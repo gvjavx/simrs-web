@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.teamdokter.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -8,6 +9,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -52,5 +54,53 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    public String namaPelayanan(String idPelayanan) {
+        String res = "";
+
+        if(!"".equalsIgnoreCase(idPelayanan) && idPelayanan != null){
+            String SQL = "SELECT \n" +
+                    "id_pelayanan,\n" +
+                    "nama_pelayanan\n" +
+                    "FROM im_simrs_pelayanan \n" +
+                    "WHERE id_pelayanan = :idPelayanan";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idPelayanan", idPelayanan)
+                    .list();
+
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                res = obj[1].toString();
+            }
+        }
+
+        return res;
+    }
+
+    public DokterTeam getNamaDokter(String idDetailCheckup) {
+        DokterTeam res = new DokterTeam();
+        if(!"".equalsIgnoreCase(idDetailCheckup) && idDetailCheckup != null){
+            String SQL = "SELECT \n" +
+                    "a.id_dokter,\n" +
+                    "b.nama_dokter,\n" +
+                    "b.sip\n" +
+                    "FROM it_simrs_dokter_team a\n" +
+                    "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
+                    "WHERE a.id_detail_checkup = :id\n";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idDetailCheckup)
+                    .list();
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                res.setIdDokter(obj[0] == null ? "" : obj[0].toString());
+                res.setNamaDokter(obj[1] == null ? "" : obj[1].toString());
+                res.setSip(obj[2] == null ? "" : obj[2].toString());
+            }
+        }
+        return res;
     }
 }

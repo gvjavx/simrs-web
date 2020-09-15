@@ -4,16 +4,20 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-md"></i> Transfer Pasien Antar Pasien
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Transfer Pasien Antar Ruangan
                 </h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-success alert-dismissible" style="display: none"
+                     id="warning_ina_transfer_pasien">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_ina_transfer_pasien"></p>
+                </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_transfer_pasien">
+                    <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                    <p id="msg_transfer_pasien"></p>
+                </div>
                 <div class="box-body btn-hide">
-                    <div class="alert alert-success alert-dismissible" style="display: none"
-                         id="warning_ina_transfer_pasien">
-                        <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_ina_transfer_pasien"></p>
-                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -41,6 +45,7 @@
                                 <img id="btn_ina_data_ruangan" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('data_ruangan')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_data_ruangan" class="hvr-grow btn-hide" onclick="conRI('data_ruangan', 'transfer_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_catatan_klinis">
@@ -49,6 +54,7 @@
                                 <img id="btn_ina_catatan_klinis" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('catatan_klinis')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_catatan_klinis" class="hvr-grow btn-hide" onclick="conRI('catatan_klinis', 'transfer_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_kondisi_serah_terima">
@@ -57,6 +63,7 @@
                                 <img id="btn_ina_kondisi_serah_terima" class="hvr-grow"
                                      onclick="detailAsesmenRawatInap('kondisi_serah_terima')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_kondisi_serah_terima" class="hvr-grow btn-hide" onclick="conRI('kondisi_serah_terima', 'transfer_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -237,7 +244,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Diagnosa Medis</label>
                             <div class="col-md-8">
-                                <textarea class="form-control" rows="3" id="dr9"></textarea>
+                                <textarea class="form-control diagnosa-pasien" rows="3" id="dr9"></textarea>
                             </div>
                         </div>
                     </div>
@@ -287,7 +294,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Anamnesis</label>
                             <div class="col-md-8">
-                                <textarea rows="3" class="form-control" id="ck1" style="margin-top: 7px"></textarea>
+                                <textarea rows="3" class="form-control anamnese" id="ck1" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
                     </div>
@@ -295,16 +302,17 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Alergi</label>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Tidak" id="ck21" name="ck2" /><label for="ck21">Tidak</label>
-                                </div>
+                            <div class="col-md-8">
+                                <input class="form-control alergi-pasien" id="ck2">
+                                <%--<div class="custom02">--%>
+                                    <%--<input type="radio" value="Tidak" id="ck21" name="ck2" /><label for="ck21">Tidak</label>--%>
+                                <%--</div>--%>
                             </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Tidak" id="ck22" name="ck2" /><label for="ck22">Ya</label>
-                                </div>
-                            </div>
+                            <%--<div class="col-md-3">--%>
+                                <%--<div class="custom02">--%>
+                                    <%--<input type="radio" value="Tidak" id="ck22" name="ck2" /><label for="ck22">Ya</label>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                         </div>
                     </div>
                     <hr class="garis">

@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface MppBo {
     public List<Mpp> getByCriteria(Mpp bean) throws GeneralBOException;
-    public CrudResponse saveAdd(Mpp bean) throws GeneralBOException;
+    public CrudResponse saveAdd(List<Mpp> list) throws GeneralBOException;
+    public CrudResponse saveDelete(Mpp bean) throws GeneralBOException;
 }

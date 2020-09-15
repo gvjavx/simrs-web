@@ -24,6 +24,15 @@ public class ItSimrsRawatInapEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getIdRawatInap() {
         return idRawatInap;

@@ -14,9 +14,11 @@ import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.dao.RekamMedicLamaDao;
 import com.neurix.simrs.master.pasien.dao.UploadRekamMedicLamaDao;
 import com.neurix.simrs.master.pasien.model.*;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItSimrsPaketPasienEntity;
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPasien;
 import org.apache.log4j.Logger;
@@ -182,6 +184,19 @@ public class PasienBoImpl implements PasienBo {
                 //cek finger data
                 pasien.setDisabledFingerData(cekFingerData(pasien.getIdPasien()));
 
+                HeaderDetailCheckup detailCheckup = pasienDao.getLastCheckup(data.getIdPasien());
+                if(detailCheckup.getIdDetailCheckup() != null){
+                    pasien.setIdPelayanan(detailCheckup.getIdPelayanan());
+                    pasien.setNoCheckuoUlang(detailCheckup.getNoCheckupUlang());
+                    pasien.setIdLastDetailCheckup(detailCheckup.getIdDetailCheckup());
+                    pasien.setIsOrderLab(detailCheckup.getIsOrderLab());
+                    if(detailCheckup.getTglCekup() != null){
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(detailCheckup.getTglCekup());
+                        pasien.setTglCheckup(formatDate);
+                        pasien.setIsCheckupUlang("Y");
+                    }
+                }
+
             }
 
             list.add(pasien);
@@ -247,65 +262,77 @@ public class PasienBoImpl implements PasienBo {
     }
 
     @Override
-    public void saveEdit(Pasien pasien) throws GeneralBOException {
+    public CrudResponse saveEdit(Pasien pasien) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
         logger.info("[PasienBoImpl.saveEdit] Start >>>>>>>");
 
         if (pasien != null && pasien.getIdPasien() != null && !"".equalsIgnoreCase(pasien.getIdPasien())) {
-
-            Pasien newPasien = new Pasien();
-            newPasien.setIdPasien(pasien.getIdPasien());
-            ImSimrsPasienEntity pasienEntity = getEntityByCriteria(newPasien).get(0);
-
+            ImSimrsPasienEntity pasienEntity = pasienDao.getById("idPasien", pasien.getIdPasien());
             if (pasienEntity != null) {
-
-                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-
-                try {
-                    date = formater.parse(pasien.getTglLahir());
-//                tglLahir = formater.format(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
 
                 pasienEntity.setNama(pasien.getNama());
                 pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
                 pasienEntity.setNoKtp(pasien.getNoKtp());
-                pasienEntity.setNoBpjs(pasien.getNoBpjs());
+                if(pasien.getNoBpjs() != null && !"".equalsIgnoreCase(pasien.getNoBpjs())){
+                    pasienEntity.setNoBpjs(pasien.getNoBpjs());
+                }
                 pasienEntity.setTempatLahir(pasien.getTempatLahir());
-
-                pasienEntity.setTglLahir(date);
-                BigInteger bigInteger = new BigInteger(pasien.getDesaId());
-                pasienEntity.setDesaId(bigInteger);
-
+                pasienEntity.setTglLahir(java.sql.Date.valueOf(pasien.getTglLahir()));
+                pasienEntity.setDesaId(new BigInteger(pasien.getDesaId()));
                 pasienEntity.setJalan(pasien.getJalan());
                 pasienEntity.setSuku(pasien.getSuku());
                 pasienEntity.setAgama(pasien.getAgama());
                 pasienEntity.setProfesi(pasien.getProfesi());
                 pasienEntity.setNoTelp(pasien.getNoTelp());
-                pasienEntity.setUrlKtp(pasien.getNoKtp());
-                pasienEntity.setPassword(pasien.getPassword());
+                if(pasien.getUrlKtp() != null && !"".equalsIgnoreCase(pasien.getUrlKtp())){
+                    pasienEntity.setUrlKtp(pasien.getUrlKtp());
+                }
+                if("N".equalsIgnoreCase(pasien.getFlag())){
+                    pasienEntity.setAction("D");
+                }else{
+                    pasienEntity.setAction("U");
+                }
                 pasienEntity.setFlag(pasien.getFlag());
-                pasienEntity.setAction("U");
                 pasienEntity.setLastUpdate(pasien.getLastUpdate());
                 pasienEntity.setLastUpdateWho(pasien.getLastUpdateWho());
 
                 try {
                     pasienDao.updateAndSave(pasienEntity);
+                    response.setStatus("success");
+                    response.setMsg("berhasil");
                 } catch (HibernateException e) {
+                    response.setStatus("eror");
+                    response.setMsg("[PasienBoImpl.saveAdd] Error when Updating data pasien"+e.getMessage());
                     logger.error("[PasienBoImpl.saveAdd] Error when Updating data pasien", e);
-                    throw new GeneralBOException(" Error when Updating data pasien " + e.getMessage());
                 }
             } else {
+                response.setStatus("eror");
+                response.setMsg("Error when get entity pasien is null");
                 logger.error("[PasienBoImpl.saveAdd] Error when get entity pasien is null");
-                throw new GeneralBOException("  Error when get entity pasien is null");
             }
 
         } else {
+            response.setStatus("eror");
+            response.setMsg("[PasienBoImpl.saveAdd] Error when saving data pasien data is null");
             logger.error("[PasienBoImpl.saveAdd] Error when saving data pasien data is null");
-            throw new GeneralBOException(" Error when saving data pasien data is null");
         }
 
         logger.info("[PasienBoImpl.saveEdit] End <<<<<<<");
+        return response;
+    }
+
+    @Override
+    public Boolean cekNikPasien(String nik) throws GeneralBOException {
+        Boolean res = false;
+        if(nik != null){
+            Pasien pasien = new Pasien();
+            pasien.setNoKtp(nik);
+            List<ImSimrsPasienEntity> pasienList = getEntityByCriteria(pasien);
+            if(pasienList.size() > 0){
+                res = true;
+            }
+        }
+        return res;
     }
 
     @Override

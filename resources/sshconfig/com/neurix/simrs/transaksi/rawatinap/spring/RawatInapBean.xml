@@ -33,6 +33,10 @@
           p:monPemberianObatDao-ref="monPemberianObatDao"
           p:monVitalSignDao-ref="monVitalSignDao"
           p:planKegiatanRawatDao-ref="planKegiatanRawatDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:headerCheckupDao-ref="headerCheckupDao"
+          p:ruanganDao-ref="ruanganDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
     />
 
     <bean id="rawatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -62,6 +62,15 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="namaTerangDokter">
+            <column name="nama_terang_dokter" />
+        </property>
+        <property name="namaTerangPerawat">
+            <column name="nama_terang_perawat" />
+        </property>
+        <property name="sipDokter">
+            <column name="sipDokter" />
+        </property>
 
     </class>
 </hibernate-mapping>

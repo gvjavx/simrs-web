@@ -20,6 +20,24 @@ public class ItSimrsAsesmenOperasiEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String tipe;
+    private String namaterang;
+    private String sip;
+
+    public String getNamaterang() {
+        return namaterang;
+    }
+
+    public void setNamaterang(String namaterang) {
+        this.namaterang = namaterang;
+    }
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
 
     public String getTipe() {
         return tipe;

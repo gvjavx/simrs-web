@@ -25,6 +25,33 @@ public class CatatanPemberianObat extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String namaTerangDokter;
+    private String namaTerangPerawat;
+    private String sipDokter;
+
+    public String getNamaTerangDokter() {
+        return namaTerangDokter;
+    }
+
+    public void setNamaTerangDokter(String namaTerangDokter) {
+        this.namaTerangDokter = namaTerangDokter;
+    }
+
+    public String getNamaTerangPerawat() {
+        return namaTerangPerawat;
+    }
+
+    public void setNamaTerangPerawat(String namaTerangPerawat) {
+        this.namaTerangPerawat = namaTerangPerawat;
+    }
+
+    public String getSipDokter() {
+        return sipDokter;
+    }
+
+    public void setSipDokter(String sipDokter) {
+        this.sipDokter = sipDokter;
+    }
 
     public String getStatus() {
         return status;

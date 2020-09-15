@@ -42,5 +42,9 @@
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
 
+        <property name="skor">
+            <column name="skor"/>
+        </property>
+
     </class>
 </hibernate-mapping>

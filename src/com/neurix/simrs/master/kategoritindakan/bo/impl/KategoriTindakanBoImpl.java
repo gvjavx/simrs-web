@@ -56,10 +56,10 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
     }
 
     @Override
-    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan) throws GeneralBOException {
+    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan, String kategori) throws GeneralBOException {
         List<KategoriTindakan> list = new ArrayList<>();
         try {
-            list = kategoriTindakanDao.getListKategoriTindakan(idPelayanan);
+            list = kategoriTindakanDao.getListKategoriTindakan(idPelayanan, kategori);
         }catch (HibernateException e){
             logger.error(e.getMessage());
         }

@@ -15,5 +15,6 @@ public interface DiagnosaRawatBo {
 
     public CrudResponse saveEdit(DiagnosaRawat bean) throws GeneralBOException;
     public CrudResponse updateCoverBpjs(HeaderDetailCheckup bean) throws GeneralBOException;
+    public Boolean cekDiagnosa(DiagnosaRawat bean) throws GeneralBOException;
 
 }

@@ -35,6 +35,8 @@ apply the skin class to the body tag so the changes take effect.
 <link rel="stylesheet" href="<s:url value="/pages/dist/css/dataTables.bootstrap.min.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/plugins/pace/pace.min.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/plugins/iCheck/all.css"/>">
+<link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/modal-style.css"/>">
+<link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/info_box.css"/>">
 <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />--%>
 
 <%--<link rel="stylesheet" href="<s:url value="/pages/css/style-form.css"/>">--%>
@@ -97,6 +99,7 @@ apply the skin class to the body tag so the changes take effect.
 <script type="text/javascript" src="<s:url value="/pages/bootstraplte/js/jquery-ui.js"/>"></script>
 <script src="<s:url value="/pages/plugins/morris/morris.min.js"/>"></script>
 <script src="<s:url value="/pages/plugins/morris/raphael.min.js"/>"></script>
+<script src="<s:url value="/pages/dist/js/spinner.js"/>"></script>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>--%>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>--%>
 <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>--%>
@@ -378,6 +381,8 @@ apply the skin class to the body tag so the changes take effect.
 </style>
 <script>
 
+    var contextPathHeader = '<%= request.getContextPath() %>';
+
     $(window).load(function() {
         // Animate loader off screen
         $(".se-pre-con").fadeOut("slow");
@@ -474,6 +479,22 @@ apply the skin class to the body tag so the changes take effect.
         }
     }
 
+    function formatRupiahAtas2(angka) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return rupiah;
+    }
+
     function converterDateTime(dateTime) {
 
         var today = "";
@@ -534,6 +555,14 @@ apply the skin class to the body tag so the changes take effect.
 
     function cekIcons(val) {
         var fa = val;
+        if (val == "Ya") {
+            fa = '<i class="fa fa-check"></i>'
+        }
+        return fa;
+    }
+
+    function cekIconsIsNotNull(val) {
+        var fa = "";
         if (val == "Ya") {
             fa = '<i class="fa fa-check"></i>'
         }

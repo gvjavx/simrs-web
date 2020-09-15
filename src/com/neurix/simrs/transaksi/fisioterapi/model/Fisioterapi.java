@@ -17,6 +17,24 @@ public class Fisioterapi extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String skor;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getSkor() {
+        return skor;
+    }
+
+    public void setSkor(String skor) {
+        this.skor = skor;
+    }
 
     public String getIdDetailCheckup() {
         return idDetailCheckup;

@@ -74,6 +74,8 @@ public class AsesmenIcuBoImpl implements AsesmenIcuBo {
                     asesmenIcu.setLastUpdateWho(entity.getLastUpdateWho());
                     asesmenIcu.setTipe(entity.getTipe());
                     asesmenIcu.setInformasi(entity.getInformasi());
+                    asesmenIcu.setNamaTerang(entity.getNamaTerang());
+                    asesmenIcu.setSip(entity.getSip());
                     list.add(asesmenIcu);
                 }
             }
@@ -86,35 +88,83 @@ public class AsesmenIcuBoImpl implements AsesmenIcuBo {
     public CrudResponse saveAdd(List<AsesmenIcu> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if (list.size() > 0) {
-            for (AsesmenIcu bean : list) {
+            AsesmenIcu asesmenIcu = list.get(0);
+            AsesmenIcu icu = new AsesmenIcu();
+            icu.setIdDetailCheckup(asesmenIcu.getIdDetailCheckup());
+            icu.setKeterangan(asesmenIcu.getKeterangan());
+            List<AsesmenIcu> asesmenIcus = getByCriteria(icu);
+            if(asesmenIcus.size() > 0){
+                response.setStatus("error");
+                response.setMsg("Data yang anda masukan sudah ada...!");
+            }else{
+                for (AsesmenIcu bean : list) {
+                    ItSimrsAsesmenIcuEntity asesmenIcuEntity = new ItSimrsAsesmenIcuEntity();
+                    asesmenIcuEntity.setIdAsesmenIcu("ICU" + asesmenIcuDao.getNextSeq());
+                    asesmenIcuEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    asesmenIcuEntity.setParameter(bean.getParameter());
+                    asesmenIcuEntity.setJawaban(bean.getJawaban());
+                    asesmenIcuEntity.setKeterangan(bean.getKeterangan());
+                    asesmenIcuEntity.setJenis(bean.getJenis());
+                    asesmenIcuEntity.setScore(bean.getScore());
+                    asesmenIcuEntity.setAction(bean.getAction());
+                    asesmenIcuEntity.setFlag(bean.getFlag());
+                    asesmenIcuEntity.setCreatedDate(bean.getCreatedDate());
+                    asesmenIcuEntity.setCreatedWho(bean.getCreatedWho());
+                    asesmenIcuEntity.setLastUpdate(bean.getLastUpdate());
+                    asesmenIcuEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    asesmenIcuEntity.setTipe(bean.getTipe());
+                    asesmenIcuEntity.setInformasi(bean.getInformasi());
+                    asesmenIcuEntity.setNamaTerang(bean.getNamaTerang());
+                    asesmenIcuEntity.setSip(bean.getSip());
 
-                ItSimrsAsesmenIcuEntity asesmenIcuEntity = new ItSimrsAsesmenIcuEntity();
-                asesmenIcuEntity.setIdAsesmenIcu("ICU" + asesmenIcuDao.getNextSeq());
-                asesmenIcuEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-                asesmenIcuEntity.setParameter(bean.getParameter());
-                asesmenIcuEntity.setJawaban(bean.getJawaban());
-                asesmenIcuEntity.setKeterangan(bean.getKeterangan());
-                asesmenIcuEntity.setJenis(bean.getJenis());
-                asesmenIcuEntity.setScore(bean.getScore());
-                asesmenIcuEntity.setAction(bean.getAction());
-                asesmenIcuEntity.setFlag(bean.getFlag());
-                asesmenIcuEntity.setCreatedDate(bean.getCreatedDate());
-                asesmenIcuEntity.setCreatedWho(bean.getCreatedWho());
-                asesmenIcuEntity.setLastUpdate(bean.getLastUpdate());
-                asesmenIcuEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                asesmenIcuEntity.setTipe(bean.getTipe());
-                asesmenIcuEntity.setInformasi(bean.getInformasi());
+                    try {
+                        asesmenIcuDao.addAndSave(asesmenIcuEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Found Error " + e.getMessage());
+                        logger.error(e.getMessage());
+                    }
+                }
+            }
+        }
+        return response;
+    }
 
+    @Override
+    public CrudResponse saveDelete(AsesmenIcu bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        hsCriteria.put("keterangan", bean.getKeterangan());
+        List<ItSimrsAsesmenIcuEntity> entityList = new ArrayList<>();
+        try {
+            entityList = asesmenIcuDao.getByCriteria(hsCriteria);
+        }catch (HibernateException e){
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
+            logger.error(e.getMessage());
+        }
+        if(entityList.size() > 0){
+            for (ItSimrsAsesmenIcuEntity entity : entityList){
+                entity.setFlag("N");
+                entity.setAction("D");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
                 try {
-                    asesmenIcuDao.addAndSave(asesmenIcuEntity);
+                    asesmenIcuDao.updateAndSave(entity);
                     response.setStatus("success");
                     response.setMsg("Berhasil");
-                } catch (HibernateException e) {
+                }catch (HibernateException e){
                     response.setStatus("error");
-                    response.setMsg("Found Error " + e.getMessage());
+                    response.setMsg("Found Error, "+e.getMessage());
                     logger.error(e.getMessage());
                 }
             }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
         }
         return response;
     }

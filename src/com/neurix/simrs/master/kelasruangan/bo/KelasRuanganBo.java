@@ -15,4 +15,6 @@ public interface KelasRuanganBo  extends GeneralBo {
     public void saveEdit(KelasRuangan kelasRuangan) throws GeneralBOException;
     public void saveDelete(KelasRuangan kelasRuangan) throws GeneralBOException;
     public ImSimrsKelasRuanganEntity getKelasRuanganById(String id) throws GeneralBOException;
+
+    public List<KelasRuangan> getListKelasKamar(String kategori) throws GeneralBOException;
 }

@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_ina_edukasi_pasien_terintegrasi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_edukasi_pasien_terintegrasi">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_edukasi_pasien_terintegrasi"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -53,6 +57,7 @@
                                 <img id="btn_ina_ept_tppri" class="hvr-grow"
                                      onclick="listEdukasiPasien('ept_tppri')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_ept_tppri" class="hvr-grow btn-hide" onclick="conRI('ept_tppri', 'edukasi_pasien_terintegrasi', '0', 'edukasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_ept_perawat">
@@ -61,6 +66,7 @@
                                 <img id="btn_ina_ept_perawat" class="hvr-grow"
                                      onclick="listEdukasiPasien('ept_perawat')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_ept_perawat" class="hvr-grow btn-hide" onclick="conRI('ept_perawat', 'edukasi_pasien_terintegrasi', '0', 'edukasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_ept_dpjp">
@@ -69,6 +75,7 @@
                                 <img id="btn_ina_ept_dpjp" class="hvr-grow"
                                      onclick="listEdukasiPasien('ept_dpjp')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_ept_dpjp" class="hvr-grow btn-hide" onclick="conRI('ept_dpjp', 'edukasi_pasien_terintegrasi', '0', 'edukasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_ept_nutrisionis">
@@ -77,6 +84,7 @@
                                 <img id="btn_ina_ept_nutrisionis" class="hvr-grow"
                                      onclick="listEdukasiPasien('ept_nutrisionis')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_ept_nutrisionis" class="hvr-grow btn-hide" onclick="conRI('ept_nutrisionis', 'edukasi_pasien_terintegrasi', '0', 'edukasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_ept_farmasi">
@@ -85,6 +93,7 @@
                                 <img id="btn_ina_ept_farmasi" class="hvr-grow"
                                      onclick="listEdukasiPasien('ept_farmasi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_ept_farmasi" class="hvr-grow btn-hide" onclick="conRI('ept_farmasi', 'edukasi_pasien_terintegrasi', '0', 'edukasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_ept_rehabilitasi_medis">
@@ -93,6 +102,7 @@
                                 <img id="btn_ina_ept_rehabilitasi_medis" class="hvr-grow"
                                      onclick="listEdukasiPasien('ept_rehabilitasi_medis')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_ept_rehabilitasi_medis" class="hvr-grow btn-hide" onclick="conRI('ept_rehabilitasi_medis', 'edukasi_pasien_terintegrasi', '0', 'edukasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_ept_dokter">
@@ -101,6 +111,7 @@
                                 <img id="btn_ina_ept_dokter" class="hvr-grow"
                                      onclick="listEdukasiPasien('ept_dokter')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_ept_dokter" class="hvr-grow btn-hide" onclick="conRI('ept_dokter', 'edukasi_pasien_terintegrasi', '0', 'edukasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_ept_radiografer">
@@ -109,6 +120,7 @@
                                 <img id="btn_ina_ept_radiografer" class="hvr-grow"
                                      onclick="listEdukasiPasien('ept_radiografer')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_ept_radiografer" class="hvr-grow btn-hide" onclick="conRI('ept_radiografer', 'edukasi_pasien_terintegrasi', '0', 'edukasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_ina_ept_ppa">
@@ -117,6 +129,7 @@
                                 <img id="btn_ina_ept_ppa" class="hvr-grow"
                                      onclick="listEdukasiPasien('ept_ppa')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_ept_ppa" class="hvr-grow btn-hide" onclick="conRI('ept_ppa', 'edukasi_pasien_terintegrasi', '0', 'edukasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>

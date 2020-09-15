@@ -22,31 +22,34 @@ public class PengkajianUlangKeperawatanBoImpl implements PengkajianUlangKeperawa
     public List<PengkajianUlangKeperawatan> getByCriteria(PengkajianUlangKeperawatan bean) throws GeneralBOException {
         List<PengkajianUlangKeperawatan> list = new ArrayList<>();
 
-        if(bean != null){
+        if (bean != null) {
             Map hsCriteria = new HashMap();
-            if(bean.getIdPengkajianUlangKeperawatan() != null && !"".equalsIgnoreCase(bean.getIdPengkajianUlangKeperawatan())){
+            if (bean.getIdPengkajianUlangKeperawatan() != null && !"".equalsIgnoreCase(bean.getIdPengkajianUlangKeperawatan())) {
                 hsCriteria.put("id_asesmen_keperawatan_rawat_inap", bean.getIdPengkajianUlangKeperawatan());
             }
-            if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
-            if(bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())){
+            if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
                 hsCriteria.put("keterangan", bean.getKeterangan());
             }
-            if(bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())){
+            if (bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())) {
                 hsCriteria.put("jenis", bean.getJenis());
+            }
+            if (bean.getTanggal() != null && !"".equalsIgnoreCase(bean.getTanggal().toString())) {
+                hsCriteria.put("tanggal", bean.getTanggal());
             }
 
             List<ItSimrsPengkajianUlangKeperawatanEntity> entityList = new ArrayList<>();
 
             try {
                 entityList = pengkajianUlangKeperawatanDao.getByCriteria(hsCriteria);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error(e.getMessage());
             }
 
-            if(entityList.size() > 0){
-                for (ItSimrsPengkajianUlangKeperawatanEntity entity: entityList){
+            if (entityList.size() > 0) {
+                for (ItSimrsPengkajianUlangKeperawatanEntity entity : entityList) {
                     PengkajianUlangKeperawatan keperawatan = new PengkajianUlangKeperawatan();
                     keperawatan.setIdPengkajianUlangKeperawatan(entity.getIdPengkajianUlangKeperawatan());
                     keperawatan.setIdDetailCheckup(entity.getIdDetailCheckup());
@@ -74,14 +77,14 @@ public class PengkajianUlangKeperawatanBoImpl implements PengkajianUlangKeperawa
     @Override
     public CrudResponse saveAdd(PengkajianUlangKeperawatan bean, List<PengkajianUlangKeperawatan> keperawatanList) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean != null){
+        if (bean != null) {
 
             Boolean cekInsertData = false;
             Boolean cekExistData = false;
 
             try {
                 cekInsertData = cekPengkajianUlangKeperawatan(bean, "insert");
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 response.setStatus("error");
                 response.setMsg("Found Error " + e.getMessage());
                 logger.error("Errof");
@@ -89,14 +92,14 @@ public class PengkajianUlangKeperawatanBoImpl implements PengkajianUlangKeperawa
 
             try {
                 cekExistData = cekPengkajianUlangKeperawatan(bean, "update");
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 response.setStatus("error");
                 response.setMsg("Found Error " + e.getMessage());
                 logger.error("Errof");
             }
 
-            for (PengkajianUlangKeperawatan ulangKeperawatan: keperawatanList){
-                if(cekInsertData) {
+            for (PengkajianUlangKeperawatan ulangKeperawatan : keperawatanList) {
+                if (cekInsertData) {
                     if (cekExistData) {
                         response.setStatus("error");
                         response.setMsg("Data pada waktu " + bean.getWaktu() + " sudah ada");
@@ -104,9 +107,9 @@ public class PengkajianUlangKeperawatanBoImpl implements PengkajianUlangKeperawa
                     } else {
                         response = saveEdit(ulangKeperawatan);
                     }
-                }else{
+                } else {
                     ItSimrsPengkajianUlangKeperawatanEntity keperawatanEntity = new ItSimrsPengkajianUlangKeperawatanEntity();
-                    keperawatanEntity.setIdPengkajianUlangKeperawatan("PUK"+pengkajianUlangKeperawatanDao.getNextSeq());
+                    keperawatanEntity.setIdPengkajianUlangKeperawatan("PUK" + pengkajianUlangKeperawatanDao.getNextSeq());
                     keperawatanEntity.setIdDetailCheckup(ulangKeperawatan.getIdDetailCheckup());
                     keperawatanEntity.setTanggal(ulangKeperawatan.getTanggal());
                     keperawatanEntity.setParameter(ulangKeperawatan.getParameter());
@@ -127,9 +130,9 @@ public class PengkajianUlangKeperawatanBoImpl implements PengkajianUlangKeperawa
                         pengkajianUlangKeperawatanDao.addAndSave(keperawatanEntity);
                         response.setStatus("success");
                         response.setMsg("Berhasil");
-                    }catch (HibernateException e){
+                    } catch (HibernateException e) {
                         response.setStatus("error");
-                        response.setMsg("Found Error "+e.getMessage());
+                        response.setMsg("Found Error " + e.getMessage());
                         logger.error(e.getMessage());
                     }
                 }
@@ -141,18 +144,18 @@ public class PengkajianUlangKeperawatanBoImpl implements PengkajianUlangKeperawa
     @Override
     public CrudResponse saveEdit(PengkajianUlangKeperawatan bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean != null){
+        if (bean != null) {
 
             ItSimrsPengkajianUlangKeperawatanEntity keperawatanEntity = getEntity(bean);
-            if(keperawatanEntity.getIdPengkajianUlangKeperawatan() != null){
+            if (keperawatanEntity.getIdPengkajianUlangKeperawatan() != null) {
 
-                if("pagi".equalsIgnoreCase(bean.getWaktu())){
+                if ("pagi".equalsIgnoreCase(bean.getWaktu())) {
                     keperawatanEntity.setPagi(bean.getPagi());
                 }
-                if("siang".equalsIgnoreCase(bean.getWaktu())){
+                if ("siang".equalsIgnoreCase(bean.getWaktu())) {
                     keperawatanEntity.setSiang(bean.getSiang());
                 }
-                if("malam".equalsIgnoreCase(bean.getWaktu())){
+                if ("malam".equalsIgnoreCase(bean.getWaktu())) {
                     keperawatanEntity.setMalam(bean.getMalam());
                 }
 
@@ -163,15 +166,69 @@ public class PengkajianUlangKeperawatanBoImpl implements PengkajianUlangKeperawa
                     pengkajianUlangKeperawatanDao.updateAndSave(keperawatanEntity);
                     response.setStatus("success");
                     response.setMsg("Berhasil");
-                }catch (HibernateException e){
+                } catch (HibernateException e) {
                     response.setStatus("error");
-                    response.setMsg("Found Error "+e.getMessage());
+                    response.setMsg("Found Error " + e.getMessage());
                     logger.error(e.getMessage());
                 }
-            }else{
+            } else {
                 response.setStatus("error");
                 response.setMsg("Found Error ID tidak ditemukan....!");
             }
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveDelete(PengkajianUlangKeperawatan bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsPengkajianUlangKeperawatanEntity entity = pengkajianUlangKeperawatanDao.getById("idPengkajianUlangKeperawatan", bean.getIdPengkajianUlangKeperawatan());
+        if (entity != null) {
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_detail_checkup", entity.getIdDetailCheckup());
+            hsCriteria.put("keterangan", entity.getKeterangan());
+            hsCriteria.put("jenis", entity.getJenis());
+            hsCriteria.put("tanggal", entity.getTanggal());
+            List<ItSimrsPengkajianUlangKeperawatanEntity> entityList = new ArrayList<>();
+            try {
+                entityList = pengkajianUlangKeperawatanDao.getByCriteria(hsCriteria);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg("Data tidak ditemukan...!");
+                logger.error(e.getMessage());
+            }
+            if (entityList.size() > 0) {
+                for (ItSimrsPengkajianUlangKeperawatanEntity keperawatanEntity : entityList) {
+                    if ("pagi".equalsIgnoreCase(bean.getWaktu())) {
+                        keperawatanEntity.setPagi(null);
+                    }
+                    if ("siang".equalsIgnoreCase(bean.getWaktu())) {
+                        keperawatanEntity.setSiang(null);
+                    }
+                    if ("malam".equalsIgnoreCase(bean.getWaktu())) {
+                        keperawatanEntity.setMalam(null);
+                    }
+                    keperawatanEntity.setLastUpdate(bean.getLastUpdate());
+                    keperawatanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        pengkajianUlangKeperawatanDao.updateAndSave(keperawatanEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
+                    }
+                }
+            } else {
+                response.setStatus("error");
+                response.setMsg("Data tidak ditemukan...!");
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("Data tidak ditemukan...!");
         }
         return response;
     }
@@ -181,33 +238,33 @@ public class PengkajianUlangKeperawatanBoImpl implements PengkajianUlangKeperawa
         Boolean response = false;
         try {
             response = pengkajianUlangKeperawatanDao.cekPengkajianUlangkeperawatan(bean, tipe);
-        }catch (HibernateException e){
-            logger.error("Found Error "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("Found Error " + e.getMessage());
         }
         return response;
     }
 
-    private ItSimrsPengkajianUlangKeperawatanEntity getEntity(PengkajianUlangKeperawatan bean){
+    private ItSimrsPengkajianUlangKeperawatanEntity getEntity(PengkajianUlangKeperawatan bean) {
         ItSimrsPengkajianUlangKeperawatanEntity keperawatanEntity = new ItSimrsPengkajianUlangKeperawatanEntity();
         Map hsCriteria = new HashMap();
 
-        if(bean != null){
-            if(bean.getIdPengkajianUlangKeperawatan() != null && !"".equalsIgnoreCase(bean.getIdPengkajianUlangKeperawatan())){
+        if (bean != null) {
+            if (bean.getIdPengkajianUlangKeperawatan() != null && !"".equalsIgnoreCase(bean.getIdPengkajianUlangKeperawatan())) {
                 hsCriteria.put("id_asesmen_keperawatan_rawat_inap", bean.getIdPengkajianUlangKeperawatan());
             }
-            if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
-            if(bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())){
+            if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
                 hsCriteria.put("keterangan", bean.getKeterangan());
             }
-            if(bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())){
+            if (bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())) {
                 hsCriteria.put("jenis", bean.getJenis());
             }
-            if(bean.getKodeParameter() != null && !"".equalsIgnoreCase(bean.getKodeParameter())){
+            if (bean.getKodeParameter() != null && !"".equalsIgnoreCase(bean.getKodeParameter())) {
                 hsCriteria.put("kode_parameter", bean.getKodeParameter());
             }
-            if(bean.getTanggal() != null && !"".equalsIgnoreCase(bean.getTanggal().toString())){
+            if (bean.getTanggal() != null && !"".equalsIgnoreCase(bean.getTanggal().toString())) {
                 hsCriteria.put("tanggal", bean.getTanggal());
             }
 
@@ -215,17 +272,18 @@ public class PengkajianUlangKeperawatanBoImpl implements PengkajianUlangKeperawa
 
             try {
                 entityList = pengkajianUlangKeperawatanDao.getByCriteria(hsCriteria);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error(e.getMessage());
             }
 
-            if(entityList.size() > 0){
+            if (entityList.size() > 0) {
                 keperawatanEntity = entityList.get(0);
             }
         }
 
         return keperawatanEntity;
     }
+
     public static Logger getLogger() {
         return logger;
     }

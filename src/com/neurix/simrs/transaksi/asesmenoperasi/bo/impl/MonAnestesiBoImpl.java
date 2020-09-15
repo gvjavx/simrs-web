@@ -7,6 +7,7 @@ import com.neurix.simrs.transaksi.asesmenoperasi.bo.MonAnestesiBo;
 import com.neurix.simrs.transaksi.asesmenoperasi.dao.MonAnestesiDao;
 import com.neurix.simrs.transaksi.asesmenoperasi.model.ItSimrsMonitoringAnestesiEntity;
 import com.neurix.simrs.transaksi.asesmenoperasi.model.MonitoringAnestesi;
+import com.neurix.simrs.transaksi.icu.model.HeaderIcu;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -78,9 +79,9 @@ public class MonAnestesiBoImpl implements MonAnestesiBo {
     @Override
     public CrudResponse saveAdd(MonitoringAnestesi bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean != null){
+        if (bean != null) {
             ItSimrsMonitoringAnestesiEntity monitoringAnestesiEntity = new ItSimrsMonitoringAnestesiEntity();
-            monitoringAnestesiEntity.setIdMonitoringAnestesi("MON"+monAnestesiDao.getNextSeq());
+            monitoringAnestesiEntity.setIdMonitoringAnestesi("MON" + monAnestesiDao.getNextSeq());
             monitoringAnestesiEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
             monitoringAnestesiEntity.setWaktu(bean.getWaktu());
             monitoringAnestesiEntity.setRr(bean.getRr());
@@ -118,6 +119,30 @@ public class MonAnestesiBoImpl implements MonAnestesiBo {
     @Override
     public Boolean cekDataAnestesi(String id, String jam, String jenis) throws GeneralBOException {
         return monAnestesiDao.cekDataAnestesi(id, jam, jenis);
+    }
+
+    @Override
+    public CrudResponse saveDelete(MonitoringAnestesi bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsMonitoringAnestesiEntity entity = monAnestesiDao.getById("idMonitoringAnestesi", bean.getIdMonitoringAnestesi());
+        if (entity != null) {
+            entity.setFlag("N");
+            entity.setAction("D");
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            try {
+                monAnestesiDao.updateAndSave(entity);
+                response.setStatus("success");
+                response.setMsg("berhasil");
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("Data tidak diketahui...!");
+        }
+        return response;
     }
 
     public void setMonAnestesiDao(MonAnestesiDao monAnestesiDao) {

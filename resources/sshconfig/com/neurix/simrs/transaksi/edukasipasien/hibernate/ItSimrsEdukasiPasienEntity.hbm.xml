@@ -65,6 +65,14 @@
         <property name="lastUpdateWho">
             <column name="last_update_who"/>
         </property>
-
+        <property name="namaTerang">
+            <column name="nama_terang"/>
+        </property>
+        <property name="sip">
+            <column name="sip"/>
+        </property>
+        <property name="namaStaf">
+            <column name="nama_staf"/>
+        </property>
     </class>
 </hibernate-mapping>

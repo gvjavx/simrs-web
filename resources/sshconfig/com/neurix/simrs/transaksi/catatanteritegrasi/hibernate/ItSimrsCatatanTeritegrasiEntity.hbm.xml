@@ -20,8 +20,8 @@
         <property name="ppa">
             <column name="ppa" sql-type="varchar" length="100" not-null="false"/>
         </property>
-        <property name="jenis">
-            <column name="jenis" sql-type="varchar" length="1000" not-null="false"/>
+        <property name="subjective">
+            <column name="subjective" sql-type="varchar" length="1000" not-null="false"/>
         </property>
         <property name="intruksi">
             <column name="intruksi" sql-type="text" not-null="false"/>
@@ -52,6 +52,39 @@
         </property>
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="objective">
+            <column name="objective"/>
+        </property>
+        <property name="nadi">
+            <column name="nadi"/>
+        </property>
+        <property name="suhu">
+            <column name="suhu"/>
+        </property>
+        <property name="tensi">
+            <column name="tensi"/>
+        </property>
+        <property name="rr">
+            <column name="rr"/>
+        </property>
+        <property name="namaDokter">
+            <column name="nama_dokter"/>
+        </property>
+        <property name="namaPetugas">
+            <column name="nama_petugas"/>
+        </property>
+        <property name="sipDokter">
+            <column name="sip_dokter"/>
+        </property>
+        <property name="sipPetugas">
+            <column name="sip_petugas"/>
+        </property>
+        <property name="assesment">
+            <column name="assesment"/>
+        </property>
+        <property name="planning">
+            <column name="planning"/>
         </property>
 
     </class>
