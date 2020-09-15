@@ -2190,9 +2190,9 @@ public class ObatBoImpl implements ObatBo {
 
                 TransaksiStok transaksiStok = getSumKreditTransaksiStok(agingObat.getNoNota(), periode, branchId, agingObat.getMasterId());
                 if (transaksiStok != null && transaksiStok.getQty() != null){
-                    BigDecimal totalKredit = new BigDecimal(transaksiStok.getQty());
-                    BigDecimal total = agingObat.getTotal().subtract(totalKredit);
-                    agingObat.setTotal(total);
+//                    BigDecimal totalKredit = new BigDecimal(transaksiStok.getQty());
+//                    BigDecimal total = agingObat.getTotal().subtract(totalKredit);
+//                    agingObat.setTotal(total);
                 }
             }
         }
