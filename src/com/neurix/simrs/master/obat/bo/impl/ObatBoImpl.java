@@ -2183,6 +2183,24 @@ public class ObatBoImpl implements ObatBo {
 
     @Override
     public List<Aging> getListAging(String branchId, String idPelayanan, String periode) throws GeneralBOException {
-        return obatDao.getAgingStokObat(branchId, idPelayanan, periode);
+
+        List<Aging> listAgingObat = obatDao.getAgingStokObat(branchId, idPelayanan, periode);
+        if (listAgingObat != null && listAgingObat.size() > 0){
+            for (Aging agingObat : listAgingObat){
+
+                TransaksiStok transaksiStok = getSumKreditTransaksiStok(agingObat.getNoNota(), periode, branchId, agingObat.getMasterId());
+                if (transaksiStok != null && transaksiStok.getQty() != null){
+                    BigDecimal totalKredit = new BigDecimal(transaksiStok.getQty());
+                    BigDecimal total = agingObat.getTotal().subtract(totalKredit);
+                    agingObat.setTotal(total);
+                }
+            }
+        }
+
+        return listAgingObat;
+    }
+
+    private TransaksiStok getSumKreditTransaksiStok(String idBarang, String periode, String branchId, String idPelayanan){
+        return obatDao.getSumKreditByPeriodeTransaksiStok(branchId, idPelayanan, periode, idBarang);
     }
 }

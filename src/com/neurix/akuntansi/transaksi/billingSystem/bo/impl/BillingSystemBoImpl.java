@@ -319,8 +319,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 jurnalEntity.setCreatedDate(updateTime);
                 jurnalEntity.setLastUpdate(updateTime);
                 jurnalEntity.setAction("C");
-
-                if (periodSudahTutup==null){
+                // dirubah oleh sigit penambahan filter JKR 2020-09-15
+                if (periodSudahTutup==null || "JKR".equalsIgnoreCase(jurnalEntity.getTipeJurnalId())){
                     try {
                         jurnalDao.addAndSave(jurnalEntity);
                     } catch (HibernateException e) {
@@ -967,7 +967,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             totalKredit = totalKredit.setScale(2, BigDecimal.ROUND_HALF_UP);
             BigDecimal balance = totalDebit.subtract(totalKredit);
             if (balance.compareTo(new BigDecimal(0)) == 0){
-                if (periodSudahTutup==null||("Y").equalsIgnoreCase(periodSudahTutup)){
+                // penambahan filter JKR, Sigit 2020-09-15
+                if (periodSudahTutup==null || ("Y").equalsIgnoreCase(periodSudahTutup) || "JKR".equalsIgnoreCase(tipeJurnalId)){
                     for (ItJurnalDetailEntity jurnalDetailEntity : jurnalDetailEntityList){
                         /////////////////////// Save data ///////////////////////
                         if (jurnalDetailEntity.getJumlahDebit().compareTo(BigDecimal.ZERO)==0&&jurnalDetailEntity.getJumlahKredit().compareTo(BigDecimal.ZERO)==0){

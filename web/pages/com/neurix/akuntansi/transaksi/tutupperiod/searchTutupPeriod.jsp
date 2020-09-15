@@ -69,6 +69,8 @@
                                         <option value="10">Oktober</option>
                                         <option value="11">November</option>
                                         <option value="12">Desember</option>
+                                        <option value="12a" id="des-a" style="display: none;">Desember A</option>
+                                        <option value="12b" id="des-b" style="display: none;">Desember B</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-2">

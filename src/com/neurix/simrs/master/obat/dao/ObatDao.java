@@ -6,6 +6,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -906,5 +907,48 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             }
         }
         return agingList;
+    }
+
+    public TransaksiStok getSumKreditByPeriodeTransaksiStok(String branchId, String idPelayanan, String periode, String idBarang){
+
+        periode = periode + "%";
+
+        String SQL = "SELECT \n" +
+                "id_pelayanan,\n" +
+                "registered_date,\n" +
+                "tipe,\n" +
+                "id_barang,\n" +
+                "SUM(qty) as total_qty\n" +
+                "FROM it_simrs_transaksi_stok\n" +
+                "WHERE branch_id LIKE :unit \n" +
+                "AND tipe = 'K'\n" +
+                "AND id_pelayanan = :pelayanan \n" +
+                "AND id_barang LIKE :idbarang \n" +
+                "AND CAST(registered_date as VARCHAR) LIKE :periode \n" +
+                "GROUP BY \n" +
+                "id_pelayanan,\n" +
+                "registered_date,\n" +
+                "tipe,\n" +
+                "id_barang";
+
+        List<Object[]> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("pelayanan", idPelayanan)
+                .setParameter("periode", periode)
+                .setParameter("idbarang", idBarang)
+                .list();
+
+        TransaksiStok transaksiStok = new TransaksiStok();
+        if (objects != null && objects.size() > 0){
+            for (Object[] obj : objects){
+                transaksiStok.setIdPelayanan(obj[0].toString());
+                transaksiStok.setRegisteredDate((Date) obj[1]);
+                transaksiStok.setTipe(obj[2].toString());
+                transaksiStok.setIdPelayanan(obj[3].toString());
+                transaksiStok.setQty(obj[4] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(String.valueOf((BigDecimal) obj[4])));
+            }
+        }
+
+        return transaksiStok;
     }
 }

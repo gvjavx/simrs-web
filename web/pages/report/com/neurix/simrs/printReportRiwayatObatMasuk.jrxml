@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printReportRiwayatObatMasuk" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1f1d46d-b0ce-493a-8119-1250c2de0d06">
-	<property name="ireport.zoom" value="1.4641000000000095"/>
+	<property name="ireport.zoom" value="1.3310000000000086"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="100"/>
+	<property name="ireport.y" value="187"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.area" class="java.lang.String"/>
 	<parameter name="reportParams.unit" class="java.lang.String"/>
@@ -36,6 +36,21 @@
 	<field name="totalLalu" class="java.lang.String"/>
 	<field name="subTotalLalu" class="java.lang.String"/>
 	<field name="idBarang" class="java.lang.String"/>
+	<group name="group keterangan">
+		<groupExpression><![CDATA[$F{keterangan}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToTallestObject" x="55" y="2" width="213" height="19" uuid="0e421ae7-a67a-49e1-a6e2-9a5229c66f10"/>
+					<box leftPadding="3" rightPadding="3"/>
+					<textElement verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{keterangan}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -323,22 +338,14 @@
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="-17" y="1" width="72" height="20" uuid="14d3940e-a64b-4b90-abeb-662255b958f5"/>
+				<reportElement x="-17" y="-19" width="72" height="20" uuid="14d3940e-a64b-4b90-abeb-662255b958f5"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{registeredDate}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="55" y="1" width="99" height="20" uuid="0e421ae7-a67a-49e1-a6e2-9a5229c66f10"/>
-				<box leftPadding="3" rightPadding="3"/>
-				<textElement verticalAlignment="Middle">
-					<font size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{keterangan}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0" isBlankWhenNull="true">
 				<reportElement x="339" y="1" width="37" height="20" uuid="1ed07d61-bb7b-4103-bc85-ab5dcb950997"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -362,7 +369,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotal}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0" isBlankWhenNull="true">
 				<reportElement x="497" y="1" width="43" height="20" uuid="0c315621-0829-4562-9bf7-4f214cb6d5d0"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -386,7 +393,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotalKredit}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0" isBlankWhenNull="true">
 				<reportElement x="657" y="1" width="42" height="20" uuid="6d63782a-24ff-4647-a667-f92e493cdcc4"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -410,7 +417,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotalSaldo}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="#,##0" isBlankWhenNull="true">
 				<reportElement x="154" y="1" width="44" height="20" uuid="48cdbd9f-340f-4d11-855a-95a909c48424"/>
 				<box leftPadding="3" rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">

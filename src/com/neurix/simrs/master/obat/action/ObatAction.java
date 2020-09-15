@@ -1121,6 +1121,7 @@ public class ObatAction extends BaseMasterAction {
         for(Aging data: agingList){
             Aging newData = new Aging();
 
+            BigDecimal total = data.getTotal();
             newData.setTotal(data.getTotalAwal().abs());
             newData.setJumlah1(new BigDecimal(0));
             newData.setJumlah2(new BigDecimal(0));
@@ -1153,31 +1154,31 @@ public class ObatAction extends BaseMasterAction {
 
             //umur 0 s/d 1 bulan
             if(agingPosition<=1){
-                newData.setJumlah1(data.getTotal().abs());
+                newData.setJumlah1(total.abs());
             }
             //umur 1 s/d 2 bulan
             else if(agingPosition<=2 && agingPosition>1){
-                newData.setJumlah2(data.getTotal().abs());
+                newData.setJumlah2(total.abs());
             }
             //umur 2 s/d 3 bulan
             else if(agingPosition<=3 && agingPosition>2){
-                newData.setJumlah3(data.getTotal().abs());
+                newData.setJumlah3(total.abs());
             }
             //umur 3 s/d 6 bulan
             else if(agingPosition<=6 && agingPosition>3){
-                newData.setJumlah4(data.getTotal().abs());
+                newData.setJumlah4(total.abs());
             }
             //umur 6 s/d 12 bulan
             else if(agingPosition<=12 && agingPosition>6){
-                newData.setJumlah5(data.getTotal().abs());
+                newData.setJumlah5(total.abs());
             }
             //umur 1 s/d 2 tahun
             else if(agingPosition<=24 && agingPosition>12){
-                newData.setJumlah6(data.getTotal().abs());
+                newData.setJumlah6(total.abs());
             }
             //umur > 2 tahun
             else{
-                newData.setJumlah7(data.getTotal().abs());
+                newData.setJumlah7(total.abs());
             }
 
             newData.setNoNota(data.getNoNota());
