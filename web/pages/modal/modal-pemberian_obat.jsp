@@ -165,6 +165,8 @@
                                 <label style="margin-left: 8px">TTD Dokter</label>
                                 <canvas class="paint-canvas-ttd" id="cpo9" width="220"
                                         onmouseover="paintTtd('cpo9')"></canvas>
+                                <input class="form-control" id="nama_terang_cpo9" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_cpo9" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="clearConvas('cpo9')"><i
                                         class="fa fa-trash"></i> Clear
@@ -174,6 +176,7 @@
                                 <label style="margin-left: 8px">TTD Apotek</label>
                                 <canvas class="paint-canvas-ttd" id="cpo10" width="220"
                                         onmouseover="paintTtd('cpo10')"></canvas>
+                                <input class="form-control" id="nama_terang_cpo10" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="clearConvas('cpo10')"><i
                                         class="fa fa-trash"></i> Clear

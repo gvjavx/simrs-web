@@ -56,6 +56,52 @@ public class Pasien {
 
     private BigDecimal tarif;
 
+    private String tglCheckup;
+    private String noCheckuoUlang;
+    private String isOrderLab;
+    private String idLastDetailCheckup;
+    private String isCheckupUlang;
+
+    public String getIsCheckupUlang() {
+        return isCheckupUlang;
+    }
+
+    public void setIsCheckupUlang(String isCheckupUlang) {
+        this.isCheckupUlang = isCheckupUlang;
+    }
+
+    public String getTglCheckup() {
+        return tglCheckup;
+    }
+
+    public void setTglCheckup(String tglCheckup) {
+        this.tglCheckup = tglCheckup;
+    }
+
+    public String getNoCheckuoUlang() {
+        return noCheckuoUlang;
+    }
+
+    public void setNoCheckuoUlang(String noCheckuoUlang) {
+        this.noCheckuoUlang = noCheckuoUlang;
+    }
+
+    public String getIsOrderLab() {
+        return isOrderLab;
+    }
+
+    public void setIsOrderLab(String isOrderLab) {
+        this.isOrderLab = isOrderLab;
+    }
+
+    public String getIdLastDetailCheckup() {
+        return idLastDetailCheckup;
+    }
+
+    public void setIdLastDetailCheckup(String idLastDetailCheckup) {
+        this.idLastDetailCheckup = idLastDetailCheckup;
+    }
+
     public BigDecimal getTarif() {
         return tarif;
     }

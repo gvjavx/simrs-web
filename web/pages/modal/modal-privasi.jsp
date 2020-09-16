@@ -126,7 +126,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Nomor RM</label>
                             <div class="col-md-8">
-                                <input style="margin-top: 7px" class="form-control no-rm" id="pp6">
+                                <input style="margin-top: 7px" class="form-control norm-pasien" id="pp6">
                             </div>
                         </div>
                     </div>

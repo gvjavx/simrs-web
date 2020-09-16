@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printStrukResepPasien" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.610510000000005"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -102,7 +102,7 @@
 			<staticText>
 				<reportElement x="248" y="37" width="59" height="19" uuid="775c4ba5-7eaf-4d16-ba92-9a6e019af517"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Printed date : ]]></text>
 			</staticText>
@@ -115,7 +115,7 @@
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
 				<reportElement x="306" y="37" width="75" height="19" uuid="3dcaf516-69b2-419b-b28a-4d0b689b93eb"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -293,7 +293,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.sep} == null ? "" : $P{reportParams.sep} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.sep} == null ? "" : $P{reportParams.sep}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="84" width="90" height="15" uuid="f439d6f9-504b-44fc-860f-2ccbed7923d1"/>

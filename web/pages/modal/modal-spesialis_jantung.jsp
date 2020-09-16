@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_sps_spesialis_jantung"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
+                    </div>
                     <div class="btn-group btn-hide">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -37,6 +41,8 @@
                             <td width="20%" align="center"><img id="btn_sps_anamnesa_pemeriksaan_jantung" class="hvr-grow"
                                                                 onclick="detailSPS('anamnesa_pemeriksaan_jantung')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+
+                                <img id="delete_anamnesa_pemeriksaan_jantung" class="hvr-grow btn-hide" onclick="conSPS('anamnesa_pemeriksaan_jantung', 'spesialis_jantung')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_sps_edukasi_jantung">
@@ -44,6 +50,8 @@
                             <td width="20%" align="center"><img id="btn_sps_edukasi_jantung" class="hvr-grow"
                                                                 onclick="detailSPS('edukasi_jantung')"
                                                                 src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+
+                                <img id="delete_edukasi_jantung" class="hvr-grow btn-hide" onclick="conSPS('edukasi_jantung', 'spesialis_jantung')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -129,13 +137,13 @@
                     <div class="row jarak">
                         <label class="col-md-4">Terapi</label>
                         <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt6"></textarea>
+                            <textarea rows="2" class="form-control resep-pasien" id="pt6"></textarea>
                         </div>
                     </div>
                     <div class="row jarak">
                         <label class="col-md-4">Tindakan / Rencana Tindakan</label>
                         <div class="col-md-8">
-                            <textarea rows="2" class="form-control" id="pt7"></textarea>
+                            <textarea rows="2" class="form-control tindakan-pasien" id="pt7"></textarea>
                         </div>
                     </div>
                     <div class="row jarak">
@@ -152,7 +160,7 @@
                     <div class="row jarak">
                         <label class="col-md-4">Indikasi Rawat Inap</label>
                         <div class="col-md-8">
-                            <input class="form-control" id="pt9">
+                            <input class="form-control anamnese" id="pt9">
                         </div>
                     </div>
                 </div>
@@ -216,19 +224,31 @@
                             <input id="ket_alasan" class="form-control" placeholder="Keterangan"/>
                         </div>
                     </div>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <span>Isi Edukasi</span>
+                                <textarea rows="4" class="form-control" id="isi_edukasi"></textarea>
+                            </div>
+                        </div>
+                    </div>
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
                                 <label>TTD Pasien/Keluarga</label>
                                 <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('et4')" class="paint-canvas-ttd" id="et4"></canvas>
-                                <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('et4')"><i class="fa fa-trash"></i> Clear
+                                <input class="form-control" id="nama_terang_pasien" placeholder="Nama Terang">
+                                <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('et4')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
                             <div class="col-md-6">
                                 <label>TTD Dokter</label>
                                 <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('et5')" class="paint-canvas-ttd" id="et5"></canvas>
-                                <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('et5')"><i class="fa fa-trash"></i> Clear
+                                <input class="form-control nama_dokter" id="nama_terang_dokter" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_dokter" placeholder="SIP">
+                                <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('et5')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
                         </div>

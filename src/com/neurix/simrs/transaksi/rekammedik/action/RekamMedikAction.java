@@ -155,6 +155,8 @@ public class RekamMedikAction extends BaseTransactionAction {
             detailCheckup.setNamaDiagnosa(checkup.getNamaDiagnosa());
             String label = checkup.getNamaPelayanan().replace("Poli Spesialis", "");
             detailCheckup.setAsesmenLabel("Asesmen " + label);
+            detailCheckup.setKategoriPelayanan(checkup.getKategoriPelayanan());
+            detailCheckup.setTipePelayanan(checkup.getTipePelayanan());
             setDetailCheckup(detailCheckup);
         }
 //else {

@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_rb_identifikasi_bayi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_identifikasi_bayi">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_identifikasi_bayi"></p>
+                    </div>
                     <button type="button" onclick="showModalRB('identifikasi_bayi_lahir')" class="btn btn-success"><i class="fa fa-plus"></i> Identifikasi Bayi
                     </button>
                     <button type="button" onclick="showModalRB('pernyataan_bayi_lahir')" class="btn btn-success"><i class="fa fa-plus"></i> Pernyataan
@@ -28,6 +32,8 @@
                                 <img id="btn_rb_identifikasi_bayi_lahir" class="hvr-grow"
                                      onclick="detailRB('identifikasi_bayi_lahir')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+
+                                <img id="delete_identifikasi_bayi_lahir" class="hvr-grow btn-hide" onclick="conRB('identifikasi_bayi_lahir', 'identifikasi_bayi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_rb_pernyataan_bayi_lahir">
@@ -36,6 +42,7 @@
                                 <img id="btn_rb_pernyataan_bayi_lahir" class="hvr-grow"
                                      onclick="detailRB('pernyataan_bayi_lahir')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pernyataan_bayi_lahir" class="hvr-grow btn-hide" onclick="conRB('pernyataan_bayi_lahir', 'identifikasi_bayi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -195,15 +202,19 @@
                                 <label style="margin-left: 8px">TTD Penentu Jenis Kelamin</label>
                                 <canvas class="paint-canvas-ttd" id="ttd1" width="220"
                                         onmouseover="paintTtd('ttd1')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd1" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd1" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd1')"><i
                                         class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
                             <div class="col-md-6">
-                                <label style="margin-left: 8px">TTD Dokter/Bidan</label>
+                                <label style="margin-left: 8px">TTD Dokter DPJP</label>
                                 <canvas class="paint-canvas-ttd" id="ttd2" width="220"
                                         onmouseover="paintTtd('ttd2')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd2" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd2" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd2')"><i
                                         class="fa fa-trash"></i> Clear
@@ -215,18 +226,22 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <label style="margin-left: 8px">TTD Kamar Bersalin</label>
+                                <label style="margin-left: 8px">TTD Bidan Kamar Bersalin</label>
                                 <canvas class="paint-canvas-ttd" id="ttd3" width="220"
                                         onmouseover="paintTtd('ttd3')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd3" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd3" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd3')"><i
                                         class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
                             <div class="col-md-6">
-                                <label style="margin-left: 8px">TTD Perawatan Ruang Bayi</label>
+                                <label style="margin-left: 8px">TTD Perawat Ruang Bayi</label>
                                 <canvas class="paint-canvas-ttd" id="ttd4" width="220"
                                         onmouseover="paintTtd('ttd4')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd4" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd4" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd4')"><i
                                         class="fa fa-trash"></i> Clear
@@ -295,6 +310,8 @@
                                 <label style="margin-left: 8px">TTD Bidan/Perawat</label>
                                 <canvas class="paint-canvas-ttd" id="ttd1_pernyataan_bayi_lahir" width="220"
                                         onmouseover="paintTtd('ttd1_pernyataan_bayi_lahir')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd11" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd11" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd1_pernyataan_bayi_lahir')"><i
                                         class="fa fa-trash"></i> Clear
@@ -304,6 +321,7 @@
                                 <label style="margin-left: 8px">TTD Ibu</label>
                                 <canvas class="paint-canvas-ttd" id="ttd2_pernyataan_bayi_lahir" width="220"
                                         onmouseover="paintTtd('ttd2_pernyataan_bayi_lahir')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd22" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd2_pernyataan_bayi_lahir')"><i
                                         class="fa fa-trash"></i> Clear

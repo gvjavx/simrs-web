@@ -95,6 +95,7 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
             String branchId = "%";
             String noCheckup = "%";
             String idDetail = "%";
+            String jenis = "";
 
             if(bean.getBranchId() != null){
                 branchId = bean.getBranchId();
@@ -108,13 +109,32 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                 idDetail = bean.getIdDetailCheckup();
             }
 
-            String SQL = "SELECT a.no_checkup, b.id_detail_checkup, c.id_riwayat_tindakan, \n" +
-                    "c.id_tindakan, c.nama_tindakan, c.keterangan, c.jenis_pasien, c.total_tarif, c.kategori_tindakan_bpjs, \n" +
-                    "c.approve_bpjs_flag, c.tanggal_tindakan, d.kategori_ina_bpjs FROM it_simrs_header_checkup a\n" +
+            if(bean.getJenisPasien() != null && !"".equalsIgnoreCase(bean.getJenisPasien())){
+                jenis = "AND c.jenis_pasien = 'umum'";
+            }
+
+            String SQL = "SELECT " +
+                    "a.no_checkup," +
+                    "b.id_detail_checkup, " +
+                    "c.id_riwayat_tindakan, \n" +
+                    "c.id_tindakan, " +
+                    "c.nama_tindakan, " +
+                    "c.keterangan, " +
+                    "c.jenis_pasien, " +
+                    "c.total_tarif, " +
+                    "c.kategori_tindakan_bpjs, \n" +
+                    "c.approve_bpjs_flag," +
+                    "c.tanggal_tindakan," +
+                    "d.kategori_ina_bpjs," +
+                    "c.flag_update_klaim "+
+                    "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
                     "LEFT JOIN im_simrs_tindakan d ON d.id_tindakan = c.id_tindakan\n" +
-                    "WHERE a.branch_id LIKE :branchId AND a.no_checkup LIKE :noCheckup AND b.id_detail_checkup LIKE :idDetail ORDER BY c.keterangan\n";
+                    "WHERE a.branch_id LIKE :branchId \n" +
+                    "AND a.no_checkup LIKE :noCheckup \n" +
+                    "AND b.id_detail_checkup LIKE :idDetail \n" + jenis +
+                    "ORDER BY c.keterangan\n";
 
             List<Object[]> result = new ArrayList<>();
 
@@ -147,12 +167,12 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                         tindakan.setStTglTindakan(formatDate);
                     }
                     tindakan.setKategoriInaBpjs(obj[11] == null ? "" : obj[11].toString());
-
+                    tindakan.setFlagUpdateKlaim((obj[12] == null ? "" : obj[12].toString()));
                     riwayatTindakanList.add(tindakan);
                 }
             }
-
         }
+
         return riwayatTindakanList;
 
     }

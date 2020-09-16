@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_rb_asesmen_awal_bayi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_asesmen_awal_bayi">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_asesmen_awal_bayi"></p>
+                    </div>
                     <button type="button" onclick="showModalRB('asesmen_awal_bayi_rb')" class="btn btn-success"><i class="fa fa-plus"></i> Asesmen Awal Bayi
                     </button>
                 </div>
@@ -26,6 +30,7 @@
                                 <img id="btn_rb_asesmen_awal_bayi_rb" class="hvr-grow"
                                      onclick="detailRB('asesmen_awal_bayi_rb')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_asesmen_awal_bayi_rb" class="hvr-grow btn-hide" onclick="conRB('asesmen_awal_bayi_rb', 'asesmen_awal_bayi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -413,6 +418,8 @@
                                 <label style="margin-left: 8px">TTD DPJP</label>
                                 <canvas class="paint-canvas-ttd" id="ttd1_asesmen_awal_bayi_rb" width="220"
                                         onmouseover="paintTtd('ttd1_asesmen_awal_bayi_rb')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd1" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd1" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd1_asesmen_awal_bayi_rb')"><i
                                         class="fa fa-trash"></i> Clear

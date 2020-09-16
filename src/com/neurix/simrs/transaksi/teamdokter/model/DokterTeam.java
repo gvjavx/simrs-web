@@ -20,6 +20,42 @@ public class DokterTeam extends BaseModel {
     private String namaDokter;
     private String namaSpesialis;
 
+    private String idPelayanan;
+    private String namaPelayanan;
+    private String jenisDpjp;
+    private String sip;
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
+
+    public String getJenisDpjp() {
+        return jenisDpjp;
+    }
+
+    public void setJenisDpjp(String jenisDpjp) {
+        this.jenisDpjp = jenisDpjp;
+    }
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
     public String getNamaSpesialis() {
         return namaSpesialis;
     }

@@ -53,7 +53,7 @@
                         <div class="form-group">
                             <s:form id="kasirjalanForm" method="post" namespace="/kasirjalan" action="search_kasirjalan.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <label class="control-label col-sm-4">NO RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="headerDetailCheckup.idPasien" required="false"
@@ -103,7 +103,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Jenis Pasien</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'asuransi':'ASURANSI', 'paket_individu':'PAKET INDIVIDU'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'asuransi':'SISA ASURANSI', 'bpjs':'SISA BPJS', 'paket_individu':'PAKET INDIVIDU'}" cssStyle="margin-top: 7px"
                                                   headerKey="umum" headerValue="UMUM" name="headerDetailCheckup.idJenisPeriksaPasien"
                                                   cssClass="form-control"/>
                                     </div>
@@ -199,7 +199,7 @@
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
-                                <td>ID Pasien</td>
+                                <td>NO RM</td>
                                 <td>Nama</td>
                                 <td>Status Periksa</td>
                                 <td >Status</td>
@@ -507,6 +507,7 @@
         var metode="";
         var bukti = "";
         var namaAsuransi = "";
+        var idJenisPasien = "";
 
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
@@ -546,6 +547,7 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         namaAsuransi = response.namaAsuransi;
+                        idJenisPasien = response.idJenisPeriksaPasien;
 
                         if(response.metodePembayaran == "tunai"){
                             metode = "tunai";
@@ -580,9 +582,8 @@
                 $("#body_uang_muka").html(str);
             });
 
-            KasirRawatJalanAction.getListTindakanRawat(idDetailCheckup, function (response) {
+            KasirRawatJalanAction.getListTindakanRawat(idDetailCheckup, idJenisPasien, function (response) {
                 dataTindakan = response;
-                console.log(response);
                 if (dataTindakan != null) {
                     var total = 0;
                     var totalObat = 0;
@@ -749,6 +750,7 @@
             }
 
             $('#fin_jenis_pasien').html(jenisPasien.toUpperCase());
+            setLabelJenisPasien('fin_jenis_pasien', jenisPasien);
             $('#fin_no_sep').html(noSep);
             $('#fin_no_checkup').html(idDetailCheckup);
             $('#fin_nik').html(nik);

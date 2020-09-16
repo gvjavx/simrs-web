@@ -344,6 +344,11 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
     }
 
     @Override
+    public List<KelasRuangan> getListKelasKamar(String kategori) throws GeneralBOException {
+        return kelasRuanganDao.getListKelasKamar(kategori);
+    }
+
+    @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
     }

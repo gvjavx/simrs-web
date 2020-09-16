@@ -1695,6 +1695,11 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. "+e);
         }
 
+        // membuat jurnal balik akhir tahun
+        if ("12".equalsIgnoreCase(tutupPeriod.getBulan())){
+            
+        }
+
         // create saldo bulan lalu pada transaksi stok;
         Map hsCriteria = new HashMap();
         hsCriteria.put("branch_id", tutupPeriod.getUnit());

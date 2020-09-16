@@ -170,5 +170,38 @@
             <column name="dibayar_pasien" sql-type="numeric"/>
         </property>
 
+        <property name="noCheckupUlang">
+            <column name="no_checkup_ulang" sql-type="varchar"/>
+        </property>
+        <property name="isOrderLab">
+            <column name="is_order_lab" sql-type="varchar"/>
+        </property>
+
+        <property name="flagCloseTraksaksi">
+            <column name="flag_close_traksaksi"/>
+        </property>
+        <property name="tindakLanjut">
+            <column name="tindak_lanjut"/>
+        </property>
+        <property name="catatan">
+            <column name="catatan"/>
+        </property>
+        <property name="rsRujukan">
+            <column name="rs_rujukan"/>
+        </property>
+        <property name="flagTppri">
+            <column name="flag_tppri"/>
+        </property>
+        <property name="isStay">
+            <column name="is_stay"/>
+        </property>
+        <property name="flagCover">
+            <column name="flag_cover"/>
+        </property>
+
+        <property name="flagSisa">
+            <column name="flag_sisa"/>
+        </property>
+
     </class>
 </hibernate-mapping>

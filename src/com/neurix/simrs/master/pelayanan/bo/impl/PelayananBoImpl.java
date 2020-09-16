@@ -410,13 +410,15 @@ public class PelayananBoImpl implements PelayananBo{
                     pelayanan.setStLastUpdate(entity.getLastUpdate().toString());
                     pelayanan.setLastUpdate(entity.getLastUpdate());
                     pelayanan.setLastUpdateWho(entity.getLastUpdateWho());
-                    if (entity.getTipePelayanan() != null)
+                    if (entity.getTipePelayanan() != null){
                         pelayanan.setTipePelayanan(entity.getTipePelayanan());
+                    }
                     pelayanan.setBranchId(entity.getBranchId());
                     pelayanan.setTipePelayanan(entity.getTipePelayanan());
                     pelayanan.setKodering(entity.getKodering());
-                    if (entity.getDivisiId() != null)
+                    if (entity.getDivisiId() != null){
                         pelayanan.setDivisiId(entity.getDivisiId());
+                    }
                     pelayanan.setIsEksekutif(entity.getIsEksekutif());
 
                     ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
@@ -426,8 +428,10 @@ public class PelayananBoImpl implements PelayananBo{
                         branch.setBranchId(entity.getBranchId());
                         branch.setFlag("Y");
                         List<Branch> branches = branchBo.getByCriteria(branch);
-                        String branchName = branches.get(0).getBranchName();
-                        pelayanan.setBranchName(branchName);
+                        if(branches.size() > 0){
+                            String branchName = branches.get(0).getBranchName();
+                            pelayanan.setBranchName(branchName);
+                        }
                     }
 
                     if (entity.getDivisiId() != null){
@@ -436,8 +440,10 @@ public class PelayananBoImpl implements PelayananBo{
                         position.setPositionId(entity.getDivisiId());
                         position.setFlag("Y");
                         List<Position> positions = positionBo.getByCriteria(position);
-                        String positionName = positions.get(0).getPositionName();
-                        pelayanan.setDivisiName(positionName);
+                        if(positions.size() > 0 ){
+                            String positionName = positions.get(0).getPositionName();
+                            pelayanan.setDivisiName(positionName);
+                        }
                     }
 
                     pelayanan.setKategoriPelayanan(entity.getKategoriPelayanan());
@@ -536,6 +542,10 @@ public class PelayananBoImpl implements PelayananBo{
         return pelayananDao.getListPelayananFarmasi(branchId);
     }
 
+    @Override
+    public List<Pelayanan> getListPelayananWithLab(String tipe) throws GeneralBOException {
+        return pelayananDao.getListPelayananWithLab(tipe);
+    }
     @Override
     public List<ImSimrsPelayananEntity> getByCriteria(Map criteria) throws GeneralBOException {
         return pelayananDao.getByCriteria(criteria);

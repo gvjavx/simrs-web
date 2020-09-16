@@ -26,6 +26,15 @@ public class ItSimrsRiwayatTindakanEntity implements Serializable {
     private Timestamp tanggalTindakan;
     private String rekanan;
     private String isKamar;
+    private String idRuangan;
+
+    public String getIdRuangan() {
+        return idRuangan;
+    }
+
+    public void setIdRuangan(String idRuangan) {
+        this.idRuangan = idRuangan;
+    }
 
     public String getIsKamar() {
         return isKamar;

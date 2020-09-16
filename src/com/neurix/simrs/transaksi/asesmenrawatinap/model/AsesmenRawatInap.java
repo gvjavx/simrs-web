@@ -22,6 +22,24 @@ public class AsesmenRawatInap extends BaseModel {
     private String lastUpdateWho;
     private String tipe;
     private String informasi;
+    private String namaTerang;
+    private String sip;
+
+    public String getNamaTerang() {
+        return namaTerang;
+    }
+
+    public void setNamaTerang(String namaTerang) {
+        this.namaTerang = namaTerang;
+    }
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
 
     public String getTipe() {
         return tipe;

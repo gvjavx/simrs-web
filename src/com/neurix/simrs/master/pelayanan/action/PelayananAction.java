@@ -9,6 +9,9 @@ import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -421,5 +424,40 @@ public class PelayananAction extends BaseMasterAction {
 
         listOfComboFarmasi.addAll(pelayanans);
         return "init_combo_farmasi";
+    }
+
+    public Pelayanan getDataPelayanan(String idPelayanan) {
+
+        logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
+        Pelayanan response = new Pelayanan();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+            List<Pelayanan> pelayananList = new ArrayList<>();
+            Pelayanan pelayanan = new Pelayanan();
+            pelayanan.setIdPelayanan(idPelayanan);
+            pelayanan.setBranchId(CommonUtil.userBranchLogin());
+
+            try {
+                pelayananList = pelayananBo.getByCriteria(pelayanan);
+            } catch (HibernateException e) {
+                logger.error("[CheckupAction.saveAdd] Error when get data for pelayanan", e);
+                throw new GeneralBOException("Error when pasien id pelayanan", e);
+            }
+
+            Pelayanan poli = new Pelayanan();
+            if(pelayananList.size() > 0) {
+
+                poli = pelayananList.get(0);
+
+                if (poli.getIdPelayanan() != null) {
+                    response = poli;
+                }
+            }
+        }
+
+        logger.info("[CheckupAction.getListDokterByBranchId] END process >>>");
+        return response;
     }
 }

@@ -74,6 +74,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                         }
                     }
 
+                    permintaanResep.setStatus(resepEntity.getStatus());
                     listOfResults.add(permintaanResep);
                 }
             }

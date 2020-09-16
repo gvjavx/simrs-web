@@ -35,6 +35,9 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="idDetailChekcup">
+                <column name="id_detail_checkup"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

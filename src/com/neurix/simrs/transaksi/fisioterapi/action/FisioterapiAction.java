@@ -8,6 +8,8 @@ import com.neurix.simrs.transaksi.fisioterapi.bo.FisioterapiBo;
 import com.neurix.simrs.transaksi.fisioterapi.bo.MonitoringFisioterapiBo;
 import com.neurix.simrs.transaksi.fisioterapi.model.Fisioterapi;
 import com.neurix.simrs.transaksi.fisioterapi.model.MonitoringFisioterapi;
+import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
+import com.neurix.simrs.transaksi.rekammedik.model.StatusPengisianRekamMedis;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,65 +31,102 @@ import java.util.List;
 public class FisioterapiAction {
 
     public static transient Logger logger = Logger.getLogger(FisioterapiAction.class);
+    private String userLogin = CommonUtil.userLogin();
+    private Timestamp time = new Timestamp(System.currentTimeMillis());
 
-    public CrudResponse saveFisio(String data) throws JSONException, IOException {
+    public CrudResponse saveFisio(String data, String dataPasien){
         CrudResponse response = new CrudResponse();
-        String userLogin = CommonUtil.userLogin();
-        Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         FisioterapiBo fisioterapiBo = (FisioterapiBo) ctx.getBean("fisioterapiBoProxy");
-        JSONArray json = new JSONArray(data);
-        List<Fisioterapi> list = new ArrayList<>();
-        for (int i = 0; i < json.length(); i++) {
-
-            JSONObject obj = json.getJSONObject(i);
-            Fisioterapi fisioterapi = new Fisioterapi();
-            fisioterapi.setParameter(obj.getString("parameter"));
-
-            if("Scala Nyeri Paint".equalsIgnoreCase(obj.getString("parameter"))){
-                BASE64Decoder decoder = new BASE64Decoder();
-                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
-                logger.info("Decoded upload data : " + decodedBytes.length);
-                String wkt = time.toString();
-                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                logger.info("PATTERN :" + patten);
-                String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("keterangan")+i+ "-" + patten + ".png";
-                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
-
-                logger.info("File save path : " + uploadFile);
-                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-
-                if (image == null) {
-                    logger.error("Buffered Image is null");
-                    response.setStatus("error");
-                    response.setMsg("Buffered Image is null");
-                } else {
-                    File f = new File(uploadFile);
-                    // write the image
-                    ImageIO.write(image, "png", f);
-                    fisioterapi.setJawaban(fileName);
-                }
-            }else{
-                fisioterapi.setJawaban(obj.getString("jawaban"));
-            }
-
-            fisioterapi.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-            fisioterapi.setKeterangan(obj.getString("keterangan"));
-            fisioterapi.setAction("C");
-            fisioterapi.setFlag("Y");
-            fisioterapi.setCreatedWho(userLogin);
-            fisioterapi.setCreatedDate(time);
-            fisioterapi.setLastUpdateWho(userLogin);
-            fisioterapi.setLastUpdate(time);
-            list.add(fisioterapi);
-        }
-
         try {
-            response = fisioterapiBo.saveAdd(list);
-        } catch (GeneralBOException e) {
-            response.setStatus("Error");
-            response.setMsg("Found Error " + e.getMessage());
-            return response;
+            JSONArray json = new JSONArray(data);
+            List<Fisioterapi> list = new ArrayList<>();
+            for (int i = 0; i < json.length(); i++) {
+
+                JSONObject obj = json.getJSONObject(i);
+                Fisioterapi fisioterapi = new Fisioterapi();
+                fisioterapi.setParameter(obj.getString("parameter"));
+
+                if(obj.has("tipe")){
+                    if("ttd".equalsIgnoreCase(obj.getString("tipe")) || "gambar".equalsIgnoreCase(obj.getString("tipe"))){
+                        try {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("keterangan")+i+ "-" + patten + ".png";
+                            String uploadFile = "";
+                            if("ttd".equalsIgnoreCase(obj.getString("tipe"))){
+                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                            }
+                            if("gambar".equalsIgnoreCase(obj.getString("tipe"))){
+                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                            }
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                            if (image == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                            } else {
+                                File f = new File(uploadFile);
+                                ImageIO.write(image, "png", f);
+                                fisioterapi.setJawaban(fileName);
+                            }
+                        }catch (IOException e){
+                            response.setStatus("error");
+                            response.setMsg("Found Error, "+e.getMessage());
+                        }
+                    }else{
+                        fisioterapi.setJawaban(obj.getString("jawaban"));
+                    }
+                    fisioterapi.setTipe(obj.getString("tipe"));
+                }else{
+                    fisioterapi.setJawaban(obj.getString("jawaban"));
+                }
+
+                fisioterapi.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                fisioterapi.setKeterangan(obj.getString("keterangan"));
+                fisioterapi.setAction("C");
+                fisioterapi.setFlag("Y");
+                fisioterapi.setCreatedWho(userLogin);
+                fisioterapi.setCreatedDate(time);
+                fisioterapi.setLastUpdateWho(userLogin);
+                fisioterapi.setLastUpdate(time);
+                if(obj.has("skor")){
+                    fisioterapi.setSkor(obj.getString("skor"));
+                }
+                list.add(fisioterapi);
+            }
+            try {
+                response = fisioterapiBo.saveAdd(list);
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                    JSONObject obj = new JSONObject(dataPasien);
+                    if(obj != null){
+                        StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                        status.setNoCheckup(obj.getString("no_checkup"));
+                        status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                        status.setIdPasien(obj.getString("id_pasien"));
+                        status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                        status.setIsPengisian("Y");
+                        status.setAction("C");
+                        status.setFlag("Y");
+                        status.setCreatedWho(userLogin);
+                        status.setCreatedDate(time);
+                        status.setLastUpdateWho(userLogin);
+                        status.setLastUpdate(time);
+                        response = rekamMedikBo.saveAdd(status);
+                    }
+                }
+            } catch (GeneralBOException e) {
+                response.setStatus("Error");
+                response.setMsg("Found Error " + e.getMessage());
+                return response;
+            }
+        }catch (JSONException e){
+            response.setStatus("error");
+            response.setMsg("Found Error, "+e.getMessage());
         }
         return response;
     }
@@ -150,6 +189,58 @@ public class FisioterapiAction {
                 MonitoringFisioterapi fisioterapi = new MonitoringFisioterapi();
                 fisioterapi.setIdDetailCheckup(idDetailCheckup);
                 list = monitoringFisioterapiBo.getByCriteria(fisioterapi);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        FisioterapiBo fisioterapiBo = (FisioterapiBo) ctx.getBean("fisioterapiBoProxy");
+        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+            try {
+                Fisioterapi fisioterapi = new Fisioterapi();
+                fisioterapi.setIdDetailCheckup(idDetailCheckup);
+                fisioterapi.setKeterangan(keterangan);
+                fisioterapi.setLastUpdate(time);
+                fisioterapi.setLastUpdateWho(userLogin);
+                response = fisioterapiBo.saveDelete(fisioterapi);
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    try {
+                        JSONObject obj = new JSONObject(dataPasien);
+                        RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                        if (obj != null) {
+                            StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
+                            status.setNoCheckup(obj.getString("no_checkup"));
+                            status.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                            status.setIdPasien(obj.getString("id_pasien"));
+                            status.setIdRekamMedisPasien(obj.getString("id_rm"));
+                            status.setLastUpdateWho(userLogin);
+                            status.setLastUpdate(time);
+                            response = rekamMedikBo.saveEdit(status);
+                        }
+                    }catch (JSONException e){
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
+                    }
+                }
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    public List<MonitoringFisioterapi> getKunjunganFisioterapi(String idPasien) {
+        List<MonitoringFisioterapi> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        FisioterapiBo fisioterapiBo = (FisioterapiBo) ctx.getBean("fisioterapiBoProxy");
+        if (!"".equalsIgnoreCase(idPasien) && idPasien != null) {
+            try {
+                list = fisioterapiBo.getKunjunganFisio(idPasien, CommonUtil.userBranchLogin());
             } catch (GeneralBOException e) {
                 logger.error("Found Error" + e.getMessage());
             }

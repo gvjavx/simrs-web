@@ -101,7 +101,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 			<staticText>
 				<reportElement x="422" y="33" width="59" height="19" uuid="3c04548a-c1f5-46e4-9e43-76006318030d"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Printed date : ]]></text>
 			</staticText>
@@ -125,7 +125,7 @@ WHERE id_permintaan_obat_poli LIKE $P{reportParams.permintaanId}]]>
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
 				<reportElement x="480" y="33" width="75" height="19" uuid="79ff3428-27c1-4577-8215-50ea31050843"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>

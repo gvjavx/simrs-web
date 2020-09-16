@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printSuratPenolakanTindakan" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.1269722013523757"/>
+	<property name="ireport.zoom" value="1.2396694214876134"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="174"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -86,7 +86,7 @@
 			<staticText>
 				<reportElement x="421" y="30" width="59" height="19" uuid="711bd471-61c7-4e26-a5f7-23f47f6c6eb4"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Printed date : ]]></text>
 			</staticText>
@@ -100,7 +100,7 @@
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
 				<reportElement x="480" y="30" width="75" height="19" uuid="c74fa1f1-4199-4fb4-8162-4173796d277f"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -470,7 +470,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="123" y="190" width="432" height="20" uuid="7476733b-a5a5-4f11-8856-ce3a3bb04563"/>
@@ -478,8 +478,22 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.noBpjs} == null ? "" : $P{reportParams.noBpjs} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.noBpjs} == null ? "" : $P{reportParams.noBpjs}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="411" y="210" width="5" height="20" uuid="40c173cc-f07c-4986-bfd3-8683da725f71"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="210" width="111" height="20" uuid="0d96efd5-ba24-45dd-8a86-a0ccae3de43c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Selisih Bayar]]></text>
+			</staticText>
 		</band>
 	</title>
 	<lastPageFooter>
