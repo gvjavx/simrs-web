@@ -264,7 +264,7 @@
 //                                "<td align='center'><span class='label label-success'>Siap Ditutup</span></td>" +
 //                                "</tr>";
 //                            }
-                        }
+//                        }
                     });
 
                     indexbranch += "_"+item.branchId;
