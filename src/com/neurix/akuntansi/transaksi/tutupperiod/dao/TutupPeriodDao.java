@@ -59,7 +59,7 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
             rekenigId = bean.getRekeningId();
         }
         if (bean.getTipeJurnalId() != null && !"".equalsIgnoreCase(bean.getTipeJurnalId())){
-            rekenigId = bean.getTipeJurnalId();
+            tipeJurnalId = bean.getTipeJurnalId();
         }
         if (bean.getNoJurnal() != null && !"".equalsIgnoreCase(bean.getNoJurnal())){
             noJurnal = bean.getNoJurnal();
@@ -281,13 +281,13 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 "a.periode, \n" +
                 "a.posisi,\n" +
                 "a.saldo,\n" +
-                "b.nama_kode_rekening" +
+                "b.nama_kode_rekening\n" +
                 "FROM it_akun_saldo_akhir a\n" +
                 "INNER JOIN im_akun_kode_rekening b ON b.rekening_id = a.rekening_id\n" +
-                "WHERE a.periode LIKE '%'\n" +
-                "AND a.branch_id = 'RS01'\n" +
-                "AND a.rekening_id LIKE '00199'\n" +
-                "AND b.level = '5'\n" +
+                "WHERE a.periode LIKE :periode \n" +
+                "AND a.branch_id = :unit \n" +
+                "AND a.rekening_id LIKE :rekening \n" +
+                "AND b.level = :level \n" +
                 "AND a.saldo > 0\n" +
                 "ORDER BY b.kode_rekening";
 

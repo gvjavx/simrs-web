@@ -1711,6 +1711,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         // membuat jurnal balik akhir tahun
         // create saldo akhir tutup tahun
         if ("12".equalsIgnoreCase(tutupPeriod.getBulan())){
+            tutupPeriod.setPeriode(tutupPeriod.getBulan() +"-"+ tutupPeriod.getTahun());
             createJurnalBalikAkhirTahun(tutupPeriod);
             createSaldoAkhirTahun(tutupPeriod);
         }
