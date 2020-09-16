@@ -37,6 +37,7 @@
           p:obatPoliDao-ref="obatPoliDao"
           p:transDao-ref="transDao"
           p:obatDao-ref="obatDao"
+          p:branchDao-ref="branchDao"
     />
 
     <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -925,3 +925,12 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
      ADD COLUMN nama_biaya_rutin TEXT;
 
 --
+
+-- 2020-09-16
+
+    ALTER TABLE it_simrs_batas_tutup_period
+    ADD COLUMN no_jurnal_koreksi VARCHAR(30),
+    ADD COLUMN flag_desember_a VARCHAR(1),
+    ADD COLUMN flag_desember_b VARCHAR(1)
+
+--

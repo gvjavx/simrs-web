@@ -2,6 +2,7 @@ package com.neurix.akuntansi.transaksi.billingSystem.bo.impl;
 
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
 import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
@@ -13,13 +14,19 @@ import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailActivityDao;
 import com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao;
 import com.neurix.akuntansi.transaksi.jurnal.model.*;
+import com.neurix.akuntansi.transaksi.saldoakhir.model.SaldoAkhir;
 import com.neurix.akuntansi.transaksi.tutupperiod.bo.impl.TutupPeriodBoImpl;
 import com.neurix.akuntansi.transaksi.tutupperiod.dao.BatasTutupPeriodDao;
+import com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
+import com.neurix.authorization.company.dao.BranchDao;
+import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
@@ -36,6 +43,7 @@ import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
+import com.neurix.simrs.transaksi.bataltelemedic.model.ItSimrsBatalTelemedicEntity;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
@@ -99,6 +107,11 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
     private MasterDao masterDao;
     private AsuransiDao asuransiDao;
     private ObatPoliDao obatPoliDao;
+    private BranchDao branchDao;
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
 
     public void setObatPoliDao(ObatPoliDao obatPoliDao) {
         this.obatPoliDao = obatPoliDao;
@@ -1696,8 +1709,10 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         }
 
         // membuat jurnal balik akhir tahun
+        // create saldo akhir tutup tahun
         if ("12".equalsIgnoreCase(tutupPeriod.getBulan())){
-            
+            createJurnalBalikAkhirTahun(tutupPeriod);
+            createSaldoAkhirTahun(tutupPeriod);
         }
 
         // create saldo bulan lalu pada transaksi stok;
@@ -1753,6 +1768,106 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         }
 
         logger.info("[BillingSystemBoImpl.saveTutupPeriod] END <<<");
+    }
+
+    private void createJurnalBalikAkhirTahun(TutupPeriod tutupPeriod){
+        logger.info("[BillingSystemBoImpl.createJurnalBalikAkhirTahun] START >>>");
+
+        ImBranchesPK primaryKey = new ImBranchesPK();
+        primaryKey.setId(tutupPeriod.getUnit());
+        ImBranches imBranches = branchDao.getById(primaryKey,"Y");
+
+        Integer level = getLowestLevelKodeRekening();
+
+//        Map mapTrans = new HashMap();
+//        mapTrans.put("pendapatan", "");
+//        mapTrans.put("biaya", "");
+//        mapTrans.put("investasi", "");
+
+        List<SaldoAkhir> listSaldo = getListSaldoAkhir(tutupPeriod.getUnit(), tutupPeriod.getPeriode(), "%", new BigInteger(String.valueOf(level)));
+        if (listSaldo.size() > 0){
+
+            Map dataBilling = new HashMap();
+            // debit
+            List<Map> mapDikoreksiList = new ArrayList<>();
+            // kredit
+            List<Map> mapHasilKoreksiList = new ArrayList<>();
+
+            for (SaldoAkhir saldoAkhir : listSaldo){
+
+                Map mapData = new HashMap();
+                mapData.put("rekening_id",saldoAkhir.getRekeningId());
+                mapData.put("nilai",saldoAkhir.getSaldo());
+
+                if ("D".equalsIgnoreCase(saldoAkhir.getPosisi())){
+                    // jika debit masukan ke kredit;
+                    mapHasilKoreksiList.add(mapData);
+                } else {
+                    // jika kredit masukan ke debit;
+                    mapDikoreksiList.add(mapData);
+                }
+            }
+
+            dataBilling.put("dikoreksi", mapDikoreksiList);
+            dataBilling.put("hasil_koreksi", mapHasilKoreksiList);
+
+            String catatan = "Jurnal Balik Tutup Tahun " +imBranches.getBranchName() + " Periode "+ tutupPeriod.getPeriode();
+
+            try {
+                Jurnal jurnal = createJurnal(CommonConstant.TRANSAKSI_ID_KOREKSI_AKHIR_TAHUN, dataBilling, tutupPeriod.getUnit(),catatan,"Y");
+
+                // update batas tutup period
+                TutupPeriod period = new TutupPeriod();
+                period.setNoJurnal(jurnal.getNoJurnal());
+                period.setBulan(tutupPeriod.getBulan());
+                period.setTahun(tutupPeriod.getTahun());
+                period.setUnit(tutupPeriod.getUnit());
+                period.setFlagDesemberA(tutupPeriod.getFlagDesemberA());
+                period.setFlagDesemberB(tutupPeriod.getFlagDesemberB());
+                updateBatasTutupPeriod(period);
+            } catch (GeneralBOException e){
+                logger.error("[TutupPeriodAction.createJurnalBalikAkhirTahun] ERROR when create jurnal balik. ", e);
+                throw new GeneralBOException("[BillingSystemBoImpl.createJurnalBalikAkhirTahun] ERROR when create jurnal balik. "+e);
+            }
+        }
+
+        logger.info("[BillingSystemBoImpl.createJurnalBalikAkhirTahun] END <<<");
+    }
+
+    private void updateBatasTutupPeriod(TutupPeriod period) throws GeneralBOException{
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("bulan", period.getBulan());
+        hsCriteria.put("tahun", period.getTahun());
+        hsCriteria.put("unit", period.getUnit());
+
+        List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriodEntities = batasTutupPeriodDao.getByCriteria(hsCriteria);
+        if (batasTutupPeriodEntities.size() > 0){
+            ItSimrsBatasTutupPeriodEntity tutupPeriodEntity = batasTutupPeriodEntities.get(0);
+            tutupPeriodEntity.setNoJurnalKoreksi(period.getNoJurnal() != null && !"".equalsIgnoreCase(period.getNoJurnal()) ? period.getNoJurnal() : null);
+            tutupPeriodEntity.setFlagDesemberA(period.getFlagDesemberA() != null && !"".equalsIgnoreCase(period.getFlagDesemberA()) ? period.getFlagDesemberA() : null);
+            tutupPeriodEntity.setFlagDesemberB(period.getFlagDesemberB() != null && !"".equalsIgnoreCase(period.getFlagDesemberB()) ? period.getFlagDesemberB() : null);
+            tutupPeriodEntity.setAction("U");
+            tutupPeriodEntity.setLastUpdate(period.getLastUpdate());
+            tutupPeriodEntity.setLastUpdateWho(period.getLastUpdateWho());
+            try {
+                batasTutupPeriodDao.updateAndSave(tutupPeriodEntity);
+            } catch (GeneralBOException e){
+                logger.error("[TutupPeriodAction.updateBatasTutupPeriod] ERROR when update setting batas. ", e);
+                throw new GeneralBOException("[BillingSystemBoImpl.updateBatasTutupPeriod] ERROR when update setting batas. "+e);
+            }
+        }
+    }
+
+    private void createSaldoAkhirTahun(TutupPeriod tutupPeriod){
+        logger.info("[BillingSystemBoImpl.createSaldoAkhirTahun] START >>>");
+        try {
+            saveUpdateSaldoAkhirTahun(tutupPeriod);
+        } catch (GeneralBOException e){
+            logger.error("[TutupPeriodAction.createSaldoAkhirTahun] ERROR when create saldo akhir tahun. ", e);
+            throw new GeneralBOException("[BillingSystemBoImpl.createSaldoAkhirTahun] ERROR when create saldo akhir tahun. " +e);
+        }
+        logger.info("[BillingSystemBoImpl.createSaldoAkhirTahun] END <<<");
     }
 
     private List<TransaksiStok> getListTransaksiObat(String idPelayanan, Integer tahun, Integer bulan, String idObat) throws GeneralBOException{
