@@ -2393,7 +2393,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                     // jika datenow lebih kecil tgl pengambilan maka kirim alert
                     if (datenow.compareTo(tglPengambilan) == -1) {
-                        obatDetailDiambil.setFlagKronisDiambil("N");
+                        obatDetailDiambil.setFlagKronisDiambil("K");
                         obatDetailDiambil.setMsg("Masih dalam waktu obat kronis. selama 30 hari.");
                         obatDetailDiambil.setTglPengambilan(tglPengambilan);
                         return obatKronisList;

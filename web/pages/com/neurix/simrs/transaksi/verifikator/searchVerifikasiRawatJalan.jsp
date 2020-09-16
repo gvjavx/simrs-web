@@ -361,6 +361,10 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_pending"></p>
                 </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_jen">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_jen"></p>
+                </div>
                 <div class="box-body" id="form-tindakan" style="display: none">
                     <table class="table table-bordered table-striped" id="tabel_tindakan_ts" style="font-size: 12px">
                         <thead>
@@ -370,10 +374,14 @@
                             <td align="center">Total Tarif (Rp.)</td>
                             <td align="center">Kategori</td>
                             <td align="center" id="jp" style="display: none">Jenis Cover</td>
-                            <td align="center">Action</td>
+                            <%--<td align="center">Action</td>--%>
                         </tr>
                         </thead>
                         <tbody id="body_tindakan">
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered table-striped" style="font-size: 12px">
+                        <tbody id="body_tindakan_total">
                         </tbody>
                     </table>
                     <p id="loading_page" style="color: #0F9E5E; display: none"><img style="width: 50px; height: 50px" src="<s:url value="/pages/images/spinner.gif"/>"><b>Sedang mencari data traksaksi...</b></p>
@@ -554,6 +562,7 @@
                     $('#h_no_checkup').val(response.noCheckup);
                     $('#h_jenis_pasien').val(response.idDetailCheckup);
                     $('#h_id_pasien').val(response.idPasien);
+                    startLoad();
                     listTindakan(idCheckup, idDetailCheckup, response.idJenisPeriksaPasien, response.idPasien);
                     hitungStatusBiaya(idDetailCheckup);
                     $('#modal-detail-pasien').modal({show: true, backdrop: 'static'});
@@ -567,7 +576,6 @@
         var total = 0;
         var cekPending = false;
         var cekTindakan = false;
-        startLoad();
         dwr.engine.setAsync(true);
         VerifikatorAction.getListTindakanRawat(idCheckup, idDetailCheckup, jenisPasien,
             {callback: function (response) {
@@ -593,6 +601,7 @@
                             var statusVal = "";
                             var btn = "<s:url value="/pages/images/icons8-edit-25.png"/>";
                             var onclick = 'onclick="updateApproveFlag(\'' + item.idRiwayatTindakan + '\',\'' + i + '\', \'' + idDetailCheckup + '\')"';
+                            var disabledJenis = "";
 
                             var tindakanina = "";
                             VerifikatorAction.getListKategoriTindakanBpjs(function (restindakanina) {
@@ -606,7 +615,7 @@
                             });
 
                             var kategori =
-                                '<select style="width: 100%;" class="form-control select-2" id="kategori' + i + '">' +
+                                '<select style="width: 100%;" class="form-control select-2" id="kategori_' + i + '">' +
                                 '<option value="">[Select One]</option>' +
                                 tindakanina +
                                 '</select>';
@@ -616,12 +625,13 @@
                             }
 
                             if (item.kategoriTindakanBpjs != null && item.kategoriTindakanBpjs != '') {
-                                kategori = '<select class="form-control" id="kategori' + i + '" disabled>' +
+                                kategori = '<select class="form-control" id="kategori_' + i + '" disabled>' +
                                     '<option value="' + item.kategoriTindakanBpjs + '">' + item.kategoriTindakanBpjs + '</option>';
                                 '</select>';
                                 statusVal = 1;
                                 btn = "<s:url value="/pages/images/icon_success.ico"/>";
                                 onclick = "";
+                                disabledJenis = "disabled";
                             }
 
                             if (item.flagUpdateKlaim == '' || item.flagUpdateKlaim == null) {
@@ -648,17 +658,17 @@
                                     choice2 = "selected";
                                 }
                                 table += "<tr>" +
-                                    "<td>" + tgl + "</td>" +
+                                    "<td>" + tgl + '<input type="hidden" id="id_riwayat_'+i+'" value="'+item.idRiwayatTindakan+'">' +"</td>" +
                                     "<td>" + tindakan + "</td>" +
                                     "<td align='right'>" + formatRupiah(tarif) + "</td>" +
                                     "<td>" + kategori + "</td>" +
                                     "<td>" +
-                                    '<select style="width: 100%;" class="form-control select-2" id="jen' + i + '">' +
+                                    '<select style="width: 100%;" class="form-control select-2" id="jenis_pasien_' + i + '" onchange="updateApproveFlag(\''+item.idRiwayatTindakan+'\', \''+i+'\', \''+idDetailCheckup+'\', this.value)" '+disabledJenis+'>' +
                                     '<option value="bpjs" ' + choice2 + '>BPJS</option>' +
                                     '<option value="ptpn" ' + choice1 + '>PTPN</option>' +
                                     '</select>' +
                                     "</td>" +
-                                    "<td align='center'>" + '<input value="' + statusVal + '" type="hidden" id="status' + i + '">' + '<img id="btn' + i + '" class="hvr-grow" style="cursor: pointer" ' + onclick + ' src="' + btn + '">' + "</td>" +
+                                    // "<td align='center'>" + '<input value="' + statusVal + '" type="hidden" id="status' + i + '">' + '<img id="btn' + i + '" class="hvr-grow" style="cursor: pointer" ' + onclick + ' src="' + btn + '">' + "</td>" +
                                     "</tr>";
                             } else {
                                 $('#jp').show();
@@ -671,22 +681,22 @@
                                     choice2 = "selected";
                                 }
                                 table += "<tr>" +
-                                    "<td>" + tgl + "</td>" +
+                                    "<td>" + tgl + '<input type="hidden" id="id_riwayat_'+i+'" value="'+item.idRiwayatTindakan+'">'+ "</td>" +
                                     "<td>" + tindakan + "</td>" +
                                     "<td align='right'>" + formatRupiah(tarif) + "</td>" +
                                     "<td>" + kategori + "</td>" +
                                     "<td>" +
-                                    '<select style="width: 100%;" class="form-control select-2" id="jen' + i + '">' +
+                                    '<select style="width: 100%;" class="form-control select-2" id="jenis_pasien_' + i + '" onchange="updateApproveFlag(\''+item.idRiwayatTindakan+'\', \''+i+'\', \''+idDetailCheckup+'\', this.value)" '+disabledJenis+'>' +
                                     '<option value="bpjs" ' + choice2 + '>BPJS</option>' +
                                     '<option value="umum" ' + choice1 + '>UMUM</option>' +
                                     '</select>' +
                                     "</td>" +
-                                    "<td align='center'>" + '<input value="' + statusVal + '" type="hidden" id="status' + i + '">' + '<img id="btn' + i + '" class="hvr-grow" style="cursor: pointer" ' + onclick + ' src="' + btn + '">' + "</td>" +
+                                    // "<td align='center'>" + '<input value="' + statusVal + '" type="hidden" id="status' + i + '">' + '<img id="btn' + i + '" class="hvr-grow" style="cursor: pointer" ' + onclick + ' src="' + btn + '">' + "</td>" +
                                     "</tr>";
                             }
                         });
 
-                        table = table + '<tr><td colspan="2">Total</td><td align="right">' + formatRupiah(total) + '</td><td></td><td></td><td></td></tr>'
+                        table = table + '<tr><td colspan="2">Total Semua Tindakan</td><td align="right">' + formatRupiah(total) + '</td><td></td><td></td></tr>';
                         // if (jenisPasien == "ptpn") {
                         //
                         // } else {
@@ -717,36 +727,34 @@
         });
     }
 
-    function updateApproveFlag(idTindakan, i, idDetailCheckup){
-        var kategoriBpjs = $('#kategori'+i).val();
-        var jenisPasien = $('#jen'+i).val();
+    function updateApproveFlag(idTindakan, i, idDetailCheckup, jenisPasien){
+        var kategoriBpjs = $('#kategori_'+i).val();
         if(kategoriBpjs != '' && jenisPasien != ''){
-            var url = '<s:url value="/pages/images/spinner.gif"/>'
-            $('#btn'+i).attr('src',url).css('width', '30px', 'height', '40px');
+            <%--var url = '<s:url value="/pages/images/spinner.gif"/>'--%>
+            <%--$('#btn'+i).attr('src',url).css('width', '30px', 'height', '40px');--%>
             dwr.engine.setAsync(true);
             VerifikatorAction.updateApproveBpjsFlag(idTindakan, kategoriBpjs, jenisPasien, {
                 callback: function (response) {
                 if (response.status == "success"){
                     hitungStatusBiaya(idDetailCheckup);
-                    var url = "<s:url value="/pages/images/icon_success.ico"/>";
-                    $('#btn'+i).attr('src',url).css('width', '', 'height', '');
-                    $('#btn'+i).removeAttr("class");
-                    $('#btn'+i).removeAttr("style");
-                    $('#btn'+i).removeAttr("onclick");
-                    $('#status'+i).val(1);
-                    $('#msg_tin2').text(response.message);
-                    $('#success_tin').show().fadeOut(5000);
+                    <%--var url = "<s:url value="/pages/images/icon_success.ico"/>";--%>
+                    <%--$('#btn'+i).attr('src',url).css('width', '', 'height', '');--%>
+                    <%--$('#btn'+i).removeAttr("class");--%>
+                    <%--$('#btn'+i).removeAttr("style");--%>
+                    <%--$('#btn'+i).removeAttr("onclick");--%>
+                    <%--$('#status'+i).val(1);--%>
+                    <%--$('#msg_tin2').text(response.message);--%>
+                    <%--$('#success_tin').show().fadeOut(5000);--%>
                 }else{
-                    var url = "<s:url value="/pages/images/icons8-edit-25.png"/>";
-                    $('#btn'+i).attr('src',url).css('width', '', 'height', '');
-                    $('#msg_tin').text(response.message);
-                    $('#warning_tin').show().fadeOut(5000);
+                    <%--var url = "<s:url value="/pages/images/icons8-edit-25.png"/>";--%>
+                    <%--$('#btn'+i).attr('src',url).css('width', '', 'height', '');--%>
+                    $('#msg_jen').text(response.message);
+                    $('#warning_jen').show().fadeOut(5000);
                 }
             }});
         }else{
-            $('#msg_tin').text("Silahkan pilih kategori tindakan terlebih dahulu...!");
-            $('#warning_tin').show().fadeOut(5000);
-            $('#modal-detail-pasien').scrollTop(0);
+            $('#msg_jen').text("Silahkan pilih kategori tindakan terlebih dahulu...!");
+            $('#warning_jen').show().fadeOut(5000);
         }
     }
 
@@ -755,15 +763,16 @@
         var cek = false;
 
         $.each(data, function (i, item) {
-            var kategori = $('#kategori' + i).val();
-            var status   = $('#status'+i).val();
-            if (kategori == "" || status == "") {
+            var idRiwayat = $('#id_riwayat_' + i).val();
+            var kategori = $('#kategori_' + i).val();
+            var jenisPasien = $('#jenis_pasien_' + i).val();
+            if (kategori == "") {
                 cek = true;
             }
         });
 
         if (cek) {
-            $('#msg_tin').text("Silahkan pilih kategori tindakan BPJS terlebih kemudian klik icon di pinggir untuk konfirmasi...!");
+            $('#msg_tin').text("Silahkan pilih kategori tindakan BPJS terlebih dahulu...!");
             $('#warning_tin').show().fadeOut(5000);
             $('#modal-detail-pasien').scrollTop(0);
         } else {
@@ -775,13 +784,31 @@
 
     function saveApproveTindakan(idDetailCheckup) {
         $('#modal-confirm-dialog').modal('hide');
+        var data = $('#tabel_tindakan_ts').tableToJSON();
+        var dataRiwayat = [];
+        var jml = data.length - 1;
+
+        $.each(data, function (i, item) {
+            var idRiwayat = $('#id_riwayat_' + i).val();
+            var kategori = $('#kategori_' + i).val();
+            var jenisPasien = $('#jenis_pasien_' + i).val();
+            if(jml != i){
+                dataRiwayat.push({
+                    'id_riwayat_tindakan': idRiwayat,
+                    'kategori': kategori,
+                    'jenis_pasien': jenisPasien
+                });
+            }
+        });
+
         $('#load_verif').show();
         $('#save_verif').hide();
+        var result = JSON.stringify(dataRiwayat);
         var noCheckup = $('#h_no_checkup').val();
         var jenisPasien = $('#h_jenis_pasien').val();
         var idPasien = $('#h_id_pasien').val();
         dwr.engine.setAsync(true);
-        VerifikatorAction.saveApproveTindakan(idDetailCheckup, {
+        VerifikatorAction.saveApproveTindakan(idDetailCheckup, result, {
             callback:function (response) {
                 if(response.status == "200"){
                     $('#load_verif').hide();

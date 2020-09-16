@@ -26,4 +26,6 @@ public interface VerifikatorBo {
     public List<HeaderDetailCheckup> getListVerifTransaksi(HeaderDetailCheckup detailCheckup) throws GeneralBOException;
     public CrudResponse updateCoverAsuransi(List<RiwayatTindakan> list, HeaderDetailCheckup bean) throws GeneralBOException;
     public CrudResponse updateInvoice(HeaderDetailCheckup bean) throws GeneralBOException;
+
+    public CheckResponse updateRiwayatTindakan(List<RiwayatTindakan> list) throws GeneralBOException;
 }

@@ -211,11 +211,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) ||
                     "bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
 
-                if("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
-                    forRekanan = "\n AND dt.invoice IS NOT NULL\n";
-                }else{
-                    forRekanan = "\n AND dt.invoice IS NULL OR dt.invoice = '' \n";
-                }
+                forRekanan = "\n AND dt.flag_sisa = 'Y' \n";
 
             }
 
@@ -1283,7 +1279,14 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                         "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                         "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
                         "INNER JOIN im_simrs_jenis_periksa_pasien jp ON jp.id_jenis_periksa_pasien = b.id_jenis_periksa_pasien\n" +
-                        "INNER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') d ON b.id_detail_checkup = d.id_detail_checkup\n" +
+                        "INNER JOIN (" +
+                        "SELECT * FROM (\n" +
+                        "SELECT *, rank() OVER (PARTITION BY id_detail_checkup ORDER BY created_date ASC) as rank\n" +
+                        "FROM it_simrs_rawat_inap \n" +
+                        "WHERE flag = 'Y'\n" +
+                        "AND status = '1'\n" +
+                        ") a WHERE a.rank = 1 \n"+
+                        ") d ON b.id_detail_checkup = d.id_detail_checkup\n" +
                         "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
                         "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
                         "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = b.id_detail_checkup\n" +

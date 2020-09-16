@@ -796,7 +796,8 @@
                                                                 noCkpUlang: item.noCheckuoUlang,
                                                                 lastIdDetail: item.idLastDetailCheckup,
                                                                 isOrder: item.isOrderLab,
-                                                                isCkp: item.isCheckupUlang
+                                                                isCkp: item.isCheckupUlang,
+                                                                isPeriksa: item.isDaftar
                                                             };
                                                             functions.push(labelItem);
                                                         });
@@ -805,9 +806,7 @@
                                                     },
                                                     updater: function (item) {
                                                         var selectedObj = mapped[item];
-                                                        console.log(selectedObj);
                                                         alertPasien(selectedObj.id);
-                                                        alertObatKronis(selectedObj.id);
                                                         getRiwayatPemeriksaan(selectedObj.id);
                                                         $('#no_bpjs').val(selectedObj.noBpjs);
                                                         $('#no_ktp').val(selectedObj.ktp);
@@ -867,6 +866,18 @@
                                                             $('#paket_perusahaan').val(selectedObj.namaPaket);
                                                             $('#cover_biaya_paket').val(selectedObj.tarif);
                                                         }
+
+                                                        if(selectedObj.isPeriksa == "Y"){
+                                                            $('#btn-save').hide();
+                                                            $('#warning_pasien').show();
+                                                            $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
+                                                        }else{
+                                                            $('#btn-save').show();
+                                                            $('#warning_pasien').hide();
+                                                            $('#msg_pasien').text("");
+                                                        }
+
+                                                        alertObatKronis(selectedObj.id);
 
                                                         $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
                                                         return selectedObj.id;
@@ -2011,6 +2022,7 @@
                     <td>Nama Obat</td>
                     <td>Stok Obat</td>
                     <td>Jenis Satuan</td>
+                    <td>Keterangan</td>
                     <td>Hari Kronis</td>
                     <td>Qty</td>
                     </thead>
@@ -2528,19 +2540,25 @@
 
         CheckupAction.findRiwayatObatKronis(idPasien, function (response) {
             if(response.idDetailCheckup != null){
-                console.log(response);
-
                 if(response.flagPengambilan == "Y"){
                     $('#btn-save').hide();
                     $('#btn-kronis').show();
                     $('#success_kronis').show();
                     $('#msg_kronis2').text("Pengambilan Obat Kronis, Silahkan tekan tombol Obat Kronis untuk melanjutkan");
                     $('#btn-kronis').attr('onclick','showObatKronis(\''+response.idDetailCheckup+'\',\''+response.idApprovalObat+'\')');
+                    $('#btn-save').hide();
                 }else{
-                    $('#btn-kronis').removeAttr('onclick');
-                    $('#btn-kronis').hide();
-                    $('#warning_kronis').show();
-                    $('#msg_kronis').text(response.msg+", Tanggal Pemgambilan "+formatDate(response.tglPengambilan));
+                    if(response.flagKronisDiambil == "K"){
+                        $('#btn-kronis').removeAttr('onclick');
+                        $('#btn-kronis').hide();
+                        $('#warning_kronis').show();
+                        $('#msg_kronis').text(response.msg);
+                    }else{
+                        $('#btn-kronis').removeAttr('onclick');
+                        $('#btn-kronis').hide();
+                        $('#warning_kronis').show();
+                        $('#msg_kronis').text(response.msg+", Tanggal Pemgambilan "+formatDate(response.tglPengambilan));
+                    }
                 }
                 $('html, body').animate({
                     scrollTop: $('#pos_kronis').offset().top
@@ -2576,6 +2594,7 @@
                         var qtyLembar = 0;
                         var qtyBiji = 0;
                         var hariKronis = 0;
+                        var ket = "";
 
                         if(item.qtyBox != null){
                             qtyBox = item.qtyBox;
@@ -2593,6 +2612,10 @@
                             qtyTotal = parseInt(qtyBiji) + ((parseInt(item.lembarPerBox * parseInt(qtyBox))) * parseInt(item.bijiPerLembar));
                         }
 
+                        if(item.keterangan != null){
+                            ket = item.keterangan;
+                        }
+
                         hariKronis = parseInt(30) - parseInt(item.hariKronis);
 
                         table += '<tr>' +
@@ -2600,6 +2623,7 @@
                             '<td>'+item.namaObat+'</td>' +
                             '<td>'+qtyTotal+'</td>' +
                             '<td>biji</td>' +
+                            '<td>'+ket+'</td>' +
                             '<td>'+hariKronis+'</td>' +
                             '<td width="20%">'+'<input type="number" onchange="validasiInput(\''+qtyTotal+'\',\''+i+'\')" class="form-control" id="qty'+i+'">'+'</td>' +
                             '</tr>';
@@ -2610,7 +2634,7 @@
                     $('#save_kronis').attr('onclick','savePengambilanObatKronis(\''+idDetailCheckup+'\',\''+idPelayanan+'\')');
 
                 }else{
-
+                    $('#body_kronis').html("");
                 }
             })
         }
@@ -2628,10 +2652,18 @@
                 var qty = $('#qty'+i).val();
                 var qtyTotal = data[i]["Stok Obat"];
                 var hariKronis = data[i]["Hari Kronis"];
+                var keterangan = data[i]["Keterangan"];
                 var transId = $('#trans_id'+i).val();
 
                 if(qty != ""){
-                    result.push({'id_obat':idObat, 'jenis_satuan':'biji', 'qty':qty, 'hari_selanjutnya':hariKronis, 'trans_id':transId});
+                    result.push({
+                        'id_obat':idObat,
+                        'jenis_satuan':'biji',
+                        'qty':qty,
+                        'keterangan':keterangan,
+                        'hari_selanjutnya':hariKronis,
+                        'trans_id':transId
+                    });
                     cekQty = true;
                 }
 

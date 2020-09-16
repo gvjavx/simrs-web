@@ -2919,6 +2919,8 @@ public class CheckupAction extends BaseMasterAction {
                 obatDetail.setQty(new BigInteger(obj.getString("qty")));
                 obatDetail.setHariKronis(new Integer(obj.getString("hari_selanjutnya")));
                 obatDetail.setIdTransaksiObatDetail(obj.getString("trans_id"));
+                obatDetail.setKeterangan(obj.getString("keterangan"));
+                obatDetail.setFlagKronisDiambil("Y");
 
                 if (!"".equalsIgnoreCase(obatDetail.getIdTransaksiObatDetail())) {
                     try {

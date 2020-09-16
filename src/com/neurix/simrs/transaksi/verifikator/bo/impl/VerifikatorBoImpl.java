@@ -328,4 +328,46 @@ public class VerifikatorBoImpl implements VerifikatorBo {
         }
         return response;
     }
+
+    @Override
+    public CheckResponse updateRiwayatTindakan(List<RiwayatTindakan> list) throws GeneralBOException {
+        CheckResponse response = new CheckResponse();
+        if (list.size() > 0) {
+            ItSimrsRiwayatTindakanEntity entity = new ItSimrsRiwayatTindakanEntity();
+            for (RiwayatTindakan bean : list) {
+                try {
+                    entity = riwayatTindakanDao.getById("idRiwayatTindakan", bean.getIdRiwayatTindakan());
+                } catch (HibernateException e) {
+                    logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when update data flag approve tindakan rawat ", e);
+                }
+
+                if (entity != null) {
+
+                    entity.setApproveBpjsFlag("Y");
+                    entity.setKategoriTindakanBpjs(bean.getKategoriTindakanBpjs());
+                    entity.setAction("U");
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    if (!"".equalsIgnoreCase(bean.getJenisPasien()) && bean.getJenisPasien() != null) {
+                        entity.setJenisPasien(bean.getJenisPasien());
+                    }
+
+                    try {
+                        riwayatTindakanDao.updateAndSave(entity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil menyimpan kategori tindakan BPJS!");
+                    } catch (HibernateException e) {
+                        logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when save update data flag approve tindakan rawat ", e);
+                        response.setStatus("error");
+                        response.setMessage("Terjadi kesalahan saat menyimpan ke database : " + e.getMessage());
+                    }
+                } else {
+                    logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when save update data flag approve tindakan rawat ");
+                    response.setStatus("error");
+                    response.setMessage("Terjadi kesalahan saat menyimpan ke database ");
+                }
+            }
+        }
+        return response;
+    }
 }
