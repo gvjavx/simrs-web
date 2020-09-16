@@ -59,6 +59,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
     private JurnalPendingDao jurnalPendingDao;
     private JurnalDetailPendingDao jurnalDetailPendingDao;
     private JurnalDetailActivityPendingDao jurnalDetailActivityPendingDao;
+    private boolean isTutupTahun = false;
 
     @Override
     public void saveSettingPeriod(List<ItSimrsBatasTutupPeriodEntity> batasList) throws GeneralBOException {
