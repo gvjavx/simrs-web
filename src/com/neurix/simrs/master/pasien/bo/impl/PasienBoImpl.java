@@ -185,12 +185,12 @@ public class PasienBoImpl implements PasienBo {
                 pasien.setDisabledFingerData(cekFingerData(pasien.getIdPasien()));
 
                 HeaderDetailCheckup detailCheckup = pasienDao.getLastCheckup(data.getIdPasien());
-                if(detailCheckup.getIdDetailCheckup() != null){
+                if (detailCheckup.getIdDetailCheckup() != null) {
                     pasien.setIdPelayanan(detailCheckup.getIdPelayanan());
                     pasien.setNoCheckuoUlang(detailCheckup.getNoCheckupUlang());
                     pasien.setIdLastDetailCheckup(detailCheckup.getIdDetailCheckup());
                     pasien.setIsOrderLab(detailCheckup.getIsOrderLab());
-                    if(detailCheckup.getTglCekup() != null){
+                    if (detailCheckup.getTglCekup() != null) {
                         String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(detailCheckup.getTglCekup());
                         pasien.setTglCheckup(formatDate);
                         pasien.setIsCheckupUlang("Y");
@@ -222,7 +222,7 @@ public class PasienBoImpl implements PasienBo {
                 e.printStackTrace();
             }
 
-            pasienEntity.setIdPasien(CommonUtil.userBranchLogin()+dateFormater("MM")+dateFormater("yy")+id);
+            pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("MM") + dateFormater("yy") + id);
             pasienEntity.setNama(pasien.getNama());
             pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
             pasienEntity.setNoKtp(pasien.getNoKtp());
@@ -273,7 +273,7 @@ public class PasienBoImpl implements PasienBo {
                 pasienEntity.setNama(pasien.getNama());
                 pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
                 pasienEntity.setNoKtp(pasien.getNoKtp());
-                if(pasien.getNoBpjs() != null && !"".equalsIgnoreCase(pasien.getNoBpjs())){
+                if (pasien.getNoBpjs() != null && !"".equalsIgnoreCase(pasien.getNoBpjs())) {
                     pasienEntity.setNoBpjs(pasien.getNoBpjs());
                 }
                 pasienEntity.setTempatLahir(pasien.getTempatLahir());
@@ -284,12 +284,12 @@ public class PasienBoImpl implements PasienBo {
                 pasienEntity.setAgama(pasien.getAgama());
                 pasienEntity.setProfesi(pasien.getProfesi());
                 pasienEntity.setNoTelp(pasien.getNoTelp());
-                if(pasien.getUrlKtp() != null && !"".equalsIgnoreCase(pasien.getUrlKtp())){
+                if (pasien.getUrlKtp() != null && !"".equalsIgnoreCase(pasien.getUrlKtp())) {
                     pasienEntity.setUrlKtp(pasien.getUrlKtp());
                 }
-                if("N".equalsIgnoreCase(pasien.getFlag())){
+                if ("N".equalsIgnoreCase(pasien.getFlag())) {
                     pasienEntity.setAction("D");
-                }else{
+                } else {
                     pasienEntity.setAction("U");
                 }
                 pasienEntity.setFlag(pasien.getFlag());
@@ -302,7 +302,7 @@ public class PasienBoImpl implements PasienBo {
                     response.setMsg("berhasil");
                 } catch (HibernateException e) {
                     response.setStatus("eror");
-                    response.setMsg("[PasienBoImpl.saveAdd] Error when Updating data pasien"+e.getMessage());
+                    response.setMsg("[PasienBoImpl.saveAdd] Error when Updating data pasien" + e.getMessage());
                     logger.error("[PasienBoImpl.saveAdd] Error when Updating data pasien", e);
                 }
             } else {
@@ -324,11 +324,11 @@ public class PasienBoImpl implements PasienBo {
     @Override
     public Boolean cekNikPasien(String nik) throws GeneralBOException {
         Boolean res = false;
-        if(nik != null){
+        if (nik != null) {
             Pasien pasien = new Pasien();
             pasien.setNoKtp(nik);
             List<ImSimrsPasienEntity> pasienList = getEntityByCriteria(pasien);
-            if(pasienList.size() > 0){
+            if (pasienList.size() > 0) {
                 res = true;
             }
         }
@@ -407,7 +407,7 @@ public class PasienBoImpl implements PasienBo {
         logger.info("[PasienBoImpl.getListComboPasien] Start >>>>>>>");
 
         String tmp = "%" + query + "%";
-
+        List<Pasien> list = new ArrayList<>();
         List<ImSimrsPasienEntity> pasienEntityList = new ArrayList<>();
         try {
             pasienEntityList = pasienDao.getListPasienByTmp(tmp);
@@ -415,12 +415,93 @@ public class PasienBoImpl implements PasienBo {
             logger.error("[PasienBoImpl.getByByCriteria] Error when search pasien by criteria " + e.getMessage());
         }
 
-        logger.info("[PasienBoImpl.getListComboPasien] End <<<<<<<");
         if (!pasienEntityList.isEmpty()) {
-            return setTemplatePasien(pasienEntityList);
-        }
+            Date date = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        return new ArrayList<>();
+            Pasien pasien;
+            for (ImSimrsPasienEntity data : pasienEntityList) {
+                pasien = new Pasien();
+                pasien.setIdPasien(data.getIdPasien());
+                pasien.setNama(data.getNama());
+                pasien.setJenisKelamin(data.getJenisKelamin());
+                pasien.setNoKtp(data.getNoKtp());
+                pasien.setNoBpjs(data.getNoBpjs());
+                pasien.setTempatLahir(data.getTempatLahir());
+
+                String strDate = formatter.format(data.getTglLahir());
+                pasien.setTglLahir(strDate);
+
+                pasien.setDesaId(data.getDesaId().toString());
+                pasien.setJalan(data.getJalan());
+                pasien.setSuku(data.getSuku());
+                pasien.setAgama(data.getAgama());
+                pasien.setProfesi(data.getProfesi());
+                pasien.setNoTelp(data.getNoTelp());
+                pasien.setImgKtp(data.getUrlKtp());
+                pasien.setUrlKtp(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_KTP_PASIEN + data.getUrlKtp());
+                pasien.setFlag(data.getFlag());
+                pasien.setAction(data.getAction());
+                pasien.setCreatedDate(data.getCreatedDate());
+                pasien.setCreatedWho(data.getCreatedWho());
+                pasien.setLastUpdate(data.getLastUpdate());
+                pasien.setLastUpdateWho(data.getLastUpdateWho());
+                pasien.setEmail(data.getEmail());
+                pasien.setPassword(data.getPassword());
+
+                if (pasien.getDesaId() != null) {
+                    List<Object[]> objs = provinsiDao.getListAlamatByDesaId(pasien.getDesaId().toString());
+                    if (!objs.isEmpty()) {
+                        for (Object[] obj : objs) {
+                            pasien.setDesa(obj[0].toString());
+                            pasien.setKecamatan(obj[1].toString());
+                            pasien.setKota(obj[2].toString());
+                            pasien.setProvinsi(obj[3].toString());
+                            pasien.setKecamatanId(obj[4].toString());
+                            pasien.setKotaId(obj[5].toString());
+                            pasien.setProvinsiId(obj[6].toString());
+                        }
+                    }
+                }
+
+                if (pasien.getIdPasien() != null) {
+                    Map hsCriteria = new HashMap();
+                    hsCriteria.put("id_pasien", pasien.getIdPasien());
+                    List<ItSimrsHeaderChekupEntity> cekKunjungan = headerCheckupDao.getByCriteria(hsCriteria);
+                    if (cekKunjungan.size() > 0) {
+                        pasien.setIsPasienLama(true);
+                    }
+
+                    //cek finger data
+                    pasien.setDisabledFingerData(cekFingerData(pasien.getIdPasien()));
+
+                    HeaderDetailCheckup detailCheckup = pasienDao.getLastCheckup(data.getIdPasien());
+                    if (detailCheckup.getIdDetailCheckup() != null) {
+                        pasien.setIdPelayanan(detailCheckup.getIdPelayanan());
+                        pasien.setNoCheckuoUlang(detailCheckup.getNoCheckupUlang());
+                        pasien.setIdLastDetailCheckup(detailCheckup.getIdDetailCheckup());
+                        pasien.setIsOrderLab(detailCheckup.getIsOrderLab());
+                        if (detailCheckup.getTglCekup() != null) {
+                            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(detailCheckup.getTglCekup());
+                            pasien.setTglCheckup(formatDate);
+                            pasien.setIsCheckupUlang("Y");
+                        }
+                    }
+                }
+
+                Boolean cekPendaftaran = pasienDao.cekPendaftaranPasien(data.getIdPasien());
+
+                if (cekPendaftaran) {
+                    pasien.setIsDaftar("Y");
+                }else{
+                    pasien.setIsDaftar("N");
+                }
+
+                list.add(pasien);
+            }
+        }
+        logger.info("[PasienBoImpl.getListComboPasien] End <<<<<<<");
+        return list;
     }
 
     @Override
@@ -430,12 +511,12 @@ public class PasienBoImpl implements PasienBo {
         List<ImSimrsPasienEntity> pasienEntityList = new ArrayList<>();
         try {
             pasienEntityList = pasienDao.getPasienListByLike(query);
-        } catch (HibernateException e){
-            logger.error("[PasienBoImpl.getByByCriteria] Error when search pasien by criteria "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[PasienBoImpl.getByByCriteria] Error when search pasien by criteria " + e.getMessage());
         }
 
         logger.info("[PasienBoImpl.getTypeAheadPasienByIdAndName] End <<<<<<<");
-        if (!pasienEntityList.isEmpty()){
+        if (!pasienEntityList.isEmpty()) {
             return setTemplatePasien(pasienEntityList);
         }
 
@@ -740,19 +821,19 @@ public class PasienBoImpl implements PasienBo {
         }
     }
 
-    private String dateFormater(String type){
+    private String dateFormater(String type) {
         java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
         DateFormat df = new SimpleDateFormat(type);
         return df.format(date);
     }
 
-    private Boolean cekFingerData(String idPasien){
+    private Boolean cekFingerData(String idPasien) {
         Boolean response = false;
 
         try {
             response = fingerDataDao.cekFingerData(idPasien);
-        }catch (HibernateException e){
-            logger.error("Found Error when cek finger data "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("Found Error when cek finger data " + e.getMessage());
         }
 
         return response;
@@ -772,7 +853,7 @@ public class PasienBoImpl implements PasienBo {
             ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
             String id = getIdPasien();
 
-            pasienEntity.setIdPasien(CommonUtil.userBranchLogin()+dateFormater("MM")+dateFormater("yy")+id);
+            pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("MM") + dateFormater("yy") + id);
             pasienEntity.setNama(pasien.getNama());
             pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
             pasienEntity.setNoKtp(pasien.getNoKtp());
@@ -781,7 +862,7 @@ public class PasienBoImpl implements PasienBo {
 
             pasienEntity.setNoTelp(pasien.getNoTelp());
 
-            if(pasien.getTglLahir() != null && !"".equalsIgnoreCase(pasien.getTglLahir())){
+            if (pasien.getTglLahir() != null && !"".equalsIgnoreCase(pasien.getTglLahir())) {
                 pasienEntity.setTglLahir(java.sql.Date.valueOf(pasien.getTglLahir()));
             }
 
@@ -813,7 +894,7 @@ public class PasienBoImpl implements PasienBo {
 
             } catch (HibernateException e) {
                 response.setStatus("error");
-                response.setMsg("Error "+e.getMessage());
+                response.setMsg("Error " + e.getMessage());
                 logger.error("[PasienBoImpl.saveAdd] Error when saving data pasien", e);
                 throw new GeneralBOException(" Error when saving data pasien " + e.getMessage());
             }
@@ -832,8 +913,8 @@ public class PasienBoImpl implements PasienBo {
         List<Pasien> list = new ArrayList<>();
         try {
             list = pasienDao.getListPasienWithPaket(nama);
-        }catch (HibernateException e){
-            logger.error("Found Erro "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("Found Erro " + e.getMessage());
         }
         return list;
     }

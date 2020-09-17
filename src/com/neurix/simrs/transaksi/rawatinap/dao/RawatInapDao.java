@@ -413,6 +413,12 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                         "AND b.flag_cover = 'Y' \n";
             }
 
+            String forSisaRekanan = "";
+
+            if ("asuransi".equalsIgnoreCase(type) || "bpjs".equalsIgnoreCase(type)) {
+                forSisaRekanan = "\n AND b.flag_sisa = 'Y' \n";
+            }
+
             String SQL = "SELECT\n" +
                     "b.id_detail_checkup,\n" +
                     "a.no_checkup,\n" +
@@ -455,7 +461,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "AND e.id_ruangan LIKE :idRuang\n" +
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND b.is_kronis IS NULL\n" +
-                    "AND a.branch_id LIKE :branchId\n" + jenisPasien + isKasir +
+                    "AND a.branch_id LIKE :branchId\n" + jenisPasien + isKasir + forSisaRekanan +
                     "AND a.flag = 'Y'\n";
 
             List<Object[]> results = new ArrayList<>();

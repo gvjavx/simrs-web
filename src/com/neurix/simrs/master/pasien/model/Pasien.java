@@ -62,6 +62,16 @@ public class Pasien {
     private String idLastDetailCheckup;
     private String isCheckupUlang;
 
+    private String isDaftar;
+
+    public String getIsDaftar() {
+        return isDaftar;
+    }
+
+    public void setIsDaftar(String isDaftar) {
+        this.isDaftar = isDaftar;
+    }
+
     public String getIsCheckupUlang() {
         return isCheckupUlang;
     }
