@@ -210,6 +210,10 @@
             <filter-chain pattern="/mobileapi/rekening/*" filters="none" />
             <filter-chain pattern="/mobileapi/rekening/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/historypegawai" filters="none" />
+            <filter-chain pattern="/mobileapi/historypegawai/*" filters="none" />
+            <filter-chain pattern="/mobileapi/historypegawai/*/**" filters="none" />
+
 
             <filter-chain pattern="/**/*"
                           filters="

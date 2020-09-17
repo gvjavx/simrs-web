@@ -83,7 +83,6 @@
                             <tr>
                                 <td align="center">
                                     <s:form id="pengajuanBiayaForm" method="post"  theme="simple" namespace="/pengajuanBiaya" action="search_pengajuanBiaya.action" cssClass="form-horizontal">
-                                        <s:hidden name="pengajuanBiaya.tipePembayaran" value="KK" />
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -99,10 +98,17 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="pengajuanBiaya.branchId" disabled="true"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                        <s:hidden id="branchId" name="pengajuanBiaya.branchId" />
+                                                        <s:if test='pengajuanBiaya.branchId == "KP"'>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchSelainKp_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pengajuanBiaya.branchId"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="pengajuanBiaya.branchId" disabled="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            <s:hidden id="branchId" name="pengajuanBiaya.branchId" />
+                                                        </s:else>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -112,9 +118,9 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'PDU':'Swift Kas Unit ke Pusat','SMK':'Setoran Modal Kerja ke Unit'}"
+                                                        <s:select list="#{'SMK':'Setoran Modal Kerja ke Unit'}"
                                                                   id="transaksi" name="pengajuanBiaya.transaksi"
-                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                                  headerKey="PDU" headerValue="Swift Kas Unit ke Pusat" cssClass="form-control" />
                                                     </table>
                                                 </td>
                                             </tr>
@@ -180,9 +186,11 @@
                                                             Search
                                                         </sj:submit>
                                                     </td>
+                                                    <s:if test='pengajuanBiaya.branchId == "KP"'>
                                                     <td>
                                                         <a href="add_pengajuanBiaya.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Transaksi RK</a>
                                                     </td>
+                                                    </s:if>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_pengajuanBiaya"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
@@ -200,25 +208,35 @@
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="500" width="600" autoOpen="false"
-                                                                   title="Pembayaran Hutang Piutang ">
+                                                                   title="Transaksi RK ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
                                                         <s:set name="listOfPengajuanBiaya" value="#session.listOfResult" scope="request" />
                                                         <display:table name="listOfPengajuanBiaya" class="table table-condensed table-striped table-hover tablePengajuanBiaya"
                                                                        requestURI="paging_displaytag_pengajuanBiaya.action" export="true" id="row" pagesize="20" style="font-size:10">
-                                                            <display:column media="html" title="View">
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaId}"/>" class="item-view">
-                                                                    <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
-                                                                </a>
-                                                            </display:column>
+                                                            <%--<display:column media="html" title="View">--%>
+                                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaId}"/>" class="item-view">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">--%>
+                                                                <%--</a>--%>
+                                                            <%--</display:column>--%>
                                                             <display:column property="pengajuanBiayaId" sortable="true" title="Transaksi RK ID" />
                                                             <display:column property="tanggal" sortable="true" title="Tanggal" />
                                                             <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
                                                             <display:column property="keterangan" sortable="true" title="Keterangan" />
                                                             <display:column property="stTotalBiaya" sortable="true" title="Total Biaya" />
-                                                            <display:column property="coaAjuan" sortable="true" title="Coa Ajuan" />
-                                                            <display:column property="coaTarget" sortable="true" title="Coa Target" />
+                                                            <display:column property="coaAjuanName" sortable="true" title="Nama RK" />
+                                                            <display:column property="coaTargetName" sortable="true" title="Nama Rekening Kas" />
+                                                            <display:column media="html" title="Posting"  style="text-align:center">
+                                                                <s:if test="#attr.row.flagPosting">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                </s:if>
+                                                                <s:else>
+                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaId}"/>" class="item-posting">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_closed.ico"/>" name="icon_edit" style="width: 30px">
+                                                                    </a>
+                                                                </s:else>
+                                                            </display:column>
                                                         </display:table>
                                                     </td>
                                                 </tr>
@@ -359,21 +377,12 @@
 
         $('.tablePengajuanBiaya').on('click', '.item-posting', function() {
             var pembayaranId = $(this).attr('data');
-            $('#mod_pembayaran_id').val(pembayaranId);
-            PengajuanBiayaAction.getForModalPopUp(pembayaranId,function (data) {
-                $('#mod_no_jurnal').val(data.noJurnal);
-                $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
-                $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_metode_bayar').val(data.metodePembayaranName);
-                $('#mod_no_slip_bank').val(data.noSlipBank);
-                $('#mod_keterangan').val(data.keterangan);
-                $('#mod_total_bayar').val(data.stBayar);
-            });
-            loadPembayaran();
-            $("#modal-posting-jurnal").find('.modal-title').text('Posting Jurnal');
-            $("#modal-posting-jurnal").modal('show');
-            $("#btnPostingJurnal").show();
-
+            if (confirm("apakah anda ingin memposting pengeluaran dengan pembayaran id "+pembayaranId +" ?")){
+                PengajuanBiayaAction.postingJurnal(pembayaranId,function (listdata) {
+                    alert(listdata);
+                    window.location.reload();
+                })
+            }
         });
         $('.tablePengajuanBiaya').on('click', '.item-cetak-bukti', function() {
             var noJurnal = $(this).attr('data');

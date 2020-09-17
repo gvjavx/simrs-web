@@ -2,7 +2,6 @@ package com.neurix.simrs.master.pasien.bo;
 
 import com.neurix.common.bo.GeneralBo;
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.hris.master.belajar.model.Belajar;
 import com.neurix.simrs.master.pasien.model.*;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;

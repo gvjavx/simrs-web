@@ -963,7 +963,23 @@ public class AbsensiBoImpl implements AbsensiBo {
         HttpSession session = ServletActionContext.getRequest().getSession();
         listOfAbsensiFinal = (List<AbsensiPegawaiEntity>) session.getAttribute("listOfResultAbsensiFinal");
         String tipePegawai;
+
         if (bean != null) {
+            String tahunGaji="";
+            try {
+                ImCompany company = companyDao.getCompanyInfo("Y");
+                if (!("").equalsIgnoreCase(company.getPeriodeGaji())) {
+                    tahunGaji = company.getPeriodeGaji();
+                } else {
+                    String status = "Error : tidak ditemukan periode gaji pada Company";
+                    logger.error("[PayrollBoImpl.dataAddPayroll] " + status);
+                    throw new GeneralBOException(status);
+                }
+            }catch (HibernateException e){
+                logger.error("[PayrollBoImpl.dataAddPayroll] " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
+
             // creating object entity serializable
             AbsensiPegawaiEntity absensiPegawaiEntity = new AbsensiPegawaiEntity();
 
@@ -1086,24 +1102,11 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4.put("flag", "Y");
                         double faktor = 0;
                         Double upahLembur = 0d;
+                        Double gapok = 0d;
+                        Double sankhus = 0d;
                         pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
                         for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                             faktor = pengaliFaktorLemburEntity.getFaktor();
-                        }
-
-                        String tahunGaji="";
-                        try {
-                            ImCompany company = companyDao.getCompanyInfo("Y");
-                            if (!("").equalsIgnoreCase(company.getPeriodeGaji())) {
-                                tahunGaji = company.getPeriodeGaji();
-                            } else {
-                                String status = "Error : tidak ditemukan periode gaji pada Company";
-                                logger.error("[PayrollBoImpl.dataAddPayroll] " + status);
-                                throw new GeneralBOException(status);
-                            }
-                        }catch (HibernateException e){
-                            logger.error("[PayrollBoImpl.dataAddPayroll] " + e.getMessage());
-                            throw new GeneralBOException(e.getMessage());
                         }
 
                         hsCriteria4 = new HashMap();
@@ -1116,12 +1119,14 @@ public class AbsensiBoImpl implements AbsensiBo {
                         if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP01")){
                             payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodataEntity.getGolongan(),tahunGaji);
                             for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                                upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                                gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                                sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                             }
                         }else if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP03")){
                             payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodataEntity.getGolongan(),tahunGaji);
                             for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop:payrollSkalaGajiPkwtEntityList){
-                                upahLembur = skalaGajiLoop.getGajiPokok().doubleValue();
+                                gapok = skalaGajiLoop.getGajiPokok().doubleValue();
+                                sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
                             }
                         }
 
@@ -1155,21 +1160,20 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 j=j+1;
                             }while (lamaLembur>0);
                         }
-                        Double umk =0d;
                         Double peralihan = 0d;
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(),bean.getTanggal()).doubleValue();
-                        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                        String strDate = dateFormat.format(bean.getTanggal());
-                        String[] a = strDate.split("-");
-                        int intBulan =Integer.valueOf(a[1])-1;
-                        if (intBulan<10){a[1]="0"+intBulan;}
-                        String bulan = a[1];
-                        String tahun = a[2];
-                        List<ItPayrollEntity> payrollEntityList = payrollDao.getTunjanganPeralihan(bean.getNip(),bulan,tahun);
-                        for (ItPayrollEntity itPayrollEntity : payrollEntityList){
-                            peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
-                        }
-                        upahLembur = (upahLembur+peralihan)*faktor*jamLembur;
+//                        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//                        String strDate = dateFormat.format(bean.getTanggal());
+//                        String[] a = strDate.split("-");
+//                        int intBulan =Integer.valueOf(a[1])-1;
+//                        if (intBulan<10){a[1]="0"+intBulan;}
+//                        String bulan = a[1];
+//                        String tahun = a[2];
+//                        List<ItPayrollEntity> payrollEntityList = payrollDao.getTunjanganPeralihan(bean.getNip(),bulan,tahun);
+//                        for (ItPayrollEntity itPayrollEntity : payrollEntityList){
+//                            peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
+//                        }
+                        upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
 
                         absensiPegawaiEntity.setLembur("Y");
                         absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -1293,6 +1297,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4.put("flag", "Y");
                         double faktor = 0;
                         Double upahLembur = 0d;
+                        Double gapok = 0d;
+                        Double sankhus= 0d;
                         pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
                         for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                             faktor = pengaliFaktorLemburEntity.getFaktor();
@@ -1301,12 +1307,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4 = new HashMap();
                         hsCriteria4.put("golongan_id", biodataEntity.getGolongan());
                         hsCriteria4.put("point", (int) Math.round(biodataEntity.getPoint()));
-                        hsCriteria4.put("tahun", "2019");
+                        hsCriteria4.put("tahun", tahunGaji);
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                         payrollSkalaGajiList = payrollSkalaGajiDao.getByCriteria(hsCriteria4);
                         for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                            upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                            gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                            sankhus = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                         }
 
                         double jamLembur = 0;
@@ -1339,22 +1346,9 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 j=j+1;
                             }while (lamaLembur>0);
                         }
-                        Double umk =0d;
                         Double peralihan = 0d;
-                        umk = getTunjanganUmk(branch,biodataEntity.getGolongan()).doubleValue();
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(),bean.getTanggal()).doubleValue();
-                        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                        String strDate = dateFormat.format(bean.getTanggal());
-                        String[] a = strDate.split("-");
-                        int intBulan =Integer.valueOf(a[1])-1;
-                        if (intBulan<10){a[1]="0"+intBulan;}
-                        String bulan = a[1];
-                        String tahun = a[2];
-                        List<ItPayrollEntity> payrollEntityList = payrollDao.getTunjanganPeralihan(bean.getNip(),bulan,tahun);
-                        for (ItPayrollEntity itPayrollEntity : payrollEntityList){
-                            peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
-                        }
-                        upahLembur = (upahLembur+umk+peralihan)*faktor*jamLembur;
+                        upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
 
                         absensiPegawaiEntity.setLembur("Y");
                         absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -1378,6 +1372,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4.put("flag", "Y");
                         double faktor = 0;
                         Double upahLembur = 0d;
+                        Double gapok = 0d;
+                        Double sankhus = 0d;
                         pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
                         for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                             faktor = pengaliFaktorLemburEntity.getFaktor();
@@ -1386,12 +1382,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4 = new HashMap();
                         hsCriteria4.put("golongan_id", biodataEntity.getGolongan());
                         hsCriteria4.put("point", (int) Math.round(biodataEntity.getPoint()));
-                        hsCriteria4.put("tahun", "2019");
+                        hsCriteria4.put("tahun", tahunGaji);
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                         payrollSkalaGajiList = payrollSkalaGajiDao.getByCriteria(hsCriteria4);
                         for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                            upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                            gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                            sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                         }
 
                         double jamLembur = 0;
@@ -1424,22 +1421,10 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 j=j+1;
                             }while (lamaLembur>0);
                         }
-                        Double umk =0d;
                         Double peralihan = 0d;
-                        umk = getTunjanganUmk(branch,biodataEntity.getGolongan()).doubleValue();
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(),bean.getTanggal()).doubleValue();
-                        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                        String strDate = dateFormat.format(bean.getTanggal());
-                        String[] a = strDate.split("-");
-                        int intBulan =Integer.valueOf(a[1])-1;
-                        if (intBulan<10){a[1]="0"+intBulan;}
-                        String bulan = a[1];
-                        String tahun = a[2];
-                        List<ItPayrollEntity> payrollEntityList = payrollDao.getTunjanganPeralihan(bean.getNip(),bulan,tahun);
-                        for (ItPayrollEntity itPayrollEntity : payrollEntityList){
-                            peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
-                        }
-                        upahLembur = (upahLembur+umk+peralihan)*faktor*jamLembur;
+
+                        upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
 
                         absensiPegawaiEntity.setLembur("Y");
                         absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -2464,17 +2449,14 @@ public class AbsensiBoImpl implements AbsensiBo {
     }
 
     @Override
-    public List getDataFromMesin() throws Exception {
-        String urlParameters = "";
-        String url = "";
-
+    public List getDataFromMesin(MesinAbsensi bean) throws Exception {
         Map hsCriteriaMesin = new HashMap();
         hsCriteriaMesin.put("flag", "Y");
         List<ImMesinAbsensiEntity> imMesinAbsensiEntityList = new ArrayList<>();
         imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
         for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
-            urlParameters = mesin.getMesinSn();
-            url = mesin.getMesinName();
+            String urlParameters = mesin.getMesinSn();
+            String url = "http://"+mesin.getMesinName()+"/scanlog/all/paging";
 
             // CODING ASLI //
             String inputLine;
@@ -2534,7 +2516,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
                     mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
 
-                    String userLogin = CommonUtil.userLogin();
+                    String userLogin = bean.getCreatedWho();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
                     mesinAbsensiDetailEntity.setAction("C");
                     mesinAbsensiDetailEntity.setFlag("Y");
@@ -2546,6 +2528,11 @@ public class AbsensiBoImpl implements AbsensiBo {
                     mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
                 }
             }
+
+            //jika berhasil maka akan ditaruh di last get
+            ImMesinAbsensiEntity mesinAbsensiEntity = mesinDao.getById("mesinId",mesin.getMesinId());
+            mesinAbsensiEntity.setLastGet(bean.getLastUpdate());
+            mesinDao.updateAndSave(mesinAbsensiEntity);
         }
         // END OF CODING ASLI //
 
@@ -2619,9 +2606,7 @@ public class AbsensiBoImpl implements AbsensiBo {
     }
 
     @Override
-    public List getAllDataFromMesin() throws Exception {
-        String urlParameters = "";
-        String url = "";
+    public List getAllDataFromMesin(MesinAbsensi bean) throws Exception {
 
         Map hsCriteriaMesin = new HashMap();
         hsCriteriaMesin.put("flag", "Y");
@@ -2629,265 +2614,105 @@ public class AbsensiBoImpl implements AbsensiBo {
         List<ImMesinAbsensiEntity> imMesinAbsensiEntityList = new ArrayList<>();
         imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
         for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
-            urlParameters = mesin.getMesinSn();
-            url = mesin.getMesinName();
-        }
-        // CODING ASLI //
-        boolean isSession;
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        List<MesinAbsensiDetail> mesinAbsensiDetailList = new ArrayList<>();
-        do {
-            byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
-            int postDataLength = postData.length;
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            // optional default is GET
-            con.setRequestMethod("POST");
-            con.setDoOutput( true );
-            con.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-            //add request header
-            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            try( DataOutputStream wr = new DataOutputStream( con.getOutputStream())) {
-                wr.write( postData );
-            }
-            int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'POST' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            StringBuffer responseTemp = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                responseTemp.append(inputLine);
-            }
-            in.close();
-            JSONObject myResponseCheck = new JSONObject(responseTemp.toString());
-            isSession = myResponseCheck.getBoolean("IsSession");
-            JSONArray ja_data = myResponseCheck.getJSONArray("Data");
-            int length = ja_data.length();
-            for(int i=0; i<length; i++) {
-                JSONObject jObj = ja_data.getJSONObject(i);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");
-                String stScanDate = jObj.getString("ScanDate");
-                java.util.Date parsedDate = dateFormat.parse(stScanDate);
-                Timestamp scanDate = new Timestamp(parsedDate.getTime());
+            String urlParameters = mesin.getMesinSn();
+            String url = "http://"+mesin.getMesinName()+"/scanlog/all/paging";
 
-                MesinAbsensiDetail mesinAbsensiDetail = new MesinAbsensiDetail();
-                mesinAbsensiDetail.setPin(jObj.getString("PIN"));
-                mesinAbsensiDetail.setStatus(String.valueOf(jObj.getInt("IOMode")));
-                mesinAbsensiDetail.setScanDate(scanDate);
-                mesinAbsensiDetail.setVerifyMode(String.valueOf(jObj.getInt("VerifyMode")));
-                mesinAbsensiDetail.setWorkCode(String.valueOf(jObj.getInt("WorkCode")));
-                mesinAbsensiDetailList.add(mesinAbsensiDetail);
-            }
-            response.append(responseTemp);
-        }
-        while (isSession);
+            // CODING ASLI //
+            boolean isSession;
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            List<MesinAbsensiDetail> mesinAbsensiDetailList = new ArrayList<>();
+            do {
+                byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
+                int postDataLength = postData.length;
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                // optional default is GET
+                con.setRequestMethod("POST");
+                con.setDoOutput( true );
+                con.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                //add request header
+                con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                try( DataOutputStream wr = new DataOutputStream( con.getOutputStream())) {
+                    wr.write( postData );
+                }
+                int responseCode = con.getResponseCode();
+                System.out.println("\nSending 'POST' request to URL : " + url);
+                System.out.println("Response Code : " + responseCode);
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                StringBuffer responseTemp = new StringBuffer();
+                while ((inputLine = in.readLine()) != null) {
+                    responseTemp.append(inputLine);
+                }
+                in.close();
+                JSONObject myResponseCheck = new JSONObject(responseTemp.toString());
+                isSession = myResponseCheck.getBoolean("IsSession");
+                JSONArray ja_data = myResponseCheck.getJSONArray("Data");
+                int length = ja_data.length();
+                for(int i=0; i<length; i++) {
+                    JSONObject jObj = ja_data.getJSONObject(i);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");
+                    String stScanDate = jObj.getString("ScanDate");
+                    java.util.Date parsedDate = dateFormat.parse(stScanDate);
+                    Timestamp scanDate = new Timestamp(parsedDate.getTime());
 
-        //Save To mesin Absensi Detail List
-        for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
-            List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-            Map hsCriteria = new HashMap();
-            hsCriteria.put("pin", mesinAbsensiDetail.getPin());
-            hsCriteria.put("status", mesinAbsensiDetail.getStatus());
-            hsCriteria.put("scan_date", mesinAbsensiDetail.getScanDate());
-            hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
-            hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
-            hsCriteria.put("flag", "Y");
-            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
-            if (mesinAbsensiDetailEntityList.size() == 0) {
-                MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
-                String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
-                String userLogin = CommonUtil.userLogin();
-                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
-                mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
-                mesinAbsensiDetailEntity.setStatus(mesinAbsensiDetail.getStatus());
-                mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
-                mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
-                mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
-                mesinAbsensiDetailEntity.setAction("C");
-                mesinAbsensiDetailEntity.setFlag("Y");
-                mesinAbsensiDetailEntity.setLastUpdate(updateTime);
-                mesinAbsensiDetailEntity.setCreatedDate(updateTime);
-                mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
-                mesinAbsensiDetailEntity.setCreatedWho(userLogin);
-                mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
+                    MesinAbsensiDetail mesinAbsensiDetail = new MesinAbsensiDetail();
+                    mesinAbsensiDetail.setPin(jObj.getString("PIN"));
+                    mesinAbsensiDetail.setStatus(String.valueOf(jObj.getInt("IOMode")));
+                    mesinAbsensiDetail.setScanDate(scanDate);
+                    mesinAbsensiDetail.setVerifyMode(String.valueOf(jObj.getInt("VerifyMode")));
+                    mesinAbsensiDetail.setWorkCode(String.valueOf(jObj.getInt("WorkCode")));
+                    mesinAbsensiDetailList.add(mesinAbsensiDetail);
+                }
+                response.append(responseTemp);
             }
+            while (isSession);
+
+            //Save To mesin Absensi Detail List
+            for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
+                List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("pin", mesinAbsensiDetail.getPin());
+                hsCriteria.put("status", mesinAbsensiDetail.getStatus());
+                hsCriteria.put("scan_date", mesinAbsensiDetail.getScanDate());
+                hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
+                hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
+                hsCriteria.put("flag", "Y");
+                mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
+                if (mesinAbsensiDetailEntityList.size() == 0) {
+                    MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
+                    String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
+                    String userLogin = bean.getCreatedWho();
+                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                    mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
+                    mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
+                    mesinAbsensiDetailEntity.setStatus(mesinAbsensiDetail.getStatus());
+                    mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
+                    mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
+                    mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
+                    mesinAbsensiDetailEntity.setAction("C");
+                    mesinAbsensiDetailEntity.setFlag("Y");
+                    mesinAbsensiDetailEntity.setLastUpdate(updateTime);
+                    mesinAbsensiDetailEntity.setCreatedDate(updateTime);
+                    mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
+                    mesinAbsensiDetailEntity.setCreatedWho(userLogin);
+                    mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
+                }
+            }
+            //jika berhasil maka akan ditaruh di last get
+            ImMesinAbsensiEntity mesinAbsensiEntity = mesinDao.getById("mesinId",mesin.getMesinId());
+            mesinAbsensiEntity.setLastGet(bean.getLastUpdate());
+            mesinDao.updateAndSave(mesinAbsensiEntity);
         }
+
         // END OF CODING ASLI //
         return null;
     }
 
-    public void getDataFingerForCronJob() throws Exception{
-        String urlParameters = "";
-        String url = "";
-
-        Map hsCriteriaMesin = new HashMap();
-        hsCriteriaMesin.put("flag", "Y");
-
-        List<ImMesinAbsensiEntity> imMesinAbsensiEntityList = new ArrayList<>();
-        imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
-        for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
-            urlParameters = mesin.getMesinSn();
-            url = mesin.getMesinName();
-        }
-        // CODING ASLI //
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        List<MesinAbsensiDetail> mesinAbsensiDetailList = new ArrayList<>();
-        byte[] postData = urlParameters.getBytes( StandardCharsets.UTF_8 );
-        int postDataLength = postData.length;
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        // optional default is GET
-        con.setRequestMethod("POST");
-        con.setDoOutput( true );
-        con.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-        //add request header
-        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        try( DataOutputStream wr = new DataOutputStream( con.getOutputStream())) {
-            wr.write( postData );
-        }
-        int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        StringBuffer responseTemp = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            responseTemp.append(inputLine);
-        }
-        in.close();
-        JSONObject myResponseCheck = new JSONObject(responseTemp.toString());
-        JSONArray ja_data = myResponseCheck.getJSONArray("Data");
-        int length = ja_data.length();
-        for(int i=0; i<length; i++) {
-            JSONObject jObj = ja_data.getJSONObject(i);
-            MesinAbsensiDetail mesinAbsensiDetail = new MesinAbsensiDetail();
-            mesinAbsensiDetail.setPin(jObj.getString("PIN"));
-            mesinAbsensiDetail.setStatus(String.valueOf(jObj.getInt("IOMode")));
-            mesinAbsensiDetail.setScanDate(Timestamp.valueOf(jObj.getString("ScanDate")));
-            mesinAbsensiDetail.setVerifyMode(String.valueOf(jObj.getInt("VerifyMode")));
-            mesinAbsensiDetail.setWorkCode(String.valueOf(jObj.getInt("WorkCode")));
-            mesinAbsensiDetailList.add(mesinAbsensiDetail);
-        }
-
-        //Save To mesin Absensi Detail List
-        for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
-            List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-            Map hsCriteria = new HashMap();
-            hsCriteria.put("pin", mesinAbsensiDetail.getPin());
-            hsCriteria.put("status", mesinAbsensiDetail.getStatus());
-            hsCriteria.put("scan_date", mesinAbsensiDetail.getScanDate());
-            hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
-            hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
-            hsCriteria.put("flag", "Y");
-            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
-            if (mesinAbsensiDetailEntityList.size() == 0) {
-                MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
-                String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
-                String userLogin = CommonUtil.userLogin();
-                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
-                mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
-                mesinAbsensiDetailEntity.setStatus(mesinAbsensiDetail.getStatus());
-                mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
-                mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
-                mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
-                mesinAbsensiDetailEntity.setAction("C");
-                mesinAbsensiDetailEntity.setFlag("Y");
-                mesinAbsensiDetailEntity.setLastUpdate(updateTime);
-                mesinAbsensiDetailEntity.setCreatedDate(updateTime);
-                mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
-                mesinAbsensiDetailEntity.setCreatedWho(userLogin);
-
-                mesinAbsensiDetailEntity.setAction("C");
-                mesinAbsensiDetailEntity.setFlag("Y");
-                mesinAbsensiDetailEntity.setLastUpdate(updateTime);
-                mesinAbsensiDetailEntity.setCreatedDate(updateTime);
-                mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
-                mesinAbsensiDetailEntity.setCreatedWho(userLogin);
-
-                // Save mesin Absensi
-                mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
-            }
-
-        }
-        response=responseTemp;
-
-        /*//PERCOBAAN DATA DUMMY
-        List<MesinAbsensiDetail> mesinAbsensiDetailList = new ArrayList<>();
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        // optional default is GET
-        con.setRequestMethod("POST");
-        con.setDoOutput(true);
-        //add request header
-        con.setRequestProperty("Content-Type", "application/json");
-        int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
-        BufferedReader in = new BufferedReader(
-        new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-        JSONObject myResponse = new JSONObject(response.toString());
-        JSONArray ja_data = myResponse.getJSONArray("Data");
-
-        int length = ja_data.length();
-        for (int i = 0; i < length; i++) {
-            JSONObject jObj = ja_data.getJSONObject(i);
-            MesinAbsensiDetail mesinAbsensiDetail = new MesinAbsensiDetail();
-            mesinAbsensiDetail.setPin(jObj.getString("PIN"));
-            mesinAbsensiDetail.setStatus(String.valueOf(jObj.getInt("IOMode")));
-            mesinAbsensiDetail.setScanDate(Timestamp.valueOf(jObj.getString("ScanDate")));
-            mesinAbsensiDetail.setVerifyMode(String.valueOf(jObj.getInt("VerifyMode")));
-            mesinAbsensiDetail.setWorkCode(String.valueOf(jObj.getInt("WorkCode")));
-            mesinAbsensiDetailList.add(mesinAbsensiDetail);
-        }
-        //Save To mesin Absensi Detail List
-        for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
-            List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-            Map hsCriteria = new HashMap();
-            hsCriteria.put("pin", mesinAbsensiDetail.getPin());
-            hsCriteria.put("status", mesinAbsensiDetail.getStatus());
-            hsCriteria.put("scan_date", mesinAbsensiDetail.getScanDate());
-            hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
-            hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
-            hsCriteria.put("flag", "Y");
-            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
-            if (mesinAbsensiDetailEntityList.size() == 0) {
-                MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
-                String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
-                mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
-                mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
-                mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
-                mesinAbsensiDetailEntity.setStatus(mesinAbsensiDetail.getStatus());
-                mesinAbsensiDetailEntity.setPin(mesinAbsensiDetail.getPin());
-                mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
-
-                String userLogin = CommonUtil.userLogin();
-                Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                mesinAbsensiDetailEntity.setAction("C");
-                mesinAbsensiDetailEntity.setFlag("Y");
-                mesinAbsensiDetailEntity.setLastUpdate(updateTime);
-                mesinAbsensiDetailEntity.setCreatedDate(updateTime);
-                mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
-                mesinAbsensiDetailEntity.setCreatedWho(userLogin);
-
-                mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
-            }
-        }
-        // END OF PERCOBAAN DATA DUMMY*/
-    }
-
-
     public void getDataInquiryForCronJob() throws Exception{
-        getDataFromMesin();
+        MesinAbsensi mesinAbsensi = new MesinAbsensi();
+        mesinAbsensi.setCreatedWho("Cron");
+        getDataFromMesin(mesinAbsensi);
 
         java.util.Date date = new java.util.Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -3889,7 +3714,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 if (hasilInquiry.getJamMasuk()==null||hasilInquiry.getJamKeluar()==null ){
                                     hasil = Double.parseDouble("0");
                                 }else {
-                                    hasil = SubtractJamAwalDanJamAkhir(hasilInquiry.getJamMasuk(),hasilInquiry.getJamKeluar(),"Positif");
+                                    hasil = CommonUtil.SubtractJamAwalDanJamAkhir(hasilInquiry.getJamMasuk(),hasilInquiry.getJamKeluar(),"Positif");
                                 }
                                 hasilInquiry.setRealisasiJamLembur(hasil);
                             }else{
@@ -4074,7 +3899,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 cal.setTime(tanggal);
                 int day = cal.get(Calendar.DAY_OF_WEEK);
                 Map hsCriteria2 = new HashMap();
-                hsCriteria2.put("branch_id","KD01");
+                hsCriteria2.put("branch_id","KP");
                 hsCriteria2.put("hari",day);
                 hsCriteria2.put("flag","Y");
                 jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
@@ -4181,6 +4006,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                     hsCriteria4.put("flag", "Y");
                     double faktor = 0;
                     Double upahLembur = 0d;
+                    Double sankhus = 0d;
+                    Double gapok = 0d;
                     pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
                     for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                         faktor = pengaliFaktorLemburEntity.getFaktor();
@@ -4189,12 +4016,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                     hsCriteria4 = new HashMap();
                     hsCriteria4.put("golongan_id", golongan);
                     hsCriteria4.put("point", (int) Math.round(point));
-                    hsCriteria4.put("tahun", "2019");
+                    hsCriteria4.put("tahun", "2020");
                     hsCriteria4.put("flag", "Y");
                     List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                     payrollSkalaGajiList = payrollSkalaGajiDao.getByCriteria(hsCriteria4);
                     for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                        upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                        gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                        sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                     }
                     String tipeHari="hari_kerja";
                     if (("Y").equalsIgnoreCase(libur)){
@@ -4230,22 +4058,10 @@ public class AbsensiBoImpl implements AbsensiBo {
                             j=j+1;
                         }while (lamaLembur>0);
                     }
-                    Double umk =0d;
                     Double peralihan = 0d;
-                    umk = getTunjanganUmk("KD01",golongan).doubleValue();
                     peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(),tanggal).doubleValue();
-                    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                    String strDate = dateFormat.format(tanggal);
-                    String[] a = strDate.split("-");
-                    int intBulan =Integer.valueOf(a[1])-1;
-                    if (intBulan<10){a[1]="0"+intBulan;}
-                    String bulan = a[1];
-                    String tahun = a[2];
-                    List<ItPayrollEntity> payrollEntityList = payrollDao.getTunjanganPeralihan(nip,bulan,tahun);
-                    for (ItPayrollEntity itPayrollEntity : payrollEntityList){
-                        peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
-                    }
-                    upahLembur = (upahLembur+umk+peralihan)*faktor*jamLembur;
+
+                    upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
 
                     absensiPegawaiEntity.setLembur("Y");
                     absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -4908,44 +4724,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         }
         return listAbsensi;
     }
-    public Double SubtractJamAwalDanJamAkhir (String jamAwal,String jamAkhir,String status) throws ParseException {
-        java.text.DateFormat df = new java.text.SimpleDateFormat("dd:MM:yyyy HH:mm");
-        java.util.Date date1 = df.parse("01:01:2000 "+jamAwal);
-        java.util.Date date2 = df.parse("01:01:2000 "+jamAkhir);
-        long diff = date2.getTime() - date1.getTime();
-        if (diff<0&&status.equalsIgnoreCase("positif")){
-            date2 = df.parse("02:01:2000 "+jamAkhir);
-            diff = date2.getTime() - date1.getTime();
-        }
-        int timeInSeconds = (int) (diff / 1000);
-        int hours, minutes;
-        hours = timeInSeconds / 3600;
-        timeInSeconds = timeInSeconds - (hours * 3600);
-        minutes = timeInSeconds / 60;
-        double hasil=hours;
-        if (minutes<15){hasil=hasil+0;}
-        else if (minutes<30){hasil=hasil+0.25;}
-        else if (minutes<45){hasil=hasil+0.50;}
-        else if (minutes<60){hasil=hasil+0.75;}
-        return hasil;
-    }
-    public Double SubtractJam (String jamAwal,String jamAkhir) throws ParseException {
-        java.text.DateFormat df = new java.text.SimpleDateFormat("dd:MM:yyyy HH:mm");
-        java.util.Date date1 = df.parse("01:01:2000 "+jamAwal);
-        java.util.Date date2 = df.parse("01:01:2000 "+jamAkhir);
-        long diff = date2.getTime() - date1.getTime();
-        int timeInSeconds = (int) (diff / 1000);
-        int hours, minutes;
-        hours = timeInSeconds / 3600;
-        timeInSeconds = timeInSeconds - (hours * 3600);
-        minutes = timeInSeconds / 60;
-        double hasil=hours;
-        if (minutes<15){hasil=hasil+0;}
-        else if (minutes<30){hasil=hasil+0.25;}
-        else if (minutes<45){hasil=hasil+0.50;}
-        else if (minutes<60){hasil=hasil+0.75;}
-        return hasil;
-    }
+
     public List <StrukturJabatan> getPerBagianSys() throws GeneralBOException {
         List<ImStrukturJabatanEntity> imStrukturJabatanEntities  = strukturJabatanDao.getPerBagianDao();
         List<StrukturJabatan> strukturJabatans  = new ArrayList<>();
@@ -5369,19 +5148,19 @@ public class AbsensiBoImpl implements AbsensiBo {
                 break;
             }
             if (iJamAwalKerja<iJamAwalDb){
-                hasil=hasil+SubtractJamAwalDanJamAkhir (jamAwal,sJamKerjaAwalDb,"positif");
+                hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,sJamKerjaAwalDb,"positif");
                 if (iJamAkhirKerja>iJamAkhirDb){
-                    hasil=hasil+SubtractJamAwalDanJamAkhir (sJamKerjaAkhirDb,jamAkhir,"positif");
+                    hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (sJamKerjaAkhirDb,jamAkhir,"positif");
                 }
             }
             if (iJamAkhirKerja<iJamAkhirDb&&iJamAkhirKerja>iJamAwalDb){
                 hasil= (double) 0;
             }
             else if (iJamAwalKerja>=iJamAkhirDb){
-                hasil=hasil+SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
+                hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
             }
         }else{
-            hasil=SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
+            hasil=CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
         }
         return hasil;
     }
@@ -5399,16 +5178,16 @@ public class AbsensiBoImpl implements AbsensiBo {
             iJamAkhirDb=Integer.parseInt(sJamKerjaAkhirDb.replace(":",""));
 
             if (iJamAwalKerja<iJamAwalDb){
-                hasil=hasil+SubtractJamAwalDanJamAkhir (jamAwal,sJamKerjaAwalDb,"positif");
+                hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,sJamKerjaAwalDb,"positif");
                 if (iJamAkhirKerja>iJamAkhirDb){
-                    hasil=hasil+SubtractJamAwalDanJamAkhir (sJamKerjaAkhirDb,jamAkhir,"positif");
+                    hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (sJamKerjaAkhirDb,jamAkhir,"positif");
                 }
             }
             if (iJamAwalKerja>=iJamAkhirDb){
-                hasil=hasil+SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
+                hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
             }
         }else{
-            hasil=SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
+            hasil=CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
         }
         return hasil;
     }
@@ -5491,7 +5270,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                             jamMasukDB= jamKerja.getJamAwalKerja();
                         }
                         try {
-                            selisih = SubtractJam(jamMasukDB,hasilAbsensi.getJamMasuk());
+                            selisih = CommonUtil.SubtractJam(jamMasukDB,hasilAbsensi.getJamMasuk());
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -5569,6 +5348,26 @@ public class AbsensiBoImpl implements AbsensiBo {
             logger.error("[AbsensiBoImpl.getByCriteriaMesin] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
+        return result;
+    }
+
+    @Override
+    public List<AbsensiPegawai> getHistoryAbsensiByMonth (String nip, String branchId, Date date){
+        List<AbsensiPegawai> result = new ArrayList<>();
+        SimpleDateFormat dateFormat  = new SimpleDateFormat("YYYY");
+        String year = dateFormat.format(date);
+        dateFormat = new SimpleDateFormat("MM");
+        String month = dateFormat.format(date);
+        String firstDate = "01-" + month + "-" + year;
+        String lastDate = CommonUtil.getLastDayOfMonth() + "-" + month + "-" + year;
+
+        try {
+          result = absensiPegawaiDao.getAbsensiByMonth(nip, branchId, firstDate, lastDate);
+        } catch (HibernateException e){
+            logger.error("[AbsensiBoImpl.getByCriteriaMesin] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
         return result;
     }
 }

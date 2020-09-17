@@ -22,10 +22,16 @@ import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUta
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.authorization.user.dao.UserDao;
+import com.neurix.authorization.user.model.ImUsers;
+import com.neurix.authorization.user.model.User;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -55,7 +61,25 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
     private JurnalDetailDao jurnalDetailDao;
     private TransDao transDao;
     private BranchDao branchDao;
+    private PositionDao positionDao;
     private MappingJurnalDao mappingJurnalDao;
+    private UserDao userDao;
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public PositionDao getPositionDao() {
+        return positionDao;
+    }
+
+    public void setPositionDao(PositionDao positionDao) {
+        this.positionDao = positionDao;
+    }
 
     public MappingJurnalDao getMappingJurnalDao() {
         return mappingJurnalDao;
@@ -317,6 +341,29 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                     returnPembayaranUtangPiutang.setKeterangan(pembayaranUtangPiutangEntity.getKeterangan());
                     returnPembayaranUtangPiutang.setNoSlipBank(pembayaranUtangPiutangEntity.getNoSlipBank());
                     returnPembayaranUtangPiutang.setBranchId(pembayaranUtangPiutangEntity.getBranchId());
+                    returnPembayaranUtangPiutang.setApprovalKeuanganFlag(pembayaranUtangPiutangEntity.getApprovalKeuanganFlag());
+                    returnPembayaranUtangPiutang.setApprovalKeuanganId(pembayaranUtangPiutangEntity.getApprovalKeuanganId());
+                    returnPembayaranUtangPiutang.setApprovalKeuanganName(pembayaranUtangPiutangEntity.getApprovalKeuanganName());
+                    returnPembayaranUtangPiutang.setApprovalKeuanganDate(pembayaranUtangPiutangEntity.getApprovalKeuanganDate());
+                    returnPembayaranUtangPiutang.setApprovalKasubKeuanganFlag(pembayaranUtangPiutangEntity.getApprovalKasubKeuanganFlag());
+                    returnPembayaranUtangPiutang.setApprovalKasubKeuanganId(pembayaranUtangPiutangEntity.getApprovalKasubKeuanganId());
+                    returnPembayaranUtangPiutang.setApprovalKasubKeuanganName(pembayaranUtangPiutangEntity.getApprovalKasubKeuanganName());
+                    returnPembayaranUtangPiutang.setApprovalKasubKeuanganDate(pembayaranUtangPiutangEntity.getApprovalKasubKeuanganDate());
+
+                    List<ImBranches> branchesList = branchDao.getListBranchById(pembayaranUtangPiutangEntity.getBranchId());
+                    for (ImBranches branches : branchesList){
+                        returnPembayaranUtangPiutang.setBranchName(branches.getBranchName());
+                    }
+
+                    String roleId = CommonUtil.roleIdAsLogin();
+                    if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(roleId)){
+                        returnPembayaranUtangPiutang.setJabatan("keu");
+                    }else if (CommonConstant.ROLE_ID_KASUB_KEU.equalsIgnoreCase(roleId)){
+                        returnPembayaranUtangPiutang.setJabatan("kasub");
+                    }else if (CommonConstant.ROLE_ID_KA_KEU.equalsIgnoreCase(roleId)){
+                        returnPembayaranUtangPiutang.setJabatan("ka");
+                    }
+
                     returnPembayaranUtangPiutang.setNoJurnal(pembayaranUtangPiutangEntity.getNoJurnal());
                     returnPembayaranUtangPiutang.setTipePembayaran(pembayaranUtangPiutangEntity.getTipePembayaran());
 
@@ -616,10 +663,28 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 returnPembayaranUtangPiutangDetail.setPembayaranUtangPiutangDetailId(pembayaranUtangPiutangDetail.getPembayaranUtangPiutangDetailId());
                 returnPembayaranUtangPiutangDetail.setMasterId(pembayaranUtangPiutangDetail.getMasterId());
                 returnPembayaranUtangPiutangDetail.setDivisiId(pembayaranUtangPiutangDetail.getDivisiId());
+
+                List<ImPosition> positionList = positionDao.getListPositionKodering(pembayaranUtangPiutangDetail.getDivisiId());
+                if (positionList.size()!=0){
+                    for (ImPosition position : positionList){
+                        returnPembayaranUtangPiutangDetail.setDivisiName(position.getPositionName());
+                    }
+                }else{
+                    returnPembayaranUtangPiutangDetail.setDivisiName("");
+                }
+
                 returnPembayaranUtangPiutangDetail.setRekeningId(pembayaranUtangPiutangDetail.getRekeningId());
                 returnPembayaranUtangPiutangDetail.setNoNota(pembayaranUtangPiutangDetail.getNoNota());
                 returnPembayaranUtangPiutangDetail.setPosisiCoa(pembayaranUtangPiutangDetail.getPosisiCoa());
                 returnPembayaranUtangPiutangDetail.setStJumlahPembayaran(CommonUtil.numbericFormat(pembayaranUtangPiutangDetail.getJumlahPembayaran(),"###,###"));
+
+                if (pembayaranUtangPiutangDetail.getPph()!=null){
+                    returnPembayaranUtangPiutangDetail.setStPph(CommonUtil.numbericFormat(pembayaranUtangPiutangDetail.getPph(),"###,###"));
+                }
+                if (pembayaranUtangPiutangDetail.getPpn()!=null){
+                    returnPembayaranUtangPiutangDetail.setStPpn(CommonUtil.numbericFormat(pembayaranUtangPiutangDetail.getPpn(),"###,###"));
+                }
+
                 if (pembayaranUtangPiutangDetail.getNoFakturPajak()!=null){
                     returnPembayaranUtangPiutangDetail.setNoFakturPajak(pembayaranUtangPiutangDetail.getNoFakturPajak());
                     returnPembayaranUtangPiutangDetail.setUrlFakturImage(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_FAKTUR_PAJAK+pembayaranUtangPiutangDetail.getUrlFakturImage());
@@ -737,5 +802,76 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
         }
         logger.info("[PembayaranUtangPiutangBoImpl.getPosisiCoaDiMappingJurnal] end process <<<");
         return posisiCoa;
+    }
+
+    @Override
+    public List<Notifikasi> approvePembayaran(PembayaranUtangPiutang bean) throws GeneralBOException {
+        logger.info("[PembayaranUtangPiutangBoImpl.approvePembayaran] start process >>>");
+        List<Notifikasi> notifikasiList = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+        if (bean!=null) {
+            ImPembayaranUtangPiutangEntity imPembayaranUtangPiutangEntity = null;
+            try {
+                // Get data from database by ID
+                imPembayaranUtangPiutangEntity = pembayaranUtangPiutangDao.getById("pembayaranUtangPiutangId", bean.getPembayaranUtangPiutangId());
+            } catch (HibernateException e) {
+                logger.error("[PembayaranUtangPiutangBoImpl.postingJurnal] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data PembayaranUtangPiutang by Kode PembayaranUtangPiutang, please inform to your admin...," + e.getMessage());
+            }
+            if (imPembayaranUtangPiutangEntity != null) {
+                if (bean.getApprovalKeuanganFlag()!=null){
+                    imPembayaranUtangPiutangEntity.setApprovalKeuanganFlag(bean.getApprovalKeuanganFlag());
+                    imPembayaranUtangPiutangEntity.setApprovalKeuanganId(bean.getApprovalKeuanganId());
+                    imPembayaranUtangPiutangEntity.setApprovalKeuanganName(bean.getApprovalKeuanganName());
+                    imPembayaranUtangPiutangEntity.setApprovalKeuanganDate(bean.getApprovalKeuanganDate());
+
+                    if ("Y".equalsIgnoreCase(bean.getApprovalKeuanganFlag())){
+                        imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganFlag(null);
+                        imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganId(null);
+                        imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganName(null);
+                        imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganDate(null);
+                    }
+
+                    //mengirim notif ke kasub keuangan
+                    if (imPembayaranUtangPiutangEntity.getApprovalKasubKeuanganFlag()==null){
+                        users = userDao.getUserByBranchAndRole(imPembayaranUtangPiutangEntity.getBranchId(),CommonConstant.ROLE_ID_KASUB_KEU);
+                    }
+
+                }else if (bean.getApprovalKasubKeuanganFlag()!=null){
+                    imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganFlag(bean.getApprovalKasubKeuanganFlag());
+                    imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganId(bean.getApprovalKasubKeuanganId());
+                    imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganName(bean.getApprovalKasubKeuanganName());
+                    imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganDate(bean.getApprovalKasubKeuanganDate());
+
+                    if ("N".equalsIgnoreCase(bean.getApprovalKasubKeuanganFlag())){
+                        imPembayaranUtangPiutangEntity.setApprovalKeuanganFlag(null);
+                        imPembayaranUtangPiutangEntity.setApprovalKeuanganId(null);
+                        imPembayaranUtangPiutangEntity.setApprovalKeuanganName(null);
+                        imPembayaranUtangPiutangEntity.setApprovalKeuanganDate(null);
+                    }
+
+                    if ("Y".equalsIgnoreCase(bean.getApprovalKasubKeuanganFlag())){
+                        users = userDao.getUserByBranchAndRole(imPembayaranUtangPiutangEntity.getBranchId(),CommonConstant.ROLE_ID_KA_KEU);
+                    }
+                }
+
+                imPembayaranUtangPiutangEntity.setAction(bean.getAction());
+                imPembayaranUtangPiutangEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imPembayaranUtangPiutangEntity.setLastUpdate(bean.getLastUpdate());
+                try {
+                    // Update into database
+                    pembayaranUtangPiutangDao.updateAndSave(imPembayaranUtangPiutangEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PembayaranUtangPiutangBoImpl.postingJurnal] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data PembayaranUtangPiutang, please info to your admin..." + e.getMessage());
+                }
+            } else {
+                logger.error("[PembayaranUtangPiutangBoImpl.postingJurnal] Error, not found data PembayaranUtangPiutang with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data PembayaranUtangPiutang with request id, please check again your data ...");
+            }
+        }
+        logger.info("[PembayaranUtangPiutangBoImpl.approvePembayaran] end process <<<");
+
+        return notifikasiList;
     }
 }

@@ -263,4 +263,8 @@
     <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetingeksploitasi/struts/BgEksploitasiAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetingnominasi/struts/BgNominasiAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetingpendapatan/struts/BgPendapatanAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollPtkp/struts/PayrollPtkpAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/master/tipeLaporan/struts/TipeLaporanAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/tipePayroll/struts/TipePayrollAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/statusAbsensi/struts/StatusAbsensiAction.xml"/>
 </struts>

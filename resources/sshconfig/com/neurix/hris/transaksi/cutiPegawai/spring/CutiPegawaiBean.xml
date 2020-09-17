@@ -8,6 +8,9 @@
     <bean id="historyCutiController" class="com.neurix.hris.mobileapi.HistoryCutiController"
           p:cutiPegawaiBoProxy-ref="cutiPegawaiBoProxy" />
 
+    <bean id="historyPegawaiController" class="com.neurix.hris.mobileapi.HistoryPegawaiController"
+          p:cutiPegawaiBoProxy-ref="cutiPegawaiBoProxy" />
+
     <bean id="cutiFormPegawaiController" class="com.neurix.hris.mobileapi.CutiFormPegawaiController"
           p:cutiPegawaiBoProxy-ref="cutiPegawaiBoProxy"
           p:biodataBoProxy-ref="biodataBoProxy"

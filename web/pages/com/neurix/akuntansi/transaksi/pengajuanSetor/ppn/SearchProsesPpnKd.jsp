@@ -132,6 +132,7 @@
                                         <div id="actions" class="form-actions">
                                             <table align="center">
                                                 <tr>
+                                                    <s:if test='pengajuanSetor.branchId == "KP"'>
                                                     <td>
                                                         <sj:submit type="button" cssClass="btn btn-primary" formIds="pengajuanSetorForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
@@ -142,6 +143,7 @@
                                                     <td>
                                                         <a href="addProsesPpnKantorPusat_pengajuanSetor.action" class="btn btn-success" ><i class="fa fa-plus"></i> Proses PPN Kanpus</a>
                                                     </td>
+                                                    </s:if>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initFormProsesPpnKd_pengajuanSetor"/>'">
                                                             <i class="fa fa-refresh"></i> Reset

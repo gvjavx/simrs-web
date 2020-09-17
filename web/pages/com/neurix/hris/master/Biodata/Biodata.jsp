@@ -69,6 +69,7 @@
             var statusPegawai       = document.getElementById("statusPegawai1").value;
             var flag                = document.getElementById("flagAktif").value;
             var masaGolongan        = document.getElementById("poinLebih").value;
+            var shift               = document.getElementById("shift").value;
 
             if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '') {
                 if(flag == 'N'){
@@ -1324,6 +1325,25 @@
                                     </td>
                                 </tr>
 
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Shift * :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:select list="#{'Y':'Y'}" id="shift" name="biodata.shift"
+                                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:select list="#{'Y':'Y'}" id="shift" name="biodata.shift"
+                                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                </tr>
+
                                 <%--<tr>--%>
                                     <%--<td>--%>
                                         <%--<label class="control-label"><small>Zakat Profesi :</small></label>--%>
@@ -2160,7 +2180,7 @@
                             <s:action id="initComboBranch2" namespace="/admin/branch"
                                       name="initComboBranch2_branch"/>
                             <s:select list="#initComboBranch2.listOfComboBranch" id="branchIdRiwayatKerja"
-                                      name="biodata.branchId" onchange="listDivisiHistory();cekPerusahaanLain()"
+                                      name="biodata.branchId" onchange="listDivisiHistory(),cekPerusahaanLain();"
                                       listKey="branchId" listValue="branchName" headerKey=""
                                       headerValue="[Select one]" cssClass="form-control"/>
                         </div>

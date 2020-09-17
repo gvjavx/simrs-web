@@ -602,6 +602,7 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
                                 imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
                                 imBiodataEntity.setNipLama(bean.getNipLama());
+                                imBiodataEntity.setShift(bean.getShift());
 
 //                            if(itPersonilPositionEntity != null){
 //                                for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
@@ -825,6 +826,7 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
                             imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
                             imBiodataEntity.setNipLama(bean.getNipLama());
+                            imBiodataEntity.setShift(bean.getShift());
 
 //                        if(itPersonilPositionEntity != null){
 //                            for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
@@ -1023,6 +1025,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
                 imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
+                imBiodataEntity.setShift(bean.getShift());
 
                 //Tanggal Pensiun Lama
             /*DateTime tglLahir = new DateTime(bean.getTanggalLahir());
@@ -1660,6 +1663,43 @@ public class BiodataBoImpl implements BiodataBo {
         }
         return biodataList;
     }
+
+    @Override
+    public List<Biodata> getTanggalAktif(String nip) throws GeneralBOException {
+        logger.info("[BiodataBoImpl.getTanggalAktif] start process >>>");
+
+        List<Biodata> listOfResult = new ArrayList<>();
+
+        if (nip != null){
+            List<ImBiodataEntity> entityList = null;
+            try{
+                entityList = biodataDao.getByNip(nip);
+            }catch (HibernateException e){
+                logger.error("[BiodataBoImpl.getTanggalAktif] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when get tanggal aktif by nip, please info to your admin..." + e.getMessage());
+            }
+
+            if (entityList != null){
+                Biodata biodata;
+
+                for (ImBiodataEntity list : entityList){
+                    biodata = new Biodata();
+
+                    biodata.setNamaPegawai(list.getNamaPegawai());
+                    biodata.setTanggalAktif(list.getTanggalAktif());
+                    biodata.setTanggalMasuk(list.getTanggalMasuk());
+
+                    listOfResult.add(biodata);
+                }
+            }else {
+                throw new GeneralBOException("Found problem when get tanggal aktif by nip, please info to your admin...");
+            }
+        }else {
+            throw new GeneralBOException("nip is null, please info to your admin...");
+        }
+        return listOfResult;
+    }
+
     @Override
     public List<Biodata> getByCriteria(Biodata searchBean) throws GeneralBOException {
         logger.info("[BiodataBoImpl.getByCriteria] start process >>>");
@@ -1735,6 +1775,7 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setMasaKerjaGolongan(personalEntity.getMasaKerjaGolongan());
                     returnBiodata.setGolonganDapenId(personalEntity.getGolonganDapenId());
                     returnBiodata.setProfesiId(personalEntity.getProfesiId());
+                    returnBiodata.setShift(personalEntity.getShift());
 
                     returnBiodata.setTanggalPraPensiun(personalEntity.getTanggalPraPensiun());
 

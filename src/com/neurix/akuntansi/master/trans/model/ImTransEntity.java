@@ -15,9 +15,6 @@ public class ImTransEntity implements Serializable {
     private String transId;
     private String transName;
     private String tipePembayaran;
-    private String flagSumberBaru;
-
-    private String flagPengajuanBiaya;
 
     private String master;
 
@@ -28,14 +25,6 @@ public class ImTransEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    public String getFlagPengajuanBiaya() {
-        return flagPengajuanBiaya;
-    }
-
-    public void setFlagPengajuanBiaya(String flagPengajuanBiaya) {
-        this.flagPengajuanBiaya = flagPengajuanBiaya;
-    }
-
     public String getMaster() {
         return master;
     }
@@ -44,13 +33,6 @@ public class ImTransEntity implements Serializable {
         this.master = master;
     }
 
-    public String getFlagSumberBaru() {
-        return flagSumberBaru;
-    }
-
-    public void setFlagSumberBaru(String flagSumberBaru) {
-        this.flagSumberBaru = flagSumberBaru;
-    }
 
     public String getTipePembayaran() {
         return tipePembayaran;

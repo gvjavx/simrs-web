@@ -19,7 +19,11 @@ import java.util.List;
 public interface PengajuanBiayaBo extends BaseMasterBo<PengajuanBiaya> {
     public void saveDelete(PengajuanBiaya bean) throws GeneralBOException;
 
+    void postingJurnal(PengajuanBiaya bean) throws GeneralBOException;
+
     List<Notifikasi> saveAddPengajuanBiaya(PengajuanBiaya bean) throws GeneralBOException;
+
+    List<Notifikasi> sendNotifikasiKeAdminAks(String branchId, String id, String keterangan, String createdWho);
 
     List<Notifikasi> saveAddPengajuan(PengajuanBiaya bean, List<PengajuanBiayaDetail> pengajuanBiayaDetailList) throws GeneralBOException;
 

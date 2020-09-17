@@ -2286,4 +2286,24 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 
         return status;
     }
+
+    @Override
+    public List<IjinKeluar> getHistoryIjinKeluarByMonth (String nip, String branchId, Date date) {
+        List<IjinKeluar> result = new ArrayList<>();
+        SimpleDateFormat dateFormat  = new SimpleDateFormat("YYYY");
+        String year = dateFormat.format(date);
+        dateFormat = new SimpleDateFormat("MM");
+        String month = dateFormat.format(date);
+        String firstDate = "01-" + month + "-" + year;
+        String lastDate = CommonUtil.getLastDayOfMonth() + "-" + month + "-" + year;
+
+        try {
+           result = ijinKeluarDao.getHistoryIjinKeluarByMonth(nip, branchId, firstDate, lastDate);
+        } catch (HibernateException e){
+            logger.error("[AbsensiBoImpl.getByCriteriaMesin] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        return result;
+    }
 }

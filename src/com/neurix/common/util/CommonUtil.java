@@ -550,6 +550,13 @@ public class CommonUtil {
         return jam;
     }
 
+    public static String getLastDayOfMonth() {
+        Calendar cal = Calendar.getInstance();
+        int res = cal.getActualMaximum(Calendar.DATE);
+
+        return String.valueOf(res);
+    }
+
     public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
@@ -1076,6 +1083,29 @@ public class CommonUtil {
         }
     }
 
+    public static String convertTipePayroll(String tipePayroll){
+        switch (tipePayroll){
+            case "PR":
+                return "Payroll";
+            case "T":
+                return "THR";
+            case "JP":
+                return "Jasa Operasional";
+            case "JB":
+                return "Jubileum";
+            case "PN":
+                return "Pensiun";
+            case "IN":
+                return "Insentif";
+            case "CP":
+                return "Cuti Panjang";
+            case "CT":
+                return "Cuti Tahunan";
+            default:
+                return "";
+        }
+    }
+
     public static String getDateParted(Date date, String tipe){
         //create calander instance and get required params
         switch (tipe){
@@ -1177,5 +1207,45 @@ public class CommonUtil {
             default:
                 return "";
         }
+    }
+
+    public static Double SubtractJamAwalDanJamAkhir(String jamAwal, String jamAkhir, String status) throws ParseException {
+        java.text.DateFormat df = new java.text.SimpleDateFormat("dd:MM:yyyy HH:mm");
+        java.util.Date date1 = df.parse("01:01:2000 "+jamAwal);
+        java.util.Date date2 = df.parse("01:01:2000 "+jamAkhir);
+        long diff = date2.getTime() - date1.getTime();
+        if (diff<0&&status.equalsIgnoreCase("positif")){
+            date2 = df.parse("02:01:2000 "+jamAkhir);
+            diff = date2.getTime() - date1.getTime();
+        }
+        int timeInSeconds = (int) (diff / 1000);
+        int hours, minutes;
+        hours = timeInSeconds / 3600;
+        timeInSeconds = timeInSeconds - (hours * 3600);
+        minutes = timeInSeconds / 60;
+        double hasil=hours;
+        if (minutes<15){hasil=hasil+0;}
+        else if (minutes<30){hasil=hasil+0;}
+        else if (minutes<45){hasil=hasil+0.5;}
+        else if (minutes<60){hasil=hasil+0.5;}
+        return hasil;
+    }
+
+    public static Double SubtractJam(String jamAwal, String jamAkhir) throws ParseException {
+        java.text.DateFormat df = new java.text.SimpleDateFormat("dd:MM:yyyy HH:mm");
+        java.util.Date date1 = df.parse("01:01:2000 "+jamAwal);
+        java.util.Date date2 = df.parse("01:01:2000 "+jamAkhir);
+        long diff = date2.getTime() - date1.getTime();
+        int timeInSeconds = (int) (diff / 1000);
+        int hours, minutes;
+        hours = timeInSeconds / 3600;
+        timeInSeconds = timeInSeconds - (hours * 3600);
+        minutes = timeInSeconds / 60;
+        double hasil=hours;
+        if (minutes<15){hasil=hasil+0;}
+        else if (minutes<30){hasil=hasil+0;}
+        else if (minutes<45){hasil=hasil+0.5;}
+        else if (minutes<60){hasil=hasil+0.5;}
+        return hasil;
     }
 }

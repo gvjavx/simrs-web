@@ -21,6 +21,15 @@ public class Biodata implements Serializable {
     private String golongan;
     private String tipePegawaiId;
     private String tipePegawai;
+    private String agama;
+
+    public String getAgama() {
+        return agama;
+    }
+
+    public void setAgama(String agama) {
+        this.agama = agama;
+    }
 
     public String getNipLama() {
         return nipLama;

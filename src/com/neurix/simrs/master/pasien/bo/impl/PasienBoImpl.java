@@ -4,7 +4,6 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 
 import com.neurix.common.util.CommonUtil;
-import com.neurix.hris.master.belajar.model.Belajar;
 import com.neurix.hris.master.cuti.model.ImCutiEntity;
 import com.neurix.hris.master.provinsi.dao.ProvinsiDao;
 

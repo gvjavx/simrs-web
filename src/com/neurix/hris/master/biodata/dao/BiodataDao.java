@@ -633,6 +633,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setFlag((String) row[29]);
             result.setAction((String) row[30]);
 
+            result.setShift((String)row[60]);
             result.setCreatedWho((String) row[31]);
             result.setLastUpdateWho((String) row[32]);
             result.setTanggalAktif((Date) row[33]);
@@ -977,6 +978,17 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 .add(Restrictions.eq("tipePegawai","TP01"))
                 .add(Restrictions.isNotNull("pin"))
                 .add(Restrictions.eq("flag","Y"))
+                .addOrder(Order.asc("nip"))
+                .list();
+        return results;
+    }
+
+    public List<ImBiodataEntity> getByNip(String nip) throws  HibernateException{
+        List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("tipePegawai", "TP01"))
+                .add(Restrictions.isNotNull("tanggalAktif"))
+                .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("nip"))
                 .list();
         return results;

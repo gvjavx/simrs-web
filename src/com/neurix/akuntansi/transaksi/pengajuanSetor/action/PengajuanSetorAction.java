@@ -697,7 +697,7 @@ public class PengajuanSetorAction extends BaseMasterAction {
 
             Map dataPostingJurnal = pengajuanSetorBo.getBillingForPosting(pengajuanSetorId);
             //disini untuk posting jurnal untuk mendapat nojurnal
-            Jurnal jurnal = billingSystemBo.createJurnal("65",dataPostingJurnal,pengajuanSetor.getBranchId(),pengajuanSetor.getKeterangan(),"Y");
+            Jurnal jurnal = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PENGAJUAN_SETOR_PPH21,dataPostingJurnal,pengajuanSetor.getBranchId(),pengajuanSetor.getKeterangan(),"Y");
             data.setPengajuanSetorId(pengajuanSetorId);
             data.setApprovalDate(updateTime);
             data.setApprovalFlag("Y");
@@ -1136,7 +1136,14 @@ public class PengajuanSetorAction extends BaseMasterAction {
         session.setAttribute("listOfResultPencarianDataKeluaran",pengajuanSetorDetailListKeluaran);
         session.setAttribute("listOfResultPengajuanSetor",pengajuanSetor);
 
+
+        if (pengajuanSetor.getJumlahPpnMasukanB2().compareTo(pengajuanSetor.getJumlahPpnKeluaran())>0){
+            String status ="ERROR : PPN Masukan B2 tidak boleh melebihi PPN Keluaran";
+            logger.error("[PengajuanSetorAction.saveAddPengajuanSetorPpn] Error when save : "+status);
+            throw new GeneralBOException(status);
+        }
         logger.info("[PengajuanSetorAction.saveAddTmpPengajuanSetorPpn] stop process >>>");
+
         return "success_save_tmp_pengajuan_setor_ppn";
     }
 
@@ -1401,6 +1408,12 @@ public class PengajuanSetorAction extends BaseMasterAction {
             return ERROR;
         }
         perhitunganPpnKd=search;
+
+        String branchId = CommonUtil.userBranchLogin();
+        PengajuanSetor data = new PengajuanSetor();
+        data.setBranchId(branchId);
+        setPengajuanSetor(data);
+
         logger.info("[PengajuanSetorAction.searchProsesPpnKd] stop process >>>");
         return "success_search_proses_ppn";
     }

@@ -87,6 +87,8 @@ public interface BiodataBo extends BaseMasterBo<Biodata>{
     public List<PelatihanJabatanUser> searchDataPelatihanjabatanUser(String nip) throws GeneralBOException;
 
     List<Biodata> getListOfPersonilOnlyName(String query, String branchId) throws GeneralBOException;
+    List<Biodata> getTanggalAktif(String nip) throws GeneralBOException;
+
     List<ImBiodataEntity> searchKaryawanDanBatihSys(Biodata biodata) throws GeneralBOException;
 
     List<Biodata> getBiodataforAbsensi(String branchId, String divisiId, String bagianId, String nip);

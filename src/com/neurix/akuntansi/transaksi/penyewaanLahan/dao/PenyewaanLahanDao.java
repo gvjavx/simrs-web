@@ -61,7 +61,7 @@ public class PenyewaanLahanDao extends GenericDao<ItAkunPenyewaanLahanEntity, St
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.desc("penyewaanLahanId"));
+        criteria.addOrder(Order.asc("penyewaanLahanId"));
         List<ItAkunPenyewaanLahanEntity> results = criteria.list();
 
         return results;
