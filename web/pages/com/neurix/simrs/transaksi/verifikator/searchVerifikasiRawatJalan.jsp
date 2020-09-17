@@ -811,6 +811,7 @@
         VerifikatorAction.saveApproveTindakan(idDetailCheckup, result, {
             callback:function (response) {
                 if(response.status == "200"){
+                    hitungStatusBiaya(idDetailCheckup);
                     $('#load_verif').hide();
                     $('#save_verif').show();
                     $('#success_tin').show().fadeOut(5000);

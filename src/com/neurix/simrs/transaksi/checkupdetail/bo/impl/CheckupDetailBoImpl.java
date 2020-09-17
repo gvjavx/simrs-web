@@ -761,7 +761,6 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 dkt.setJenisDpjp(dokterTeam.getJenisDpjp());
                 dkt.setCreatedWho(bean.getCreatedWho());
                 dkt.setLastUpdateWho(bean.getLastUpdateWho());
-                dkt.setIdPelayanan(bean.getIdPelayanan());
                 response = saveTeamDokter(dkt);
             }
         }

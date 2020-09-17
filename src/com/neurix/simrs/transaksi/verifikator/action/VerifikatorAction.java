@@ -388,6 +388,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 riwayatTindakan.setIdRiwayatTindakan(obj.getString("id_riwayat_tindakan"));
                 riwayatTindakan.setJenisPasien(obj.getString("jenis_pasien"));
                 riwayatTindakan.setKategoriTindakanBpjs(obj.getString("kategori"));
+                riwayatTindakan.setIdDetailCheckup(idDetailCheckup);
                 riwayatTindakan.setLastUpdateWho(userLogin);
                 riwayatTindakan.setLastUpdate(time);
                 riwayatTindakanList.add(riwayatTindakan);

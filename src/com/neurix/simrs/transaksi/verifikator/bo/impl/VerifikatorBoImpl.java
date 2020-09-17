@@ -333,6 +333,7 @@ public class VerifikatorBoImpl implements VerifikatorBo {
     public CheckResponse updateRiwayatTindakan(List<RiwayatTindakan> list) throws GeneralBOException {
         CheckResponse response = new CheckResponse();
         if (list.size() > 0) {
+            Boolean sisaBayar = false;
             ItSimrsRiwayatTindakanEntity entity = new ItSimrsRiwayatTindakanEntity();
             for (RiwayatTindakan bean : list) {
                 try {
@@ -349,6 +350,9 @@ public class VerifikatorBoImpl implements VerifikatorBo {
                     entity.setLastUpdate(bean.getLastUpdate());
                     entity.setLastUpdateWho(bean.getLastUpdateWho());
                     if (!"".equalsIgnoreCase(bean.getJenisPasien()) && bean.getJenisPasien() != null) {
+                        if("umum".equalsIgnoreCase(bean.getJenisPasien())){
+                            sisaBayar = true;
+                        }
                         entity.setJenisPasien(bean.getJenisPasien());
                     }
 
@@ -365,6 +369,25 @@ public class VerifikatorBoImpl implements VerifikatorBo {
                     logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when save update data flag approve tindakan rawat ");
                     response.setStatus("error");
                     response.setMessage("Terjadi kesalahan saat menyimpan ke database ");
+                }
+            }
+
+            if(sisaBayar){
+                RiwayatTindakan riwayatTindakan = list.get(0);
+                ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", riwayatTindakan.getIdDetailCheckup());
+                if(detailCheckupEntity != null){
+                    detailCheckupEntity.setFlagSisa("Y");
+                    detailCheckupEntity.setLastUpdateWho(riwayatTindakan.getLastUpdateWho());
+                    detailCheckupEntity.setLastUpdate(riwayatTindakan.getLastUpdate());
+                    try {
+                        checkupDetailDao.updateAndSave(detailCheckupEntity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil menyimpan kategori tindakan BPJS!");
+                    }catch (HibernateException e){
+                        logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when save update data flag approve tindakan rawat ");
+                        response.setStatus("error");
+                        response.setMessage("Terjadi kesalahan saat menyimpan ke database ");
+                    }
                 }
             }
         }
