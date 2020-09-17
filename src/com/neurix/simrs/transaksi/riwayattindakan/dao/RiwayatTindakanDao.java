@@ -265,6 +265,29 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
         return listKeterangan;
     }
 
+    public List<String> listOfRuanganRiwayatTindakan(String id, String keterangan){
+
+        String SQL = "SELECT keterangan, id_detail_checkup, id_ruangan FROM it_simrs_riwayat_tindakan\n" +
+                "    WHERE id_detail_checkup = :id \n" +
+                "    AND keterangan = :keterangan \n" +
+                "    AND id_ruangan is not null\n" +
+                "    GROUP BY keterangan, id_detail_checkup, id_ruangan";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .setParameter("keterangan", keterangan)
+                .list();
+
+        List<String> listKeterangan = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                // idRuangan
+                listKeterangan.add(obj[2].toString());
+            }
+        }
+        return listKeterangan;
+    }
+
+
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_riwayat_tindakan')");
         Iterator<BigInteger> iter = query.list().iterator();

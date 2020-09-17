@@ -187,6 +187,11 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
         return response;
     }
 
+    @Override
+    public ItSimrsTindakanRawatEntity getTindakanRawatEntityById(String id) throws GeneralBOException {
+        return tindakanRawatDao.getById("idTindakanRawat", id);
+    }
+
     protected void updateDetailCheckup(TindakanRawat bean) throws GeneralBOException{
         logger.info("[TindakanRawatBoImpl.updateDetailCheckup] Start >>>>>>>");
 

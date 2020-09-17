@@ -326,6 +326,11 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
     }
 
     @Override
+    public List<String> getListRuanganRiwayatTindakan(String idDetailCheckup, String keterangan) throws GeneralBOException {
+        return riwayatTindakanDao.listOfRuanganRiwayatTindakan(idDetailCheckup, keterangan);
+    }
+
+    @Override
     public MtSimrsItemPaketEntity getItemPaketEntity(String idPaket, String idItem) throws GeneralBOException{
 
         Map hsCriteria = new HashMap();

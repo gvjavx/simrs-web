@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.tindakanrawat.bo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
+import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface TindakanRawatBo {
     public CrudResponse saveEdit(TindakanRawat bean)throws GeneralBOException;
     public List<TindakanRawat> cekTodayTindakanTarifKamar(String idDetail, String tanggal) throws GeneralBOException;
     public CheckResponse updateFlagApproveTindakan(TindakanRawat bean) throws GeneralBOException;
+    public ItSimrsTindakanRawatEntity getTindakanRawatEntityById(String id) throws GeneralBOException;
 }
