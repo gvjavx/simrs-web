@@ -864,7 +864,7 @@ public class BgInvestasiAction {
         return nilaiTotal;
     }
 
-    public List<ParameterBudgeting> getListDivisiBudgeting( String idKategori, String masterId, String branch, String tahun){
+    public List<ParameterBudgeting> getListDivisiBudgeting( String idKategori, String masterId, String branch, String tahun, String tipe){
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
@@ -880,7 +880,7 @@ public class BgInvestasiAction {
         }
 
         // cari ada di data base jika ada
-        if (sessionNilaiParam == null){
+        if (sessionNilaiParam == null || "DRAFT".equalsIgnoreCase(tipe)){
             sessionNilaiParam = new ArrayList<>();
             ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
             parameterBudgeting.setBranchId(branch);
@@ -962,15 +962,19 @@ public class BgInvestasiAction {
                             List<ItAkunNilaiParameterPengadaaanEntity> pengadaaanEntities = new ArrayList<>();
                             if (sessionPengadaan.size() == 0){
                                 pengadaaanEntities = budgetingPerhitunganBo.getListEntityNilaiParameterPengadaan(parameterBudgeting);
+                                sessionPengadaan.addAll(pengadaaanEntities);
                             } else {
                                 List<ItAkunNilaiParameterPengadaaanEntity> filterPengadaans = sessionPengadaan.stream().filter(p->p.getIdNilaiParam().equalsIgnoreCase(nilaiParam.getIdNilaiParameter())).collect(Collectors.toList());
                                 if (filterPengadaans.size() == 0){
                                     pengadaaanEntities = budgetingPerhitunganBo.getListEntityNilaiParameterPengadaan(parameterBudgeting);
+                                    sessionPengadaan.addAll(pengadaaanEntities);
                                 } else {
-                                    pengadaaanEntities.addAll(filterPengadaans);
+                                    for (ItAkunNilaiParameterPengadaaanEntity pengadaan : filterPengadaans){
+                                        sessionPengadaan.remove(pengadaan);
+                                        sessionPengadaan.add(pengadaan);
+                                    }
                                 }
                             }
-                            sessionPengadaan.addAll(pengadaaanEntities);
                         }
                     }
                 }

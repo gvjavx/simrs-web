@@ -185,6 +185,9 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             if (bean.getNotResep() != null) {
                 hsCriteria.put("not_resep", bean.getNotResep());
             }
+            if (bean.getIdRuangan() != null) {
+                hsCriteria.put("id_ruangan", bean.getIdRuangan());
+            }
 
             hsCriteria.put("flag", "Y");
 
@@ -323,6 +326,11 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
     @Override
     public List<String> getListKeteranganByIdDetailCheckup(String idDetailCheckup) throws GeneralBOException {
         return riwayatTindakanDao.listOfKeteranganExistByIdDetailCheckup(idDetailCheckup);
+    }
+
+    @Override
+    public List<String> getListRuanganRiwayatTindakan(String idDetailCheckup, String keterangan) throws GeneralBOException {
+        return riwayatTindakanDao.listOfRuanganRiwayatTindakan(idDetailCheckup, keterangan);
     }
 
     @Override

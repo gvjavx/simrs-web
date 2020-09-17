@@ -235,7 +235,16 @@ public class BgEksploitasiAction {
                 // convert null to 0 masing - masing nilai
                 BudgetingDetail budgetingDetail = new BudgetingDetail();
                 budgetingDetail.setMasterId(param.getMasterId());
-                budgetingDetail.setDivisiId(param.getDivisiId());
+                if ("INV".equalsIgnoreCase(param.getMasterId())){
+                    budgetingDetail.setDivisiId("INVS");
+                    budgetingDetail.setMasterId("");
+                } else if ("BYA".equalsIgnoreCase(param.getMasterId())){
+                    budgetingDetail.setDivisiId(param.getDivisiId());
+                    budgetingDetail.setMasterId("");
+                }else {
+                    budgetingDetail.setDivisiId(param.getDivisiId());
+                    budgetingDetail.setMasterId(param.getMasterId());
+                }
                 budgetingDetail.setQty(new BigInteger(String.valueOf(1)));
                 budgetingDetail.setNilai(param.getNilaiTotal());
                 budgetingDetail.setSubTotal(param.getNilaiTotal().multiply(new BigDecimal(budgetingDetail.getQty())));
@@ -405,11 +414,6 @@ public class BgEksploitasiAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
         List<ParameterBudgeting> listKategori =  budgetingPerhitunganBo.getListSumOfKategoriBudgeting(idJenisBudgeting, tahun, branchId);
-//        if (listKategori != null && listKategori.size() > 0){
-//            for (ParameterBudgeting kategori : listKategori){
-//
-//            }
-//        }
         return listKategori;
     }
 

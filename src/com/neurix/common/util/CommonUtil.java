@@ -767,6 +767,49 @@ public class CommonUtil {
         return stBulan;
     }
 
+    public static String convertStringBulanToNumber(String bulan){
+        String stBulan = "";
+        switch (bulan.toLowerCase()){
+            case "januari" :
+                stBulan = "1";
+                break;
+            case "februari" :
+                stBulan = "2";
+                break;
+            case "maret" :
+                stBulan = "3";
+                break;
+            case "april" :
+                stBulan = "4";
+                break;
+            case "mei" :
+                stBulan = "5";
+                break;
+            case "juni" :
+                stBulan = "6";
+                break;
+            case "juli" :
+                stBulan = "7";
+                break;
+            case "agustus" :
+                stBulan = "8";
+                break;
+            case "september" :
+                stBulan = "9";
+                break;
+            case "oktober" :
+                stBulan = "10";
+                break;
+            case "november" :
+                stBulan = "11";
+                break;
+            case "desember" :
+                stBulan = "12";
+                break;
+        }
+        return stBulan;
+    }
+
 
     public static String convertIdBagian(String id){
         String bagian = "-";

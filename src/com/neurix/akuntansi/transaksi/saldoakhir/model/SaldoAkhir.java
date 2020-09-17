@@ -28,6 +28,15 @@ public class SaldoAkhir {
     private String divisiId;
     private Integer bulan;
     private String kdBarang;
+    private String namaKodeRekening;
+
+    public String getNamaKodeRekening() {
+        return namaKodeRekening;
+    }
+
+    public void setNamaKodeRekening(String namaKodeRekening) {
+        this.namaKodeRekening = namaKodeRekening;
+    }
 
     public String getKdBarang() {
         return kdBarang;

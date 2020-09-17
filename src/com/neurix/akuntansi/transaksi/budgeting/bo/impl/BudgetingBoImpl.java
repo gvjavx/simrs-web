@@ -10,6 +10,7 @@ import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingDao;
 import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingDetailDao;
 import com.neurix.akuntansi.transaksi.budgeting.dao.BudgetingPengadaanDao;
 import com.neurix.akuntansi.transaksi.budgeting.model.*;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting;
 import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDao;
 import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDetailDao;
 import com.neurix.akuntansi.transaksi.saldoakhir.model.ItAkunSaldoAkhirDetailEntity;
@@ -143,6 +144,12 @@ public class BudgetingBoImpl implements BudgetingBo {
                     budgeting.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
                     budgeting.setFlagMaster(kodeRekeningEntity.getFlagMaster());
                     budgeting.setTipeBudgeting(kodeRekeningEntity.getTipeBudgeting());
+
+                    // nilai realisasi
+                    String strDivisi = "Y".equalsIgnoreCase(budgeting.getFlagDivisi()) ? "%" : null;
+                    String strMaster = "Y".equalsIgnoreCase(budgeting.getFlagMaster()) ? "%" : null;
+                    BigDecimal realisasi = budgetingDao.getNilaiRealisaiByKodeRekening(bean.getBranchId(), strMaster, strDivisi, kodeRekeningEntity.getKodeRekening(), "%", bean.getTahun());
+                    budgeting.setRealisasi(realisasi);
                 }
 
                 // mencari list periode;
@@ -1147,7 +1154,14 @@ public class BudgetingBoImpl implements BudgetingBo {
 
                 if (!"".equalsIgnoreCase(budgetingDetail.getPositionId()) && budgetingDetail.getPositionId() != null){
                     ImPosition position = positionDao.getById("positionId", budgetingDetail.getPositionId());
-                    budgetingDetail.setDivisiName(position.getPositionName());
+                    if (position != null){
+                        budgetingDetail.setDivisiName(position.getPositionName());
+                    }
+                }  else if (budgetingDetail.getDivisiId() != null && !"".equalsIgnoreCase(budgetingDetail.getDivisiId())){
+                    ImPosition position = positionDao.getById("kodering", budgetingDetail.getDivisiId());
+                    if (position != null){
+                        budgetingDetail.setDivisiName(position.getPositionName());
+                    }
                 }
 
                 if (!"".equalsIgnoreCase(budgetingDetail.getMasterId())){
@@ -1543,5 +1557,56 @@ public class BudgetingBoImpl implements BudgetingBo {
     @Override
     public String ceckAvailBudgetingByTahun(String tahun) {
         return budgetingDao.checkAvailBudgetingByTahun(tahun);
+    }
+
+    @Override
+    public List<ParameterBudgeting> getListBudgetingRealisasi(String idJenisBudgeting, String unit, String tahun) {
+        return budgetingDao.getListBudgeting(idJenisBudgeting, unit, tahun);
+    }
+
+    @Override
+    public List<ParameterBudgeting> getListBudgetingRealisasiPerperiode(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String rekeningId) {
+        int n = 12;
+        List<ParameterBudgeting> listOfResults = new ArrayList<>();
+        List<ParameterBudgeting> listRealisasi = budgetingDao.getListBudgetingDetailPerPeriode(idJenisBudgeting, unit, tahun, divisiId, masterId, rekeningId);
+        for (int i = 1; i<=n ; i++){
+            ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+            String bulan = i <= 9 ? "0" + String.valueOf(i) : String.valueOf(i);
+            parameterBudgeting.setPeriode(CommonUtil.convertNumberToStringBulan(bulan));
+            parameterBudgeting.setNilaiTotal(new BigDecimal(0));
+            parameterBudgeting.setRealisasi(new BigDecimal(0));
+            parameterBudgeting.setTotalRealisasi(new BigDecimal(0));
+            if (listRealisasi != null && listRealisasi.size() > 0){
+                int finalI = i;
+                List<ParameterBudgeting> filterReaalisasi = listRealisasi.stream().filter(p->p.getBulan().equalsIgnoreCase(String.valueOf(finalI))).collect(Collectors.toList());
+                if (filterReaalisasi != null && filterReaalisasi.size() > 0){
+                    for (ParameterBudgeting budgeting : filterReaalisasi){
+                        budgeting.setPeriode(CommonUtil.convertNumberToStringBulan(bulan));
+                        listOfResults.add(budgeting);
+                    }
+                } else {
+                    BigDecimal nilaiRealisai = budgetingDao.getNilaiRealisai(unit, masterId, divisiId, rekeningId, String.valueOf(i), tahun);
+                    parameterBudgeting.setRealisasi(nilaiRealisai);
+                    parameterBudgeting.setTotalRealisasi(parameterBudgeting.getNilaiTotal().subtract(nilaiRealisai));
+                    listOfResults.add(parameterBudgeting);
+                }
+            } else {
+                BigDecimal nilaiRealisai = budgetingDao.getNilaiRealisai(unit, masterId, divisiId, rekeningId, String.valueOf(i), tahun);
+                parameterBudgeting.setRealisasi(nilaiRealisai);
+                parameterBudgeting.setTotalRealisasi(parameterBudgeting.getNilaiTotal().subtract(nilaiRealisai));
+                listOfResults.add(parameterBudgeting);
+            }
+        }
+        return listOfResults;
+    }
+
+    @Override
+    public List<ParameterBudgeting> getListBudgetingRealisasiPerKodeRekening(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId) {
+        return budgetingDao.getListBudgetingPerRekening(idJenisBudgeting, unit, tahun, divisiId, masterId);
+    }
+
+    @Override
+    public String getIdBudgetingDetailInvestasi(String status, String unit, String tahun, String divisi, String tipe) {
+        return budgetingDao.getIdBudgetingDetailInvestasiByCriteria(unit, tipe, tahun, status, divisi);
     }
 }

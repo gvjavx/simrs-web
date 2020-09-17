@@ -903,6 +903,53 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return jumlah;
     }
 
+    public BigDecimal getSumAllTarifTindakanRI(String idDetail, String jenis, String ket, String idRuangan) {
+
+        String keterangan = "%";
+        if (!"".equalsIgnoreCase(ket)) {
+            keterangan = ket;
+        }
+
+        String jenisPasien = "%";
+        if (!"".equalsIgnoreCase(jenis)) {
+            jenisPasien = jenis;
+        } else if ("ptpn".equalsIgnoreCase(jenis)) {
+            jenisPasien = "bpjs";
+        }
+
+        String SQL = "SELECT \n" +
+                "id_detail_checkup,\n" +
+                "SUM(total_tarif) as total_tarif\n" +
+                "FROM\n" +
+                "it_simrs_riwayat_tindakan\n" +
+                "WHERE \n" +
+                "id_detail_checkup = :idDetail\n" +
+                "AND keterangan LIKE :ket\n" +
+                "AND jenis_pasien LIKE :jenis\n" +
+                "AND id_ruangan LIKE :ruangan\n" +
+                "AND id_riwayat_tindakan NOT IN (\n" +
+                "\tSELECT id_riwayat_tindakan \n" +
+                "\tFROM it_simrs_tindakan_transitoris\n" +
+                "\tWHERE id_detail_checkup = :idDetail\n" +
+                ")\n" +
+                "GROUP BY id_detail_checkup";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetail)
+                .setParameter("ket", keterangan)
+                .setParameter("jenis", jenisPasien)
+                .setParameter("ruangan", idRuangan)
+                .list();
+
+        BigDecimal jumlah = new BigDecimal(0);
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                jumlah = (BigDecimal) obj[1];
+            }
+        }
+        return jumlah;
+    }
+
     public BigDecimal getSumAllTarifTransitoris(String idDetail, String ket) {
 
         String keterangan = "%";

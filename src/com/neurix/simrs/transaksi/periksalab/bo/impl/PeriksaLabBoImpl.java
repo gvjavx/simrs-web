@@ -993,4 +993,9 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
         }
         return response;
     }
+
+    @Override
+    public ItSimrsPeriksaLabEntity getPeriksaLabEntityById(String id) throws GeneralBOException {
+        return periksaLabDao.getById("idPeriksaLab", id);
+    }
 }

@@ -43,7 +43,6 @@
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
                 <!--<prop key="hibernate.connection.password">postgres</prop>-->
 
-
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://10.88.70.233:5432/gomedsys_nmu</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">root</prop>-->
@@ -469,6 +468,8 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/saldoakhir/hibernate/ItAkunSaldoAkhirEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/saldoakhir/hibernate/ItAkunSaldoAkhirDetailEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/hibernate/ImReportKeuanganKonsolEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/saldoakhir/hibernate/ItAkunSaldoAkhirTahunEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/saldoakhir/hibernate/ItAkunSaldoAkhirDetailTahunEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/hibernate/ImAkunSettingReportKeuanganKonsolDetail.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgeting/hibernate/ItAkunBudgetingEntity.hbm.xml</value>
@@ -490,6 +491,7 @@
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ImAkunKategoriParameterBudgetingEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ImAkunParameterBudgetingRekeningEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ItAkunNilaiParameterPengadaaanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ItAkunNilaiBiayaRutinEntity.hbm.xml</value>
 
                 <!--Hibernate Config For PAKET SIMRS-->
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/ImSimrsKelasPaketEntity.hbm.xml</value>

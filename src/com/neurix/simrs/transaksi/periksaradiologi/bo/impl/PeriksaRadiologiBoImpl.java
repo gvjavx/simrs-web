@@ -283,6 +283,11 @@ public class PeriksaRadiologiBoImpl implements PeriksaRadiologiBo {
         return response;
     }
 
+    @Override
+    public ItSimrsPeriksaRadiologiEntity getEntityPeriksaRadiologi(String id) throws GeneralBOException {
+        return periksaRadiologiDao.getById("idPeriksaRadiologi", id);
+    }
+
     private ImSimrsDokterEntity getMasterDokterById(String idDokter) throws GeneralBOException {
         logger.info("[PeriksaRadiologiBoImpl.getMasterDokterById] START >>>>>>");
 

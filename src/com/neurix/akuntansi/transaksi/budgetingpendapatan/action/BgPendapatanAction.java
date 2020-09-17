@@ -619,7 +619,7 @@ public class BgPendapatanAction {
         return results;
     }
 
-    public List<ParameterBudgeting> getListMasterBudgeting(String idKategori, String branch, String tahun){
+    public List<ParameterBudgeting> getListMasterBudgeting(String idKategori, String branch, String tahun, String tipe){
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
@@ -635,7 +635,7 @@ public class BgPendapatanAction {
         }
 
         // cari ada di data base jika ada
-        if (sessionNilaiParam == null){
+        if (sessionNilaiParam == null || "DRAFT".equalsIgnoreCase(tipe)){
             sessionNilaiParam = new ArrayList<>();
             ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
             parameterBudgeting.setBranchId(branch);
