@@ -1185,7 +1185,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 //** BPJS **//
 
                 mapPiutang.put("bukti", invNumber);
-                mapPiutang.put("nilai", uangPiutang);
+                mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "umum", "").add(ppnObat).add(allTindakanTransUmum).subtract(uangMuka));
                 mapPiutang.put("master_id", masterId);
 //                mapPiutang.put("pasien_id", idPasien);
 
