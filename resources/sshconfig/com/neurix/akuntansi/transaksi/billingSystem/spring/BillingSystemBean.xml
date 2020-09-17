@@ -38,6 +38,8 @@
           p:transDao-ref="transDao"
           p:obatDao-ref="obatDao"
           p:branchDao-ref="branchDao"
+          p:saldoAkhirTahunDao-ref="saldoAkhirTahunDao"
+          p:saldoAkhirDetailTahunDao-ref="saldoAkhirDetailTahunDao"
     />
 
     <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -63,4 +65,7 @@
             </props>
         </property>
     </bean>
+
+
+
 </beans>

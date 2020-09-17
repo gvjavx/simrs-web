@@ -289,7 +289,8 @@
             dwr.engine.setAsync(false);
             if (response.status == "error"){
                searchPeriod();
-               $("#alert-error").show().fadeOut(5000);
+//               $("#alert-error").show().fadeOut(5000);
+               $("#alert-error").show();
                $("#error-msg").text(response.msg);
            } else {
                searchPeriod();

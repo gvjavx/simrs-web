@@ -344,8 +344,8 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                             ItAkunSaldoAkhirTahunEntity saldoAkhirEntity = new ItAkunSaldoAkhirTahunEntity();
                             saldoAkhirEntity.setSaldoAkhirId(getNextSaldoAkhirTahunId());
-                            saldoAkhirEntity.setBranchId(jurnalDetail.getUnit());
-                            saldoAkhirEntity.setPeriode(jurnalDetail.getBulan()+"-"+jurnalDetail.getTahun());
+                            saldoAkhirEntity.setBranchId(bean.getUnit());
+                            saldoAkhirEntity.setPeriode(bean.getBulan()+"-"+bean.getTahun());
                             saldoAkhirEntity.setRekeningId(jurnalDetail.getRekeningId());
                             saldoAkhirEntity.setJumlahDebit(jurnalDetail.getJumlahDebit());
                             saldoAkhirEntity.setJumlahKredit(jurnalDetail.getJumlahKredit());
@@ -357,27 +357,27 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             saldoAkhirEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
                             // mendapatkan data saldo akhir periode sebelumnya dengan rekening_id dan unit
-                            SaldoAkhir saldoAkhir = new SaldoAkhir();
-                            saldoAkhir.setPeriode(getPeriodeSebelum(jurnalDetail.getBulan(), jurnalDetail.getTahun()));
-                            saldoAkhir.setBranchId(jurnalDetail.getUnit());
-                            saldoAkhir.setRekeningId(jurnalDetail.getRekeningId());
+//                            SaldoAkhir saldoAkhir = new SaldoAkhir();
+//                            saldoAkhir.setPeriode(getPeriodeSebelum(jurnalDetail.getBulan(), jurnalDetail.getTahun()));
+//                            saldoAkhir.setBranchId(jurnalDetail.getUnit());
+//                            saldoAkhir.setRekeningId(jurnalDetail.getRekeningId());
 
-                            ItAkunSaldoAkhirEntity saldoAkhirLalu = new ItAkunSaldoAkhirEntity();
-                            List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = getListEntitySaldoAkhir(saldoAkhir);
-                            if (saldoAkhirEntities.size() > 0){
-                                saldoAkhirLalu = saldoAkhirEntities.get(0);
-
-                                // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
-                                if ("D".equalsIgnoreCase(saldoAkhirLalu.getPosisi())){
-                                    saldoAkhirEntity.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
-                                    jurnalDetail.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
-                                } else {
-                                    // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
-                                    saldoAkhirEntity.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
-                                    jurnalDetail.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
-                                }
-                            }
-                            // end
+//                            ItAkunSaldoAkhirEntity saldoAkhirLalu = new ItAkunSaldoAkhirEntity();
+//                            List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = getListEntitySaldoAkhir(saldoAkhir);
+//                            if (saldoAkhirEntities.size() > 0){
+//                                saldoAkhirLalu = saldoAkhirEntities.get(0);
+//
+//                                // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
+//                                if ("D".equalsIgnoreCase(saldoAkhirLalu.getPosisi())){
+//                                    saldoAkhirEntity.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
+//                                    jurnalDetail.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(saldoAkhirLalu.getSaldo()));
+//                                } else {
+//                                    // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
+//                                    saldoAkhirEntity.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
+//                                    jurnalDetail.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
+//                                }
+//                            }
+//                            // end
 
                             if (saldoAkhirEntity.getJumlahDebit().compareTo(saldoAkhirEntity.getJumlahKredit()) == 1){
 
@@ -654,35 +654,35 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         if (nilaiJurnalPerDivisi.size() > 0){
             for (TutupPeriod jurnal : nilaiJurnalPerDivisi){
 
-                SaldoAkhir saldoAkhir = new SaldoAkhir();
-                saldoAkhir.setPeriode(getPeriodeSebelum(bean.getBulan(), bean.getTahun()));
-                saldoAkhir.setBranchId(bean.getUnit());
-                saldoAkhir.setRekeningId(bean.getRekeningId());
-
-                if (jurnal.getMasterId() != null && !"".equalsIgnoreCase(jurnal.getMasterId())){
-                    saldoAkhir.setMasterId(jurnal.getMasterId());
-                }
-
-                if (jurnal.getDivisiId() != null && !"".equalsIgnoreCase(jurnal.getDivisiId())){
-                    saldoAkhir.setDivisiId(jurnal.getDivisiId());
-                }
-
-                if (jurnal.getPasienId() != null && !"".equalsIgnoreCase(jurnal.getPasienId())){
-                    saldoAkhir.setPasienId(jurnal.getPasienId());
-                }
-
-                if (jurnal.getKdBarang() != null && !"".equalsIgnoreCase(jurnal.getKdBarang())){
-                    saldoAkhir.setKdBarang(jurnal.getKdBarang());
-                }
-
-                // MENDAPATKAN SALDO AKHIR DETAIL PERIODE LALU
-                ItAkunSaldoAkhirDetailEntity saldoAkhirDetaillalu = new ItAkunSaldoAkhirDetailEntity();
-                List<ItAkunSaldoAkhirDetailEntity> saldoAkhirDetailEntities = getListEntitySaldoAkhirDetail(saldoAkhir);
-                if (saldoAkhirDetailEntities.size() > 0){
-                    for (ItAkunSaldoAkhirDetailEntity saldoAkhirDetailEntity : saldoAkhirDetailEntities){
-                        saldoAkhirDetaillalu = saldoAkhirDetailEntity;
-                    }
-                }
+//                SaldoAkhir saldoAkhir = new SaldoAkhir();
+//                saldoAkhir.setPeriode(getPeriodeSebelum(bean.getBulan(), bean.getTahun()));
+//                saldoAkhir.setBranchId(bean.getUnit());
+//                saldoAkhir.setRekeningId(bean.getRekeningId());
+//
+//                if (jurnal.getMasterId() != null && !"".equalsIgnoreCase(jurnal.getMasterId())){
+//                    saldoAkhir.setMasterId(jurnal.getMasterId());
+//                }
+//
+//                if (jurnal.getDivisiId() != null && !"".equalsIgnoreCase(jurnal.getDivisiId())){
+//                    saldoAkhir.setDivisiId(jurnal.getDivisiId());
+//                }
+//
+//                if (jurnal.getPasienId() != null && !"".equalsIgnoreCase(jurnal.getPasienId())){
+//                    saldoAkhir.setPasienId(jurnal.getPasienId());
+//                }
+//
+//                if (jurnal.getKdBarang() != null && !"".equalsIgnoreCase(jurnal.getKdBarang())){
+//                    saldoAkhir.setKdBarang(jurnal.getKdBarang());
+//                }
+//
+//                // MENDAPATKAN SALDO AKHIR DETAIL PERIODE LALU
+//                ItAkunSaldoAkhirDetailEntity saldoAkhirDetaillalu = new ItAkunSaldoAkhirDetailEntity();
+//                List<ItAkunSaldoAkhirDetailEntity> saldoAkhirDetailEntities = getListEntitySaldoAkhirDetail(saldoAkhir);
+//                if (saldoAkhirDetailEntities.size() > 0){
+//                    for (ItAkunSaldoAkhirDetailEntity saldoAkhirDetailEntity : saldoAkhirDetailEntities){
+//                        saldoAkhirDetaillalu = saldoAkhirDetailEntity;
+//                    }
+//                }
 
 
                 ItAkunSaldoAkhirDetailTahunEntity detailEntity = new ItAkunSaldoAkhirDetailTahunEntity();
@@ -704,13 +704,13 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 detailEntity.setPasienId(jurnal.getPasienId());
 
                 // DITAMBAH DENGAN SALDO BULAN LALU
-                if (saldoAkhirDetaillalu != null && saldoAkhirDetaillalu.getSaldo() != null){
-                    if ("D".equalsIgnoreCase(saldoAkhirDetaillalu.getPosisi())){
-                        detailEntity.setJumlahDebit(detailEntity.getJumlahDebit().add(saldoAkhirDetaillalu.getSaldo()));
-                    } else {
-                        detailEntity.setJumlahKredit(detailEntity.getJumlahKredit().add(saldoAkhirDetaillalu.getSaldo()));
-                    }
-                }
+//                if (saldoAkhirDetaillalu != null && saldoAkhirDetaillalu.getSaldo() != null){
+//                    if ("D".equalsIgnoreCase(saldoAkhirDetaillalu.getPosisi())){
+//                        detailEntity.setJumlahDebit(detailEntity.getJumlahDebit().add(saldoAkhirDetaillalu.getSaldo()));
+//                    } else {
+//                        detailEntity.setJumlahKredit(detailEntity.getJumlahKredit().add(saldoAkhirDetaillalu.getSaldo()));
+//                    }
+//                }
 
                 // JIKA DEBIT LEBIH BESAR DARI KREDIT
                 BigDecimal saldo = new BigDecimal(0);
