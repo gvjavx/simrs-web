@@ -1318,7 +1318,7 @@
                                         <div class="form-group" id="form_no_kartu">
                                             <label class="col-md-4" style="margin-top: 10px">No Kartu</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="no_kartu" name="headerCheckup.noKartuAsuransi" cssStyle="margin-top: 7px" cssClass="form-control" onkeypress="var warn =$('#war_no_asuransi').is(':visible'); if (warn){$('#con_no_asuransi').show().fadeOut(3000);$('#war_no_asuransi').hide()}"></s:textfield>
+                                                <s:textfield autocomplete="off" id="no_kartu" name="headerCheckup.noKartuAsuransi" cssStyle="margin-top: 7px" cssClass="form-control" onkeypress="var warn =$('#war_no_asuransi').is(':visible'); if (warn){$('#con_no_asuransi').show().fadeOut(3000);$('#war_no_asuransi').hide()}"></s:textfield>
                                                 <span style="color: red; display: none" id="war_no_asuransi"><i
                                                         class="fa fa-times"></i> required</span>
                                                 <span style="color: green; display: none" id="con_no_asuransi"><i
