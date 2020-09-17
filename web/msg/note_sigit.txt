@@ -934,3 +934,70 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN flag_desember_b VARCHAR(1)
 
 --
+
+-- 2020-09-17
+
+    CREATE TABLE public.it_akun_saldo_akhir_tahun
+    (
+        saldo_akhir_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+        rekening_id character varying(15) COLLATE pg_catalog."default",
+        periode character varying(7) COLLATE pg_catalog."default",
+        jumlah_debit numeric(20,2),
+        jumlah_kredit numeric(20,2),
+        saldo numeric(20,2),
+        posisi character varying(1) COLLATE pg_catalog."default",
+        branch_id character varying(5) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        last_update timestamp without time zone,
+        master_id character varying(20) COLLATE pg_catalog."default",
+        pasien_id character varying(30) COLLATE pg_catalog."default",
+        CONSTRAINT it_akun_saldo_akhir_tahun_pkey PRIMARY KEY (saldo_akhir_id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_saldo_akhir_tahun
+        OWNER to postgres;
+
+    -------------------------------------------------------------------------
+
+    CREATE TABLE public.it_akun_saldo_akhir_detail_tahun
+        (
+            id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+            saldo_akhir_id character varying(20) COLLATE pg_catalog."default",
+            rekening_id character varying(15) COLLATE pg_catalog."default",
+            periode character varying(7) COLLATE pg_catalog."default",
+            jumlah_debit numeric(20,2),
+            jumlah_kredit numeric(20,2),
+            saldo numeric(20,2),
+            posisi character varying(1) COLLATE pg_catalog."default",
+            branch_id character varying(5) COLLATE pg_catalog."default",
+            flag character varying(1) COLLATE pg_catalog."default",
+            action character varying(1) COLLATE pg_catalog."default",
+            created_who character varying(100) COLLATE pg_catalog."default",
+            last_update_who character varying(100) COLLATE pg_catalog."default",
+            created_date timestamp without time zone,
+            last_update timestamp without time zone,
+            master_id character varying(20) COLLATE pg_catalog."default",
+            pasien_id character varying(30) COLLATE pg_catalog."default",
+            divisi_id character varying(30) COLLATE pg_catalog."default",
+            kd_barang character varying(100) COLLATE pg_catalog."default",
+            CONSTRAINT it_akun_saldo_akhir_detail_tahun_pkey PRIMARY KEY (id)
+        )
+        WITH (
+            OIDS = FALSE
+        )
+        TABLESPACE pg_default;
+
+        ALTER TABLE public.it_akun_saldo_akhir_detail_tahun
+            OWNER to postgres;
+
+    CREATE SEQUENCE seq_saldo_akhir_tahun;
+    CREATE SEQUENCE seq_saldo_akhir_tahun_detail;
+--

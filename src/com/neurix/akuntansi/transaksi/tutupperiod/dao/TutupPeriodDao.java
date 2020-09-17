@@ -50,11 +50,13 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
 
     public List<TutupPeriod> getListDetailJurnalByCriteria(TutupPeriod bean){
 
-        BigDecimal dcBulan = new BigDecimal(bean.getBulan());
-        BigDecimal dcTahun = new BigDecimal(bean.getTahun());
-        String rekenigId = "%";
+//        BigDecimal dcBulan = new BigDecimal(bean.getBulan());
+//        BigDecimal dcTahun = new BigDecimal(bean.getTahun());
+        String rekenigId    = "%";
         String tipeJurnalId = "%";
-        String noJurnal = "%";
+        String noJurnal     = "%";
+        String bulan        = "%";
+        String tahun        = "%";
         if (bean.getRekeningId() != null && !"".equalsIgnoreCase(bean.getRekeningId())){
             rekenigId = bean.getRekeningId();
         }
@@ -64,6 +66,13 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
         if (bean.getNoJurnal() != null && !"".equalsIgnoreCase(bean.getNoJurnal())){
             noJurnal = bean.getNoJurnal();
         }
+        if (bean.getTahun() != null && !"".equalsIgnoreCase(bean.getTahun())){
+            tahun = bean.getTahun();
+        }
+        if (bean.getBulan() != null && !"".equalsIgnoreCase(bean.getBulan())){
+            bulan = bean.getBulan();
+        }
+
 
         String SQL = "SELECT \n" +
                 "dt.rekening_id,\n" +
@@ -76,8 +85,8 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 "INNER JOIN it_akun_jurnal_detail dt ON dt.no_jurnal = h.no_jurnal\n" +
                 "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = dt.rekening_id\n" +
                 "WHERE registered_flag = 'Y'\n" +
-                "AND EXTRACT(MONTH FROM h.tanggal_jurnal) = :bulan \n" +
-                "AND EXTRACT(YEAR FROM h.tanggal_jurnal) = :tahun  \n" +
+                "AND CAST(EXTRACT(MONTH FROM h.tanggal_jurnal) AS VARCHAR) LIKE :bulan \n" +
+                "AND CAST(EXTRACT(YEAR FROM h.tanggal_jurnal) AS VARCHAR) LIKE :tahun  \n" +
                 "AND h.branch_id = :unit  \n" +
                 "AND dt.rekening_id LIKE :rekening \n" +
                 "AND h.tipe_jurnal_id LIKE :tipeJurnalId \n" +
@@ -92,8 +101,8 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("unit", bean.getUnit())
-                .setParameter("bulan", dcBulan)
-                .setParameter("tahun", dcTahun)
+                .setParameter("bulan", bulan)
+                .setParameter("tahun", tahun)
                 .setParameter("rekening", rekenigId)
                 .setParameter("tipeJurnalId", tipeJurnalId)
                 .setParameter("nojurnal", noJurnal)
