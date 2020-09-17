@@ -13,7 +13,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#rawat_inap').addClass('active');
+            $('#pel_ri_active, #bayar_rawat_inap').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
         });
 
     </script>

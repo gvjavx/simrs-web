@@ -15,7 +15,8 @@
     <script type='text/javascript'>
 
         $(document).ready(function () {
-            $('#pendaftaran').addClass('active');
+            $('#pendaftaran_active, #bayar_rawat_jalan').addClass('active');
+            $('#pendaftaran_open').addClass('menu-open');
         });
 
     </script>
@@ -32,7 +33,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pendaftaran Rawat Pasien
+            Pendaftaran Rawat Jalan Pasien
         </h1>
     </section>
 

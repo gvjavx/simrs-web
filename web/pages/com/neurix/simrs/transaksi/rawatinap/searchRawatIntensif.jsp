@@ -13,7 +13,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#rawat_intensif').addClass('active');
+            $('#pel_ri_active, #rawat_intensif').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
             selectKamar();
         });
 

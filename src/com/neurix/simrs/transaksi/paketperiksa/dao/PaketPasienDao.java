@@ -1,5 +1,7 @@
 package com.neurix.simrs.transaksi.paketperiksa.dao;
 
+import com.neurix.akuntansi.master.master.model.Master;
+import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItSimrsPaketPasienEntity;
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
@@ -419,5 +421,27 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
         }
 
         return paketPeriksaList;
+    }
+
+    public List<MasterVendor> getListPerusahaan(){
+        List<MasterVendor> masterVendors = new ArrayList<>();
+        String SQL = "SELECT\n" +
+                "nomor_master,\n" +
+                "nama\n" +
+                "FROM im_akun_master\n" +
+                "WHERE flag = 'Y'\n";
+        List<Object[]> res = new ArrayList<>();
+        res = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .list();
+        if(res.size() > 0){
+            for (Object[] obj: res){
+                MasterVendor masterVendor = new MasterVendor();
+                masterVendor.setNomorMaster(obj[0] != null ? obj[0].toString() : "");
+                masterVendor.setNama(obj[1] != null ? obj[1].toString() : "");
+                masterVendors.add(masterVendor);
+            }
+        }
+        return masterVendors;
+
     }
 }

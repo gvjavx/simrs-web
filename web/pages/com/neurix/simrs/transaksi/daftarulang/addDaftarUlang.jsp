@@ -25,7 +25,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Daftar Ulang Pasien
+            Peralihan Biaya Pasien
         </h1>
     </section>
 
@@ -420,7 +420,9 @@
 <script type='text/javascript'>
 
     $(document).ready(function () {
-        $('#daftar_ulang_pasien').addClass('active');
+        $('#pendaftaran_active, #peralihan_biaya').addClass('active');
+        $('#pendaftaran_open').addClass('menu-open');
+
         initlistPenjamin();
 
         $(document).on('change', '.btn-file :file', function () {
