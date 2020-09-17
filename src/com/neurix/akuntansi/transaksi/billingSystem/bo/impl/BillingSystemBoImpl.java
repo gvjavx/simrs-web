@@ -1381,11 +1381,14 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                     } else {
 
                         if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)){
-                            ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(idRuangan);
-                            if (kelasRuanganEntity != null) {
-                                ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                if (position != null) {
-                                    divisiId = position.getKodering();
+                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(idRuangan);
+                            if (ruanganEntity != null) {
+                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+                                if (kelasRuanganEntity != null) {
+                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
+                                    if (position != null) {
+                                        divisiId = position.getKodering();
+                                    }
                                 }
                             }
                         } else {
@@ -1415,7 +1418,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
     }
 
 
-    private List<Map> getAcitivityList(String idDetailCheckup, String jenisPasien, String ket, String type) {
+    private List<Map> getAcitivityList(String idDetailCheckup, String jenisPasien, String ket, String type, String idRuangan) {
         logger.info("[CheckupDetailAction.getAcitivityList] START >>>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TeamDokterBo teamDokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
@@ -1445,6 +1448,9 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         } else {
             riwayatTindakan.setKeterangan(ket);
         }
+
+        if (idRuangan != null && !"".equalsIgnoreCase(idRuangan))
+            riwayatTindakan.setIdRuangan(idRuangan);
 
         List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = riwayatTindakanBo.getListEntityRiwayatTindakan(riwayatTindakan);
         if (riwayatTindakanEntities.size() > 0) {
@@ -1582,7 +1588,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                                 mapTindakan.put("master_id", masterId);
                                 mapTindakan.put("divisi_id", getDivisiId(bean.getIdDetailCheckup(), idJenisPasien, keterangan, ruangan));
                                 mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(bean.getIdDetailCheckup(), idJenisPasien, keterangan, ruangan));
-                                mapTindakan.put("activity", getAcitivityList(bean.getIdDetailCheckup(), idJenisPasien, keterangan, "JRI"));
+                                mapTindakan.put("activity", getAcitivityList(bean.getIdDetailCheckup(), idJenisPasien, keterangan, "JRI", ruangan));
                                 listOfMapTindakan.add(mapTindakan);
                             }
                         }
@@ -1591,7 +1597,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                         mapTindakan.put("master_id", masterId);
                         mapTindakan.put("divisi_id", getDivisiId(bean.getIdDetailCheckup(), idJenisPasien, keterangan,""));
                         mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(bean.getIdDetailCheckup(), idJenisPasien, keterangan, ""));
-                        mapTindakan.put("activity", getAcitivityList(bean.getIdDetailCheckup(), idJenisPasien, keterangan, "JRI"));
+                        mapTindakan.put("activity", getAcitivityList(bean.getIdDetailCheckup(), idJenisPasien, keterangan, "JRI", ""));
                         listOfMapTindakan.add(mapTindakan);
                     }
                 }

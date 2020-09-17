@@ -55,6 +55,9 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
             if (mapCriteria.get("not_resep") != null) {
                 criteria.add(Restrictions.ne("keterangan", "resep"));
             }
+            if (mapCriteria.get("id_ruangan") != null) {
+                criteria.add(Restrictions.eq("idRuangan", (String) mapCriteria.get("id_ruangan")));
+            }
         }
 
         criteria.addOrder(Order.asc("idRiwayatTindakan"));

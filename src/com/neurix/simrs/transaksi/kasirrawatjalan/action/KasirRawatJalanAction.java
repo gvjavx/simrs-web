@@ -872,11 +872,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     } else {
 
                         if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)){
-                            ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(idRuangan);
-                            if (kelasRuanganEntity != null) {
-                                ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
-                                if (position != null) {
-                                    divisiId = position.getKodering();
+                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(idRuangan);
+                            if (ruanganEntity != null) {
+                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+                                if (kelasRuanganEntity != null) {
+                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
+                                    if (position != null) {
+                                        divisiId = position.getKodering();
+                                    }
                                 }
                             }
                         } else {
@@ -905,7 +908,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return divisiId;
     }
 
-    private List<Map> getAcitivityList(String idDetailCheckup, String jenisPasien, String ket, String type) {
+    private List<Map> getAcitivityList(String idDetailCheckup, String jenisPasien, String ket, String type, String idRuangan) {
         logger.info("[CheckupDetailAction.getAcitivityList] START >>>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TeamDokterBo teamDokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
@@ -935,6 +938,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         } else {
             riwayatTindakan.setKeterangan(ket);
         }
+
+        if (idRuangan != null && !"".equalsIgnoreCase(idRuangan))
+            riwayatTindakan.setIdRuangan(idRuangan);
 
         List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = riwayatTindakanBo.getListEntityRiwayatTindakan(riwayatTindakan);
         if (riwayatTindakanEntities.size() > 0) {
@@ -1108,14 +1114,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                 mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "umum"));
                                 mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "umum", keterangan, ruangan));
                                 mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "umum", keterangan, ruangan));
-                                mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "umum", keterangan, kode));
+                                mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "umum", keterangan, kode, ruangan));
                                 listOfMapTindakanUmum.add(mapTindakan);
 
                                 mapTindakan = new HashMap();
                                 mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "asuransi"));
                                 mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "asuransi", keterangan, ruangan));
                                 mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "asuransi", keterangan, ruangan));
-                                mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "asuransi", keterangan, kode));
+                                mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "asuransi", keterangan, kode, ruangan));
                                 listOfMapTindakanAsuransi.add(mapTindakan);
                             }
                         }
@@ -1125,14 +1131,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "umum"));
                         mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "umum", keterangan, ""));
                         mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "umum", keterangan, ""));
-                        mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "umum", keterangan, kode));
+                        mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "umum", keterangan, kode, ""));
                         listOfMapTindakanUmum.add(mapTindakan);
 
                         mapTindakan = new HashMap();
                         mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "asuransi"));
                         mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "asuransi", keterangan, ""));
                         mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "asuransi", keterangan, ""));
-                        mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "asuransi", keterangan, kode));
+                        mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "asuransi", keterangan, kode, ""));
                         listOfMapTindakanAsuransi.add(mapTindakan);
                     }
                 }
@@ -1145,7 +1151,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "umum"));
                     mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "umum", keterangan, ""));
                     mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "umum", keterangan, ""));
-                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "umum", keterangan, kode));
+                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "umum", keterangan, kode, ""));
                     listOfMapTindakanUmum.add(mapTindakan);
                 }
                 for (String keterangan : listOfKeteranganRiwayat){
@@ -1153,7 +1159,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "asuransi"));
                     mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "asuransi", keterangan, ""));
                     mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "asuransi", keterangan, ""));
-                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "asuransi", keterangan, kode));
+                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "asuransi", keterangan, kode, ""));
                     listOfMapTindakanAsuransi.add(mapTindakan);
                 }
             }
