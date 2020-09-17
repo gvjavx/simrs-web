@@ -104,6 +104,16 @@ public class AbsensiPegawai extends BaseModel {
     private String tidakAbsenPulang;
     private String cekPegawaiStatus;
 
+    private boolean isMobile = false;
+
+    public boolean isMobile() {
+        return isMobile;
+    }
+
+    public void setMobile(boolean mobile) {
+        isMobile = mobile;
+    }
+
     public String getCekPegawaiStatus() {
         return cekPegawaiStatus;
     }

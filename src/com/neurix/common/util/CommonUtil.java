@@ -29,7 +29,7 @@ import java.util.Properties;
  * Time: 21:18
  * To change this template use File | Settings | File Templates.
  */
-public class CommonUtil {
+public class  CommonUtil {
 
     protected static transient Logger logger = Logger.getLogger(CommonUtil.class);
 

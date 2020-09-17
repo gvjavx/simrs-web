@@ -1794,8 +1794,11 @@ public class AbsensiBoImpl implements AbsensiBo {
                     returnAbsensi.setCreatedWho(absensiPegawaiEntity.getCreatedWho());
                     returnAbsensi.setCreatedDate(absensiPegawaiEntity.getCreatedDate());
                     returnAbsensi.setLastUpdate(absensiPegawaiEntity.getLastUpdate());
-                    if (("ADMIN").equalsIgnoreCase(CommonUtil.roleAsLogin())){
-                        returnAbsensi.setCekAdmin(true);
+
+                    if  (!searchBean.isMobile()) {
+                        if (("ADMIN").equalsIgnoreCase(CommonUtil.roleAsLogin())){
+                            returnAbsensi.setCekAdmin(true);
+                        }
                     }
 
                     if (searchBean.getBagian() != null && !searchBean.getBagian().equalsIgnoreCase("")){

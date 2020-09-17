@@ -21,6 +21,7 @@ import org.apache.struts2.rest.HttpHeaders;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -41,6 +42,24 @@ public class HistoryPegawaiController implements ModelDriven<Object> {
     private String nip;
     private String branchId;
     private String action;
+    private String bulan;
+    private String tahun;
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
 
     public String getAction() {
         return action;
@@ -159,8 +178,18 @@ public class HistoryPegawaiController implements ModelDriven<Object> {
                 model.setJumlahHadir(String.valueOf(absensiPegawai.size()));
             }
             if (ijinKeluar != null) {
-                model.setJumlahDispen(String.valueOf(ijinKeluar.size()));
-            }
+               int totalIjin = 0;
+
+               //looping untuk menghitung hari
+               for (IjinKeluar item : ijinKeluar) {
+
+                   //cek jika total ijin telah melebihi jumlah hari di bulan ini,
+                   if (totalIjin != Integer.valueOf(CommonUtil.getLastDayOfMonth())){
+                       totalIjin += item.getLamaIjin().intValue();
+                   } else break;
+               }
+                model.setJumlahDispen(String.valueOf(totalIjin));
+            } else model.setJumlahDispen("0");
 
         }
 
@@ -197,7 +226,7 @@ public class HistoryPegawaiController implements ModelDriven<Object> {
                         historyPegawaiMobile.setAbsensiPegawaiId(item.getAbsensiPegawaiId());
                         historyPegawaiMobile.setTanggalAbsen(CommonUtil.convertDateToString(item.getTanggal()));
                         historyPegawaiMobile.setJamDatang(item.getJamMasuk());
-                        historyPegawaiMobile.setJamPulang(item.getJamPulang());
+                        historyPegawaiMobile.setJamPulang(item.getJamKeluar());
                         historyPegawaiMobile.setStatus(item.getStatusAbsensi());
                         historyPegawaiMobile.setIsLembur(item.getLembur());
                         historyPegawaiMobile.setIsDispen(item.getIjin());
@@ -205,6 +234,62 @@ public class HistoryPegawaiController implements ModelDriven<Object> {
 
                         listOfHistoryPegawaiMoblile.add(historyPegawaiMobile);
 
+                }
+            }
+        }
+
+        if (action.equalsIgnoreCase("getAbsensiByCriteria")) {
+            listOfHistoryPegawaiMoblile = new ArrayList<>();
+
+            List<AbsensiPegawai> result = new ArrayList<>();
+            String tanggalAwal;
+            String tanggalAkhir;
+
+            //jika bulan kosong, maka akan mencari absensi dalam setahun
+            if (!bulan.equalsIgnoreCase("")) {
+                tanggalAwal = "01-"+bulan+"-"+tahun;
+
+                //Mencari tanggal terakhir di bulan yg diinputkan
+                Date dtTanggalAkhir = CommonUtil.convertStringToDate(tanggalAwal);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(dtTanggalAkhir);
+                calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+                tanggalAkhir = CommonUtil.convertDateToString(calendar.getTime());
+            } else {
+                tanggalAwal = "01-01-"+tahun;
+                tanggalAkhir = "31-12-"+tahun;
+            }
+
+            AbsensiPegawai bean = new AbsensiPegawai();
+            bean.setNip(nip);
+            bean.setBranchId(branchId);
+            bean.setStTanggalDari(tanggalAwal);
+            bean.setStTanggalSelesai(tanggalAkhir);
+            bean.setMobile(true);
+
+            try {
+                result = absensiBoProxy.getByCriteria(bean);
+            } catch (GeneralBOException e){
+                logger.error("[SisaCutiController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e);
+            }
+
+            if (result.size() > 0) {
+                for (AbsensiPegawai item : result) {
+                    HistoryPegawaiMobile historyPegawaiMobile = new HistoryPegawaiMobile();
+                    historyPegawaiMobile.setAbsensiPegawaiId(item.getAbsensiPegawaiId());
+                    historyPegawaiMobile.setTanggalAbsen(CommonUtil.convertDateToString(item.getTanggal()));
+                    historyPegawaiMobile.setNama(item.getNama());
+                    historyPegawaiMobile.setNip(item.getNip());
+                    historyPegawaiMobile.setJamMasuk(item.getJamMasuk());
+                    historyPegawaiMobile.setJamKeluar(item.getJamKeluar());
+                    historyPegawaiMobile.setJamPulang(item.getJamPulang());
+                    historyPegawaiMobile.setTanggal(item.getStTanggal());
+                    historyPegawaiMobile.setStatus(item.getStatusAbsensi());
+                    historyPegawaiMobile.setIsLembur(item.getLembur());
+                    historyPegawaiMobile.setIsDispen(item.getIjin());
+                    historyPegawaiMobile.setNamaStatus(CommonUtil.statusName(item.getStatusAbsensi()));
+
+                    listOfHistoryPegawaiMoblile.add(historyPegawaiMobile);
                 }
             }
         }

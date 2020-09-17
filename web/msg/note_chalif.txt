@@ -188,6 +188,30 @@ ALTER TABLE public.it_simrs_video_rm
 
 
 <<< //
+--2020-09-15
+-- Table: public.it_hris_mesin_absensi_detail
+
+-- DROP TABLE public.it_hris_mesin_absensi_detail;
+
+CREATE TABLE public.it_hris_mesin_absensi_detail_oncall
+(
+  oncall_mesin_absensi_detail_id character varying(20) NOT NULL,
+  nip character varying(20),
+  scan_date timestamp without time zone,
+  verify_mode character varying(2),
+  action character varying(1),
+  flag character varying(1),
+  last_update timestamp without time zone,
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update_who character varying(100),
+  CONSTRAINT oncall_mesin_absensi_detail_id_pkey PRIMARY KEY (oncall_mesin_absensi_detail_id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_hris_mesin_absensi_detail_oncall
+  OWNER TO postgres;
 
 
 
