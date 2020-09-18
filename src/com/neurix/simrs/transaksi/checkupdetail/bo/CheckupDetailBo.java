@@ -37,6 +37,7 @@ public interface CheckupDetailBo {
     public BigDecimal getSumJumlahTindakanNonBpjs(String idDetailCheckup, String ket);
     public BigDecimal getSumJumlahTindakanTransitoris(String idDetailCheckup, String ket);
     public BigDecimal getSumJumlahTindakanByJenis(String idDetailCheckup, String jenis, String ket);
+    public BigDecimal getSumJumlahTindakanByJenisRI(String idDetailCheckup, String jenis, String ket, String idRuangan);
     public BigDecimal getSumJumlajTindakanTransitorisByJenis(String idDetailCheckup, String jenis, String ket);
     public String findResep(String idDetailCheckup);
     public CheckResponse updateInvoiceBpjs(String idDetailCheckup, String invNumber);

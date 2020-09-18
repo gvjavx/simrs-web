@@ -137,7 +137,7 @@ public class TindakanRawatAction extends BaseMasterAction {
         return "init_add";
     }
 
-    public CrudResponse saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String tipeRawat, BigInteger qty, String jenisTransaksi, String idPelayanan){
+    public CrudResponse saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String tipeRawat, BigInteger qty, String jenisTransaksi, String idPelayanan, String idRuangan){
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
         CrudResponse response = new CrudResponse();
         try {
@@ -147,6 +147,9 @@ public class TindakanRawatAction extends BaseMasterAction {
             TindakanRawat tindakanRawat = new TindakanRawat();
             tindakanRawat.setIdDetailCheckup(idDetailCheckup);
             tindakanRawat.setIdTindakan(idTindakan);
+            if(!"".equalsIgnoreCase(idRuangan) && idRuangan != null){
+                tindakanRawat.setIdRuangan(idRuangan);
+            }
 
             List<Tindakan> tindakanList = new ArrayList<>();
             Tindakan tindakan = new Tindakan();

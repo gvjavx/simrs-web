@@ -97,6 +97,7 @@
 
         $(document).ready(function () {
             $('#monitor_ruangan').addClass('active');
+            getKelasKamar();
         });
 
         function formatRupiah(angka) {
@@ -104,6 +105,21 @@
                 ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
             return ribuan;
+        }
+
+        function getKelasKamar(){
+            var option = '<option value="">[Select One]</option>';
+            dwr.engine.setAsync(true);
+            CheckupDetailAction.getListKelasKamar(null, function (res) {
+                if(res.length > 0){
+                    $.each(res, function (i, item) {
+                        option += '<option value="' + item.idKelasRuangan + '">' + item.namaKelasRuangan + '</option>';
+                    });
+                    $('#kelas_kamar').html(option);
+                }else{
+                    $('#kelas_kamar').html(option);
+                }
+            });
         }
 
     </script>
@@ -145,16 +161,21 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
-                                        <s:action id="initComboKelas" namespace="/checkupdetail"
-                                                  name="getListComboKelasRuangan_checkupdetail"/>
-                                        <s:select cssStyle="margin-top: 7px"
-                                                  onchange="$(this).css('border',''); listSelectRuangan(this.value)"
-                                                  list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
-                                                  name="ruangan.idKelasRuangan"
-                                                  listKey="idKelasRuangan"
-                                                  listValue="namaKelasRuangan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
+                                        <%--<s:action id="initComboKelas" namespace="/checkupdetail"--%>
+                                                  <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
+                                        <%--<s:select cssStyle="margin-top: 7px"--%>
+                                                  <%--onchange="$(this).css('border',''); listSelectRuangan(this.value)"--%>
+                                                  <%--list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"--%>
+                                                  <%--name="ruangan.idKelasRuangan"--%>
+                                                  <%--listKey="idKelasRuangan"--%>
+                                                  <%--listValue="namaKelasRuangan"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
+                                            <select id="kelas_kamar" style="margin-top: 7px" class="form-control select2"
+                                                    name="ruangan.idKelasRuangan" onchange="listSelectRuangan(this.value)">
+                                                <option value=''>[Select One]</option>
+                                            </select>
+
                                     </div>
                                     <div class="col-sm-3" style="display: none;" id="load_ruang">
                                         <img border="0" src="<s:url value="/pages/images/spinner.gif"/>"

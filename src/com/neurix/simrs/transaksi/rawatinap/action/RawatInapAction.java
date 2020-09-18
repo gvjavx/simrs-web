@@ -2104,6 +2104,7 @@ public class RawatInapAction extends BaseMasterAction {
                         riwayatTindakan.setLastUpdate(updateTime);
                         riwayatTindakan.setLastUpdateWho(user);
                         riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
+                        riwayatTindakan.setIdRuangan(entity.getIdRuangan());
 
                         try {
                             riwayatTindakanBo.saveAdd(riwayatTindakan);

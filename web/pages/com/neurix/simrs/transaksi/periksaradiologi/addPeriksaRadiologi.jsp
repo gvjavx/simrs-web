@@ -488,7 +488,8 @@
     var keterangan       = '<s:property value="periksaLab.keterangan"/>';
 
     $(document).ready(function () {
-        $('#periksa_radiologi').addClass('active');
+        $('#penunjang_active, #periksa_radiologi').addClass('active');
+        $('#penunjang_open').addClass('menu-open');
         listSelectDokter();
         getIdRadiologi();
 

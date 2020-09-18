@@ -573,6 +573,22 @@ public class UserBoImpl implements UserBo {
                         menuNameString = "<li id=\"laporan_akuntansi1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-tasks\"></i><span> " + menuName + "</span></a></li>";
                     }else if (menuName.equalsIgnoreCase("Pembayaran Hutang Piutang")) {
                         menuNameString = "<li id=\"pembayaran_hutang_piutang1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-money\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Peralihan Biaya")) {
+                        menuNameString = "<li id=\"peralihan_biaya\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Rencana Kegiatan Rawat")) {
+                        menuNameString = "<li id=\"rencana_kegiatan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Rawat Intensif")) {
+                        menuNameString = "<li id=\"rawat_intensif\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Rawat Operasi")) {
+                        menuNameString = "<li id=\"rawat_operasi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Rawat Bersalin")) {
+                        menuNameString = "<li id=\"rawat_bersalin\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Rawat Isolasi")) {
+                        menuNameString = "<li id=\"rawat_isolasi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Periksa Lab")) {
+                        menuNameString = "<li id=\"periksa_lab\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Periksa Radiologi")) {
+                        menuNameString = "<li id=\"periksa_radiologi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }
@@ -714,7 +730,7 @@ public class UserBoImpl implements UserBo {
                             idLi = "pendaftaran_active";
                             openLu = "pendaftaran_open";
                         }else if (("Ply. Rawat Inap").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-medkit\"></i>";
+                            icon="<i class=\"fa fa-bed\"></i>";
                             idLi = "pel_ri_active";
                             openLu = "pel_ri_open";
                         }else if (("Penunjang Medis").equalsIgnoreCase(menuName)){

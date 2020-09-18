@@ -908,25 +908,27 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
 
             if(result.size() > 0){
                 for (Object[] obj: result){
-                    if("Makanan".equalsIgnoreCase(obj[3].toString())){
-                        if(!"".equalsIgnoreCase(makanan)){
-                            makanan = makanan+", "+obj[2].toString();
-                        }else{
-                            makanan = obj[2].toString();
+                    if(obj[3] != null){
+                        if("Makanan".equalsIgnoreCase(obj[3].toString())){
+                            if(!"".equalsIgnoreCase(makanan)){
+                                makanan = makanan+", "+obj[2].toString();
+                            }else{
+                                makanan = obj[2].toString();
+                            }
                         }
-                    }
-                    if("Obat".equalsIgnoreCase(obj[3].toString())){
-                        if(!"".equalsIgnoreCase(makanan)){
-                            obat = obat+", "+obj[2].toString();
-                        }else{
-                            obat = obj[2].toString();
+                        if("Obat".equalsIgnoreCase(obj[3].toString())){
+                            if(!"".equalsIgnoreCase(makanan)){
+                                obat = obat+", "+obj[2].toString();
+                            }else{
+                                obat = obj[2].toString();
+                            }
                         }
-                    }
-                    if("Lain-Lain".equalsIgnoreCase(obj[3].toString())){
-                        if(!"".equalsIgnoreCase(makanan)){
-                            lainLain = lainLain+", "+obj[2].toString();
-                        }else{
-                            lainLain = obj[2].toString();
+                        if("Lain-Lain".equalsIgnoreCase(obj[3].toString())){
+                            if(!"".equalsIgnoreCase(makanan)){
+                                lainLain = lainLain+", "+obj[2].toString();
+                            }else{
+                                lainLain = obj[2].toString();
+                            }
                         }
                     }
                 }
@@ -1282,7 +1284,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "d.biji_per_lembar,\n" +
                     "b.hari_kronis,\n" +
                     "c.id_pelayanan,\n" +
-                    "b.id_transaksi_obat_detail\n" +
+                    "b.id_transaksi_obat_detail, \n" +
+                    "b.keterangan \n"+
                     "FROM mt_simrs_permintaan_resep a\n" +
                     "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "INNER JOIN (SELECT id_pelayanan, id_obat, SUM(qty_box) box, SUM(qty_lembar) lembar, SUM(qty_biji) biji\n" +
@@ -1313,6 +1316,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     detail.setHariKronis(obj[8] == null ? 0 : (Integer) obj[8]);
                     detail.setIdPelayanan(obj[9] == null ? "" : obj[9].toString());
                     detail.setIdTransaksiObatDetail(obj[10] == null ? "" : obj[10].toString());
+                    detail.setKeterangan(obj[11] == null ? "" : obj[11].toString());
                     transaksiObatDetailList.add(detail);
                 }
 

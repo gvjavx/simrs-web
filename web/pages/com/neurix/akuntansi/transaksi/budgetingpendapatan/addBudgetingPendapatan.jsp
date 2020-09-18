@@ -643,23 +643,23 @@
         var nilaiTotal = 0;
         if("=" == valop){
             str += '<div class="col-md-2" align="right" style="margin-top: 7px"><strong>Formula : </strong></div>' +
-                    '<div class="col-md-10"><h4>';
+                    '<div class="col-md-10">';
                     for (i = 0; i<n; i++){
                         var label   = $("#label-"+i).text();
                         var opr     = $("#opr-" + i + "-" + idParam).val();
                         str += ' ' + label + ' ' + (opr == "=" ? "" : opr) + ' ';
                     };
-            str += "</h4></div>";
+            str += "</div>";
             str += "</div>";
             str += "<div class='row'>";
             str += '<div class="col-md-2"></div>';
-            str += '<div class="col-md-10"><h4>'
+            str += '<div class="col-md-10">'
 
             for (i = 0; i<n; i++){
                 var nilai   = $("#total-" + i + "-" + idParam).val();
                 var opr     = $("#opr-" + i + "-" + idParam).val();
                 var namaNilai = $("#total-" + i + "-" + idParam + " option:selected").text();
-                str += " " + nilai + " "  + (opr == "=" ? "" : opr) + " ";
+                str += " " + formatRupiah(nilai) + " "  + (opr == "=" ? "" : opr) + " ";
 
                 if (operator == ""){
                     nilaiTotal = nilai;
@@ -673,13 +673,13 @@
 //                    str += nilaiTotal;
 //                }
             }
-            str += "</h4></div>";
+            str += "</div>";
             str += "</div>";
             str += "<div class='row'>";
-            str += '<div class="col-md-2"></div>';
-            str += '<div class="col-md-10"><h4>';
-            str += "= " + nilaiTotal;
-            str += "</h4></div>";
+            str += '<div class="col-md-2" align="right">=</div>';
+            str += '<div class="col-md-10">';
+            str += formatRupiah(nilaiTotal);
+            str += "</div>";
             str += "</div>";
 
             $("#display-hitung").html(str);
@@ -761,8 +761,6 @@
             var namaDivisi = divisi.replace(/\./g,'\\.');
             namaDivisi = $("#label-divisi-"+namaDivisi).text();
 
-            var label = $("#label-head-"+idParam).text();
-
             var str = "<div class=\"row\">" +
                 "<div class=\"col-md-2\" id=\"label-"+n+"\" align='right' style='margin-top: 7px'>"+ hurufByIndex(n) +"</div>" +
                 "<div class=\"col-md-6\">" +
@@ -786,7 +784,7 @@
             $("#id-param").val(idParam);
             $("#masterid").val(master);
             $("#divisiid").val(divisi);
-            $("#label-edit").text(label);
+            $("#label-edit").text(namaKategori);
             $("#master-name").text(namaMaster);
             $("#divisi-name").text(namaDivisi);
             $("#body-nilai").html(str);

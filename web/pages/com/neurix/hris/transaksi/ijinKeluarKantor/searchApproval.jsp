@@ -196,6 +196,11 @@
                                                         </a>
                                                     </s:else>
                                                 </display:column>
+                                                <display:setProperty name="paging.banner.item_name">Approval</display:setProperty>
+                                                <display:setProperty name="paging.banner.items_name">Approval</display:setProperty>
+                                                <display:setProperty name="export.excel.filename">Approval.xls</display:setProperty>
+                                                <display:setProperty name="export.csv.filename">Approval.csv</display:setProperty>
+                                                <display:setProperty name="export.pdf.filename">Approval.pdf</display:setProperty>
                                             </display:table>
                                         </td>
                                     </tr>

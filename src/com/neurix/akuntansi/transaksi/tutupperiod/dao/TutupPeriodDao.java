@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.tutupperiod.dao;
 
+import com.neurix.akuntansi.transaksi.saldoakhir.model.SaldoAkhir;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItAkunTutupPeriodEntity;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
 import com.neurix.common.dao.GenericDao;
@@ -49,12 +50,29 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
 
     public List<TutupPeriod> getListDetailJurnalByCriteria(TutupPeriod bean){
 
-        BigDecimal dcBulan = new BigDecimal(bean.getBulan());
-        BigDecimal dcTahun = new BigDecimal(bean.getTahun());
-        String rekenigId = "%";
+//        BigDecimal dcBulan = new BigDecimal(bean.getBulan());
+//        BigDecimal dcTahun = new BigDecimal(bean.getTahun());
+        String rekenigId    = "%";
+        String tipeJurnalId = "%";
+        String noJurnal     = "%";
+        String bulan        = "%";
+        String tahun        = "%";
         if (bean.getRekeningId() != null && !"".equalsIgnoreCase(bean.getRekeningId())){
             rekenigId = bean.getRekeningId();
         }
+        if (bean.getTipeJurnalId() != null && !"".equalsIgnoreCase(bean.getTipeJurnalId())){
+            tipeJurnalId = bean.getTipeJurnalId();
+        }
+        if (bean.getNoJurnal() != null && !"".equalsIgnoreCase(bean.getNoJurnal())){
+            noJurnal = bean.getNoJurnal();
+        }
+        if (bean.getTahun() != null && !"".equalsIgnoreCase(bean.getTahun())){
+            tahun = bean.getTahun();
+        }
+        if (bean.getBulan() != null && !"".equalsIgnoreCase(bean.getBulan())){
+            bulan = bean.getBulan();
+        }
+
 
         String SQL = "SELECT \n" +
                 "dt.rekening_id,\n" +
@@ -67,23 +85,27 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 "INNER JOIN it_akun_jurnal_detail dt ON dt.no_jurnal = h.no_jurnal\n" +
                 "INNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = dt.rekening_id\n" +
                 "WHERE registered_flag = 'Y'\n" +
-                "AND EXTRACT(MONTH FROM h.tanggal_jurnal) = :bulan \n" +
-                "AND EXTRACT(YEAR FROM h.tanggal_jurnal) = :tahun \n" +
-                "AND h.branch_id = :unit \n" +
-                "AND dt.rekening_id LIKE :rekening\n" +
+                "AND CAST(EXTRACT(MONTH FROM h.tanggal_jurnal) AS VARCHAR) LIKE :bulan \n" +
+                "AND CAST(EXTRACT(YEAR FROM h.tanggal_jurnal) AS VARCHAR) LIKE :tahun  \n" +
+                "AND h.branch_id = :unit  \n" +
+                "AND dt.rekening_id LIKE :rekening \n" +
+                "AND h.tipe_jurnal_id LIKE :tipeJurnalId \n" +
+                "AND h.no_jurnal LIKE :nojurnal \n" +
                 "GROUP\n" +
                 "BY \n" +
                 "dt.rekening_id,\n" +
                 "kd.parent_id,\n" +
                 "kd.kode_rekening,\n" +
                 "kd.nama_kode_rekening\n" +
-                "ORDER BY kd.parent_id, kd.kode_rekening";
+                "ORDER BY kd.parent_id, kd.kode_rekening\n";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("unit", bean.getUnit())
-                .setParameter("bulan", dcBulan)
-                .setParameter("tahun", dcTahun)
+                .setParameter("bulan", bulan)
+                .setParameter("tahun", tahun)
                 .setParameter("rekening", rekenigId)
+                .setParameter("tipeJurnalId", tipeJurnalId)
+                .setParameter("nojurnal", noJurnal)
                 .list();
 
         List<TutupPeriod> tutupPeriods = new ArrayList<>();
@@ -259,5 +281,44 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
         }
 
         return found;
+    }
+
+    public List<SaldoAkhir> getNilaiSaldoAkhir(String periode, String branchId, String rekeningId, BigInteger level){
+
+        String SQL = "SELECT\n" +
+                "a.rekening_id,\n" +
+                "a.periode, \n" +
+                "a.posisi,\n" +
+                "a.saldo,\n" +
+                "b.nama_kode_rekening\n" +
+                "FROM it_akun_saldo_akhir a\n" +
+                "INNER JOIN im_akun_kode_rekening b ON b.rekening_id = a.rekening_id\n" +
+                "WHERE a.periode LIKE :periode \n" +
+                "AND a.branch_id = :unit \n" +
+                "AND a.rekening_id LIKE :rekening \n" +
+                "AND b.level = :level \n" +
+                "AND a.saldo > 0\n" +
+                "ORDER BY b.kode_rekening";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("periode", periode)
+                .setParameter("unit", branchId)
+                .setParameter("rekening", rekeningId)
+                .setParameter("level", level)
+                .list();
+
+        List<SaldoAkhir> saldoAkhirs  = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                SaldoAkhir saldoAkhir = new SaldoAkhir();
+                saldoAkhir.setRekeningId(obj[0].toString());
+                saldoAkhir.setPeriode(obj[1].toString());
+                saldoAkhir.setPosisi(obj[2].toString());
+                saldoAkhir.setSaldo((BigDecimal) obj[3]);
+                saldoAkhir.setNamaKodeRekening(obj[4].toString());
+                saldoAkhirs.add(saldoAkhir);
+            }
+        }
+        return saldoAkhirs;
     }
 }

@@ -240,6 +240,34 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
         return detailCheckup;
     }
 
+    public Boolean cekPendaftaranPasien(String idPasien){
+        Boolean res = false;
+        if(idPasien != null && !"".equalsIgnoreCase(idPasien)){
+            String SQL = "SELECT \n" +
+                    "a.id_pasien,\n" +
+                    "b.id_detail_checkup,\n" +
+                    "b.status_periksa,\n" +
+                    "b.created_date\n" +
+                    "FROM it_simrs_header_checkup a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "WHERE a.id_pasien = :id\n" +
+                    "ORDER BY b.created_date DESC LIMIT 1";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idPasien)
+                    .list();
+            if(result.size() > 0){
+                Object[] objects = result.get(0);
+                if(objects[2] != null){
+                    if(!"3".equalsIgnoreCase(objects[2].toString())){
+                        res = true;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
     public String getNextIdPasien() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pasien')");
         Iterator<BigInteger> iter = query.list().iterator();

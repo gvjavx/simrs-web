@@ -795,7 +795,7 @@
         $("#modal-view-detail").modal('show');
         $("#jenis-budgeting").val(idJenis);
         if ("PDT" == idJenis){
-            BgPendapatanAction.getListMasterBudgeting(idKategori, unit, tahun, function (list) {
+            BgPendapatanAction.getListMasterBudgeting(idKategori, unit, tahun, "DRAFT", function (list) {
                 var str = '<table class="table table-bordered table-striped">' +
                     '<thead>' +
                     '<tr>' +
@@ -824,7 +824,7 @@
                 $("#body-view-budgeting-detail").html(str);
             });
         } else if ("INV" == idJenis){
-            BgInvestasiAction.getListDivisiBudgeting(idKategori, idJenis, unit, tahun, function (list) {
+            BgInvestasiAction.getListDivisiBudgeting(idKategori, idJenis, unit, tahun, "DRAFT", function (list) {
                 var str = '<table class="table table-bordered table-striped">' +
                     '<thead>' +
                     '<tr>' +
@@ -853,7 +853,7 @@
                 $("#body-view-budgeting-detail").html(str);
             });
         } else if ("BYA" == idJenis){
-            BgNominasiAction.getListDivisiBudgeting(idKategori, idJenis, unit, tahun, function (list) {
+            BgNominasiAction.getListDivisiBudgeting(idKategori, idJenis, unit, tahun, "DRAFT", function (list) {
                 var str = '<table class="table table-bordered table-striped">' +
                     '<thead>' +
                     '<tr>' +

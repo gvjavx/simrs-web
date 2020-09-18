@@ -60,5 +60,8 @@
         <property name="idPelayanan">
             <column name="id_pelayanan"/>
         </property>
+        <property name="idRuangan">
+            <column name="id_ruangan"/>
+        </property>
     </class>
 </hibernate-mapping>

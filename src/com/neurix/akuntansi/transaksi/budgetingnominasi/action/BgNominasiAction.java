@@ -759,6 +759,7 @@ public class BgNominasiAction {
                         // memperbarui idItemTemp dan idItemRutin;
                         idItemTemp = perhitungan.getIdBiayaRutin();
                         idItemRutin = budgetingPerhitunganBo.getNextIdBiayaRutin();
+                        perhitungan.setIdBiayaRutin(idItemRutin);
                     }
                 }
             }
@@ -899,7 +900,7 @@ public class BgNominasiAction {
         return nilaiTotal;
     }
 
-    public List<ParameterBudgeting> getListDivisiBudgeting( String idKategori, String masterId, String branch, String tahun){
+    public List<ParameterBudgeting> getListDivisiBudgeting( String idKategori, String masterId, String branch, String tahun, String tipe){
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
@@ -915,7 +916,7 @@ public class BgNominasiAction {
         }
 
         // cari ada di data base jika ada
-        if (sessionNilaiParam == null){
+        if (sessionNilaiParam == null || "DRAFT".equalsIgnoreCase(tipe)){
             sessionNilaiParam = new ArrayList<>();
             ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
             parameterBudgeting.setBranchId(branch);

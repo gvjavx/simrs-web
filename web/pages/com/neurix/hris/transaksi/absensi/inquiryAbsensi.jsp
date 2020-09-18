@@ -58,7 +58,7 @@
             $('#info_dialog').dialog('close');
         }
         function link(){
-            window.location.href="<s:url action='goToProses_absensi'/>";
+            window.location.href="<s:url action='initForm_absensi'/>";
         }
         function link2(){
             window.location.href="<s:url action='goToInquiry_absensi'/>";
@@ -75,23 +75,11 @@
                 $('#info_dialog').dialog('close');
             };
             $.subscribe('beforeProcessSaveAbsensi', function (event, data) {
-                var values;
-                values = $('input:checkbox:checked').length;
-                if (values!=0) {
-                    if (confirm('Do you want to proses this record?')) {
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
-                    } else {
-                        event.originalEvent.options.submit = false;
-                    }
-                }else{
+                if (confirm('Do you want to proses this record?')) {
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
+                } else {
                     event.originalEvent.options.submit = false;
-                    var msg = "";
-                    if (values == 0) {
-                        msg += 'tidak ada absensi yang di checklist' + '<br/>';
-                    }
-                    document.getElementById('errorValidationMessage').innerHTML = msg;
-                    $.publish('showErrorValidationDialog');
                 }
             });
             $.subscribe('beforeProcessInquiryAbsensi', function (event, data) {
@@ -177,8 +165,29 @@
                     <table width="100%" align="center">
                         <tr>
                             <td align="center">
-                                <s:form id="inquiryAbsensi" method="post" theme="simple" namespace="/absensi" action="inquiry_absensi" cssClass="form-horizontal">
+                                <s:form id="inquiryAbsensi" method="post" theme="simple" namespace="/absensi" action="cronInquiry_absensi" cssClass="form-horizontal">
                                     <table >
+                                        <tr>
+                                            <td>
+                                                <label class="control-label"><small>Unit :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:if test='absensiPegawai.branchId == "KP"'>
+                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId"
+                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId" disabled="true"
+                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        <s:hidden id="branchId" name="absensiPegawai.branchId"/>
+                                                    </s:else>
+
+                                                </table>
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <td>
                                                 <label class="control-label"><small>Tanggal :</small></label>
@@ -203,40 +212,6 @@
                                                 </table>
                                             </td>
                                         </tr>
-
-                                        <tr>
-                                            <td>
-                                                <label class="control-label"><small>Unit :</small></label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:if test='absensiPegawai.branchId == "KP"'>
-                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                    </s:if>
-                                                    <s:else>
-                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId" disabled="true"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                        <s:hidden id="branchId" name="absensiPegawai.branchId"/>
-                                                    </s:else>
-
-                                                </table>
-                                            </td>
-                                        </tr>
-
-                                        <tr style="display: none">
-                                            <td>
-                                                <label class="control-label"><small>Status Pegawai :</small></label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:select list="#{'Y':'Pegawai Shift','N':'Pegawai Kantor'}" id="statusPegawai" name="absensiPegawai.cekPegawaiStatus"
-                                                              headerKey="" headerValue="Semua Pegawai" cssClass="form-control" />
-                                                </table>
-                                            </td>
-                                        </tr>
                                         <tr>
                                             <td align="center" colspan="2">
                                                 <br>
@@ -253,7 +228,7 @@
                                                             Inquiry
                                                         </sj:submit>
                                                         <button id="btnProses" type="button" class="btn btn-success">
-                                                            <i class="fa fa-check"></i> Proses
+                                                            <i class="fa fa-save"></i> Save
                                                         </button>
                                                     </div>
                                                 </div>
@@ -265,7 +240,7 @@
                         </tr>
                         <tr>
                             <td align="center">
-                                <s:form id="prosesAbsensi" method="post" theme="simple" namespace="/absensi" action="saveTmp_absensi" cssClass="form-horizontal">
+                                <s:form id="prosesAbsensi" method="post" theme="simple" namespace="/absensi" action="saveAdd_absensi" cssClass="form-horizontal">
                                     <s:hidden name="addOrEdit"/>
                                     <s:hidden name="delete"/>
                                     <table>
@@ -295,7 +270,7 @@
                                         <table id="showdata" width="95%">
                                             <tr>
                                                 <td align="center">
-                                                    <table style="width: 100%;" class="absensiTable table table-bordered" id="absensiTable">
+                                                    <table style="width: 100%;" class="absensiDetailTable table table-bordered" id="absensiDetailTable">
                                                     </table>
                                                 </td>
                                             </tr>
@@ -356,7 +331,7 @@
                                                             }"
                                                             >
                                                                 <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                                                Record has been process successfully.
+                                                                Record has been saved successfully.
                                                             </sj:dialog>
                                                             <sj:dialog id="info_dialog" openTopics="showInfoDialogInquiry" modal="true" resizable="false"
                                                                        height="200" width="400" autoOpen="false" title="Infomation Dialog"
@@ -449,11 +424,6 @@
     </div>
 </div>
 <script>
-    window.cekKoneksi = function(){
-        dwr.engine.setAsync(false);
-        AbsensiAction.cekKoneksi(function(listdata) {
-        })
-    };
     window.saveTmp = function(){
             var values = new Array();
             var status ;
@@ -487,60 +457,77 @@
                 alert('Silahkan Centang Salah Satu Absensi !');
             }
     };
-    window.loadAbsensi =  function(){
-        $('.absensiDetailTable').find('tr').remove();
-        $('.absensiTable').find('tbody').remove();
-        $('.absensiTable').find('thead').remove();
+    window.loadFinal =  function() {
+        var tanggal = $('#tanggal').val();
+        $('.absensiTable').find('tr').remove();
+        $('.absensiDetailTable').find('tbody').remove();
+        $('.absensiDetailTable').find('thead').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
-        AbsensiAction.loadAbsensi(function(listdata) {
-            if(listdata!=""){
-                tmp_table = "<thead style='font-size: 12px' ><tr class='active'>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>View</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAll'></th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tanggal</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>PIN</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Jam Masuk</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Jam Keluar</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Status</th>"+
-                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc''>Lembur</th>"+
-                        "</tr></thead>";
-                var i = i ;
-                $.each(listdata, function (i, item) {
-                    var combo = '<input type="checkbox" id="check" name="absensiPegawai.checkedValue" value="'+item.pin+':'+item.stTanggal+'" class="check" >';
-                    tmp_table += '<tr style="font-size: 11px;" ">' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-view-absen' data ='"+item.pin+"' tanggal ='"+item.stTanggal+"' >" +
-                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>"+
-                            '</a>' +
-                            '</td>' +
-                            '<td style="text-align: center">' + combo + '</td>' +
-                            '<td style="text-align: center">' + item.stTanggal + '</td>' +
-                            '<td style="text-align: center">' + item.pin + '</td>' +
-                            '<td style="text-align: center">' + item.nip + '</td>' +
-                            '<td style="text-align: center">' + item.nama + '</td>' +
-                            '<td align="center" class="ceknull">' + item.jamMasuk + '</td>' +
-                            '<td align="center" class="ceknull">' + item.jamKeluar + '</td>' +
-                            '<td align="center" class="ceknull">' + item.statusName + '</td>' +
-                            '<td align="center" class="ceknull">' + item.lembur + '</td>' +
-                            "</tr>";
-                });
-            }else{
-                alert("Data pada tanggal ini kosong");
-                window.location.href = "<s:url action='add_absensi.action'/>";
-            }
+        AbsensiAction.searchAbsensiFinal(function (listdata) {
+            tmp_table = "<thead style='font-size: 10px' ><tr class='active'>" +
+                // "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>View</th>" +
+                // "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAll'></th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Tanggal</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Hari</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>PIN</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>NIP</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Nama</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Bidang/Divisi</th>" +
+                "<th colspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Jam Kerja</th>" +
+                "<th colspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Lembur</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Pengajuan Lembur</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Realisasi Lembur</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Perhitungan Lembur</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Biaya Lembur</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Status</th>" +
+                "</tr>" +
+                "<tr class='active'>" +
+                "<th style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>In</th>" +
+                "<th style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Out</th>" +
+                "<th style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Start</th>" +
+                "<th style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>End</th>" +
+                "</tr>" +
+                "</thead>";
+            var i = i;
+            $.each(listdata, function (i, item) {
+                var combo = '<input type="checkbox" id="check" name="checkApprove[]" value="' + item.pin + '" class="check" checked >';
 
-            $('.absensiTable').append(tmp_table);
-            $("#checkAll").change(function(){
+                tmp_table += '<tr style="font-size: 9px;" ">' +
+                    <%--'<td align="center">' +--%>
+                    <%--"<a href='javascript:;' class ='item-view-detail' data ='" + item.pin + "' tanggal ='" + item.stTanggal + "' nip ='" + item.nip + "' lemburAwal ='" + item.awalLembur + "' lemburAkhir ='" + item.selesaiLembur + "'>" +--%>
+                    <%--"<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +--%>
+                    <%--'</a>' +--%>
+                    <%--'</td>' +--%>
+                    // '<td align="center">' + combo + '</td>' +
+                    '<td align="center">' + item.stTanggal + '</td>' +
+                    '<td align="center">' + item.tipeHariName + '</td>' +
+                    '<td align="center">' + item.pin + '</td>' +
+                    '<td align="center">' + item.nip + '</td>' +
+                    '<td align="center">' + item.nama + '</td>' +
+                    '<td align="center" class="ceknull">' + item.divisi + '</td>' +
+                    '<td align="center" class="ceknull">' + item.jamMasuk + '</td>' +
+                    '<td align="center" class="ceknull">' + item.jamPulang + '</td>' +
+                    '<td align="center" class="ceknull">' + item.awalLembur + '</td>' +
+                    '<td align="center" class="ceknull">' + item.selesaiLembur + '</td>' +
+                    '<td align="center">' + item.pengajuanLembur + '</td>' +
+                    '<td align="center">' + item.realisasiJamLembur + '</td>' +
+                    '<td align="center">' + item.jamLembur + '</td>' +
+                    '<td align="center" class="ceknull">' + item.stBiayaLembur + '</td>' +
+                    '<td align="center">' + item.statusName + '</td>' +
+                    "</tr>";
+            });
+            $('.absensiDetailTable').append(tmp_table);
+            $("#checkAll").change(function () {
                 $('input:checkbox').not(this).prop('checked', this.checked);
             });
-            $('#save').show();
-            $("#absensiTable .ceknull:contains('null')").html("-");});
-    };
+            $('#cancel').show();
+            $('#saveAdd').show();
+            $("#absensiDetailTable .ceknull:contains('null')").html("-");
+        });
+    }
     $(document).ready(function(){
-        loadAbsensi();
+        loadFinal();
         $('#tanggal1').datepicker({
             dateFormat: 'dd-mm-yy'
         });
@@ -551,44 +538,5 @@
             $("#btnProsesSave").trigger( "click" );
         });
         $('input:checkbox').removeAttr('checked');
-        $('#tanggal').change(function() {
-            var val= $('#tanggal').val();
-            AbsensiAction.searchStatusHari(val,function(listdata){
-                    if (listdata == 'kerja') {
-                        $('#statusHari').val("hari_kerja");
-                    } else if (listdata == 'libur'){
-                        $('#statusHari').val("hari_libur");
-                    }
-                });
-        });
-    });
-    $('.absensiTable').on('click', '.item-view-absen', function () {
-        var pin = $(this).attr('data');
-        var tanggal = $(this).attr('tanggal');
-
-        $('.listAbsensiTable').find('tbody').remove();
-        $('.listAbsensiTable').find('thead').remove();
-        dwr.engine.setAsync(false);
-        var tmp_table = "";
-        AbsensiAction.searchListAbsensi(pin,tanggal,function(listdata) {
-            tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tanggal</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>status</th>"+
-                    "</tr></thead>";
-            var i = i;
-            $.each(listdata, function (i, item) {
-                tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="center">' + item.tanggal + '</td>' +
-                        '<td align="center">' + item.statusName + '</td>' +
-                        "</tr>";
-            });
-            $('.listAbsensiTable').append(tmp_table);
-            $("#listAbsensiTable td:contains('null')").html("-");
-        });
-
-        $('#modal-list').find('.modal-title').text('View Absensi');
-        $('#modal-list').modal('show');
     });
 </script>

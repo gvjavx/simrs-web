@@ -235,7 +235,7 @@
                                     <td>Total Bayar (RP) </td>
                                     <td align="center">View</td>
                                     <td align="center">Approval Keu.</td>
-                                    <td align="center">Approval Kasub.</td>
+                                    <td align="center">Approval Atasan</td>
                                     <td align="center">Posting</td>
                                     <td align="center">Bukti</td>
                                 </tr>

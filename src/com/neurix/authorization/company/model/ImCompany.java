@@ -144,6 +144,16 @@ public class ImCompany implements Serializable {
     private BigDecimal paramDapenPegawai;
     private BigDecimal biayaJabatan;
 
+    private Integer jamBatasAbsen;
+
+    public Integer getJamBatasAbsen() {
+        return jamBatasAbsen;
+    }
+
+    public void setJamBatasAbsen(Integer jamBatasAbsen) {
+        this.jamBatasAbsen = jamBatasAbsen;
+    }
+
     public BigDecimal getParamDapenPegawai() {
         return paramDapenPegawai;
     }

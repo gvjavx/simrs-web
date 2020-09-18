@@ -89,6 +89,16 @@ public class Budgeting {
     private String namaKategori;
     private String jenis;
 
+    private BigDecimal realisasi;
+
+    public BigDecimal getRealisasi() {
+        return realisasi;
+    }
+
+    public void setRealisasi(BigDecimal realisasi) {
+        this.realisasi = realisasi;
+    }
+
     public String getJenis() {
         return jenis;
     }

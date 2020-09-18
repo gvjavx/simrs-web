@@ -30,7 +30,7 @@ import java.util.Random;
  * Time: 21:18
  * To change this template use File | Settings | File Templates.
  */
-public class CommonUtil {
+public class  CommonUtil {
 
     protected static transient Logger logger = Logger.getLogger(CommonUtil.class);
 
@@ -768,6 +768,49 @@ public class CommonUtil {
         return stBulan;
     }
 
+    public static String convertStringBulanToNumber(String bulan){
+        String stBulan = "";
+        switch (bulan.toLowerCase()){
+            case "januari" :
+                stBulan = "1";
+                break;
+            case "februari" :
+                stBulan = "2";
+                break;
+            case "maret" :
+                stBulan = "3";
+                break;
+            case "april" :
+                stBulan = "4";
+                break;
+            case "mei" :
+                stBulan = "5";
+                break;
+            case "juni" :
+                stBulan = "6";
+                break;
+            case "juli" :
+                stBulan = "7";
+                break;
+            case "agustus" :
+                stBulan = "8";
+                break;
+            case "september" :
+                stBulan = "9";
+                break;
+            case "oktober" :
+                stBulan = "10";
+                break;
+            case "november" :
+                stBulan = "11";
+                break;
+            case "desember" :
+                stBulan = "12";
+                break;
+        }
+        return stBulan;
+    }
+
 
     public static String convertIdBagian(String id){
         String bagian = "-";
@@ -1254,4 +1297,42 @@ public class CommonUtil {
         Random random = new Random();
         return random.ints(min,(max+1)).findFirst().getAsInt();
     }
+
+    //Convert Date to Calendar
+    public static Calendar dateToCalendar(java.util.Date date) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+
+    }
+
+    //Convert Calendar to Date
+    public static java.util.Date calendarToDate(Calendar calendar) {
+        return calendar.getTime();
+    }
+
+    public static long compareTwoTimeStamps(java.sql.Timestamp currentTime, java.sql.Timestamp oldTime,String get) {
+        long milliseconds1 = oldTime.getTime();
+        long milliseconds2 = currentTime.getTime();
+
+        long diff = milliseconds2 - milliseconds1;
+        long diffSeconds = diff / 1000;
+        long diffMinutes = diff / (60 * 1000);
+        long diffHours = diff / (60 * 60 * 1000);
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        if ("menit".equalsIgnoreCase(get)){
+            return diffMinutes;
+        }else if ("jam".equalsIgnoreCase(get)){
+            return diffHours;
+        }else if ("detik".equalsIgnoreCase(get)){
+            return diffSeconds;
+        }else if ("hari".equalsIgnoreCase(get)){
+            return diffDays;
+        }else{
+            return diff;
+        }
+    }
+
 }

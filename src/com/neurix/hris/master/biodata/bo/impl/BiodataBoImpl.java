@@ -1956,8 +1956,8 @@ public class BiodataBoImpl implements BiodataBo {
                         study.setNip(personalEntity.getNip());
                         study.setFlag("Y");
                         List<Study> studies = studyBo.getByCriteria(study);
-                        String pendidikanTerkahir = pendidikanTerakhir(studies);
-                        returnBiodata.setPendidikanTerakhir(pendidikanTerkahir);
+                        String pendidikanTerakhir = pendidikanTerakhir(studies);
+                        returnBiodata.setPendidikanTerakhir(pendidikanTerakhir);
 
 //                        Branch branch = new Branch();
 //                        BranchBo branchBo = (BranchBo) context.getBean("branchBoProxy");

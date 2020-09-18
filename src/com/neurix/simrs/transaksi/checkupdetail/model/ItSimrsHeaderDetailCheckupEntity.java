@@ -81,6 +81,15 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String flagTppri;
     private String isStay;
     private String flagCover;
+    private String flagSisa;
+
+    public String getFlagSisa() {
+        return flagSisa;
+    }
+
+    public void setFlagSisa(String flagSisa) {
+        this.flagSisa = flagSisa;
+    }
 
     public String getFlagCover() {
         return flagCover;

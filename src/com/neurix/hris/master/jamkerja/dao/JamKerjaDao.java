@@ -79,4 +79,18 @@ public class JamKerjaDao extends GenericDao<ImHrisJamKerja,String> {
     public void addAndSaveHistory(ImHrisJamKerjaHistory entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);
     }
+
+    public List<ImHrisJamKerja> getJamKerjaByBranchAndHari(String branchId,Integer hari) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImHrisJamKerja.class);
+        criteria.add(Restrictions.eq("branchId", branchId));
+        criteria.add(Restrictions.eq("hariKerja", hari));
+        criteria.add(Restrictions.eq("flag", "Y"));
+
+        // Order by
+        criteria.addOrder(Order.asc("jamKerjaId"));
+
+        List<ImHrisJamKerja> results = criteria.list();
+
+        return results;
+    }
 }

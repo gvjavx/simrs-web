@@ -3266,6 +3266,8 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(500000000));
             hasil = hasil.add(BigDecimal.valueOf(0.30).multiply(sisaPkp));
         }*/
+
+
         BigDecimal hasil = new BigDecimal(0) ;
         if (!"".equalsIgnoreCase(npwp)){
             if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
@@ -6455,13 +6457,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                 if(itPayrollEntity1.getFlagJubileum() != null){
                     if(itPayrollEntity1.getFlagJubileum().equalsIgnoreCase("Y")){
-                        payroll.setFlagSlip(false);
+                        payroll.setFlagSlip(true);
                     }
                 }
 
                 if(itPayrollEntity1.getFlagPensiun() != null){
                     if(itPayrollEntity1.getFlagPensiun().equalsIgnoreCase("Y")){
-                        payroll.setFlagSlip(false);
+                        payroll.setFlagSlip(true);
                     }
                 }
                 payroll.setTipe(bean.getTipe());

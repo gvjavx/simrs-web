@@ -347,6 +347,11 @@
                                                                     </s:if>
                                                                 </display:column>
                                                             </s:if>--%>
+                                                            <display:setProperty name="paging.banner.item_name">Lembur</display:setProperty>
+                                                            <display:setProperty name="paging.banner.items_name">Lembur</display:setProperty>
+                                                            <display:setProperty name="export.excel.filename">Lembur.xls</display:setProperty>
+                                                            <display:setProperty name="export.csv.filename">Lembur.csv</display:setProperty>
+                                                            <display:setProperty name="export.pdf.filename">Lembur.pdf</display:setProperty>
                                                         </display:table>
                                                     </td>
                                                 </tr>

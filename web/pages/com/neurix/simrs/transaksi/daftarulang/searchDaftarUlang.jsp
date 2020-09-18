@@ -13,7 +13,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#daftar_ulang_pasien').addClass('active');
+            $('#pendaftaran_active, #peralihan_biaya').addClass('active');
+            $('#pendaftaran_open').addClass('menu-open');
         });
 
 
@@ -31,7 +32,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Daftar Ulang Pasien
+            Peralihan Biaya Pasien
         </h1>
     </section>
 
@@ -42,7 +43,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Daftar Ulang Pasien</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Peralihan Biaya Pasien</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
@@ -163,7 +164,7 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Ulang Pasien</h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Data Pasien</h3>
                     </div>
                     <div class="box-body">
                         <table id="myTable" class="table table-bordered table-striped">

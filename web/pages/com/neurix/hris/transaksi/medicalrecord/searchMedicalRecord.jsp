@@ -362,6 +362,11 @@
                                                         <display:column property="tipeBerobatName" sortable="true" title="Tipe Berobat"  />
                                                         <display:column property="iconApprove" sortable="true" title="Status"/>
                                                         <display:column property="note" sortable="true" title="Note"  />
+                                                        <display:setProperty name="paging.banner.item_name">MedicalRecord</display:setProperty>
+                                                        <display:setProperty name="paging.banner.items_name">MedicalRecord</display:setProperty>
+                                                        <display:setProperty name="export.excel.filename">MedicalRecord.xls</display:setProperty>
+                                                        <display:setProperty name="export.csv.filename">MedicalRecord.csv</display:setProperty>
+                                                        <display:setProperty name="export.pdf.filename">MedicalRecord.pdf</display:setProperty>
                                                     </display:table>
                                                 </td>
                                             </tr>

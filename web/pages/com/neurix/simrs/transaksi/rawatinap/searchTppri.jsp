@@ -26,7 +26,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#tppri').addClass('active');
+            $('#pendaftaran_active, #bayar_rawat_inap').addClass('active');
+            $('#pendaftaran_open').addClass('menu-open');
         });
 
     </script>

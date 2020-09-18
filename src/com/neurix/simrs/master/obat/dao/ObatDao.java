@@ -6,6 +6,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -803,7 +804,8 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 "a.*,\n" +
                 "pl.nama_pelayanan,\n" +
                 "br.branch_name,\n" +
-                "ts.qty as qty_awal\n" +
+                "ts.qty as qty_awal,\n" +
+                "ob.id_obat\n" +
                 "FROM\n" +
                 "(\n" +
                 "        SELECT \n" +
@@ -860,25 +862,26 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 ") a \n" +
                 "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = a.id_pelayanan\n" +
                 "INNER JOIN im_branches br ON br.branch_id = pl.branch_id\n" +
+                "INNER JOIN im_simrs_obat ob ON ob.id_barang = a.id_barang \n" +
                 "INNER JOIN (\n" +
-                "\tSELECT \n" +
-                "\tid_barang,\n" +
-                "\tregistered_date,\n" +
-                "\tid_pelayanan,\n" +
-                "\tSUM(qty) as qty\n" +
-                "\tFROM \n" +
-                "\tit_simrs_transaksi_stok\n" +
-                "\tWHERE tipe = 'D'\n" +
-                "\tGROUP BY\n" +
-                "\tid_barang,\n" +
-                "\tregistered_date,\n" +
-                "\tid_pelayanan\n" +
+                "        SELECT \n" +
+                "        id_barang,\n" +
+                "        registered_date,\n" +
+                "        id_pelayanan,\n" +
+                "        SUM(qty) as qty\n" +
+                "        FROM \n" +
+                "        it_simrs_transaksi_stok\n" +
+                "        WHERE tipe = 'D'\n" +
+                "        GROUP BY\n" +
+                "        id_barang,\n" +
+                "        registered_date,\n" +
+                "        id_pelayanan\n" +
                 ") ts ON ts.id_barang = a.id_barang AND ts.registered_date = a.registered_date AND ts.id_pelayanan = a.id_pelayanan\n" +
                 "WHERE a.qty > 0\n" +
                 "AND br.branch_id LIKE :unit \n" +
                 "AND pl.id_pelayanan LIKE :pelayanan \n" +
                 "ORDER BY \n" +
-                "pl.id_pelayanan DESC, a.registered_date, a.nama_obat, a.id_barang";
+                "pl.id_pelayanan DESC, ob.id_obat, a.nama_obat, a.registered_date, a.id_barang";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("unit", branchId)
@@ -891,16 +894,61 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             for (Object[] row : results){
                 Aging data = new Aging();
                 data.setKodeRekening((String) row[0]);
-                data.setNoNota((String) row[2] + " (" + (String) row[1] + ")");
+                data.setNoNota((String) row[1]);
                 data.setTotal(BigDecimal.valueOf(Double.parseDouble(row[3].toString())));
                 data.setTglJurnal((Date) row[4]);
                 data.setMasterId((String) row[5]);
                 data.setNamaMaster((String) row[6]);
                 data.setNamaRekening((String) row[7]);
                 data.setTotalAwal((BigDecimal) row[8]);
+                data.setIdItem((String) row[9]);
+                data.setNamaItem((String) row[2]);
                 agingList.add(data);
             }
         }
         return agingList;
+    }
+
+    public TransaksiStok getSumKreditByPeriodeTransaksiStok(String branchId, String idPelayanan, String periode, String idBarang){
+
+        periode = periode + "%";
+
+        String SQL = "SELECT \n" +
+                "id_pelayanan,\n" +
+                "registered_date,\n" +
+                "tipe,\n" +
+                "id_barang,\n" +
+                "SUM(qty) as total_qty\n" +
+                "FROM it_simrs_transaksi_stok\n" +
+                "WHERE branch_id LIKE :unit \n" +
+                "AND tipe = 'K'\n" +
+                "AND id_pelayanan = :pelayanan \n" +
+                "AND id_barang LIKE :idbarang \n" +
+                "AND CAST(registered_date as VARCHAR) LIKE :periode \n" +
+                "GROUP BY \n" +
+                "id_pelayanan,\n" +
+                "registered_date,\n" +
+                "tipe,\n" +
+                "id_barang";
+
+        List<Object[]> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("pelayanan", idPelayanan)
+                .setParameter("periode", periode)
+                .setParameter("idbarang", idBarang)
+                .list();
+
+        TransaksiStok transaksiStok = new TransaksiStok();
+        if (objects != null && objects.size() > 0){
+            for (Object[] obj : objects){
+                transaksiStok.setIdPelayanan(obj[0].toString());
+                transaksiStok.setRegisteredDate((Date) obj[1]);
+                transaksiStok.setTipe(obj[2].toString());
+                transaksiStok.setIdPelayanan(obj[3].toString());
+                transaksiStok.setQty(obj[4] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(String.valueOf((BigDecimal) obj[4])));
+            }
+        }
+
+        return transaksiStok;
     }
 }

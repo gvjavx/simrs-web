@@ -262,6 +262,11 @@
                                             <display:column property="branchName" title="Unit"  />
                                             <display:column property="strJumlahInsentif" title="Jumlah Insentif"  />
                                             <display:column property="strJumlahPph" title="PPh Insentif" />
+                                            <display:setProperty name="paging.banner.item_name">PayrollIntensif</display:setProperty>
+                                            <display:setProperty name="paging.banner.items_name">PayrollIntensif</display:setProperty>
+                                            <display:setProperty name="export.excel.filename">PayrollIntensif.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">PayrollIntensif.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">PayrollIntensif.pdf</display:setProperty>
 
                                         </display:table>
                                     </td>

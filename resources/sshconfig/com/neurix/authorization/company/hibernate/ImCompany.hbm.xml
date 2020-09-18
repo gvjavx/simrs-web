@@ -112,5 +112,9 @@
         <property name="biayaJabatan">
             <column name="param_biaya_jabatan"/>
         </property>
+
+        <property name="jamBatasAbsen">
+            <column name="jam_batas_absen"/>
+        </property>
     </class>
 </hibernate-mapping>

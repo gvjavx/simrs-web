@@ -174,22 +174,49 @@
         });
 
         $.subscribe('beforeProcessSaveStudy', function (event, data){
-            if (confirm('Do you want to save this record?')){
-                event.originalEvent.options.submit = true;
-                $('#modal-edit').modal('hide');
-                $('#myFormDocument')[0].reset();
-                alert('Record has been Saved successfully.');
+            var studyName = document.getElementById("studyName").value;
+            var programStudy = document.getElementById("pendidikanProgramStudi").value;
+            var tahunAwal = document.getElementById("studyTahunAwal").value;
+            var tahunAkhir = document.getElementById("studyTahunAkhir").value;
+            dwr.engine.setAsync(false);
+            if( studyName != ''|| programStudy != ''|| tahunAwal != ''|| tahunAkhir !=''){
+                if (confirm('Do you want to save this record?')){
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
+                    $('#modal-edit').modal('hide');
+                    $('#myFormDocument')[0].reset();
+                    alert('Record has been Saved successfully.');
 //                loadSessionStudy();
 
-                <s:if test="isAdd()">
+                    <s:if test="isAdd()">
                     loadSessionStudy();
-                </s:if>
-                <s:else>
+                    </s:if>
+                    <s:else>
                     var nip = document.getElementById("nip1").value;
                     loadStudy(nip);
-                </s:else>
+                    </s:else>
+                } else{
+                    event.originalEvent.options.submit = false;
+                }
             } else{
                 event.originalEvent.options.submit = false;
+                var msg = "";
+                if (studyName == '') {
+                    msg += 'Field <strong>Study Name</strong> is required.' + '<br/>';
+                }
+                if (programStudy == '') {
+                    msg += 'Field <strong>Program Studi</strong> is required.' + '<br/>';
+                }
+                if (tahunAwal == '') {
+                    msg += 'Field <strong>Tahun Awal</strong> is required.' + '<br/>';
+                }
+                if (tahunAkhir == '') {
+                    msg += 'Field <strong>Tahun Akhir</strong> is required.' + '<br/>';
+                }
+                document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                $("#modal-edit").modal('hide');
+                $.publish('showErrorValidationDialog');
             }
         });
 
@@ -1907,111 +1934,111 @@
 </body>
 
 
-<div id="modal-edit-study" class="modal fade" role="dialog">
-    <div class="modal-dialog" style="width: 450px">
+<%--<div id="modal-edit-study" class="modal fade" role="dialog">--%>
+    <%--<div class="modal-dialog" style="width: 450px">--%>
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Edit Study</h4>
-            </div>
-            <div class="modal-body">
-                <s:url id="urlProcess" namespace="/study" action="editStudy_study"
-                       includeContext="false"/>
-                <s:form id="myFormDocument1" enctype="multipart/form-data" method="post" action="%{urlProcess}"
-                        theme="simple" cssClass="form-horizontal">
-                    <s:hidden name="addOrEdit"/>
-                    <s:hidden id="add" name="add"/>
-                    <s:hidden name="delete"/>
+        <%--<!-- Modal content-->--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header">--%>
+                <%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+                <%--<h4 class="modal-title">Edit Study</h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body">--%>
+                <%--<s:url id="urlProcess" namespace="/study" action="editStudy_study"--%>
+                       <%--includeContext="false"/>--%>
+                <%--<s:form id="myFormDocument1" enctype="multipart/form-data" method="post" action="%{urlProcess}"--%>
+                        <%--theme="simple" cssClass="form-horizontal">--%>
+                    <%--<s:hidden name="addOrEdit"/>--%>
+                    <%--<s:hidden id="add" name="add"/>--%>
+                    <%--<s:hidden name="delete"/>--%>
 
-                    <s:if test="isAddOrEdit()">
-                    <div style="display: none" class="form-group">
-                        <label class="control-label col-sm-3" >Id : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyId" name="study.studyId">
-                        </div>
-                    </div>
+                    <%--<s:if test="isAddOrEdit()">--%>
+                    <%--<div style="display: none" class="form-group">--%>
+                        <%--<label class="control-label col-sm-3" >Id : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="studyId" name="study.studyId">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="gender">Type Study :</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" id="studyTypeStudy" name="study.typeStudy">
-                                <option value="SD">SD</option>
-                                <option value="SMP">SMP</option>
-                                <option value="SMA">SMA</option>
-                                <option value="D1">Diploma D1</option>
-                                <option value="D2">Diploma D2</option>
-                                <option value="D3">Diploma D3</option>
-                                <option value="S1">Sarjana (S1)</option>
-                                <option value="S2">Sarjana (S2)</option>
-                                <option value="S3">Sarjana (S3)</option>
-                            </select>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" for="gender">Type Study :</label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<select class="form-control" id="studyTypeStudy" name="study.typeStudy">--%>
+                                <%--<option value="SD">SD</option>--%>
+                                <%--<option value="SMP">SMP</option>--%>
+                                <%--<option value="SMA">SMA</option>--%>
+                                <%--<option value="D1">Diploma D1</option>--%>
+                                <%--<option value="D2">Diploma D2</option>--%>
+                                <%--<option value="D3">Diploma D3</option>--%>
+                                <%--<option value="S1">Sarjana (S1)</option>--%>
+                                <%--<option value="S2">Sarjana (S2)</option>--%>
+                                <%--<option value="S3">Sarjana (S3)</option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Study Name : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyName" name="study.studyName">
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Study Name : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="studyName" name="study.studyName">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="gender">Fakultas :</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" id="studyFakultas1" name="study.studyFakultas" >
-                            </select>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" for="gender">Fakultas :</label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<select class="form-control" id="studyFakultas1" name="study.studyFakultas" >--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Program Studi : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Program Studi : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Tahun Awal : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Tahun Awal : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Tahun Lulus : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Tahun Lulus : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4">Ijazah (Jpeg) : </label>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4">Ijazah (Jpeg) : </label>--%>
 
-                        <div class="col-sm-8">
-                            <input type="file" id="file" class="form-control" name="fileUpload"/>
-                            <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
-                                   name="study.uploadFile" readonly />
-                        </div>
-                    </div>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="file" id="file" class="form-control" name="fileUpload"/>--%>
+                            <%--<input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"--%>
+                                   <%--name="study.uploadFile" readonly />--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="modal-footer">
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="myFormDocument1"
-                                   id="saveDocument1" name="save" onBeforeTopics="beforeProcessSaveStudy1"
-                                   onCompleteTopics="closeDialog,successDialogDocument1"
-                                   onSuccessTopics="successDialogDocument1" onErrorTopics="errorDialog">
-                            <i class="fa fa-check"></i>
-                            Save
-                        </sj:submit>
-                        <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
-                    </div>
-                    </s:if>
-                </s:form>
-            </div>
-        </div>
-    </div>
-</div>
+                    <%--<div class="modal-footer">--%>
+                        <%--<sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="myFormDocument1"--%>
+                                   <%--id="saveDocument1" name="save" onBeforeTopics="beforeProcessSaveStudy1"--%>
+                                   <%--onCompleteTopics="closeDialog,successDialogDocument1"--%>
+                                   <%--onSuccessTopics="successDialogDocument1" onErrorTopics="errorDialog">--%>
+                            <%--<i class="fa fa-check"></i>--%>
+                            <%--Save--%>
+                        <%--</sj:submit>--%>
+                        <%--<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>--%>
+                    <%--</div>--%>
+                    <%--</s:if>--%>
+                <%--</s:form>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
 
 
 <!-- Modal Edit-->
