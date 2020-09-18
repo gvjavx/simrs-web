@@ -184,7 +184,7 @@
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
-
+                                        <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>" onclick="printPo('<s:property value="idPermintaanVendor"/>','<s:property value="idApprovalObat"/>')">
                                         <s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
                                             <%--<s:url var="print_po" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">--%>
                                                 <%--<s:param name="id"><s:property value="idPermintaanVendor"/></s:param>--%>
@@ -479,6 +479,45 @@
         $('#img_surat_po').attr('src',img);
         $('#modal-doc').modal('show');
     }
+
+    function post(path, params) {
+
+        var method='post';
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        const form = document.createElement('form');
+        form.method = method;
+        form.action = path;
+        form.target = "_blank";
+
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                const hiddenField = document.createElement('input');
+                hiddenField.type = 'hidden';
+                hiddenField.name = key;
+                hiddenField.value = params[key];
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function firstpath() {
+        var pathArray = window.location.pathname.split('/');
+        var first = pathArray[1];
+        return "/" + first;
+    }
+
+
+    function printPo(idPermintaan, idApproval) {
+        var form = { "permintaanVendor.idPermintaanVendor":idPermintaan, "permintaanVendor.idApprovalObat":idApproval };
+        var host = firstpath()+"/permintaanpo/printPo_permintaanpo.action";
+        post(host, form);
+    }
+
 
 </script>
 

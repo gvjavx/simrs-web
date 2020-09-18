@@ -2,7 +2,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <html>
 <head>
-    <title>e-HEALTH</title>
+    <title>GO-MEDSYS NMU</title>
     <link rel="shortcut icon" href="<s:url value="/pages/images/logo-pln.png"/>"/>
     <link rel="stylesheet" type="text/css" href="<s:url value="/pages/css/style.css"/>"/>
     <style type="text/css" media="all">

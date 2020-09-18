@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-asesmen-ugd">
+<div class="modal fade" id="modal-aud_asesmen-ugd">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -9,9 +9,13 @@
             </div>
             <div class="modal-body">
                 <div class="box-body btn-hide">
-                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_asesmen-ugd">
+                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_aud_asesmen-ugd">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_asesmen-ugd"></p>
+                        <p id="msg_aud_asesmen-ugd"></p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="modal_warning">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_warning"></p>
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
@@ -34,7 +38,7 @@
                             <li><a onclick="addAsesmenUgd('asuhan')" style="cursor: pointer"><i class="fa fa-plus"></i> Rencanan Asuhan Keperawatan</a></li>
                             <li><a onclick="addAsesmenUgd('anamnesa')" style="cursor: pointer"><i class="fa fa-plus"></i> Anamnesis dan Pemeriksaan Fisik</a></li>
                             <li><a onclick="addAsesmenUgd('asuhan_medis')" style="cursor: pointer"><i class="fa fa-plus"></i> Rencana Asuhan Medis</a></li>
-                            <li><a onclick="addAsesmenUgd('kondisi_pasien')" style="cursor: pointer"><i class="fa fa-plus"></i> Perkembangan Kondisi Pasien</a></li>
+                            <li><a onclick="addAsesmenUgd('terintegrasi')" style="cursor: pointer"><i class="fa fa-plus"></i> Perkembangan Kondisi Pasien</a></li>
                             <li><a onclick="addAsesmenUgd('keluar_igd')" style="cursor: pointer"><i class="fa fa-plus"></i> Kondisi Saat Keluar IGD</a></li>
                         </ul>
                     </div>
@@ -46,84 +50,98 @@
                             <td>Keluhan Utama</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_keluhan_utama" class="hvr-grow" onclick="detailAud('keluhan_utama')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_keluhan_utama" class="hvr-grow btn-hide" onclick="conUGD('keluhan_utama', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_pre_hospital">
                             <td>Data Pre Hospipal</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_pre_hospital" class="hvr-grow" onclick="detailAud('pre_hospital')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pre_hospital" class="hvr-grow btn-hide" onclick="conUGD('pre_hospital', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_keperawatan">
                             <td>Keperawatan</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_keperawatan" class="hvr-grow" onclick="detailAud('keperawatan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_keperawatan" class="hvr-grow btn-hide" onclick="conUGD('keperawatan', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_nyeri">
                             <td>Asesmen Nyeri</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_nyeri" class="hvr-grow" onclick="detailAud('nyeri')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_nyeri" class="hvr-grow btn-hide" onclick="conUGD('nyeri', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_nutrisional">
                             <td>Skrining Risiko Nutrisional</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_nutrisional" class="hvr-grow" onclick="detailAud('nutrisional')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_nutrisional" class="hvr-grow btn-hide" onclick="conUGD('nutrisional', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_jatuh">
                             <td>Asesmen Resiko Jatuh</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_jatuh" class="hvr-grow" onclick="detailAud('jatuh')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_jatuh" class="hvr-grow btn-hide" onclick="conUGD('jatuh', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_status">
                             <td>Status Fungsional</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_status" class="hvr-grow" onclick="detailAud('status')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_status" class="hvr-grow btn-hide" onclick="conUGD('status', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_kebutuhan">
                             <td>Kebutuhan Edukasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_kebutuhan" class="hvr-grow" onclick="detailAud('kebutuhan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_kebutuhan" class="hvr-grow btn-hide" onclick="conUGD('kebutuhan', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_diagnosis">
                             <td>Diagnosis Keperawatan</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_diagnosis" class="hvr-grow" onclick="detailAud('diagnosis')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_diagnosis" class="hvr-grow btn-hide" onclick="conUGD('diagnosis', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_asuhan">
                             <td>Rencanan Asuhan Keperawatan</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_asuhan" class="hvr-grow" onclick="detailAud('asuhan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_asuhan" class="hvr-grow btn-hide" onclick="conUGD('asuhan', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_anamnesa">
                             <td>Anamnesa dan Pemeriksaan Fisik</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_anamnesa" class="hvr-grow" onclick="detailAud('anamnesa')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_anamnesa" class="hvr-grow btn-hide" onclick="conUGD('anamnesa', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_asuhan_medis">
                             <td>Rencana Asuhan Medis</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_asuhan_medis" class="hvr-grow" onclick="detailAud('asuhan_medis')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_asuhan_medis" class="hvr-grow btn-hide" onclick="conUGD('asuhan_medis', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_kondisi_pasien">
                             <td>Perkembangan Kondisi Pasien</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_kondisi_pasien" class="hvr-grow" onclick="detailAud('kondisi_pasien')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_kondisi_pasien" class="hvr-grow btn-hide" onclick="conUGD('kondisi_pasien', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_aud_keluar_igd">
                             <td>Kondisi Saat Keluar IGD</td>
                             <td width="20%" align="center">
                                 <img id="btn_aud_keluar_igd" class="hvr-grow" onclick="detailAud('keluar_igd')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_keluar_igd" class="hvr-grow btn-hide" onclick="conUGD('keluar_igd', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -160,7 +178,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input type="radio" value="Merah" id="triase1" name="radio_triase" /><label for="triase1" >Merah</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Merah" id="triase1" name="radio_triase" /><label for="triase1" >Merah</label>
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -168,7 +186,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input type="radio" value="Kuning" id="triase2" name="radio_triase" /><label for="triase2">Kuning</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Kuning" id="triase2" name="radio_triase" /><label for="triase2">Kuning</label>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +198,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input type="radio" value="Hijau" id="triase3" name="radio_triase" /><label for="triase3">Hijau</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Hijau" id="triase3" name="radio_triase" /><label for="triase3">Hijau</label>
                                 </div>
                             </div>
                             <div class="col-md-1">
@@ -188,151 +206,17 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02" style="margin-left: -20px">
-                                    <input type="radio" value="Hitam" id="triase4" name="radio_triase" /><label for="triase4">Hitam</label>
+                                    <input onclick="setDataTriase(this.value)" type="radio" value="Hitam" id="triase4" name="radio_triase" /><label for="triase4">Hitam</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" >Keadaan Umum</label>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="Gelisah/Koma" id="keadaan1" name="radio_keadaan" /><label for="keadaan1">Gelisah/Koma</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="Lemah/Kesakitan" id="keadaan2" name="radio_keadaan" /><label for="keadaan2">Lemah/Kesakitan</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="Cukup" id="keadaan3" name="radio_keadaan" /><label for="keadaan3">Cukup</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" >Pernafasan</label>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="< 12 / > 30x/m" id="napas1" name="radio_napas" /><label for="napas1">< 12 / > 30x/m</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="21-30x/m" id="napas2" name="radio_napas" /><label for="napas2">21-30x/m</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="12-20x/m" id="napas3" name="radio_napas" /><label for="napas3">12-20x/m</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" >Nadi</label>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="< 50 / > 150x/m" id="nadi1" name="radio_nadi" /><label for="nadi1"><50/>150x/m</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="101-150x/m" id="nadi2" name="radio_nadi" /><label for="nadi2">101-150x/m</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="50-100x/m" id="nadi3" name="radio_nadi" /><label for="nadi3">50-100x/m</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" >Akral</label>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="< 12 / > 30x/m" id="akral1" name="radio_akral" /><label for="akral1">Dingin</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="21-30x/m" id="akral2" name="radio_akral" /><label for="akral2">Dingin</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="12-20x/m" id="akral3" name="radio_akral" /><label for="akral3">Hangat</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" >CRT</label>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="> 2 detik" id="crt1" name="radio_crt" /><label for="crt1">> 2 detik</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="< 2 detik" id="crt2" name="radio_crt" /><label for="crt2">< 2 detik</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="< 2 detik" id="crt3" name="radio_crt" /><label for="crt3">< 2 detik</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3" >Keadaan Awal</label>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="Meninggal" id="ka1" name="radio_ka" /><label for="ka1">Meninggal</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="Kaku Mayat" id="ka2" name="radio_ka" /><label for="ka2">Kaku Mayat</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" >
-                                    <input type="radio" value="Lebam Mayat" id="ka3" name="radio_ka" /><label for="ka3">Lebam Mayat</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-offset-3 col-md-4">
-                                <div class="custom02" >
-                                    <input type="radio" value="Refleks Kornea (-)" id="ka4" name="radio_ka" /><label for="ka4">Refleks Kornea (-)</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="set_triase"></div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_aud_keluhan_utama" class="btn btn-success pull-right" onclick="saveAsesmenUgd('keluhan_utama')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_keluhan_utama" class="btn btn-success pull-right" onclick="saveAsesmenUgd('keluhan_utama','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_keluhan_utama" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -721,7 +605,7 @@
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_aud_pre_hospital" class="btn btn-success pull-right" onclick="saveAsesmenUgd('pre_hospital')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_pre_hospital" class="btn btn-success pull-right" onclick="saveAsesmenUgd('pre_hospital','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_pre_hospital" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -975,7 +859,7 @@
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_aud_keperawatan" class="btn btn-success pull-right" onclick="saveAsesmenUgd('keperawatan')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_keperawatan" class="btn btn-success pull-right" onclick="saveAsesmenUgd('keperawatan','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_keperawatan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1091,7 +975,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_nyeri" class="btn btn-success pull-right" onclick="saveAsesmenUgd('nyeri')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_nyeri" class="btn btn-success pull-right" onclick="saveAsesmenUgd('nyeri','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_nyeri" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1199,7 +1083,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_nutrisional" class="btn btn-success pull-right" onclick="saveAsesmenUgd('nutrisional')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_nutrisional" class="btn btn-success pull-right" onclick="saveAsesmenUgd('nutrisional','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_nutrisional" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1365,7 +1249,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_jatuh" class="btn btn-success pull-right" onclick="saveAsesmenUgd('jatuh')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_jatuh" class="btn btn-success pull-right" onclick="saveAsesmenUgd('jatuh','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_jatuh" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1524,7 +1408,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_status" class="btn btn-success pull-right" onclick="saveAsesmenUgd('status')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_status" class="btn btn-success pull-right" onclick="saveAsesmenUgd('status','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_status" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1701,7 +1585,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_kebutuhan" class="btn btn-success pull-right" onclick="saveAsesmenUgd('kebutuhan')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_kebutuhan" class="btn btn-success pull-right" onclick="saveAsesmenUgd('kebutuhan','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_kebutuhan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1841,7 +1725,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_diagnosis" class="btn btn-success pull-right" onclick="saveAsesmenUgd('diagnosis')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_diagnosis" class="btn btn-success pull-right" onclick="saveAsesmenUgd('diagnosis','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_diagnosis" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1957,7 +1841,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_asuhan" class="btn btn-success pull-right" onclick="saveAsesmenUgd('asuhan')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_asuhan" class="btn btn-success pull-right" onclick="saveAsesmenUgd('asuhan','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_asuhan" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2120,7 +2004,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_anamnesa" class="btn btn-success pull-right" onclick="saveAsesmenUgd('anamnesa')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_anamnesa" class="btn btn-success pull-right" onclick="saveAsesmenUgd('anamnesa','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_anamnesa" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2204,7 +2088,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_asuhan_medis" class="btn btn-success pull-right" onclick="saveAsesmenUgd('asuhan_medis')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_asuhan_medis" class="btn btn-success pull-right" onclick="saveAsesmenUgd('asuhan_medis','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_asuhan_medis" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2214,77 +2098,248 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-aud-kondisi_pasien">
+<%--<div class="modal fade" id="modal-aud-kondisi_pasien">--%>
+    <%--<div class="modal-dialog modal-md">--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header" style="background-color: #00a65a; color: white">--%>
+                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
+                    <%--<span aria-hidden="true">&times;</span></button>--%>
+                <%--<h4 class="modal-title"><i class="fa fa-user-plus"></i> Perkembangan Kondisi Pasien--%>
+                <%--</h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body">--%>
+                <%--<div class="box-body">--%>
+                    <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_aud_kondisi_pasien">--%>
+                        <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
+                        <%--<p id="msg_aud_kondisi_pasien"></p>--%>
+                    <%--</div>--%>
+                    <%--<div class="row">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3">Tanggal</label>--%>
+                            <%--<div class="col-md-4">--%>
+                                <%--<div class="input-group">--%>
+                                    <%--<div class="input-group-addon">--%>
+                                        <%--<i class="fa fa-calendar"></i>--%>
+                                    <%--</div>--%>
+                                    <%--<input class="form-control tgl" id="pk1">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<label class="col-md-1">Jam</label>--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--<div class="input-group">--%>
+                                    <%--<div class="input-group-addon">--%>
+                                        <%--<i class="fa fa-clock-o"></i>--%>
+                                    <%--</div>--%>
+                                    <%--<input class="form-control jam" id="pk2">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row jarak">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3">PPA</label>--%>
+                            <%--<div class="col-md-9">--%>
+                                <%--<select class="form-control" id="pk3">--%>
+                                    <%--<option value="Dokter">Dokter</option>--%>
+                                    <%--<option value="Perawat">Perawat</option>--%>
+                                    <%--<option value="Gizi">Gizi</option>--%>
+                                    <%--<option value="Apoteker">Apoteker</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row jarak">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3">IAR</label>--%>
+                            <%--<div class="col-md-9">--%>
+                                <%--<textarea style="width: 100%;" class="form-control" id="pk4"></textarea>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row jarak">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3">Instruksi</label>--%>
+                            <%--<div class="col-md-9">--%>
+                                <%--<textarea class="form-control" id="pk5"></textarea>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row jarak">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3">Notasi</label>--%>
+                            <%--<div class="col-md-9">--%>
+                                <%--<textarea class="form-control" id="pk6"></textarea>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="modal-footer" style="background-color: #cacaca">--%>
+                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
+                <%--</button>--%>
+                <%--<button id="save_aud_kondisi_pasien" class="btn btn-success pull-right" onclick="saveAsesmenUgd('kondisi_pasien','asesmen-ugd')"><i class="fa fa-check"></i> Save--%>
+                <%--</button>--%>
+                <%--<button id="load_aud_kondisi_pasien" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i--%>
+                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
+                <%--</button>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
+<div class="modal fade" id="modal-aud-terintegrasi">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Perkembangan Kondisi Pasien
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Catatan Terintegrasi
                 </h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_aud_terintegrasi">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_aud_terintegrasi"></p>
+                </div>
                 <div class="box-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_aud_kondisi_pasien">
-                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_aud_kondisi_pasien"></p>
+                    <div class="form-group" style="display: none">
+                        <div class="col-md-1">
+                            <input type="color" style="margin-left: -6px; margin-top: -8px"
+                                   class="js-color-picker  color-picker pull-left">
+                        </div>
+                        <div class="col-md-9">
+                            <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
+                                   value="1">
+                        </div>
+                        <div class="col-md-2">
+                            <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3">Tanggal</label>
+                            <label class="col-md-3" style="margin-top: 7px">Tanggal</label>
                             <div class="col-md-4">
-                                <div class="input-group">
+                                <div class="input-group" style="margin-top: 7px">
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control tgl" id="pk1">
+                                    <input class="form-control tgl" id="cppt1">
                                 </div>
                             </div>
-                            <label class="col-md-1">Jam</label>
+                            <label class="col-md-1" style="margin-top: 7px">Jam</label>
                             <div class="col-md-3">
-                                <div class="input-group">
+                                <div class="input-group" style="margin-top: 7px">
                                     <div class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </div>
-                                    <input class="form-control jam" id="pk2">
+                                    <input class="form-control jam" id="cppt2">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row jarak">
+                    <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3">PPA</label>
-                            <div class="col-md-9">
-                                <select class="form-control" id="pk3">
+                            <label class="col-md-3" style="margin-top: 7px">PPA</label>
+                            <div class="col-md-8">
+                                <select class="form-control" id="cppt3" style="margin-top: 7px">
+                                    <option value="">[Select One]</option>
                                     <option value="Dokter">Dokter</option>
                                     <option value="Perawat">Perawat</option>
-                                    <option value="Gizi">Gizi</option>
                                     <option value="Apoteker">Apoteker</option>
+                                    <option value="Gizi">Gizi</option>
+                                    <option value="Bidan">Bidan</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">IAR</label>
-                            <div class="col-md-9">
-                                <textarea style="width: 100%;" class="form-control" id="pk4"></textarea>
+                            <label class="col-md-3"><b>S</b>ubjective</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="cppt4"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Instruksi</label>
-                            <div class="col-md-9">
-                                <textarea class="form-control" id="pk5"></textarea>
+                            <label class="col-md-3" ><b>O</b>bjective</label>
+                            <div class="col-md-4">
+                                <span>Tensi </span> <small>(mmHg)</small>
+                                <input class="form-control" id="cppt5_tensi">
+                            </div>
+                            <div class="col-md-4">
+                                <span>Suhu </span> <small>(&#8451)</small>
+                                <input class="form-control" id="cppt5_suhu" type="number">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Notasi</label>
-                            <div class="col-md-9">
-                                <textarea class="form-control" id="pk6"></textarea>
+                            <div class="col-md-offset-3 col-md-4">
+                                <span>Nadi </span> <small>(x/menit)</small>
+                                <input class="form-control" id="cppt5_nadi" type="number">
+                            </div>
+                            <div class="col-md-4">
+                                <span>RR </span> <small>(x/menit)</small>
+                                <input class="form-control" id="cppt5_rr" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-8">
+                                <textarea class="form-control" id="ket_cppt5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" ><b>A</b>ssesment</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="cppt6"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" ><b>P</b>lanning</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="cppt7"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3" >Instruksi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="cppt8"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6 text-center">
+                                <label>TTD Petugas</label>
+                                <canvas class="paint-canvas-ttd" id="cppt9" width="220"
+                                        onmouseover="paintTtd('cppt9')"></canvas>
+                                <input class="form-control" id="nama_petugas" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_petugas" placeholder="SIP">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('cppt9')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <label>TTD DPJP</label>
+                                <canvas class="paint-canvas-ttd" id="cppt10" width="220"
+                                        onmouseover="paintTtd('cppt10')"></canvas>
+                                <input class="form-control nama_dokter" id="nama_dpjp" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_dpjp" placeholder="SIP">
+                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                        onclick="removePaint('cppt10')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -2293,9 +2348,12 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_kondisi_pasien" class="btn btn-success pull-right" onclick="saveAsesmenUgd('kondisi_pasien')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_terintegrasi" class="btn btn-success pull-right"
+                        onclick="saveCPPT('terintegrasi','asesmen-ugd', 'aud')"><i class="fa fa-check"></i>
+                    Save
                 </button>
-                <button id="load_aud_kondisi_pasien" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
+                <button id="load_aud_terintegrasi" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -2446,13 +2504,17 @@
                             <div class="col-md-6">
                                 <label style="margin-top: 7px">Perawat</label>
                                 <canvas width="250" style="margin-left: -1px;" onmouseover="paintTtd('ki10')" class="paint-canvas-ttd" id="ki10"></canvas>
-                                <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ki10')"><i class="fa fa-trash"></i> Clear
+                                <input class="form-control" id="nama_terang_ki10" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_ki10" placeholder="SIP">
+                                <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ki10')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
                             <div class="col-md-6">
                                 <label style="margin-top: 7px">Dokter</label>
                                 <canvas width="250" style="margin-left: -1px;" onmouseover="paintTtd('ki11')" class="paint-canvas-ttd" id="ki11"></canvas>
-                                <button style="margin-top: -5px; margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ki11')"><i class="fa fa-trash"></i> Clear
+                                <input class="form-control" id="nama_terang_ki11" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_ki11" placeholder="SIP">
+                                <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ki11')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
                         </div>
@@ -2462,7 +2524,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button id="save_aud_keluar_igd" class="btn btn-success pull-right" onclick="saveAsesmenUgd('keluar_igd')"><i class="fa fa-check"></i> Save
+                <button id="save_aud_keluar_igd" class="btn btn-success pull-right" onclick="saveAsesmenUgd('keluar_igd','asesmen-ugd')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_aud_keluar_igd" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...

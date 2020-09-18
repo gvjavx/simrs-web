@@ -190,6 +190,7 @@
                                             <s:url var="add_periksa_radiologi" namespace="/radiologi" action="add_radiologi" escapeAmp="false">
                                                 <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                                 <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
+                                                <s:param name="ket"><s:property value="keterangan"/></s:param>
                                             </s:url>
                                             <s:a href="%{add_periksa_radiologi}">
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">

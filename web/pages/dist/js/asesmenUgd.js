@@ -35,7 +35,10 @@ function showKetIntruksi(val){
     }
 }
 
-function showAsesmenUgd(jenis) {
+function showAsesmenUgd(jenis, idRM, isSetIdRM) {
+    if(isSetIdRM == "Y"){
+        tempidRm = idRM;
+    }
     if(isReadRM){
         $('#title').text(jenis);
         $('.btn-hide').hide();
@@ -43,15 +46,13 @@ function showAsesmenUgd(jenis) {
         $('#title').text(title);
         $('.btn-hide').show();
     }
-    $('#modal-asesmen-ugd').modal({show: true, backdrop: 'static'});
+    $('#modal-aud_asesmen-ugd').modal({show: true, backdrop: 'static'});
 }
 
-function addAsesmenUgd(jenis) {
+function addAsesmenUgd(jenis, idRM, isSetIdRM) {
     if (jenis != '') {
-        setDataPasien();
-        var selec = $('.select2').length;
-        if(selec > 0){
-            $('.select2').select2();
+        if(isSetIdRM == "Y"){
+            tempidRm = idRM;
         }
         if("anamnesa" == jenis){
             var url = "";
@@ -65,74 +66,43 @@ function addAsesmenUgd(jenis) {
         if("asuhan_medis" == jenis){
             listTindakanKategoriPoli();
         }
+        if("triase" == jenis){
+            setNyeri('set_nyeri', umur);
+        }
         $('#modal-aud-' + jenis).modal({show: true, backdrop: 'static'});
+        setDataPasien();
     }
 }
 
-function saveAsesmenUgd(jenis) {
+function saveAsesmenUgd(jenis, keterangan) {
     if (jenis != '') {
 
         var data = [];
         var cek = false;
+        var dataPasien = "";
+
+        dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
+        }
 
         if ("keluhan_utama" == jenis) {
-            var triase = $('[name=radio_triase]:checked').val();
-            var keadaanUmum = $('[name=radio_keadaan]:checked').val();
-            var napas = $('[name=radio_napas]:checked').val();
-            var nadi = $('[name=radio_nadi]:checked').val();
-            var akral = $('[name=radio_akral]:checked').val();
-            var crt = $('[name=radio_crt]:checked').val();
-            var keaddAwal = $('[name=radio_ka]:checked').val();
-
-            if (triase && keadaanUmum && napas && nadi && akral && crt && keaddAwal != undefined) {
-                data.push({
-                    'parameter': 'Triase',
-                    'jawaban': triase,
-                    'keterangan': jenis,
-                    'jenis': '',
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Keadaan Umum',
-                    'jawaban': keadaanUmum,
-                    'keterangan': jenis,
-                    'jenis': '',
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Pernafasan',
-                    'jawaban': napas,
-                    'keterangan': jenis,
-                    'jenis': '',
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Nadi',
-                    'jawaban': nadi,
-                    'keterangan': jenis,
-                    'jenis': '',
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Akral',
-                    'jawaban': akral,
-                    'keterangan': jenis,
-                    'jenis': '',
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'CRT',
-                    'jawaban': crt,
-                    'keterangan': jenis,
-                    'jenis': '',
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Keadaan Awal',
-                    'jawaban': keaddAwal,
-                    'keterangan': jenis,
-                    'jenis': '',
-                    'id_detail_checkup': idDetailCheckup
+            var triase = $('.triase_ugd');
+            if (triase.length > 0) {
+                $.each(triase, function (idx, itemx) {
+                    var label = $('#label_trias_'+idx).text();
+                    var isi = $('[name=trias_'+idx+']:checked').val();
+                    if(isi != undefined && isi != ''){
+                        data.push({
+                            'parameter': label,
+                            'jawaban': isi,
+                            'keterangan': jenis,
+                            'jenis': keterangan,
+                            'id_detail_checkup': idDetailCheckup
+                        });
+                    }
                 });
                 cek = true;
             }
@@ -183,49 +153,49 @@ function saveAsesmenUgd(jenis) {
                     'parameter': 'Cara tiba ke RS',
                     'jawaban': cara,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Rujukan',
                     'jawaban': rjk,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Tindakan',
                     'jawaban': tdk,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Tekanan Darah',
                     'jawaban': tkn + ' mmHg',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Nadi',
                     'jawaban': nadi1 + ' x/menit',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'RR',
                     'jawaban': rr1 + ' x/menit',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Suhu',
                     'jawaban': suhu + ' C',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
@@ -419,35 +389,35 @@ function saveAsesmenUgd(jenis) {
                     'parameter': 'Tekanan Darah',
                     'jawaban': tkn + ' mmHg',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Nadi',
                     'jawaban': nadi1 + ' x/menit',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'RR',
                     'jawaban': rr1 + ' x/menit',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Suhu',
                     'jawaban': suhu + ' C',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Berat Badan',
                     'jawaban': bb + ' Kg',
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
@@ -556,31 +526,30 @@ function saveAsesmenUgd(jenis) {
                     'parameter': 'Apakah terdapat keluhan nyeri',
                     'jawaban': nyeri,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Lokasi',
                     'jawaban': lokasi,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Jenis',
                     'jawaban': skala,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Skala',
                     'jawaban': skal,
                     'keterangan': jenis,
-                    'jenis': '',
+                    'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
-                console.log(data);
                 cek = true;
             }
         }
@@ -1194,6 +1163,10 @@ function saveAsesmenUgd(jenis) {
             var ttd2 = document.getElementById("ki11");
             var cekTtd1 = isCanvasBlank(ttd1);
             var cekTtd2 = isCanvasBlank(ttd2);
+            var nama1 = $('#nama_terang_ki10').val();
+            var sip1 = $('#sip_ki10').val();
+            var nama2 = $('#nama_terang_ki11').val();
+            var sip2 = $('#sip_ki11').val();
 
             if (va1 && va2 && va3 && va4 && va5 && va6 &&
                 va7 && va8 && va9 != '' && !cekTtd1 && !cekTtd2) {
@@ -1257,6 +1230,8 @@ function saveAsesmenUgd(jenis) {
                     'jawaban': ttdA,
                     'tipe': 'ttd',
                     'keterangan': jenis,
+                    'nama_terang': nama1,
+                    'sip':sip1,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
@@ -1264,6 +1239,8 @@ function saveAsesmenUgd(jenis) {
                     'jawaban': ttdB,
                     'tipe': 'ttd',
                     'keterangan': jenis,
+                    'nama_terang': nama2,
+                    'sip':sip2,
                     'id_detail_checkup': idDetailCheckup
                 });
 
@@ -1479,19 +1456,155 @@ function saveAsesmenUgd(jenis) {
             }
         }
 
-        var result = JSON.stringify(data);
+        if ("triase" == jenis) {
+            var va1 = $('[name=tr1]:checked').val();
+            var va2 = $('#tr2').val();
+            var va3 = $('#tr3').val();
+            var va4 = $('#tr4').val();
+            var va5 = $('#tr5').val();
+            var va6 = $('#tr6').val();
+            var va7 = $('#tr7').val();
+            var va8 = $('#tr8').val();
+            var va9 = $('#tr9').val();
+            var va10 = $('#tr10').val();
+            var va11 = $('#tr11').val();
+
+            var ny1 = $('[name=radio_nyeri_keluhan]:checked').val();
+            var ny2 = $('#y_lokasi').val();
+            var ny3 = $('[name=radio_nyeri_jenis]:checked').val();
+            var ny4 = $('#y_inten').val();
+            var jen = $('#temp_jenis').val();
+            var nyeri = "";
+            var tipe = "";
+
+            var nama = $('#nama_terang_tr12').val();
+            var sip = $('#sip_tr12').val();
+            var ttd = document.getElementById('tr12');
+
+            if(jen == "emoji"){
+                nyeri = document.getElementById('choice_emoji');
+                tipe = "Wong Baker Pain Scale";
+            }else{
+                nyeri = document.getElementById('area_nyeri');
+                tipe = "Nomeric Rating Scale";
+            }
+
+            var cekTtd = isCanvasBlank(ttd);
+
+            if( va1 && ny1 && ny3 != undefined && va2 && va3 && va4 && va5 && va6 &&
+                va7 && va8 && va9 && va10 && va11 && ny2 && ny4 && nama && sip != '' && !cekTtd){
+
+                var canv1 = convertToDataURL(nyeri);
+                var canv2 = convertToDataURL(ttd);
+
+                data.push({
+                    'parameter': 'Triase',
+                    'jawaban': va1,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Keluhan',
+                    'jawaban': va2,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Vital Sign',
+                    'jawaban': 'Tensi '+va3+' mmHg, Nadi '+va4+' x/menit, Suhu '+va5+' C, RR '+va6+' x/menit',
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'GCS (EVM)',
+                    'jawaban': 'E '+va7+', V '+va8+', M '+va9,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Apakah terdapat keluhan nyeri',
+                    'jawaban': ny1,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Lokasi',
+                    'jawaban': ny2,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Jenis',
+                    'jawaban': ny3,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Intensitas',
+                    'jawaban': ny4,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': tipe,
+                    'jawaban': canv1,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'tipe': 'gambar',
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Diagnosa',
+                    'jawaban': va10,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'Terapi',
+                    'jawaban': va11,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                data.push({
+                    'parameter': 'TTD Dokter IGD',
+                    'jawaban': canv2,
+                    'keterangan': jenis,
+                    'jenis': keterangan,
+                    'tipe': 'ttd',
+                    'nama_terang': nama,
+                    'sip': sip,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                cek = true;
+            }
+        }
+
         if (cek) {
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+
             $('#save_aud_'+jenis).hide();
             $('#load_aud_'+jenis).show();
             dwr.engine.setAsync(true);
-            AsesmenUgdAction.saveAsesmenUgd(result, {callback: function (res) {
+            AsesmenUgdAction.saveAsesmenUgd(result, pasienData, {
+                callback: function (res) {
                 if(res.status == "success"){
                     $('#save_aud_'+jenis).show();
                     $('#load_aud_'+jenis).hide();
                     $('#modal-aud-' + jenis).modal('hide');
-                    $('#warning_asesmen_ugd-dewasa').show().fadeOut(5000);
-                    $('#msg_asesmen_ugd-dewasa').text("Berhasil menambahkan data asesmen UGD...");
-                    $("#modal-asesmen-ugd-dewasa").scrollTop(0);
+                    $('#warning_aud_'+keterangan).show().fadeOut(5000);
+                    $('#msg_aud_'+keterangan).text("Berhasil menambahkan data asesmen UGD...");
+                    $("#modal-aud_"+keterangan).scrollTop(0);
                 }else{
                     $('#save_aud_'+jenis).show();
                     $('#load_aud_'+jenis).hide();
@@ -1536,7 +1649,10 @@ function detailAud(jenis) {
                     }else if ("ttd" == item.tipe) {
                         body += '<tr>' +
                             '<td width="60%">' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + item.jawaban + '" style="width: 100px">' + '</td>' +
+                            '<td>' + '<img src="' + item.jawaban + '" style="width: 100px">' +
+                            '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>'+
+                            '<p style="margin-top: -7px">'+cekItemIsNull(item.sip)+'</p>'+
+                            '</td>' +
                             '</tr>';
                     }else if("gambar" == item.tipe){
                         body += '<tr>' +
@@ -1696,4 +1812,176 @@ function loadImgToCanvas(url, id){
         ctxCek.clearRect(0, 0, canvasCek.width, canvasCek.height);
         ctxCek.drawImage(imgCek, 0, 0);
     }
+}
+
+function dataTriase(jenis){
+    var data = [];
+    var dataCari = [];
+
+    data.push({
+        'jenis': 'Merah',
+        'isi': 'gelisah/koma',
+        'label': 'Keadaan Umum'
+    });
+    data.push({
+        'jenis': 'Merah',
+        'isi': '< 12 / > 30x/m',
+        'label': 'Pernafasan'
+    });
+    data.push({
+        'jenis': 'Merah',
+        'isi': '< 50 / > 150x/m',
+        'label': 'Nadi'
+    });
+    data.push({
+        'jenis': 'Merah',
+        'isi': 'Dingin',
+        'label': 'Akral'
+    });
+    data.push({
+        'jenis': 'Merah',
+        'isi': '> 2 detik',
+        'label': 'CRT'
+    });
+
+    data.push({
+        'jenis': 'Kuning',
+        'isi': 'Lemah/kesakitan',
+        'label': 'Keadaan Umum'
+    });
+    data.push({
+        'jenis': 'Kuning',
+        'isi': '21-30x/m',
+        'label': 'Pernafasan'
+    });
+    data.push({
+        'jenis': 'Kuning',
+        'isi': '101-150x/m',
+        'label': 'Nadi'
+    });
+    data.push({
+        'jenis': 'Kuning',
+        'isi': 'Dingin',
+        'label': 'Akral'
+    });
+    data.push({
+        'jenis': 'Kuning',
+        'isi': '< 2 detik',
+        'label': 'CRT'
+    });
+
+    data.push({
+        'jenis': 'Hijau',
+        'isi': 'Cukup',
+        'label': 'Keadaan Umum'
+    });
+    data.push({
+        'jenis': 'Hijau',
+        'isi': '12-20x/m',
+        'label': 'Pernafasan'
+    });
+    data.push({
+        'jenis': 'Hijau',
+        'isi': '50-100x/m',
+        'label': 'Nadi'
+    });
+    data.push({
+        'jenis': 'Hijau',
+        'isi': 'Hangat',
+        'label': 'Akral'
+    });
+    data.push({
+        'jenis': 'Hijau',
+        'isi': '< 2 detik',
+        'label': 'CRT'
+    });
+
+    data.push({
+        'jenis': 'Hitam',
+        'isi': 'Meninggal',
+        'label': 'Keadaan Umum'
+    });
+    data.push({
+        'jenis': 'Hitam',
+        'isi': 'Kaku Mayat',
+        'label': 'Pernafasan'
+    });
+    data.push({
+        'jenis': 'Hitam',
+        'isi': 'Lebam Mayat',
+        'label': 'Nadi'
+    });
+    data.push({
+        'jenis': 'Hitam',
+        'isi': 'Refleks Kornea (-)',
+        'label': 'Akral'
+    });
+
+    if(jenis != ''){
+        $.each(data, function (i, item) {
+            if(jenis == item.jenis){
+                dataCari.push({
+                    'jenis': item.jenis,
+                    'isi': item.isi,
+                    'label': item.label
+                });
+            }
+        });
+    }
+    return dataCari;
+}
+
+function setDataTriase(val){
+    if(val != ''){
+        var traise = "";
+        $.each(dataTriase(val), function (i, item) {
+            traise += '<hr class="garis">\n' +
+                '<div class="row">\n' +
+                '    <div class="form-group">\n' +
+                '        <label class="col-md-offset-3 col-md-3 triase_ugd" id="label_trias_'+i+'">'+item.label+'</label>\n' +
+                '        <div class="col-md-6">\n' +
+                '            <div class="form-check">\n' +
+                '                <input type="checkbox" name="trias_'+i+'" id="tria_'+i+'" value="'+item.isi+'">\n' +
+                '                <label for="tria_'+i+'"></label>'+item.isi+' \n' +
+                '            </div>\n' +
+                '        </div>\n' +
+                '    </div>\n' +
+                '</div>';
+        });
+        $('#set_triase').html(traise);
+    }else{
+       $('#set_triase').html('');
+    }
+}
+
+function conUGD(jenis, ket){
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
+    $('#save_con_rm').attr('onclick', 'delUGD(\''+jenis+'\', \''+ket+'\')');
+}
+
+function delUGD(jenis, ket) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startSpin('delete_'+jenis);
+    dwr.engine.setAsync(true);
+    AsesmenUgdAction.saveDelete(idDetailCheckup, jenis, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopSpin('delete_'+jenis);
+                $('#warning_aud_' + ket).show().fadeOut(5000);
+                $('#msg_aud_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopSpin('delete_'+jenis);
+                $('#modal_warning').show().fadeOut(5000);
+                $('#msg_warning').text(res.msg);
+            }
+        }
+    });
 }

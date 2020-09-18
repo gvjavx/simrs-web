@@ -38,7 +38,7 @@ public class BranchDao extends GenericDao<ImBranches,ImBranchesPK> {
 
         if (mapCriteria!=null) {
             if (mapCriteria.get("branch_id")!=null) {
-                criteria.add(Restrictions.ilike("primaryKey.id", (String) mapCriteria.get("branch_id")));
+                criteria.add(Restrictions.eq("primaryKey.id", (String) mapCriteria.get("branch_id")));
             }
             if (mapCriteria.get("branch_name")!=null) {
                 criteria.add(Restrictions.ilike("branchName", "%" + (String)mapCriteria.get("branch_name") + "%"));

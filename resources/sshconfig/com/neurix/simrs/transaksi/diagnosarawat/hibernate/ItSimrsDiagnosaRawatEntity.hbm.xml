@@ -22,7 +22,7 @@
             <column name="keterangan_diagnosa" sql-type="varchar" length="1000" not-null="false"/>
         </property>
         <property name="jenisDiagnosa">
-            <column name="jenis_diagnosa" sql-type="varchar" length="10" not-null="false"/>
+            <column name="jenis_diagnosa" sql-type="varchar" length="100" not-null="false"/>
         </property>
         <property name="tipe">
             <column name="tipe" sql-type="varchar" length="30" not-null="false"/>

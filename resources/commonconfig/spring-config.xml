@@ -269,10 +269,20 @@
     <import resource="sshconfig/com/neurix/hris/master/mappingpersengaji/spring/MappingPersenGajiBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/transaksi/absensi/spring/MesinAbsensiBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenoperasi/spring/MonAnestesiBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/rekammedis/spring/RekamMedisPasienBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/periksalab/spring/OrderPeriksaLabBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenrawatjalan/spring/KeperawatanRawatJalanBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/hemodialisa/spring/ObservasiTindakanHdBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/penyewaanLahan/spring/PenyewaanLahanBean.xml"/>
 
     <import resource="sshconfig/com/neurix/hris/master/payrollPtkp/spring/PayrollPtkpBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/tipeLaporan/spring/TipeLaporanBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/tipePayroll/spring/TipePayrollBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/statusAbsensi/spring/StatusAbsensiBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgetingnilaidasar/spring/BudgetingNilaiDasarBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/spring/BudgetingPerhitunganBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/simrs/transaksi/kandungan/spring/PartografBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenrawatinap/spring/ImplementasiPerawatBean.xml"/>
 </beans>

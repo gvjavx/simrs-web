@@ -1129,6 +1129,19 @@ public class CommonUtil {
         return df.format(date);
     }
 
+    public static String ddMMyyyyFormat(Date date){
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        return df.format(date);
+    }
+
+    public static String yyyyMMddFormat(Date date){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        return df.format(date);
+    }
+
+
     public static Timestamp getCurrentDateTimes(){
         return new Timestamp(System.currentTimeMillis());
     }
@@ -1241,4 +1254,42 @@ public class CommonUtil {
         Random random = new Random();
         return random.ints(min,(max+1)).findFirst().getAsInt();
     }
+
+    //Convert Date to Calendar
+    public static Calendar dateToCalendar(java.util.Date date) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+
+    }
+
+    //Convert Calendar to Date
+    public static java.util.Date calendarToDate(Calendar calendar) {
+        return calendar.getTime();
+    }
+
+    public static long compareTwoTimeStamps(java.sql.Timestamp currentTime, java.sql.Timestamp oldTime,String get) {
+        long milliseconds1 = oldTime.getTime();
+        long milliseconds2 = currentTime.getTime();
+
+        long diff = milliseconds2 - milliseconds1;
+        long diffSeconds = diff / 1000;
+        long diffMinutes = diff / (60 * 1000);
+        long diffHours = diff / (60 * 60 * 1000);
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        if ("menit".equalsIgnoreCase(get)){
+            return diffMinutes;
+        }else if ("jam".equalsIgnoreCase(get)){
+            return diffHours;
+        }else if ("detik".equalsIgnoreCase(get)){
+            return diffSeconds;
+        }else if ("hari".equalsIgnoreCase(get)){
+            return diffDays;
+        }else{
+            return diff;
+        }
+    }
+
 }

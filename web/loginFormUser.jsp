@@ -185,16 +185,15 @@
                     <div class="icon">
                         <i class="icon-user icon-large"></i>
                     </div>
-                    <s:textfield name="j_username" value="%{userName}" cssClass="input" placeholder="User id or email"/>
+                    <s:textfield name="j_username" value="%{userName}" cssClass="input" placeholder="User id or email" autocomplete="off"/>
                 </div>
                 <br>
                 <div>
                     <div class="icon">
                         <i class="icon-lock icon-large"></i>
                     </div>
-                    <s:password name="j_password" cssClass="input" placeholder="Password"/>
+                    <s:password name="j_password" cssClass="input" placeholder="Password" autocomplete="off"/>
                 </div>
-
 
                 <div id="waiting_dialog" style="font-size:14px;font-family: Arial, Helvetica, sans-serif;text-align : center;background-color: rgba(255, 255, 255, 1);">
                     Please wait a moment, server is loging in your account ...

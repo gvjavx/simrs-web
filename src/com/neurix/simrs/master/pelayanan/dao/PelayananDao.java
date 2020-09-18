@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.pelayanan.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import org.hibernate.Criteria;
@@ -188,4 +189,37 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return sId;
     }
 
+    public List<Pelayanan> getListPelayananWithLab(String tipe){
+        String ply = "('rawat_jalan')";
+        if("umum".equalsIgnoreCase(tipe)){
+            ply = "('rawat_jalan', 'lab', 'radiologi')";
+        }
+        String SQL = "SELECT\n" +
+                "id_pelayanan,\n" +
+                "nama_pelayanan,\n" +
+                "tipe_pelayanan,\n" +
+                "kategori_pelayanan\n" +
+                "FROM im_simrs_pelayanan\n" +
+                "WHERE tipe_pelayanan IN " + ply + "\n"+
+                "AND branch_id = :branchId\n" +
+                "ORDER BY nama_pelayanan ASC";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", CommonUtil.userBranchLogin())
+                .list();
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                Pelayanan pelayanan = new Pelayanan();
+                pelayanan.setIdPelayanan(obj[0] != null ? obj[0].toString() : "");
+                pelayanan.setNamaPelayanan(obj[1] != null ? obj[1].toString() : "");
+                pelayanan.setTipePelayanan(obj[2] != null ? obj[2].toString() : "");
+                pelayanan.setKategoriPelayanan(obj[3] != null ? obj[3].toString() : "");
+                pelayananList.add(pelayanan);
+            }
+        }
+        return pelayananList;
+    }
 }

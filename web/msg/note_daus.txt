@@ -503,3 +503,17 @@ ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN bukti_piutang_pajak_keluaran c
 ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN keterangan character varying(200);
 
 CREATE SEQUENCE IF NOT EXISTS seq_pengajuan_biaya_rk INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+
+
+--14-09-2020
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN gaji numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN sankhus numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN tunjangan_jabatan numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN tunjangan_fungsional numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN tunjangan_tambahan numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN pemondokan numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN komunikasi numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN keterangan_jubilium varchar(200);
+
+ALTER TABLE im_company ADD COLUMN jam_batas_absen integer;
+update im_company set jam_batas_absen=3;

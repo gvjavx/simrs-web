@@ -197,13 +197,13 @@
                         <div class="form-group">
                             <label class="col-md-3">Pernafasan/RP.</label>
                             <div class="col-md-4">
-                                <input type="number" class="form-control" id="ews7">
+                                <input type="number" class="form-control" id="ews7" placeholder="x/menit">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-1">Suhu</label>
                             <div class="col-md-4">
-                                <input type="number" class="form-control" id="ews8">
+                                <input type="number" class="form-control" id="ews8" placeholder="C">
                             </div>
                         </div>
                     </div>
@@ -211,7 +211,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Nadi</label>
                             <div class="col-md-4">
-                                <input type="number" class="form-control" id="ews9" style="margin-top: 7px">
+                                <input type="number" class="form-control" id="ews9" style="margin-top: 7px" placeholder="x/menit">
                             </div>
                         </div>
                         <div class="form-group">
@@ -225,17 +225,18 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Tekanan Darah</label>
                             <div class="col-md-4">
-                                <input type="number" class="form-control" id="ews11" style="margin-top: 7px">
+                                <input class="form-control" id="ews11" style="margin-top: 7px">
                             </div>
                         </div>
                     </div>
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-md-offset-6 col-md-4">
+                            <div class="col-md-offset-6 col-md-6">
                                 <label style="margin-left: 8px">TTD Perawat</label>
                                 <canvas class="paint-canvas-ttd" id="ews12" width="220"
                                         onmouseover="paintTtd('ews12')"></canvas>
+                                <input class="form-control" id="nama_terang_ews12" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="clearConvas('ews12')"><i
                                         class="fa fa-trash"></i> Clear

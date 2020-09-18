@@ -37,7 +37,7 @@ function viewPlanDetail(idDetail, tglMasuk, jenis){
 
 
         if (response.length > 0){
-
+            $('#empty_plan').text("");
             $.each(response, function(i,item){
 
                 var ket = "";
@@ -203,6 +203,7 @@ function viewPlanDetail(idDetail, tglMasuk, jenis){
             $("#body-list-plan-pagi").html("");
             $("#body-list-plan-siang").html("");
             $("#body-list-plan-malam").html("");
+            $('#empty_plan').text("Tidak ada rencana kegiatan...!");
         }
     });
 }

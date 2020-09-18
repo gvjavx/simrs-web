@@ -210,7 +210,7 @@
                                                                 mapped = {};
                                                                 var data = [];
                                                                 dwr.engine.setAsync(false);
-                                                                PositionAction.typeHeadPosition(query,function (listdata) {
+                                                                PositionAction.typeAheadPosition(query,function (listdata) {
                                                                     data = listdata;
                                                                 });
                                                                 $.each(data, function (i, item) {

@@ -24,6 +24,15 @@ public class ImSimrsDokterEntity implements Serializable {
     private String flagCall;
     private String flagTele;
     private String kuotaTele;
+    private String sip;
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
 
     public String getKuotaTele() {
         return kuotaTele;

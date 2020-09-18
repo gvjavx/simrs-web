@@ -363,6 +363,23 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
         return results;
     }
 
+    public List<ImKodeRekeningEntity> getKodeRekeningListByLevelAndTipeBudgeting(String coa, Long level, String tipeBudgeting) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImKodeRekeningEntity.class);
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.ilike("kodeRekening", coa + "%"),
+                        Restrictions.ilike("namaKodeRekening", "%"+coa+"%")
+                )
+        );
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.add(Restrictions.eq("level", level));
+        criteria.add(Restrictions.eq("tipeBudgeting", tipeBudgeting));
+        criteria.addOrder(Order.desc("kodeRekening"));
+
+        List<ImKodeRekeningEntity> results = criteria.list();
+        return results;
+    }
+
     public Integer getLevelKodeRekening(String coa) {
         Integer result ;
         String query = "select \n" +
@@ -396,5 +413,18 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
             result = null;
         }
         return result;
+    }
+
+    public List<String> getListRekeningIdsByTipeBudgeting(String tipeBudgeting){
+        String SQL = "SELECT rekening_id FROM im_akun_kode_rekening WHERE tipe_budgeting = :tipeBudgeting";
+        List<Object> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tipeBudgeting", tipeBudgeting)
+                .list();
+
+        List<String> list = new ArrayList<>();
+        for (Object obj : result){
+            list.add(obj.toString());
+        }
+        return list;
     }
 }

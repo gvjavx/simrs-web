@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_rb_asesmen_ponek"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_asesmen_ponek">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_asesmen_ponek"></p>
+                    </div>
                     <button type="button" onclick="showModalRB('asesmen_ponek_rb')" class="btn btn-success"><i class="fa fa-plus"></i> Asesmen Ponek
                     </button>
                 </div>
@@ -26,6 +30,7 @@
                                 <img id="btn_rb_asesmen_ponek_rb" class="hvr-grow"
                                      onclick="detailRB('asesmen_ponek_rb')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_asesmen_ponek_rb" class="hvr-grow btn-hide" onclick="conRB('asesmen_ponek_rb', 'asesmen_ponek')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -380,6 +385,8 @@
                                 <label style="margin-left: 8px">TTD Bidang jaga</label>
                                 <canvas class="paint-canvas-ttd" id="ttd1_asesmen_ponek_rb" width="220"
                                         onmouseover="paintTtd('ttd1_asesmen_ponek_rb')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd1" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd1" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd1_asesmen_ponek_rb')"><i
                                         class="fa fa-trash"></i> Clear
@@ -389,6 +396,8 @@
                                 <label style="margin-left: 8px">TTD Dokter</label>
                                 <canvas class="paint-canvas-ttd" id="ttd3_asesmen_ponek_rb" width="220"
                                         onmouseover="paintTtd('ttd3_asesmen_ponek_rb')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd2" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd2" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd3_asesmen_ponek_rb')"><i
                                         class="fa fa-trash"></i> Clear
@@ -403,6 +412,7 @@
                                 <label style="margin-left: 8px">TTD Pasien dan Keluarga</label>
                                 <canvas class="paint-canvas-ttd" id="ttd2_asesmen_ponek_rb" width="220"
                                         onmouseover="paintTtd('ttd2_asesmen_ponek_rb')"></canvas>
+                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd3" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd2_asesmen_ponek_rb')"><i
                                         class="fa fa-trash"></i> Clear

@@ -2,8 +2,10 @@ package com.neurix.simrs.master.obat.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
@@ -52,6 +54,15 @@ public class ObatAction extends BaseMasterAction {
     private String type;
     private List<Obat> listOfObat = new ArrayList<>();
     List<TransaksiStok> report = new ArrayList<>();
+    List<Aging> myList = new ArrayList<>() ;
+
+    public List<Aging> getMyList() {
+        return myList;
+    }
+
+    public void setMyList(List<Aging> myList) {
+        this.myList = myList;
+    }
 
     public String getType() {
         return type;
@@ -1077,6 +1088,142 @@ public class ObatAction extends BaseMasterAction {
     public void resetSessionKandunganObat(){
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfKandunganObat");
+    }
+
+    public String initReportAging(){
+        return "init_print_aging";
+    }
+
+    public String printReportAging(){
+
+        Obat obat = getObat();
+        String branchLogin = CommonUtil.userBranchLogin();
+        String periode = obat.getBulan() + "-" + obat.getTahun();
+        String periodeAging = obat.getTahun() + "-" + obat.getBulan();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+        String []jumlahTanggalTahunKabisat = {"","31","29","31","30","31","30","31","31","30","31","30","31"};
+        String []jumlahTanggalTahunBiasa = {"","31","28","31","30","31","30","31","31","30","31","30","31"};
+        String jumlahTanggalTemp="";
+
+        String periodeTitle[] = periode.split("-");
+        if(Integer.parseInt(periodeTitle[0]) % 4 == 0){
+            jumlahTanggalTemp=jumlahTanggalTahunKabisat[Integer.parseInt(periodeTitle[0])];
+        }else{
+            jumlahTanggalTemp=jumlahTanggalTahunBiasa[Integer.parseInt(periodeTitle[0])];
+        }
+
+        Branch branch = branchBo.getBranchById(branchLogin,"Y");
+        List<Aging> agingList = obatBo.getListAging(branch.getBranchId(), obat.getIdPelayanan(), periodeAging);
+        for(Aging data: agingList){
+            Aging newData = new Aging();
+
+            newData.setTotal(data.getTotalAwal().abs());
+            newData.setJumlah1(new BigDecimal(0));
+            newData.setJumlah2(new BigDecimal(0));
+            newData.setJumlah3(new BigDecimal(0));
+            newData.setJumlah4(new BigDecimal(0));
+            newData.setJumlah5(new BigDecimal(0));
+            newData.setJumlah6(new BigDecimal(0));
+            newData.setJumlah7(new BigDecimal(0));
+
+            //Tentukan posisi umur aging.
+            //Yaitu dengan mengammbil periode sedang berjalan (tanggal aging di cetak) dan periode tanggal dari jurnal tersebut
+            int agingPosition = 0;
+            String periodeJurnal = CommonUtil.convertDateToString(data.getTglJurnal());
+            String periodeJurnalArrTemp[]= periodeJurnal.split("-");
+
+            Integer tglCetak    = Integer.parseInt(jumlahTanggalTemp);
+            Integer tglJurnal   = Integer.parseInt(periodeJurnalArrTemp[0]);
+            Integer blnCetak    = Integer.parseInt(periodeTitle[0]);
+            Integer blnJurnal   = Integer.parseInt(periodeJurnalArrTemp[1]);
+            Integer thnCetak    = Integer.parseInt(periodeTitle[1]);
+            Integer thnJurnal   = Integer.parseInt(periodeJurnalArrTemp[2]);
+
+            if(thnCetak > thnJurnal){
+                agingPosition=(((thnCetak-thnJurnal)*12)-blnJurnal)+blnCetak;
+                if(tglCetak > tglJurnal) agingPosition+=1;
+            }else{
+                agingPosition=blnCetak-blnJurnal;
+                if(tglCetak > tglJurnal) agingPosition+=1;
+            }
+
+            //umur 0 s/d 1 bulan
+            if(agingPosition<=1){
+                newData.setJumlah1(data.getTotal().abs());
+            }
+            //umur 1 s/d 2 bulan
+            else if(agingPosition<=2 && agingPosition>1){
+                newData.setJumlah2(data.getTotal().abs());
+            }
+            //umur 2 s/d 3 bulan
+            else if(agingPosition<=3 && agingPosition>2){
+                newData.setJumlah3(data.getTotal().abs());
+            }
+            //umur 3 s/d 6 bulan
+            else if(agingPosition<=6 && agingPosition>3){
+                newData.setJumlah4(data.getTotal().abs());
+            }
+            //umur 6 s/d 12 bulan
+            else if(agingPosition<=12 && agingPosition>6){
+                newData.setJumlah5(data.getTotal().abs());
+            }
+            //umur 1 s/d 2 tahun
+            else if(agingPosition<=24 && agingPosition>12){
+                newData.setJumlah6(data.getTotal().abs());
+            }
+            //umur > 2 tahun
+            else{
+                newData.setJumlah7(data.getTotal().abs());
+            }
+
+            newData.setNoNota(data.getNoNota());
+            newData.setKodeRekening(data.getKodeRekening());
+            newData.setTglJurnal(data.getTglJurnal());
+            newData.setMasterId(data.getMasterId());
+            newData.setNamaMaster(data.getNamaMaster());
+            newData.setNamaRekening(data.getNamaRekening());
+            myList.add(newData);
+        }
+
+        if(myList.size()>0){
+//            List<Aging> forReport = new ArrayList<>();
+//
+//            myList.addAll(forReport);
+            reportParams.put("reportTitle", "AGING STOK OBAT");
+            reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+            reportParams.put("cabangId", branch.getBranchId());
+            reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(obat.getBulan())+" "+obat.getTahun());
+            java.util.Date now = new java.util.Date();
+            reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+            reportParams.put("namaGeneralManager", "");
+            reportParams.put("nipGeneralManager", "");
+            reportParams.put("namaManagerKeuangan", "");
+            reportParams.put("nipManagerKeuangan", "");
+            reportParams.put("periode",periode);
+            reportParams.put("kota",branch.getBranchName());
+            reportParams.put("alamatSurat",branch.getAlamatSurat());
+            reportParams.put("areaId",CommonUtil.userAreaName());
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                Long logId = null;
+//                try {
+//                    logId = laporanAkuntansiBo.saveErrorMessage(e.getMessage(), "printReportAging");
+//                } catch (GeneralBOException e1) {
+//                    logger.error("[LaporanAkuntansiAction.printReportAging] Error when downloading ,", e1);
+//                }
+                logger.error("[LaporanAkuntansiAction.printReportAging] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+            }
+            logger.info("[LaporanAkuntansiAction.printReportAging] end process <<<");
+            return "print_aging";
+        }
+
+        return "print_aging";
     }
 
 }

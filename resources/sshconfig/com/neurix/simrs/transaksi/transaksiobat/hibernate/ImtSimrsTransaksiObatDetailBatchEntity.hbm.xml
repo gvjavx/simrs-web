@@ -72,7 +72,6 @@
         <property name="noDo">
             <column name="no_do" sql-type="varchar" length="100" not-null="false" />
         </property>
-
         <property name="diskon">
             <column name="diskon" sql-type="numeric" not-null="false" />
         </property>
@@ -84,6 +83,15 @@
         </property>
         <property name="urlDoc">
             <column name="url_doc" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="jenis">
+            <column name="jenis" sql-type="varchar" length="50" not-null="false" />
+        </property>
+        <property name="tglDo">
+            <column name="tgl_do" sql-type="date"  />
+        </property>
+        <property name="tglInvoice">
+            <column name="tgl_invoice" sql-type="date"  />
         </property>
 
     </class>

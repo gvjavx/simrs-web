@@ -1,10 +1,8 @@
-// 2020-06-15 >>>
-
+-- 2020-06-15
     ALTER TABLE public.im_simrs_dokter ADD flag_tele VARCHAR(1) NULL;
     ALTER TABLE public.it_simrs_antrian_telemedic ADD keluhan text NULL;
 
-<<< //
-// 2020-06-16 >>>
+-- 2020-06-16
     CREATE SEQUENCE seq_kurir;
 
 
@@ -37,15 +35,12 @@
       OWNER TO postgres;
 
 
-<<< //
-// 2020-06-18 >>>
 
+-- 2020-06-18
     ALTER TABLE public.it_simrs_pembayaran_online ADD alamat text NULL;
 
-<<< //
 
-// 2020-06-23 >>>
-
+-- 2020-06-23
     ALTER TABLE public.it_simrs_pengiriman_obat ADD lat VARCHAR(200) NULL,
                                                   ADD lon VARCHAR(200) NULL;
 
@@ -59,19 +54,14 @@
                                                 ADD no_telp VARCHAR(15) NULL;
 
 
-<<< //
 
-// 2020-06-29 >>>
-
+-- 2020-06-29
     ALTER TABLE public.it_simrs_antrian_telemedic ADD jenis_pembayaran VARCHAR(50) NULL,
 
-<<< //
 
-// 2020-06-29 >>>
-
+-- 2020-06-29
     ALTER TABLE public.it_simrs_antrian_telemedic ADD no_rujukan VARCHAR(100) NULL,
                                                   ADD jenis_rujukan VARCHAR(10) NULL
-
 <<< //
 
 // 2020-07-03 >>>

@@ -123,6 +123,30 @@ public class HemodinamikaBoImpl implements HemodinamikaBo {
         return hemodinamikaDao.cekData(id, waktu);
     }
 
+    @Override
+    public CrudResponse saveDelete(Hemodinamika bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsHemodinamikaEntity hemodinamikaEntity = hemodinamikaDao.getById("idHemodinamika", bean.getIdHemodinamika());
+        if(hemodinamikaEntity != null){
+            hemodinamikaEntity.setFlag("N");
+            hemodinamikaEntity.setAction("D");
+            hemodinamikaEntity.setLastUpdate(bean.getLastUpdate());
+            hemodinamikaEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            try {
+                hemodinamikaDao.updateAndSave(hemodinamikaEntity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            }catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Data tidak dutemukan...!");
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

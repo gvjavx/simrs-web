@@ -131,7 +131,7 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                         if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                             detailCheckupEntity.setIdAsuransi(bean.getIdAsuransi());
                             detailCheckupEntity.setNoKartuAsuransi(bean.getNoKartuAsuransi());
-                            detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
+//                            detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
                         }
 
                         if ("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
@@ -292,6 +292,32 @@ public class StatusPeriksaBoImpl implements StatusPeriksaBo {
                                                             logger.error("[CheckupBoImpl FOunf error]" + e.getMessage());
                                                         }
 
+                                                    }
+
+                                                    List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntities = new ArrayList<>();
+                                                    Map hsCriteria = new HashMap();
+                                                    hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+                                                    try {
+                                                        riwayatTindakanEntities = riwayatTindakanDao.getByCriteria(hsCriteria);
+                                                    }catch (HibernateException e){
+                                                        response.setStatus("error");
+                                                        response.setMessage(e.getMessage());
+                                                    }
+
+                                                    if(riwayatTindakanEntities.size() > 0){
+                                                        for (ItSimrsRiwayatTindakanEntity entity: riwayatTindakanEntities){
+                                                            entity.setJenisPasien(bean.getIdJenisPeriksaPasien());
+                                                            entity.setLastUpdate(bean.getLastUpdate());
+                                                            entity.setLastUpdateWho(bean.getLastUpdateWho());
+                                                            try {
+                                                                riwayatTindakanDao.updateAndSave(entity);
+                                                                response.setStatus("success");
+                                                                response.setMessage("berhasil");
+                                                            }catch (HibernateException e){
+                                                                response.setStatus("error");
+                                                                response.setMessage(e.getMessage());
+                                                            }
+                                                        }
                                                     }
 
                                                 } catch (HibernateException e) {

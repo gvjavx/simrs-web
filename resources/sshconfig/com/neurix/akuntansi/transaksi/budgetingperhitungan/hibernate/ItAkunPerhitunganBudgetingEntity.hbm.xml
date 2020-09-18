@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity">
+        <table name="it_akun_perhitungan_budgeting" schema="public"/>
+        <attributes>
+            <id name="id">
+                <column name="id"/>
+            </id>
+            <basic name="idParameterBudgeting">
+                <column name="id_parameter_budgeting"/>
+            </basic>
+            <basic name="nilai">
+                <column name="nilai"/>
+            </basic>
+            <basic name="operator">
+                <column name="operator"/>
+            </basic>
+            <basic name="branchId">
+                <column name="branch_id"/>
+            </basic>
+            <basic name="tahun">
+                <column name="tahun"/>
+            </basic>
+            <basic name="urutan">
+                <column name="urutan"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="idNilaiParameter">
+                <column name="id_nilai_parameter"/>
+            </basic>
+            <basic name="idBiayaRutin">
+                <column name="id_biaya_rutin"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

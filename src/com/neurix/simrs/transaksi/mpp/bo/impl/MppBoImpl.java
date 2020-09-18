@@ -22,18 +22,18 @@ public class MppBoImpl implements MppBo {
     public List<Mpp> getByCriteria(Mpp bean) throws GeneralBOException {
         List<Mpp> list = new ArrayList<>();
 
-        if(bean != null){
+        if (bean != null) {
             Map hsCriteria = new HashMap();
-            if(bean.getIdMpp() != null && !"".equalsIgnoreCase(bean.getIdMpp())){
+            if (bean.getIdMpp() != null && !"".equalsIgnoreCase(bean.getIdMpp())) {
                 hsCriteria.put("id_mpp", bean.getIdMpp());
             }
-            if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
-            if(bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())){
+            if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
                 hsCriteria.put("keterangan", bean.getKeterangan());
             }
-            if(bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())){
+            if (bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())) {
                 hsCriteria.put("jenis", bean.getJenis());
             }
 
@@ -41,12 +41,12 @@ public class MppBoImpl implements MppBo {
 
             try {
                 entityList = mppDao.getByCriteria(hsCriteria);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error(e.getMessage());
             }
 
-            if(entityList.size() > 0){
-                for (ItSimrsMppEntity entity: entityList){
+            if (entityList.size() > 0) {
+                for (ItSimrsMppEntity entity : entityList) {
                     Mpp mpp = new Mpp();
                     mpp.setIdMpp(entity.getIdMpp());
                     mpp.setIdDetailCheckup(entity.getIdDetailCheckup());
@@ -70,34 +70,83 @@ public class MppBoImpl implements MppBo {
     }
 
     @Override
-    public CrudResponse saveAdd(Mpp bean) throws GeneralBOException {
+    public CrudResponse saveAdd(List<Mpp> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean != null){
-
-            ItSimrsMppEntity asesmenUgdEntity = new ItSimrsMppEntity();
-            asesmenUgdEntity.setIdMpp("MPP"+mppDao.getNextSeq());
-            asesmenUgdEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-            asesmenUgdEntity.setParameter(bean.getParameter());
-            asesmenUgdEntity.setJawaban(bean.getJawaban());
-            asesmenUgdEntity.setKeterangan(bean.getKeterangan());
-            asesmenUgdEntity.setJenis(bean.getJenis());
-            asesmenUgdEntity.setWaktu(bean.getWaktu());
-            asesmenUgdEntity.setAction(bean.getAction());
-            asesmenUgdEntity.setFlag(bean.getFlag());
-            asesmenUgdEntity.setCreatedDate(bean.getCreatedDate());
-            asesmenUgdEntity.setCreatedWho(bean.getCreatedWho());
-            asesmenUgdEntity.setLastUpdate(bean.getLastUpdate());
-            asesmenUgdEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-            try {
-                mppDao.addAndSave(asesmenUgdEntity);
-                response.setStatus("success");
-                response.setMsg("Berhasil");
-            }catch (HibernateException e){
+        if (list.size() > 0) {
+            Mpp mpp = list.get(0);
+            Mpp mp = new Mpp();
+            mp.setIdDetailCheckup(mpp.getIdDetailCheckup());
+            mp.setKeterangan(mpp.getKeterangan());
+            List<Mpp> mppList = getByCriteria(mp);
+            if (mppList.size() > 0) {
                 response.setStatus("error");
-                response.setMsg("Found Error "+e.getMessage());
-                logger.error(e.getMessage());
+                response.setMsg("Found Error, Data yang anda masukan sudah ada...!");
+            } else {
+                for (Mpp bean : list) {
+                    ItSimrsMppEntity asesmenUgdEntity = new ItSimrsMppEntity();
+                    asesmenUgdEntity.setIdMpp("MPP" + mppDao.getNextSeq());
+                    asesmenUgdEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    asesmenUgdEntity.setParameter(bean.getParameter());
+                    asesmenUgdEntity.setJawaban(bean.getJawaban());
+                    asesmenUgdEntity.setKeterangan(bean.getKeterangan());
+                    asesmenUgdEntity.setJenis(bean.getJenis());
+                    asesmenUgdEntity.setWaktu(bean.getWaktu());
+                    asesmenUgdEntity.setAction(bean.getAction());
+                    asesmenUgdEntity.setFlag(bean.getFlag());
+                    asesmenUgdEntity.setCreatedDate(bean.getCreatedDate());
+                    asesmenUgdEntity.setCreatedWho(bean.getCreatedWho());
+                    asesmenUgdEntity.setLastUpdate(bean.getLastUpdate());
+                    asesmenUgdEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    try {
+                        mppDao.addAndSave(asesmenUgdEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Found Error " + e.getMessage());
+                        logger.error(e.getMessage());
+                    }
+                }
             }
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveDelete(Mpp bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        hsCriteria.put("keterangan", bean.getKeterangan());
+        List<ItSimrsMppEntity> entityList = new ArrayList<>();
+
+        try {
+            entityList = mppDao.getByCriteria(hsCriteria);
+        }catch (HibernateException e){
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
+            logger.error(e.getMessage());
+        }
+
+        if(entityList.size() > 0){
+            for (ItSimrsMppEntity entity : entityList){
+                entity.setFlag("N");
+                entity.setAction("D");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    mppDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("Found Error, "+e.getMessage());
+                    logger.error(e.getMessage());
+                }
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
         }
         return response;
     }

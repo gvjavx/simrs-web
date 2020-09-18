@@ -4,6 +4,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kategoritindakanina.dao.KategoriTindakanInaDao;
 import com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -122,6 +123,8 @@ public class VerifikatorBoImpl implements VerifikatorBo {
             if(entity != null){
 
                 entity.setKlaimBpjsFlag("Y");
+                entity.setFlagCloseTraksaksi("Y");
+                entity.setFlagCover("Y");
                 entity.setAction("U");
                 entity.setLastUpdate(bean.getLastUpdate());
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -241,5 +244,83 @@ public class VerifikatorBoImpl implements VerifikatorBo {
 
     public List<ImSimrsKategoriTindakanInaEntity> getAllKatTindakanInaList() throws GeneralBOException {
         return kategoriTindakanInaDao.getByCriteria(new HashMap());
+    }
+
+    @Override
+    public List<HeaderDetailCheckup> getListVerifTransaksi(HeaderDetailCheckup detailCheckup) throws GeneralBOException {
+        return checkupDetailDao.getListVerifTransaksi(detailCheckup);
+    }
+
+    @Override
+    public CrudResponse updateCoverAsuransi(List<RiwayatTindakan> list, HeaderDetailCheckup bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if(list.size() > 0){
+            for (RiwayatTindakan tindakan: list){
+                ItSimrsRiwayatTindakanEntity riwayatTindakanEntity = new ItSimrsRiwayatTindakanEntity();
+                riwayatTindakanEntity = riwayatTindakanDao.getById("idRiwayatTindakan", tindakan.getIdRiwayatTindakan());
+                if(riwayatTindakanEntity != null){
+                    riwayatTindakanEntity.setJenisPasien(tindakan.getJenisPasien());
+                    riwayatTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    riwayatTindakanEntity.setLastUpdate(bean.getLastUpdate());
+                    try {
+                        riwayatTindakanDao.updateAndSave(riwayatTindakanEntity);
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("found error, "+e.getMessage());
+                        return response;
+                    }
+                }
+            }
+
+            if(bean.getIdDetailCheckup() != null){
+                ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
+                detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+                if(detailCheckupEntity != null){
+                    detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                    detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
+                    try {
+                        checkupDetailDao.updateAndSave(detailCheckupEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("found error, "+e.getMessage());
+                    }
+                }
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Found Error, List yang dikirm tidak ada...!");
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse updateInvoice(HeaderDetailCheckup bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if(bean.getIdDetailCheckup() != null){
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
+            detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+            if(detailCheckupEntity != null){
+                detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                detailCheckupEntity.setInvoice(bean.getInvoice());
+                detailCheckupEntity.setFlagCover(bean.getFlagCover());
+                detailCheckupEntity.setDibayarPasien(bean.getPasienBayar());
+                try {
+                    checkupDetailDao.updateAndSave(detailCheckupEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("found error, "+e.getMessage());
+                }
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("found error id detail checkup tidak ditemukan..!");
+        }
+        return response;
     }
 }

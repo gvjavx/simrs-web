@@ -22,11 +22,14 @@ public interface BudgetingBo {
     public void saveAddBudgeting(List<Budgeting> budgetingList, List<BudgetingDetail> budgetingDetails, List<BudgetingPengadaan> budgetingPengadaans, String type, Budgeting bean) throws GeneralBOException;
     public void saveEditBudgeting(List<Budgeting> budgetingList, List<BudgetingDetail> budgetingDetails, List<BudgetingPengadaan> budgetingPengadaans, String statusTrans, String typeTrans, Budgeting bean) throws GeneralBOException;
     public Long getlastLevelKodeRekening();
-    public Boolean foundWithSameStatus(String tahun, String branchId, String status);
+    public Boolean foundWithSameStatus(String tahun, String branchId, String status, String tipe);
+
     public String generateBudgetingDetailId();
     public String generateBudgetingPengadaan();
     public String checkLastTipeBudgeting();
     public Budgeting checkBudgeting(String branchId, String tahun) throws GeneralBOException;
+    public Budgeting checkBudgetingByTipe(String branchId, String tahun, String tipeBudgeting) throws GeneralBOException;
+    public String checkNilaiDasarByTahun(String tahun) throws GeneralBOException;
     public ItAkunBudgetingEntity getBudgetingEntityById(String id) throws GeneralBOException;
 
     public Budgeting getBudgetBiayaDivisiSaatIni(Budgeting bean);
@@ -40,4 +43,6 @@ public interface BudgetingBo {
     Budgeting getBudgetBiayaInvestasiSaatIni(Budgeting bean);
 
     List<BudgetingPengadaan> getTerminPembayaran(String pengadaanId);
+    public List<Budgeting> getListLabaRugi(String tahun, String unit, String status);
+    public String ceckAvailBudgetingByTahun(String tahun);
 }

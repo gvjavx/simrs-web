@@ -37,6 +37,15 @@ public class Aging implements Serializable {
     private String tanggal;
 
     private String grup;
+    private BigDecimal totalAwal;
+
+    public BigDecimal getTotalAwal() {
+        return totalAwal;
+    }
+
+    public void setTotalAwal(BigDecimal totalAwal) {
+        this.totalAwal = totalAwal;
+    }
 
     public String getRekeningId() {
         return rekeningId;

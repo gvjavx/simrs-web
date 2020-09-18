@@ -61,6 +61,7 @@ public class MonAnestesiDao extends GenericDao<ItSimrsMonitoringAnestesiEntity, 
                     "FROM it_simrs_monitoring_anestesi\n" +
                     "WHERE id_detail_checkup = :id\n" +
                     "AND waktu = :jam\n" +
+                    "AND flag = 'Y' \n"+
                     "AND keterangan = :ket";
 
             List<Object[]> result = new ArrayList<>();

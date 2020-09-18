@@ -307,7 +307,8 @@
                 }
 
                 if(tipe == "asuransi"){
-                    if(asuransi != '' && coverBiaya != ''){
+                    // if(asuransi != '' && coverBiaya != ''){
+                    if(asuransi != ''){
 
                         if(isLaka == "Y"){
                             $('#confirm_dialog').dialog('open');
@@ -674,7 +675,7 @@
                                                                 $('#suku').val(selectedObj.suku);
                                                                 $('#img_ktp').val(selectedObj.imgKtp);
                                                                 $('#img-upload').attr('src', selectedObj.urlktp);
-//                                                            $('#penjamin').val("002");
+                                                                $('#no_telp').val(selectedObj.notelp);
                                                                 $('#provinsi').val(selectedObj.prov);
                                                                 $('#kabupaten').val(selectedObj.kota);
                                                                 $('#kecamatan').val(selectedObj.kec);
@@ -795,6 +796,7 @@
                                                         $('#kabupaten11').val(selectedObj.idKota);
                                                         $('#kecamatan11').val(selectedObj.idKec);
                                                         $('#desa11').val(selectedObj.idDesa);
+                                                        $('#no_telp').val(selectedObj.notelp);
                                                         if (selectedObj.isLama) {
                                                             $('#kunjungan').val("Lama").attr('disabled', true);
                                                             $('#kunjungan_val').val("Lama");
@@ -1053,9 +1055,7 @@
                                             <label class="col-md-4" style="margin-top: 7px">No Telp.</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="no_telp" name="headerCheckup.noTelp"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"
-                                                             data-inputmask="'mask': ['+62 999-9999-9999']"
-                                                             data-mask=""/>
+                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
                                     </div>
@@ -1227,23 +1227,24 @@
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 10px">Jumlah Cover</label>
-                                                <div class="col-md-8">
-                                                    <div class="input-group" style="margin-top: 7px">
-                                                        <div class="input-group-addon">
-                                                            Rp.
-                                                        </div>
-                                                        <s:hidden name="headerCheckup.coverBiaya" id="cover_biaya"></s:hidden>
-                                                        <s:textfield type="text" id="nominal_cover_biaya" cssClass="form-control"
-                                                                     onkeypress="var warn =$('#war_jml_cover').is(':visible'); if (warn){$('#con_jml_cover').show().fadeOut(3000);$('#war_jml_cover').hide()}"/>
-                                                    </div>
-                                                    <span style="color: red; display: none" id="war_jml_cover"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_jml_cover"><i
-                                                            class="fa fa-check"></i> correct</span>
-                                                </div>
-                                            </div>
+                                            <%--<div class="form-group">--%>
+                                                <%--<label class="col-md-4" style="margin-top: 10px">Jumlah Cover</label>--%>
+                                                <%--<div class="col-md-8">--%>
+                                                    <%--<div class="input-group" style="margin-top: 7px">--%>
+                                                        <%--<div class="input-group-addon">--%>
+                                                            <%--Rp.--%>
+                                                        <%--</div>--%>
+                                                        <%----%>
+                                                        <%--<s:textfield type="text" id="nominal_cover_biaya" cssClass="form-control"--%>
+                                                                     <%--onkeypress="var warn =$('#war_jml_cover').is(':visible'); if (warn){$('#con_jml_cover').show().fadeOut(3000);$('#war_jml_cover').hide()}"/>--%>
+                                                    <%--</div>--%>
+                                                    <%--<span style="color: red; display: none" id="war_jml_cover"><i--%>
+                                                            <%--class="fa fa-times"></i> required</span>--%>
+                                                    <%--<span style="color: green; display: none" id="con_jml_cover"><i--%>
+                                                            <%--class="fa fa-check"></i> correct</span>--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
+                                            <s:hidden name="headerCheckup.coverBiaya" id="cover_biaya"></s:hidden>
                                             <div id="form_jasaraharja_2" style="display: none">
                                                 <div class="form-group">
                                                     <label class="col-md-4" style="margin-top: 10px">Tanggal Kejadian</label>
@@ -1503,22 +1504,15 @@
                                 <h4><i class="icon fa fa-info"></i> Info!</h4>
                                 <p id="msg_kronis2"></p>
                             </div>
-                            <div class="box-header with-border"></div>
+                            <%--<div class="box-header with-border"></div>--%>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group" style="display: inline;">
-                                            <div class="col-md-offset-3 col-md-7" style="margin-top: 7px">
+                                            <div class="col-md-offset-2 col-md-8 text-center" style="margin-top: 7px">
                                                 <button type="button" id="btn-save" class="btn btn-success" onclick="confirm()"><i
-                                                        class="fa fa-arrow-right"></i> Save
+                                                        class="fa fa-check"></i> Save
                                                 </button>
-                                                <button type="button" class="btn btn-danger"
-                                                        onclick="window.location.reload(true)">
-                                                    <i class="fa fa-refresh"></i> Reset
-                                                </button>
-                                                <a type="button" class="btn btn-warning" href="initForm_igd.action">
-                                                    <i class="fa fa-arrow-left"></i> Back
-                                                </a>
                                                 <%--<a type="button" id="btn-rm" style="display:none;"--%>
                                                    <%--class="btn btn-primary"--%>
                                                    <%--onclick="initRekamMedic()">--%>
@@ -1531,6 +1525,31 @@
                                                     <i class="fa fa-medkit"></i> Obat Kronis
                                                 </a>
 
+                                                <s:if test='tipe == "bpjs"'>
+                                                    <div class="btn-group dropup">
+                                                        <button type="button" class="btn btn-info"><i class="fa fa-print"></i> Print Gagal SEP
+                                                        </button>
+                                                        <button type="button" class="btn btn-info dropdown-toggle"
+                                                                data-toggle="dropdown" style="height: 34px">
+                                                            <span class="caret"></span>
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <ul class="dropdown-menu" role="menu">
+                                                            <li><a style="cursor: pointer" onclick="printGagalSEP('SP10')"><i class="fa fa-print"></i> Non Aktif</a></li>
+                                                            <li><a style="cursor: pointer" onclick="printGagalSEP('SP11')"><i class="fa fa-print"></i> Kartu Tidak Dibawak</a></li>
+                                                            <li><a style="cursor: pointer" onclick="printGagalSEP('SP12')"><i class="fa fa-print"></i> Kemauan Sendiri</a></li>
+                                                            <li><a style="cursor: pointer" onclick="printGagalSEP('SP13')"><i class="fa fa-print"></i> Masa Pengurusan Denda</a></li>
+                                                            <li><a style="cursor: pointer" onclick="printGagalSEP('SP14')"><i class="fa fa-print"></i> Penangguhan Pasien</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </s:if>
+                                                <button type="button" class="btn btn-danger"
+                                                        onclick="window.location.reload(true)">
+                                                    <i class="fa fa-refresh"></i> Reset
+                                                </button>
+                                                <a type="button" class="btn btn-warning" href="initForm_igd.action">
+                                                    <i class="fa fa-arrow-left"></i> Back
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -2024,7 +2043,7 @@
         });
 
         var nominal = document.getElementById('uang_muka');
-        var coverBiaya = document.getElementById("nominal_cover_biaya");
+        // var coverBiaya = document.getElementById("nominal_cover_biaya");
         if(nominal != null && nominal != ''){
             nominal.addEventListener('keyup', function (e) {
                 nominal.value = formatRupiah2(this.value);
@@ -2038,17 +2057,17 @@
             });
         }
 
-        if(coverBiaya != null && coverBiaya != ''){
-            coverBiaya.addEventListener('keyup', function (e) {
-                coverBiaya.value = formatRupiah2(this.value);
-                var valCover = coverBiaya.value.replace(/[.]/g, '');
-                if(valCover != ''){
-                    $('#cover_biaya').val(valCover);
-                }else{
-                    $('#cover_biaya').val('');
-                }
-            });
-        }
+        // if(coverBiaya != null && coverBiaya != ''){
+        //     coverBiaya.addEventListener('keyup', function (e) {
+        //         coverBiaya.value = formatRupiah2(this.value);
+        //         var valCover = coverBiaya.value.replace(/[.]/g, '');
+        //         if(valCover != ''){
+        //             $('#cover_biaya').val(valCover);
+        //         }else{
+        //             $('#cover_biaya').val('');
+        //         }
+        //     });
+        // }
     });
 
     function setFormAdmisi() {

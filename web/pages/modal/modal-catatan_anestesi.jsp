@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_catatan_anestesi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_catatan_anestesi">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_catatan_anestesi"></p>
+                    </div>
                     <button type="button" class="btn btn-success" onclick="showModalOperasi('pra_induksi')"><i class="fa fa-plus"></i> Pra Induksi
                     </button>
                     <button type="button" class="btn btn-success" onclick="showModalOperasi('perencanaan_anestesi')"><i class="fa fa-plus"></i> Perencanaan Anestesi
@@ -25,12 +29,14 @@
                             <td>Asesmen Pra Induksi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_pra_induksi" class="hvr-grow" onclick="detailOperasi('pra_induksi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pra_induksi" class="hvr-grow btn-hide" onclick="conOP('pra_induksi', 'catatan_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_perencanaan_anestesi">
                             <td>Perencenaan Teknik Anestesi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_perencanaan_anestesi" class="hvr-grow" onclick="detailOperasi('perencanaan_anestesi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_perencanaan_anestesi" class="hvr-grow btn-hide" onclick="conOP('perencanaan_anestesi', 'catatan_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -759,6 +765,8 @@
                                 <label style="margin-left: 8px">TTD Dokter Spesialis</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_dokter_spesialis" width="220"
                                         onmouseover="paintTtd('ttd_dokter_spesialis')"></canvas>
+                                <input class="form-control" id="nama_terang_sps" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_sps" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_dokter_spesialis')"><i
                                         class="fa fa-trash"></i> Clear

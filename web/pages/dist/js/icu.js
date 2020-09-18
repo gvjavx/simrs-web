@@ -1,17 +1,11 @@
-function showModalICU(jenis) {
+function showModalICU(jenis, idRM, isSetIdRM) {
+    if (isSetIdRM == "Y") {
+        tempidRm = idRM;
+    }
     if (isReadRM) {
         $('.btn-hide').hide();
     } else {
         $('.btn-hide').show();
-    }
-
-    setDataPasien();
-
-    if ("hemodinamika" == jenis) {
-        listHemodinamika(jenis);
-    }
-    if ("respirasi" == jenis) {
-        listRespirasi(jenis);
     }
 
     if ("respirasi_icu" == jenis) {
@@ -27,18 +21,12 @@ function showModalICU(jenis) {
 
         setInputan(jenis);
     }
-    if ("keseimbangan" == jenis) {
-        listInputan(jenis);
-    }
 
     if ("checklist_kriteria" == jenis) {
         setInputan(jenis);
     }
-
-    if("asuhan_keperawatan" == jenis){
-        listAsuhanKeperawatanICU(jenis);
-    }
     $('#modal-icu-' + jenis).modal({show: true, backdrop: 'static'});
+    setDataPasien();
 }
 
 function setHeadRespirasi() {
@@ -59,8 +47,16 @@ function setHeadRespirasi() {
 function saveICU(jenis, ket) {
     var data = [];
     var cek = false;
-    var tgl = $('#tgl_'+jenis).val();
-    var jam = $('#jam_'+jenis).val();
+    var tgl = $('#tgl_' + jenis).val();
+    var jam = $('#jam_' + jenis).val();
+    var dataPasien = "";
+
+    dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
 
     if ("identitas" == jenis) {
 
@@ -387,6 +383,9 @@ function saveICU(jenis, ket) {
 
         var cekTtd1 = isCanvasBlank(dpjp);
         var cekTtd2 = isCanvasBlank(pasien);
+        var nama1 = $('#nama_terang_dokter');
+        var sip1 = $('#sip_dokter');
+        var nama2 = $('#nama_terang_pasien');
 
         $.each(parameter, function (i, item) {
 
@@ -419,7 +418,7 @@ function saveICU(jenis, ket) {
             }
         });
 
-        if(data.length > 0 && !cekTtd1 && !cekTtd2){
+        if (data.length > 0 && !cekTtd1 && !cekTtd2 && nama1 && nama2 && sip1 != '') {
 
             var canv1 = dpjp.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -431,7 +430,9 @@ function saveICU(jenis, ket) {
                 'jawaban': canv1,
                 'keterangan': jenis,
                 'jenis': ket,
-                'tipe':'ttd',
+                'tipe': 'ttd',
+                'nama_terang': nama1,
+                'sip': sip1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -439,7 +440,8 @@ function saveICU(jenis, ket) {
                 'jawaban': canv2,
                 'keterangan': jenis,
                 'jenis': ket,
-                'tipe':'ttd',
+                'tipe': 'ttd',
+                'nama_terang': nama2,
                 'id_detail_checkup': idDetailCheckup
             });
 
@@ -447,7 +449,7 @@ function saveICU(jenis, ket) {
         }
     }
 
-    if("pengkajian_medik" == jenis){
+    if ("pengkajian_medik" == jenis) {
         var va1 = $('#01pm').val();
         var va2 = $('#02pm').val();
         var va3 = $('#03pm').val();
@@ -468,63 +470,65 @@ function saveICU(jenis, ket) {
         var v10 = $('[name=pm6]');
 
         var dokter = document.getElementById("ttd_dokter");
+        var nama = $('#nama_terang_dokter').val();
+        var sip = $('#sip_dokter').val();
 
         var cekTtd1 = isCanvasBlank(dokter);
 
         $.each(v5, function (i, item) {
-            if(item.checked){
-                if(va5 != ''){
-                    va5 = va5 + ', '+item.value;
-                }else{
+            if (item.checked) {
+                if (va5 != '') {
+                    va5 = va5 + ', ' + item.value;
+                } else {
                     va5 = item.value;
                 }
             }
         });
 
         $.each(v6, function (i, item) {
-            if(item.checked){
-                if(va6 != ''){
-                    va6 = va6 + ', '+item.value;
-                }else{
+            if (item.checked) {
+                if (va6 != '') {
+                    va6 = va6 + ', ' + item.value;
+                } else {
                     va6 = item.value;
                 }
             }
         });
 
         $.each(v8, function (i, item) {
-            if(item.checked){
-                if(va8 != ''){
-                    va8 = va8 + ', '+item.value;
-                }else{
+            if (item.checked) {
+                if (va8 != '') {
+                    va8 = va8 + ', ' + item.value;
+                } else {
                     va8 = item.value;
                 }
             }
         });
 
         $.each(v9, function (i, item) {
-            if(item.checked){
-                if(va9 != ''){
-                    va9 = va9 + ', '+item.value;
-                }else{
+            if (item.checked) {
+                if (va9 != '') {
+                    va9 = va9 + ', ' + item.value;
+                } else {
                     va9 = item.value;
                 }
             }
         });
 
         $.each(v10, function (i, item) {
-            if(item.checked){
-                if(va10 != ''){
-                    va10 = va10 + ', '+item.value;
-                }else{
+            if (item.checked) {
+                if (va10 != '') {
+                    va10 = va10 + ', ' + item.value;
+                } else {
                     va10 = item.value;
                 }
             }
         });
 
-        if(va1 && va2 && va3 && va5 && va6 && va8 && va9 && va10 && va11 && va12 != '' && !cekTtd1 && va7 != undefined){
+        if (va1 && va2 && va3 && va5 && va6 && va8 && va9 && va10 && va11 && va12 && nama && sip != '' && !cekTtd1 && va7 != undefined) {
             data.push({
                 'parameter': 'Tanggal Jam',
-                'jawaban': tgl+' '+jam,
+                'jawaban': tgl + ' ' + jam,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -622,7 +626,9 @@ function saveICU(jenis, ket) {
                 'jawaban': canv1,
                 'keterangan': jenis,
                 'jenis': ket,
-                'tipe':'ttd',
+                'tipe': 'ttd',
+                'nama_terang': nama,
+                'sip': sip,
                 'id_detail_checkup': idDetailCheckup
             });
 
@@ -632,7 +638,7 @@ function saveICU(jenis, ket) {
 
     }
 
-    if("pengkajian_keperawatan" == jenis){
+    if ("pengkajian_keperawatan" == jenis) {
 
         var va1 = "";
         var va3 = "";
@@ -667,14 +673,15 @@ function saveICU(jenis, ket) {
 
 
         var dokter = document.getElementById("ttd_perawat");
+        var nama = $('#nama_terang_perawat').val();
 
         var cekTtd1 = isCanvasBlank(dokter);
 
-        if(v1 != undefined){
+        if (v1 != undefined) {
             var ket = $('#ket_pk11').val();
-            if("Ya" == v1){
-                va1 = v1+', '+ket;
-            }else{
+            if ("Ya" == v1) {
+                va1 = v1 + ', ' + ket;
+            } else {
                 va1 = v1;
             }
         }
@@ -683,44 +690,44 @@ function saveICU(jenis, ket) {
         var isiVa32 = "";
         var isiVa33 = "";
 
-        if(v02 != undefined){
+        if (v02 != undefined) {
             var ket = $('#ket_pk22').val();
-            if("Ya" == v1){
-                isiVa31 = v02+', '+ket;
-            }else{
+            if ("Ya" == v1) {
+                isiVa31 = v02 + ', ' + ket;
+            } else {
                 isiVa31 = v02;
             }
         }
 
-        if(v03 != undefined){
+        if (v03 != undefined) {
             var ket = $('#ket_pk32').val();
-            if("Ya" == v03){
-                isiVa31 = v03+', '+ket;
-            }else{
+            if ("Ya" == v03) {
+                isiVa31 = v03 + ', ' + ket;
+            } else {
                 isiVa31 = v03;
             }
         }
 
-        if(v04 != undefined){
+        if (v04 != undefined) {
             var ket = $('#ket_pk42').val();
-            if("Ya" == v1){
-                isiVa33 = v04+', '+ket;
-            }else{
+            if ("Ya" == v1) {
+                isiVa33 = v04 + ', ' + ket;
+            } else {
                 isiVa33 = v04;
             }
         }
 
-        if(v2 != undefined){
-            va3 = v2+', '+isiVa31+'. ';
+        if (v2 != undefined) {
+            va3 = v2 + ', ' + isiVa31 + '. ';
         }
-        if(v3 != undefined){
-            va3 = va3 + v3+', '+isiVa32+'. ';
+        if (v3 != undefined) {
+            va3 = va3 + v3 + ', ' + isiVa32 + '. ';
         }
-        if(v4 != undefined){
-            va3 = va3 + v3+', '+isiVa33+'. ';
+        if (v4 != undefined) {
+            va3 = va3 + v3 + ', ' + isiVa33 + '. ';
         }
 
-        if(v5 != undefined){
+        if (v5 != undefined) {
 
             var ket1 = $('#ket_pk51').val();
             var ket2 = $('#ket_pk52').val();
@@ -728,40 +735,39 @@ function saveICU(jenis, ket) {
             var ket4 = $('#ket_pk54').val();
             var ket5 = $('#ket_pk55').val();
 
-            if("Ya" == v1){
-                va5 = v5+', Nama '+ket1+', Dimana '+ket2+', Hubungan dengan pasien '+ket3+', No. Telepon/HP '+ket4;
-            }else{
+            if ("Ya" == v1) {
+                va5 = v5 + ', Nama ' + ket1 + ', Dimana ' + ket2 + ', Hubungan dengan pasien ' + ket3 + ', No. Telepon/HP ' + ket4;
+            } else {
                 va5 = v5;
             }
         }
 
         $.each(v10, function (i, item) {
-            if(item.checked){
-                if(va10 != ''){
-                    va10 = va10 + ', '+item.value;
-                }else{
+            if (item.checked) {
+                if (va10 != '') {
+                    va10 = va10 + ', ' + item.value;
+                } else {
                     va10 = item.value;
                 }
             }
         });
 
         $.each(v11, function (i, item) {
-            if(item.checked){
-                if(va11 != ''){
-                    va11 = va11 + ', '+item.value;
-                }else{
+            if (item.checked) {
+                if (va11 != '') {
+                    va11 = va11 + ', ' + item.value;
+                } else {
                     va11 = item.value;
                 }
             }
         });
 
 
-
-        if(jam && tgl && va1 && va3 && va5 != '' && !cekTtd1){
+        if (jam && tgl && va1 && va3 && va5 && nama != '' && !cekTtd1) {
 
             data.push({
                 'parameter': 'Tanggal Jam',
-                'jawaban': tgl+' '+jam,
+                'jawaban': tgl + ' ' + jam,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -809,7 +815,7 @@ function saveICU(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
 
-            if(v7 != undefined){
+            if (v7 != undefined) {
                 data.push({
                     'parameter': 'Apakah lingkungan rumah sudah disiapkan',
                     'jawaban': v7,
@@ -818,7 +824,7 @@ function saveICU(jenis, ket) {
                     'id_detail_checkup': idDetailCheckup
                 });
             }
-            if(v8 != undefined){
+            if (v8 != undefined) {
                 data.push({
                     'parameter': 'Jika ya, apakah anda mampu merawat pasien dirumah',
                     'jawaban': v8,
@@ -827,7 +833,7 @@ function saveICU(jenis, ket) {
                     'id_detail_checkup': idDetailCheckup
                 });
             }
-            if(v9 != undefined){
+            if (v9 != undefined) {
                 data.push({
                     'parameter': 'Jika tidak, apakah perlu difasilitasi oleh rumah sakit',
                     'jawaban': v9,
@@ -860,7 +866,8 @@ function saveICU(jenis, ket) {
                 'jawaban': canv1,
                 'keterangan': jenis,
                 'jenis': ket,
-                'tipe':'ttd',
+                'tipe': 'ttd',
+                'nama_terang': nama,
                 'id_detail_checkup': idDetailCheckup
             });
 
@@ -869,7 +876,7 @@ function saveICU(jenis, ket) {
 
     }
 
-    if("terminal" == jenis){
+    if ("terminal" == jenis) {
 
         var va1 = $('#ter1').val();
         var va2 = $('#ter2').val();
@@ -909,16 +916,16 @@ function saveICU(jenis, ket) {
         var cekTtd1 = isCanvasBlank(dokter);
 
         $.each(temp24, function (i, item) {
-            if(item.checked){
-                if(va24 != ''){
-                    va24 = va24 + ', '+item.value;
-                }else{
+            if (item.checked) {
+                if (va24 != '') {
+                    va24 = va24 + ', ' + item.value;
+                } else {
                     va24 = item.value;
                 }
             }
         });
 
-        if(va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 &&va10 != '' && !cekTtd1){
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 != '' && !cekTtd1) {
 
             data.push({
                 'parameter': 'Keluarga Terdekat',
@@ -971,7 +978,7 @@ function saveICU(jenis, ket) {
             });
             data.push({
                 'parameter': 'Tensi',
-                'jawaban': va8+', Nadi '+va9+', Suhu '+va10+', RR '+va11+', BB '+va12+', TB '+va13+', GCS '+va14,
+                'jawaban': va8 + ', Nadi ' + va9 + ', Suhu ' + va10 + ', RR ' + va11 + ', BB ' + va12 + ', TB ' + va13 + ', GCS ' + va14,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1027,7 +1034,7 @@ function saveICU(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
 
-            if(va20 != undefined){
+            if (va20 != undefined) {
                 data.push({
                     'parameter': 'Relaksasi Otot',
                     'jawaban': va20,
@@ -1036,7 +1043,7 @@ function saveICU(jenis, ket) {
                     'id_detail_checkup': idDetailCheckup
                 });
             }
-            if(va21 != undefined){
+            if (va21 != undefined) {
                 data.push({
                     'parameter': 'Mata / Refrek cahaya',
                     'jawaban': va21,
@@ -1045,7 +1052,7 @@ function saveICU(jenis, ket) {
                     'id_detail_checkup': idDetailCheckup
                 });
             }
-            if(va22 != undefined){
+            if (va22 != undefined) {
                 data.push({
                     'parameter': 'Berbicara',
                     'jawaban': va22,
@@ -1054,7 +1061,7 @@ function saveICU(jenis, ket) {
                     'id_detail_checkup': idDetailCheckup
                 });
             }
-            if(va23 != undefined){
+            if (va23 != undefined) {
                 data.push({
                     'parameter': 'Kenjang',
                     'jawaban': va23,
@@ -1105,7 +1112,8 @@ function saveICU(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
-            }); data.push({
+            });
+            data.push({
                 'parameter': 'Saluran Kencing',
                 'jawaban': va29,
                 'keterangan': jenis,
@@ -1135,14 +1143,14 @@ function saveICU(jenis, ket) {
                 'jawaban': canv1,
                 'keterangan': jenis,
                 'jenis': ket,
-                'tipe':'ttd',
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
         }
     }
 
-    if("add_tindakan_icu" == jenis){
+    if ("add_tindakan_icu" == jenis) {
         var va1 = $('#icu1').val();
         var va2 = $('#icu2').val();
         var va3 = $('#icu3').val();
@@ -1152,7 +1160,7 @@ function saveICU(jenis, ket) {
         var va7 = $('#icu7').val();
         var va8 = $('#icu8').val();
         var va9 = $('#icu9').val();
-        var va10= $('#icu10').val();
+        var va10 = $('#icu10').val();
         var va11 = $('#icu11').val();
 
         var tindakan = $('#tindakan_icu').val();
@@ -1175,10 +1183,10 @@ function saveICU(jenis, ket) {
 
             data.push({
                 'parameter': 'pernyataan',
-                'jawaban': 'Pemberian Informasi dan Persetujuan Tindakan Kedokteran '+tindakan,
+                'jawaban': 'Pemberian Informasi dan Persetujuan Tindakan Kedokteran ' + tindakan,
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'colspan',
+                'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1216,47 +1224,47 @@ function saveICU(jenis, ket) {
                 'jawaban': 'Check Informasi',
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'bold',
+                'tipe': 'bold',
                 'id_detail_checkup': idDetailCheckup
             });
 
             $.each(parameter, function (i, item) {
-                var informasi = $('[name=informasi'+i+']');
+                var informasi = $('[name=informasi' + i + ']');
                 var info = "";
                 $.each(informasi, function (idx, itemx) {
                     console.log(itemx.type);
-                    if(itemx.type == 'checkbox'){
-                        if(itemx.checked){
-                            if(info != ''){
-                                info = info +', '+itemx.value;
-                            }else{
+                    if (itemx.type == 'checkbox') {
+                        if (itemx.checked) {
+                            if (info != '') {
+                                info = info + ', ' + itemx.value;
+                            } else {
                                 info = itemx.value;
                             }
                         }
                     }
-                    if(itemx.type == 'radio'){
-                        if(itemx.checked){
-                            if(info != ''){
-                                info = info +', '+itemx.value;
-                            }else{
+                    if (itemx.type == 'radio') {
+                        if (itemx.checked) {
+                            if (info != '') {
+                                info = info + ', ' + itemx.value;
+                            } else {
                                 info = itemx.value;
                             }
                         }
                     }
-                    if(itemx.type == 'text'){
-                        if(itemx.value != ''){
-                            if(info != ''){
-                                info = info +', '+itemx.value;
-                            }else{
+                    if (itemx.type == 'text') {
+                        if (itemx.value != '') {
+                            if (info != '') {
+                                info = info + ', ' + itemx.value;
+                            } else {
                                 info = itemx.value;
                             }
                         }
                     }
-                    if(itemx.type == 'hidden'){
-                        if(itemx.value != ''){
-                            if(info != ''){
-                                info = info +', '+itemx.value;
-                            }else{
+                    if (itemx.type == 'hidden') {
+                        if (itemx.value != '') {
+                            if (info != '') {
+                                info = info + ', ' + itemx.value;
+                            } else {
                                 info = itemx.value;
                             }
                         }
@@ -1264,7 +1272,7 @@ function saveICU(jenis, ket) {
                 });
 
                 var tdn = "";
-                if(tanda[i].checked){
+                if (tanda[i].checked) {
                     tdn = tanda[i].value;
                 }
 
@@ -1274,7 +1282,7 @@ function saveICU(jenis, ket) {
                     'jawaban': tdn,
                     'keterangan': ket,
                     'jenis': tindakan,
-                    'tipe':'info',
+                    'tipe': 'info',
                     'id_detail_checkup': idDetailCheckup
                 });
             });
@@ -1312,7 +1320,7 @@ function saveICU(jenis, ket) {
                 'jawaban': 'Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien erdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan',
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'colspan',
+                'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1320,21 +1328,21 @@ function saveICU(jenis, ket) {
                 'jawaban': 'Persetujuan Tindakan Medis',
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'colspan',
+                'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'penyataan',
-                'jawaban': 'Yang bertanda tangan dibawah ini, Saya '+va5+' ' +
-                    'tanggal lahir '+va6+', '+va7+' dengan ini menyatakan persetujuan untuk dilakukan tindakan '+va8+' ' +
-                    'terhadap pasien Bernama '+va9+' tanggal lahir '+va10+', Alamat '+va11+'.' +
+                'jawaban': 'Yang bertanda tangan dibawah ini, Saya ' + va5 + ' ' +
+                    'tanggal lahir ' + va6 + ', ' + va7 + ' dengan ini menyatakan persetujuan untuk dilakukan tindakan ' + va8 + ' ' +
+                    'terhadap pasien Bernama ' + va9 + ' tanggal lahir ' + va10 + ', Alamat ' + va11 + '.' +
                     'Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti diatas ' +
                     'kepada saya termasuk resiko dan komplikasi yang timbul ' +
                     'Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti, maka keberhasilan tindakan ' +
-                    'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal '+converterDate(new Date)+', Jam '+converterTime(new Date()),
+                    'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal ' + converterDate(new Date) + ', Jam ' + converterTime(new Date()),
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'colspan',
+                'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1342,7 +1350,7 @@ function saveICU(jenis, ket) {
                 'jawaban': canv3,
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'ttd',
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1350,7 +1358,7 @@ function saveICU(jenis, ket) {
                 'jawaban': canv4,
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'ttd',
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -1358,7 +1366,7 @@ function saveICU(jenis, ket) {
                 'jawaban': canv5,
                 'keterangan': ket,
                 'jenis': tindakan,
-                'tipe':'ttd',
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1367,10 +1375,11 @@ function saveICU(jenis, ket) {
 
     if (cek) {
         var result = JSON.stringify(data);
+        var pasienData = JSON.stringify(dataPasien);
         $('#save_icu_' + jenis).hide();
         $('#load_icu_' + jenis).show();
         dwr.engine.setAsync(true);
-        AsesmenIcuAction.save(result, {
+        AsesmenIcuAction.save(result, pasienData, {
             callback: function (res) {
                 if (res.status == "success") {
                     $('#save_icu_' + jenis).show();
@@ -1430,7 +1439,7 @@ function detailICU(jenis) {
                             '<td>' + '<ul style="margin-left: 15px">' + li + '</ul>' + '</td>' +
                             '</tr>';
 
-                    }else if("tindakan_icu" == jenis){
+                    } else if ("tindakan_icu" == jenis) {
                         if ("colspan" == item.tipe) {
                             body += '<tr>' +
                                 '<td colspan="3">' + jwb + '</td>' +
@@ -1439,20 +1448,20 @@ function detailICU(jenis) {
                             body += '<tr>' +
                                 '<td width="25%">' + item.parameter + '</td>' +
                                 '<td >' + item.informasi + '</td>' +
-                                '<td width="20%" align="center">' +cekIcons(jwb)+ '</td>' +
+                                '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
                                 '</tr>';
                         } else if ("ttd" == item.tipe) {
                             body += '<tr>' +
                                 '<td colspan="2">' + item.parameter + '</td>' +
                                 '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
                                 '</tr>';
-                        } else if("bold" == item.tipe){
+                        } else if ("bold" == item.tipe) {
                             body += '<tr style="font-weight: bold">' +
                                 '<td width="25%">' + item.parameter + '</td>' +
                                 '<td >' + item.informasi + '</td>' +
-                                '<td width="20%" align="center">' +cekIcons(jwb)+ '</td>' +
+                                '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
                                 '</tr>';
-                        } else{
+                        } else {
                             body += '<tr>' +
                                 '<td width="30%">' + item.parameter + '</td>' +
                                 '<td colspan="2">' + jwb + '</td>' +
@@ -1472,20 +1481,20 @@ function detailICU(jenis) {
                             '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
                             '</tr>';
                     } else {
-                        if("checklist_kriteria" == jenis){
+                        if ("checklist_kriteria" == jenis) {
                             if ("ttd" == item.tipe) {
                                 forTTD += '<tr>' +
                                     '<td width="40%">' + item.parameter + '</td>' +
                                     '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
                                     '</tr>';
                             }
-                        }else{
+                        } else {
                             if ("ttd" == item.tipe) {
                                 forTTD += '<tr>' +
                                     '<td width="40%">' + item.parameter + '</td>' +
                                     '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
                                     '</tr>';
-                            }else{
+                            } else {
                                 body += '<tr>' +
                                     '<td width="40%">' + item.parameter + '</td>' +
                                     '<td>' + jwb + '</td>' +
@@ -1545,17 +1554,23 @@ function delRowICU(id) {
 }
 
 function saveHemodinamika(jenis, ket) {
-
-    var va1 = $('#id1').val();
-    var va2 = $('#id2').val();
-    var va3 = $('#id3').val();
-    var va4 = $('#id4').val();
-    var va5 = $('#id5').val();
-    var va6 = $('#id6').val();
-    var va7 = $('#id7').val();
-    var va8 = $('#id8').val();
-    var va9 = $('#id9').val();
-    var va10 = $('#id10').val();
+    var dataPasien = "";
+    dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var va1 = $('#hemo1').val();
+    var va2 = $('#hemo2').val();
+    var va3 = $('#hemo3').val();
+    var va4 = $('#hemo4').val();
+    var va5 = $('#hemo5').val();
+    var va6 = $('#hemo6').val();
+    var va7 = $('#hemo7').val();
+    var va8 = $('#hemo8').val();
+    var va9 = $('#hemo9').val();
+    var va10 = $('#hemo10').val();
     var data = "";
 
     if (va1 != '') {
@@ -1571,13 +1586,14 @@ function saveHemodinamika(jenis, ket) {
             'ibp': va8,
             'cvp': va9,
             'map': va10,
-            'keterangan': ket
+            'keterangan': jenis
         };
         var result = JSON.stringify(data);
+        var pasienData = JSON.stringify(dataPasien);
         $('#save_icu_' + jenis).hide();
         $('#load_icu_' + jenis).show();
         dwr.engine.setAsync(true);
-        HemodinamikaAction.save(result, {
+        HemodinamikaAction.save(result, pasienData, {
             callback: function (res) {
                 if (res.status == "success") {
                     $('#save_icu_' + jenis).show();
@@ -1586,7 +1602,6 @@ function saveHemodinamika(jenis, ket) {
                     $('#warning_icu_' + ket).show().fadeOut(5000);
                     $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
                     $('#modal-icu-' + jenis).scrollTop(0);
-                    listHemodinamika(ket);
                 } else {
                     $('#save_icu_' + jenis).show();
                     $('#load_icu_' + jenis).hide();
@@ -1698,9 +1713,11 @@ function showChartHemodinamika(jenis, tgl) {
 }
 
 function listHemodinamika(jenis) {
+    var cekData = false;
+    var body = "";
+    var head = "";
     HemodinamikaAction.getListDetail(idDetailCheckup, jenis, null, function (res) {
         if (res.length > 0) {
-            var body = "";
             $.each(res, function (i, item) {
                 var tanggal = converterDate(new Date(item.createdDate));
                 var ketTgl = converterDateYmd(new Date(item.tanggal));
@@ -1734,50 +1751,94 @@ function listHemodinamika(jenis) {
                     '<td>' + cekItemIsNull(item.ibp) + '</td>' +
                     '<td>' + cekItemIsNull(item.cvp) + '</td>' +
                     '<td>' + cekItemIsNull(item.map) + '</td>' +
+                    '<td align="center">' + '<i id="delete_' + item.idHemodinamika + '" onclick="conICU(\'' + jenis + '\', \'asesmen_icu\', \'' + item.idHemodinamika + '\', \'hemodinamika\')" class="fa fa-trash hvr-grow" style="color: red;">' + '</td>' +
                     '</tr>';
+                cekData = true;
             });
-            $('#body_hemodinamika').html(body);
+        } else {
+            body = '<tr><td>Data belum ada</td></tr>';
         }
+
+        if (cekData) {
+            head = '<tr style="font-weight: bold">\n' +
+                '<td>Tanggal</td>\n' +
+                '<td>Waktu</td>\n' +
+                '<td>Tensi</td>\n' +
+                '<td>BP</td>\n' +
+                '<td>HI</td>\n' +
+                '<td>RR</td>\n' +
+                '<td>EKG</td>\n' +
+                '<td>ICP</td>\n' +
+                '<td>IBP</td>\n' +
+                '<td>CVP</td>\n' +
+                '<td>MAP</td>\n' +
+                '<td width="10%" align="center">Action</td>\n' +
+                '</tr>';
+        }
+
+        var table = '<table style="font-size: 12px" class="table table-bordered">' +
+            '<thead>' + head + '</thead>' +
+            '<tbody>' + body + '</tbody>' +
+            '</table>';
+
+        var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+        newRow.insertAfter($('table').find('#row_icu_' + jenis));
+        var url = contextPath + '/pages/images/minus-allnew.png';
+        $('#btn_icu_' + jenis).attr('src', url);
+        $('#btn_icu_' + jenis).attr('onclick', 'delRowHemo(\'' + jenis + '\')');
     });
 }
 
-function saveRespirasi(jenis, ket) {
+function delRowHemo(id) {
+    $('#del_icu_' + id).remove();
+    var url = contextPath + '/pages/images/icons8-add-list-25.png';
+    $('#btn_icu_' + id).attr('src', url);
+    $('#btn_icu_' + id).attr('onclick', 'listHemodinamika(\'' + id + '\')');
+}
 
-    var va1 = $('#id1').val();
-    var va2 = $('#id2').val();
-    var va3 = $('#id3').val();
-    var va4 = $('#id4').val();
-    var va5 = $('#id5').val();
-    var va6 = $('#id6').val();
-    var va7 = $('#id7').val();
-    var va8 = $('#id8').val();
-    var va9 = $('#id9').val();
-    var va10 = $('#id10').val();
-    var va11 = $('#id11').val();
-    var va12 = $('#id12').val();
-    var va13 = $('#id13').val();
-    var va14 = $('#id14').val();
-    var va014 = $('#id014').val();
-    var va15 = $('#id15').val();
-    var va16 = $('#id16').val();
-    var va17 = $('#id17').val();
-    var va18 = $('#id18').val();
-    var va19 = $('#id19').val();
-    var va20 = $('#id20').val();
-    var va21 = $('#id21').val();
-    var va22 = $('#id22').val();
-    var va23 = $('#id23').val();
-    var va24 = $('#id24').val();
-    var va25 = $('#id25').val();
-    var va26 = $('#id26').val();
-    var va27 = $('#id27').val();
-    var va28 = $('#id28').val();
-    var va29 = $('#id29').val();
-    var va30 = $('#id30').val();
-    var va31 = $('#id31').val();
-    var va32 = $('#id32').val();
-    var va33 = $('#id33').val();
-    var va34 = $('#id34').val();
+function saveRespirasi(jenis, ket) {
+    var dataPasien = "";
+    dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var va1 = $('#res1').val();
+    var va2 = $('#res2').val();
+    var va3 = $('#res3').val();
+    var va4 = $('#res4').val();
+    var va5 = $('#res5').val();
+    var va6 = $('#res6').val();
+    var va7 = $('#res7').val();
+    var va8 = $('#res8').val();
+    var va9 = $('#res9').val();
+    var va10 = $('#res10').val();
+    var va11 = $('#res11').val();
+    var va12 = $('#res12').val();
+    var va13 = $('#res13').val();
+    var va14 = $('#res14').val();
+    var va014 = $('#res014').val();
+    var va15 = $('#res15').val();
+    var va16 = $('#res16').val();
+    var va17 = $('#res17').val();
+    var va18 = $('#res18').val();
+    var va19 = $('#res19').val();
+    var va20 = $('#res20').val();
+    var va21 = $('#res21').val();
+    var va22 = $('#res22').val();
+    var va23 = $('#res23').val();
+    var va24 = $('#res24').val();
+    var va25 = $('#res25').val();
+    var va26 = $('#res26').val();
+    var va27 = $('#res27').val();
+    var va28 = $('#res28').val();
+    var va29 = $('#res29').val();
+    var va30 = $('#res30').val();
+    var va31 = $('#res31').val();
+    var va32 = $('#res32').val();
+    var va33 = $('#res33').val();
+    var va34 = $('#res34').val();
 
     var data = "";
 
@@ -1813,13 +1874,14 @@ function saveRespirasi(jenis, ket) {
             'ukuran_kedalamaan_ett': va32,
             'spo': va33,
             'secret': va34,
-            'keterangan': ket
+            'keterangan': jenis
         };
         var result = JSON.stringify(data);
+        var pasienData = JSON.stringify(dataPasien);
         $('#save_icu_' + jenis).hide();
         $('#load_icu_' + jenis).show();
         dwr.engine.setAsync(true);
-        RespirasiAction.save(result, {
+        RespirasiAction.save(result, pasienData, {
             callback: function (res) {
                 if (res.status == "success") {
                     $('#save_icu_' + jenis).show();
@@ -1828,7 +1890,6 @@ function saveRespirasi(jenis, ket) {
                     $('#warning_icu_' + ket).show().fadeOut(5000);
                     $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
                     $('#modal-icu-' + jenis).scrollTop(0);
-                    listRespirasi(ket);
                 } else {
                     $('#save_icu_' + jenis).show();
                     $('#load_icu_' + jenis).hide();
@@ -1846,9 +1907,11 @@ function saveRespirasi(jenis, ket) {
 }
 
 function listRespirasi(jenis) {
+    var body = "";
+    var head = '';
+    var cekData = false;
     RespirasiAction.getListDetail(idDetailCheckup, jenis, function (res) {
         if (res.length > 0) {
-            var body = "";
             var valueRes = res[0];
             $('#head1').text(valueRes.jenisNkRmNrm);
             $('#head2').text(valueRes.jenisTPieceJRise.substring(0, 2));
@@ -1909,11 +1972,71 @@ function listRespirasi(jenis) {
                     '<td>' + cekItemIsNull(item.ukuranKedalamaanEtt) + '</td>' +
                     '<td>' + cekItemIsNull(item.spo) + '</td>' +
                     '<td>' + cekItemIsNull(item.secret) + '</td>' +
+                    '<td align="center">' + '<i id="delete_' + item.idRespirasi + '" onclick="conICU(\'' + jenis + '\', \'asesmen_icu\', \'' + item.idRespirasi + '\', \'respirasi\')" class="fa fa-trash hvr-grow" style="color: red;">' + '</td>' +
                     '</tr>';
+                cekData = true;
             });
-            $('#body_respirasi').html(body);
+        } else {
+            body = '<tr><td>Data belum ada</td></tr>';
         }
+
+        if (cekData) {
+            head = '<tr>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center">Tanggal Jam</td>\n' +
+                '<td colspan="3" style="vertical-align: middle" align="center">GCS</td>\n' +
+                '<td colspan="2" style="vertical-align: middle" align="center">DP</td>\n' +
+                '<td colspan="2" style="vertical-align: middle" align="center">RC</td>\n' +
+                '<td colspan="4" style="vertical-align: middle" align="center">EXTR</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center" id="head1">NM</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center" id="head2">TP</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center">TI</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center" id="head3">PE</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center">FR</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center">TV</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center">MV</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center" id="head4">PS</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center" id="head5">PI</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center">TR</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center">IN</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center">FL</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center" id="head6">FI</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center" id="head7">UK</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center">SP</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center">SE</td>\n' +
+                '<td rowspan="2" style="vertical-align: middle" align="center">Action</td>\n' +
+                '                        </tr>\n' +
+                '                        <tr>\n' +
+                '<td align="center">E</td>\n' +
+                '<td align="center">V</td>\n' +
+                '<td align="center">M</td>\n' +
+                '<td align="center">R</td>\n' +
+                '<td align="center">L</td>\n' +
+                '<td align="center">R</td>\n' +
+                '<td align="center">L</td>\n' +
+                '<td align="center">TR</td>\n' +
+                '<td align="center">TL</td>\n' +
+                '<td align="center">KR</td>\n' +
+                '<td align="center">KL</td>\n' +
+                '                        </tr>';
+        }
+        var table = '<table style="font-size: 10px" class="table table-bordered">' +
+            '<thead>' + head + '</thead>' +
+            '<tbody>' + body + '</tbody>' +
+            '</table>';
+
+        var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+        newRow.insertAfter($('table').find('#row_icu_' + jenis));
+        var url = contextPath + '/pages/images/minus-allnew.png';
+        $('#btn_icu_' + jenis).attr('src', url);
+        $('#btn_icu_' + jenis).attr('onclick', 'delRowRes(\'' + jenis + '\')');
     });
+}
+
+function delRowRes(id) {
+    $('#del_icu_' + id).remove();
+    var url = contextPath + '/pages/images/icons8-add-list-25.png';
+    $('#btn_icu_' + id).attr('src', url);
+    $('#btn_icu_' + id).attr('onclick', 'listRespirasi(\'' + id + '\')');
 }
 
 function setInputan(jenis) {
@@ -1967,9 +2090,9 @@ function setInputan(jenis) {
         dataBody.push({'param': 'b. Kejang berulang', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
         dataBody.push({'param': 'c. Gangguan kesadaran', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
         dataBody.push({'param': 'd. Dehidrasi berat', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
-        dataBody.push({'param': 'e. ', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
-        dataBody.push({'param': 'f. Aritmia Jantung', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
-        dataBody.push({'param': 'g. Astma Jantung', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
+        // dataBody.push({'param': 'e. ', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
+        dataBody.push({'param': 'e. Aritmia Jantung', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
+        dataBody.push({'param': 'f. Astma Akut Berat', 'ket1': 'Ya', 'ket2': 'Tidak', 'skor': '2'});
         dataBody.push({
             'param': 'h. Diabetis yang memerlukan terapi insulin-kontinyu',
             'ket1': 'Ya',
@@ -2042,7 +2165,7 @@ function setInputan(jenis) {
                     body += '<tr style="font-weight: bold"><td colspan="3">' + item.param + '' +
                         '<input value="' + item.param + '" type="hidden" name="parameter">' +
                         '<input type="hidden" name="kriteria1"><input type="hidden" name="kriteria2">' +
-                    '</td></tr>';
+                        '</td></tr>';
                 }
             });
         }
@@ -2317,7 +2440,13 @@ function delInputan(id) {
 }
 
 function saveInputan(jenis, ket) {
-
+    var dataPasien = "";
+    dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
     var isNew = $('#is_new').val();
     var data = [];
     var label = $('.data-label' + jenis);
@@ -2350,11 +2479,13 @@ function saveInputan(jenis, ket) {
         });
 
         var result = JSON.stringify(data);
+        var pasienData = JSON.stringify(dataPasien);
+
         $('#save_icu_' + jenis).hide();
         $('#load_icu_' + jenis).show();
         dwr.engine.setAsync(true);
 
-        IcuAction.save(result, isNew, {
+        IcuAction.save(result, isNew, pasienData, {
             callback: function (res) {
                 if (res.status == "success") {
                     $('#save_icu_' + jenis).show();
@@ -2363,9 +2494,6 @@ function saveInputan(jenis, ket) {
                     $('#warning_icu_' + ket).show().fadeOut(5000);
                     $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
                     $('#modal-icu-' + jenis).scrollTop(0);
-                    if ("keseimbangan_icu" == jenis) {
-                        listInputan(ket);
-                    }
                 } else {
                     $('#save_icu_' + jenis).show();
                     $('#load_icu_' + jenis).hide();
@@ -2383,7 +2511,7 @@ function saveInputan(jenis, ket) {
 }
 
 function listInputan(jenis) {
-    IcuAction.getListDetail(idDetailCheckup, jenis + '_icu', function (res) {
+    IcuAction.getListDetail(idDetailCheckup, jenis, function (res) {
         if (res.length > 0) {
 
             var tempHead = [];
@@ -2418,7 +2546,7 @@ function listInputan(jenis) {
                     }
                 }
 
-                tempBody.push({'tanggal': tempTgl, 'jam': item.waktu, 'nilai': item.nilai});
+                tempBody.push({'tanggal': tempTgl, 'jam': item.waktu, 'nilai': item.nilai, 'id': item.idDetailIcu});
             });
 
             if (tempHead.length > 0) {
@@ -2427,47 +2555,67 @@ function listInputan(jenis) {
                 });
             }
 
-            if (tempBody.length > 0) {
+            if(tempHead.length == 1){
                 var tempJm = "";
                 var tempJml = 0;
                 var tempTotal = 0;
                 $.each(tempBody, function (i, item) {
-
                     var jam = item.jam;
                     var nilai = item.nilai;
                     var tgl = item.tanggal;
-
-                    var temTR = "";
-                    var temJM = "";
                     var jml = "";
-                    var last = "";
 
                     tempJml = parseInt(tempJml) + parseInt(item.nilai);
 
-                    if (tempJm != jam) {
-                        tempJm = jam;
-                        temTR = "|";
-                        temJM = '<td>' + tgl + '<span class="pull-right">' + jam + '</span>' + '</td>';
-                        if (i > 0) {
-                            var total = parseInt(tempJml) - parseInt(item.nilai);
-                            tempTotal = parseInt(tempTotal) + parseInt(total);
-                            jml = '<td align="center"><div class="number-circle" style="background-color: #b3ffb3">' + total + '</div>&nbsp;<div class="number-circle" style="background-color: #ffff66">' + tempTotal + '</div></td>'
-                            tempJml = parseInt(item.nilai);
-                        }
-                    }
+                    jml = '<td align="center"><div class="number-circle" style="background-color: #b3ffb3">' + item.nilai + '</div>&nbsp;<div class="number-circle" style="background-color: #ffff66">' + tempJml + '</div></td><td align="center"><i onclick="conICU(\'' + jenis + '\',\'asesmen_icu\', \'' + item.id + '\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>';
 
-                    if (i == tempBody.length - 1) {
-                        tempTotal = parseInt(tempTotal) + parseInt(tempJml);
-                        last = '<td align="center"><div class="number-circle" style="background-color: #b3ffb3">' + tempJml + '</div>&nbsp;<div class="number-circle" style="background-color: #ffff66">' + tempTotal + '</div></td>'
-                        tempJml = parseInt(item.nilai);
-                    }
-
-                    if (i == 0) {
-                        body += '<td>' + tgl + '<span class="pull-right">' + jam + '</span>' + '</td><td>' + nilai + '</td>';
-                    } else {
-                        body += jml + temTR + temJM + '<td>' + nilai + '</td>' + last;
+                    if(body != ''){
+                        body =  body+'|'+'<td><span class="pull-right">' + jam + '</span>' + '</td><td>' + nilai + '</td>'+jml;
+                    }else{
+                        body = body+'|'+'<td>' + tgl + '<span class="pull-right">' + jam + '</span>' + '</td><td>' + nilai + '</td>'+jml;
                     }
                 });
+            }else{
+                if (tempBody.length > 0) {
+                    var tempJm = "";
+                    var tempJml = 0;
+                    var tempTotal = 0;
+                    $.each(tempBody, function (i, item) {
+
+                        var jam = item.jam;
+                        var nilai = item.nilai;
+                        var tgl = item.tanggal;
+
+                        var temTR = "";
+                        var temJM = "";
+                        var jml = "";
+                        var last = "";
+
+                        tempJml = parseInt(tempJml) + parseInt(item.nilai);
+
+                        if (tempJm != jam) {
+                            tempJm = jam;
+                            temTR = "|";
+                            temJM = '<td>' + tgl + '<span class="pull-right">' + jam + '</span>' + '</td>';
+                            var total = parseInt(tempJml) - parseInt(item.nilai);
+                            tempTotal = parseInt(tempTotal) + parseInt(total);
+                            jml = '<td align="center"><div class="number-circle" style="background-color: #b3ffb3">' + total + '</div>&nbsp;<div class="number-circle" style="background-color: #ffff66">' + tempTotal + '</div></td><td align="center"><i onclick="conICU(\'' + jenis + '\',\'asesmen_icu\', \'' + item.id + '\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>';
+                            tempJml = parseInt(item.nilai);
+                        }
+
+                        if (i == tempBody.length - 1) {
+                            tempTotal = parseInt(tempTotal) + parseInt(tempJml);
+                            last = '<td align="center"><div class="number-circle" style="background-color: #b3ffb3">' + tempJml + '</div>&nbsp;<div class="number-circle" style="background-color: #ffff66">' + tempTotal + '</div></td><td align="center"><i onclick="conICU(\'' + jenis + '\',\'asesmen_icu\', \'' + item.id + '\')" class="fa fa-trash hvr-grow" style="color: red"></i></td>';
+                            tempJml = parseInt(item.nilai);
+                        }
+
+                        if (i == 0) {
+                            body += '<td>' + tgl + '<span class="pull-right">' + jam + '</span>' + '</td><td>' + nilai + '</td>';
+                        } else {
+                            body += jml + temTR + temJM + '<td>' + nilai + '</td>' + last;
+                        }
+                    });
+                }
             }
 
             var bod = body.split("|");
@@ -2476,7 +2624,7 @@ function listInputan(jenis) {
                 bb += '<tr>' + item + '</tr>';
             });
 
-            head = head + '<td width="16%">Jumlah/ Komulatif</td>';
+            head = head + '<td width="16%">Jumlah/ Komulatif</td><td align="center" width="10%">Action</td>';
 
             if ("keseimbangan" == jenis) {
                 $('#head_' + jenis + '_icu').html('<tr>' + head + '</tr>');
@@ -2511,24 +2659,24 @@ function listInputan(jenis) {
 
 function delRowICCU(id) {
     $('#del_icu_' + id).remove();
-    var url = contextPath + '/pages/images/icons8-plus-25.png';
+    var url = contextPath + '/pages/images/icons8-add-list-25.png';
     $('#btn_icu_' + id).attr('src', url);
     $('#btn_icu_' + id).attr('onclick', 'listInputan(\'' + id + '\')');
 }
 
-function checkSelect(id, pid, val){
+function checkSelect(id, pid, val) {
 
-    if($('#'+pid).is(':checked')){
-        $('#'+id).prop('checked', true);
-        $('#'+pid).prop('checked', false);
-    }else{
-        $('#'+id).prop('checked', true);
+    if ($('#' + pid).is(':checked')) {
+        $('#' + id).prop('checked', true);
+        $('#' + pid).prop('checked', false);
+    } else {
+        $('#' + id).prop('checked', true);
     }
 
-    if(val == "Ya" || val == "Dirawat dirumah"){
-        $('#icu_'+id).show();
-    }else {
-        $('#icu_'+pid).hide();
+    if (val == "Ya" || val == "Dirawat dirumah") {
+        $('#icu_' + id).show();
+    } else {
+        $('#icu_' + pid).hide();
     }
 }
 
@@ -2622,7 +2770,7 @@ function listCatatanTerintegrasiICU(jenis) {
                 '<td width="10%">Petugas</td>\n' +
                 '<td width="10%">DPJP</td>\n' +
                 '</tr>';
-        }else{
+        } else {
             body = '<tr><td>Data belum ada</td></tr>'
         }
         var table = '<table style="font-size: 12px" class="table table-bordered">' +
@@ -2640,38 +2788,43 @@ function listCatatanTerintegrasiICU(jenis) {
 
 function saveAsuhanKeperawatanICU(jenis, ket) {
 
-    var data =[];
+    var data = [];
+    var dataPasien = "";
+    dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
 
     var diagnosis = $('[name=diag]');
     var inter = $('[name=inter]');
     var imple = $('#tin').val();
     var param = $('[name=params]');
 
-    // var ttdPerawat = document.getElementById("ttd_perawat");
-
     var tgl = $('.tgl').val();
     var jam = $('.jam').val();
 
-    var tempDiag    = "";
-    var tempInter   = "";
-    var tempImple   = "";
+    var tempDiag = "";
+    var tempInter = "";
+    var tempImple = "";
 
     $.each(diagnosis, function (i, item) {
         var val = "";
-        if(item.type == 'checkbox' || item.type == 'radio'){
-            if(item.checked){
+        if (item.type == 'checkbox' || item.type == 'radio') {
+            if (item.checked) {
                 val = item.value;
             }
-        }else{
-            if(item.value != ''){
+        } else {
+            if (item.value != '') {
                 val = item.value;
             }
         }
 
-        if(val != ''){
-            if(tempDiag != ''){
-                tempDiag = tempDiag +'|'+val;
-            }else{
+        if (val != '') {
+            if (tempDiag != '') {
+                tempDiag = tempDiag + '|' + val;
+            } else {
                 tempDiag = val;
             }
         }
@@ -2681,38 +2834,38 @@ function saveAsuhanKeperawatanICU(jenis, ket) {
 
     $.each(param, function (i, item) {
 
-        var subjek = $('[name=subjek'+i+']');
+        var subjek = $('[name=subjek' + i + ']');
         var val = "";
         var sbj = "";
 
         $.each(subjek, function (idx, itm) {
-            if(itm.type == 'checkbox'){
-                if(itm.checked){
-                    if(val != ''){
-                        val = val+', '+itm.value;
-                    }else{
+            if (itm.type == 'checkbox') {
+                if (itm.checked) {
+                    if (val != '') {
+                        val = val + ', ' + itm.value;
+                    } else {
                         val = itm.value;
                     }
                 }
-            }else{
-                if(itm.value != ''){
-                    if(val != ''){
-                        val = val+', '+itm.value;
-                    }else{
+            } else {
+                if (itm.value != '') {
+                    if (val != '') {
+                        val = val + ', ' + itm.value;
+                    } else {
                         val = itm.value;
                     }
                 }
             }
         });
 
-        if(val != ''){
-            sbj = item.value +' : '+val;
-            if(subjektif != ''){
-                subjektif = subjektif +'|'+sbj;
-            }else{
-                if(diagnosis != ''){
-                    subjektif = '|'+sbj;
-                }else{
+        if (val != '') {
+            sbj = item.value + ' : ' + val;
+            if (subjektif != '') {
+                subjektif = subjektif + '|' + sbj;
+            } else {
+                if (diagnosis != '') {
+                    subjektif = '|' + sbj;
+                } else {
                     subjektif = sbj;
                 }
             }
@@ -2721,58 +2874,70 @@ function saveAsuhanKeperawatanICU(jenis, ket) {
 
     $.each(inter, function (i, item) {
         var val = "";
-        if(item.type == 'checkbox'){
-            if(item.checked){
+        if (item.type == 'checkbox') {
+            if (item.checked) {
                 val = item.value;
             }
-        }else{
-            if(item.value != ''){
+        } else {
+            if (item.value != '') {
                 val = item.value;
             }
         }
 
-        if(val != ''){
-            if(tempInter != ''){
-                tempInter = tempInter +'|'+val;
-            }else{
+        if (val != '') {
+            if (tempInter != '') {
+                tempInter = tempInter + '|' + val;
+            } else {
                 tempInter = val;
             }
         }
     });
 
     $.each(imple, function (i, item) {
-        if(tempImple != ''){
-            tempImple = tempImple +'|'+item;
-        }else{
+        if (tempImple != '') {
+            tempImple = tempImple + '|' + item;
+        } else {
             tempImple = item;
         }
     });
 
-    // var cekTtd = isCanvasBlank(ttdPerawat);
+    var ttdPerawat = document.getElementById("asuhan_perawat");
+    var ttdDpjp = document.getElementById("asuhan_dpjp");
+    var nama1 = $('#nama_asuhan_perawat').val();
+    var nama2 = $('#nama_asuhan_dpjp').val();
+    var sip2 = $('#sip_asuhan_dpjp').val();
 
-    if (tgl && jam && tempDiag && tempInter && tempImple && subjektif != '') {
+    var cekTtd1 = isCanvasBlank(ttdPerawat);
+    var cekTtd2 = isCanvasBlank(ttdDpjp);
 
-        // var ttd = ttdPerawat.toDataURL("image/png"),
-        //     ttd = ttd.replace(/^data:image\/(png|jpg);base64,/, "");
+    if (tgl && jam && tempDiag && tempInter && tempImple && subjektif && nama1 && nama2 && sip2 != '' && !cekTtd1 && !cekTtd2) {
+
+        var cvs1 = convertToDataURL(ttdPerawat);
+        var cvs2 = convertToDataURL(ttdDpjp);
 
         data = {
             'id_detail_checkup': idDetailCheckup,
-            'waktu': tgl+' '+jam,
-            'diagnosa': tempDiag+subjektif,
+            'waktu': tgl + ' ' + jam,
+            'diagnosa': tempDiag + subjektif,
             'hasil': '',
             'intervensi': tempInter,
             'implementasi': tempImple,
             'evaluasi': '',
             'keterangan': jenis,
-            'ttd_perawat': ''
+            'ttd_perawat': cvs1,
+            'ttd_dpjp': cvs2,
+            'nama_terang': nama1,
+            'nama_dokter': nama2,
+            'sip': sip2,
         }
 
         var result = JSON.stringify(data);
+        var pasienData = JSON.stringify(dataPasien);
 
         $('#save_icu_' + jenis).hide();
         $('#load_icu_' + jenis).show();
         dwr.engine.setAsync(true);
-        RencanaAsuhanKeperawatanAction.save(result, {
+        RencanaAsuhanKeperawatanAction.save(result, pasienData, {
             callback: function (res) {
                 if (res.status == "success") {
                     $('#save_icu_' + jenis).show();
@@ -2802,7 +2967,10 @@ function saveAsuhanKeperawatanICU(jenis, ket) {
 
 function listAsuhanKeperawatanICU(jenis) {
     var table = "";
-    RencanaAsuhanKeperawatanAction.getListDetail(idDetailCheckup, jenis+'_icu', function (res) {
+    var head = '';
+    var body = '';
+    var cekData = false;
+    RencanaAsuhanKeperawatanAction.getListDetail(idDetailCheckup, jenis, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
 
@@ -2845,17 +3013,45 @@ function listAsuhanKeperawatanICU(jenis) {
                     ul3 = '<ul style="margin-left: 12px">' + implementasi + '</ul>'
                 }
 
-                table += '<tr>' +
+                body += '<tr>' +
                     '<td>' + item.waktu + '</td>' +
                     '<td>' + ul1 + '</td>' +
                     '<td>' + ul2 + '</td>' +
                     '<td>' + ul3 + '</td>' +
                     '</tr>';
+                cekData = true;
             });
-
-            $('#body_asuhan_keperawatan').html(table);
+        } else {
+            body = '<tr><td>Data belum ada</td></tr>';
         }
+
+        if (cekData) {
+            head = '<tr>\n' +
+                '<td width="10%" style="vertical-align: middle" align="center">Tanggal Jam</td>\n' +
+                '<td width="20%" style="vertical-align: middle" align="center">Diagnosa Keperawatan</td>\n' +
+                '<td width="20%" style="vertical-align: middle" align="center">Planning/ Rencana Tindakan</td>\n' +
+                '<td width="20%" style="vertical-align: middle" align="center">Tindakan</td>\n' +
+                '</tr>';
+        }
+
+        var table = '<table style="font-size: 12px" class="table table-bordered">' +
+            '<thead><tr>' + head + '</tr></thead>' +
+            '<tbody>' + body + '</tbody>' +
+            '</table>';
+
+        var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+        newRow.insertAfter($('table').find('#row_icu_' + jenis));
+        var url = contextPath + '/pages/images/minus-allnew.png';
+        $('#btn_icu_' + jenis).attr('src', url);
+        $('#btn_icu_' + jenis).attr('onclick', 'delRowAsuhan(\'' + jenis + '\')');
     });
+}
+
+function delRowAsuhan(id) {
+    $('#del_icu_' + id).remove();
+    var url = contextPath + '/pages/images/icons8-add-list-25.png';
+    $('#btn_icu_' + id).attr('src', url);
+    $('#btn_icu_' + id).attr('onclick', 'listAsuhanKeperawatanICU(\'' + id + '\')');
 }
 
 function pilihTindakanICU(val) {
@@ -2868,52 +3064,52 @@ function pilihTindakanICU(val) {
             var params = "";
             var informasi = "";
 
-            if("i" == item.keterangan ){
+            if ("i" == item.keterangan) {
                 var info = item.informasi.split("|");
                 $.each(info, function (idx, itemx) {
-                    if(itemx != ''){
-                        informasi += '<input class="form-control" name="informasi'+i+'" id="info'+i+'" placeholder="'+itemx+'" onchange="$(\'#info'+i+'\').val(\''+itemx+' '+'\'+this.value)">';
-                    }else{
-                        informasi += '<input class="form-control" name="informasi'+i+'" id="info'+i+'" placeholder="'+itemx+'">';
+                    if (itemx != '') {
+                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i + '" placeholder="' + itemx + '" onchange="$(\'#info' + i + '\').val(\'' + itemx + ' ' + '\'+this.value)">';
+                    } else {
+                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i + '" placeholder="' + itemx + '">';
                     }
                 });
             }
-            if("r" == item.keterangan ){
+            if ("r" == item.keterangan) {
                 var info = item.informasi.split("|");
                 $.each(info, function (idx, itemx) {
                     informasi += '<div class="row">' +
                         '<div class="custom02" style="margin-left: 15px">\n' +
-                        '<input type="radio" value="'+itemx+'" id="informasi'+i+idx+'" name="informasi'+i+'"/><label for="informasi'+i+idx+'">' +itemx+'</label>\n' +
-                        '</div>'+
-                        '</div>';
-                });
-            }
-            if("c" == item.keterangan ){
-                var info = item.informasi.split("|");
-                $.each(info, function (idx, itemx) {
-                    informasi += '<div class="row">' +
-                        '<div class="form-check02">\n' +
-                        '<input type="checkbox" name="informasi'+i+'" id="informasi' + i + idx +'" value="' + itemx + '">\n' +
-                        '<label for="informasi' + i + idx+ '"></label> ' + itemx + '\n' +
+                        '<input type="radio" value="' + itemx + '" id="informasi' + i + idx + '" name="informasi' + i + '"/><label for="informasi' + i + idx + '">' + itemx + '</label>\n' +
                         '</div>' +
                         '</div>';
                 });
             }
-            if("l" == item.keterangan ){
-                informasi += item.informasi+'<input type="hidden" value="'+item.informasi+'" name="informasi'+i+'">';
+            if ("c" == item.keterangan) {
+                var info = item.informasi.split("|");
+                $.each(info, function (idx, itemx) {
+                    informasi += '<div class="row">' +
+                        '<div class="form-check02">\n' +
+                        '<input type="checkbox" name="informasi' + i + '" id="informasi' + i + idx + '" value="' + itemx + '">\n' +
+                        '<label for="informasi' + i + idx + '"></label> ' + itemx + '\n' +
+                        '</div>' +
+                        '</div>';
+                });
+            }
+            if ("l" == item.keterangan) {
+                informasi += item.informasi + '<input type="hidden" value="' + item.informasi + '" name="informasi' + i + '">';
             }
 
             var cekList = '<div class="row">' +
                 '<div class="form-check02">\n' +
-                '<input type="checkbox" name="tanda" id="tanda' + i +'" value="Ya">\n' +
-                '<label for="tanda' + i +'"></label>'+
+                '<input type="checkbox" name="tanda" id="tanda' + i + '" value="Ya">\n' +
+                '<label for="tanda' + i + '"></label>' +
                 '</div>' +
                 '</div>'
 
             body += '<tr>' +
-                '<td width="25%">'+item.parameter+'<input name="parameter" type="hidden" value="'+item.parameter+'"></td>' +
-                '<td>'+informasi+'</td>' +
-                '<td align="center" width="15%">'+cekList+'</td>' +
+                '<td width="25%">' + item.parameter + '<input name="parameter" type="hidden" value="' + item.parameter + '"></td>' +
+                '<td>' + informasi + '</td>' +
+                '<td align="center" width="15%">' + cekList + '</td>' +
                 '</tr>';
         });
 
@@ -2992,9 +3188,9 @@ function tindakanICU(jenis) {
         'keterangan': 'i'
     });
 
-    if(jenis != ''){
+    if (jenis != '') {
         $.each(data, function (i, item) {
-            if(jenis == item.jenis){
+            if (jenis == item.jenis) {
                 dataCari.push({
                     'jenis': item.jenis,
                     'parameter': item.parameter,
@@ -3006,6 +3202,73 @@ function tindakanICU(jenis) {
     }
     return dataCari;
 }
+
+function conICU(jenis, ket, idAsesmen, tipe) {
+    $('#tanya').text("Yakin mengahapus data ini ?");
+    $('#modal-confirm-rm').modal({show: true, backdrop: 'static'});
+    if (idAsesmen != undefined && idAsesmen != '') {
+        $('#save_con_rm').attr('onclick', 'delICUS(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\', \'' + tipe + '\')');
+    } else {
+        $('#save_con_rm').attr('onclick', 'delICU(\'' + jenis + '\', \'' + ket + '\')');
+    }
+}
+
+function delICUS(jenis, ket, idAsesmen, tipe) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startIconSpin('delete_' + idAsesmen);
+    dwr.engine.setAsync(true);
+    IcuAction.saveDelete(idAsesmen, tipe, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopIconSpin('delete_' + idAsesmen);
+                $('#modal-icu-' + ket).scrollTop(0);
+                $('#warning_icu_' + ket).show().fadeOut(5000);
+                $('#msg_icu_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopIconSpin('delete_' + idAsesmen);
+                $('#modal-icu-' + ket).scrollTop(0);
+                $('#warn_' + ket).show().fadeOut(5000);
+                $('#msg_' + ket).text(res.msg);
+            }
+        }
+    });
+}
+
+function delICU(jenis, ket) {
+    $('#modal-confirm-rm').modal('hide');
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
+    var result = JSON.stringify(dataPasien);
+    startSpin('delete_' + jenis);
+    dwr.engine.setAsync(true);
+    AsesmenIcuAction.saveDelete(idDetailCheckup, jenis, result, {
+        callback: function (res) {
+            if (res.status == "success") {
+                stopSpin('delete_' + jenis);
+                $('#modal-icu-' + ket).scrollTop(0);
+                $('#warning_icu_' + ket).show().fadeOut(5000);
+                $('#msg_icu_' + ket).text("Berhasil menghapus data...");
+            } else {
+                stopSpin('delete_' + jenis);
+                $('#modal-icu-' + ket).scrollTop(0);
+                $('#warn_' + ket).show().fadeOut(5000);
+                $('#msg_' + ket).text(res.msg);
+            }
+        }
+    });
+}
+
 
 
 

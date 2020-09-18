@@ -92,9 +92,6 @@
         <property name="tglKeluar">
             <column name="tgl_keluar" sql-type="timestamp" not-null="false" />
         </property>
-        <property name="anamnese">
-            <column name="anamnese" sql-type="text" not-null="false" />
-        </property>
         <property name="idAntrianOnline">
             <column name="id_antrian_online" sql-type="varchar" />
         </property>
@@ -110,6 +107,12 @@
         </property>
         <property name="rr">
             <column name="rr" sql-type="varchar" />
+        </property>
+        <property name="autoanamnesis">
+            <column name="autoanamnesis" />
+        </property>
+        <property name="heteroanamnesis">
+            <column name="heteroanamnesis" />
         </property>
 
     </class>

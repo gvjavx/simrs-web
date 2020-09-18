@@ -32,6 +32,15 @@ public class TindakanRawat extends BaseModel {
     private BigInteger tarifBpjs;
 
     private String approveFlag;
+    private String idPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public String getKategoriInaBpjs() {
         return kategoriInaBpjs;

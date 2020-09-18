@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceBpjs" language="groovy" pageWidth="421" pageHeight="200" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="2.3579476910000072"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="245"/>
 	<property name="ireport.y" value="143"/>
 	<style name="table">
 		<box>
@@ -127,14 +127,14 @@
 			<staticText>
 				<reportElement x="248" y="39" width="59" height="19" uuid="f1001fbb-6e3b-4ec3-920b-036db1549a87"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[Printed date : ]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
 				<reportElement x="306" y="39" width="75" height="19" uuid="ebe6dc6c-3839-45b7-81d1-f7cab1e78acc"/>
 				<textElement>
-					<font fontName="Calibri" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
