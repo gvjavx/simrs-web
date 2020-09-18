@@ -569,8 +569,8 @@
                 <value>sshconfig/com/neurix/akuntansi/master/tipeLaporan/hibernate/ImAkunTipeLaporanHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/kandungan/hibernate/ItSimrsPartografEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenrawatinap/hibernate/ItSimrsImplementasiPerawatEntity.hbm.xml</value>
-
-
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItAkunPerhitunganKembaliUnitEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/hibernate/ItAkunPengajuanBiayaRkEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

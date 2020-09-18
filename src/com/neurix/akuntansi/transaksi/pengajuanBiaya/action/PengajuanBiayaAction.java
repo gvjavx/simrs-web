@@ -11,6 +11,7 @@ import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.bo.PengajuanBiayaBo;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiaya;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiayaDetail;
+import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.PengajuanBiayaRk;
 import com.neurix.akuntansi.transaksi.pengajuanBiaya.model.StokDTO;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
@@ -61,8 +62,17 @@ public class PengajuanBiayaAction extends BaseMasterAction {
     private NotifikasiBo notifikasiBoProxy;
     private PengajuanBiaya pengajuanBiaya;
     private PengajuanBiayaDetail pengajuanBiayaDetail;
+    private PengajuanBiayaRk pengajuanBiayaRk;
     private List<PengajuanBiaya> listOfComboPengajuanBiaya = new ArrayList<PengajuanBiaya>();
     private String rkId;
+
+    public PengajuanBiayaRk getPengajuanBiayaRk() {
+        return pengajuanBiayaRk;
+    }
+
+    public void setPengajuanBiayaRk(PengajuanBiayaRk pengajuanBiayaRk) {
+        this.pengajuanBiayaRk = pengajuanBiayaRk;
+    }
 
     public String getRkId() {
         return rkId;
@@ -751,6 +761,24 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         session.removeAttribute("listOfResult");
         logger.info("[PengajuanBiayaAction.initForm] end process >>>");
         return INPUT;
+    }
+
+    public String initFormPembayaranDo() {
+        logger.info("[PengajuanBiayaAction.initFormPembayaranDo] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        String branchId = CommonUtil.userBranchLogin();
+        PengajuanBiayaRk data = new PengajuanBiayaRk();
+        if (branchId!=null){
+            data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
+        }else{
+            data.setBranchId("");
+        }
+
+        setPengajuanBiayaRk(data);
+        session.removeAttribute("listOfResult");
+        logger.info("[PengajuanBiayaAction.initFormPembayaranDo] end process >>>");
+        return "init_do";
     }
 
     public String initFormPengajuan() {
@@ -1609,6 +1637,252 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         return df.format(date);
     }
 
+    public String searchPembayaranDo() {
+        logger.info("[PengajuanBiayaAction.searchPembayaranDo] start process >>>");
+        PengajuanBiayaRk search = getPengajuanBiayaRk();
+        List<PengajuanBiayaRk> pengajuanBiayaRkList = new ArrayList();
+        try {
+            pengajuanBiayaRkList = pengajuanBiayaBoProxy.getDaftarPembayaranDo(search);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pengajuanBiayaBoProxy.saveErrorMessage(e.getMessage(), "PengajuanBiayaBO.searchPembayaranDo");
+            } catch (GeneralBOException e1) {
+                logger.error("[PengajuanBiayaAction.searchPembayaranDo] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PengajuanBiayaAction.searchPembayaranDo] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", pengajuanBiayaRkList);
+
+        String branchId = CommonUtil.userBranchLogin();
+        if (branchId!=null){
+            search.setBranchIdUser(branchId);
+        }else{
+            search.setBranchIdUser("");
+        }
+        setPengajuanBiayaRk(search);
+        logger.info("[PengajuanBiayaAction.searchPembayaranDo] end process <<<");
+
+        return "success_pengajuan_rk";
+    }
+
+    public void kirimPengajuanPembayaranDoRk(String data,String branchId,String branchIdUser) {
+        logger.info("[PengajuanBiayaAction.kirimPengajuanPembayaranDoRk] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BillingSystemBo billingSystemBo= (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        KodeRekeningBo kodeRekeningBo= (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        BigDecimal jumlah = BigDecimal.ZERO;
+        List<PengajuanBiayaRk> pengajuanBiayaRkList = (List<PengajuanBiayaRk>) session.getAttribute("listOfResult");
+        List<PengajuanBiayaRk> finalPengajuanBiayaRkList = new ArrayList<>();
+        List<Map> pembayaranDo = new ArrayList<>();
+
+        try {
+            JSONArray json = new JSONArray(data);
+            for (int i = 0; i < json.length(); i++) {
+                PengajuanBiayaRk dataRk = new PengajuanBiayaRk();
+                JSONObject obj = json.getJSONObject(i);
+                dataRk.setNoTransaksi(obj.getString("noDo"));
+                dataRk.setMasterId(obj.getString("masterId"));
+                dataRk.setJumlah(BigDecimal.valueOf(Double.valueOf(obj.getString("jumlah").replace(",",""))));
+
+                Map dataDo = new HashMap();
+                dataDo.put("master_id",dataRk.getMasterId());
+                dataDo.put("bukti",dataRk.getNoTransaksi());
+                dataDo.put("nilai",dataRk.getJumlah());
+                pembayaranDo.add(dataDo);
+
+                jumlah = jumlah.add(dataRk.getJumlah());
+
+                for (PengajuanBiayaRk pengajuanBiayaRk : pengajuanBiayaRkList){
+                    if (pengajuanBiayaRk.getNoTransaksi().equalsIgnoreCase(dataRk.getNoTransaksi())){
+                        pengajuanBiayaRk.setFlag("Y");
+                        pengajuanBiayaRk.setAction("C");
+                        pengajuanBiayaRk.setLastUpdateWho(CommonUtil.userIdLogin());
+                        pengajuanBiayaRk.setCreatedWho(CommonUtil.userIdLogin());
+                        pengajuanBiayaRk.setStatus("K");
+                        pengajuanBiayaRk.setLastUpdate(new Timestamp (new java.util.Date().getTime()));
+                        pengajuanBiayaRk.setCreatedDate(new Timestamp (new java.util.Date().getTime()));
+                        pengajuanBiayaRk.setSave(true);
+                        finalPengajuanBiayaRkList.add(pengajuanBiayaRk);
+                    }
+                }
+            }
+
+            //Membuat Jurnal
+            //membuat RK pengiriman modal
+            Map dataRk = new HashMap();
+            //mencari coa RK
+            Branch branch = branchBo.getBranchById(branchIdUser,"Y");
+            Map rkUnit = new HashMap();
+            rkUnit.put("nilai",jumlah);
+            rkUnit.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(branch.getCoaRk()));
+
+            dataRk.put("rk_kd_unit",rkUnit);
+            dataRk.put("data_do",pembayaranDo);
+
+            String keterangan ="Pengajuan pembayaran DO Ke Kantor Pusat dari Unit :"+branch.getBranchName()+" pada tanggal "+CommonUtil.convertDateToString(new java.util.Date());
+
+            //disimpan
+            pengajuanBiayaBo.savePembayaranPengajuanDo(finalPengajuanBiayaRkList);
+
+            //membuat jurnal RK dari kantor pusat
+            billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_KIRIM_PENGAJUAN_PEMBAYARAN_DO,dataRk,branchIdUser,keterangan,"Y");
+        }catch (Exception e){
+            logger.error("[PengajuanBiayaAction.kirimPengajuanPembayaranDoRk] Error ," + "[" + e.getMessage() + "] ", e);
+            throw new GeneralBOException(e);
+        }
+        logger.info("[PengajuanBiayaAction.kirimPengajuanPembayaranDoRk] end process <<<");
+    }
+
+    public void terimaPengajuanPembayaranDoRk(String data,String branchId,String branchIdUser) {
+        logger.info("[PengajuanBiayaAction.terimaPengajuanPembayaranDoRk] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BillingSystemBo billingSystemBo= (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        KodeRekeningBo kodeRekeningBo= (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        BigDecimal jumlah = BigDecimal.ZERO;
+        List<PengajuanBiayaRk> pengajuanBiayaRkList = (List<PengajuanBiayaRk>) session.getAttribute("listOfResult");
+        List<PengajuanBiayaRk> finalPengajuanBiayaRkList = new ArrayList<>();
+        List<Map> pembayaranDo = new ArrayList<>();
+
+        try {
+            JSONArray json = new JSONArray(data);
+            for (int i = 0; i < json.length(); i++) {
+                PengajuanBiayaRk dataRk = new PengajuanBiayaRk();
+                JSONObject obj = json.getJSONObject(i);
+                dataRk.setNoTransaksi(obj.getString("noDo"));
+                dataRk.setMasterId(obj.getString("masterId"));
+                dataRk.setJumlah(BigDecimal.valueOf(Double.valueOf(obj.getString("jumlah").replace(",",""))));
+
+                Map dataDo = new HashMap();
+                dataDo.put("master_id",dataRk.getMasterId());
+                dataDo.put("nilai",dataRk.getJumlah());
+                dataDo.put("bukti",dataRk.getNoTransaksi());
+                pembayaranDo.add(dataDo);
+
+                jumlah = jumlah.add(dataRk.getJumlah());
+
+                for (PengajuanBiayaRk pengajuanBiayaRk : pengajuanBiayaRkList){
+                    if (pengajuanBiayaRk.getNoTransaksi().equalsIgnoreCase(dataRk.getNoTransaksi())){
+                        pengajuanBiayaRk.setAproveKeuId(CommonUtil.userIdLogin());
+                        pengajuanBiayaRk.setApproveKeuDate(new Timestamp(new java.util.Date().getTime()));
+                        pengajuanBiayaRk.setApproveKeuFlag("Y");
+                        pengajuanBiayaRk.setLastUpdate(new Timestamp(new java.util.Date().getTime()));
+                        pengajuanBiayaRk.setLastUpdateWho(CommonUtil.userIdLogin());
+                        pengajuanBiayaRk.setAction("U");
+                        pengajuanBiayaRk.setStatus("R");
+                        pengajuanBiayaRk.setSave(true);
+                        finalPengajuanBiayaRkList.add(pengajuanBiayaRk);
+                    }
+                }
+            }
+
+            //Membuat Jurnal
+            //membuat RK pengiriman modal
+            Map dataRk = new HashMap();
+            //mencari coa RK
+            Branch branch = branchBo.getBranchById(branchId,"Y");
+            Map rkUnit = new HashMap();
+            rkUnit.put("nilai",jumlah);
+            rkUnit.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(branch.getCoaRk()));
+
+            dataRk.put("rk_kd_unit",rkUnit);
+            dataRk.put("data_do",pembayaranDo);
+
+            String keterangan ="Penerimaan pembayaran DO dari Unit :"+branch.getBranchName()+" ke Kantor Pusat pada tanggal "+CommonUtil.convertDateToString(new java.util.Date());
+
+            //disimpan
+            pengajuanBiayaBo.approvePengajuanBiayaRk(finalPengajuanBiayaRkList);
+            //membuat jurnal RK dari kantor pusat
+            billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_TERIMA_PENGAJUAN_PEMBAYARAN_DO,dataRk,branchIdUser,keterangan,"Y");
+        }catch (Exception e){
+            logger.error("[PengajuanBiayaAction.kirimPengajuanPembayaranDoRk] Error ," + "[" + e.getMessage() + "] ", e);
+            throw new GeneralBOException(e);
+        }
+        logger.info("[PengajuanBiayaAction.terimaPengajuanPembayaranDoRk] end process <<<");
+    }
+
+    public void pembayaranDo(String data,String metodeBayar, String branchIdUser) {
+        logger.info("[PengajuanBiayaAction.pembayaranDo] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BillingSystemBo billingSystemBo= (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        KodeRekeningBo kodeRekeningBo= (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        BigDecimal jumlah = BigDecimal.ZERO;
+        List<PengajuanBiayaRk> pengajuanBiayaRkList = (List<PengajuanBiayaRk>) session.getAttribute("listOfResult");
+        List<PengajuanBiayaRk> finalPengajuanBiayaRkList = new ArrayList<>();
+        List<Map> pembayaranDo = new ArrayList<>();
+
+        try {
+            JSONArray json = new JSONArray(data);
+            for (int i = 0; i < json.length(); i++) {
+                PengajuanBiayaRk dataRk = new PengajuanBiayaRk();
+                JSONObject obj = json.getJSONObject(i);
+                dataRk.setNoTransaksi(obj.getString("noDo"));
+                dataRk.setMasterId(obj.getString("masterId"));
+                dataRk.setJumlah(BigDecimal.valueOf(Double.valueOf(obj.getString("jumlah").replace(",",""))));
+
+                Map dataDo = new HashMap();
+                dataDo.put("master_id",dataRk.getMasterId());
+                dataDo.put("bukti",dataRk.getNoTransaksi());
+                dataDo.put("nilai",dataRk.getJumlah());
+                pembayaranDo.add(dataDo);
+
+                jumlah = jumlah.add(dataRk.getJumlah());
+
+                for (PengajuanBiayaRk pengajuanBiayaRk : pengajuanBiayaRkList){
+                    if (pengajuanBiayaRk.getNoTransaksi().equalsIgnoreCase(dataRk.getNoTransaksi())){
+                        pengajuanBiayaRk.setAction("U");
+                        pengajuanBiayaRk.setLastUpdateWho(CommonUtil.userIdLogin());
+                        pengajuanBiayaRk.setStatus("D");
+                        pengajuanBiayaRk.setLastUpdate(new Timestamp (new java.util.Date().getTime()));
+                        pengajuanBiayaRk.setSave(true);
+                        finalPengajuanBiayaRkList.add(pengajuanBiayaRk);
+                    }
+                }
+            }
+
+            //Membuat Jurnal
+            //membuat RK pengiriman modal
+            Map dataRk = new HashMap();
+
+            Map giro = new HashMap();
+            giro.put("nilai",jumlah);
+            giro.put("rekening_id",kodeRekeningBo.getRekeningIdByKodeRekening(metodeBayar));
+            dataRk.put("metode_bayar",giro);
+
+            dataRk.put("data_do",pembayaranDo);
+
+            String keterangan ="Pembayaran DO Kantor Pusat pada tanggal "+CommonUtil.convertDateToString(new java.util.Date());
+
+            //membuat jurnal RK dari kantor pusat
+            Jurnal jurnal = billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_PEMBAYARAN_DO,dataRk,branchIdUser,keterangan,"Y");
+
+            //disimpan
+            pengajuanBiayaBo.savePembayaranPengajuanDoFinal(finalPengajuanBiayaRkList,jurnal.getNoJurnal(),metodeBayar);
+        }catch (Exception e){
+            logger.error("[PengajuanBiayaAction.pembayaranDo] Error ," + "[" + e.getMessage() + "] ", e);
+            throw new GeneralBOException(e);
+        }
+        logger.info("[PengajuanBiayaAction.pembayaranDo] end process <<<");
+    }
     public String paging(){
         return SUCCESS;
     }

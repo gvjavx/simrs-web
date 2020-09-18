@@ -22,6 +22,8 @@
           p:jurnalDao-ref="jurnalDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
           p:jurnalDetailDao-ref="jurnalDetailDao"
+          p:pengajuanBiayaRkDao-ref="pengajuanBiayaRkDao"
+          p:masterVendorDao-ref="masterVendorDao"
     />
 
     <bean id="pengajuanBiayaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -47,6 +49,8 @@
     <bean id="pengajuanBiayaDao" class="com.neurix.akuntansi.transaksi.pengajuanBiaya.dao.PengajuanBiayaDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="pengajuanBiayaDetailDao" class="com.neurix.akuntansi.transaksi.pengajuanBiaya.dao.PengajuanBiayaDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="pengajuanBiayaRkDao" class="com.neurix.akuntansi.transaksi.pengajuanBiaya.dao.PengajuanBiayaRkDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

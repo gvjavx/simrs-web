@@ -1112,6 +1112,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("judulGm", dataAtasan.getJudulGeneralManager());
+        reportParams.put("judulManagerKeu", dataAtasan.getJudulManagerKeuangan());
         reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
         reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
         reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
@@ -1454,23 +1456,24 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         String reportId="RPT07";
         String tipeAging ="";
         String unit = "";
-        if ((CommonConstant.ID_KANPUS).equalsIgnoreCase(dataLaporan.getUnit())){
-            List<Branch> branchList = new ArrayList<>();
-            branchList = branchBo.getAll();
-            int i = 1;
-            for (Branch dataUnit : branchList){
-                if (i==1){
-                    unit="'"+dataUnit.getBranchId()+"'";
-                }else{
-                    unit=unit+",'"+dataUnit.getBranchId()+"'";
-                }
-                i++;
-            }
-            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
-            branch.setBranchName("Semua");
-        }else{
-            unit="'"+dataLaporan.getUnit()+"'";
-        }
+//        if ((CommonConstant.ID_KANPUS).equalsIgnoreCase(dataLaporan.getUnit())){
+//            List<Branch> branchList = new ArrayList<>();
+//            branchList = branchBo.getAll();
+//            int i = 1;
+//            for (Branch dataUnit : branchList){
+//                if (i==1){
+//                    unit="'"+dataUnit.getBranchId()+"'";
+//                }else{
+//                    unit=unit+",'"+dataUnit.getBranchId()+"'";
+//                }
+//                i++;
+//            }
+//            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
+//            branch.setBranchName("Semua");
+//        }else{
+//            unit="'"+dataLaporan.getUnit()+"'";
+//        }
+        unit="'"+dataLaporan.getUnit()+"'";
 
         switch (dataLaporan.getTipeLaporan()){
             case("hutang_usaha") :

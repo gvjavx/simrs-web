@@ -54,6 +54,16 @@ public class PengajuanBiaya extends BaseModel {
     private String coaAjuanName;
     private String coaTargetName;
 
+    private String branchIdUser;
+
+    public String getBranchIdUser() {
+        return branchIdUser;
+    }
+
+    public void setBranchIdUser(String branchIdUser) {
+        this.branchIdUser = branchIdUser;
+    }
+
     public String getCoaAjuanName() {
         return coaAjuanName;
     }
