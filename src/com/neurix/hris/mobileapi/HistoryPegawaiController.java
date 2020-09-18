@@ -1,11 +1,8 @@
 package com.neurix.hris.mobileapi;
 
-import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.hris.master.ijin.model.Ijin;
 import com.neurix.hris.mobileapi.model.HistoryPegawaiMobile;
-import com.neurix.hris.mobileapi.model.ProfilSisaCuti;
 import com.neurix.hris.transaksi.absensi.bo.AbsensiBo;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
 import com.neurix.hris.transaksi.cutiPegawai.bo.CutiPegawaiBo;
@@ -13,7 +10,6 @@ import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
 import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.opensymphony.xwork2.ModelDriven;
-import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
@@ -160,6 +156,7 @@ public class HistoryPegawaiController implements ModelDriven<Object> {
             }
             if (ijinKeluar != null) {
                 model.setJumlahDispen(String.valueOf(ijinKeluar.size()));
+                model.setLamaijinDispen(String.valueOf(ijinKeluar.size()));
             }
 
         }

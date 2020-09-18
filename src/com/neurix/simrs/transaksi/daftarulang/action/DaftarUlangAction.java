@@ -25,7 +25,6 @@ import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.daftarulang.bo.DaftarUlangBo;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
-import com.neurix.simrs.transaksi.statusperiksa.bo.StatusPeriksaBo;
 import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import org.apache.log4j.Logger;
