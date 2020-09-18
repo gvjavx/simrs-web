@@ -936,7 +936,7 @@
         var profesiBaruName = $('#profesiBaruId1 option:selected').text();
 
 
-        if (personName!=''&&branchLamaId!=''&&tipe!=''&&status!='') {
+        if (personName!=''&&branchLamaId!=''&&tipe!=''&&status!=''&&profesiBaruId!=''&&levelBaruId!='') {
             if(url == 'addPerson'){
                 if (confirm('Are you sure you want to save this Record?')) {
                     dwr.engine.setAsync(false);
@@ -1027,6 +1027,12 @@
             }
             if (status=="") {
                 msg+="Status masih belum dipilih";
+            }
+            if (profesiBaruId==""){
+                msg+="Profesi masih kosong ";
+            }
+            if (levelBaruId==""){
+                msg+="Level masih kosong";
             }
             alert(msg);
         }
