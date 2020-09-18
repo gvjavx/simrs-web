@@ -725,6 +725,13 @@ public class MutasiAction extends BaseMasterAction{
 
                 mutasi.setStatus(status);
 
+                if (("").equalsIgnoreCase(levelBaru)){
+                    mutasi.setLevelBaru(levelLama);
+                }
+                if (("").equalsIgnoreCase(levelBaruName)){
+                    mutasi.setLevelBaruName(levelLamaName);
+                }
+
                 if (!("").equalsIgnoreCase(status)){
                     if ("M".equalsIgnoreCase(status)){
                         mutasi.setStatusName("Move");

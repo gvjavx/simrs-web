@@ -288,4 +288,7 @@
 
     <import resource="sshconfig/com/neurix/simrs/transaksi/kandungan/spring/PartografBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmenrawatinap/spring/ImplementasiPerawatBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/statusMutasi/spring/StatusMutasiBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/hris/master/jenisPegawai/spring/JenisPegawaiBean.xml"/>
 </beans>

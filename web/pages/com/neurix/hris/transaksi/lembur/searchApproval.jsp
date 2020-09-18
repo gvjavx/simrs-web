@@ -214,6 +214,11 @@
                                                 <display:column property="jamAwal" sortable="true" title="<center>Jam Awal</center>" style="text-align:center" />
                                                 <display:column property="jamAkhir" sortable="true" title="<center>Jam Akhir</center>" style="text-align:center" />
                                                 <display:column property="lamaJam" sortable="true" title="<center>Lama</center>" style="text-align:center" />
+                                                <display:setProperty name="paging.banner.item_name">Approval</display:setProperty>
+                                                <display:setProperty name="paging.banner.items_name">Approval</display:setProperty>
+                                                <display:setProperty name="export.excel.filename">Approval.xls</display:setProperty>
+                                                <display:setProperty name="export.csv.filename">Approval.csv</display:setProperty>
+                                                <display:setProperty name="export.pdf.filename">Approval.pdf</display:setProperty>
                                             </display:table>
                                         </td>
                                     </tr>

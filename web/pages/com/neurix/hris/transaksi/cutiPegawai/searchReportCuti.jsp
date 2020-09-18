@@ -270,6 +270,11 @@
                                             <display:column property="namaPegawai" sortable="true" title="Nama"  />
                                             <display:column property="sisaCutiTahunan" sortable="true" title="<center>Sisa Cuti Tahunan</center>"  style="text-align:center" />
                                             <display:column property="sisaCutiPanjang" sortable="true" title="<center>Sisa Cuti Panjang</center>" style="text-align:center" />
+                                            <display:setProperty name="paging.banner.item_name">ReportCuti</display:setProperty>
+                                            <display:setProperty name="paging.banner.items_name">ReportCuti</display:setProperty>
+                                            <display:setProperty name="export.excel.filename">ReportCuti.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">ReportCuti.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">ReportCuti.pdf</display:setProperty>
                                         </display:table>
                                     </td>
                                 </tr>

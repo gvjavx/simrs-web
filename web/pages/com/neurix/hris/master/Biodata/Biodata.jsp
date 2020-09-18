@@ -174,22 +174,49 @@
         });
 
         $.subscribe('beforeProcessSaveStudy', function (event, data){
-            if (confirm('Do you want to save this record?')){
-                event.originalEvent.options.submit = true;
-                $('#modal-edit').modal('hide');
-                $('#myFormDocument')[0].reset();
-                alert('Record has been Saved successfully.');
+            var studyName = document.getElementById("studyName").value;
+            var programStudy = document.getElementById("pendidikanProgramStudi").value;
+            var tahunAwal = document.getElementById("studyTahunAwal").value;
+            var tahunAkhir = document.getElementById("studyTahunAkhir").value;
+            dwr.engine.setAsync(false);
+            if( studyName != ''|| programStudy != ''|| tahunAwal != ''|| tahunAkhir !=''){
+                if (confirm('Do you want to save this record?')){
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
+                    $('#modal-edit').modal('hide');
+                    $('#myFormDocument')[0].reset();
+                    alert('Record has been Saved successfully.');
 //                loadSessionStudy();
 
-                <s:if test="isAdd()">
+                    <s:if test="isAdd()">
                     loadSessionStudy();
-                </s:if>
-                <s:else>
+                    </s:if>
+                    <s:else>
                     var nip = document.getElementById("nip1").value;
                     loadStudy(nip);
-                </s:else>
+                    </s:else>
+                } else{
+                    event.originalEvent.options.submit = false;
+                }
             } else{
                 event.originalEvent.options.submit = false;
+                var msg = "";
+                if (studyName == '') {
+                    msg += 'Field <strong>Study Name</strong> is required.' + '<br/>';
+                }
+                if (programStudy == '') {
+                    msg += 'Field <strong>Program Studi</strong> is required.' + '<br/>';
+                }
+                if (tahunAwal == '') {
+                    msg += 'Field <strong>Tahun Awal</strong> is required.' + '<br/>';
+                }
+                if (tahunAkhir == '') {
+                    msg += 'Field <strong>Tahun Akhir</strong> is required.' + '<br/>';
+                }
+                document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                $("#modal-edit").modal('hide');
+                $.publish('showErrorValidationDialog');
             }
         });
 

@@ -365,6 +365,11 @@
                                             <display:column property="personName" sortable="true" title="Nama" />
                                             <display:column property="tanggalSppdBerangkat" sortable="true" title="Tanggal SPPD"
                                                             decorator="com.neurix.common.displaytag.LongDateWrapper"/>--%>
+                                            <display:setProperty name="paging.banner.item_name">Sppd</display:setProperty>
+                                            <display:setProperty name="paging.banner.items_name">Sppd</display:setProperty>
+                                            <display:setProperty name="export.excel.filename">Sppd.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">Sppd.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">Sppd.pdf</display:setProperty>
 
                                         </display:table>
                                     </td>

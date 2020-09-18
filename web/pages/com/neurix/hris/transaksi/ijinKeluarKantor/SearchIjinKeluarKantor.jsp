@@ -325,6 +325,11 @@
                                                                 <s:else>
                                                                 </s:else>
                                                             </display:column>
+                                                            <display:setProperty name="paging.banner.item_name">IjinKeluarKantor</display:setProperty>
+                                                            <display:setProperty name="paging.banner.items_name">IjinKeluarKantor</display:setProperty>
+                                                            <display:setProperty name="export.excel.filename">IjinKeluarKantor.xls</display:setProperty>
+                                                            <display:setProperty name="export.csv.filename">IjinKeluarKantor.csv</display:setProperty>
+                                                            <display:setProperty name="export.pdf.filename">IjinKeluarKantor.pdf</display:setProperty>
                                                         </display:table>
                                                     </td>
                                                 </tr>
