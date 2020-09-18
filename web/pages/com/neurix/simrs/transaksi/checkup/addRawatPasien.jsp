@@ -875,9 +875,8 @@
                                                             $('#btn-save').show();
                                                             $('#warning_pasien').hide();
                                                             $('#msg_pasien').text("");
+                                                            alertObatKronis(selectedObj.id);
                                                         }
-
-                                                        alertObatKronis(selectedObj.id);
 
                                                         $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
                                                         return selectedObj.id;

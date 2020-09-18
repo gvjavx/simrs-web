@@ -15,6 +15,7 @@
         $( document ).ready(function() {
             $('#pel_ri_active, #bayar_rawat_inap').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
+            getKelasKamar();
         });
 
     </script>
@@ -77,15 +78,18 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
-                                        <s:action id="initComboKelas" namespace="/checkupdetail"
-                                                  name="getListComboKelasRuangan_checkupdetail"/>
-                                        <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"
-                                                  list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
-                                                  name="rawatInap.idKelas"
-                                                  listKey="idKelasRuangan"
-                                                  listValue="namaKelasRuangan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
+                                        <select style="margin-top: 7px" class="form-control select2" id="kelas_kamar" name="rawatInap.idKelas" onchange="listSelectRuangan(this.value)">
+                                            <option value=''>[Select One]</option>
+                                        </select>
+                                        <%--<s:action id="initComboKelas" namespace="/checkupdetail"--%>
+                                                  <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
+                                        <%--<s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"--%>
+                                                  <%--list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"--%>
+                                                  <%--name="rawatInap.idKelas"--%>
+                                                  <%--listKey="idKelasRuangan"--%>
+                                                  <%--listValue="namaKelasRuangan"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
                                     </div>
                                     <div class="col-sm-3" style="display: none;" id="load_ruang">
                                         <img border="0" src="<s:url value="/pages/images/spinner.gif"/>" style="cursor: pointer; width: 45px; height: 45px"><b style="color: #00a157;">Sedang diproses...</b></div>
@@ -249,38 +253,48 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
+    function getKelasKamar(){
+        var option = '<option value="">[Select One]</option>';
+        dwr.engine.setAsync(true);
+        CheckupDetailAction.getListKelasKamar('rawat_inap', function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="' + item.idKelasRuangan + '">' + item.namaKelasRuangan + '</option>';
+                });
+                $('#kelas_kamar').html(option);
+            }else{
+                $('#kelas_kamar').html(option);
+            }
+        });
+    }
+
     function printGelangPasien(noCheckup) {
         window.open('printGelangPasien_rawatinap.action?id=' + noCheckup, '_blank');
     }
 
     function listSelectRuangan(id){
-        var idx     = id.selectedIndex;
-        var idKelas = id.options[idx].value;
-        var option  = "";
+        var option  = "<option value=''>[Select One]</option>";;
         var flag    = false;
-
         $('#load_ruang').show();
         setTimeout(function () {
 
         },100);
-        if(idKelas != ''){
-            CheckupDetailAction.listRuangan(idKelas, flag, { callback: function (response) {
-                option = "<option value=''>[Select One]</option>";
-                if (response != null) {
+        if(id != ''){
+            CheckupDetailAction.listRuangan(id, flag, { callback: function (response) {
+                if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
                     });
+                    $('#nama_ruangan').html(option);
                 } else {
-                    option = option;
+                    $('#nama_ruangan').html(option);
                 }
                 $('#load_ruang').hide();
             }
             });
         }else{
-            option = "<option value=''>[Select One]</option>";
+            $('#nama_ruangan').html(option);
         }
-
-        $('#nama_ruangan').html(option);
     }
 </script>
 

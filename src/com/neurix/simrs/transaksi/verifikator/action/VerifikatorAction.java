@@ -1757,6 +1757,7 @@ public class VerifikatorAction extends BaseMasterAction {
         String id = getId();
         String jk = "";
         BigDecimal ppnObat = new BigDecimal(String.valueOf(0));
+        Boolean isRawatInap = false;
 
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
         HeaderCheckup checkup = new HeaderCheckup();
@@ -1784,7 +1785,14 @@ public class VerifikatorAction extends BaseMasterAction {
                             BigDecimal ppn = (riwayatTindakan.getTotalTarif().multiply(new BigDecimal(0.1))).setScale(2, BigDecimal.ROUND_HALF_UP);
                             ppnObat = ppnObat.add(ppn);
                         }
+                        if("kamar".equalsIgnoreCase(riwayatTindakan.getKeterangan())){
+                            isRawatInap = true;
+                        }
                     }
+                }
+
+                if(isRawatInap){
+                    ppnObat = new BigDecimal(String.valueOf(0));
                 }
 
                 JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(riwayatTindakanList);
