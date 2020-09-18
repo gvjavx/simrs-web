@@ -408,7 +408,8 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
                 "WHERE nip = :nip\n" +
                 "AND tanggal BETWEEN :firstDate AND :lastDate\n" +
                 "AND branch_id = :branchId\n " +
-                "AND status_absensi NOT IN ('00', '08', '10', '11', '12', '13')";
+                "AND status_absensi NOT IN ('00', '08', '10', '11', '12', '13')\n" +
+                "ORDER BY tanggal ASC";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)

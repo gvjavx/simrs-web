@@ -132,6 +132,15 @@ public class AbsensiPegawai extends BaseModel {
     public void setTanggalUtil(java.util.Date tanggalUtil) {
         this.tanggalUtil = tanggalUtil;
     }
+    private boolean isMobile = false;
+
+    public boolean isMobile() {
+        return isMobile;
+    }
+
+    public void setMobile(boolean mobile) {
+        isMobile = mobile;
+    }
 
     public String getCekPegawaiStatus() {
         return cekPegawaiStatus;

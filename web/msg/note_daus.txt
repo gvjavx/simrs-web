@@ -245,7 +245,7 @@ ALTER TABLE public.it_akun_pengajuan_biaya
      last_update_who character varying(100) COLLATE pg_catalog."default",
      action character varying(100) COLLATE pg_catalog."default",
      flag character varying(1) COLLATE pg_catalog."default",
-     CONSTRAINT it_akun_perhitungan_ppn_kd_pkey PRIMARY KEY (perhitungan_ppn_kd)
+     CONSTRAINT it_akun_perhitungan_ppn_kd_pkey PRIMARY KEY (perhitungan_ppn_kd_id)
  )
 
  CREATE TABLE public.it_akun_proses_ppn_kd

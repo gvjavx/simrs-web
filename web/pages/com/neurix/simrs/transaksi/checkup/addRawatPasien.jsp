@@ -2463,6 +2463,7 @@
                     option = option;
                 }
             });
+            $('#poli').val(idPelayanan).trigger('change');
         }
 
         var idDokter = '<s:property value="headerCheckup.idDokter"></s:property>';
