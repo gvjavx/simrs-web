@@ -873,6 +873,8 @@
 </div>
 
 <div id="modal-temp"></div>
+
+<div class="mask"></div>
 <%@ include file="/pages/modal/modalRingkasanRawatJalan.jsp" %>
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -998,6 +1000,27 @@
 
         $('.dropup').on('hide.bs.dropdown', function(e){
             $(this).find('.dropdown-menu').first().stop(true, true).slideUp(350);
+        });
+
+
+        $('#img_ktp').on('click', function (e) {
+            e.preventDefault();
+            var src = $('#img_ktp').attr('src');
+
+            if (src != null && src != "") {
+                $('.mask').html('<div class="img-box"><img src="' + src + '"><a class="close">&times;</a>');
+
+                $('.mask').addClass('is-visible fadein').on('animationend', function () {
+                    $(this).removeClass('fadein is-visible').addClass('is-visible');
+                });
+
+                $('.close').on('click', function () {
+                    $(this).parents('.mask').addClass('fadeout').on('animationend', function () {
+                        $(this).removeClass('fadeout is-visible')
+                    });
+                });
+            }
+
         });
     });
 

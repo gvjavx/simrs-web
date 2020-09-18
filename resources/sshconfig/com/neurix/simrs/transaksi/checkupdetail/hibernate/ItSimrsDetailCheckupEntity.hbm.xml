@@ -199,5 +199,9 @@
             <column name="flag_cover"/>
         </property>
 
+        <property name="flagSisa">
+            <column name="flag_sisa"/>
+        </property>
+
     </class>
 </hibernate-mapping>

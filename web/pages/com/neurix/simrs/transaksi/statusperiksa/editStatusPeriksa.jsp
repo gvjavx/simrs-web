@@ -55,8 +55,9 @@
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
                                                 <table>
-                                                    <s:label cssClass="label label-success"
-                                                             name="headerDetailCheckup.noSep"></s:label>
+                                                     <span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                    <s:property value="headerDetailCheckup.noSep"></s:property>
+                                                    </span>
                                                 </table>
                                             </td>
                                         </tr>
@@ -120,8 +121,23 @@
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:label id="jenis_periksa"
-                                                         name="headerDetailCheckup.jenisPeriksaPasien"></s:label>
+                                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
+                                                <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:if>
+                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "umum"'>
+                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
+                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
+                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:else>
+                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:else>
+                                                    <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
+                                                </span>
                                             </table>
                                         </td>
                                     </tr>

@@ -45,6 +45,16 @@ public class RiwayatTindakan extends BaseModel {
     private String msg;
     private String pasienBayar;
 
+    private String idRuangan;
+
+    public String getIdRuangan() {
+        return idRuangan;
+    }
+
+    public void setIdRuangan(String idRuangan) {
+        this.idRuangan = idRuangan;
+    }
+
     public String getPasienBayar() {
         return pasienBayar;
     }

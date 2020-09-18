@@ -223,7 +223,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             case "cron-mesin-absensi":
                 cronJobMesinAbsensi();
                 break;
-            case "cron-absensi-absensi":
+            case "cron-absensi-pegawai":
                 cronJobAbsensiPegawai();
                 break;
             default:

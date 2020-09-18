@@ -13,7 +13,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#periksa_lab').addClass('active');
+            $('#penunjang_active, #periksa_lab').addClass('active');
+            $('#penunjang_open').addClass('menu-open');
         });
 
     </script>

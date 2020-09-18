@@ -55,6 +55,9 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
             if (mapCriteria.get("not_resep") != null) {
                 criteria.add(Restrictions.ne("keterangan", "resep"));
             }
+            if (mapCriteria.get("id_ruangan") != null) {
+                criteria.add(Restrictions.eq("idRuangan", (String) mapCriteria.get("id_ruangan")));
+            }
         }
 
         criteria.addOrder(Order.asc("idRiwayatTindakan"));
@@ -134,7 +137,7 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                     "WHERE a.branch_id LIKE :branchId \n" +
                     "AND a.no_checkup LIKE :noCheckup \n" +
                     "AND b.id_detail_checkup LIKE :idDetail \n" + jenis +
-                    "ORDER BY c.keterangan\n";
+                    "ORDER BY c.tanggal_tindakan ASC\n";
 
             List<Object[]> result = new ArrayList<>();
 
@@ -191,7 +194,8 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                     "FROM it_simrs_riwayat_tindakan a\n" +
                     "WHERE a.id_detail_checkup = :idDet\n" +
                     "AND flag_update_klaim = 'Y'\n" +
-                    "ORDER BY a.keterangan, a.tanggal_tindakan ASC";
+                    "AND a.jenis_pasien = 'bpjs' \n" +
+                    "ORDER BY a.tanggal_tindakan ASC";
 
             List<Object[]> result = new ArrayList<>();
 
@@ -264,6 +268,29 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
 
         return listKeterangan;
     }
+
+    public List<String> listOfRuanganRiwayatTindakan(String id, String keterangan){
+
+        String SQL = "SELECT keterangan, id_detail_checkup, id_ruangan FROM it_simrs_riwayat_tindakan\n" +
+                "    WHERE id_detail_checkup = :id \n" +
+                "    AND keterangan = :keterangan \n" +
+                "    AND id_ruangan is not null\n" +
+                "    GROUP BY keterangan, id_detail_checkup, id_ruangan";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .setParameter("keterangan", keterangan)
+                .list();
+
+        List<String> listKeterangan = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                // idRuangan
+                listKeterangan.add(obj[2].toString());
+            }
+        }
+        return listKeterangan;
+    }
+
 
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_riwayat_tindakan')");

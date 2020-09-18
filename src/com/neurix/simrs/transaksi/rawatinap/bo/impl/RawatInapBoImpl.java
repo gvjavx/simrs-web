@@ -956,7 +956,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                 detailCheckup.setIsStay(bean.getIsStay());
             }
             if("kembali_ke_inap".equalsIgnoreCase(bean.getTindakLanjut())){
-                detailCheckup.setIsStay(null);
+                detailCheckup.setIsStay("N");
             }
             response = updateDetail(detailCheckup);
             if ("success".equalsIgnoreCase(response.getStatus())) {
@@ -1141,7 +1141,13 @@ public class RawatInapBoImpl implements RawatInapBo {
                 if (bean.getKeteranganSelesai() != null && !"".equalsIgnoreCase(bean.getKeteranganSelesai())) {
                     entity.setKeteranganSelesai(bean.getKeteranganSelesai());
                 }
-                entity.setIsStay(bean.getIsStay());
+                if(bean.getIsStay() != null && !"".equalsIgnoreCase(bean.getIsStay())){
+                    if("N".equalsIgnoreCase(bean.getIsStay())){
+                        entity.setIsStay(null);
+                    }else{
+                        entity.setIsStay(bean.getIsStay());
+                    }
+                }
                 try {
                     checkupDetailDao.updateAndSave(entity);
                     response.setStatus("success");
@@ -1218,7 +1224,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                         entity.setIdDetailCheckup(bean.getIdDetailCheckup());
                         entity.setIdTindakan(rawatInap.getIdRawatInap());
                         entity.setNamaTindakan("Kamar "+rawatInap.getNamaRangan());
-                        entity.setKeterangan("tindakan");
+                        entity.setKeterangan("kamar");
                         entity.setTotalTarif(new BigDecimal(rawatInap.getTarif().multiply(rawatInap.getLamakamar())));
                         if("ptpn".equalsIgnoreCase(bean.getIdJenisPeriksa())){
                             entity.setJenisPasien("bpjs");
@@ -1233,6 +1239,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                         entity.setLastUpdateWho(bean.getLastUpdateWho());
                         entity.setTanggalTindakan(rawatInap.getCreatedDate());
                         entity.setIsKamar("Y");
+                        entity.setIdRuangan(rawatInap.getIdRuangan());
 
                         try {
                             riwayatTindakanDao.addAndSave(entity);

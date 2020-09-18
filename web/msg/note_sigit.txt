@@ -1,4 +1,4 @@
-// 2020-06-08 >>>
+-- 2020-06-08 >>>
 
     CREATE SEQUENCE sq_antrian_telemedic;
 
@@ -36,10 +36,10 @@
     ALTER TABLE public.it_simrs_antrian_telemedic
         OWNER to postgres;
 
-<<< //
+--
 
 
-// 2020-06-10 >>>
+-- 2020-06-10 >>>
 
 
     ALTER TABLE public.im_roles ALTER COLUMN role_name TYPE VARCHAR(100) USING role_name::VARCHAR(100);
@@ -98,17 +98,17 @@
     ALTER TABLE public.it_simrs_antrian_telemedic ADD branch_id VARCHAR(10) NULL;
 
 
-<<< //
+--
 
-// 2020-06-12 >>>
+-- 2020-06-12 >>>
 
     ALTER TABLE public.it_simrs_header_checkup ADD id_antrian_online VARCHAR(100) NULL;
     ALTER TABLE public.it_simrs_header_detail_checkup ADD id_transaksi_online VARCHAR(100) NULL;
     ALTER TABLE public.mt_simrs_permintaan_resep ADD id_transaksi_online VARCHAR(100) NULL;
 
-<<< //
+--
 
-// 2020-06-16 >>>
+-- 2020-06-16 >>>
 
     CREATE SEQUENCE seq_resep_online;
 
@@ -146,9 +146,9 @@
     ALTER TABLE it_akun_saldo_akhir_detail
         ADD COLUMN kd_barang VARCHAR(100);
 
-<<< //
+--
 
-// 2020-06-17 >>>
+-- 2020-06-17 >>>
 
     ALTER TABLE public.it_simrs_resep_online ADD keterangan TEXT NULL;
 
@@ -169,9 +169,9 @@
 
     ALTER TABLE it_akun_jurnal
         ADD COLUMN pengajuan_biaya_id VARCHAR(50);
-<<< //
+--
 
-// 2020-06-18 >>>
+-- 2020-06-18 >>>
 
     CREATE TABLE public.it_simrs_pengiriman_obat
     (
@@ -199,11 +199,11 @@
         ADD COLUMN desa_id VARCHAR(30),
         ADD alamat text,
         ADD no_telp VARCHAR(30);
-<<< //
+--
 
-// 2020-06-22 >>>
+-- 2020-06-22 >>>
 
-    // function Pengiriman Obat ==========
+    -- function Pengiriman Obat ==========
 
     "Search Pengiriman Obat"        "/reseponline/searchApprovedResep_reseponline.action"
     "init form Pengiriman Obat"     "/reseponline/initForm_reseponline.action"
@@ -211,7 +211,7 @@
 
     role : admin apotek
 
-    // ===================================
+    -- ===================================
 
     # function :
     - search verifikasi online		/onlinepaymentverif/search_onlinepaymentverif.action
@@ -252,18 +252,18 @@
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN flag_eresep VARCHAR(1),
     ADD COLUMN url_foto_resep text;
-<<< //
+--
 
-// 2020-06-26 >>>
+-- 2020-06-26 >>>
     ALTER TABLE it_simrs_antrian_telemedic ADD COLUMN jumlah_cover NUMERIC;
-<<< //
+--
 
-// 2020-06-29 >>>
+-- 2020-06-29 >>>
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN no_jurnal VARCHAR(30);
-<<< //
+--
 
-// 2020-06-30 >>>
+-- 2020-06-30 >>>
     ALTER TABLE it_simrs_antrian_telemedic
     ADD COLUMN no_sep VARCHAR(50);
 
@@ -273,9 +273,9 @@
 
     ALTER TABLE it_simrs_pengiriman_obat
     ADD COLUMN flag_terkirim VARCHAR(1);
-<<< ///
+--/
 
-// 2020-07-08 >>>
+-- 2020-07-08 >>>
     CREATE SEQUENCE seq_kandungan_obat;
     CREATE SEQUENCE seq_kandungan_obat_detail;
 
@@ -323,9 +323,9 @@
 
     ALTER TABLE public.im_simrs_kandungan_obat_detail
         OWNER to postgres;
-<<< ///
+--/
 
-// 2020-07-16 >>>
+-- 2020-07-16 >>>
     -- Table: public.im_simrs_setting_harga_pengiriman
 
     -- DROP TABLE public.im_simrs_setting_harga_pengiriman;
@@ -353,9 +353,9 @@
         OWNER to postgres;
 
     CREATE SEQUENCE seq_setting_harga_pengiriman;
-<<< //
+--
 
-// 2020-07-17 >>>
+-- 2020-07-17 >>>
     ALTER TABLE it_simrs_header_detail_checkup
     ADD COLUMN cover_diatanggung numeric;
 
@@ -392,14 +392,14 @@
 
     ALTER TABLE it_simrs_struk_asuransi
         ADD COLUMN id_antrian_telemedic VARCHAR(50);
-<<< //
+--
 
-// >>> 2020-07-20
+-- 2020-07-20
     ALTER TABLE it_simrs_header_detail_checkup
         ADD COLUMN dibayar_pasien NUMERIC;
-<<< //
+--
 
-// >>> 2020-07-23
+-- 2020-07-23
     -- Table: public.it_simrs_batal_dokter_telemedic
 
     -- DROP TABLE public.it_simrs_batal_dokter_telemedic;
@@ -456,21 +456,21 @@
     CREATE SEQUENCE seq_batal_telemedic;
 
     ALTER TABLE it_simrs_batal_dokter_telemedic ADD COLUMN batal_date DATE;
-<<< //
+--
 
-// >>> 2020-07-24
+-- 2020-07-24
     ALTER TABLE it_simrs_batal_telemedic ADD COLUMN kembali_konsultasi NUMERIC;
     ALTER TABLE it_simrs_batal_telemedic ADD COLUMN flag_kembali_konsultasi VARCHAR(1);
     ALTER TABLE it_simrs_batal_telemedic ADD COLUMN kembali_resep NUMERIC;
     ALTER TABLE it_simrs_batal_telemedic ADD COLUMN flag_kembali_resep VARCHAR(1);
-<<< //
+--
 
-// >>> 2020-08-05
+-- 2020-08-05
     ALTER TABLE im_akun_kode_rekening
     ADD COLUMN tipe_budgeting VARCHAR(50);
-<<< //
+--
 
-// >>> 2020-08-06
+-- 2020-08-06
     -- Table: public.it_notifikasi_admin_telemedic
 
     -- DROP TABLE public.it_notifikasi_admin_telemedic;
@@ -500,9 +500,9 @@
         OWNER to postgres;
 
     CREATE SEQUENCE seq_notifikasi_admin_telemedic;
-//>>>
+-->>>
 
-// >>> 2020-08-07
+-- 2020-08-07
     -- Table: public.im_akun_budgeting_nilai_dasar
 
     -- DROP TABLE public.im_akun_budgeting_nilai_dasar;
@@ -525,7 +525,7 @@
     )
     TABLESPACE pg_default;
 
-    ================================================================================
+--================================================================================
 
     ALTER TABLE public.im_akun_budgeting_nilai_dasar
         OWNER to postgres;
@@ -557,16 +557,16 @@
     ALTER TABLE public.it_akun_budgeting_nilai_dasar
         OWNER to postgres;
 
-    ================================================================================
+--================================================================================
     CREATE SEQUENCE seq_budgeting_nilai_dasar;
     CREATE SEQUENCE seq_trans_budgeting_nilai_dasar;
-// <<<
+-- <<<
 
-// >>> 2020-08-10
+-- 2020-08-10
     ALTER TABLE im_akun_budgeting_nilai_dasar ADD COLUMN urutan INTEGER;
-// <<<
+-- <<<
 
-// >>> 2020-08-13
+-- 2020-08-13
     -- Table: public.im_simrs_header_tindakan
 
     -- DROP TABLE public.im_simrs_header_tindakan;
@@ -597,9 +597,9 @@
 
     ALTER TABLE im_simrs_tindakan ADD id_header_tindakan VARCHAR(30);
     CREATE SEQUENCE seq_header_tindakan;
-<<< //
+--
 
-// >>> 2020-08-14
+-- 2020-08-14
     CREATE TABLE public.im_akun_jenis_budgeting
     (
         id character varying(50) COLLATE pg_catalog."default" NOT NULL,
@@ -619,7 +619,7 @@
 
     ALTER TABLE public.im_akun_jenis_budgeting
         OWNER to postgres;
-=================================================================================================
+--=================================================================================================
     CREATE TABLE public.im_akun_parameter_budgeting
     (
         id character varying(30) COLLATE pg_catalog."default" NOT NULL,
@@ -642,7 +642,7 @@
 
     ALTER TABLE public.im_akun_parameter_budgeting
         OWNER to postgres;
-=================================================================================================
+--=================================================================================================
     CREATE TABLE public.it_akun_perhitungan_budgeting
     (
         id character varying(50) COLLATE pg_catalog."default" NOT NULL,
@@ -669,9 +669,9 @@
         OWNER to postgres;
 
     CREATE SEQUENCE seq_perhitungan_budgeting;
-<<< //
+--
 
-// >>> 2020-08-21
+-- 2020-08-21
 
 UPDATE im_akun_kode_rekening SET tipe_budgeting = null;
 UPDATE im_akun_kode_rekening SET tipe_budgeting = 'biaya' WHERE kode_rekening LIKE '5%';
@@ -682,9 +682,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '04' WHERE kode_rekening LIKE '1%';
 UPDATE im_akun_kode_rekening SET tipe_coa = '03', flag_divisi = 'Y' WHERE kode_rekening LIKE '5%';
 UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master = 'Y' WHERE kode_rekening LIKE '4%';
 
-<<< //
+--
 
-// >>> 2020-08-23
+-- 2020-08-23
 
     -- Table: public.im_akun_kategori_parameter_budgeting
 
@@ -748,19 +748,19 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
     CREATE SEQUENCE seq_nilai_budgeting;
 
-<<< //
+--
 
-// >>> 2020-08-26
-
-    ALTER TABLE it_akun_nilai_parameter_budgeting
-    ADD COLUMN periode VARCHAR(100);
+-- 2020-08-26
 
     ALTER TABLE it_akun_nilai_parameter_budgeting
     ADD COLUMN periode VARCHAR(100);
 
-<<< //
+    ALTER TABLE it_akun_nilai_parameter_budgeting
+    ADD COLUMN periode VARCHAR(100);
 
-// >>> 2020-08-27
+--
+
+-- 2020-08-27
 
     ALTER TABLE im_akun_parameter_budgeting
     ADD COLUMN divisi_id VARCHAR(30),
@@ -769,9 +769,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE im_akun_budgeting_nilai_dasar
     ADD COLUMN tipe VARCHAR(30);
 
-<<< //
+--
 
-// >>> 2020-08-28
+-- 2020-08-28
 
     -- Table: public.im_akun_parameter_budgeting_rekening
 
@@ -803,9 +803,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE im_akun_parameter_budgeting
     ADD COLUMN id_param_rekening VARCHAR(30);
 
-<<< //
+--
 
-// >>> 2020-08-30
+-- 2020-08-30
 
     -- Table: public.it_akun_nilai_parameter_pengadaaan
 
@@ -837,9 +837,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
 
     CREATE SEQUENCE seq_nilai_pengadaan;
-<<< //
+--
 
-// >>> 2020-08-03
+-- 2020-08-03
 
     CREATE TABLE im_user_vendor (
         id VARCHAR(30) NOT NULL,
@@ -872,20 +872,20 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     );
 
     CREATE SEQUENCE seq_doc_po;
-<<< //
+--
 
-// >>> 2020-09-04
+-- 2020-09-04
     ALTER TABLE mt_simrs_transaksi_obat_detail_batch
     ADD COLUMN jenis VARCHAR(50);
-<<< //
+--
 
-// >>> 2020-09-06
+-- 2020-09-06
     ALTER TABLE it_simrs_doc_po
     ADD COLUMN url_img TEXT,
     ADD COLUMN no_batch INTEGER
-<<< //
+--
 
-// >>> 2020-09-09
+-- 2020-09-09
     CREATE SEQUENCE seq_nilai_biaya_rutin;
 
     ALTER TABLE it_akun_perhitungan_budgeting
@@ -917,4 +917,187 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE mt_simrs_transaksi_obat_detail_batch
     ADD COLUMN tgl_invoice DATE,
     ADD COLUMN tgl_do DATE;
-<<<//
+--
+
+-- 2020-09-11
+
+     ALTER TABLE it_akun_perhitungan_budgeting
+     ADD COLUMN nama_biaya_rutin TEXT;
+
+--
+
+-- 2020-09-16
+
+    ALTER TABLE it_simrs_batas_tutup_period
+    ADD COLUMN no_jurnal_koreksi VARCHAR(30),
+    ADD COLUMN flag_desember_a VARCHAR(1),
+    ADD COLUMN flag_desember_b VARCHAR(1)
+
+--
+
+-- 2020-09-17
+
+    CREATE TABLE public.it_akun_saldo_akhir_tahun
+    (
+        saldo_akhir_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+        rekening_id character varying(15) COLLATE pg_catalog."default",
+        periode character varying(7) COLLATE pg_catalog."default",
+        jumlah_debit numeric(20,2),
+        jumlah_kredit numeric(20,2),
+        saldo numeric(20,2),
+        posisi character varying(1) COLLATE pg_catalog."default",
+        branch_id character varying(5) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        last_update timestamp without time zone,
+        master_id character varying(20) COLLATE pg_catalog."default",
+        pasien_id character varying(30) COLLATE pg_catalog."default",
+        CONSTRAINT it_akun_saldo_akhir_tahun_pkey PRIMARY KEY (saldo_akhir_id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_saldo_akhir_tahun
+        OWNER to postgres;
+
+    -------------------------------------------------------------------------
+
+    CREATE TABLE public.it_akun_saldo_akhir_detail_tahun
+        (
+            id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+            saldo_akhir_id character varying(20) COLLATE pg_catalog."default",
+            rekening_id character varying(15) COLLATE pg_catalog."default",
+            periode character varying(7) COLLATE pg_catalog."default",
+            jumlah_debit numeric(20,2),
+            jumlah_kredit numeric(20,2),
+            saldo numeric(20,2),
+            posisi character varying(1) COLLATE pg_catalog."default",
+            branch_id character varying(5) COLLATE pg_catalog."default",
+            flag character varying(1) COLLATE pg_catalog."default",
+            action character varying(1) COLLATE pg_catalog."default",
+            created_who character varying(100) COLLATE pg_catalog."default",
+            last_update_who character varying(100) COLLATE pg_catalog."default",
+            created_date timestamp without time zone,
+            last_update timestamp without time zone,
+            master_id character varying(20) COLLATE pg_catalog."default",
+            pasien_id character varying(30) COLLATE pg_catalog."default",
+            divisi_id character varying(30) COLLATE pg_catalog."default",
+            kd_barang character varying(100) COLLATE pg_catalog."default",
+            CONSTRAINT it_akun_saldo_akhir_detail_tahun_pkey PRIMARY KEY (id)
+        )
+        WITH (
+            OIDS = FALSE
+        )
+        TABLESPACE pg_default;
+
+        ALTER TABLE public.it_akun_saldo_akhir_detail_tahun
+            OWNER to postgres;
+
+    CREATE SEQUENCE seq_saldo_akhir_tahun;
+    CREATE SEQUENCE seq_saldo_akhir_tahun_detail;
+--
+
+-- 2020-09-18
+
+    -- Table: public.it_akun_jurnal
+
+    -- DROP TABLE public.it_akun_jurnal;
+
+    CREATE TABLE public.it_akun_jurnal_akhir_tahun
+    (
+        no_jurnal character varying(12) COLLATE pg_catalog."default" NOT NULL,
+        tipe_jurnal_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
+        tanggal_jurnal date,
+        sumber character varying(16) COLLATE pg_catalog."default",
+        sumber_dana_id character varying(3) COLLATE pg_catalog."default",
+        carry_over character varying(5) COLLATE pg_catalog."default",
+        mata_uang_id character varying(3) COLLATE pg_catalog."default" NOT NULL,
+        kurs numeric(13,2) NOT NULL,
+        keterangan character varying(300) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+        created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+        branch_id character varying(5) COLLATE pg_catalog."default" NOT NULL,
+        created_date timestamp without time zone NOT NULL,
+        last_update timestamp(4) without time zone,
+        printed_date date,
+        printed_flag character varying(1) COLLATE pg_catalog."default",
+        registered_date date,
+        registered_flag character varying(1) COLLATE pg_catalog."default",
+        registered_user character varying(30) COLLATE pg_catalog."default",
+        register_id character varying(15) COLLATE pg_catalog."default",
+        spum_id character varying(100) COLLATE pg_catalog."default",
+        print_count numeric(10,0) DEFAULT 0,
+        print_register_count numeric(10,0) NOT NULL DEFAULT 0,
+        re_printed_date date,
+        re_registered_date date,
+        cara_penerimaan character varying(30) COLLATE pg_catalog."default",
+        no_seri_pajak_dipungut character varying(20) COLLATE pg_catalog."default",
+        no_seri_pajak_ditanggung character varying(20) COLLATE pg_catalog."default",
+        personal character varying(50) COLLATE pg_catalog."default",
+        pos_anggaran character varying(50) COLLATE pg_catalog."default",
+        bukti_pendukung character varying(50) COLLATE pg_catalog."default",
+        tanggal_pendukung date,
+        dpp_dipungut numeric(14,2),
+        dpp_ditanggung numeric(14,2),
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        pengajuan_biaya_id character varying(50) COLLATE pg_catalog."default"
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_jurnal_akhir_tahun
+        OWNER to postgres;
+
+    -------------------------------------------------------------------------------------------------------------------
+
+    -- Table: public.it_akun_jurnal_detail
+
+    -- DROP TABLE public.it_akun_jurnal_detail;
+
+    CREATE TABLE public.it_akun_jurnal_detail_akhir_tahun
+    (
+        no_jurnal character varying(12) COLLATE pg_catalog."default" NOT NULL,
+        rekening_id character varying(12) COLLATE pg_catalog."default" NOT NULL,
+        master_id character varying(17) COLLATE pg_catalog."default",
+        no_nota character varying(30) COLLATE pg_catalog."default",
+        jumlah_debit numeric(19,2) NOT NULL,
+        jumlah_kredit numeric(19,2) NOT NULL,
+        biaya character varying(6) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        last_update timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        jurnal_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+        kd_barang character varying(30) COLLATE pg_catalog."default",
+        pasien_id character varying(30) COLLATE pg_catalog."default",
+        nomor_rekening character varying(30) COLLATE pg_catalog."default",
+        divisi_id character varying(10) COLLATE pg_catalog."default",
+        CONSTRAINT it_akun_jurnal_detail_akhir_tahun_pkey PRIMARY KEY (jurnal_detail_id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_jurnal_detail_akhir_tahun
+        OWNER to postgres;
+
+    -------------------------------------------------------------------------------------------------------------------
+
+    CREATE SEQUENCE seq_jurnal_akhir_tahun;
+    CREATE SEQUENCE seq_jurnal_detail_akhir_tahun;
+
+    ALTER TABLE it_akun_jurnal_detail_akhir_tahun
+    ADD COLUMN jurnal_detail_id VARCHAR(30);
+
+--

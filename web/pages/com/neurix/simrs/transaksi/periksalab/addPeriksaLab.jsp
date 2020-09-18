@@ -442,7 +442,10 @@
     var keterangan       = '<s:property value="periksaLab.keterangan"/>';
 
     $(document).ready(function () {
-        $('#periksa_lab').addClass('active');
+
+        $('#penunjang_active, #periksa_lab').addClass('active');
+        $('#penunjang_open').addClass('menu-open');
+
         listParameter();
         listLab();
         listSelectDokter();

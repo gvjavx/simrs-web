@@ -101,7 +101,7 @@
             </result>
 
             <result name="print_aging" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/Aging.jasper</param>
+                <param name="location">/pages/report/com/neurix/simrs/agingPersediaan.jasper</param>
                 <param name="format">PDF</param>
                 <param name="dataSource">myList</param>
                 <param name="reportParameters">reportParams</param>

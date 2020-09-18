@@ -33,6 +33,15 @@ public class TindakanRawat extends BaseModel {
 
     private String approveFlag;
     private String idPelayanan;
+    private String idRuangan;
+
+    public String getIdRuangan() {
+        return idRuangan;
+    }
+
+    public void setIdRuangan(String idRuangan) {
+        this.idRuangan = idRuangan;
+    }
 
     public String getIdPelayanan() {
         return idPelayanan;

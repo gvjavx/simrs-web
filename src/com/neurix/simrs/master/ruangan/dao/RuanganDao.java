@@ -119,7 +119,8 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     "FROM it_simrs_rawat_inap a\n" +
                     "INNER JOIN it_simrs_header_checkup b \n" +
                     "ON a.no_checkup = b.no_checkup\n" +
-                    "WHERE a.flag = 'Y'\n" +
+                    "AND a.status = '1' \n"+
+                    "WHERE a.flag = 'Y' \n" +
                     "AND b.branch_id LIKE :branchId) c On b.id_ruangan = c.id_ruangan\n" +
                     "WHERE a.id_kelas_ruangan LIKE :idKelas\n" +
                     "AND b.id_ruangan LIKE :idRuang\n" +

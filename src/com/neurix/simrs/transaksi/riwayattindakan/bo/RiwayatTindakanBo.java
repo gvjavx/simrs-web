@@ -30,6 +30,7 @@ public interface RiwayatTindakanBo {
     List<RiwayatTindakan> typeaheadRiwayatTindakan(String idRiwayatTindakan) throws GeneralBOException;
     public ItSimrsRiwayatTindakanEntity getRiwayatTindakanResep(String idDetail, String jenisPasien) throws GeneralBOException;
     public List<String> getListKeteranganByIdDetailCheckup(String idDetailCheckup) throws GeneralBOException;
+    public List<String> getListRuanganRiwayatTindakan(String idDetailCheckup, String keterangan) throws GeneralBOException;
     public MtSimrsItemPaketEntity getItemPaketEntity(String idPaket, String idItem) throws GeneralBOException;
     public ItemPaket getTarifPaketLab(String idPaket, String idLab) throws GeneralBOException;
 }

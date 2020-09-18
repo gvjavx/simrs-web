@@ -33,7 +33,7 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getListPaketPeriksa">readOnly</prop>
-                <prop key="savePaketPeriksa">PROPAGATION_REQUIRED</prop>
+                <prop key="savePaketPasien">PROPAGATION_REQUIRED</prop>
                 <!--<prop key="saveEdit">PROPAGATION_REQUIRED</prop>-->
             </props>
         </property>

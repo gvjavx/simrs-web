@@ -59,7 +59,7 @@ public class AsesmenUgdAction {
                     asesmenUgd.setSip(obj.getString("sip"));
                 }
                 if (obj.has("tipe")) {
-                    if ("ttd".equalsIgnoreCase(obj.getString("tipe")) && "gambar".equalsIgnoreCase(obj.getString("tipe"))) {
+                    if ("ttd".equalsIgnoreCase(obj.getString("tipe")) || "gambar".equalsIgnoreCase(obj.getString("tipe"))) {
                         try {
                             BASE64Decoder decoder = new BASE64Decoder();
                             byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));

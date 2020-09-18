@@ -1657,7 +1657,7 @@ function detailAud(jenis) {
                     }else if("gambar" == item.tipe){
                         body += '<tr>' +
                             '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + item.jawaban + '" style="height: 300px">' + '</td>' +
+                            '<td>' + '<img src="' + item.jawaban + '" style="width: 100%">' + '</td>' +
                             '</tr>';
                     }else{
                         if(item.skor != null){

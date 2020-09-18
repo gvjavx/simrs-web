@@ -838,7 +838,7 @@ function saveTindakan(id) {
             });
         } else {
             dwr.engine.setAsync(true);
-            TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDok, "RI", qty, idJenisPeriksa, idPelayanan, {
+            TindakanRawatAction.saveTindakanRawat(idDetailCheckup, idTindakan, idDok, "RI", qty, idJenisPeriksa, idPelayanan, idRuangan, {
                 callback: function (response) {
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);
@@ -2204,7 +2204,7 @@ function listResepPasien() {
                     "<td>" + idResep + "</td>" +
                     "<td>" + status + "</td>" +
                     "<td align='center'>" +
-                    '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="'+pathImages+'/pages/images/icons8-create-25.png" style="cursor: pointer;">' +
+                    // '<img border="0" class="hvr-grow" onclick="detailResep(\'' + item.idApprovalObat + '\')" src="'+pathImages+'/pages/images/icons8-create-25.png" style="cursor: pointer;">' +
             '<img onclick="printResep(\'' + idResep + '\')" class="hvr-grow" src="'+pathImages+'/pages/images/icons8-print-25.png" style="cursor: pointer;">' +
             "</td>" +
             "</tr>"
@@ -2949,8 +2949,14 @@ function savePemeriksaanPasien() {
                 }
             }else{
                 var stay = "N";
-                if(isStay){
-                    stay = "Y";
+                if(kategoriRuangan == 'rawat_inap'){
+                    if(isStay){
+                        stay = "Y";
+                    }
+                }else{
+                    if(stayRuangan != null && stayRuangan != ''){
+                        stay = "R";
+                    }
                 }
                 var ket = tindakLanjut.replace("_", " ");
                 var ktr = convertSentenceCaseUp(ket);

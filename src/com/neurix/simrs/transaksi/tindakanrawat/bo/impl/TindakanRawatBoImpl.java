@@ -82,6 +82,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
                 tindakanRawatEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 tindakanRawatEntity.setApproveFlag(bean.getApproveFlag());
                 tindakanRawatEntity.setIdPelayanan(bean.getIdPelayanan());
+                tindakanRawatEntity.setIdRuangan(bean.getIdRuangan());
 
                 try {
                     tindakanRawatDao.addAndSave(tindakanRawatEntity);
@@ -186,6 +187,11 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
         return response;
     }
 
+    @Override
+    public ItSimrsTindakanRawatEntity getTindakanRawatEntityById(String id) throws GeneralBOException {
+        return tindakanRawatDao.getById("idTindakanRawat", id);
+    }
+
     protected void updateDetailCheckup(TindakanRawat bean) throws GeneralBOException{
         logger.info("[TindakanRawatBoImpl.updateDetailCheckup] Start >>>>>>>");
 
@@ -281,6 +287,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
             tindakanRawat.setLastUpdateWho(entity.getLastUpdateWho());
             tindakanRawat.setApproveFlag(entity.getApproveFlag());
             tindakanRawat.setIdPelayanan(entity.getIdPelayanan());
+            tindakanRawat.setIdRuangan(entity.getIdRuangan());
 
             if (entity.getIdDokter() != null && !"".equalsIgnoreCase(entity.getIdDokter())){
                 List<ImSimrsDokterEntity> listDokter = getDokterList(entity.getIdDokter());

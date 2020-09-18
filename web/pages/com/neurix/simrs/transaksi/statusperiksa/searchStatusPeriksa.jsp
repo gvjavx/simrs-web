@@ -13,7 +13,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#status_pasien').addClass('active');
+            $('#pendaftaran_active, #peralihan_biaya').addClass('active');
+            $('#pendaftaran_open').addClass('menu-open');
         });
 
 

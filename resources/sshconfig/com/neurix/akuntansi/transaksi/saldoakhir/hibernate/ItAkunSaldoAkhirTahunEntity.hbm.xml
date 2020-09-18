@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.saldoakhir.model.ItAkunSaldoAkhirTahunEntity">
+        <table name="it_akun_saldo_akhir_tahun" schema="public" catalog="simrs"/>
+        <attributes>
+            <id name="saldoAkhirId">
+                <column name="saldo_akhir_id"/>
+            </id>
+            <basic name="rekeningId">
+                <column name="rekening_id"/>
+            </basic>
+            <basic name="periode">
+                <column name="periode"/>
+            </basic>
+            <basic name="jumlahDebit">
+                <column name="jumlah_debit"/>
+            </basic>
+            <basic name="jumlahKredit">
+                <column name="jumlah_kredit"/>
+            </basic>
+            <basic name="saldo">
+                <column name="saldo"/>
+            </basic>
+            <basic name="posisi">
+                <column name="posisi"/>
+            </basic>
+            <basic name="branchId">
+                <column name="branch_id"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="masterId">
+                <column name="master_id"/>
+            </basic>
+            <basic name="pasienId">
+                <column name="pasien_id"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
