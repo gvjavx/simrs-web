@@ -17,6 +17,7 @@ public class HistoryPegawaiMobile {
     private String lamaIjin;
     private String tanggalAwal;
     private String tanggalAkhir;
+    private String lamaijinDispen;
 
     private String absensiPegawaiId;
     private String jamDatang;
@@ -922,4 +923,14 @@ public class HistoryPegawaiMobile {
     public void setTahun(String tahun) {
         this.tahun = tahun;
     }
+
+    public String getLamaijinDispen() {
+        return lamaijinDispen;
+    }
+
+    public void setLamaijinDispen(String lamaijinDispen) {
+        this.lamaijinDispen = lamaijinDispen;
+    }
 }
+
+
