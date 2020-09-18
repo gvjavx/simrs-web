@@ -358,4 +358,14 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
         return listOfResult;
     }
 
+    public List<ItMutasiEntity> checkDataDelete(String statusMutasi) throws HibernateException {
+
+        List<ItMutasiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItMutasiEntity.class)
+                .add(Restrictions.eq("statusMutasi", statusMutasi))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
+
 }

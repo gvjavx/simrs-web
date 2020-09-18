@@ -65,6 +65,33 @@ public class PerhitunganPpnKd extends BaseModel {
     private String statusB2;
 
     private String branchId;
+    private BigDecimal piutangPpnKeluaran;
+    private String buktiPiutangPpnKeluaran;
+    private String keterangan;
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getBuktiPiutangPpnKeluaran() {
+        return buktiPiutangPpnKeluaran;
+    }
+
+    public void setBuktiPiutangPpnKeluaran(String buktiPiutangPpnKeluaran) {
+        this.buktiPiutangPpnKeluaran = buktiPiutangPpnKeluaran;
+    }
+
+    public BigDecimal getPiutangPpnKeluaran() {
+        return piutangPpnKeluaran;
+    }
+
+    public void setPiutangPpnKeluaran(BigDecimal piutangPpnKeluaran) {
+        this.piutangPpnKeluaran = piutangPpnKeluaran;
+    }
 
     public String getBranchId() {
         return branchId;

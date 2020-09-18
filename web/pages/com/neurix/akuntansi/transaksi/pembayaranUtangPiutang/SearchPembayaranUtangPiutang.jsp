@@ -283,7 +283,7 @@
                                             <s:elseif test='#row.approvalKasubKeuanganFlag == "N"'>
                                                 <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>">
                                             </s:elseif>
-                                            <s:elseif test='#row.jabatan == "kasub"'>
+                                            <s:elseif test='#row.jabatan == "kasub" && #row.approvalKeuanganFlag == "Y"'>
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.pembayaranUtangPiutangId}"/>" class="item-approve-kasub-keu">
                                                     <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>">
                                                 </a>
@@ -293,7 +293,7 @@
                                             <s:if test='#row.registeredFlag == "Y"'>
                                                 <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>">
                                             </s:if>
-                                            <s:elseif test='#row.jabatan == "ka"'>
+                                            <s:elseif test='#row.jabatan == "ka" && #row.approvalKasubKeuanganFlag == "Y"'>
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.pembayaranUtangPiutangId}"/>" class="item-posting">
                                                     <img border="0" src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>">
                                                 </a>
@@ -413,6 +413,12 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-primary" id="btnLampiran"><i class="fa fa-file"></i> Lampiran</button>
+                <script>
+                    $('#btnLampiran').click(function () {
+                        $('#modal-lampiran').modal('show');
+                    })
+                </script>
                 <button type="button" class="btn btn-success" id="btnApproveKeu" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Approve Keu.</button>
                 <button type="button" class="btn btn-danger" id="btnNotApproveKeu" data-dismiss="modal"><i class="fa fa-close"></i> Not Approve Keu.</button>
                 <button type="button" class="btn btn-success" id="btnApproveKasub" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Approve Kasub.</button>
@@ -441,6 +447,82 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-lampiran">
+    <div class="modal-dialog modal-flat modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Lampiran</h4>
+            </div>
+            <div class="modal-body">
+                <center class="box">
+                    <br>
+                    <br>
+                    <%--<div class="row">--%>
+                        <%--<label class="control-label col-sm-4">Nama Lampiran </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<s:textfield id="mod_nama_lampiran" onkeypress="$(this).css('border','')" cssClass="form-control modal_lampiran"/>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="row" style="margin-top: 7px">--%>
+                        <%--<label class="control-label col-sm-4">Lampiran (PDF/JPEG/PNG) </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<div class="input-group" id="img_file2"  style="margin-top: 7px">--%>
+                                          <%--<span class="input-group-btn">--%>
+                                            <%--<span class="btn btn-default btn-file btn-file-2">--%>
+                                               <%--Browse… <s:file id="imgInp2" accept=".jpg" name="fileUpload2"--%>
+                                                               <%--onchange="$('#img_file2').css('border','')"></s:file>--%>
+                                            <%--</span>--%>
+                                            <%--</span>--%>
+                                <%--<input type="text" class="form-control" readonly id="namaFile2">--%>
+                            <%--</div>--%>
+                            <%--<canvas id="img_faktur_canvas2" style="display: none"></canvas>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<br>--%>
+                    <%--<div class="row" style="margin-top: 7px">--%>
+                        <%--<center>--%>
+                            <%--<a id="btnAddLampiran" type="button" class="btn btn-default btn-success"><i class="fa fa-plus"></i> Tambah</a>--%>
+                        <%--</center>--%>
+                    <%--</div>--%>
+                    <%--<br>--%>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table style="width: 100%;" class="tabelLampiran table table-bordered">
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </center>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div id="modal-view-lampiran" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Lampiran</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-responsive" id="my-image2">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         $('#tablePembayaranUtangPiutang').DataTable({
@@ -460,6 +542,7 @@
                 $('#mod_total_bayar').val(data.stBayar);
             });
             loadPembayaran();
+            loadLampiran();
             $("#btnPostingJurnal").hide();
             $("#btnApproveKeu").hide();
             $("#btnNotApproveKeu").hide();
@@ -482,6 +565,7 @@
                 $('#mod_total_bayar').val(data.stBayar);
             });
             loadPembayaran();
+            loadLampiran();
             $("#modal-posting-jurnal").find('.modal-title').text('Posting Jurnal');
             $("#modal-posting-jurnal").modal('show');
             $("#btnPostingJurnal").show();
@@ -504,6 +588,7 @@
                 $('#mod_total_bayar').val(data.stBayar);
             });
             loadPembayaran();
+            loadLampiran();
             $("#modal-posting-jurnal").find('.modal-title').text('Approval Admin Keuangan');
             $("#modal-posting-jurnal").modal('show');
             $("#btnPostingJurnal").hide();
@@ -526,6 +611,7 @@
                 $('#mod_total_bayar').val(data.stBayar);
             });
             loadPembayaran();
+            loadLampiran();
             $("#modal-posting-jurnal").find('.modal-title').text('Approval Kasub. Keuangan');
             $("#modal-posting-jurnal").modal('show');
             $("#btnPostingJurnal").hide();
@@ -602,6 +688,7 @@
         })
     });
     window.loadPembayaran = function () {
+        loadLampiran();
         $('.pembayaranTable').find('tbody').remove();
         $('.pembayaranTable').find('thead').remove();
         dwr.engine.setAsync(false);
@@ -650,6 +737,39 @@
         $('#modal-view-faktur').find('.modal-title').text(judul);
         $('#modal-view-faktur').modal('show');
     });
+    window.loadLampiran = function () {
+        $('.tabelLampiran').find('tbody').remove();
+        $('.tabelLampiran').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        PembayaranUtangPiutangAction.loadSessionLampiran(function (listdata) {
+            tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
+                "<th style='text-align: center; background-color:  #30d196'>No</th>" +
+                "<th style='text-align: center; background-color:  #30d196'>Nama Lampiran</th>" +
+                "<th style='text-align: center; background-color:  #30d196'>View</th>" +
+                "</tr></thead>";
+            var i = i;
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                    '<td align="center" >' + (i + 1) + '</td>' +
+                    '<td align="center">' + item.namaLampiran + '</td>' +
+                    '<td align="center">' +
+                    "<a href='javascript:;' class ='item-view-lampiran' nama ='" + item.namaLampiran + "' url ='" + item.uploadFile + "'>" +
+                    "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                    '</a>' +
+                    '</td>' +
+                    "</tr>";
+            });
+            $('.tabelLampiran').append(tmp_table);
+        });
+    };
 
+    $('.tabelLampiran').on('click', '.item-view-lampiran', function(){
+        var judul = $(this).attr('nama');
+        var url = $(this).attr('url');
+        $('#modal-view-lampiran').find('.modal-title').text(judul);
+        $("#my-image2").attr("src", url);
+        $('#modal-view-lampiran').modal('show');
+    });
 </script>
 

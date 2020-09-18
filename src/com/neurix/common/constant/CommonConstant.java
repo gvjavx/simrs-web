@@ -161,6 +161,10 @@ public class CommonConstant {
     public static final String APP_ID = "18016b16da294c7ab3255c5c792384b6";
 
     //AKUNTANSI
+    public final static String NAMA_GENERAL_MANAGER_KP = CommonUtil.getPropertyParams("nama.general.manager.kp");
+    public final static String NAMA_MANAGER_KEUANGAN_KP = CommonUtil.getPropertyParams("nama.manager.keuangan.kp");
+    public final static String NAMA_GENERAL_MANAGER_UNIT = CommonUtil.getPropertyParams("nama.general.manager.unit");
+    public final static String NAMA_MANAGER_KEUANGAN_UNIT = CommonUtil.getPropertyParams("nama.manager.keuangan.unit");
     public final static String COA_PAYROLL = CommonUtil.getPropertyParams("coa.bank.payroll");
     public final static String KELOMPOK_ID_PEJABAT_MUDA = CommonUtil.getPropertyParams("kelompok.id.pejabat.muda");
     public final static String KELOMPOK_ID_PEJABAT_MADYA = CommonUtil.getPropertyParams("kelompok.id.pejabat.madya");
@@ -177,32 +181,27 @@ public class CommonConstant {
     public final static String ID_KANPUS = "KP";
     public final static String MASTER_PAJAK_OBAT = "03.00";
 
-    public final static String REKENING_ID_PPN_MASUKAN = CommonUtil.getPropertyParams("rekening.id.ppn.masukan");
-    public final static String REKENING_ID_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");
 
-
-    public final static String REKENING_PPH21 = "00187";
     public final static String RESOURCE_PATH_FAKTUR_PAJAK = "/upload/faktur_pajak/";
+    public final static String RESOURCE_PATH_LAMPIRAN = "/upload/lampiran/";
+    public final static String RESOURCE_PATH_IPA = "/upload/ipa/";
     public final static String REK_BANK_BRI_TELE = "01041802112149";
-    public final static String KODERING_FARMASI_RI = "02.02.01";
-    public final static String KODERING_INSTALASI_RI = "03.04.01";
-    public final static String KODERING_FARMASI_RJ = "02.01.01";
-    public final static String REKENING_ID_PENDAPATAN_RI ="00304";
-    public final static String REKENING_ID_PENDAPATAN_RJ ="00303";
+    public final static String KODERING_FARMASI_RI = "05.00.01";
+    public final static String KODERING_INSTALASI_RI = "06.01.01";
+    public final static String KODERING_FARMASI_RJ = "05.00.00";
+
 
     public final static String CUTI_ID_DILUAR_TANGGUNJAWAB = CommonUtil.getPropertyParams("cuti.id.diluar.tanggungjawab");
 
     //TELEMEDICINE
     public static final int ADD_JAM_BAYAR = 30; //MENIT
 
-    public final static String posisiKabidKeuanganKp = "P042";
-    public final static String posisiDirkeuKp = "P002";
-    public final static String posisiKadivKeuanganUnit = "";
-    public final static String posisiGmUnit = "";
+    public final static String posisiKabidKeuanganKp = CommonUtil.getPropertyParams("posisi.kabid.keuangan.kp");
+    public final static String posisiKasubbidKeuanganKp = CommonUtil.getPropertyParams("posisi.kasubbid.keuangan.kp");
+    public final static String posisiKadivKeuanganUnit = CommonUtil.getPropertyParams("posisi.kadiv.keuangan.unit");
+    public final static String posisiGmUnit = CommonUtil.getPropertyParams("posisi.ka.rs");
 
     // CONSTANT ID TRANSAKSI BILLING
-    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KOREKSI =CommonUtil.getPropertyParams("transaksi.id.proses.ppn.kd.koreksi");
-    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KAS_KELUAR =CommonUtil.getPropertyParams("transaksi.id.proses.ppn.kd.kas.keluar");
     public final static String TRANSAKSI_ID_PENYEWAAN_LAHAN =CommonUtil.getPropertyParams("transaksi.id.penyewaan.lahan");
     public final static String TRANSAKSI_ID_PENGAJUAN_SETOR_PPH21 =CommonUtil.getPropertyParams("transaksi.id.pengajuan.setor.pph21");
     public final static String TRANSAKSI_ID_PAYROLL =CommonUtil.getPropertyParams("transaksi.id.payroll");
@@ -211,7 +210,30 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_PENGIRIMAN_PENDAPATAN_KE_PUSAT =CommonUtil.getPropertyParams("transaksi.id.pengiriman.pendapatan.ke.pusat");
     public final static String TRANSAKSI_ID_PENERIMAAN_PENDAPATAN_DARI_UNIT =CommonUtil.getPropertyParams("transaksi.id.penerimaan.pendapatan.dari.unit");
     public final static String TRANSAKSI_ID_PERHITUNGAN_PENDAPATAN_DOKTER =CommonUtil.getPropertyParams("transaksi.id.perhitungan.pendapatan.dokter");
-    public final static String JUNK_MASTER_PIUTANG_PPN =CommonUtil.getPropertyParams("junk.master.piutang.ppn");
+    public final static String TRANSAKSI_ID_PEMBAYARAN_PENGAJUAN_BIAYA_UM_KURANG =CommonUtil.getPropertyParams("transaksi.id.pembayaran.pengajuan.biaya.um.kurang");
+    public final static String TRANSAKSI_ID_PEMBAYARAN_PENGAJUAN_BIAYA_UM_LEBIH =CommonUtil.getPropertyParams("transaksi.id.pembayaran.pengajuan.biaya.um.lebih");
+    public final static String JUNK_MASTER_PIUTANG_PPN_MASUKAN =CommonUtil.getPropertyParams("junk.master.piutang.ppn.keluaran");
+    public final static String JUNK_MASTER_PIUTANG_PPN_KELUARAN =CommonUtil.getPropertyParams("junk.master.piutang.ppn.masukan");
+    public final static String TRANSAKSI_ID_PENGELOMPOKAN_PPN_KELUARAN = CommonUtil.getPropertyParams("transaksi.id.pengelompokan.ppn.keluaran");
+    public final static String TRANSAKSI_ID_PENGELOMPOKAN_PPN_MASUKAN = CommonUtil.getPropertyParams("transaksi.id.pengelompokan.ppn.masukan");
+    public final static String TRANSAKSI_ID_PPN_KELUARAN_DIJADIKAN_RK = CommonUtil.getPropertyParams("transaksi.id.ppn.keluaran.dijadikan.rk");
+    public final static String TRANSAKSI_ID_PPN_MASUKAN_DIJADIKAN_RK = CommonUtil.getPropertyParams("transaksi.id.ppn.masukan.dijadikan.rk");
+    public final static String TRANSAKSI_ID_RK_DIJADIKAN_PPN_KELUARAN = CommonUtil.getPropertyParams("transaksi.id.rk.dijadikan.ppn.keluaran");
+    public final static String TRANSAKSI_ID_RK_DIJADIKAN_PPN_MASUKAN = CommonUtil.getPropertyParams("transaksi.id.rk.dijadikan.ppn.masukan");
+    public final static String TRANSAKSI_ID_PENGURANG_PPN_KELUARAN = CommonUtil.getPropertyParams("transaksi.id.pengurang.ppn.keluaran");
+    public final static String TRANSAKSI_ID_PEMBAYARAN_PPN_KELUARAN = CommonUtil.getPropertyParams("transaksi.id.pembayaran.ppn.keluaran");
+    public final static String TRANSAKSI_ID_PEMBAGIAN_BIAYA_UNTUK_RK_TIAP_UNIT = CommonUtil.getPropertyParams("transaksi.id.pembagian.biaya.untuk.rk.tiap.unit");
+    public final static String TRANSAKSI_ID_PENERIMAAN_BIAYA_UNTUK_RK_TIAP_UNIT = CommonUtil.getPropertyParams("transaksi.id.penerimaan.biaya.untuk.rk.tiap.unit");
+    public final static String TRANSAKSI_ID_KIRIM_PENGAJUAN_PEMBAYARAN_DO = CommonUtil.getPropertyParams("transaksi.id.kirim.pengajuan.pembayaran.do");
+    public final static String TRANSAKSI_ID_TERIMA_PENGAJUAN_PEMBAYARAN_DO = CommonUtil.getPropertyParams("transaksi.id.terima.pengajuan.pembayaran.do");
+    public final static String TRANSAKSI_ID_PEMBAYARAN_DO = CommonUtil.getPropertyParams("transaksi.id.pembayaran.do");
+
+    public final static String REKENING_ID_PPN_MASUKAN = CommonUtil.getPropertyParams("rekening.id.ppn.masukan");
+    public final static String REKENING_ID_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");
+    public final static String REKENING_PPH21 = "00187";
+    public final static String REKENING_ID_PENDAPATAN_RI ="00304";
+    public final static String REKENING_ID_PENDAPATAN_RJ ="00303";
+    public final static String REKENING_ID_DO =CommonUtil.getPropertyParams("rekening.id.do");
 
     //CONSTANT HCM
     public final static String METODE_MESIN_ABSENSI = CommonUtil.getPropertyParams("metode.mesin.absensi");

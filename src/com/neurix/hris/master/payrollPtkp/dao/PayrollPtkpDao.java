@@ -3,6 +3,8 @@ package com.neurix.hris.master.payrollPtkp.dao;
 import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.payrollPtkp.model.ImHrisPayrollPtkpEntity;
+import com.neurix.hris.master.payrollPtkp.model.ImHrisPayrollPtkpHistoryEntity;
+import com.neurix.hris.master.tipePayroll.model.ImHrisTipePayrollHistoryEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -70,6 +72,18 @@ public class PayrollPtkpDao extends GenericDao<ImHrisPayrollPtkpEntity, String> 
         String sId = String.format("%03d", iter.next());
 
         return "PTKP" + sId;
+    }
+
+    public String getNextPayrollPtkpHistoryId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_payroll_ptkp_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%03d", iter.next());
+
+        return "HPTKP"+sId;
+    }
+
+    public void addAndSaveHistory(ImHrisPayrollPtkpHistoryEntity entity) throws HibernateException {
+        this.sessionFactory.getCurrentSession().save(entity);
     }
 
     public List<ImHrisPayrollPtkpEntity> getData2(String idPtkp) throws HibernateException {

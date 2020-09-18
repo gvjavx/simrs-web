@@ -77,4 +77,23 @@ public class PerhitunganKembaliPpnDao extends GenericDao<ItAkunPpnPerhitunganKem
 
         return results;
     }
+
+    public BigDecimal getPpnHasilPerhitunganKembali(String bulan,String tahun){
+        BigDecimal result=BigDecimal.ZERO;
+        String query = "select \n" +
+                "  ppn_hasil_perhitungan_kembali_ppn \n" +
+                "from \n" +
+                "  it_akun_ppn_perhitungan_kembali \n" +
+                "where \n" +
+                "  bulan = '"+bulan+"' \n" +
+                "  and tahun = '"+tahun+"' \n" +
+                "  and flag = 'Y'\n";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = (BigDecimal) results;
+        }
+
+        return result;
+    }
 }

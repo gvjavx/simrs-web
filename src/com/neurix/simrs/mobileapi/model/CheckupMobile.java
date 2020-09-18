@@ -62,6 +62,24 @@ public class CheckupMobile {
     private String message;
 
     private String createdDate;
+    private String noAntrian;
+    private String belumBayarUangMuka;
+
+    public String getBelumBayarUangMuka() {
+        return belumBayarUangMuka;
+    }
+
+    public void setBelumBayarUangMuka(String belumBayarUangMuka) {
+        this.belumBayarUangMuka = belumBayarUangMuka;
+    }
+
+    public String getNoAntrian() {
+        return noAntrian;
+    }
+
+    public void setNoAntrian(String noAntrian) {
+        this.noAntrian = noAntrian;
+    }
 
     public String getCreatedDate() {
         return createdDate;

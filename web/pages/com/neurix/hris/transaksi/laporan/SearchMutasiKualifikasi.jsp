@@ -313,7 +313,11 @@
                                                     <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
                                                 </a>
                                             </display:column>
-
+                                            <display:setProperty name="paging.banner.item_name">MutasiKualifikasi</display:setProperty>
+                                            <display:setProperty name="paging.banner.items_name">MutasiKualifikasi</display:setProperty>
+                                            <display:setProperty name="export.excel.filename">MutasiKualifikasi.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">MutasiKualifikasi.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">MutasiKualifikasi.pdf</display:setProperty>
                                         </display:table>
                                     </td>
                                 </tr>

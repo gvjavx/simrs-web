@@ -34,6 +34,64 @@
             margin-bottom: 30px;
         }
     </style>
+    <style>
+        *, *:before, *:after {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .new {
+            padding: 50px;
+        }
+
+        .form-check {
+            display: block;
+        }
+
+        .form-check input {
+            padding: 0;
+            height: initial;
+            width: initial;
+            margin-bottom: 0;
+            display: none;
+            cursor: pointer;
+        }
+
+        .form-check label {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .form-check label:before {
+            content:'';
+            -webkit-appearance: none;
+            background-color: transparent;
+            border: 2px solid #0079bf;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+            padding: 10px;
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .form-check input:checked + label:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 2px;
+            left: 9px;
+            width: 6px;
+            height: 14px;
+            border: solid #0079bf;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+    </style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini" >
@@ -63,7 +121,6 @@
                             <tr>
                                 <td align="center">
                                     <s:form id="pengajuanBiayaForm" method="post"  theme="simple" namespace="/pengajuanBiaya" action="searchPengajuanAdmin_pengajuanBiaya.action" cssClass="form-horizontal">
-                                        <s:hidden name="pengajuanBiaya.tipePembayaran" value="KK" />
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -79,7 +136,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='laporanAkuntansi.unit == "KP"'>
+                                                        <s:if test='pengajuanBiayaDetail.branchIdUser == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pengajuanBiayaDetail.branchId"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -88,7 +145,7 @@
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="pengajuanBiayaDetail.branchId" disabled="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                            <s:hidden id="branchId" name="pengajuanBiayaDetail.branchId" />
+                                                            <s:hidden name="pengajuanBiayaDetail.branchId" id="branchId" />
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -112,6 +169,16 @@
                                                 <td>
                                                     <table>
                                                         <s:textfield  id="pengajuanBiayaId" name="pengajuanBiayaDetail.pengajuanBiayaDetailId" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>RK ID :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield  id="rk" name="pengajuanBiayaDetail.rkId" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -205,6 +272,18 @@
                                             </tr>
                                             <tr>
                                                 <td>
+                                                    <label class="control-label"><small>Status Keuangan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'A':'Unit', 'KP' : 'Kantor Pusat'}"
+                                                                  id="statusKeuangan" name="pengajuanBiayaDetail.statusKeuangan"
+                                                                  headerKey="" headerValue="" cssClass="form-control" />
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
                                                     <label class="control-label"><small>Status Pengajuan :</small></label>
                                                 </td>
                                                 <td>
@@ -245,6 +324,10 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
+                                                        <a class="btn btn-success" id="btn_create" style="display: none" onclick="createRk()"><i class="fa fa-plus"></i>
+                                                            Create RK</a>
+                                                    </td>
+                                                    <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initFormPengajuan_pengajuanBiaya"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
@@ -260,16 +343,26 @@
                                                 <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pengajuan Biaya</h3>
                                             </div>
                                             <div class="box-body">
-                                                <table id="myTableAllRows" class="tablePengajuanBiaya table table-bordered table-striped">
+                                                <table id="tablePengajuanBiaya" class="tablePengajuanBiaya table table-bordered table-striped" style="font-size: 11px;">
                                                     <thead >
                                                     <tr bgcolor="#90ee90">
-                                                        <td>ID Pengajuan Biaya</td>
-                                                        <td>Nama Unit</td>
-                                                        <td>Nama Divisi</td>
-                                                        <td>Tanggal Pengajuan</td>
-                                                        <td>Tanggal Realisasi</td>
+                                                        <s:if test='pengajuanBiayaDetail.branchIdUser == "KP"'>
+                                                        <td align="center" width="7%">
+                                                            <div class="form-check">
+                                                                <input type="checkbox" id="selectall">
+                                                                <label for="selectall"></label>
+                                                            </div>
+                                                        </td>
+                                                        </s:if>
+                                                        <td>ID</td>
+                                                        <td>Unit</td>
+                                                        <td>Divisi</td>
+                                                        <td>Pengajuan</td>
+                                                        <td>Realisasi</td>
                                                         <td>Jumlah (RP)</td>
                                                         <td>Keperluan</td>
+                                                        <td>ID RK</td>
+                                                        <td>Metode Bayar</td>
                                                         <td>Status Saat Ini</td>
                                                         <td align="center">View</td>
                                                         <td align="center">Dibayar</td>
@@ -277,7 +370,18 @@
                                                     </thead>
                                                     <tbody>
                                                     <s:iterator value="#session.listOfResult" var="row">
-                                                        <tr>
+                                                            <s:if test='pengajuanBiayaDetail.branchIdUser == "KP"'>
+                                                            <td align="center">
+                                                                <s:if test='#row.pengajuanBiayaDetailId == ""||#row.statusKeuangan != "KP"||#row.rkId!= null'>
+                                                                </s:if>
+                                                                <s:else>
+                                                                    <div class="form-check">
+                                                                        <input type="checkbox" class="selectedId" name="selectedId" id="check_<s:property value="pengajuanBiayaDetailId"/>">
+                                                                        <label for="check_<s:property value="pengajuanBiayaDetailId"/>"></label>
+                                                                    </div>
+                                                                </s:else>
+                                                            </td>
+                                                            </s:if>
                                                             <td><s:property value="pengajuanBiayaDetailId"/></td>
                                                             <td><s:property value="branchName"/></td>
                                                             <td><s:property value="divisiName"/></td>
@@ -285,6 +389,8 @@
                                                             <td><s:property value="stTanggalRealisasi"/></td>
                                                             <td style="text-align: right"><s:property value="stJumlah"/></td>
                                                             <td><s:property value="keperluan"/></td>
+                                                            <td><s:property value="rkId"/></td>
+                                                            <td><s:property value="statusKeuanganName"/></td>
                                                             <td><s:property value="statusSaatIni"/></td>
                                                             <td align="center">
                                                                 <s:if test='#row.canView'>
@@ -395,6 +501,27 @@
                             <input type="text" readonly class="form-control" id="mod_status_detail">
                         </div>
                     </div>
+                    <div class="form-group view-ipa">
+                        <label class="control-label col-sm-3" >Ijin Prinsip Atasan : </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" readonly id="namaFileUpload">
+                        </div>
+                        <div class="col-sm-1">
+                            <a href="javascript:;" id="btnViewIpaUploaded">
+                                <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
+                            </a>
+                        </div>
+                        <script>
+                            $('#btnViewIpaUploaded').click(function () {
+                                dwr.engine.setAsync(false);
+                                var pengajuanId = $('#modPengajuanBiayaDetailIdDetail').val();
+                                PengajuanBiayaAction.searchPengajuanDetailImage(pengajuanId,function(data){
+                                    $("#my-image").attr("src", data);
+                                });
+                                $('#modal-view-ipa').modal('show');
+                            })
+                        </script>
+                    </div>
                     <div class="form-group" id="not_approval_note_detail">
                         <label class="control-label col-sm-3" >Keterangan Not Approve : </label>
                         <div class="col-sm-7">
@@ -410,6 +537,106 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-view-ipa">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Ijin Prinsip Atasan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <img src="" class="img-responsive" id="my-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-create-pengajuan">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Create RK</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rk">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Metode Pembayaran</label>
+                        <div class="col-md-7">
+                            <select class="form-control" id="mod_metode_bayar" style="margin-top: 7px">
+                                <option value="" ></option>
+                            </select>
+                        </div>
+                    </div>
+                    <script>
+                        function getCoaBayar() {
+                            var option = '<option value=""></option>';
+                            var tipeTransaksi = "47";
+                            KodeRekeningAction.getKodeRekeningLawanByTransId(tipeTransaksi,"K",function (res) {
+                                if(res.length > 0){
+                                    $.each(res, function (i, item) {
+                                        option += '<option value="'+item.kodeRekening+'">'+item.namaKodeRekening+'</option>';
+                                    });
+                                    $('#mod_metode_bayar').html(option);
+                                }else{
+                                    $('#mod_metode_bayar').html(option);
+                                }
+                            });
+                        }
+                        $(document).ready(function () {
+                            getCoaBayar();
+                        })
+                    </script>
+                    <input id="data_pengajuan" type="hidden">
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="btnSaveRk" onclick="confirmsSaveRk()"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
         $('.tablePengajuanBiaya').on('click', '.item-view', function() {
@@ -425,6 +652,7 @@
                 $('#mod_tanggal_realisasi_detail').val(data.stTanggalRealisasi);
                 $('#mod_budget_detail').val(data.stBudgetBiayaSdBulanIni);
                 $('#mod_status_detail').val(data.statusSaatIni);
+                $('#namaFileUpload').val(data.fileName);
                 if (data.notApprovalNote!="null"){
                     $('#mod_not_approval_note_detail').val(data.notApprovalNote);
                 } else{
@@ -453,5 +681,82 @@
             var url = "cetakSurat_pengajuanBiaya.action?id="+id;
             window.open(url,'_blank');
         });
+
+        $('#tablePengajuanBiaya').DataTable({
+            "order": [[1, "desc"]],
+            "pageLength": 100,
+            "columnDefs": [
+                { "orderable": false, "targets": 0 }
+            ]
+        });
+
+        $('#selectall').click(function () {
+            $('.selectedId').prop('checked', this.checked);
+
+            var checkbox = document.getElementsByName('selectedId');
+            var ln = 0;
+            for(var i=0; i< checkbox.length; i++) {
+                if(checkbox[i].checked)
+                    ln++
+            }
+            if(ln > 0){
+                $('#btn_create').show();
+            }else{
+                $('#btn_create').hide();
+            }
+        });
+
+        $('.selectedId').change(function () {
+            var check = ($('.selectedId').filter(":checked").length == $('.selectedId').length);
+            $('#selectall').prop("checked", check);
+
+            var checkbox = document.getElementsByName('selectedId');
+            var fpk = $('#no_fpk_search').val();
+
+            var ln = 0;
+            for(var i=0; i< checkbox.length; i++) {
+                if(checkbox[i].checked)
+                    ln++
+            }
+            if(ln > 0){
+                $('#btn_create').show();
+            }else{
+                $('#btn_create').hide();
+            }
+        });
     });
+    function createRk() {
+        var data = $('#tablePengajuanBiaya').tableToJSON();
+        var result = [];
+        $.each(data, function (i, item) {
+            var idPengajuanBiaya = data[i]["ID"];
+            if ($('#check_' + idPengajuanBiaya).prop("checked") == true) {
+                result.push({'id': idPengajuanBiaya});
+            }
+        });
+        var jsonString = JSON.stringify(result);
+        $('#data_pengajuan').val(jsonString);
+        $('#modal-create-pengajuan').modal('show');
+        console.log(result);
+    }
+
+    function confirmsSaveRk(){
+        var data = $('#data_pengajuan').val();
+        var metodeBayar = $('#mod_metode_bayar').val();
+        if (data != '[]' && metodeBayar != '') {
+            $('#modal-confirm-dialog').modal('show');
+        }else{
+            alert("Metode Bayar masih kosong");
+        }
+    }
+
+    $('#save_con').click(function () {
+        var data = $('#data_pengajuan').val();
+        var metodeBayar = $('#mod_metode_bayar').val();
+        var branchId = $('#branchId').val();
+        PengajuanBiayaAction.rkPengajuanBiayaKp(data,metodeBayar,branchId,"K",function(result) {
+            alert(result);
+            window.location.reload();
+        });
+    })
 </script>

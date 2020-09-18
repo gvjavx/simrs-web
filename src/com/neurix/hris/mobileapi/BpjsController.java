@@ -6,6 +6,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.mobileapi.model.FingerPrintResponse;
 import com.neurix.hris.mobileapi.model.simrs.Poli;
 import com.neurix.hris.transaksi.absensi.bo.AbsensiBo;
+import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
 import com.neurix.hris.transaksi.absensi.model.MesinAbsensi;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
 import com.neurix.simrs.bpjs.eklaim.model.DataPerKlaimResponse;
@@ -221,6 +222,9 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                 break;
             case "cron-mesin-absensi":
                 cronJobMesinAbsensi();
+                break;
+            case "cron-absensi-pegawai":
+                cronJobAbsensiPegawai();
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -728,6 +732,43 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             case "bpjs-tindakan":
                 return listOfTindakanResponse;
             default: return null;
+        }
+    }
+
+    public void cronJobAbsensiPegawai (){
+
+        List<AbsensiPegawai> absensiPegawaiList= new ArrayList<>();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, -1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        Date tanggalSekarang = new Date(cal.getTimeInMillis());
+
+        AbsensiPegawai search = new AbsensiPegawai();
+        search.setCreatedWho("cron");
+        search.setLastUpdate(updateTime);
+        search.setLastUpdateWho("cron");
+        search.setCreatedDate(updateTime);
+        search.setFlag("Y");
+        search.setAction("U");
+
+        AbsensiPegawai data = new AbsensiPegawai();
+        data.setBranchId("KP");
+        data.setTanggalUtil(tanggalSekarang);
+
+        try {
+            absensiPegawaiList = absensiBoProxy.cronInquiry(data);
+            absensiBoProxy.saveAddAbsensi(absensiPegawaiList,search);
+        }catch (Exception e){
+            logger.error("ERROR WHEN GET ABSENSI PEGAWAI : " + "[" + e + "]");
+            logger.error("[BpjsController.cronJobAbsensiPegawai] Error : " + "[" + e + "]");
         }
     }
 

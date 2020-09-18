@@ -1001,3 +1001,103 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     CREATE SEQUENCE seq_saldo_akhir_tahun;
     CREATE SEQUENCE seq_saldo_akhir_tahun_detail;
 --
+
+-- 2020-09-18
+
+    -- Table: public.it_akun_jurnal
+
+    -- DROP TABLE public.it_akun_jurnal;
+
+    CREATE TABLE public.it_akun_jurnal_akhir_tahun
+    (
+        no_jurnal character varying(12) COLLATE pg_catalog."default" NOT NULL,
+        tipe_jurnal_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
+        tanggal_jurnal date,
+        sumber character varying(16) COLLATE pg_catalog."default",
+        sumber_dana_id character varying(3) COLLATE pg_catalog."default",
+        carry_over character varying(5) COLLATE pg_catalog."default",
+        mata_uang_id character varying(3) COLLATE pg_catalog."default" NOT NULL,
+        kurs numeric(13,2) NOT NULL,
+        keterangan character varying(300) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+        created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+        branch_id character varying(5) COLLATE pg_catalog."default" NOT NULL,
+        created_date timestamp without time zone NOT NULL,
+        last_update timestamp(4) without time zone,
+        printed_date date,
+        printed_flag character varying(1) COLLATE pg_catalog."default",
+        registered_date date,
+        registered_flag character varying(1) COLLATE pg_catalog."default",
+        registered_user character varying(30) COLLATE pg_catalog."default",
+        register_id character varying(15) COLLATE pg_catalog."default",
+        spum_id character varying(100) COLLATE pg_catalog."default",
+        print_count numeric(10,0) DEFAULT 0,
+        print_register_count numeric(10,0) NOT NULL DEFAULT 0,
+        re_printed_date date,
+        re_registered_date date,
+        cara_penerimaan character varying(30) COLLATE pg_catalog."default",
+        no_seri_pajak_dipungut character varying(20) COLLATE pg_catalog."default",
+        no_seri_pajak_ditanggung character varying(20) COLLATE pg_catalog."default",
+        personal character varying(50) COLLATE pg_catalog."default",
+        pos_anggaran character varying(50) COLLATE pg_catalog."default",
+        bukti_pendukung character varying(50) COLLATE pg_catalog."default",
+        tanggal_pendukung date,
+        dpp_dipungut numeric(14,2),
+        dpp_ditanggung numeric(14,2),
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        pengajuan_biaya_id character varying(50) COLLATE pg_catalog."default"
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_jurnal_akhir_tahun
+        OWNER to postgres;
+
+    -------------------------------------------------------------------------------------------------------------------
+
+    -- Table: public.it_akun_jurnal_detail
+
+    -- DROP TABLE public.it_akun_jurnal_detail;
+
+    CREATE TABLE public.it_akun_jurnal_detail_akhir_tahun
+    (
+        no_jurnal character varying(12) COLLATE pg_catalog."default" NOT NULL,
+        rekening_id character varying(12) COLLATE pg_catalog."default" NOT NULL,
+        master_id character varying(17) COLLATE pg_catalog."default",
+        no_nota character varying(30) COLLATE pg_catalog."default",
+        jumlah_debit numeric(19,2) NOT NULL,
+        jumlah_kredit numeric(19,2) NOT NULL,
+        biaya character varying(6) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        last_update timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        jurnal_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+        kd_barang character varying(30) COLLATE pg_catalog."default",
+        pasien_id character varying(30) COLLATE pg_catalog."default",
+        nomor_rekening character varying(30) COLLATE pg_catalog."default",
+        divisi_id character varying(10) COLLATE pg_catalog."default",
+        CONSTRAINT it_akun_jurnal_detail_akhir_tahun_pkey PRIMARY KEY (jurnal_detail_id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_jurnal_detail_akhir_tahun
+        OWNER to postgres;
+
+    -------------------------------------------------------------------------------------------------------------------
+
+    CREATE SEQUENCE seq_jurnal_akhir_tahun;
+    CREATE SEQUENCE seq_jurnal_detail_akhir_tahun;
+
+    ALTER TABLE it_akun_jurnal_detail_akhir_tahun
+    ADD COLUMN jurnal_detail_id VARCHAR(30);
+
+--

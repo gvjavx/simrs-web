@@ -1807,7 +1807,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     }
                     // cek apakah anak > 25 tahun
                     payrollEntity.setJumlahAnak(cekJumlahAnak(payrollEntity.getNip(), payrollEntity.getBranchId()));
-                    payroll.setJumlahAnak(payrollEntity.getJumlahAnak());
                     payroll.setGender(payrollEntity.getGender());
                     payroll.setDanaPensiunName(payrollEntity.getDanaPensiunName());
                     payroll.setFlagPjs(payrollEntity.getFlagPjs());
@@ -3267,6 +3266,8 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(500000000));
             hasil = hasil.add(BigDecimal.valueOf(0.30).multiply(sisaPkp));
         }*/
+
+
         BigDecimal hasil = new BigDecimal(0) ;
         if (!"".equalsIgnoreCase(npwp)){
             if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
@@ -6456,13 +6457,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                 if(itPayrollEntity1.getFlagJubileum() != null){
                     if(itPayrollEntity1.getFlagJubileum().equalsIgnoreCase("Y")){
-                        payroll.setFlagSlip(false);
+                        payroll.setFlagSlip(true);
                     }
                 }
 
                 if(itPayrollEntity1.getFlagPensiun() != null){
                     if(itPayrollEntity1.getFlagPensiun().equalsIgnoreCase("Y")){
-                        payroll.setFlagSlip(false);
+                        payroll.setFlagSlip(true);
                     }
                 }
                 payroll.setTipe(bean.getTipe());
@@ -21095,9 +21096,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     private int cekJumlahAnak(String nip, String branchId){
         index++;
         ImBiodataEntity biodataEntity = biodataDao.getById("nip", nip);
-        int jumlahAnak = biodataEntity.getJumlahAnak().intValue();
+        int jumlahAnak = 0;
 
-        if(branchId.equalsIgnoreCase("KD01")){
+        try {
+            if (biodataEntity.getJumlahAnak()!=null){
+                jumlahAnak = biodataEntity.getJumlahAnak().intValue();
+            }
             int anak = 0 ;
             List<ImKeluargaEntity> keluargaEntities = new ArrayList<>();
             keluargaEntities = keluargaDao.getListKeluargaById("", biodataEntity.getNip());
@@ -21113,11 +21117,15 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 }
             }
             jumlahAnak = anak;
+
+            if(jumlahAnak > 3){
+                jumlahAnak = 3;
+            }
+        }catch (Exception e){
+            String status = "ERROR : Saat Pengecekan jumlah anak pada NIP : "+nip;
+            throw new GeneralBOException(status);
         }
 
-        if(jumlahAnak > 3){
-            jumlahAnak = 3;
-        }
         return jumlahAnak;
     }
 

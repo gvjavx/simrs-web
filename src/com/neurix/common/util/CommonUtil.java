@@ -21,6 +21,7 @@ import java.text.*;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.Random;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,7 +30,7 @@ import java.util.Properties;
  * Time: 21:18
  * To change this template use File | Settings | File Templates.
  */
-public class CommonUtil {
+public class  CommonUtil {
 
     protected static transient Logger logger = Logger.getLogger(CommonUtil.class);
 
@@ -1291,4 +1292,47 @@ public class CommonUtil {
         else if (minutes<60){hasil=hasil+0.5;}
         return hasil;
     }
+
+    public static int getRandomNumberInts(int min, int max){
+        Random random = new Random();
+        return random.ints(min,(max+1)).findFirst().getAsInt();
+    }
+
+    //Convert Date to Calendar
+    public static Calendar dateToCalendar(java.util.Date date) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+
+    }
+
+    //Convert Calendar to Date
+    public static java.util.Date calendarToDate(Calendar calendar) {
+        return calendar.getTime();
+    }
+
+    public static long compareTwoTimeStamps(java.sql.Timestamp currentTime, java.sql.Timestamp oldTime,String get) {
+        long milliseconds1 = oldTime.getTime();
+        long milliseconds2 = currentTime.getTime();
+
+        long diff = milliseconds2 - milliseconds1;
+        long diffSeconds = diff / 1000;
+        long diffMinutes = diff / (60 * 1000);
+        long diffHours = diff / (60 * 60 * 1000);
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        if ("menit".equalsIgnoreCase(get)){
+            return diffMinutes;
+        }else if ("jam".equalsIgnoreCase(get)){
+            return diffHours;
+        }else if ("detik".equalsIgnoreCase(get)){
+            return diffSeconds;
+        }else if ("hari".equalsIgnoreCase(get)){
+            return diffDays;
+        }else{
+            return diff;
+        }
+    }
+
 }

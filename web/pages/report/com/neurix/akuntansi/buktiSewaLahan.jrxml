@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="buktiSewaLahan" language="groovy" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7abe0260-6861-44d8-80f9-a37c87a63c3b">
-	<property name="ireport.zoom" value="1.9487171000000016"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="buktiSewaLahan" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7abe0260-6861-44d8-80f9-a37c87a63c3b">
+	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="306"/>
+	<property name="ireport.y" value="117"/>
 	<parameter name="namaPenyewa" class="java.lang.String"/>
 	<parameter name="jumlahTerbilang" class="java.lang.String"/>
 	<parameter name="keterangan" class="java.lang.String"/>
@@ -35,8 +35,7 @@
 	<field name="approval_flag" class="java.lang.String"/>
 	<field name="approval_who" class="java.lang.String"/>
 	<field name="approval_date" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[
-]]></fieldDescription>
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="metode_bayar" class="java.lang.String"/>
 	<field name="bank" class="java.lang.String"/>
@@ -147,7 +146,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 		</band>
 	</title>
 	<detail>
-		<band height="294" splitType="Stretch">
+		<band height="666" splitType="Stretch">
 			<staticText>
 				<reportElement key="staticText-41" x="124" y="90" width="15" height="20" uuid="ea9db5ec-0e99-478f-92b7-e2850ed3399b"/>
 				<box>
@@ -305,7 +304,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-37" x="390" y="198" width="161" height="20" uuid="6d67461b-e11a-4318-9d64-636391976349"/>
+				<reportElement key="staticText-37" x="390" y="432" width="161" height="20" uuid="6d67461b-e11a-4318-9d64-636391976349"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -318,7 +317,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Penerima]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-24" x="390" y="268" width="157" height="20" uuid="c0a678ec-4b61-4a90-b79a-68eba554c625"/>
+				<reportElement key="textField-24" x="390" y="502" width="157" height="20" uuid="c0a678ec-4b61-4a90-b79a-68eba554c625"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

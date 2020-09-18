@@ -270,6 +270,13 @@ public class PenyewaanLahanAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PenyewaanLahanBo penyewaanLahanBo= (PenyewaanLahanBo) ctx.getBean("penyewaanLahanBoProxy");
 
+        if ("".equalsIgnoreCase(nilaiPph)){
+            nilaiPph="0";
+        }
+        if ("".equalsIgnoreCase(nilaiPpn)){
+            nilaiPpn="0";
+        }
+
         try {
             PenyewaanLahan penyewaanLahan = new PenyewaanLahan();
             String userLogin = CommonUtil.userLogin();
@@ -424,14 +431,18 @@ public class PenyewaanLahanAction extends BaseMasterAction {
             kas.put("nilai",penyewaanLahanEntity.getNilai());
 
             Map mapPpn = new HashMap();
-//            mapPpn.put("master_id",);
             mapPpn.put("nilai",penyewaanLahanEntity.getNilaiPpn());
+
+            Map mapPph = new HashMap();
+            mapPph.put("master_id",penyewaanLahanEntity.getNamaPenyewa());
+            mapPph.put("nilai",penyewaanLahanEntity.getNilaiPph());
 
             Map pendapatanPenyewaan = new HashMap();
             pendapatanPenyewaan.put("nilai",penyewaanLahanEntity.getNilaiNetto());
 
             dataPostingJurnal.put("kas",kas);
             dataPostingJurnal.put("ppn",mapPpn);
+            dataPostingJurnal.put("pph",mapPph);
             dataPostingJurnal.put("pendapatan_sewa_lahan",pendapatanPenyewaan);
 
             //disini untuk posting jurnal untuk mendapat nojurnal

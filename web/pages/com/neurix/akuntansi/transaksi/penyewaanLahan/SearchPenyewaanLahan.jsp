@@ -345,17 +345,18 @@
                             </div>
                             <script>
                                 function hitungPpn(val){
-                                    val = val.replace(".","");
+                                    val = val.replace(/[.]/g,"");
                                     var nilai = parseInt(val);
                                     $('#mod_add_nilai_ppn').val(formatRupiahAtas(nilai*10/100));
-                                    $('#mod_add_nilai_netto').val(formatRupiahAtas(nilai-(nilai*10/100)));
+                                    $('#mod_add_nilai_pph').val(formatRupiahAtas(nilai*2/100));
+                                    $('#mod_add_nilai_netto').val(formatRupiahAtas(nilai-(nilai*10/100)-(nilai*2/100)));
                                 }
                             </script>
                             <div class="row">
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 14px" >PPN (RP)</label>
                                     <div class="col-md-6">
-                                        <s:textfield id="mod_add_nilai_ppn" cssClass="form-control" onkeyup="formatRupiah2(this),hitungNilaiNetto(this.value)" placeholder="0" cssStyle="text-align: right;margin-top: 7px" />
+                                        <s:textfield id="mod_add_nilai_ppn" cssClass="form-control" onkeyup="formatRupiah2(this),hitungNilaiNettoPpn(this.value)" placeholder="0" cssStyle="text-align: right;margin-top: 7px" />
                                     </div>
                                 </div>
                             </div>
@@ -363,26 +364,46 @@
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 14px" >PPH (RP)</label>
                                     <div class="col-md-6">
-                                        <s:textfield id="mod_add_nilai_pph" cssClass="form-control" onkeyup="formatRupiah2(this)" placeholder="0" cssStyle="text-align: right;margin-top: 7px" />
+                                        <s:textfield id="mod_add_nilai_pph" cssClass="form-control" onkeyup="formatRupiah2(this),hitungNilaiNettoPph(this.value)" placeholder="0" cssStyle="text-align: right;margin-top: 7px" />
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 14px" >Netto ( Nilai - PPN ) (RP)</label>
+                                    <label class="col-md-4" style="margin-top: 14px" >Netto ( Nilai - PPN - PPH ) (RP)</label>
                                     <div class="col-md-6">
                                         <s:textfield id="mod_add_nilai_netto" cssClass="form-control" readonly="true" cssStyle="text-align: right;margin-top: 7px" placeholder="0" />
                                     </div>
                                 </div>
                             </div>
                             <script>
-                                function hitungNilaiNetto(val){
+                                function hitungNilaiNettoPpn(val){
+                                    var pph = $('#mod_add_nilai_pph').val();
+                                    if (pph==""){
+                                        pph="0";
+                                    }
+                                    pph = pph.replace(/[.]/g,"");
                                     var bruto = $('#mod_add_nilai').val();
-                                    bruto = bruto.replace(".","");
-                                    val = val.replace(".","");
+                                    bruto = bruto.replace(/[.]/g,"");
+                                    val = val.replace(/[.]/g,"");
                                     var nilai = parseInt(val);
                                     var nilaiBruto = parseInt(bruto);
-                                    $('#mod_add_nilai_netto').val(formatRupiahAtas(nilaiBruto-nilai));
+                                    var nilaiPph = parseInt(pph);
+                                    $('#mod_add_nilai_netto').val(formatRupiahAtas(nilaiBruto-nilai-nilaiPph));
+                                }
+                                function hitungNilaiNettoPph(val){
+                                    var ppn = $('#mod_add_nilai_ppn').val();
+                                    if (ppn==""){
+                                        ppn="0";
+                                    }
+                                    ppn = ppn.replace(/[.]/g,"");
+                                    var bruto = $('#mod_add_nilai').val();
+                                    bruto = bruto.replace(/[.]/g,"");
+                                    val = val.replace(/[.]/g,"");
+                                    var nilai = parseInt(val);
+                                    var nilaiBruto = parseInt(bruto);
+                                    var nilaiPpn = parseInt(ppn);
+                                    $('#mod_add_nilai_netto').val(formatRupiahAtas(nilaiBruto-nilai-nilaiPpn));
                                 }
                             </script>
                             <div class="row">
@@ -433,12 +454,12 @@
                                     <label class="col-md-4" style="margin-top: 7px">Upload Faktur Pajak</label>
                                     <div class="col-md-6">
                                         <div class="input-group" id="img_file"  style="margin-top: 7px">
-                              <span class="input-group-btn">
-                              <span class="btn btn-default btn-file">
-                                   Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
-                                                   onchange="$('#img_file').css('border','')"></s:file>
-                                                        </span>
-                                                        </span>
+                                          <span class="input-group-btn">
+                                            <span class="btn btn-default btn-file">
+                                               Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
+                                                               onchange="$('#img_file').css('border','')"></s:file>
+                                            </span>
+                                            </span>
                                             <input type="text" class="form-control" readonly id="namaFile">
                                         </div>
                                         <canvas id="img_faktur_canvas" style="display: none"></canvas>
@@ -529,7 +550,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4" >Netto ( Nilai - PPN ) (RP)</label>
+                                <label class="col-md-4" >Netto ( Nilai - PPN - PPH ) (RP)</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_view_nilai_netto" cssClass="form-control" readonly="true" cssStyle="text-align: right" />
                                     <br>
@@ -1024,7 +1045,6 @@
             } else {
                 if (log) alert(log);
             }
-
         });
     });
     $('#btnViewFaktur').click(function () {

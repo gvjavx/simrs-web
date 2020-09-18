@@ -322,6 +322,11 @@
                                                         <display:column property="divisiName" sortable="true" title="Bidang" />
                                                         <display:column property="branchName" sortable="true" title="Unit" />
                                                         <display:column property="statusSaatIni" sortable="true" title="Status" />
+                                                        <display:setProperty name="paging.banner.item_name">Rekruitmen</display:setProperty>
+                                                        <display:setProperty name="paging.banner.items_name">Rekruitmen</display:setProperty>
+                                                        <display:setProperty name="export.excel.filename">Rekruitmen.xls</display:setProperty>
+                                                        <display:setProperty name="export.csv.filename">Rekruitmen.csv</display:setProperty>
+                                                        <display:setProperty name="export.pdf.filename">Rekruitmen.pdf</display:setProperty>
                                                     </display:table>
                                                 </td>
                                             </tr>

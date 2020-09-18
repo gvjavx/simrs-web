@@ -537,6 +537,11 @@
                                                             <display:column property="ijin" sortable="true" title="ijin" style="text-align:center" />
                                                             <display:column property="lembur" sortable="true" title="lembur" style="text-align:center" />
                                                             <display:column property="realisasiJamLembur" sortable="true" title="Realisasi Lembur" style="text-align:center" />
+                                                            <display:setProperty name="paging.banner.item_name">Absensi</display:setProperty>
+                                                            <display:setProperty name="paging.banner.items_name">Absensi</display:setProperty>
+                                                            <display:setProperty name="export.excel.filename">Absensi.xls</display:setProperty>
+                                                            <display:setProperty name="export.csv.filename">Absensi.csv</display:setProperty>
+                                                            <display:setProperty name="export.pdf.filename">Absensi.pdf</display:setProperty>
                                                             <%--<display:column media="html" title="Keterangan" style="text-align:center;font-size:9">
                                                                 <s:if test="#attr.row.cekAdmin">
                                                                     <s:if test="#attr.row.absensiApprove">

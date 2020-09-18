@@ -285,6 +285,11 @@
                                                                     <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>" name="icon_edit">
                                                                 </display:column>
                                                             </s:else>
+                                                            <display:setProperty name="paging.banner.item_name">PendapatanDokter</display:setProperty>
+                                                            <display:setProperty name="paging.banner.items_name">PendapatanDokter</display:setProperty>
+                                                            <display:setProperty name="export.excel.filename">PendapatanDokter.xls</display:setProperty>
+                                                            <display:setProperty name="export.csv.filename">PendapatanDokter.csv</display:setProperty>
+                                                            <display:setProperty name="export.pdf.filename">PendapatanDokter.pdf</display:setProperty>
                                                         </display:table>
                                                     </td>
                                                 </tr>

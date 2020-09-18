@@ -111,6 +111,17 @@ public class LiburDao extends GenericDao<ImLiburEntity, String> {
         return "LH"+sId;
     }
 
+    public List<ImLiburEntity> getLiburByDate(java.util.Date date) throws HibernateException {
+        Timestamp tanggal = new Timestamp(date.getTime());
+        List<ImLiburEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImLiburEntity.class)
+                .add(Restrictions.eq("tanggal",tanggal))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("liburId"))
+                .list();
+
+        return results;
+    }
+
     public void addAndSaveHistory(ImLiburHistoryEntity entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);
     }

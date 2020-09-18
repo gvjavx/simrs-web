@@ -4,7 +4,11 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.statusAbsensi.bo.StatusAbsensiBo;
 import com.neurix.hris.master.statusAbsensi.dao.StatusAbsensiDao;
 import com.neurix.hris.master.statusAbsensi.model.ImHrisStatusAbsensiEntity;
+import com.neurix.hris.master.statusAbsensi.model.ImHrisStatusAbsensiHistoryEntity;
 import com.neurix.hris.master.statusAbsensi.model.StatusAbsensi;
+import com.neurix.hris.transaksi.absensi.dao.AbsensiPegawaiDao;
+import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
+import com.neurix.hris.transaksi.absensi.model.AbsensiPegawaiEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -24,6 +28,15 @@ public class StatusAbsensiBoImpl implements StatusAbsensiBo {
 
     protected static transient Logger logger = Logger.getLogger(StatusAbsensiBoImpl.class);
     private StatusAbsensiDao statusAbsensiDao;
+    private AbsensiPegawaiDao absensiPegawaiDao;
+
+    public AbsensiPegawaiDao getAbsensiPegawaiDao() {
+        return absensiPegawaiDao;
+    }
+
+    public void setAbsensiPegawaiDao(AbsensiPegawaiDao absensiPegawaiDao) {
+        this.absensiPegawaiDao = absensiPegawaiDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -46,34 +59,40 @@ public class StatusAbsensiBoImpl implements StatusAbsensiBo {
         logger.info("[saveDelete.saveDelete] start process >>>");
         if (bean != null) {
             //Validasi laporan pada mapping laporan
-
+            List<AbsensiPegawaiEntity> absensiPegawaiEntityList = new ArrayList<>();
             ImHrisStatusAbsensiEntity imStatusAbsensiEntity = new ImHrisStatusAbsensiEntity();
             try {
+                absensiPegawaiEntityList = absensiPegawaiDao.checkDataDelete(bean.getStatusAbsensiId());
                 // Get data from database by ID
                 imStatusAbsensiEntity = statusAbsensiDao.getById("statusAbsensiId", bean.getStatusAbsensiId());
             } catch (HibernateException e) {
                 logger.error("[StatusAbsensiBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data laporan by Kode laporan, please inform to your admin...," + e.getMessage());
             }
-
-            if (imStatusAbsensiEntity != null) {
-                // Modify from bean to entity serializable
-                imStatusAbsensiEntity.setFlag(bean.getFlag());
-                imStatusAbsensiEntity.setAction(bean.getAction());
-                imStatusAbsensiEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imStatusAbsensiEntity.setLastUpdate(bean.getLastUpdate());
-
-                try {
-                    // Delete (Edit) into database
-                    statusAbsensiDao.updateAndSave(imStatusAbsensiEntity);
-                } catch (HibernateException e) {
-                    logger.error("[StatusAbsensiBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data StatusAbsensi, please info to your admin..." + e.getMessage());
-                }
+            if (absensiPegawaiEntityList.size() > 0) {
+                logger.error("Nama Status Absensi sudah ada tidak dapat dihapus");
+                throw new GeneralBOException("Nama Status Absensi sudah ada tidak dapat dihapus");
             } else {
-                logger.error("[StatusAbsensiBoImpl.saveDelete] Error, not found data StatusAbsensi with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data StatusAbsensi with request id, please check again your data ...");
 
+                if (imStatusAbsensiEntity != null) {
+                    // Modify from bean to entity serializable
+                    imStatusAbsensiEntity.setFlag(bean.getFlag());
+                    imStatusAbsensiEntity.setAction(bean.getAction());
+                    imStatusAbsensiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imStatusAbsensiEntity.setLastUpdate(bean.getLastUpdate());
+
+                    try {
+                        // Delete (Edit) into database
+                        statusAbsensiDao.updateAndSave(imStatusAbsensiEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[StatusAbsensiBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data StatusAbsensi, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[StatusAbsensiBoImpl.saveDelete] Error, not found data StatusAbsensi with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data StatusAbsensi with request id, please check again your data ...");
+
+                }
             }
         }
         logger.info("[StatusAbsensiBoImpl.saveDelete] end process <<<");
@@ -96,14 +115,28 @@ public class StatusAbsensiBoImpl implements StatusAbsensiBo {
                 throw new GeneralBOException("Nama Status Absensi sudah ada");
             } else {
                 ImHrisStatusAbsensiEntity imStatusAbsensiEntity = null;
+                String idHistory = "";
                 try {
                     // Get data from database by ID
                     imStatusAbsensiEntity = statusAbsensiDao.getById("statusAbsensiId", bean.getStatusAbsensiId());
+                    idHistory = statusAbsensiDao.getNextStatusAbsensiHistoryId();
                 } catch (HibernateException e) {
                     logger.error("[StatusAbsensiBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data StatusAbsensi by Kode StatusAbsensi, please inform to your admin...," + e.getMessage());
                 }
                 if (imStatusAbsensiEntity != null) {
+                    ImHrisStatusAbsensiHistoryEntity imStatusAbsensiHistoryEntity = new ImHrisStatusAbsensiHistoryEntity();
+
+                    imStatusAbsensiHistoryEntity.setId(idHistory);
+                    imStatusAbsensiHistoryEntity.setStatusAbsensiId(imStatusAbsensiEntity.getStatusAbsensiId());
+                    imStatusAbsensiHistoryEntity.setStatusAbsensiName(imStatusAbsensiEntity.getStatusAbsensiName());
+                    imStatusAbsensiHistoryEntity.setFlag(imStatusAbsensiEntity.getFlag());
+                    imStatusAbsensiHistoryEntity.setAction(imStatusAbsensiEntity.getAction());
+                    imStatusAbsensiHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imStatusAbsensiHistoryEntity.setLastUpdate(bean.getLastUpdate());
+                    imStatusAbsensiHistoryEntity.setCreatedWho(imStatusAbsensiEntity.getLastUpdateWho());
+                    imStatusAbsensiHistoryEntity.setCreatedDate(imStatusAbsensiEntity.getLastUpdate());
+
                     imStatusAbsensiEntity.setStatusAbsensiName(bean.getStatusAbsensiName());
                     imStatusAbsensiEntity.setFlag(bean.getFlag());
                     imStatusAbsensiEntity.setAction(bean.getAction());
@@ -112,6 +145,7 @@ public class StatusAbsensiBoImpl implements StatusAbsensiBo {
                     try {
                         // Update into database
                         statusAbsensiDao.updateAndSave(imStatusAbsensiEntity);
+                        statusAbsensiDao.addAndSaveHistory(imStatusAbsensiHistoryEntity);
                     } catch (HibernateException e) {
                         logger.error("[StatusAbsensiBoImpl.saveEdit] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving update data StatusAbsensi, please info to your admin..." + e.getMessage());

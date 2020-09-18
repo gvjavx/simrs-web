@@ -30,8 +30,11 @@ public class AbsensiPegawai extends BaseModel {
     private Double biayaLembur;
     private String stBiayaLembur;
     private String tipeHari;
+    private String tipeHariName;
     private Double realisasiJamLembur;
     private String stRealisasiJamLembur;
+    private Double pengajuanLembur;
+
     private String keterangan;
     private String flagUangMakan;
     private String approvalFlag;
@@ -103,6 +106,41 @@ public class AbsensiPegawai extends BaseModel {
     private String tidakAbsenMasuk;
     private String tidakAbsenPulang;
     private String cekPegawaiStatus;
+
+    public Double getPengajuanLembur() {
+        return pengajuanLembur;
+    }
+
+    public void setPengajuanLembur(Double pengajuanLembur) {
+        this.pengajuanLembur = pengajuanLembur;
+    }
+
+    private java.util.Date tanggalUtil;
+
+    public String getTipeHariName() {
+        return tipeHariName;
+    }
+
+    public void setTipeHariName(String tipeHariName) {
+        this.tipeHariName = tipeHariName;
+    }
+
+    public java.util.Date getTanggalUtil() {
+        return tanggalUtil;
+    }
+
+    public void setTanggalUtil(java.util.Date tanggalUtil) {
+        this.tanggalUtil = tanggalUtil;
+    }
+    private boolean isMobile = false;
+
+    public boolean isMobile() {
+        return isMobile;
+    }
+
+    public void setMobile(boolean mobile) {
+        isMobile = mobile;
+    }
 
     public String getCekPegawaiStatus() {
         return cekPegawaiStatus;

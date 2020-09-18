@@ -282,6 +282,11 @@
                                                                 </s:a>
                                                             </s:else>
                                                         </display:column>
+                                                        <display:setProperty name="paging.banner.item_name">RekruitmenPabrik</display:setProperty>
+                                                        <display:setProperty name="paging.banner.items_name">RekruitmenPabrik</display:setProperty>
+                                                        <display:setProperty name="export.excel.filename">RekruitmenPabrik.xls</display:setProperty>
+                                                        <display:setProperty name="export.csv.filename">RekruitmenPabrik.csv</display:setProperty>
+                                                        <display:setProperty name="export.pdf.filename">RekruitmenPabrik.pdf</display:setProperty>
                                                     </display:table>
                                                 </td>
                                             </tr>

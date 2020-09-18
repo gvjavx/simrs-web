@@ -73,4 +73,8 @@ public interface AbsensiBo extends BaseMasterBo<AbsensiPegawai> {
     AbsensiPegawai getJadwalShiftKerja(String nip, Date tanggal);
 
     List<AbsensiPegawai> getHistoryAbsensiByMonth(String nip, String branchId, Date date) throws GeneralBOException;
+
+    List<AbsensiPegawai> cronInquiry(AbsensiPegawai data);
+
+    void saveAddAbsensi(List<AbsensiPegawai> absensiPegawaiList, AbsensiPegawai bean) throws GeneralBOException;
 }

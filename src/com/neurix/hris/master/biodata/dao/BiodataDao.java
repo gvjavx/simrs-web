@@ -709,6 +709,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setBagianName((String) row[92]);
             result.setProfesiId((String)row[93]);
 
+            result.setDivisiName((String)row[9]);
             listOfResult.add(result);
         }
         return listOfResult;

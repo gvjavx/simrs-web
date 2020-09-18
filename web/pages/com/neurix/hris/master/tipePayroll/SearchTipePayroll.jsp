@@ -166,15 +166,15 @@
                                                                     <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
                                                                 </sj:a>
                                                             </display:column>
-                                                            <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                                <s:url var="urlViewDelete" namespace="/tipePayroll" action="delete_tipePayroll" escapeAmp="false">
-                                                                    <s:param name="id"><s:property value="#attr.row.tipePayrollId" /></s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                </s:url>
-                                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                                </sj:a>
-                                                            </display:column>
+                                                            <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
+                                                                <%--<s:url var="urlViewDelete" namespace="/tipePayroll" action="delete_tipePayroll" escapeAmp="false">--%>
+                                                                    <%--<s:param name="id"><s:property value="#attr.row.tipePayrollId" /></s:param>--%>
+                                                                    <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                                <%--</s:url>--%>
+                                                                <%--<sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                                                <%--</sj:a>--%>
+                                                            <%--</display:column>--%>
                                                             <display:column property="tipePayrollId" sortable="true" title="Tipe Payroll ID" />
                                                             <display:column property="tipePayrollName" sortable="true" title="Nama Tipe Payroll"  />
                                                             <display:column property="flag" sortable="true" title="Flag" />

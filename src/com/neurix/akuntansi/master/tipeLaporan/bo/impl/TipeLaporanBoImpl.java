@@ -1,10 +1,13 @@
 package com.neurix.akuntansi.master.tipeLaporan.bo.impl;
 
+import com.neurix.akuntansi.master.reportDetail.dao.ReportDetailDao;
+import com.neurix.akuntansi.master.reportDetail.model.ImReportDetailEntity;
 import com.neurix.akuntansi.master.tipeLaporan.bo.TipeLaporanBo;
 import com.neurix.akuntansi.master.tipeLaporan.dao.TipeLaporanDao;
 import com.neurix.akuntansi.master.tipeLaporan.model.ImAkunTipeLaporanEntity;
 import com.neurix.akuntansi.master.tipeLaporan.model.TipeLaporan;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.akuntansi.master.tipeLaporan.model.ImAkunTipeLaporanHistoryEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -24,6 +27,15 @@ public class TipeLaporanBoImpl implements TipeLaporanBo {
 
     protected static transient Logger logger = Logger.getLogger(TipeLaporanBoImpl.class);
     private TipeLaporanDao tipeLaporanDao;
+    private ReportDetailDao reportDetailDao;
+
+    public ReportDetailDao getReportDetailDao() {
+        return reportDetailDao;
+    }
+
+    public void setReportDetailDao(ReportDetailDao reportDetailDao) {
+        this.reportDetailDao = reportDetailDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -46,9 +58,10 @@ public class TipeLaporanBoImpl implements TipeLaporanBo {
         logger.info("[saveDelete.saveDelete] start process >>>");
         if (bean != null) {
             //Validasi laporan pada mapping laporan
-
+            List<ImReportDetailEntity> imReportDetailEntityList = new ArrayList<>();
             ImAkunTipeLaporanEntity imTipeLaporanEntity = new ImAkunTipeLaporanEntity();
             try {
+                imReportDetailEntityList = reportDetailDao.checkDataDelete(bean.getTipeLaporanId());
                 // Get data from database by ID
                 imTipeLaporanEntity = tipeLaporanDao.getById("tipeLaporanId", bean.getTipeLaporanId());
             } catch (HibernateException e) {
@@ -56,24 +69,30 @@ public class TipeLaporanBoImpl implements TipeLaporanBo {
                 throw new GeneralBOException("Found problem when searching data laporan by Kode laporan, please inform to your admin...," + e.getMessage());
             }
 
-            if (imTipeLaporanEntity != null) {
-                // Modify from bean to entity serializable
-                imTipeLaporanEntity.setFlag(bean.getFlag());
-                imTipeLaporanEntity.setAction(bean.getAction());
-                imTipeLaporanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imTipeLaporanEntity.setLastUpdate(bean.getLastUpdate());
-
-                try {
-                    // Delete (Edit) into database
-                    tipeLaporanDao.updateAndSave(imTipeLaporanEntity);
-                } catch (HibernateException e) {
-                    logger.error("[TipeLaporanBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data TipeLaporan, please info to your admin..." + e.getMessage());
-                }
+            if (imReportDetailEntityList.size() > 0) {
+                logger.error("Tipe Laporan sudah ada tidak dapat dihapus");
+                throw new GeneralBOException("Tipe Laporan sudah ada tidak dapat dihapus");
             } else {
-                logger.error("[TipeLaporanBoImpl.saveDelete] Error, not found data TipeLaporan with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data TipeLaporan with request id, please check again your data ...");
 
+                if (imTipeLaporanEntity != null) {
+                    // Modify from bean to entity serializable
+                    imTipeLaporanEntity.setFlag(bean.getFlag());
+                    imTipeLaporanEntity.setAction(bean.getAction());
+                    imTipeLaporanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imTipeLaporanEntity.setLastUpdate(bean.getLastUpdate());
+
+                    try {
+                        // Delete (Edit) into database
+                        tipeLaporanDao.updateAndSave(imTipeLaporanEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[TipeLaporanBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data TipeLaporan, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[TipeLaporanBoImpl.saveDelete] Error, not found data TipeLaporan with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data TipeLaporan with request id, please check again your data ...");
+
+                }
             }
         }
         logger.info("[TipeLaporanBoImpl.saveDelete] end process <<<");
@@ -96,14 +115,28 @@ public class TipeLaporanBoImpl implements TipeLaporanBo {
                 throw new GeneralBOException("Nama Tipe Laporan sudah ada");
             } else {
                 ImAkunTipeLaporanEntity imTipeLaporanEntity = null;
+                String idHistory = "";
                 try {
                     // Get data from database by ID
                     imTipeLaporanEntity = tipeLaporanDao.getById("tipeLaporanId", bean.getTipeLaporanId());
+                    idHistory = tipeLaporanDao.getNextTipeLaporanHistoryId();
                 } catch (HibernateException e) {
                     logger.error("[TipeLaporanBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data TipeLaporan by Kode TipeLaporan, please inform to your admin...," + e.getMessage());
                 }
                 if (imTipeLaporanEntity != null) {
+                    ImAkunTipeLaporanHistoryEntity imTipeLaporanHistoryEntity = new ImAkunTipeLaporanHistoryEntity();
+
+                    imTipeLaporanHistoryEntity.setId(idHistory);
+                    imTipeLaporanHistoryEntity.setTipeLaporanId(imTipeLaporanEntity.getTipeLaporanId());
+                    imTipeLaporanHistoryEntity.setTipeLaporanName(imTipeLaporanEntity.getTipeLaporanName());
+                    imTipeLaporanHistoryEntity.setFlag(imTipeLaporanEntity.getFlag());
+                    imTipeLaporanHistoryEntity.setAction(imTipeLaporanEntity.getAction());
+                    imTipeLaporanHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imTipeLaporanHistoryEntity.setLastUpdate(bean.getLastUpdate());
+                    imTipeLaporanHistoryEntity.setCreatedWho(imTipeLaporanEntity.getLastUpdateWho());
+                    imTipeLaporanHistoryEntity.setCreatedDate(imTipeLaporanEntity.getLastUpdate());
+                    
                     imTipeLaporanEntity.setTipeLaporanName(bean.getTipeLaporanName());
                     imTipeLaporanEntity.setFlag(bean.getFlag());
                     imTipeLaporanEntity.setAction(bean.getAction());
@@ -112,6 +145,7 @@ public class TipeLaporanBoImpl implements TipeLaporanBo {
                     try {
                         // Update into database
                         tipeLaporanDao.updateAndSave(imTipeLaporanEntity);
+                        tipeLaporanDao.addAndSaveHistory(imTipeLaporanHistoryEntity);
                     } catch (HibernateException e) {
                         logger.error("[TipeLaporanBoImpl.saveEdit] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving update data TipeLaporan, please info to your admin..." + e.getMessage());
