@@ -298,6 +298,11 @@
                                             <display:column property="stJamLembur" sortable="true" title="Jumlah Jam Lembur Faktor" style="text-align:center" />
                                             <display:column property="stBiayaLemburPerjam" sortable="true" title="Tarif Lembur Per Jam" style="text-align:center" />
                                             <display:column property="stBiayaLembur" sortable="true" title="Jumlah Upah Lembur Bruto" style="text-align:center" />
+                                            <display:setProperty name="paging.banner.item_name">ReportLembur</display:setProperty>
+                                            <display:setProperty name="paging.banner.items_name">ReportLembur</display:setProperty>
+                                            <display:setProperty name="export.excel.filename">ReportLembur.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">ReportLembur.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">ReportLembur.pdf</display:setProperty>
                                         </display:table>
                                     </td>
                                 </tr>

@@ -202,6 +202,11 @@
                                                <display:column property="stTanggalAwalBlokirAbsensi" sortable="true" title="Tanggal Dari"  />
                                                <display:column property="stTanggalAkhirBlokirAbsensi" sortable="true" title="Tanggal Selesai"  />
                                                <display:column property="dampak" sortable="true" title="Dampak"  />
+                                                <display:setProperty name="paging.banner.item_name">Approval</display:setProperty>
+                                                <display:setProperty name="paging.banner.items_name">Approval</display:setProperty>
+                                                <display:setProperty name="export.excel.filename">Approval.xls</display:setProperty>
+                                                <display:setProperty name="export.csv.filename">Approval.csv</display:setProperty>
+                                                <display:setProperty name="export.pdf.filename">Approval.pdf</display:setProperty>
                                             </display:table>
                                         </td>
                                     </tr>

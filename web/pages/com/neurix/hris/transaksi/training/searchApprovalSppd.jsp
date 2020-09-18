@@ -494,6 +494,11 @@
                                                                 </s:else>
                                                             </s:if>
                                                         </display:column>--%>
+                                                        <display:setProperty name="paging.banner.item_name">ApprovalSppd</display:setProperty>
+                                                        <display:setProperty name="paging.banner.items_name">ApprovalSppd</display:setProperty>
+                                                        <display:setProperty name="export.excel.filename">ApprovalSppd.xls</display:setProperty>
+                                                        <display:setProperty name="export.csv.filename">ApprovalSppd.csv</display:setProperty>
+                                                        <display:setProperty name="export.pdf.filename">ApprovalSppd.pdf</display:setProperty>
                                                     </display:table>
                                                 </td>
                                             </tr>

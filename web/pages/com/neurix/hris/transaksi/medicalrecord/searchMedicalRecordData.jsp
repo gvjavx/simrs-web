@@ -246,7 +246,11 @@
                                                 <display:column property="iconApprove" sortable="true" title="Status"/>
                                                 <display:column property="note" sortable="true" title="Note"  />
                                                 <%--<display:column property="action" sortable="true" title="CreatedWho"/>--%>
-
+                                                <display:setProperty name="paging.banner.item_name">MedicalRecordData</display:setProperty>
+                                                <display:setProperty name="paging.banner.items_name">MedicalRecordData</display:setProperty>
+                                                <display:setProperty name="export.excel.filename">MedicalRecordData.xls</display:setProperty>
+                                                <display:setProperty name="export.csv.filename">MedicalRecordData.csv</display:setProperty>
+                                                <display:setProperty name="export.pdf.filename">MedicalRecordData.pdf</display:setProperty>
                                             </display:table>
                                         </td>
                                     </tr>

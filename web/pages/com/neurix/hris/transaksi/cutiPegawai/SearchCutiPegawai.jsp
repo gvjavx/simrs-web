@@ -425,7 +425,7 @@
                                                                         <s:a href="#"><i class="fa fa-calendar-check-o"></i> Reset Panjang</s:a>
                                                                     </li>
                                                                     <li id="btnInisialisasiCuti">
-                                                                        <s:a href="#"><i class="fa fa-user-plus"></i> Perbaikan Data Cuti</s:a>
+                                                                        <s:a href="#"><i class="fa fa-user-plus"></i> Inisialisasi Data Cuti</s:a>
                                                                     </li>
                                                                     <%--<li id="btnCutiMinus">--%>
                                                                         <%--<s:a href="#"><i class="fa fa-search"></i> Daftar Cuti Minus</s:a>--%>
@@ -581,6 +581,11 @@
                                                                     </s:else>
                                                                 </display:column>
                                                             </s:else>
+                                                            <display:setProperty name="paging.banner.item_name">CutiPegawai</display:setProperty>
+                                                            <display:setProperty name="paging.banner.items_name">CutiPegawai</display:setProperty>
+                                                            <display:setProperty name="export.excel.filename">CutiPegawai.xls</display:setProperty>
+                                                            <display:setProperty name="export.csv.filename">CutiPegawai.csv</display:setProperty>
+                                                            <display:setProperty name="export.pdf.filename">CutiPegawai.pdf</display:setProperty>
                                                         </display:table>
                                                     </td>
                                                 </tr>
@@ -916,7 +921,7 @@
                         </tr>
                     </table>
 
-                    <button type="button" id="btnSavePerbaikanSisaCuti" class="btn btn-success">Save Perbaikan</button>
+                    <button type="button" id="btnSavePerbaikanSisaCuti" class="btn btn-success">Save Inisialisasi</button>
                 </center>
             </div>
             <br>
@@ -1346,7 +1351,7 @@
             if (data!=""){
                 alert("User Sudah Pernah Memperbaiki Cuti");
             }else{
-                alert("perbaikan berhasil");
+                alert("inisialisasi berhasil");
                 $('#modal-edit-inisialisasi').modal('hide');
                 $('#modal-inisialisasi').modal('hide');
             }

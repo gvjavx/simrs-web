@@ -213,6 +213,11 @@
                                                             <display:column property="positionName" sortable="true" title="Posisi"  />
                                                             <display:column property="profesiName" sortable="true" title="Profesi"  />
                                                             <display:column property="shiftName" sortable="true" title="Shift"  />
+                                                            <display:setProperty name="paging.banner.item_name">JadwalShiftKerja</display:setProperty>
+                                                            <display:setProperty name="paging.banner.items_name">JadwalShiftKerja</display:setProperty>
+                                                            <display:setProperty name="export.excel.filename">JadwalShiftKerja.xls</display:setProperty>
+                                                            <display:setProperty name="export.csv.filename">JadwalShiftKerja.csv</display:setProperty>
+                                                            <display:setProperty name="export.pdf.filename">JadwalShiftKerja.pdf</display:setProperty>
                                                         </display:table>
                                                     </td>
                                                 </tr>

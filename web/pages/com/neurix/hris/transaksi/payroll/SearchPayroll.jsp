@@ -374,6 +374,11 @@
                                                             <display:column style="text-align:right;" property="totalGajiBersih" title="Jumlah Bersih"  />
                                                             <display:column property="approvalFlag" title="Status Approve" />
                                                             <display:column property="stApprovalDate" title="Tanggal Approve" />
+                                                            <display:setProperty name="paging.banner.item_name">Payroll</display:setProperty>
+                                                            <display:setProperty name="paging.banner.items_name">Payroll</display:setProperty>
+                                                            <display:setProperty name="export.excel.filename">Payroll.xls</display:setProperty>
+                                                            <display:setProperty name="export.csv.filename">Payroll.csv</display:setProperty>
+                                                            <display:setProperty name="export.pdf.filename">Payroll.pdf</display:setProperty>
                                                         </display:table>
                                                     </td>
                                                 </tr>

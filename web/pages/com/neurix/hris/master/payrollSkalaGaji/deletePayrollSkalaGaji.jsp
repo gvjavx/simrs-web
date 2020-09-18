@@ -208,7 +208,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="noSk2" name="payrollSkalaGaji.noSk" required="true" cssClass="form-control"/>
+                                <s:textfield id="noSk2" name="payrollSkalaGaji.noSk" required="true" cssClass="form-control" readonly="true"/>
                             </table>
                         </td>
                     </tr>

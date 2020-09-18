@@ -404,6 +404,11 @@
                                             <display:column property="workCode" sortable="true" title="Work Kode"  />
                                             <display:column property="flag" sortable="true" title="Flag" />
                                             <display:column property="createdWho" sortable="true" title="CreatedWho"/>
+                                            <display:setProperty name="paging.banner.item_name">MesinAbsensiDetail</display:setProperty>
+                                            <display:setProperty name="paging.banner.items_name">MesinAbsensiDetail</display:setProperty>
+                                            <display:setProperty name="export.excel.filename">MesinAbsensiDetail.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">MesinAbsensiDetail.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">MesinAbsensiDetail.pdf</display:setProperty>
                                         </display:table>
                                     </td>
                                 </tr>
