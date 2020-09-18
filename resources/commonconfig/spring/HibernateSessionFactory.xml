@@ -566,21 +566,14 @@
                 <value>sshconfig/com/neurix/hris/master/tipePayroll/hibernate/ImHrisTipePayrollHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollPtkp/hibernate/ImHrisPayrollPtkpHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/tipeLaporan/hibernate/ImAkunTipeLaporanHistoryEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/simrs/transaksi/kandungan/hibernate/ItSimrsPartografEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/simrs/transaksi/asesmenrawatinap/hibernate/ItSimrsImplementasiPerawatEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItAkunPerhitunganKembaliUnitEntity.hbm.xml</value>
+                 <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItAkunPerhitunganKembaliUnitEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/hibernate/ItAkunPengajuanBiayaRkEntity.hbm.xml</value>
-<<<<<<< HEAD
-=======
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmenrawatinap/hibernate/ItSimrsImplementasiPerawatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/kandungan/hibernate/ItSimrsPartografEntity.hbm.xml</value>
-
                 <value>sshconfig/com/neurix/hris/master/statusMutasi/hibernate/ImHrisStatusMutasiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/statusMutasi/hibernate/ImHrisStatusMutasiHistoryEntity.hbm.xml</value>
-
                 <value>sshconfig/com/neurix/hris/master/jenisPegawai/hibernate/ImHrisJenisPegawaiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/jenisPegawai/hibernate/ImHrisJenisPegawaiHistoryEntity.hbm.xml</value>
->>>>>>> daus/akira
             </list>
         </property>
     </bean>
