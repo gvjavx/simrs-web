@@ -167,6 +167,7 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
                 throw new GeneralBOException("Found problem when get data AbsensiOnlineController, please info to your admin..." + e.getMessage());
             }
 
+            //ambil jam absen yang terbaru
             String[] temp = result.get(result.size()-1).getScanDate().toString().split(" ");
             String[] temp2 = temp[1].split(":");
 
