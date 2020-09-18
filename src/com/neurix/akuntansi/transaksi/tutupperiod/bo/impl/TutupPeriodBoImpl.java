@@ -1234,6 +1234,10 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         return tutupPeriodDao.getNilaiSaldoAkhir(periode, branchId, rekeningId, level);
     }
 
+    protected List<SaldoAkhir> getListSAldoAkhirDetailByIdSaldo(String idSaldo){
+        return tutupPeriodDao.getListSaldoAkhirDetailById(idSaldo);
+    }
+
     private String getNextIdBatasPeriod(){
         String id = "";
 

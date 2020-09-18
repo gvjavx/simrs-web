@@ -290,7 +290,11 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 "a.periode, \n" +
                 "a.posisi,\n" +
                 "a.saldo,\n" +
-                "b.nama_kode_rekening\n" +
+                "b.nama_kode_rekening,\n" +
+                "b.flag_master,\n" +
+                "b.flag_divisi,\n" +
+                "b.tipe_coa,\n" +
+                "a.saldo_akhir_id\n" +
                 "FROM it_akun_saldo_akhir a\n" +
                 "INNER JOIN im_akun_kode_rekening b ON b.rekening_id = a.rekening_id\n" +
                 "WHERE a.periode LIKE :periode \n" +
@@ -316,9 +320,89 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
                 saldoAkhir.setPosisi(obj[2].toString());
                 saldoAkhir.setSaldo((BigDecimal) obj[3]);
                 saldoAkhir.setNamaKodeRekening(obj[4].toString());
+                saldoAkhir.setFlagMaster(obj[5] == null ? "" : obj[5].toString());
+                saldoAkhir.setFlagDivisi(obj[6] == null ? "" : obj[6].toString());
+                saldoAkhir.setTipeCoa(obj[7] == null ? "" : obj[7].toString());
+                saldoAkhir.setSaldoAkhirId(obj[8] == null ? "" : obj[8].toString());
                 saldoAkhirs.add(saldoAkhir);
             }
         }
         return saldoAkhirs;
+    }
+
+    public List<SaldoAkhir> getNilaiSaldoAkhirDetail(String periode, String branchId, String rekeningId, BigInteger level){
+
+        String SQL = "SELECT\n" +
+                "a.rekening_id,\n" +
+                "a.periode, \n" +
+                "a.posisi,\n" +
+                "a.saldo,\n" +
+                "b.nama_kode_rekening,\n" +
+                "b.flag_master,\n" +
+                "b.flag_divisi,\n" +
+                "b.tipe_coa\n" +
+                "FROM it_akun_saldo_akhir a\n" +
+                "INNER JOIN im_akun_kode_rekening b ON b.rekening_id = a.rekening_id\n" +
+                "WHERE a.periode LIKE :periode \n" +
+                "AND a.branch_id = :unit \n" +
+                "AND a.rekening_id LIKE :rekening \n" +
+                "AND b.level = :level \n" +
+                "AND a.saldo > 0\n" +
+                "ORDER BY b.kode_rekening";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("periode", periode)
+                .setParameter("unit", branchId)
+                .setParameter("rekening", rekeningId)
+                .setParameter("level", level)
+                .list();
+
+        List<SaldoAkhir> saldoAkhirs  = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                SaldoAkhir saldoAkhir = new SaldoAkhir();
+                saldoAkhir.setRekeningId(obj[0].toString());
+                saldoAkhir.setPeriode(obj[1].toString());
+                saldoAkhir.setPosisi(obj[2].toString());
+                saldoAkhir.setSaldo((BigDecimal) obj[3]);
+                saldoAkhir.setNamaKodeRekening(obj[4].toString());
+                saldoAkhir.setFlagMaster(obj[5] == null ? "" : obj[5].toString());
+                saldoAkhir.setFlagDivisi(obj[6] == null ? "" : obj[6].toString());
+                saldoAkhir.setTipeCoa(obj[7] == null ? "" : obj[7].toString());
+                saldoAkhirs.add(saldoAkhir);
+            }
+        }
+        return saldoAkhirs;
+    }
+
+    public List<SaldoAkhir> getListSaldoAkhirDetailById(String saldoAkhirId){
+
+        String SQL = "SELECT \n" +
+                "master_id,\n" +
+                "divisi_id,\n" +
+                "saldo_akhir_id,\n" +
+                "posisi,\n" +
+                "saldo\n" +
+                "FROM it_akun_saldo_akhir_detail\n" +
+                "WHERE saldo_akhir_id LIKE :saldoId";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("saldoId", saldoAkhirId)
+                .list();
+
+        List<SaldoAkhir> list = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                SaldoAkhir saldoAkhir = new SaldoAkhir();
+                saldoAkhir.setMasterId(obj[0] == null ? "" : obj[0].toString());
+                saldoAkhir.setDivisiId(obj[1] == null ? "" : obj[1].toString());
+                saldoAkhir.setSaldoAkhirId(obj[2] == null ? "" : obj[2].toString());
+                saldoAkhir.setPosisi(obj[3] == null ? "" : obj[3].toString());
+                saldoAkhir.setSaldo(obj[4] == null ? new BigDecimal(4) : (BigDecimal) obj[4]);
+                list.add(saldoAkhir);
+            }
+        }
+
+        return list;
     }
 }

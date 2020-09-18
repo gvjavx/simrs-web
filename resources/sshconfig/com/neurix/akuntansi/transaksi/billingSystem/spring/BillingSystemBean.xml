@@ -40,6 +40,8 @@
           p:branchDao-ref="branchDao"
           p:saldoAkhirTahunDao-ref="saldoAkhirTahunDao"
           p:saldoAkhirDetailTahunDao-ref="saldoAkhirDetailTahunDao"
+          p:jurnalAkhirTahunDao-ref="jurnalAkhirTahunDao"
+          p:jurnalDetailAkhirTahunDao-ref="jurnalDetailAkhirTahunDao"
     />
 
     <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

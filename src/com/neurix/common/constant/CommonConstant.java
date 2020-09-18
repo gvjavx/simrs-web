@@ -179,6 +179,7 @@ public class CommonConstant {
     public final static String REKENING_ID_PENDAPATAN_RI ="00304";
     public final static String REKENING_ID_PENDAPATAN_RJ ="00303";
     public final static String JUNK_MASTER_PIUTANG_PPN = "JNK";
+    public final static String KODE_REKENING_LABA_RUGI = "3.3.00.00.02";
 
 
     //TELEMEDICINE

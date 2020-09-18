@@ -18,6 +18,9 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.*;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Properties;
@@ -1220,5 +1223,12 @@ public class CommonUtil {
             default:
                 return "";
         }
+    }
+
+    public static Integer getLastDateOfMonth(String dateString){
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("MM-yyyy");
+        YearMonth yearMonth = YearMonth.parse(dateString, pattern);
+        LocalDate date = yearMonth.atEndOfMonth();
+        return date.lengthOfMonth();
     }
 }
