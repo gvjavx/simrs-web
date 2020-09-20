@@ -174,6 +174,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             jurnalDetail.setParentId(kodeRekeningEntity.getParentId());
 
                             List<TutupPeriod> jurnalDatas = tutupPeriodDao.getListDetailJurnalByCriteria(jurnalDetail);
+
                             if (jurnalDatas.size() > 0){
                                 TutupPeriod jurnalData = jurnalDatas.get(0);
 
@@ -208,6 +209,27 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = getListEntitySaldoAkhir(saldoAkhir);
                             if (saldoAkhirEntities.size() > 0){
                                 saldoAkhirLalu = saldoAkhirEntities.get(0);
+
+                                // jika bulan 1, saldo akhir dikurangi dengan jurnal koreksi tutup tahun
+                                // saldo bulan lalu dikurangi saldo tutup tahun
+                                if ("1".equalsIgnoreCase(bean.getBulan())){
+                                    String[] tipePeriode = {"12b", "12a", "12"};
+                                    for (int i = 0 ; i < 3 ; i++){
+                                        Integer intTahunLalu = Integer.valueOf(bean.getTahun());
+                                        TutupPeriod jurnalAkhirTahun = new TutupPeriod();
+                                        jurnalAkhirTahun.setBulan("12");
+                                        jurnalAkhirTahun.setTahun(intTahunLalu.toString());
+                                        jurnalAkhirTahun.setUnit(bean.getUnit());
+                                        jurnalAkhirTahun.setRekeningId(kodeRekeningEntity.getRekeningId());
+                                        jurnalAkhirTahun.setTipePeriode(tipePeriode[i]);
+                                        List<TutupPeriod> listJurnalAkhir = tutupPeriodDao.getListDetailJurnalAkhirTahunByCriteria(jurnalAkhirTahun);
+                                        if (listJurnalAkhir.size() > 0){
+                                            TutupPeriod jurnalAkhir = listJurnalAkhir.get(0);
+                                            saldoAkhirLalu.setSaldo(saldoAkhirLalu.getSaldo().subtract(jurnalAkhir.getSaldo()));
+                                            break;
+                                        }
+                                    }
+                                }
 
                                 // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
                                 if ("D".equalsIgnoreCase(saldoAkhirLalu.getPosisi())){
@@ -295,7 +317,6 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
     protected void saveUpdateSaldoAkhirTahun(TutupPeriod bean) throws GeneralBOException {
 
         if (bean != null){
-
 
             BatasTutupPeriod batasTutupPeriod = new BatasTutupPeriod();
             batasTutupPeriod.setTahun(bean.getTahun());
@@ -613,6 +634,28 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 detailEntity.setMasterId(jurnal.getMasterId());
                 detailEntity.setDivisiId(jurnal.getDivisiId());
                 detailEntity.setPasienId(jurnal.getPasienId());
+
+
+                // jika bulan 1, saldo akhir dikurangi dengan jurnal koreksi tutup tahun
+                // saldo bulan lalu dikurangi saldo tutup tahun
+                if ("1".equalsIgnoreCase(bean.getBulan())){
+                    String[] tipePeriode = {"12b", "12a", "12"};
+                    for (int i = 0 ; i < 3 ; i++){
+                        Integer intTahunLalu = Integer.valueOf(bean.getTahun());
+                        TutupPeriod jurnalAkhirTahun = new TutupPeriod();
+                        jurnalAkhirTahun.setBulan("12");
+                        jurnalAkhirTahun.setTahun(intTahunLalu.toString());
+                        jurnalAkhirTahun.setUnit(bean.getUnit());
+                        jurnalAkhirTahun.setRekeningId(bean.getRekeningId());
+                        jurnalAkhirTahun.setTipePeriode(tipePeriode[i]);
+                        List<TutupPeriod> listJurnalAkhir = tutupPeriodDao.getListDetailJurnalByCriteriaPerDivisiAkhirTahun(jurnalAkhirTahun);
+                        if (listJurnalAkhir.size() > 0){
+                            TutupPeriod jurnalAkhir = listJurnalAkhir.get(0);
+                            saldoAkhirDetaillalu.setSaldo(saldoAkhirDetaillalu.getSaldo().subtract(jurnalAkhir.getSaldo()));
+                            break;
+                        }
+                    }
+                }
 
                 // DITAMBAH DENGAN SALDO BULAN LALU
                 if (saldoAkhirDetaillalu != null && saldoAkhirDetaillalu.getSaldo() != null){
@@ -1087,6 +1130,58 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         }
     }
 
+    @Override
+    public void saveUpdateLockPeriodKoreksi(TutupPeriod bean) throws GeneralBOException {
+
+        Integer intTahunDepan = Integer.valueOf(bean.getTahun()) + 1;
+        String tahunDepan = intTahunDepan.toString();
+
+        BatasTutupPeriod periodSaldoTerakhir = getLastBulanBerjalanSaldoAkhir(tahunDepan, bean.getUnit());
+        if (periodSaldoTerakhir != null){
+            // lock prosess bulan berjalan
+            lockProsesKoreksi(periodSaldoTerakhir);
+        }
+
+        BatasTutupPeriod batasTutupPeriod = new BatasTutupPeriod();
+        batasTutupPeriod.setUnit(bean.getUnit());
+        batasTutupPeriod.setTahun(bean.getTahun());
+        batasTutupPeriod.setBulan("12");
+
+        // update flag p bulan desember tahun terkoreksi;
+        lockProsesKoreksi(batasTutupPeriod);
+    }
+
+    private void lockProsesKoreksi(BatasTutupPeriod bean){
+        List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriodEntities = getListEntityBatasTutupPeriode(bean);
+        if (batasTutupPeriodEntities.size() > 0){
+
+            ItSimrsBatasTutupPeriodEntity batasTutupPeriodEntity = batasTutupPeriodEntities.get(0);
+
+            // jika ditemukan update
+            if (batasTutupPeriodEntity.getNoJurnalKoreksi() != null && !"".equalsIgnoreCase(batasTutupPeriodEntity.getNoJurnalKoreksi())){
+                if (batasTutupPeriodEntity.getFlagDesemberA() == null && "".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberA())){
+                    batasTutupPeriodEntity.setFlagDesemberA("P");
+                }
+            } else if (batasTutupPeriodEntity.getFlagDesemberA() != null && !"".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberA())){
+                if (batasTutupPeriodEntity.getFlagDesemberB() == null && "".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberB())){
+                    batasTutupPeriodEntity.setFlagDesemberB("P");
+                }
+            } else {
+                batasTutupPeriodEntity.setFlagTutup("P");
+            }
+            batasTutupPeriodEntity.setAction("U");
+            batasTutupPeriodEntity.setLastUpdate(bean.getLastUpdate());
+            batasTutupPeriodEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                batasTutupPeriodDao.updateAndSave(batasTutupPeriodEntity);
+            } catch (HibernateException e){
+                logger.error("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
+                throw new GeneralBOException("[TutupPeriodBoImpl.saveUpdateLockPeriod] ERROR. ",e);
+            }
+        }
+    }
+
     protected List<ImKodeRekeningEntity> getListEntityKodeRekening(KodeRekening bean) throws GeneralBOException{
 
         Map hsCriteria = new HashMap();
@@ -1236,6 +1331,28 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
     protected List<SaldoAkhir> getListSAldoAkhirDetailByIdSaldo(String idSaldo){
         return tutupPeriodDao.getListSaldoAkhirDetailById(idSaldo);
+    }
+
+    @Override
+    public BatasTutupPeriod getLastBulanBerjalanSaldoAkhir(String tahun, String branchId) throws GeneralBOException {
+
+        Integer intTahunDepan = Integer.valueOf(tahun) + 1;
+        String tahunDepan = intTahunDepan.toString();
+
+        SaldoAkhir saldoAkhir = saldoAkhirDao.getLastSaldoAkhirByTahun(tahun, branchId);
+        if (saldoAkhir != null){
+
+            String[] arrPeriode = saldoAkhir.getPeriode().split("-");
+            String bulan = arrPeriode[0].toString();
+
+            BatasTutupPeriod batasTutupPeriod = new BatasTutupPeriod();
+            batasTutupPeriod.setBulan(bulan);
+            batasTutupPeriod.setTahun(tahunDepan);
+            batasTutupPeriod.setUnit(branchId);
+            batasTutupPeriod.setBulanName(CommonUtil.convertNumberToStringBulan(bulan));
+            return batasTutupPeriod;
+        }
+        return null;
     }
 
     private String getNextIdBatasPeriod(){

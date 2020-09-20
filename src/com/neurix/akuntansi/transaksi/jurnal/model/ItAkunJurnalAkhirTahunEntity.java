@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.jurnal.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -7,32 +8,23 @@ import java.sql.Timestamp;
 /**
  * Created by reza on 18/09/20.
  */
-public class ItAkunJurnalAkhirTahunEntity {
+public class ItAkunJurnalAkhirTahunEntity implements Serializable {
     private String noJurnal;
     private String tipeJurnalId;
     private Date tanggalJurnal;
     private String sumber;
+    private String sumberDanaId;
+    private String carryOver;
     private String mataUangId;
     private BigDecimal kurs;
     private String keterangan;
-    private String flag;
-    private String userName;
-    private String workStation;
-    private String cabangId;
-    private Timestamp createdDate;
+    private String branchId;
+    private Date printedDate;
+    private String printedFlag;
     private Date registeredDate;
     private String registeredFlag;
     private String registeredUser;
     private String registerId;
-    private String periode;
-    private String branchId;
-    private String masterId;
-    private String sumberDanaId;
-    private String carryOver;
-    private String createdWho;
-    private Timestamp lastUpdate;
-    private Date printedDate;
-    private String printedFlag;
     private String spumId;
     private BigDecimal printCount;
     private BigDecimal printRegisterCount;
@@ -47,9 +39,23 @@ public class ItAkunJurnalAkhirTahunEntity {
     private Date tanggalPendukung;
     private BigDecimal dppDipungut;
     private BigDecimal dppDitanggung;
-    private String lastUpdateWho;
-    private String action;
+
     private String pengajuanBiayaId;
+    private String flag;
+    private String action;
+    private Timestamp createdDate;
+    private Timestamp lastUpdate;
+    private String createdWho;
+    private String lastUpdateWho;
+    private String tipePeriode;
+
+    public String getTipePeriode() {
+        return tipePeriode;
+    }
+
+    public void setTipePeriode(String tipePeriode) {
+        this.tipePeriode = tipePeriode;
+    }
 
     public String getNoJurnal() {
         return noJurnal;
@@ -83,6 +89,22 @@ public class ItAkunJurnalAkhirTahunEntity {
         this.sumber = sumber;
     }
 
+    public String getSumberDanaId() {
+        return sumberDanaId;
+    }
+
+    public void setSumberDanaId(String sumberDanaId) {
+        this.sumberDanaId = sumberDanaId;
+    }
+
+    public String getCarryOver() {
+        return carryOver;
+    }
+
+    public void setCarryOver(String carryOver) {
+        this.carryOver = carryOver;
+    }
+
     public String getMataUangId() {
         return mataUangId;
     }
@@ -107,44 +129,28 @@ public class ItAkunJurnalAkhirTahunEntity {
         this.keterangan = keterangan;
     }
 
-    public String getFlag() {
-        return flag;
+    public String getBranchId() {
+        return branchId;
     }
 
-    public void setFlag(String flag) {
-        this.flag = flag;
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 
-    public String getUserName() {
-        return userName;
+    public Date getPrintedDate() {
+        return printedDate;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setPrintedDate(Date printedDate) {
+        this.printedDate = printedDate;
     }
 
-    public String getWorkStation() {
-        return workStation;
+    public String getPrintedFlag() {
+        return printedFlag;
     }
 
-    public void setWorkStation(String workStation) {
-        this.workStation = workStation;
-    }
-
-    public String getCabangId() {
-        return cabangId;
-    }
-
-    public void setCabangId(String cabangId) {
-        this.cabangId = cabangId;
-    }
-
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
+    public void setPrintedFlag(String printedFlag) {
+        this.printedFlag = printedFlag;
     }
 
     public Date getRegisteredDate() {
@@ -177,136 +183,6 @@ public class ItAkunJurnalAkhirTahunEntity {
 
     public void setRegisterId(String registerId) {
         this.registerId = registerId;
-    }
-
-    public String getPeriode() {
-        return periode;
-    }
-
-    public void setPeriode(String periode) {
-        this.periode = periode;
-    }
-
-    public String getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
-    }
-
-    public String getMasterId() {
-        return masterId;
-    }
-
-    public void setMasterId(String masterId) {
-        this.masterId = masterId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ItAkunJurnalAkhirTahunEntity that = (ItAkunJurnalAkhirTahunEntity) o;
-
-        if (noJurnal != null ? !noJurnal.equals(that.noJurnal) : that.noJurnal != null) return false;
-        if (tipeJurnalId != null ? !tipeJurnalId.equals(that.tipeJurnalId) : that.tipeJurnalId != null) return false;
-        if (tanggalJurnal != null ? !tanggalJurnal.equals(that.tanggalJurnal) : that.tanggalJurnal != null)
-            return false;
-        if (sumber != null ? !sumber.equals(that.sumber) : that.sumber != null) return false;
-        if (mataUangId != null ? !mataUangId.equals(that.mataUangId) : that.mataUangId != null) return false;
-        if (kurs != null ? !kurs.equals(that.kurs) : that.kurs != null) return false;
-        if (keterangan != null ? !keterangan.equals(that.keterangan) : that.keterangan != null) return false;
-        if (flag != null ? !flag.equals(that.flag) : that.flag != null) return false;
-        if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
-        if (workStation != null ? !workStation.equals(that.workStation) : that.workStation != null) return false;
-        if (cabangId != null ? !cabangId.equals(that.cabangId) : that.cabangId != null) return false;
-        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
-        if (registeredDate != null ? !registeredDate.equals(that.registeredDate) : that.registeredDate != null)
-            return false;
-        if (registeredFlag != null ? !registeredFlag.equals(that.registeredFlag) : that.registeredFlag != null)
-            return false;
-        if (registeredUser != null ? !registeredUser.equals(that.registeredUser) : that.registeredUser != null)
-            return false;
-        if (registerId != null ? !registerId.equals(that.registerId) : that.registerId != null) return false;
-        if (periode != null ? !periode.equals(that.periode) : that.periode != null) return false;
-        if (branchId != null ? !branchId.equals(that.branchId) : that.branchId != null) return false;
-        if (masterId != null ? !masterId.equals(that.masterId) : that.masterId != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = noJurnal != null ? noJurnal.hashCode() : 0;
-        result = 31 * result + (tipeJurnalId != null ? tipeJurnalId.hashCode() : 0);
-        result = 31 * result + (tanggalJurnal != null ? tanggalJurnal.hashCode() : 0);
-        result = 31 * result + (sumber != null ? sumber.hashCode() : 0);
-        result = 31 * result + (mataUangId != null ? mataUangId.hashCode() : 0);
-        result = 31 * result + (kurs != null ? kurs.hashCode() : 0);
-        result = 31 * result + (keterangan != null ? keterangan.hashCode() : 0);
-        result = 31 * result + (flag != null ? flag.hashCode() : 0);
-        result = 31 * result + (userName != null ? userName.hashCode() : 0);
-        result = 31 * result + (workStation != null ? workStation.hashCode() : 0);
-        result = 31 * result + (cabangId != null ? cabangId.hashCode() : 0);
-        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
-        result = 31 * result + (registeredDate != null ? registeredDate.hashCode() : 0);
-        result = 31 * result + (registeredFlag != null ? registeredFlag.hashCode() : 0);
-        result = 31 * result + (registeredUser != null ? registeredUser.hashCode() : 0);
-        result = 31 * result + (registerId != null ? registerId.hashCode() : 0);
-        result = 31 * result + (periode != null ? periode.hashCode() : 0);
-        result = 31 * result + (branchId != null ? branchId.hashCode() : 0);
-        result = 31 * result + (masterId != null ? masterId.hashCode() : 0);
-        return result;
-    }
-
-    public String getSumberDanaId() {
-        return sumberDanaId;
-    }
-
-    public void setSumberDanaId(String sumberDanaId) {
-        this.sumberDanaId = sumberDanaId;
-    }
-
-    public String getCarryOver() {
-        return carryOver;
-    }
-
-    public void setCarryOver(String carryOver) {
-        this.carryOver = carryOver;
-    }
-
-    public String getCreatedWho() {
-        return createdWho;
-    }
-
-    public void setCreatedWho(String createdWho) {
-        this.createdWho = createdWho;
-    }
-
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public Date getPrintedDate() {
-        return printedDate;
-    }
-
-    public void setPrintedDate(Date printedDate) {
-        this.printedDate = printedDate;
-    }
-
-    public String getPrintedFlag() {
-        return printedFlag;
-    }
-
-    public void setPrintedFlag(String printedFlag) {
-        this.printedFlag = printedFlag;
     }
 
     public String getSpumId() {
@@ -421,12 +297,20 @@ public class ItAkunJurnalAkhirTahunEntity {
         this.dppDitanggung = dppDitanggung;
     }
 
-    public String getLastUpdateWho() {
-        return lastUpdateWho;
+    public String getPengajuanBiayaId() {
+        return pengajuanBiayaId;
     }
 
-    public void setLastUpdateWho(String lastUpdateWho) {
-        this.lastUpdateWho = lastUpdateWho;
+    public void setPengajuanBiayaId(String pengajuanBiayaId) {
+        this.pengajuanBiayaId = pengajuanBiayaId;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 
     public String getAction() {
@@ -437,11 +321,35 @@ public class ItAkunJurnalAkhirTahunEntity {
         this.action = action;
     }
 
-    public String getPengajuanBiayaId() {
-        return pengajuanBiayaId;
+    public Timestamp getCreatedDate() {
+        return createdDate;
     }
 
-    public void setPengajuanBiayaId(String pengajuanBiayaId) {
-        this.pengajuanBiayaId = pengajuanBiayaId;
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public String getCreatedWho() {
+        return createdWho;
+    }
+
+    public void setCreatedWho(String createdWho) {
+        this.createdWho = createdWho;
+    }
+
+    public String getLastUpdateWho() {
+        return lastUpdateWho;
+    }
+
+    public void setLastUpdateWho(String lastUpdateWho) {
+        this.lastUpdateWho = lastUpdateWho;
     }
 }

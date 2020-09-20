@@ -1097,7 +1097,7 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     CREATE SEQUENCE seq_jurnal_akhir_tahun;
     CREATE SEQUENCE seq_jurnal_detail_akhir_tahun;
 
-    ALTER TABLE it_akun_jurnal_detail_akhir_tahun
-    ADD COLUMN jurnal_detail_id VARCHAR(30);
+    ALTER TABLE it_akun_jurnal_akhir_tahun
+    ADD COLUMN tipe_periode VARCHAR(5);
 
 --

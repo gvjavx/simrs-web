@@ -2469,38 +2469,65 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         logger.info("[BillingSystemBoImpl.saveTutupPeriod] START >>>");
 
         // jika ada transitoris
-        for (TutupPeriod transJurnal : listTransitoris){
+        if (!"12a".equalsIgnoreCase(tutupPeriod.getTipePeriode()) && !"12b".equalsIgnoreCase(tutupPeriod.getTipePeriode())){
+            for (TutupPeriod transJurnal : listTransitoris){
 
-            try {
-                // create jurnal transitoris, Sigit
-                createJurnalTransitoris(transJurnal);
-            } catch (GeneralBOException e){
-                logger.error("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create jurnal transitoris. ",e);
-                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create jurnal transitoris. "+e);
+                try {
+                    // create jurnal transitoris, Sigit
+                    createJurnalTransitoris(transJurnal);
+                } catch (GeneralBOException e){
+                    logger.error("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create jurnal transitoris. ",e);
+                    throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create jurnal transitoris. "+e);
+                }
+
+                try {
+                    // jika dibuatkan jurnal save tindakan - tindakan ke table tindakan transitoris, Sigit
+                    saveTindakanTransitoris(transJurnal.getIdDetailCheckup(), transJurnal.getCreatedDate(), transJurnal.getCreatedWho());
+                } catch (GeneralBOException e){
+                    logger.error("[BillingSystemBoImpl.saveTutupPeriod] ERROR when insert tindakan to tindankan transitoris. ",e);
+                    throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when insert tindakan to tindankan transitoris. "+e);
+                }
             }
 
+            // tutup period dan generate saldo bulan lalu transaksi RS, sigit
             try {
-                // jika dibuatkan jurnal save tindakan - tindakan ke table tindakan transitoris, Sigit
-                saveTindakanTransitoris(transJurnal.getIdDetailCheckup(), transJurnal.getCreatedDate(), transJurnal.getCreatedWho());
+                saveUpdateTutupPeriod(tutupPeriod);
             } catch (GeneralBOException e){
-                logger.error("[BillingSystemBoImpl.saveTutupPeriod] ERROR when insert tindakan to tindankan transitoris. ",e);
-                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when insert tindakan to tindankan transitoris. "+e);
+                logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR when create tutup periode. ", e);
+                throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. "+e);
             }
         }
 
-        // tutup period dan generate saldo bulan lalu transaksi RS, sigit
-        try {
-            saveUpdateTutupPeriod(tutupPeriod);
-        } catch (GeneralBOException e){
-            logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR when create tutup periode. ", e);
-            throw new GeneralBOException("[BillingSystemBoImpl.saveTutupPeriod] ERROR when create tutup periode. "+e);
-        }
+
+
 
         // membuat jurnal balik akhir tahun
         // create saldo akhir tutup tahun
         if ("12".equalsIgnoreCase(tutupPeriod.getBulan())){
+
+            BatasTutupPeriod batas = new BatasTutupPeriod();
+            batas.setBulan(tutupPeriod.getBulan());
+            batas.setTahun(tutupPeriod.getTahun());
+            batas.setUnit(tutupPeriod.getUnit());
+
+            String tipePeriode = "12";
+            List<ItSimrsBatasTutupPeriodEntity> tutupPeriodEntities = getListEntityBatasTutupPeriode(batas);
+            if (tutupPeriodEntities.size() > 0){
+                ItSimrsBatasTutupPeriodEntity batasTutupPeriodEntity = tutupPeriodEntities.get(0);
+                if ("Y".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberA())){
+                    tipePeriode = "12a";
+                }
+                if ("Y".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberA())){
+                    tipePeriode = "12b";
+                }
+            }
+
+            tutupPeriod.setTipePeriode(tipePeriode);
             tutupPeriod.setPeriode(tutupPeriod.getBulan() +"-"+ tutupPeriod.getTahun());
+
+            // create jurnal
             createJurnalBalikAkhirTahun(tutupPeriod);
+
 //            createSaldoAkhirTahun(tutupPeriod);
         }
 
@@ -2509,7 +2536,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         hsCriteria.put("branch_id", tutupPeriod.getUnit());
         hsCriteria.put("in_pelayanan_medic", "Y");
         hsCriteria.put("flag", "Y");
-        List<ImSimrsPelayananEntity> pelayananEntities = pelayananDao.getByCriteria(hsCriteria);
+//        List<ImSimrsPelayananEntity> pelayananEntities = pelayananDao.getByCriteria(hsCriteria);
+        List<ImSimrsPelayananEntity> pelayananEntities = new ArrayList<>();
         if (pelayananEntities.size() > 0){
             for (ImSimrsPelayananEntity pelayananEntity : pelayananEntities){
 
@@ -2559,6 +2587,11 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         logger.info("[BillingSystemBoImpl.saveTutupPeriod] END <<<");
     }
 
+    private String tahunDepan(String tahun){
+        Integer intTahunDepan = Integer.valueOf(tahun) + 1;
+        return intTahunDepan.toString();
+    }
+
     private void createJurnalBalikAkhirTahun(TutupPeriod tutupPeriod){
         logger.info("[BillingSystemBoImpl.createJurnalBalikAkhirTahun] START >>>");
 
@@ -2566,12 +2599,22 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         primaryKey.setId(tutupPeriod.getUnit());
         ImBranches imBranches = branchDao.getById(primaryKey,"Y");
 
+        boolean bulanBerjalan = "12a".equalsIgnoreCase(tutupPeriod.getTipePeriode()) || "12b".equalsIgnoreCase(tutupPeriod.getTipePeriode());
+
         Integer level = getLowestLevelKodeRekening();
 
 //        Map mapTrans = new HashMap();
 //        mapTrans.put("pendapatan", "");
 //        mapTrans.put("biaya", "");
 //        mapTrans.put("investasi", "");
+
+        // bulan berjalan, cari bulan berjalan terakhir pada saldo akhir
+        if (bulanBerjalan){
+            BatasTutupPeriod periodeBerjalan = getLastBulanBerjalanSaldoAkhir(tutupPeriod.getTahun(), tutupPeriod.getUnit());
+            if (periodeBerjalan != null){
+                tutupPeriod.setPeriode(periodeBerjalan.getBulan()+"-"+periodeBerjalan.getTahun());
+            }
+        }
 
         List<SaldoAkhir> listSaldo = getListSaldoAkhir(tutupPeriod.getUnit(), tutupPeriod.getPeriode(), "%", new BigInteger(String.valueOf(level)));
         if (listSaldo.size() > 0){

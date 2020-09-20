@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.akuntansi.transaksi.jurnal.model.ItAkunJurnalAkhirTahunEntity">
-        <table name="it_akun_jurnal_akhir_tahun" schema="public" catalog="simrs"/>
+        <table name="it_akun_jurnal_akhir_tahun" schema="public" />
         <attributes>
             <id name="noJurnal">
                 <column name="no_jurnal"/>
@@ -116,6 +116,10 @@
             <basic name="pengajuanBiayaId">
                 <column name="pengajuan_biaya_id"/>
             </basic>
+            <basic name="tipePeriode">
+                <column name="tipe_periode"/>
+            </basic>
+
         </attributes>
     </entity>
 </entity-mappings>
