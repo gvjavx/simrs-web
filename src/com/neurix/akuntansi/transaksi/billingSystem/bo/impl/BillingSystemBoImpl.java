@@ -414,7 +414,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         return returnJurnal;
     }
 
-    public Jurnal createJurnalTutupTahun(String transId, Map data, String branchId, String catatanPembuatanJurnal, String flagRegister, String tglJurnal){
+    public Jurnal createJurnalTutupTahun(String transId, Map data, String branchId, String catatanPembuatanJurnal, String flagRegister, String tglJurnal, String tipePeriode){
         logger.info("[PembayaranUtangPiutangBoImpl.createJurnal] start process >>>");
         String noJurnal;
         String status;
@@ -517,6 +517,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 jurnalEntity.setCreatedDate(updateTime);
                 jurnalEntity.setLastUpdate(updateTime);
                 jurnalEntity.setAction("C");
+                jurnalEntity.setTipePeriode(tipePeriode);
                 // dirubah oleh sigit penambahan filter JKR 2020-09-15
                 if (periodSudahTutup==null || "JKR".equalsIgnoreCase(jurnalEntity.getTipeJurnalId())){
                     try {
@@ -2510,19 +2511,19 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             batas.setTahun(tutupPeriod.getTahun());
             batas.setUnit(tutupPeriod.getUnit());
 
-            String tipePeriode = "12";
-            List<ItSimrsBatasTutupPeriodEntity> tutupPeriodEntities = getListEntityBatasTutupPeriode(batas);
-            if (tutupPeriodEntities.size() > 0){
-                ItSimrsBatasTutupPeriodEntity batasTutupPeriodEntity = tutupPeriodEntities.get(0);
-                if ("Y".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberA())){
-                    tipePeriode = "12a";
-                }
-                if ("Y".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberA())){
-                    tipePeriode = "12b";
-                }
-            }
+//            String tipePeriode = "12";
+//            List<ItSimrsBatasTutupPeriodEntity> tutupPeriodEntities = getListEntityBatasTutupPeriode(batas);
+//            if (tutupPeriodEntities.size() > 0){
+//                ItSimrsBatasTutupPeriodEntity batasTutupPeriodEntity = tutupPeriodEntities.get(0);
+//                if ("Y".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberA())){
+//                    tipePeriode = "12a";
+//                }
+//                if ("Y".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberA())){
+//                    tipePeriode = "12b";
+//                }
+//            }
 
-            tutupPeriod.setTipePeriode(tipePeriode);
+//            tutupPeriod.setTipePeriode(tutupPeriod.getTipePeriode());
             tutupPeriod.setPeriode(tutupPeriod.getBulan() +"-"+ tutupPeriod.getTahun());
 
             // create jurnal
@@ -2707,7 +2708,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             String lastDate = tutupPeriod.getTahun() + "-" + tutupPeriod.getBulan() + "-" + lastDateOfMonth;
 
             try {
-                Jurnal jurnal = createJurnalTutupTahun(CommonConstant.TRANSAKSI_ID_KOREKSI_AKHIR_TAHUN, dataBilling, tutupPeriod.getUnit() ,catatan ,"Y", lastDate);
+                Jurnal jurnal = createJurnalTutupTahun(CommonConstant.TRANSAKSI_ID_KOREKSI_AKHIR_TAHUN, dataBilling, tutupPeriod.getUnit() ,catatan ,"Y", lastDate, tutupPeriod.getTipePeriode());
 
                 // update batas tutup period
                 TutupPeriod period = new TutupPeriod();
@@ -2715,8 +2716,16 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 period.setBulan(tutupPeriod.getBulan());
                 period.setTahun(tutupPeriod.getTahun());
                 period.setUnit(tutupPeriod.getUnit());
-                period.setFlagDesemberA(tutupPeriod.getFlagDesemberA());
-                period.setFlagDesemberB(tutupPeriod.getFlagDesemberB());
+                period.setTipePeriode(tutupPeriod.getTipePeriode());
+
+                if (bulanBerjalan){
+                    if ("12a".equalsIgnoreCase(tutupPeriod.getTipePeriode())){
+                        period.setFlagDesemberA("Y");
+                    }
+                    if ("12b".equalsIgnoreCase(tutupPeriod.getTipePeriode())){
+                        period.setFlagDesemberB("Y");
+                    }
+                }
                 updateBatasTutupPeriod(period);
             } catch (GeneralBOException e){
                 logger.error("[TutupPeriodAction.createJurnalBalikAkhirTahun] ERROR when create jurnal balik. ", e);
@@ -2737,9 +2746,9 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriodEntities = batasTutupPeriodDao.getByCriteria(hsCriteria);
         if (batasTutupPeriodEntities.size() > 0){
             ItSimrsBatasTutupPeriodEntity tutupPeriodEntity = batasTutupPeriodEntities.get(0);
-            tutupPeriodEntity.setNoJurnalKoreksi(period.getNoJurnal() != null && !"".equalsIgnoreCase(period.getNoJurnal()) ? period.getNoJurnal() : null);
-            tutupPeriodEntity.setFlagDesemberA(period.getFlagDesemberA() != null && !"".equalsIgnoreCase(period.getFlagDesemberA()) ? period.getFlagDesemberA() : null);
-            tutupPeriodEntity.setFlagDesemberB(period.getFlagDesemberB() != null && !"".equalsIgnoreCase(period.getFlagDesemberB()) ? period.getFlagDesemberB() : null);
+            tutupPeriodEntity.setNoJurnalKoreksi(period.getNoJurnal() != null && !"".equalsIgnoreCase(period.getNoJurnal()) ? period.getNoJurnal() : tutupPeriodEntity.getNoJurnalKoreksi());
+            tutupPeriodEntity.setFlagDesemberA(period.getFlagDesemberA() != null && !"".equalsIgnoreCase(period.getFlagDesemberA()) ? period.getFlagDesemberA() : tutupPeriodEntity.getFlagDesemberA());
+            tutupPeriodEntity.setFlagDesemberB(period.getFlagDesemberB() != null && !"".equalsIgnoreCase(period.getFlagDesemberB()) ? period.getFlagDesemberB() : tutupPeriodEntity.getFlagDesemberB());
             tutupPeriodEntity.setAction("U");
             tutupPeriodEntity.setLastUpdate(period.getLastUpdate());
             tutupPeriodEntity.setLastUpdateWho(period.getLastUpdateWho());
@@ -2749,6 +2758,12 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 logger.error("[TutupPeriodAction.updateBatasTutupPeriod] ERROR when update setting batas. ", e);
                 throw new GeneralBOException("[BillingSystemBoImpl.updateBatasTutupPeriod] ERROR when update setting batas. "+e);
             }
+        }
+
+        // jika transaksi bulan berjalan maka update bulan berjalan;
+        boolean bulanBerjalan = "12a".equalsIgnoreCase(period.getTipePeriode()) || "12b".equalsIgnoreCase(period.getTipePeriode());
+        if (bulanBerjalan){
+            updateSaldoAkhirBulanBerjalan(period);
         }
     }
 
