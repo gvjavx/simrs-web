@@ -236,9 +236,10 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
-
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
+            console.log(event);
+            console.log(data);
+            document.getElementById('errorMessageCuti').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            $.publish('showErrorDialogCuti');
         });
 
         function cancelBtn() {
@@ -665,15 +666,15 @@
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog_cuti" openTopics="showErrorDialogCuti" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog_cuti').dialog('close'); }
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessageCuti"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>
