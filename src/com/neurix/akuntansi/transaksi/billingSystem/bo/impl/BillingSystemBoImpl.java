@@ -2702,9 +2702,16 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             dataBilling.put("pendapatan", mapPendapatan);
             dataBilling.put("biaya", mapBiaya);
 
-            String catatan = "Jurnal Balik Tutup Tahun " +imBranches.getBranchName() + " Periode "+ tutupPeriod.getPeriode();
+            String periode = "";
+            if (bulanBerjalan){
+                periode = tutupPeriod.getTipePeriode() + " " + tutupPeriod.getTahun();
+            } else {
+                periode = tutupPeriod.getBulan() +" "+ tutupPeriod.getTahun();
+            }
 
-            Integer lastDateOfMonth = CommonUtil.getLastDateOfMonth(tutupPeriod.getPeriode());
+            String catatan = "Jurnal Balik Tutup Tahun " +imBranches.getBranchName() + " Periode "+ periode;
+
+            Integer lastDateOfMonth = CommonUtil.getLastDateOfMonth(formatToMM(tutupPeriod.getBulan()) +"-"+tutupPeriod.getTahun());
             String lastDate = tutupPeriod.getTahun() + "-" + tutupPeriod.getBulan() + "-" + lastDateOfMonth;
 
             try {
@@ -2734,6 +2741,14 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         }
 
         logger.info("[BillingSystemBoImpl.createJurnalBalikAkhirTahun] END <<<");
+    }
+
+    private String formatToMM(String bulan){
+        Integer intBulan = Integer.valueOf(bulan);
+        if (intBulan < 10){
+            return "0"+intBulan.toString();
+        }
+        return bulan;
     }
 
     private void updateBatasTutupPeriod(TutupPeriod period) throws GeneralBOException{

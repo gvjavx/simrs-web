@@ -46,6 +46,7 @@
             <props>
                 <prop key="getByCriteria">readOnly</prop>
                 <prop key="saveSettingPeriod">PROPAGATION_REQUIRED</prop>
+                <prop key="saveUpdateLockPeriodKoreksi">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

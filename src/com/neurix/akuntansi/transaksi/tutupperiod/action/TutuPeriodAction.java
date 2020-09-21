@@ -116,25 +116,43 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
             String disableButton = "Y";
             String disableLock = "Y";
-            if ("12a".equalsIgnoreCase(bulan)){
-                if (periodEntity.getNoJurnalKoreksi() != null && !"".equalsIgnoreCase(periodEntity.getNoJurnalKoreksi())){
-                    if (periodEntity.getFlagDesemberA() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+            if ("12b".equalsIgnoreCase(bulan)){
+                if (periodEntity.getFlagDesemberA() != null || !"".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+                    if (periodEntity.getFlagDesemberB() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
                         disableLock = "N";
-                    } else if (periodEntity.getFlagDesemberA() != null || "P".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+                    } else if (periodEntity.getFlagDesemberB() != null && "P".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
                         disableButton = "N";
                     }
                 }
-            } else if ("12b".equalsIgnoreCase(bulan)){
-                if (periodEntity.getFlagDesemberA() != null || !"".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
-                    if (periodEntity.getFlagDesemberB() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
-                        if (periodEntity.getFlagDesemberB() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
-                            disableLock = "N";
-                        } else if (periodEntity.getFlagDesemberB() != null || "P".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
-                            disableButton = "N";
-                        }
+            } else if ("12a".equalsIgnoreCase(bulan)){
+                if (periodEntity.getNoJurnalKoreksi() != null && !"".equalsIgnoreCase(periodEntity.getNoJurnalKoreksi())){
+                    if (periodEntity.getFlagDesemberA() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+                        disableLock = "N";
+                    } else if (periodEntity.getFlagDesemberA() != null && "P".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+                        disableButton = "N";
                     }
                 }
             }
+
+//            if ("12a".equalsIgnoreCase(bulan)){
+//                if (periodEntity.getNoJurnalKoreksi() != null && !"".equalsIgnoreCase(periodEntity.getNoJurnalKoreksi())){
+//                    if (periodEntity.getFlagDesemberA() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+//                        disableLock = "N";
+//                    } else if (periodEntity.getFlagDesemberA() != null && "P".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+//                        disableButton = "N";
+//                    }
+//                }
+//            } else if ("12b".equalsIgnoreCase(bulan)){
+//                if (periodEntity.getFlagDesemberA() != null || !"".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+//                    if (periodEntity.getFlagDesemberB() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
+//                        if (periodEntity.getFlagDesemberB() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
+//                            disableLock = "N";
+//                        } else if (periodEntity.getFlagDesemberB() != null && "P".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
+//                            disableButton = "N";
+//                        }
+//                    }
+//                }
+//            }
 
             batasTutupPeriod = new BatasTutupPeriod();
             batasTutupPeriod.setId(periodEntity.getId());
@@ -167,6 +185,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
             batasTutupPeriod.setDisableLock(disableLock);
             batasTutupPeriod.setFlagDesemberA(periodEntity.getFlagDesemberA());
             batasTutupPeriod.setFlagDesemberB(periodEntity.getFlagDesemberB());
+            batasTutupPeriod.setNoJurnalKoreksi(periodEntity.getNoJurnalKoreksi());
             return batasTutupPeriod;
         }
 

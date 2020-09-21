@@ -2005,28 +2005,29 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     @Override
     public TransaksiObatBatch getBatchByIdTransAndNoBatch(String idTrans, String noBatch) throws GeneralBOException {
 
-        TransaksiObatBatch obatBatch = new TransaksiObatBatch();
-        obatBatch.setIdTransaksiObatDetail(idTrans);
-        obatBatch.setNoBatch(Integer.valueOf(noBatch));
-        obatBatch.setJenis("do");
-        List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchObat(obatBatch);
-        if (batchEntities.size() > 0){
-            MtSimrsTransaksiObatDetailBatchEntity batchEntity = batchEntities.get(0);
-            obatBatch.setStExpDate(CommonUtil.ddMMyyyyFormat(batchEntity.getExpiredDate()));
-            obatBatch.setDiskon(batchEntity.getDiskon());
-            obatBatch.setBruto(batchEntity.getBruto());
-            obatBatch.setNetto(batchEntity.getNetto());
-            obatBatch.setQtyApprove(batchEntity.getQtyApprove());
-            obatBatch.setId(batchEntity.getId());
-            obatBatch.setNoFaktur(batchEntity.getNoFaktur());
-            obatBatch.setNoDo(batchEntity.getNoDo());
-            obatBatch.setNoInvoice(batchEntity.getNoInvoice());
-            obatBatch.setStTglFaktur(batchEntity.getTanggalFaktur() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTanggalFaktur()) : null);
-            obatBatch.setStTglInvoice(batchEntity.getTglInvoice() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTglInvoice()) : null);
-            obatBatch.setStTglDo(batchEntity.getTglDo() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTglDo()) : null);
-            return obatBatch;
+        if (noBatch != null){
+            TransaksiObatBatch obatBatch = new TransaksiObatBatch();
+            obatBatch.setIdTransaksiObatDetail(idTrans);
+            obatBatch.setNoBatch(Integer.valueOf(noBatch));
+            obatBatch.setJenis("do");
+            List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchObat(obatBatch);
+            if (batchEntities.size() > 0){
+                MtSimrsTransaksiObatDetailBatchEntity batchEntity = batchEntities.get(0);
+                obatBatch.setStExpDate(CommonUtil.ddMMyyyyFormat(batchEntity.getExpiredDate()));
+                obatBatch.setDiskon(batchEntity.getDiskon());
+                obatBatch.setBruto(batchEntity.getBruto());
+                obatBatch.setNetto(batchEntity.getNetto());
+                obatBatch.setQtyApprove(batchEntity.getQtyApprove());
+                obatBatch.setId(batchEntity.getId());
+                obatBatch.setNoFaktur(batchEntity.getNoFaktur());
+                obatBatch.setNoDo(batchEntity.getNoDo());
+                obatBatch.setNoInvoice(batchEntity.getNoInvoice());
+                obatBatch.setStTglFaktur(batchEntity.getTanggalFaktur() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTanggalFaktur()) : null);
+                obatBatch.setStTglInvoice(batchEntity.getTglInvoice() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTglInvoice()) : null);
+                obatBatch.setStTglDo(batchEntity.getTglDo() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTglDo()) : null);
+                return obatBatch;
+            }
         }
-
         return null;
     }
 

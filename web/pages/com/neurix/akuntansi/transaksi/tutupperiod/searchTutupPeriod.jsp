@@ -236,6 +236,7 @@
                             var tipeBtnTutup = "btn-primary";
                             var tipeBtnLock = "btn-info";
                             var status = "";
+                            var colorLabel = "label label-default";
 
                             if (batas.disableButton == "Y" || batas.disableButton == null){
                                 disableButton = "disabled";
@@ -247,21 +248,36 @@
                                 tipeBtnLock = "btn-default";
                             }
 
-                            if ("12a" == bulan && disableButton == "true" && disableLock == "true"){
+                            console.log("desember A --> "+batas.flagDesemberA);
+                            console.log("desember B --> "+batas.flagDesemberB);
+                            console.log("disableButton --> "+batas.disa);
+                            console.log("disableLock --> "+batas.flagDesemberB);
+
+                            if ("12a" == bulan && batas.noJurnalKoreksi != null){
                                 if (batas.flagDesemberA == "Y"){
                                     status = "Sudah Dikoreksi";
+                                    colorLabel = "label label-success";
+                                } else if (batas.flagDesemberA == "P") {
+                                    status = "Lock Dikoreksi";
+                                    colorLabel = "label label-warning";
+                                } else {
+                                    status = "Siap Lock";
+                                    colorLabel = "label label-warning";
                                 }
-                                if (batas.flagDesemberA == "P") {
-                                    status = "Siap Dikoreksi";
-                                }
-                            } else if ("12b" == bulan && disableButton == "true" && disableLock == "true" && batas.flagDesemberB == "Y"){
+                            } else if ("12b" == bulan && batas.noJurnalKoreksi != null){
                                 if (batas.flagDesemberB == "Y"){
                                     status = "Sudah Dikoreksi";
+                                    colorLabel = "label label-success";
                                 }
                                 if (batas.flagDesemberB == "P") {
                                     status = "Lock Dikoreksi";
+                                    colorLabel = "label label-warning";
+                                } else {
+                                    status = "Siap Lock";
+                                    colorLabel = "label label-warning";
                                 }
                             } else {
+                                colorLabel = "label label-danger";
                                 status = "Belum Tutup Tahun";
                             }
 
@@ -269,7 +285,7 @@
                                 " <button class='btn "+tipeBtnLock+"' id='btn-lock-"+item.branchId+"' onclick=\"saveLockKoreksi('"+item.branchId+"','"+tahun+"','"+bulan+"')\" "+disableLock+">Lock</button>" +
                                 "<span id='load-save-"+item.branchId+"'></span>" +
                                 "</td>" +
-                                "<td align='center'><span class='label label-danger'>"+status+"</span></td>" +
+                                "<td align='center'><span class='"+colorLabel+"'>"+status+"</span></td>" +
                                 "</tr>";
 
                         } else {
@@ -279,7 +295,7 @@
                                     " <button class='btn btn-default' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Lock</button>" +
                                     "<span id='load-save-"+item.branchId+"'></span>" +
                                     "</td>" +
-                                    "<td align='center'><span class='label label-danger'>Sudah Ditutup</span></td>" +
+                                    "<td align='center'><span class='label label-success'>Sudah Ditutup</span></td>" +
                                     "</tr>";
                             } else if (batas.flagTutup == "P"){
                                 strBody +=  "<button class='btn btn-primary' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\">Tutup</button>" +
@@ -289,13 +305,25 @@
                                     "<td align='center'><span class='label label-warning'>Lock Process</span></td>" +
                                     "</tr>";
                             } else {
-                                strBody += "<button class='btn btn-default' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('" + item.branchId + "','" + tahun + "','" + bulan + "')\" disabled>Tutup</button>" +
-                                    " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('" + item.branchId + "','" + tahun + "','" + bulan + "')\">Lock</button>" +
-                                    "<span id='load-save-"+item.branchId+"'></span>" +
-                                    "</td>" +
-                                    "<td align='center'><span class='label label-success'>Siap Ditutup</span></td>" +
-                                    "</tr>";
+                                if (batas.stTglBatas != null){
+                                    strBody += "<button class='btn btn-default' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('" + item.branchId + "','" + tahun + "','" + bulan + "')\" disabled>Tutup</button>" +
+                                        " <button class='btn btn-info' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('" + item.branchId + "','" + tahun + "','" + bulan + "')\">Lock</button>" +
+                                        "<span id='load-save-"+item.branchId+"'></span>" +
+                                        "</td>" +
+                                        "<td align='center'><span class='label label-warning'>Siap Lock</span></td>" +
+                                        "</tr>";
+                                } else {
+                                    strBody += "<button class='btn btn-default' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('" + item.branchId + "','" + tahun + "','" + bulan + "')\" disabled>Tutup</button>" +
+                                        " <button class='btn btn-default' id='btn-lock-"+item.branchId+"' onclick=\"saveLock('" + item.branchId + "','" + tahun + "','" + bulan + "')\" disabled>Lock</button>" +
+                                        "<span id='load-save-"+item.branchId+"'></span>" +
+                                        "</td>" +
+                                        "<td align='center'><span class='label label-danger'>Belum Set Waktu Tutup</span></td>" +
+                                        "</tr>";
+                                }
+
                             }
+
+
 
 //                        if (batas.flagTutup == "Y"){
 //                            strBody += "<button class='btn btn-default' id='btn-tutup-"+item.branchId+"' onclick=\"saveTutup('"+item.branchId+"','"+tahun+"','"+bulan+"')\" disabled>Tutup</button>" +

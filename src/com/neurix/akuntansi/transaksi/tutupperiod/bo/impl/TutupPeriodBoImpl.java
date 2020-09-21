@@ -1409,10 +1409,10 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
     @Override
     public void saveUpdateLockPeriodKoreksi(TutupPeriod bean) throws GeneralBOException {
 
-        Integer intTahunDepan = Integer.valueOf(bean.getTahun()) + 1;
-        String tahunDepan = intTahunDepan.toString();
+//        Integer intTahunDepan = Integer.valueOf(bean.getTahun()) + 1;
+//        String tahunDepan = intTahunDepan.toString();
 
-        BatasTutupPeriod periodSaldoTerakhir = getLastBulanBerjalanSaldoAkhir(tahunDepan, bean.getUnit());
+        BatasTutupPeriod periodSaldoTerakhir = getLastBulanBerjalanSaldoAkhir(bean.getTahun(), bean.getUnit());
         if (periodSaldoTerakhir != null){
             // lock prosess bulan berjalan
             lockProsesKoreksi(periodSaldoTerakhir);
@@ -1434,13 +1434,13 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
             ItSimrsBatasTutupPeriodEntity batasTutupPeriodEntity = batasTutupPeriodEntities.get(0);
 
             // jika ditemukan update
-            if (batasTutupPeriodEntity.getNoJurnalKoreksi() != null && !"".equalsIgnoreCase(batasTutupPeriodEntity.getNoJurnalKoreksi())){
-                if (batasTutupPeriodEntity.getFlagDesemberA() == null && "".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberA())){
-                    batasTutupPeriodEntity.setFlagDesemberA("P");
-                }
-            } else if (batasTutupPeriodEntity.getFlagDesemberA() != null && !"".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberA())){
-                if (batasTutupPeriodEntity.getFlagDesemberB() == null && "".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberB())){
+            if ("Y".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberA())){
+                if (batasTutupPeriodEntity.getFlagDesemberB() == null || "".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberB())){
                     batasTutupPeriodEntity.setFlagDesemberB("P");
+                }
+            } else if (batasTutupPeriodEntity.getNoJurnalKoreksi() != null && !"".equalsIgnoreCase(batasTutupPeriodEntity.getNoJurnalKoreksi())){
+                if (batasTutupPeriodEntity.getFlagDesemberA() == null || "".equalsIgnoreCase(batasTutupPeriodEntity.getFlagDesemberA())){
+                    batasTutupPeriodEntity.setFlagDesemberA("P");
                 }
             } else {
                 batasTutupPeriodEntity.setFlagTutup("P");
@@ -1622,7 +1622,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         Integer intTahunDepan = Integer.valueOf(tahun) + 1;
         String tahunDepan = intTahunDepan.toString();
 
-        SaldoAkhir saldoAkhir = saldoAkhirDao.getLastSaldoAkhirByTahun(tahun, branchId);
+        SaldoAkhir saldoAkhir = saldoAkhirDao.getLastSaldoAkhirByTahun(tahunDepan, branchId);
         if (saldoAkhir != null){
 
             String[] arrPeriode = saldoAkhir.getPeriode().split("-");
@@ -1776,6 +1776,32 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                 // mengambil parent diatasnya sekaligus insert;
                 List<TutupPeriod> tutupPeriods = hitungAndUpdateParent(listOfTutupData, bean, level-1);
+                boolean isClear = tutupPeriods.size() == 0;
+                if (isClear){
+
+                    BatasTutupPeriod batasTutupPeriod = new BatasTutupPeriod();
+                    batasTutupPeriod.setBulan(bulan);
+                    batasTutupPeriod.setTahun(bean.getTahun());
+
+                    List<ItSimrsBatasTutupPeriodEntity> tutupPeriodEntities = getListEntityBatasTutupPeriode(batasTutupPeriod);
+                    if (tutupPeriodEntities.size() > 0){
+                        ItSimrsBatasTutupPeriodEntity batasTutupPeriodEntity = tutupPeriodEntities.get(0);
+                        batasTutupPeriodEntity.setFlagTutup("Y");
+                        batasTutupPeriodEntity.setAction("U");
+                        batasTutupPeriodEntity.setLastUpdate(bean.getLastUpdate());
+                        batasTutupPeriodEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                        try {
+                            batasTutupPeriodDao.updateAndSave(batasTutupPeriodEntity);
+                        } catch (HibernateException e){
+                            logger.error("[TutupPeriodBoImpl.updateSaldoAkhirBulanBerjalan] ERROR. ",e);
+                            throw new GeneralBOException("[TutupPeriodBoImpl.updateSaldoAkhirBulanBerjalan] ERROR. ",e);
+                        }
+                    }
+                } else {
+                    logger.error("[TutupPeriodBoImpl.updateSaldoAkhirBulanBerjalan] ERROR. gagal menyimpan tutup period");
+                    throw new GeneralBOException("[TutupPeriodBoImpl.updateSaldoAkhirBulanBerjalan] ERROR. gagal menyimpan tutup period");
+                }
             }
         }
     }

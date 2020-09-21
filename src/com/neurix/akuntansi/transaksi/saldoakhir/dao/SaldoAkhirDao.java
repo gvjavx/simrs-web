@@ -60,13 +60,13 @@ public class SaldoAkhirDao extends GenericDao<ItAkunSaldoAkhirEntity, String> {
 
     public SaldoAkhir getLastSaldoAkhirByTahun(String tahun, String branchId) {
 
-        String SQL = "SELECT a.periode, a.branch_id, FROM it_akun_saldo_akhir a \n" +
-                "WHERE a.periode LIKE :tahun \n" +
+        String SQL = "SELECT a.periode, a.branch_id FROM it_akun_saldo_akhir a \n" +
+                "WHERE a.periode ILIKE :tahun \n" +
                 "AND a.branch_id = :branch \n" +
-                "ORDER BY a.create_date LIMIT 1";
+                "ORDER BY a.created_date LIMIT 1";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("tahun", tahun)
+                .setParameter("tahun", "%"+tahun)
                 .setParameter("branch", branchId)
                 .list();
 
