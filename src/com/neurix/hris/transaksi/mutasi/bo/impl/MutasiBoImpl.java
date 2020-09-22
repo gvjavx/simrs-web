@@ -27,6 +27,12 @@ import com.neurix.hris.master.study.model.ImStudyEntity;
 import com.neurix.hris.master.study.model.Study;
 import com.neurix.hris.master.updateGolongan.dao.UpdateGolonganDao;
 import com.neurix.hris.master.updateGolongan.model.ImtUpdateGolonganEntity;
+import com.neurix.hris.transaksi.cutiPegawai.dao.CutiPegawaiDao;
+import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
+import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao;
+import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity;
+import com.neurix.hris.transaksi.lembur.dao.LemburDao;
+import com.neurix.hris.transaksi.lembur.model.LemburEntity;
 import com.neurix.hris.transaksi.mutasi.dao.MutasiDao;
 import com.neurix.hris.transaksi.mutasi.dao.MutasiDocDao;
 import com.neurix.hris.transaksi.mutasi.model.ItMutasiDocEntity;
@@ -81,6 +87,33 @@ public class MutasiBoImpl implements MutasiBo {
     private HistoryJabatanPegawaiDao historyJabatanPegawaiDao;
     private SmkHistoryGolonganDao historyGolonganDao;
     private PayrollSkalaGajiDao skalaGajiDao;
+    private IjinKeluarDao ijinKeluarDao;
+    private CutiPegawaiDao cutiPegawaiDao;
+    private LemburDao lemburDao;
+
+    public IjinKeluarDao getIjinKeluarDao() {
+        return ijinKeluarDao;
+    }
+
+    public void setIjinKeluarDao(IjinKeluarDao ijinKeluarDao) {
+        this.ijinKeluarDao = ijinKeluarDao;
+    }
+
+    public CutiPegawaiDao getCutiPegawaiDao() {
+        return cutiPegawaiDao;
+    }
+
+    public void setCutiPegawaiDao(CutiPegawaiDao cutiPegawaiDao) {
+        this.cutiPegawaiDao = cutiPegawaiDao;
+    }
+
+    public LemburDao getLemburDao() {
+        return lemburDao;
+    }
+
+    public void setLemburDao(LemburDao lemburDao) {
+        this.lemburDao = lemburDao;
+    }
 
     public PayrollSkalaGajiDao getSkalaGajiDao() {
         return skalaGajiDao;
@@ -266,11 +299,70 @@ public class MutasiBoImpl implements MutasiBo {
 
     @Override
     public void saveMutasi(Mutasi bean, List<Mutasi> mutasiList) throws GeneralBOException {
+//        String status1 ="";
         logger.info("[MutasiBoImpl.saveAdd] start process >>>");
+        List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
+        List<LemburEntity> lemburEntityList = new ArrayList<>();
+        List<IjinKeluarEntity> ijinKeluarEntityList = new ArrayList<>();
+
+//        ItCutiPegawaiEntity cutiPegawaiEntity = cutiPegawaiEntityList.get(0);
+//        Calendar c1 = Calendar.getInstance();
+//        java.util.Date tanggalAwalCuti = new java.util.Date(cutiPegawaiEntity.getTanggalDari().getTime());
+//        c1.setTime(tanggalAwalCuti);
+//        int date1 = c1.get(Calendar.DATE);
+//
+//        Calendar d1 = Calendar.getInstance();
+//        java.util.Date tanggalAkhirCuti = new java.util.Date(cutiPegawaiEntity.getTanggalSelesai().getTime());
+//        d1.setTime(tanggalAkhirCuti);
+//        int dateAkhir1 = d1.get(Calendar.DATE);
+//
+//        LemburEntity lemburEntity = lemburEntityList.get(0);
+//        Calendar c2 = Calendar.getInstance();
+//        java.util.Date tanggalAwalLembur = new java.util.Date(lemburEntity.getTanggalAwal().getTime());
+//        c2.setTime(tanggalAwalLembur);
+//        int date2 = c2.get(Calendar.DATE);
+//
+//        Calendar d2 = Calendar.getInstance();
+//        java.util.Date tanggalAkhirLembur = new java.util.Date(lemburEntity.getTanggalAkhir().getTime());
+//        d2.setTime(tanggalAkhirLembur);
+//        int dateAkhir2 = d2.get(Calendar.DATE);
+//
+//        IjinKeluarEntity ijinKeluarEntity = ijinKeluarEntityList.get(0);
+//        Calendar c3 = Calendar.getInstance();
+//        java.util.Date tanggalAwalDispensasi = new java.util.Date(ijinKeluarEntity.getTanggalAwal().getTime());
+//        c3.setTime(tanggalAwalDispensasi);
+//        int date3 = c3.get(Calendar.DATE);
+//
+//        Calendar d3 = Calendar.getInstance();
+//        java.util.Date tanggalAkhirDispensasi = new java.util.Date(ijinKeluarEntity.getTanggalAkhir().getTime());
+//        d3.setTime(tanggalAkhirDispensasi);
+//        int dateAkhir3 = d3.get(Calendar.DATE);
 
         //validasi jika menggantikan maka yang digantikan harus juga move
         for (Mutasi dataMutasi : mutasiList){
             if (("M").equalsIgnoreCase(dataMutasi.getStatus())){
+                try {
+                    cutiPegawaiEntityList = cutiPegawaiDao.getListCekCuti(dataMutasi.getNip());
+                    lemburEntityList = lemburDao.getCekLembur(dataMutasi.getNip(), (CommonUtil.convertStringToDate("")));
+                    ijinKeluarEntityList = ijinKeluarDao.getListCekIjinKeluar(dataMutasi.getNip());
+                }catch (HibernateException e){
+                    logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                }
+                if(cutiPegawaiEntityList.size() > 0){
+                    String status = "Maaf masih ada Cuti yang menggantung di tanggal ini.";
+                    logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                    throw new GeneralBOException(status);
+                }else if(lemburEntityList.size() > 0){
+                    String status = "Maaf masih ada Lembur yang menggantung di tanggal ini.";
+                    logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                    throw new GeneralBOException(status);
+                }else if(ijinKeluarEntityList.size() > 0){
+                    String status = "Maaf masih ada Dispensasi yang menggantung di tanggal ini.";
+                    logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                    throw new GeneralBOException(status);
+                }
+
                 if (!("-").equalsIgnoreCase(dataMutasi.getPenggantiNip())){
                     boolean adaPengganti = false;
                     for (Mutasi cekData : mutasiList){
@@ -298,6 +390,75 @@ public class MutasiBoImpl implements MutasiBo {
                         logger.error("[PengalamanKerjaBoImpl.save mutasi] "+ status);
                         throw new GeneralBOException(status);
                     }
+                }
+            }
+            if (("R").equalsIgnoreCase(dataMutasi.getStatus())){
+                try {
+                    cutiPegawaiEntityList = cutiPegawaiDao.getListCekCuti(dataMutasi.getNip());
+                    lemburEntityList = lemburDao.getCekLembur(dataMutasi.getNip(), (CommonUtil.convertStringToDate("")));
+                    ijinKeluarEntityList = ijinKeluarDao.getListCekIjinKeluar(dataMutasi.getNip());
+                }catch (HibernateException e){
+                    logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                }
+                if(cutiPegawaiEntityList.size() > 0){
+                    String status = "Maaf masih ada Cuti yang menggantung di tanggal ini.";
+                    logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                    throw new GeneralBOException(status);
+                }else if(lemburEntityList.size() > 0){
+                    String status = "Maaf masih ada Lembur yang menggantung di tanggal ini.";
+                    logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                    throw new GeneralBOException(status);
+                }else if(ijinKeluarEntityList.size() > 0){
+                    String status = "Maaf masih ada Dispensasi yang menggantung di tanggal ini.";
+                    logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                    throw new GeneralBOException(status);
+                }
+            }
+            if (("P").equalsIgnoreCase(dataMutasi.getStatus())){
+                try {
+                    cutiPegawaiEntityList = cutiPegawaiDao.getListCekCuti(dataMutasi.getNip());
+                    lemburEntityList = lemburDao.getCekLembur(dataMutasi.getNip(), (CommonUtil.convertStringToDate("")));
+                    ijinKeluarEntityList = ijinKeluarDao.getListCekIjinKeluar(dataMutasi.getNip());
+                }catch (HibernateException e){
+                    logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                }
+                if(cutiPegawaiEntityList.size() > 0){
+                    String status = "Maaf masih ada Cuti yang menggantung di tanggal ini.";
+                    logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                    throw new GeneralBOException(status);
+                }else if(lemburEntityList.size() > 0){
+                    String status = "Maaf masih ada Lembur yang menggantung di tanggal ini.";
+                    logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                    throw new GeneralBOException(status);
+                }else if(ijinKeluarEntityList.size() > 0){
+                    String status = "Maaf masih ada Dispensasi yang menggantung di tanggal ini.";
+                    logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                    throw new GeneralBOException(status);
+                }
+            }
+            if (("MH").equalsIgnoreCase(dataMutasi.getStatus())){
+                try {
+                    cutiPegawaiEntityList = cutiPegawaiDao.getListCekCuti(dataMutasi.getNip());
+                    lemburEntityList = lemburDao.getCekLembur(dataMutasi.getNip(), (CommonUtil.convertStringToDate("")));
+                    ijinKeluarEntityList = ijinKeluarDao.getListCekIjinKeluar(dataMutasi.getNip());
+                }catch (HibernateException e){
+                    logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                }
+                if(cutiPegawaiEntityList.size() > 0){
+                    String status = "Maaf masih ada Cuti yang menggantung di tanggal ini.";
+                    logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                    throw new GeneralBOException(status);
+                }else if(lemburEntityList.size() > 0){
+                    String status = "Maaf masih ada Lembur yang menggantung di tanggal ini.";
+                    logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                    throw new GeneralBOException(status);
+                }else if(ijinKeluarEntityList.size() > 0){
+                    String status = "Maaf masih ada Dispensasi yang menggantung di tanggal ini.";
+                    logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                    throw new GeneralBOException(status);
                 }
             }
         }
