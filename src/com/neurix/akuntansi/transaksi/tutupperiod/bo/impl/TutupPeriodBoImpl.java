@@ -212,6 +212,8 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 
                                 // jika bulan 1, saldo akhir dikurangi dengan jurnal koreksi tutup tahun
                                 // saldo bulan lalu dikurangi saldo tutup tahun
+                                String posisiJurnalAkhir = "";
+                                BigDecimal jurnalAkhirSaldo = new BigDecimal(0);
                                 if ("1".equalsIgnoreCase(bean.getBulan())){
                                     String[] tipePeriode = {"12b", "12a", "12"};
                                     for (int i = 0 ; i < 3 ; i++){
@@ -225,23 +227,25 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                         List<TutupPeriod> listJurnalAkhir = tutupPeriodDao.getListDetailJurnalAkhirTahunByCriteria(jurnalAkhirTahun);
                                         if (listJurnalAkhir.size() > 0){
                                             TutupPeriod jurnalAkhir = listJurnalAkhir.get(0);
+                                            posisiJurnalAkhir = jurnalAkhir.getPosisi();
+                                            jurnalAkhirSaldo = jurnalAkhir.getSaldo();
 
-                                            if ("D".equalsIgnoreCase(jurnalAkhir.getPosisi())){
-                                                saldoAkhirLalu.setJumlahDebit(saldoAkhirLalu.getJumlahDebit().add(jurnalAkhir.getSaldo()));
-                                            } else {
-                                                // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
-                                                saldoAkhirLalu.setJumlahKredit(saldoAkhirLalu.getJumlahKredit().add(jurnalAkhir.getSaldo()));
-                                            }
-
-                                            if (saldoAkhirLalu.getJumlahDebit().compareTo(saldoAkhirLalu.getJumlahKredit()) == 1){
-                                                // jika debit lebih besar maka debit - kredit = saldo, posisi = debit
-                                                saldoAkhirLalu.setPosisi("D");
-                                                saldoAkhirLalu.setSaldo(saldoAkhirLalu.getJumlahDebit().subtract(saldoAkhirLalu.getJumlahKredit()));
-                                            } else {
-                                                // jika kredit lebih besar maka kredit - debit = saldo, posisi = kredit
-                                                saldoAkhirLalu.setPosisi("K");
-                                                saldoAkhirLalu.setSaldo(saldoAkhirLalu.getJumlahKredit().subtract(saldoAkhirLalu.getJumlahDebit()));
-                                            }
+//                                            if ("D".equalsIgnoreCase(jurnalAkhir.getPosisi())){
+//                                                saldoAkhirLalu.setJumlahDebit(saldoAkhirLalu.getJumlahDebit().add(jurnalAkhir.getSaldo()));
+//                                            } else {
+//                                                // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
+//                                                saldoAkhirLalu.setJumlahKredit(saldoAkhirLalu.getJumlahKredit().add(jurnalAkhir.getSaldo()));
+//                                            }
+//
+//                                            if (saldoAkhirLalu.getJumlahDebit().compareTo(saldoAkhirLalu.getJumlahKredit()) == 1){
+//                                                // jika debit lebih besar maka debit - kredit = saldo, posisi = debit
+//                                                saldoAkhirLalu.setPosisi("D");
+//                                                saldoAkhirLalu.setSaldo(saldoAkhirLalu.getJumlahDebit().subtract(saldoAkhirLalu.getJumlahKredit()));
+//                                            } else {
+//                                                // jika kredit lebih besar maka kredit - debit = saldo, posisi = kredit
+//                                                saldoAkhirLalu.setPosisi("K");
+//                                                saldoAkhirLalu.setSaldo(saldoAkhirLalu.getJumlahKredit().subtract(saldoAkhirLalu.getJumlahDebit()));
+//                                            }
                                             break;
                                         }
                                     }
@@ -256,9 +260,26 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                     saldoAkhirEntity.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(saldoAkhirLalu.getSaldo()));
                                     jurnalDetail.setJumlahKredit(saldoAkhirEntity.getJumlahKredit());
                                 }
+
+                                // dicalculate dengan jurnal akhir tahun
+                                if (posisiJurnalAkhir != ""){
+                                    // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
+                                    if ("D".equalsIgnoreCase(posisiJurnalAkhir)){
+                                        saldoAkhirEntity.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(jurnalAkhirSaldo));
+                                        jurnalDetail.setJumlahDebit(saldoAkhirEntity.getJumlahDebit());
+                                    } else {
+                                        // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
+                                        saldoAkhirEntity.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(jurnalAkhirSaldo));
+                                        jurnalDetail.setJumlahKredit(saldoAkhirEntity.getJumlahKredit());
+                                    }
+                                    posisiJurnalAkhir = "";
+                                    jurnalAkhirSaldo = new BigDecimal(0);
+                                }
+
                             }
                             // end
 
+                            // menghitung saldo
                             if (saldoAkhirEntity.getJumlahDebit().compareTo(saldoAkhirEntity.getJumlahKredit()) == 1){
 
                                 // jika debit lebih besar maka debit - kredit = saldo, posisi = debit
@@ -1694,9 +1715,12 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                     saldoAkhir.setRekeningId(kodeRekeningEntity.getRekeningId());
 
                     List<ItAkunSaldoAkhirEntity> saldoAkhirEntities = getListEntitySaldoAkhir(saldoAkhir);
+
                     if (saldoAkhirEntities.size() > 0){
                         ItAkunSaldoAkhirEntity saldoAkhirEntity = saldoAkhirEntities.get(0);
 
+                        String posisiJurnalAkhir = "";
+                        BigDecimal jurnalAkhirSaldo = new BigDecimal(0);
                         if ("1".equalsIgnoreCase(bulan)){
                             String[] tipePeriode = {"12b", "12a", "12"};
                             for (int n = 0 ; n < 3 ; n++){
@@ -1709,25 +1733,26 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                 List<TutupPeriod> listJurnalAkhir = tutupPeriodDao.getListDetailJurnalAkhirTahunByCriteria(jurnalAkhirTahun);
                                 if (listJurnalAkhir.size() > 0){
                                     TutupPeriod jurnalAkhir = listJurnalAkhir.get(0);
-
-                                    if ("D".equalsIgnoreCase(jurnalAkhir.getPosisi())){
-                                        BigDecimal nilai = saldoAkhirEntity.getJumlahDebit().add(jurnalAkhir.getSaldo());
-                                        saldoAkhirEntity.setJumlahDebit(nilai);
-                                    } else {
-                                        BigDecimal nilai = saldoAkhirEntity.getJumlahKredit().add(jurnalAkhir.getSaldo());
-                                        saldoAkhirEntity.setJumlahKredit(nilai);
-                                    }
-
-                                    // if jumlah debit > jumlah kredit = posisi D, jumlahDebit - kurangi kredit
-                                    if (saldoAkhirEntity.getJumlahDebit().compareTo(saldoAkhirEntity.getJumlahKredit()) == 1){
-                                        saldoAkhirEntity.setPosisi("D");
-                                        BigDecimal nilai = saldoAkhirEntity.getJumlahDebit().subtract(saldoAkhirEntity.getJumlahKredit());
-                                        saldoAkhirEntity.setSaldo(nilai);
-                                    } else {
-                                        saldoAkhirEntity.setPosisi("K");
-                                        BigDecimal nilai = saldoAkhirEntity.getJumlahKredit().subtract(saldoAkhirEntity.getJumlahDebit());
-                                        saldoAkhirEntity.setSaldo(nilai);
-                                    }
+                                    posisiJurnalAkhir = jurnalAkhir.getPosisi();
+                                    jurnalAkhirSaldo = jurnalAkhir.getSaldo();
+//                                    if ("D".equalsIgnoreCase(jurnalAkhir.getPosisi())){
+//                                        BigDecimal nilai = saldoAkhirEntity.getJumlahDebit().add(jurnalAkhir.getSaldo());
+//                                        saldoAkhirEntity.setJumlahDebit(nilai);
+//                                    } else {
+//                                        BigDecimal nilai = saldoAkhirEntity.getJumlahKredit().add(jurnalAkhir.getSaldo());
+//                                        saldoAkhirEntity.setJumlahKredit(nilai);
+//                                    }
+//
+//                                    // if jumlah debit > jumlah kredit = posisi D, jumlahDebit - kurangi kredit
+//                                    if (saldoAkhirEntity.getJumlahDebit().compareTo(saldoAkhirEntity.getJumlahKredit()) == 1){
+//                                        saldoAkhirEntity.setPosisi("D");
+//                                        BigDecimal nilai = saldoAkhirEntity.getJumlahDebit().subtract(saldoAkhirEntity.getJumlahKredit());
+//                                        saldoAkhirEntity.setSaldo(nilai);
+//                                    } else {
+//                                        saldoAkhirEntity.setPosisi("K");
+//                                        BigDecimal nilai = saldoAkhirEntity.getJumlahKredit().subtract(saldoAkhirEntity.getJumlahDebit());
+//                                        saldoAkhirEntity.setSaldo(nilai);
+//                                    }
                                     break;
                                 }
                             }
@@ -1748,19 +1773,34 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 //                                    jurnalDetail.setJumlahKredit(saldoAkhirEntity.getJumlahKredit());
                                 }
 
-                                if (saldoAkhirEntity.getJumlahDebit().compareTo(saldoAkhirEntity.getJumlahKredit()) == 1){
-
-                                    // jika debit lebih besar maka debit - kredit = saldo, posisi = debit
-                                    saldoAkhirEntity.setPosisi("D");
-                                    saldoAkhirEntity.setSaldo(saldoAkhirEntity.getJumlahDebit().subtract(saldoAkhirEntity.getJumlahKredit()));
-                                } else {
-
-                                    // jika kredit lebih besar maka kredit - debit = saldo, posisi = kredit
-                                    saldoAkhirEntity.setPosisi("K");
-                                    saldoAkhirEntity.setSaldo(saldoAkhirEntity.getJumlahKredit().subtract(saldoAkhirEntity.getJumlahDebit()));
-                                }
-
                             }
+                        }
+
+                        // dicalculate dengan jurnal akhir tahun
+                        if (posisiJurnalAkhir != ""){
+                            // jika posisi saldo akhir yang lalu dengan rekening_id yang dicari adalah debit maka akan menambah jumlah debit
+                            if ("D".equalsIgnoreCase(posisiJurnalAkhir)){
+                                saldoAkhirEntity.setJumlahDebit(saldoAkhirEntity.getJumlahDebit().add(jurnalAkhirSaldo));
+                                jurnalDetail.setJumlahDebit(saldoAkhirEntity.getJumlahDebit());
+                            } else {
+                                // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
+                                saldoAkhirEntity.setJumlahKredit(saldoAkhirEntity.getJumlahKredit().add(jurnalAkhirSaldo));
+                                jurnalDetail.setJumlahKredit(saldoAkhirEntity.getJumlahKredit());
+                            }
+                            posisiJurnalAkhir = "";
+                            jurnalAkhirSaldo = new BigDecimal(0);
+                        }
+
+                        if (saldoAkhirEntity.getJumlahDebit().compareTo(saldoAkhirEntity.getJumlahKredit()) == 1){
+
+                            // jika debit lebih besar maka debit - kredit = saldo, posisi = debit
+                            saldoAkhirEntity.setPosisi("D");
+                            saldoAkhirEntity.setSaldo(saldoAkhirEntity.getJumlahDebit().subtract(saldoAkhirEntity.getJumlahKredit()));
+                        } else {
+
+                            // jika kredit lebih besar maka kredit - debit = saldo, posisi = kredit
+                            saldoAkhirEntity.setPosisi("K");
+                            saldoAkhirEntity.setSaldo(saldoAkhirEntity.getJumlahKredit().subtract(saldoAkhirEntity.getJumlahDebit()));
                         }
 
                         jurnalDetail.setJumlahDebit(saldoAkhirEntity.getJumlahDebit());
