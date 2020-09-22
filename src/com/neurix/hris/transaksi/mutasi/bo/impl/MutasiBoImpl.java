@@ -34,6 +34,7 @@ import com.neurix.hris.transaksi.mutasi.model.Mutasi;
 import com.neurix.hris.transaksi.mutasi.model.ItMutasiEntity;
 import com.neurix.hris.transaksi.mutasi.bo.MutasiBo;
 import com.neurix.hris.transaksi.mutasi.model.MutasiDoc;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.personilPosition.dao.HistoryJabatanPegawaiDao;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.HistoryJabatanPegawai;
@@ -266,6 +267,7 @@ public class MutasiBoImpl implements MutasiBo {
     @Override
     public void saveMutasi(Mutasi bean, List<Mutasi> mutasiList) throws GeneralBOException {
         logger.info("[MutasiBoImpl.saveAdd] start process >>>");
+
         //validasi jika menggantikan maka yang digantikan harus juga move
         for (Mutasi dataMutasi : mutasiList){
             if (("M").equalsIgnoreCase(dataMutasi.getStatus())){

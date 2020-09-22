@@ -438,6 +438,33 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     public  List<Notifikasi> saveAddCuti ( CutiPegawai bean ) throws GeneralBOException {
         logger.info("[CutiPegawaiBoImpl.saveAdd] start process >>>");
         List<Notifikasi> notifikasiList = new ArrayList<>();
+        //validasi
+        List<ImBiodataEntity> biodataEntities = biodataDao.getDataBiodata(bean.getNip(),"","","","","Y");
+        for (ImBiodataEntity biodata: biodataEntities){
+            bean.setTanggalAktif(biodata.getTanggalAktif());
+        }
+
+        Calendar c = Calendar.getInstance();
+        java.util.Date tanggalSekarang = new java.util.Date(c.getTimeInMillis());
+        c.setTime(tanggalSekarang);
+        int year1 = c.get(Calendar.YEAR);
+
+        ImBiodataEntity biodataEntity = biodataEntities.get(0);
+        Calendar d = Calendar.getInstance();
+        java.util.Date tanggalAktif = new java.util.Date(biodataEntity.getTanggalAktif().getTime());
+        d.setTime(tanggalAktif);
+        int year2 = d.get(Calendar.YEAR);
+
+//        Date tanggalSekarang = new Date(c.getTimeInMillis());
+
+        int tahunMasaKerja = year1-year2;
+
+        if (tahunMasaKerja<5){
+            String status ="Tanggal Pengajuan Cuti di Luar Tanggungan Harus Melewati 5 Tahun Masa Kerja";
+            logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error :, " + status);
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + status);
+        }
+
         String atasanNip = null;
         String nip=bean.getNip(),cutiPegawaiId;
         if (bean!=null) {
@@ -479,7 +506,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                             cutiPegawaiID = cutiPegawaiDao.getNextCutiPegawaiId();
                         } catch (HibernateException e) {
                             logger.error("[CutiPegawaiBoImpl.saveCutiBersama] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when getting sequence cutiPegawai Id , please info to your admin..." + e.getMessage());
+                                throw new GeneralBOException("Found problem when getting sequence cutiPegawai Id , please info to your admin..." + e.getMessage());
                         }
                         // creating object entity serializable
                         ItCutiPegawaiEntity itCutiPegawaiEntity = new ItCutiPegawaiEntity();
