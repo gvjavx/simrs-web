@@ -3,6 +3,7 @@ package com.neurix.hris.transaksi.jadwalShiftKerja.model;
 import com.neurix.common.model.BaseModel;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,12 +19,48 @@ public class JadwalShiftKerjaDetail extends BaseModel {
     private String namaPegawai;
     private String shiftId;
     private String shiftGroupId;
+    private String onCall;
 
     private String positionName;
     private String shiftName;
     private String kelompokName;
     private String profesiName;
     private String profesiid;
+    private String flagPanggil;
+    private String panggilWho;
+    private Timestamp panggilDate;
+
+    public String getPanggilWho() {
+        return panggilWho;
+    }
+
+    public void setPanggilWho(String panggilWho) {
+        this.panggilWho = panggilWho;
+    }
+
+    public Timestamp getPanggilDate() {
+        return panggilDate;
+    }
+
+    public void setPanggilDate(Timestamp panggilDate) {
+        this.panggilDate = panggilDate;
+    }
+
+    public String getFlagPanggil() {
+        return flagPanggil;
+    }
+
+    public void setFlagPanggil(String flagPanggil) {
+        this.flagPanggil = flagPanggil;
+    }
+
+    public String getOnCall() {
+        return onCall;
+    }
+
+    public void setOnCall(String onCall) {
+        this.onCall = onCall;
+    }
 
     public String getProfesiid() {
         return profesiid;

@@ -7,6 +7,7 @@ import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalKerjaDTO;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalPelayananDTO;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.simrs.transaksi.CrudResponse;
 
 import java.sql.Date;
@@ -37,4 +38,6 @@ public interface JadwalShiftKerjaBo extends BaseMasterBo<JadwalShiftKerja> {
     List<JadwalShiftKerjaDetail> getJadwalShiftKerjaByUnitAndProfesiAndTanggal(String branchId, Date tglFrom, Date tglTo, String profesiId) throws GeneralBOException;
 
     CrudResponse getListLibur(String tanggalAwal, String tanggalAkhir) throws GeneralBOException;
+
+    List<Notifikasi> savePanggilBerdasarkanId(JadwalShiftKerjaDetail bean);
 }

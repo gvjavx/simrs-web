@@ -37,6 +37,70 @@ public class JadwalShiftKerja extends BaseModel {
     private String positionName;
     private String profesiName;
 
+    private String branchIdUser;
+    private String onCall;
+    private String jadwalShiftKerjaDetailId;
+    private boolean hariIni = false;
+    private String flagPanggil;
+    private String grupIdUser;
+    private boolean adminHcm=false;
+
+    public boolean isAdminHcm() {
+        return adminHcm;
+    }
+
+    public void setAdminHcm(boolean adminHcm) {
+        this.adminHcm = adminHcm;
+    }
+
+    public String getGrupIdUser() {
+        return grupIdUser;
+    }
+
+    public void setGrupIdUser(String grupIdUser) {
+        this.grupIdUser = grupIdUser;
+    }
+
+    public String getFlagPanggil() {
+        return flagPanggil;
+    }
+
+    public void setFlagPanggil(String flagPanggil) {
+        this.flagPanggil = flagPanggil;
+    }
+
+    public boolean isHariIni() {
+        return hariIni;
+    }
+
+    public void setHariIni(boolean hariIni) {
+        this.hariIni = hariIni;
+    }
+
+    public String getJadwalShiftKerjaDetailId() {
+        return jadwalShiftKerjaDetailId;
+    }
+
+    public void setJadwalShiftKerjaDetailId(String jadwalShiftKerjaDetailId) {
+        this.jadwalShiftKerjaDetailId = jadwalShiftKerjaDetailId;
+    }
+
+    public String getOnCall() {
+        return onCall;
+    }
+
+    public void setOnCall(String onCall) {
+        this.onCall = onCall;
+    }
+
+    public String getBranchIdUser() {
+        return branchIdUser;
+    }
+
+    public void setBranchIdUser(String branchIdUser) {
+        this.branchIdUser = branchIdUser;
+    }
+
     public String getProfesiName() {
         return profesiName;
     }
