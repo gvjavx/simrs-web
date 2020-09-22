@@ -4,6 +4,7 @@ import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.transaksi.checkup.model.AlertPasien;
@@ -11,6 +12,7 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -736,8 +738,14 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.video_rm, \n" +
                     "l.keterangan_diagnosa, \n" +
                     "l.id_diagnosa, \n" +
-                    "a.anamnese, \n" +
-                    "c.kategori_pelayanan\n" +
+                    "a.autoanamnesis, \n" +
+                    "c.kategori_pelayanan,\n" +
+                    "c.tipe_pelayanan,\n"+
+                    "b.is_stay, \n"+
+                    "b.kelas_pasien, \n"+
+                    "b.catatan, \n"+
+                    "b.flag_close_traksaksi, \n"+
+                    "b.flag_cover \n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -829,14 +837,21 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setNamaDiagnosa(obj[47] == null ? "" : obj[47].toString());
                     checkup.setDiagnosa(obj[48] == null ? "" : obj[48].toString());
                     checkup.setAlergi(getAlergiPasien(obj[0].toString()));
-                    checkup.setAnamnese(header.getAnamnese());
+                    checkup.setAutoanamnesis(header.getAutoanamnesis());
+                    checkup.setHeteroanamnesis(header.getHeteroanamnesis());
                     checkup.setKategoriPelayanan(obj[50] == null ? "" : obj[50].toString());
+                    checkup.setTipePelayanan(obj[51] == null ? "" : obj[51].toString());
+                    checkup.setIsStay(obj[52] == null ? "" : obj[52].toString());
+                    checkup.setKelasPasien(obj[53] == null ? "" : obj[53].toString());
+                    checkup.setCatatan(obj[54] == null ? "" : obj[54].toString());
+                    checkup.setFlagCloseTransaksi(obj[55] == null ? null : obj[55].toString());
+                    checkup.setFlagCover(obj[56] == null ? null : obj[56].toString());
                     HeaderCheckup hdr = getPemeriksaanFisik(obj[0].toString());
                     checkup.setTensi(hdr.getTensi());
                     checkup.setSuhu(hdr.getSuhu());
                     checkup.setNadi(hdr.getNadi());
                     checkup.setPernafasan(hdr.getPernafasan());
-                    checkup.setPenunjangMedis(getPenunjangMendis(obj[15].toString()));
+                    checkup.setPenunjangMedis(getPenunjangMendis(obj[15].toString(), null));
                 }
             }
         }
@@ -850,7 +865,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             String SQL = "SELECT \n" +
                     "tinggi,\n" +
                     "berat_badan,\n" +
-                    "anamnese \n" +
+                    "autoanamnesis, \n" +
+                    "heteroanamnesis\n" +
                     "FROM it_simrs_header_checkup\n" +
                     "WHERE no_checkup = :id";
 
@@ -863,7 +879,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 Object[] objects = result.get(0);
                 checkup.setTinggi(objects[0] != null ? objects[0].toString() : "");
                 checkup.setBerat(objects[1] != null ? objects[1].toString() : "");
-                checkup.setAnamnese(objects[2] != null ? objects[2].toString() : "");
+                checkup.setAutoanamnesis(objects[2] != null ? objects[2].toString() : "");
+                checkup.setHeteroanamnesis(objects[3] != null ? objects[3].toString() : "");
             }
         }
         return checkup;
@@ -875,7 +892,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             String SQL = "SELECT \n" +
                     "id_alergi, \n" +
                     "no_checkup, \n" +
-                    "alergi \n" +
+                    "alergi, \n" +
+                    "jenis \n" +
                     "FROM it_simrs_checkup_alergi \n" +
                     "WHERE no_checkup = :id";
 
@@ -883,41 +901,108 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", noCheckup)
                     .list();
+
+            String makanan = "";
+            String obat = "";
+            String lainLain = "";
+
             if(result.size() > 0){
                 for (Object[] obj: result){
-                    if(obj[2] != null){
-                        if(alergi != ""){
-                            alergi = alergi +", "+obj[2].toString();
-                        }else {
-                            alergi = obj[2].toString();
+                    if(obj[3] != null){
+                        if("Makanan".equalsIgnoreCase(obj[3].toString())){
+                            if(!"".equalsIgnoreCase(makanan)){
+                                makanan = makanan+", "+obj[2].toString();
+                            }else{
+                                makanan = obj[2].toString();
+                            }
+                        }
+                        if("Obat".equalsIgnoreCase(obj[3].toString())){
+                            if(!"".equalsIgnoreCase(makanan)){
+                                obat = obat+", "+obj[2].toString();
+                            }else{
+                                obat = obj[2].toString();
+                            }
+                        }
+                        if("Lain-Lain".equalsIgnoreCase(obj[3].toString())){
+                            if(!"".equalsIgnoreCase(makanan)){
+                                lainLain = lainLain+", "+obj[2].toString();
+                            }else{
+                                lainLain = obj[2].toString();
+                            }
                         }
                     }
                 }
+            }
+
+            if(!"".equalsIgnoreCase(makanan) && !"".equalsIgnoreCase(obat) && !"".equalsIgnoreCase(lainLain)){
+                alergi = "Makanan : "+makanan+". Obat-Obatan : "+obat+". Lain-Lain : "+lainLain;
+            }else if(!"".equalsIgnoreCase(makanan) && !"".equalsIgnoreCase(obat)){
+                alergi = "Makanan : "+makanan+". Obat-Obatan : "+obat;
+            }else if(!"".equalsIgnoreCase(makanan) && !"".equalsIgnoreCase(lainLain)){
+                alergi = "Makanan : "+makanan+". Lain-Lain : "+lainLain;
+            }else if(!"".equalsIgnoreCase(obat) && !"".equalsIgnoreCase(lainLain)){
+                alergi = "Obat-Obatan : "+obat+". Lain-Lain : "+lainLain;
+            }else if(!"".equalsIgnoreCase(makanan)){
+                alergi = "Makanan : "+makanan;
+            }else if(!"".equalsIgnoreCase(obat)){
+                alergi = "Obat-Obatan : "+obat;
+            }else if(!"".equalsIgnoreCase(lainLain)){
+                alergi = "Lain-Lain : "+lainLain;
             }
         }
         return alergi;
     }
 
-    public String getPenunjangMendis(String idDetailCheckup){
+    public String getPenunjangMendis(String idDetailCheckup, String tipe){
         String res = "";
-        String SQL = "SELECT \n" +
+        String kat = "";
+        if(tipe != null && !"".equalsIgnoreCase(tipe)){
+            kat = "AND c.kategori = '"+tipe+"' \n";
+        }
+        String SQL = "SELECT\n" +
                 "a.id_periksa_lab,\n" +
-                "b.nama_lab\n" +
+                "b.nama_lab,\n" +
+                "c.kategori\n" +
                 "FROM it_simrs_periksa_lab a\n" +
-                "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab \n" +
-                "WHERE id_detail_checkup = :id";
+                "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
+                "INNER JOIN im_simrs_kategori_lab c ON b.id_kategori_lab = c.id_kategori_lab\n" +
+                "WHERE id_detail_checkup = :id \n"+ kat;
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", idDetailCheckup)
                 .list();
+        String lab = "";
+        String radiologi = "";
+
         if (result.size() > 0){
             for (Object[] obj: result){
-                if(obj[1] != null){
+                if("lab".equalsIgnoreCase(obj[2].toString())){
                     if("".equalsIgnoreCase(res)){
-                        res = obj[1].toString();
+                        lab = obj[1].toString();
                     }else{
-                        res = res +", "+obj[1].toString();
+                        lab = lab +", "+obj[1].toString();
                     }
+                }
+                if("radiologi".equalsIgnoreCase(obj[2].toString())){
+                    if("".equalsIgnoreCase(res)){
+                        radiologi = obj[1].toString();
+                    }else{
+                        radiologi = radiologi +", "+obj[1].toString();
+                    }
+                }
+            }
+
+            if("lab".equalsIgnoreCase(tipe)){
+                res = lab;
+            }else if("radiologi".equalsIgnoreCase(tipe)){
+                res = radiologi;
+            }else {
+                if(!"".equalsIgnoreCase(lab) && !"".equalsIgnoreCase(radiologi)){
+                    res = "Laboratorium : "+lab+", "+"Radiologi : "+radiologi;
+                }else if(!"".equalsIgnoreCase(lab)){
+                    res = "Laboratorium : "+lab;
+                }else if(!"".equalsIgnoreCase(radiologi)){
+                    res = "Radiologi : "+radiologi;
                 }
             }
         }
@@ -947,6 +1032,31 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             }
         }
         return res;
+    }
+
+    public String getTindakanRawatIC9(String idDetailCheckup){
+        String response = "";
+        String res = "";
+        String SQL = "SELECT \n" +
+                "id_icd9,\n" +
+                "nama_icd9\n" +
+                "FROM it_simrs_tindakan_rawat_icd9\n" +
+                "WHERE id_detail_checkup = :id";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idDetailCheckup)
+                .list();
+        if (result.size() > 0){
+            for (Object[] obj: result){
+                if(obj[1] != null){
+                    res += "<li><b>"+obj[0].toString()+"</b>-"+obj[1].toString()+"</li>";
+                }
+            }
+            if(!"".equalsIgnoreCase(res)){
+                response = "<ul>"+res+"</ul>";
+            }
+        }
+        return response;
     }
 
     public String getResepPasien(String idDetailCheckup){
@@ -1000,6 +1110,72 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return res;
     }
 
+    public String getDiagnosaPrimer(String idDetailCheckup){
+        String response = "";
+        String res = "";
+        String SQL = "SELECT\n" +
+                "a.id_diagnosa,\n" +
+                "a.keterangan_diagnosa \n" +
+                "FROM(\n" +
+                " SELECT\n" +
+                " id_detail_checkup,\n" +
+                " id_diagnosa,\n" +
+                " keterangan_diagnosa,\n" +
+                " jenis_diagnosa,\n" +
+                " rank() OVER (PARTITION BY id_detail_checkup ORDER BY created_date DESC)\n" +
+                " FROM it_simrs_diagnosa_rawat\n" +
+                ") a\n" +
+                "WHERE a.rank = 1 \n" +
+                "AND a.id_detail_checkup = :id";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idDetailCheckup)
+                .list();
+        if (result.size() > 0){
+            for (Object[] obj: result){
+                if(obj[1] != null){
+                    res += "<li><b>"+obj[0].toString()+"</b>-"+obj[1].toString()+"</li>";
+                }
+            }
+            if(!"".equalsIgnoreCase(res)){
+                response = "<ul>"+res+"</ul>";
+            }
+        }
+        return response;
+    }
+
+    public String getDiagnosaSekunder(String idDetailCheckup){
+        String response = "";
+        String res = "";
+        String SQL = " SELECT\n" +
+                " id_diagnosa,\n" +
+                " keterangan_diagnosa,\n" +
+                " jenis_diagnosa\n" +
+                " FROM it_simrs_diagnosa_rawat\n" +
+                " WHERE id_detail_checkup = :id\n" +
+                " ORDER BY created_date ASC\n" +
+                " LIMIT (\n" +
+                " SELECT \n" +
+                " COUNT(id_diagnosa) - 1 as count\n" +
+                " FROM it_simrs_diagnosa_rawat\n" +
+                " WHERE id_detail_checkup = :id)";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idDetailCheckup)
+                .list();
+        if (result.size() > 0){
+            for (Object[] obj: result){
+                if(obj[1] != null){
+                    res += "<li><b>"+obj[0].toString()+"</b>-"+obj[1].toString()+"</li>";
+                }
+            }
+            if(!"".equalsIgnoreCase(res)){
+                response = "<ul>"+res+"</ul>";
+            }
+        }
+        return response;
+    }
+
     public HeaderCheckup getPemeriksaanFisik(String noCheckup){
         HeaderCheckup res = new HeaderCheckup();
         if(noCheckup != null && !"".equalsIgnoreCase(noCheckup)){
@@ -1011,7 +1187,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "suhu,\n" +
                     "nadi,\n" +
                     "rr,\n" +
-                    "anamnese\n" +
+                    "autoanamnesis, \n" +
+                    "heteroanamnesis\n" +
                     "FROM it_simrs_header_checkup\n" +
                     "WHERE no_checkup LIKE :id";
             List<Object[]> result = new ArrayList<>();
@@ -1027,10 +1204,53 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 res.setSuhu(obj[4] != null ? obj[4].toString() : "");
                 res.setNadi(obj[5] != null ? obj[5].toString() : "");
                 res.setPernafasan(obj[6] != null ? obj[6].toString() : "");
-                res.setAnamnese(obj[7] != null ? obj[7].toString() : "");
+                if(obj[7] != null && obj[8] != null){
+                    res.setAnamnese("Autoanamnesis : "+obj[7].toString()+ ". Heteroanamnesis : "+obj[8].toString());
+                }else if(obj[7] != null){
+                    res.setAnamnese("Autoanamnesis : "+obj[7].toString());
+                }else if(obj[8] != null){
+                    res.setAnamnese("Heteroanamnesis : "+obj[8].toString());
+                }else {
+                    res.setAnamnese("");
+                }
             }
         }
         return res;
+    }
+
+    public Dokter getNamaSipDokter(String id, String tipe) {
+        Dokter dokter = new Dokter();
+        String jenis = "";
+
+        if("RI".equalsIgnoreCase(tipe)){
+            jenis = "AND jenis_dpjp = 'DPJP 1'";
+        }
+
+        if(id != null){
+            String SQL = "SELECT \n" +
+                    "b.id_dokter,\n" +
+                    "b.sip,\n" +
+                    "b.nama_dokter\n" +
+                    "FROM it_simrs_dokter_team a\n" +
+                    "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
+                    "WHERE a.id_detail_checkup = :id\n" + jenis +
+                    "ORDER BY a.created_date ASC LIMIT 1";
+
+            List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", id)
+                    .list();
+
+            if (result.size() > 0) {
+                Object[] obj = result.get(0);
+                if(obj != null){
+                    dokter.setIdDokter(obj[0] != null ? obj[0].toString() : null);
+                    dokter.setSip(obj[1] != null ? obj[1].toString() : null);
+                    dokter.setNamaDokter(obj[2] != null ? obj[2].toString() : null);
+
+                }
+            }
+        }
+        return dokter;
     }
 
     public String getAsuransiName(String id) {
@@ -1064,7 +1284,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "d.biji_per_lembar,\n" +
                     "b.hari_kronis,\n" +
                     "c.id_pelayanan,\n" +
-                    "b.id_transaksi_obat_detail\n" +
+                    "b.id_transaksi_obat_detail, \n" +
+                    "b.keterangan \n"+
                     "FROM mt_simrs_permintaan_resep a\n" +
                     "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "INNER JOIN (SELECT id_pelayanan, id_obat, SUM(qty_box) box, SUM(qty_lembar) lembar, SUM(qty_biji) biji\n" +
@@ -1095,6 +1316,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     detail.setHariKronis(obj[8] == null ? 0 : (Integer) obj[8]);
                     detail.setIdPelayanan(obj[9] == null ? "" : obj[9].toString());
                     detail.setIdTransaksiObatDetail(obj[10] == null ? "" : obj[10].toString());
+                    detail.setKeterangan(obj[11] == null ? "" : obj[11].toString());
                     transaksiObatDetailList.add(detail);
                 }
 
@@ -1116,13 +1338,26 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "c.nama_tindakan,\n" +
                     "c.keterangan,\n" +
                     "b.keterangan_selesai, \n" +
-                    "b.video_rm\n" +
+                    "b.video_rm,\n" +
+                    "e.id_diagnosa,\n" +
+                    "e.keterangan_diagnosa, \n" +
+                    "f.url_img \n"+
                     "FROM it_simrs_header_checkup  a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
-                    "WHERE a.id_pasien = :id AND a.branch_id = :branchId AND b.status_periksa = '3'\n" +
-                    "AND is_kamar IS NULL ORDER BY b.id_detail_checkup DESC, c.tanggal_tindakan ASC";
+                    "LEFT JOIN (\n" +
+                    "SELECT * FROM(\n" +
+                    "SELECT *, \n" +
+                    "rank() OVER (PARTITION BY id_detail_checkup ORDER BY created_date DESC)\n" +
+                    "FROM it_simrs_diagnosa_rawat\n" +
+                    ")a WHERE rank = 1) e ON b.id_detail_checkup = e.id_detail_checkup\n" +
+                    "LEFT JOIN it_simrs_periksa_lab f ON c.id_tindakan = f.id_periksa_lab \n"+
+                    "WHERE a.id_pasien = :id \n" +
+                    "AND a.branch_id = :branchId \n" +
+                    "AND b.status_periksa = '3'\n" +
+                    "ORDER BY b.id_detail_checkup DESC, \n" +
+                    "c.tanggal_tindakan ASC";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -1141,6 +1376,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                         checkup.setIdDetailCheckup(obj[2].toString());
                         checkup.setNamaPelayanan(obj[3].toString());
                         checkup.setKeteranganKeluar(obj[8] == null ? null : obj[8].toString());
+                        checkup.setDiagnosa(obj[10] == null ? null : obj[10].toString()+"-");
+                        checkup.setNamaDiagnosa(obj[11] == null ? null : obj[11].toString());
                     }
                     if (obj[4] != null) {
                         String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format((Timestamp) obj[4]);
@@ -1156,6 +1393,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     }
                     checkup.setKeterangan(obj[7] == null ? "" : obj[7].toString());
                     checkup.setVideoRm(obj[9] == null ? null : CommonConstant.EXTERNAL_IMG_URI + obj[9].toString());
+                    if(obj[12] != null){
+                        checkup.setUrlLab(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_IMG_RM+obj[12].toString());
+                    }
                     checkupList.add(checkup);
                 }
             }
@@ -1407,6 +1647,48 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             }
         }
         return checkup;
+    }
+
+    public List<HeaderCheckup> getRiwayatPemeriksaan(String idPasien){
+        List<HeaderCheckup> response = new ArrayList<>();
+        if(idPasien != ""){
+            String SQL = "SELECT\n" +
+                    "c.nama_pelayanan,\n" +
+                    "aa.id_diagnosa,\n" +
+                    "aa.keterangan_diagnosa,\n" +
+                    "a.created_date\n" +
+                    "FROM it_simrs_header_checkup a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "LEFT JOIN (\n" +
+                    "SELECT * FROM (\n" +
+                    "SELECT\n" +
+                    "keterangan_diagnosa,\n" +
+                    "id_diagnosa,\n" +
+                    "id_detail_checkup,\n" +
+                    "rank() OVER (PARTITION BY id_detail_checkup ORDER BY created_date DESC)\n" +
+                    "FROM it_simrs_diagnosa_rawat\n" +
+                    ") a WHERE a.rank = 1\n" +
+                    ") aa ON b.id_detail_checkup = aa.id_detail_checkup\n" +
+                    "WHERE a.id_pasien = :id\n" +
+                    "ORDER BY a.created_date DESC LIMIT 5";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idPasien)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    HeaderCheckup checkup = new HeaderCheckup();
+                    checkup.setNamaPelayanan(obj[0] == null ? "" : obj[0].toString());
+                    checkup.setDiagnosa(obj[1] == null ? "" : obj[1].toString());
+                    checkup.setNamaDiagnosa(obj[2] == null ? "" : obj[2].toString());
+                    checkup.setCreatedDate(obj[3] == null ? null : (Timestamp) obj[3]);
+                    response.add(checkup);
+                }
+            }
+        }
+        return response;
     }
 
     public String getNextSeq() {

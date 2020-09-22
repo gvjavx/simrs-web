@@ -38,6 +38,51 @@ public class TransaksiObatBatch {
     private BigDecimal netto;
 
     private String urlDoc;
+    private String jenis;
+    private String stExpDate;
+    private String stTglFaktur;
+    private String stTglInvoice;
+    private String stTglDo;
+
+    public String getStTglInvoice() {
+        return stTglInvoice;
+    }
+
+    public void setStTglInvoice(String stTglInvoice) {
+        this.stTglInvoice = stTglInvoice;
+    }
+
+    public String getStTglDo() {
+        return stTglDo;
+    }
+
+    public void setStTglDo(String stTglDo) {
+        this.stTglDo = stTglDo;
+    }
+
+    public String getStTglFaktur() {
+        return stTglFaktur;
+    }
+
+    public void setStTglFaktur(String stTglFaktur) {
+        this.stTglFaktur = stTglFaktur;
+    }
+
+    public String getStExpDate() {
+        return stExpDate;
+    }
+
+    public void setStExpDate(String stExpDate) {
+        this.stExpDate = stExpDate;
+    }
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
     public String getUrlDoc() {
         return urlDoc;

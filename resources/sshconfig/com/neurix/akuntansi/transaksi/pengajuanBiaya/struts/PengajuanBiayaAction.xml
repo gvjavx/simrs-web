@@ -79,10 +79,14 @@
             <result name="success_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiaya.jsp</result>
             <result name="input_pengajuan_admin">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiayaAdmin.jsp</result>
             <result name="success_pengajuan_admin">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPengajuanBiayaAdmin.jsp</result>
+            <result name="terima_rk">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/terimaRk.jsp</result>
 
             <result name="error_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
             <result name="init_add_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
             <result name="success_save_add_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
+
+            <result name="init_do">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPembayaranDo.jsp</result>
+            <result name="success_pengajuan_rk">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPembayaranDo.jsp</result>
 
             <result name="cetak_surat_pengajuan_biaya" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/FormPengajuanBiaya.jasper</param>

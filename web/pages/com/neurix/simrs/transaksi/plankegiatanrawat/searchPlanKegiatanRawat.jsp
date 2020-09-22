@@ -16,7 +16,8 @@
     <script type='text/javascript'>
 
         $(document).ready(function () {
-            $('#rencana_kegiatan_rawat').addClass('active');
+            $('#pel_ri_active, #rencana_kegiatan').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
         });
 
     </script>

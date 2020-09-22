@@ -3,7 +3,9 @@ package com.neurix.simrs.transaksi.periksalab.bo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.labdetail.model.LabDetail;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
+import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail;
 
@@ -31,4 +33,7 @@ public interface PeriksaLabBo {
 
     public List<Dokter> getListDokterLabRadiologi(String tipe) throws GeneralBOException;
     public PeriksaLab getNamaLab(String idPeriksa) throws GeneralBOException;
+
+    public CrudResponse saveUpdateParameter(PeriksaLab bean, List<String> listParams) throws GeneralBOException;
+    public ItSimrsPeriksaLabEntity getPeriksaLabEntityById(String id) throws GeneralBOException;
 }

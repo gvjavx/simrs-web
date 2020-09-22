@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.paketperiksa.bo.impl;
 
+import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
@@ -382,6 +383,11 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<MasterVendor> getListPerusahaan() throws GeneralBOException {
+        return paketPasienDao.getListPerusahaan();
     }
 
     private String getNextPaketPeriksaId() {

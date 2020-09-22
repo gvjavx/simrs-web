@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.budgetingnilaidasar.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -11,7 +12,7 @@ public class ItAkunBudgetingNilaiDasarEntity {
     private String idNilaiDasar;
     private String tahun;
     private String branchId;
-    private BigInteger nilai;
+    private BigDecimal nilai;
     private String flag;
     private String action;
     private String createdWho;
@@ -51,11 +52,11 @@ public class ItAkunBudgetingNilaiDasarEntity {
         this.branchId = branchId;
     }
 
-    public BigInteger getNilai() {
+    public BigDecimal getNilai() {
         return nilai;
     }
 
-    public void setNilai(BigInteger nilai) {
+    public void setNilai(BigDecimal nilai) {
         this.nilai = nilai;
     }
 

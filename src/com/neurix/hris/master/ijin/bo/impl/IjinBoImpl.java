@@ -50,6 +50,8 @@ public class IjinBoImpl implements IjinBo {
         this.ijinDao = ijinDao;
     }
 
+
+
     @Override
     public void saveDelete(Ijin bean) throws GeneralBOException {
         logger.info("[saveDelete.saveDelete] start process >>>");

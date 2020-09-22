@@ -18,9 +18,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.*;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,7 +27,7 @@ import java.util.Properties;
  * Time: 21:18
  * To change this template use File | Settings | File Templates.
  */
-public class CommonUtil {
+public class  CommonUtil {
 
     protected static transient Logger logger = Logger.getLogger(CommonUtil.class);
 
@@ -767,6 +765,49 @@ public class CommonUtil {
         return stBulan;
     }
 
+    public static String convertStringBulanToNumber(String bulan){
+        String stBulan = "";
+        switch (bulan.toLowerCase()){
+            case "januari" :
+                stBulan = "1";
+                break;
+            case "februari" :
+                stBulan = "2";
+                break;
+            case "maret" :
+                stBulan = "3";
+                break;
+            case "april" :
+                stBulan = "4";
+                break;
+            case "mei" :
+                stBulan = "5";
+                break;
+            case "juni" :
+                stBulan = "6";
+                break;
+            case "juli" :
+                stBulan = "7";
+                break;
+            case "agustus" :
+                stBulan = "8";
+                break;
+            case "september" :
+                stBulan = "9";
+                break;
+            case "oktober" :
+                stBulan = "10";
+                break;
+            case "november" :
+                stBulan = "11";
+                break;
+            case "desember" :
+                stBulan = "12";
+                break;
+        }
+        return stBulan;
+    }
+
 
     public static String convertIdBagian(String id){
         String bagian = "-";
@@ -1083,6 +1124,29 @@ public class CommonUtil {
         }
     }
 
+    public static String convertTipePayroll(String tipePayroll){
+        switch (tipePayroll){
+            case "PR":
+                return "Payroll";
+            case "T":
+                return "THR";
+            case "JP":
+                return "Jasa Operasional";
+            case "JB":
+                return "Jubileum";
+            case "PN":
+                return "Pensiun";
+            case "IN":
+                return "Insentif";
+            case "CP":
+                return "Cuti Panjang";
+            case "CT":
+                return "Cuti Tahunan";
+            default:
+                return "";
+        }
+    }
+
     public static String getDateParted(Date date, String tipe){
         //create calander instance and get required params
         switch (tipe){
@@ -1104,6 +1168,19 @@ public class CommonUtil {
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
         return df.format(date);
     }
+
+    public static String ddMMyyyyFormat(Date date){
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        return df.format(date);
+    }
+
+    public static String yyyyMMddFormat(Date date){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        return df.format(date);
+    }
+
 
     public static Timestamp getCurrentDateTimes(){
         return new Timestamp(System.currentTimeMillis());
@@ -1172,4 +1249,87 @@ public class CommonUtil {
                 return "";
         }
     }
+
+    public static Double SubtractJamAwalDanJamAkhir(String jamAwal, String jamAkhir, String status) throws ParseException {
+        java.text.DateFormat df = new java.text.SimpleDateFormat("dd:MM:yyyy HH:mm");
+        java.util.Date date1 = df.parse("01:01:2000 "+jamAwal);
+        java.util.Date date2 = df.parse("01:01:2000 "+jamAkhir);
+        long diff = date2.getTime() - date1.getTime();
+        if (diff<0&&status.equalsIgnoreCase("positif")){
+            date2 = df.parse("02:01:2000 "+jamAkhir);
+            diff = date2.getTime() - date1.getTime();
+        }
+        int timeInSeconds = (int) (diff / 1000);
+        int hours, minutes;
+        hours = timeInSeconds / 3600;
+        timeInSeconds = timeInSeconds - (hours * 3600);
+        minutes = timeInSeconds / 60;
+        double hasil=hours;
+        if (minutes<15){hasil=hasil+0;}
+        else if (minutes<30){hasil=hasil+0;}
+        else if (minutes<45){hasil=hasil+0.5;}
+        else if (minutes<60){hasil=hasil+0.5;}
+        return hasil;
+    }
+
+    public static Double SubtractJam(String jamAwal, String jamAkhir) throws ParseException {
+        java.text.DateFormat df = new java.text.SimpleDateFormat("dd:MM:yyyy HH:mm");
+        java.util.Date date1 = df.parse("01:01:2000 "+jamAwal);
+        java.util.Date date2 = df.parse("01:01:2000 "+jamAkhir);
+        long diff = date2.getTime() - date1.getTime();
+        int timeInSeconds = (int) (diff / 1000);
+        int hours, minutes;
+        hours = timeInSeconds / 3600;
+        timeInSeconds = timeInSeconds - (hours * 3600);
+        minutes = timeInSeconds / 60;
+        double hasil=hours;
+        if (minutes<15){hasil=hasil+0;}
+        else if (minutes<30){hasil=hasil+0;}
+        else if (minutes<45){hasil=hasil+0.5;}
+        else if (minutes<60){hasil=hasil+0.5;}
+        return hasil;
+    }
+
+    public static int getRandomNumberInts(int min, int max){
+        Random random = new Random();
+        return random.ints(min,(max+1)).findFirst().getAsInt();
+    }
+
+    //Convert Date to Calendar
+    public static Calendar dateToCalendar(java.util.Date date) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+
+    }
+
+    //Convert Calendar to Date
+    public static java.util.Date calendarToDate(Calendar calendar) {
+        return calendar.getTime();
+    }
+
+    public static long compareTwoTimeStamps(java.sql.Timestamp currentTime, java.sql.Timestamp oldTime,String get) {
+        long milliseconds1 = oldTime.getTime();
+        long milliseconds2 = currentTime.getTime();
+
+        long diff = milliseconds2 - milliseconds1;
+        long diffSeconds = diff / 1000;
+        long diffMinutes = diff / (60 * 1000);
+        long diffHours = diff / (60 * 60 * 1000);
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        if ("menit".equalsIgnoreCase(get)){
+            return diffMinutes;
+        }else if ("jam".equalsIgnoreCase(get)){
+            return diffHours;
+        }else if ("detik".equalsIgnoreCase(get)){
+            return diffSeconds;
+        }else if ("hari".equalsIgnoreCase(get)){
+            return diffDays;
+        }else{
+            return diff;
+        }
+    }
+
 }

@@ -269,7 +269,7 @@
                                                             <display:column style="text-align:center" property="bulan" sortable="true" title="Bulan" />
                                                             <display:column style="text-align:center" property="tahun" sortable="true" title="Tahun" />
                                                             <display:column style="text-align:center" property="noNota" sortable="true" title="No. Nota" />
-                                                            <display:column style="text-align:right" property="bruto" sortable="true" title="Bruto" />
+                                                            <%--<display:column style="text-align:right" property="bruto" sortable="true" title="Bruto" />--%>
                                                             <display:column style="text-align:right" property="hrBruto" sortable="true" title="Hr. Bruto" />
                                                             <display:column style="text-align:right" property="pphDipungut" sortable="true" title="Pot. Pajak" />
                                                             <display:column style="text-align:right" property="potKs" sortable="true" title="Pot.Ks" />
@@ -339,7 +339,7 @@
 </body>
 </html>
 <div class="modal fade" id="modal-detail-pendapatan">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog" style="width: 1300px">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -374,7 +374,7 @@
                                 <td><b>Tahun</b></td>
                                 <td><span id="tahun"></span></td>
                             </tr>
-                            <tr>
+                            <tr style="display: none">
                                 <td><b>Bruto</b></td>
                                 <td align="right"><span id="bruto"></span></td>
                             </tr>

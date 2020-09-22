@@ -1,8 +1,17 @@
 package com.neurix.simrs.transaksi.antriantelemedic.bo.impl;
 
+import com.coremedia.iso.IsoFile;
+import com.coremedia.iso.boxes.Box;
+import com.coremedia.iso.boxes.Container;
+import com.googlecode.mp4parser.authoring.Movie;
+import com.googlecode.mp4parser.authoring.Track;
+import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
+import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
+import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
 import com.lowagie.text.BadElementException;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.common.util.FirebasePushNotif;
@@ -25,11 +34,11 @@ import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.mobileapi.antrian.model.Antrian;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao;
-import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
-import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
-import com.neurix.simrs.transaksi.antriantelemedic.model.StatusAntrianTelemedic;
+import com.neurix.simrs.transaksi.antriantelemedic.dao.VideoRmDao;
+import com.neurix.simrs.transaksi.antriantelemedic.model.*;
 import com.neurix.simrs.transaksi.bataltelemedic.dao.BatalDokterTelemedicDao;
 import com.neurix.simrs.transaksi.bataltelemedic.dao.BatalTelemedicDao;
 import com.neurix.simrs.transaksi.bataltelemedic.model.BatalTelemedic;
@@ -61,7 +70,12 @@ import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.record.formula.functions.Time;
 import org.hibernate.HibernateException;
+import org.springframework.security.access.method.P;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -92,6 +106,11 @@ public class TelemedicBoImpl implements TelemedicBo {
     private HeaderCheckupDao headerCheckupDao;
     private CheckupDetailDao checkupDetailDao;
     private NotifikasiAdminTelemedicDao notifikasiAdminTelemedicDao;
+    private VideoRmDao videoRmDao;
+
+    public void setVideoRmDao(VideoRmDao videoRmDao) {
+        this.videoRmDao = videoRmDao;
+    }
 
     public void setNotifikasiAdminTelemedicDao(NotifikasiAdminTelemedicDao notifikasiAdminTelemedicDao) {
         this.notifikasiAdminTelemedicDao = notifikasiAdminTelemedicDao;
@@ -1609,6 +1628,220 @@ public class TelemedicBoImpl implements TelemedicBo {
             logger.error("[NotifikasiAdminBoImpl.createNotifikasiAdmin] ERROR. ", e);
             throw new GeneralBOException("[NotifikasiAdminBoImpl.createNotifikasiAdmin] ERROR. ", e);
         }
+    }
+
+    @Override
+    public CrudResponse insertVideoRm(String idDetailCheckup, String path, String tipe) {
+
+        CrudResponse crudResponse = new CrudResponse();
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        ItSimrsVideoRmEntity itSimrsVideoRmEntity = new ItSimrsVideoRmEntity();
+        itSimrsVideoRmEntity.setIdVideoRm("VDO"+videoRmDao.getNextSeq());
+        itSimrsVideoRmEntity.setIdAntrianTelemedic("");
+        itSimrsVideoRmEntity.setIdDetailCheckup(idDetailCheckup);
+        itSimrsVideoRmEntity.setPath(path);
+        itSimrsVideoRmEntity.setAction("C");
+        itSimrsVideoRmEntity.setFlag("Y");
+        itSimrsVideoRmEntity.setCreatedDate(now);
+        itSimrsVideoRmEntity.setLastUpdate(now);
+        itSimrsVideoRmEntity.setCreatedWho("admin");
+        itSimrsVideoRmEntity.setLastUpdateWho("admin");
+        itSimrsVideoRmEntity.setTipeVideo(tipe);
+
+        try {
+            videoRmDao.addAndSave(itSimrsVideoRmEntity);
+            crudResponse.setMsg("Success");
+        } catch (GeneralBOException e){
+            logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+        }
+
+        return crudResponse;
+    }
+
+    private List<ItSimrsVideoRmEntity> getVideoRm(String idDetailCheckup) {
+        List<ItSimrsVideoRmEntity> list;
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_detail_checkup", idDetailCheckup);
+
+        try {
+            list = videoRmDao.getByCriteria(hsCriteria);
+        } catch (GeneralBOException e){
+            logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+        }
+
+        return list;
+
+    }
+
+    @Override
+    public CrudResponse updateVideoRmOnDetailCheckup(String idDetailCheckup, String path) {
+        CrudResponse crudResponse = new CrudResponse();
+
+        List<ItSimrsVideoRmEntity> itSimrsVideoRmEntityList = null;
+
+        itSimrsVideoRmEntityList = getVideoRm(idDetailCheckup);
+        if (itSimrsVideoRmEntityList != null) {
+
+            //check jika terdapat lebih dari satu video, maka video digabung
+            if (itSimrsVideoRmEntityList.size() > 1) {
+
+               path = gabungVideo(itSimrsVideoRmEntityList);
+               insertVideoRm(idDetailCheckup, path, "joined");
+
+            }
+
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = null;
+
+            try {
+                detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", idDetailCheckup, "Y");
+            } catch (GeneralBOException e) {
+                logger.info("[CheckupDetailBoImpl.editVideoRm] Error when editVideoRm ", e);
+            }
+
+            if (detailCheckupEntity != null) {
+                detailCheckupEntity.setVideoRm(path);
+                try {
+                    checkupDetailDao.updateAndSave(detailCheckupEntity);
+                    crudResponse.setMsg("Success");
+                } catch (GeneralBOException e) {
+                    logger.info("[CheckupDetailBoImpl.editVideoRm] Error when editVideoRm ", e);
+                }
+            }
+
+        }
+
+        return crudResponse;
+    }
+
+    @Override
+    public String cobaGabung(String path1, String path2) {
+
+        List<String> listPath = new ArrayList<>();
+        listPath.add(path1);
+        listPath.add(path2);
+
+        List<Movie> listMovie = new ArrayList<>();
+
+
+        for (int i = 0; i < listPath.size(); i++) {
+            Movie movie = new Movie();
+            String path = listPath.get(i);
+            try {
+                movie = MovieCreator.build(CommonUtil.getPropertyParams("upload.folder") + path);
+            } catch (IOException e){
+                logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            }
+
+            listMovie.add(movie);
+        }
+
+        Movie newMovie = listMovie.get(0);
+
+        for (int i = 1; i < listMovie.size(); i++) {
+            List<Track> tracks = listMovie.get(i).getTracks();
+            for (Track item : tracks) {
+                try {
+                    newMovie.addTrack(new AppendTrack(item, item));
+                } catch (IOException e){
+                    logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                    throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                }
+            }
+        }
+
+        Container out = new DefaultMp4Builder().build(newMovie);
+
+        String path = "/upload/video_rm/coba.mp4";
+
+        try {
+            FileOutputStream fos = new FileOutputStream(new File(CommonUtil.getPropertyParams("upload.folder")+path));
+            for ( Box item : out.getBoxes()) {
+                try {
+                    item.getBox(fos.getChannel());
+                } catch (IOException e){
+                    logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                    throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                }
+            }
+
+            try {
+                fos.close();
+            } catch (IOException e){
+                logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            }
+        } catch (FileNotFoundException e) {
+            logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+        }
+        return path;
+
+
+    }
+
+    private String gabungVideo(List<ItSimrsVideoRmEntity> listVideoRm) {
+
+        List<Movie> listMovie = new ArrayList<>();
+
+        for (int i = 0; i < listVideoRm.size(); i++) {
+            Movie movie = new Movie();
+            String path = listVideoRm.get(i).getPath();
+            try {
+               movie = MovieCreator.build(CommonUtil.getPropertyParams("upload.folder") + path);
+            } catch (IOException e){
+                logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            }
+
+            listMovie.add(movie);
+        }
+
+        Movie newMovie = listMovie.get(0);
+
+       for (int i = 1; i < listMovie.size(); i++) {
+           List<Track> tracks = listMovie.get(i).getTracks();
+           for (Track item : tracks) {
+               try {
+                   newMovie.addTrack(new AppendTrack(item, item));
+               } catch (IOException e){
+                   logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                   throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+               }
+           }
+       }
+
+       Container out = new DefaultMp4Builder().build(newMovie);
+
+       String path = "/upload/video_rm/GB_"+listVideoRm.get(0).getIdDetailCheckup()+".mp4";
+
+        try {
+            FileOutputStream fos = new FileOutputStream(new File(CommonUtil.getPropertyParams("upload.folder")+path));
+            for ( Box item : out.getBoxes()) {
+                try {
+                    item.getBox(fos.getChannel());
+                } catch (IOException e){
+                    logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                    throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                }
+            }
+
+            try {
+                fos.close();
+            } catch (IOException e){
+                logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            }
+        } catch (FileNotFoundException e) {
+            logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+        }
+        return path;
     }
 
     private String generateIdNotif(String branchId){

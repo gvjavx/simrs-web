@@ -106,6 +106,17 @@ public class JurnalDetailDao extends GenericDao<ItJurnalDetailEntity, String> {
                 .list();
         return results;
     }
+
+    public List<ItJurnalDetailEntity> getListJurnalDetailByNoNota(String id) throws HibernateException {
+
+        List<ItJurnalDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItJurnalDetailEntity.class)
+                .add(Restrictions.eq("noNota", id))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("jurnalDetailId"))
+                .list();
+        return results;
+    }
+
     public void addAndSavePending(ItJurnalDetailPendingEntity entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);
     }

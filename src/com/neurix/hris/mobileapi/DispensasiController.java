@@ -1,14 +1,11 @@
 package com.neurix.hris.mobileapi;
 
-import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.ijin.bo.IjinBo;
 import com.neurix.hris.master.ijin.model.Ijin;
-import com.neurix.hris.mobileapi.model.Branch;
 import com.neurix.hris.mobileapi.model.Dispensasi;
-import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
 import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
@@ -21,12 +18,10 @@ import org.apache.struts2.rest.HttpHeaders;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author gondok
@@ -116,10 +111,12 @@ public class DispensasiController implements ModelDriven<Object> {
         this.notifikasiBoProxy = notifikasiBoProxy;
     }
 
+
+
     public HttpHeaders create() {
 
         logger.info("[DispensasiController.index] end process POST /branch <<<");
-
+        //edit
         if  (action.equalsIgnoreCase("edit")) {
             com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar search = new IjinKeluar();
             search.setIjinKeluarId(model.getIjinKeluarId());
@@ -143,6 +140,7 @@ public class DispensasiController implements ModelDriven<Object> {
                 throw new GeneralBOException(e);
             }
 
+            //save image from update pegawai melahirkan
             String path = null;
             if (fileSurat != null) {
                 String idSuratDokter = ijinKeluarBoProxy.getNextSuratDokterId();
@@ -232,6 +230,7 @@ public class DispensasiController implements ModelDriven<Object> {
         logger.info("[DispensasiController.index] end process POST /branch <<<");
         return new DefaultHttpHeaders("index").disableCaching();
     }
+
 
     public HttpHeaders update() {
         logger.info("[DispensasiController.update] end process POST /pengajuancuti/{id} <<<");

@@ -54,6 +54,7 @@
                 && noTelp != '') {
 
                 $('#confirm_dialog').dialog('open');
+                $('body').scrollTop(0);
 
             } else {
 
@@ -112,6 +113,7 @@
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
                 $.publish('showInfoDialog');
+                $('body').scrollTop(0);
                 $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #img_file, #provinsi, #kabupaten, #kecamatan, #desa').css('border', '');
                 resetField();
 
@@ -369,9 +371,9 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group" style="display: inline;">
-                                            <div class="col-md-offset-2 col-md-7" style="margin-top: 7px">
+                                            <div class="col-md-offset-3 col-md-6 text-center" style="margin-top: 7px">
                                                 <button type="button" class="btn btn-success" onclick="confirm()"><i
-                                                        class="fa fa-arrow-right"></i> Save
+                                                        class="fa fa-check"></i> Save
                                                 </button>
                                                 <button type="button" class="btn btn-danger"
                                                         onclick="window.location.reload(true)">
@@ -538,17 +540,22 @@
         dwr.engine.setAsync(true);
         CheckupAction.completeBpjs(noBpjs, {
             callback: function (response) {
+                console.log(response);
                     if(response.statusBpjs == "AKTIF"){
                         if (response.nama != null) {
                             $('#btn-cek').html('<i class="fa fa-search"></i> Search');
                             $('#no_ktp').val(response.noKtp).attr('readonly','true');
-                            var nama = convertSentenceCase(response.nama.toLowerCase());
-                            $('#nama_pasien').val(nama).attr('readonly','true');
+                            if(response.nama != null){
+                                var nama = convertSentenceCase(response.nama.toLowerCase());
+                                $('#nama_pasien').val(nama).attr('readonly','true');
+                            }
                             $('#jenis_kelamin').val(response.jenisKelamin);
                             var tgl = $.datepicker.formatDate("yy-mm-dd", new Date(response.tglLahir))
                             $('#tanggal_lahir').val(tgl);
-                            var profesi = convertSentenceCase(response.profesi.toLowerCase());
-                            $('#profesi').val(profesi);
+                            if(response.profesi != null){
+                                var profesi = convertSentenceCase(response.profesi.toLowerCase());
+                                $('#profesi').val(profesi);
+                            }
                             $('#no_telp').val(response.noTelp);
                             // $("#no_bpjs").prop("readonly", true);
                             $('#success_pasien').show().fadeOut(5000);
@@ -558,28 +565,44 @@
                         if (response.nama != null) {
                             $('#btn-cek').html('<i class="fa fa-search"></i> Search');
                             $('#no_ktp').val(response.noKtp);
-                            var nama = convertSentenceCase(response.nama.toLowerCase());
-                            $('#nama_pasien').val(nama);
+                            if(response.nama != null){
+                                var nama = convertSentenceCase(response.nama.toLowerCase());
+                                $('#nama_pasien').val(nama).attr('readonly','true');
+                            }
                             $('#jenis_kelamin').val(response.jenisKelamin);
                             var tgl = $.datepicker.formatDate("yy-mm-dd", new Date(response.tglLahir))
                             $('#tanggal_lahir').val(tgl);
-                            var profesi = convertSentenceCase(response.profesi.toLowerCase());
-                            $('#profesi').val(profesi);
+                            if(response.profesi != null){
+                                var profesi = convertSentenceCase(response.profesi.toLowerCase());
+                                $('#profesi').val(profesi);
+                            }
                             $('#no_telp').val(response.noTelp);
                             // $("#no_bpjs").prop("readonly", true);
                             $('#warning_pasien').show().fadeOut(5000);
                             $('#msg_pasien_war').text("No BPJS sudah tidak Aktif...!");
                         }
                     }else{
-                        $('#btn-cek').html('<i class="fa fa-search"></i> Search');
-                        $('#no_ktp').val('').removeAttr('readonly');
-                        $('#nama_pasien').val('').removeAttr('readonly');
-                        $('#jenis_kelamin').val('');
-                        $('#tanggal_lahir').val('');
-                        $('#profesi').val('');
-                        $('#no_telp').val('');
-                        $('#warning_pasien').show().fadeOut(5000);
-                        $('#msg_pasien_war').text("No BPJS Tidak ditemukan...!");
+                        if(response.statusBpjs == null){
+                            $('#btn-cek').html('<i class="fa fa-search"></i> Search');
+                            $('#no_ktp').val('').removeAttr('readonly');
+                            $('#nama_pasien').val('').removeAttr('readonly');
+                            $('#jenis_kelamin').val('');
+                            $('#tanggal_lahir').val('');
+                            $('#profesi').val('');
+                            $('#no_telp').val('');
+                            $('#warning_pasien').show().fadeOut(5000);
+                            $('#msg_pasien_war').text("No BPJS Tidak ditemukan atau periksa kembali koneksi internet anda...!");
+                        }else{
+                            $('#btn-cek').html('<i class="fa fa-search"></i> Search');
+                            $('#no_ktp').val('').removeAttr('readonly');
+                            $('#nama_pasien').val('').removeAttr('readonly');
+                            $('#jenis_kelamin').val('');
+                            $('#tanggal_lahir').val('');
+                            $('#profesi').val('');
+                            $('#no_telp').val('');
+                            $('#warning_pasien').show().fadeOut(5000);
+                            $('#msg_pasien_war').text(response.statusBpjs);
+                        }
                     }
             }
         });
@@ -724,7 +747,10 @@
             $.each(data, function (i, item) {
                 //alert(item.kotaName);
                 var labelItem = item.kotaName;
-                mapped[labelItem] = {id: item.kotaId, label: labelItem};
+                mapped[labelItem] = {
+                    id: item.kotaId,
+                    label: labelItem
+                };
                 functions.push(labelItem);
             });
 
@@ -732,7 +758,8 @@
         },
         updater: function (item) {
             var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
+            var remove = selectedObj.label.substring(5);
+            var namaAlat = remove;
             kab = selectedObj.id;
             return namaAlat;
         }

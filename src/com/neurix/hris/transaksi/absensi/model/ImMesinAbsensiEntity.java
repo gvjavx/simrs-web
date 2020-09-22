@@ -15,6 +15,8 @@ public class ImMesinAbsensiEntity implements Serializable {
     private String mesinId;
     private String mesinName;
     private String mesinSn;
+    private String branchId;
+    private Timestamp lastGet;
 
     private Timestamp createdDate;
     private String flag;
@@ -22,6 +24,22 @@ public class ImMesinAbsensiEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public Timestamp getLastGet() {
+        return lastGet;
+    }
+
+    public void setLastGet(Timestamp lastGet) {
+        this.lastGet = lastGet;
+    }
 
     public String getMesinId() {
         return mesinId;

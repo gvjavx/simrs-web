@@ -11,7 +11,6 @@ import java.sql.Timestamp;
  * To change this template use File | Settings | File Templates.
  */
 public class ImLiburEntity implements Serializable {
-//    private ImApbAlatPK primaryKey;
     private String liburId;
     private String liburTahun;
     private String tipeLiburId;

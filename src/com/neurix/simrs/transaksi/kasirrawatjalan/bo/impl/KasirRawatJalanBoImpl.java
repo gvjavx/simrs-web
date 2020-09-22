@@ -100,6 +100,9 @@ public class KasirRawatJalanBoImpl implements KasirRawatJalanBo {
                 hsCriterian.put("status_bayar", bean.getStatusBayar());
 //                hsCriterian.put("nota_not_null", "Y");
             }
+            if(bean.getFlagRefund() != null && !"".equalsIgnoreCase(bean.getFlagRefund())){
+                hsCriterian.put("flag_refund", bean.getFlagRefund());
+            }
 
             List<ItSimrsUangMukaPendaftaranEntity> entityList = new ArrayList<>();
             try {

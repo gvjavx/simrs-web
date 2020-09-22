@@ -57,7 +57,7 @@ public interface PengajuanSetorBo extends BaseMasterBo<PengajuanSetor> {
 
     BigDecimal perhitunganKembaliPpn(PengajuanSetor search);
 
-    void saveAddProsesPpnKd(PerhitunganPpnKd bean, List<ProsesPpnKd> prosesPpnKdListNormal, List<ProsesPpnKd> prosesPpnKdListB2, List<ProsesPpnKd> prosesPpnKdListB3, PerhitunganPpnKd perhitunganPpnKdListNormal, PerhitunganPpnKd perhitunganPpnKdListB2, PerhitunganPpnKd perhitunganPpnKdListB3,PerhitunganKembaliPpn perhitunganKembaliPpn);
+    void saveAddProsesPpnKd(PerhitunganPpnKd bean, List<ProsesPpnKd> prosesPpnKdListNormal, List<ProsesPpnKd> prosesPpnKdListB2, List<ProsesPpnKd> prosesPpnKdListB3, PerhitunganPpnKd perhitunganPpnKdListNormal, PerhitunganPpnKd perhitunganPpnKdListB2, PerhitunganPpnKd perhitunganPpnKdListB3,PerhitunganKembaliPpn perhitunganKembaliPpn,List<PerhitunganKembaliUnit> perhitunganKembaliUnitList);
 
     List<PerhitunganPpnKd> getSearchHomeProsesPpnKd(PerhitunganPpnKd bean) throws GeneralBOException;
 
@@ -80,4 +80,24 @@ public interface PengajuanSetorBo extends BaseMasterBo<PengajuanSetor> {
     Map getBillingForPostingProsesPpnKasKeluar(String bulan, String tahun, String kas);
 
     void cancelProsesPpn(PerhitunganPpnKd bean) throws GeneralBOException;
+
+    Map getBillingForPostingPengelompokanPpnKeluaran(String bulan, String tahun, String branchId);
+
+    Map getBillingForPostingPengelompokanPpnMasukan(String bulan, String tahun, String branchId);
+
+    Map getBillingForPostingPpnKeluaranRk(String branchId,Map data);
+
+    Map getBillingForPostingPpnMasukanRk(String branchId, Map data);
+
+    Map getBillingForPostingRkPpnKeluaran(String branchId, Map data,String buktiJurnal5);
+
+    Map getBillingForPostingRkPpnMasukan(String branchId, Map data,String buktiJurnal6);
+
+    Map getBillingForPostingPengurangPpnKeluaran(String bulan, String tahun, BigDecimal totalKeluaranJurnal5, String buktiJurnal5, BigDecimal totalMasukanJurnal6, String buktiJurnal6);
+
+    Map getBillingForPostingPembayaranPpnKeluaran(String bulan, String tahun, BigDecimal sisaPpnKeluaran, String buktiJurnal5, String coaBank);
+
+    Map getBillingForPostingPembagianRkUntukUnit(String bulan, String tahun, String branchId, String sumberBiayaObat);
+
+    Map getBillingForPostingPenerimaanRkUntukUnit(String bulan, String tahun, String branchId);
 }

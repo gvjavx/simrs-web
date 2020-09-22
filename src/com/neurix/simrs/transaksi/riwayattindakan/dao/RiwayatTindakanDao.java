@@ -55,6 +55,9 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
             if (mapCriteria.get("not_resep") != null) {
                 criteria.add(Restrictions.ne("keterangan", "resep"));
             }
+            if (mapCriteria.get("id_ruangan") != null) {
+                criteria.add(Restrictions.eq("idRuangan", (String) mapCriteria.get("id_ruangan")));
+            }
         }
 
         criteria.addOrder(Order.asc("idRiwayatTindakan"));
@@ -95,6 +98,7 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
             String branchId = "%";
             String noCheckup = "%";
             String idDetail = "%";
+            String jenis = "";
 
             if(bean.getBranchId() != null){
                 branchId = bean.getBranchId();
@@ -108,13 +112,32 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                 idDetail = bean.getIdDetailCheckup();
             }
 
-            String SQL = "SELECT a.no_checkup, b.id_detail_checkup, c.id_riwayat_tindakan, \n" +
-                    "c.id_tindakan, c.nama_tindakan, c.keterangan, c.jenis_pasien, c.total_tarif, c.kategori_tindakan_bpjs, \n" +
-                    "c.approve_bpjs_flag, c.tanggal_tindakan, d.kategori_ina_bpjs FROM it_simrs_header_checkup a\n" +
+            if(bean.getJenisPasien() != null && !"".equalsIgnoreCase(bean.getJenisPasien())){
+                jenis = "AND c.jenis_pasien = 'umum'";
+            }
+
+            String SQL = "SELECT " +
+                    "a.no_checkup," +
+                    "b.id_detail_checkup, " +
+                    "c.id_riwayat_tindakan, \n" +
+                    "c.id_tindakan, " +
+                    "c.nama_tindakan, " +
+                    "c.keterangan, " +
+                    "c.jenis_pasien, " +
+                    "c.total_tarif, " +
+                    "c.kategori_tindakan_bpjs, \n" +
+                    "c.approve_bpjs_flag," +
+                    "c.tanggal_tindakan," +
+                    "d.kategori_ina_bpjs," +
+                    "c.flag_update_klaim "+
+                    "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
                     "LEFT JOIN im_simrs_tindakan d ON d.id_tindakan = c.id_tindakan\n" +
-                    "WHERE a.branch_id LIKE :branchId AND a.no_checkup LIKE :noCheckup AND b.id_detail_checkup LIKE :idDetail ORDER BY c.keterangan\n";
+                    "WHERE a.branch_id LIKE :branchId \n" +
+                    "AND a.no_checkup LIKE :noCheckup \n" +
+                    "AND b.id_detail_checkup LIKE :idDetail \n" + jenis +
+                    "ORDER BY c.tanggal_tindakan ASC\n";
 
             List<Object[]> result = new ArrayList<>();
 
@@ -147,12 +170,12 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                         tindakan.setStTglTindakan(formatDate);
                     }
                     tindakan.setKategoriInaBpjs(obj[11] == null ? "" : obj[11].toString());
-
+                    tindakan.setFlagUpdateKlaim((obj[12] == null ? "" : obj[12].toString()));
                     riwayatTindakanList.add(tindakan);
                 }
             }
-
         }
+
         return riwayatTindakanList;
 
     }
@@ -171,7 +194,8 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                     "FROM it_simrs_riwayat_tindakan a\n" +
                     "WHERE a.id_detail_checkup = :idDet\n" +
                     "AND flag_update_klaim = 'Y'\n" +
-                    "ORDER BY a.keterangan, a.tanggal_tindakan ASC";
+                    "AND a.jenis_pasien = 'bpjs' \n" +
+                    "ORDER BY a.tanggal_tindakan ASC";
 
             List<Object[]> result = new ArrayList<>();
 
@@ -244,6 +268,29 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
 
         return listKeterangan;
     }
+
+    public List<String> listOfRuanganRiwayatTindakan(String id, String keterangan){
+
+        String SQL = "SELECT keterangan, id_detail_checkup, id_ruangan FROM it_simrs_riwayat_tindakan\n" +
+                "    WHERE id_detail_checkup = :id \n" +
+                "    AND keterangan = :keterangan \n" +
+                "    AND id_ruangan is not null\n" +
+                "    GROUP BY keterangan, id_detail_checkup, id_ruangan";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .setParameter("keterangan", keterangan)
+                .list();
+
+        List<String> listKeterangan = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                // idRuangan
+                listKeterangan.add(obj[2].toString());
+            }
+        }
+        return listKeterangan;
+    }
+
 
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_riwayat_tindakan')");

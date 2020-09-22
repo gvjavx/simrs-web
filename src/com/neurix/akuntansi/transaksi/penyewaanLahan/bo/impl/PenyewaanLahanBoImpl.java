@@ -2,6 +2,8 @@ package com.neurix.akuntansi.transaksi.penyewaanLahan.bo.impl;
 
 import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
 import com.neurix.akuntansi.master.mappingJurnal.model.ImMappingJurnalEntity;
+import com.neurix.akuntansi.master.masterVendor.dao.MasterVendorDao;
+import com.neurix.akuntansi.master.masterVendor.model.ImMasterVendorEntity;
 import com.neurix.akuntansi.master.pembayaran.dao.PembayaranDao;
 import com.neurix.akuntansi.master.pembayaran.model.ImAkunPembayaranEntity;
 import com.neurix.akuntansi.transaksi.penyewaanLahan.bo.PenyewaanLahanBo;
@@ -10,6 +12,7 @@ import com.neurix.akuntansi.transaksi.penyewaanLahan.model.ItAkunPenyewaanLahanE
 import com.neurix.akuntansi.transaksi.penyewaanLahan.model.PenyewaanLahan;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
@@ -34,7 +37,16 @@ public class PenyewaanLahanBoImpl implements PenyewaanLahanBo {
     protected static transient Logger logger = Logger.getLogger(PenyewaanLahanBoImpl.class);
     private PenyewaanLahanDao penyewaanLahanDao;
     private BranchDao branchDao;
+    private MasterVendorDao masterVendorDao;
     private PembayaranDao pembayaranDao;
+
+    public MasterVendorDao getMasterVendorDao() {
+        return masterVendorDao;
+    }
+
+    public void setMasterVendorDao(MasterVendorDao masterVendorDao) {
+        this.masterVendorDao = masterVendorDao;
+    }
 
     public PembayaranDao getPembayaranDao() {
         return pembayaranDao;
@@ -92,17 +104,17 @@ public class PenyewaanLahanBoImpl implements PenyewaanLahanBo {
         String penyewaanLahanId = penyewaanLahanDao.getNextId();
         ItAkunPenyewaanLahanEntity penyewaanLahanEntity = new ItAkunPenyewaanLahanEntity();
         if (bean!=null) {
-            BigDecimal ppn = CommonUtil.percentage(bean.getNilai(),BigDecimal.TEN);
-            BigDecimal nilaiNetto = bean.getNilai().subtract(ppn);
-
             penyewaanLahanEntity.setPenyewaanLahanId(penyewaanLahanId);
             penyewaanLahanEntity.setBranchId(bean.getBranchId());
             penyewaanLahanEntity.setNamaPenyewa(bean.getNamaPenyewa());
             penyewaanLahanEntity.setKeterangan(bean.getKeterangan());
             penyewaanLahanEntity.setTanggalBayar(bean.getTanggalBayar());
             penyewaanLahanEntity.setNilai(bean.getNilai());
-            penyewaanLahanEntity.setNilaiNetto(nilaiNetto);
-            penyewaanLahanEntity.setNilaiPpn(ppn);
+            penyewaanLahanEntity.setNilaiNetto(bean.getNilaiNetto());
+            penyewaanLahanEntity.setNilaiPpn(bean.getNilaiPpn());
+            penyewaanLahanEntity.setNilaiPph(bean.getNilaiPph());
+            penyewaanLahanEntity.setNoFaktur(bean.getNoFaktur());
+            penyewaanLahanEntity.setUrlFakturImage(bean.getUrlFakturImage());
             penyewaanLahanEntity.setCancelFlag(bean.getCancelFlag());
             penyewaanLahanEntity.setMetodeBayar(bean.getMetodeBayar());
             penyewaanLahanEntity.setBank(bean.getBank());
@@ -274,11 +286,14 @@ public class PenyewaanLahanBoImpl implements PenyewaanLahanBo {
         result.setNilai(data.getNilai());
         result.setNilaiNetto(data.getNilaiNetto());
         result.setNilaiPpn(data.getNilaiPpn());
+        result.setNilaiPph(data.getNilaiPph());
         result.setStNilai(CommonUtil.numbericFormat(data.getNilai(),"###,###"));
         result.setStNilaiNetto(CommonUtil.numbericFormat(data.getNilaiNetto(),"###,###"));
         result.setStNilaiPpn(CommonUtil.numbericFormat(data.getNilaiPpn(),"###,###"));
+        result.setStNilaiPph(CommonUtil.numbericFormat(data.getNilaiPph(),"###,###"));
         result.setBranchId(data.getBranchId());
-
+        result.setNoFaktur(data.getNoFaktur());
+        result.setUrlFakturImage(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_FAKTUR_PAJAK+data.getUrlFakturImage());
         List<ImBranches> branchesList = branchDao.getListBranchById(data.getBranchId());
         for (ImBranches branches : branchesList){
             result.setBranchName(branches.getBranchName());
@@ -303,6 +318,10 @@ public class PenyewaanLahanBoImpl implements PenyewaanLahanBo {
         for (ImAkunPembayaranEntity pembayaranEntity : pembayaranEntityList){
             result.setBankName(pembayaranEntity.getPembayaranName());
         }
+
+        ImMasterVendorEntity masterVendorEntity = masterVendorDao.getById("nomorMaster",data.getNamaPenyewa());
+        result.setNamaPenyewaName(masterVendorEntity.getNama());
+
         return result;
     }
 }

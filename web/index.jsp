@@ -3,7 +3,7 @@
 <html>
   <head>
       <META HTTP-EQUIV="Refresh" CONTENT="0;URL=loginUser.action">
-      <title>e-HEALTH</title>
+      <title>GO-MEDSYS NMU</title>
   </head>
   <body>
   <br><br><br><br>

@@ -99,11 +99,11 @@ public class RuanganBoImpl implements RuanganBo {
                 ruangan.setNoRuangan(listEntity.getNoRuangan());
 
                 ruangan.setStatusRuangan(listEntity.getStatusRuangan());
-                if (listEntity.getStatusRuangan().equalsIgnoreCase("Y"))
+                if (listEntity.getStatusRuangan().equalsIgnoreCase("Y")){
                     ruangan.setStatusRuanganName("Tersedia");
-                else
+                } else{
                     ruangan.setStatusRuanganName("Tidak Tersedia");
-
+                }
                 ruangan.setIdKelasRuangan(listEntity.getIdKelasRuangan());
                 ruangan.setKeterangan(listEntity.getKeterangan());
                 ruangan.setTarif(listEntity.getTarif());
@@ -125,8 +125,10 @@ public class RuanganBoImpl implements RuanganBo {
                 kelasRuangan.setIdKelasRuangan(listEntity.getIdKelasRuangan());
                 kelasRuangan.setFlag("Y");
                 List<KelasRuangan> kelasRuangans = kelasRuanganBo.getByCriteria(kelasRuangan);
-                String kelasRuanganName = kelasRuangans.get(0).getNamaKelasRuangan();
-                ruangan.setNamaKelasRuangan(kelasRuanganName);
+                if(kelasRuangans.size() > 0){
+                    String kelasRuanganName = kelasRuangans.get(0).getNamaKelasRuangan();
+                    ruangan.setNamaKelasRuangan(kelasRuanganName);
+                }
 
                 if (listEntity.getBranchId() != null){
 //                    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
@@ -135,8 +137,10 @@ public class RuanganBoImpl implements RuanganBo {
                     branch.setBranchId(listEntity.getBranchId());
                     branch.setFlag("Y");
                     List<Branch> branches = branchBo.getByCriteria(branch);
-                    String branchName = branches.get(0).getBranchName();
-                    ruangan.setBranchName(branchName);
+                    if(branches.size() > 0){
+                        String branchName = branches.get(0).getBranchName();
+                        ruangan.setBranchName(branchName);
+                    }
                 }else {
                     ruangan.setBranchName("-");
                 }
@@ -376,6 +380,11 @@ public class RuanganBoImpl implements RuanganBo {
     @Override
     public MtSimrsRuanganEntity getEntityRuanganById(String id) throws GeneralBOException {
         return ruanganDao.getById("idRuangan", id);
+    }
+
+    @Override
+    public List<Ruangan> getListRuangan(Ruangan bean) throws GeneralBOException {
+        return ruanganDao.getListRuanganKamar(bean);
     }
 
     public String getIdRuangan() {

@@ -1,10 +1,8 @@
-// 2020-06-15 >>>
-
+-- 2020-06-15
     ALTER TABLE public.im_simrs_dokter ADD flag_tele VARCHAR(1) NULL;
     ALTER TABLE public.it_simrs_antrian_telemedic ADD keluhan text NULL;
 
-<<< //
-// 2020-06-16 >>>
+-- 2020-06-16
     CREATE SEQUENCE seq_kurir;
 
 
@@ -37,15 +35,12 @@
       OWNER TO postgres;
 
 
-<<< //
-// 2020-06-18 >>>
 
+-- 2020-06-18
     ALTER TABLE public.it_simrs_pembayaran_online ADD alamat text NULL;
 
-<<< //
 
-// 2020-06-23 >>>
-
+-- 2020-06-23
     ALTER TABLE public.it_simrs_pengiriman_obat ADD lat VARCHAR(200) NULL,
                                                   ADD lon VARCHAR(200) NULL;
 
@@ -59,19 +54,14 @@
                                                 ADD no_telp VARCHAR(15) NULL;
 
 
-<<< //
 
-// 2020-06-29 >>>
-
+-- 2020-06-29
     ALTER TABLE public.it_simrs_antrian_telemedic ADD jenis_pembayaran VARCHAR(50) NULL,
 
-<<< //
 
-// 2020-06-29 >>>
-
+-- 2020-06-29
     ALTER TABLE public.it_simrs_antrian_telemedic ADD no_rujukan VARCHAR(100) NULL,
                                                   ADD jenis_rujukan VARCHAR(10) NULL
-
 <<< //
 
 // 2020-07-03 >>>
@@ -151,5 +141,73 @@ ALTER TABLE public.seq_rekening_telemedic
  ALTER TABLE public.it_simrs_antrian_telemedic ADD kode_bank VARCHAR(100) NULL
  ALTER TABLE public.it_simrs_pengiriman_obat foto_kirim
 
+<<< //
+// 2020-08-03 >>>
+
+-- Table: public.it_simrs_video_rm
+
+-- DROP TABLE public.it_simrs_video_rm;
+
+CREATE TABLE public.it_simrs_video_rm
+(
+  id_video_rm character varying(20) NOT NULL,
+  path character varying(300),
+  id_antrian_telemedic character varying(20),
+  id_detail_checkup character varying(20),
+  tipe_video character varying(20),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying,
+  flag character varying(1),
+  action character varying(1),
+  CONSTRAINT it_simrs_video_rm_pkey PRIMARY KEY (id_video_rm)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_video_rm
+  OWNER TO postgres;
+
+
+  -- Sequence: public.seq_video_rm
+
+  -- DROP SEQUENCE public.seq_video_rm;
+
+  CREATE SEQUENCE public.seq_video_rm
+    INCREMENT 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1;
+  ALTER TABLE public.seq_video_rm
+    OWNER TO postgres;
+
 
 <<< //
+--2020-09-15
+-- Table: public.it_hris_mesin_absensi_detail
+
+-- DROP TABLE public.it_hris_mesin_absensi_detail;
+
+CREATE TABLE public.it_hris_mesin_absensi_detail_oncall
+(
+  oncall_mesin_absensi_detail_id character varying(20) NOT NULL,
+  nip character varying(20),
+  scan_date timestamp without time zone,
+  verify_mode character varying(2),
+  action character varying(1),
+  flag character varying(1),
+  last_update timestamp without time zone,
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update_who character varying(100),
+  CONSTRAINT oncall_mesin_absensi_detail_id_pkey PRIMARY KEY (oncall_mesin_absensi_detail_id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_hris_mesin_absensi_detail_oncall
+  OWNER TO postgres;
+
+

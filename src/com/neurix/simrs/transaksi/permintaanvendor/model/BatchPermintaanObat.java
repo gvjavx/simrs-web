@@ -23,6 +23,33 @@ public class BatchPermintaanObat {
     private String noInvoice;
     private String noDo;
     private String stTanggakFaktur;
+    private String jenis;
+    private String stTglInvoice;
+    private String stTglDo;
+
+    public String getStTglInvoice() {
+        return stTglInvoice;
+    }
+
+    public void setStTglInvoice(String stTglInvoice) {
+        this.stTglInvoice = stTglInvoice;
+    }
+
+    public String getStTglDo() {
+        return stTglDo;
+    }
+
+    public void setStTglDo(String stTglDo) {
+        this.stTglDo = stTglDo;
+    }
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
     public String getStTanggakFaktur() {
         return stTanggakFaktur;

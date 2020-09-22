@@ -88,6 +88,18 @@
                     </tr>
                     <tr>
                         <td>
+                            <label class="control-label"><small>Tipe Vendor :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'bpjs':'Perusahaan yg berelasi/kerjasama/mitra','lahan':'Penyewa Lahan','lain':'Lain - Lain'}" id="tipeVendorDelete" name="masterVendor.tipeVendor" disabled="true"
+                                          headerKey="umum" headerValue="Rekanan/Swasta/Vendor/Asuransi" cssClass="form-control" />
+                            </table>
+                        </td>
+                        <s:hidden name="masterVendor.tipeVendor" />
+                    </tr>
+                    <tr>
+                        <td>
                             <label class="control-label"><small>Nama Vendor :</small></label>
                         </td>
                         <td>
@@ -113,6 +125,16 @@
                         <td>
                             <table>
                                 <s:textfield id="npwpDelete" name="masterVendor.npwp" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>No. Rekening :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" id="noRekeningDelete" name="masterVendor.noRekening" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

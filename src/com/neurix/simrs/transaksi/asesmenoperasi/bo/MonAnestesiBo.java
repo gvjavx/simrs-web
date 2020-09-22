@@ -11,4 +11,5 @@ public interface MonAnestesiBo {
     public List<MonitoringAnestesi> getByCriteria(MonitoringAnestesi bean) throws GeneralBOException;
     public CrudResponse saveAdd(MonitoringAnestesi bean) throws GeneralBOException;
     public Boolean cekDataAnestesi(String id, String jam, String jenis) throws GeneralBOException;
+    public CrudResponse saveDelete(MonitoringAnestesi bean) throws GeneralBOException;
 }

@@ -8,6 +8,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,25 @@ public class KandunganDao extends GenericDao<ItSimrsAsesmenKandunganEntity, Stri
 
         List<ItSimrsAsesmenKandunganEntity> results = criteria.list();
         return results;
+    }
+
+    public Boolean cekData(String idDetailCheckup, String keterangan, String waktu){
+        Boolean res = false;
+        String SQL = "SELECT id_asesmen_kandungan\n" +
+                "FROM it_simrs_asesmen_kandungan\n" +
+                "WHERE id_detail_checkup = :id\n" +
+                "AND keterangan = :ket \n"+
+                "AND jawaban = :waktu";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idDetailCheckup)
+                .setParameter("ket", keterangan)
+                .setParameter("waktu", waktu)
+                .list();
+        if(result.size() > 0){
+            res = true;
+        }
+        return res;
     }
 
     public String getNextSeq(){

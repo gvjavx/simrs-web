@@ -461,47 +461,26 @@ public class AbsensiAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveAdd(){
+    public void saveAdd(){
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-        List<AbsensiPegawaiEntity> listOfResult = new ArrayList<>();
+        List<AbsensiPegawai> listOfResult = new ArrayList<>();
         HttpSession session = ServletActionContext.getRequest().getSession();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
-        listOfResult = (List<AbsensiPegawaiEntity>) session.getAttribute("listOfResultAbsensiFinal");
+        listOfResult = (List<AbsensiPegawai>) session.getAttribute("listOfResultAbsensiPegawai");
 
-        for (AbsensiPegawaiEntity absensiPegawaiEntity : listOfResult){
-            AbsensiPegawai absensiPegawai = new AbsensiPegawai();
-            absensiPegawai.setIjin(absensiPegawaiEntity.getIjin());
-            absensiPegawai.setLembur(absensiPegawaiEntity.getLembur());
-            absensiPegawai.setNip(absensiPegawaiEntity.getNip());
-            absensiPegawai.setBranchId(absensiPegawaiEntity.getBranchId());
-            absensiPegawai.setJamMasuk(absensiPegawaiEntity.getJamMasuk());
-            absensiPegawai.setJamKeluar(absensiPegawaiEntity.getJamKeluar());
-            absensiPegawai.setTanggal(absensiPegawaiEntity.getTanggal());
-            absensiPegawai.setStatusAbsensi(absensiPegawaiEntity.getStatusAbsensi());
-            absensiPegawai.setJenisLembur(absensiPegawaiEntity.getJenisLembur());
-            absensiPegawai.setLamaLembur(absensiPegawaiEntity.getLamaLembur());
-            absensiPegawai.setJamLembur(absensiPegawaiEntity.getJamLembur());
-            absensiPegawai.setFlagUangMakan(absensiPegawaiEntity.getFlagUangMakan());
-            absensiPegawai.setKeterangan(absensiPegawaiEntity.getKeterangan());
-            absensiPegawai.setRealisasiJamLembur(absensiPegawaiEntity.getRealisasiJamLembur());
-            absensiPegawai.setBiayaLembur(absensiPegawaiEntity.getBiayaLembur());
-            absensiPegawai.setTipeHari(absensiPegawaiEntity.getTipeHari());
+        AbsensiPegawai data = new AbsensiPegawai();
+        data.setCreatedWho(userLogin);
+        data.setLastUpdate(updateTime);
+        data.setCreatedDate(updateTime);
+        data.setLastUpdateWho(userLogin);
+        data.setAction("C");
+        data.setFlag("Y");
 
-            absensiPegawai.setCreatedWho(userLogin);
-            absensiPegawai.setLastUpdate(updateTime);
-            absensiPegawai.setCreatedDate(updateTime);
-            absensiPegawai.setLastUpdateWho(userLogin);
-            absensiPegawai.setAction("C");
-            absensiPegawai.setFlag("Y");
+        absensiBo.saveAddAbsensi(listOfResult,data);
 
-            absensiBo.saveAdd(absensiPegawai);
-
-        }
-        session.removeAttribute("listOfResultAbsensiFinal");
-        session.removeAttribute("listOfResultMesinAbsensi");
-        return null;
+        session.removeAttribute("listOfResultAbsensiPegawai");
     }
 
     public void saveAddIndisipliner (String nip, String nama,String tipeIndisipliner,String stTanggal,String keteranganIndisipliner,String dampak,String tanggalAwalPantau,String tanggalAkhirPantau,String tanggalAwalBlokir,String tanggalAkhirBlokir){
@@ -819,32 +798,11 @@ public class AbsensiAction extends BaseMasterAction {
         }
     }
 
-    public List<AbsensiPegawaiEntity> searchAbsensiFinal(){
-        List<AbsensiPegawaiEntity> mesinAbsensiList = new ArrayList<>();
-        List<AbsensiPegawaiEntity> mesinAbsensiListFinal = new ArrayList<>();
-        List<AbsensiPegawaiEntity> ListOfResult = new ArrayList<>();
-        List<Indisipliner> indisiplinerList = new ArrayList<>();
+    public List<AbsensiPegawai> searchAbsensiFinal(){
         HttpSession session = ServletActionContext.getRequest().getSession();
-        mesinAbsensiList = (List<AbsensiPegawaiEntity>) session.getAttribute("listOfResultAbsensiFinal");
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        IndisiplinerBo indisiplinerBo= (IndisiplinerBo) ctx.getBean("indisiplinerBoProxy");
-        AbsensiBo absensiBo= (AbsensiBo) ctx.getBean("absensiBoProxy");
-        for (AbsensiPegawaiEntity checkMesinAbsensi : mesinAbsensiList){
-            Indisipliner indisipliner = new Indisipliner();
-            indisipliner.setNip(checkMesinAbsensi.getNip());
-            indisipliner.setTanggal(checkMesinAbsensi.getTanggal());
-            indisipliner.setFlag("Y");
-            indisiplinerList= indisiplinerBo.getByCriteria(indisipliner);
-            if (indisiplinerList.size()!=0){
-                checkMesinAbsensi.setSaved("Y");
-            }
-            mesinAbsensiListFinal.add(checkMesinAbsensi);
-        }
-
-//        ListOfResult=absensiBo.getLemburBonusSatpam(mesinAbsensiListFinal);
-
-        return mesinAbsensiListFinal;
+        return (List<AbsensiPegawai>) session.getAttribute("listOfResultAbsensiPegawai");
     }
+
     public String goToInquiry(){
         AbsensiPegawai addAbsensiPegawai = new AbsensiPegawai();
         String unitId = CommonUtil.userBranchLogin();
@@ -3310,8 +3268,12 @@ public class AbsensiAction extends BaseMasterAction {
         String status="00";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        MesinAbsensi mesinAbsensi = new MesinAbsensi();
+        mesinAbsensi.setCreatedWho(CommonUtil.userIdLogin());
+        mesinAbsensi.setLastUpdate(updateTime);
         try {
-            absensiBo.getDataFromMesin();
+            absensiBo.getDataFromMesin(mesinAbsensi);
         } catch (GeneralBOException e) {
             Long logId = null;
             status="fail";
@@ -3325,13 +3287,18 @@ public class AbsensiAction extends BaseMasterAction {
         }
         return status;
     }
+
     public String getAllDataFromMesin() throws Exception {
         logger.info("[AbsensiAction.getDataFromMesin] start process >>>");
         String status="00";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        MesinAbsensi mesinAbsensi = new MesinAbsensi();
+        mesinAbsensi.setCreatedWho(CommonUtil.userIdLogin());
+        mesinAbsensi.setLastUpdate(updateTime);
         try {
-            absensiBo.getAllDataFromMesin();
+            absensiBo.getAllDataFromMesin(mesinAbsensi);
         } catch (GeneralBOException e) {
             Long logId = null;
             status="fail";
@@ -3358,7 +3325,6 @@ public class AbsensiAction extends BaseMasterAction {
         List<MesinAbsensi> mesinAbsensiFinalList= new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
-        BiodataBo biodataBo =(BiodataBo) ctx.getBean("biodataBoProxy");
         Date startDate = CommonUtil.convertToDate(tanggalAwal);
         Date endDate = CommonUtil.convertToDate(tanggalAkhir);
         Calendar start = Calendar.getInstance();
@@ -3836,5 +3802,64 @@ public class AbsensiAction extends BaseMasterAction {
 
         logger.info("[AbsensiAction.refreshAbsensi] end process <<<");
         return status;
+    }
+
+    public void cronInquiry()  {
+        logger.info("[AbsensiAction.cronInquiry] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResultAbsensiPegawai");
+        List<AbsensiPegawai> absensiPegawaiList = new ArrayList<>();
+        AbsensiPegawai absen = getAbsensiPegawai();
+        String tanggalAwal = absen.getStTanggalDari();
+        String tanggalAkhir = absen.getStTanggalAkhir();
+        String branchId = absen.getBranchId();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
+        Date startDate = CommonUtil.convertToDate(tanggalAwal);
+        Date endDate = CommonUtil.convertToDate(tanggalAkhir);
+        Calendar start = Calendar.getInstance();
+        start.setTime(startDate);
+        Calendar end = Calendar.getInstance();
+        end.setTime(endDate);
+        end.add(Calendar.DATE,1);
+        java.util.Date date;
+
+        if (!"".equalsIgnoreCase(tanggalAwal)&&!"".equalsIgnoreCase(tanggalAkhir)&&!"".equalsIgnoreCase(branchId)){
+            for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+                try {
+                    AbsensiPegawai data = new AbsensiPegawai();
+                    data.setTanggalUtil(date);
+                    data.setBranchId(branchId);
+                    data.setNip("");
+
+                    absensiPegawaiList=absensiBo.cronInquiry(data);
+                } catch (GeneralBOException e) {
+                    Long logId = null;
+                    try {
+                        logId = absensiBo.saveErrorMessage(e.getMessage(), "AbsensiBO.inquiry");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[AbsensiAction.inquiry] Error when saving error,", e1);
+                    }
+                    logger.error("[AbsensiAction.inquiry] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                }
+            }
+        }else{
+            String status="ERROR : [AbsensiAction.cronInquiry] ";
+            if ("".equalsIgnoreCase(tanggalAwal)){
+                status += "Tanggal Awal Belum diisi \n";
+            }
+            if ("".equalsIgnoreCase(tanggalAkhir)){
+                status += "Tanggal Akhir Belum diisi \n";
+            }
+            if ("".equalsIgnoreCase(branchId)){
+                status += "Unit Belum diisi \n";
+            }
+            logger.error(status);
+            throw new GeneralBOException(status);
+        }
+        session.setAttribute("listOfResultAbsensiPegawai",absensiPegawaiList);
+
+        logger.info("[AbsensiAction.cronInquiry] end process <<<");
     }
 }

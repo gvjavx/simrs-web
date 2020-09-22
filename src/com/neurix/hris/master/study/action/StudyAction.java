@@ -651,7 +651,6 @@ public class StudyAction extends BaseMasterAction{
 
     public String addStudy(){
         String path = null;
-
         if (isAddOrEdit()) {
             if (!isAdd()) {
 

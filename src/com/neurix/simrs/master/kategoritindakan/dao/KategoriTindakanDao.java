@@ -38,19 +38,33 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
         return result;
     }
 
-    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan){
+    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan, String kategori){
 
         List<KategoriTindakan> tindakanList = new ArrayList<>();
         String pelayanan = "%";
+        String union = "";
 
         if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
             pelayanan = idPelayanan;
         }
 
-        String SQL = "SELECT a.id_kategori_tindakan, a.kategori_tindakan \n" +
+        if(kategori != null && !"".equalsIgnoreCase(kategori)){
+            union = "UNION ALL\n" +
+                    "SELECT\n" +
+                    "a.id_kategori_tindakan,\n" +
+                    "a.kategori_tindakan \n" +
+                    "FROM im_simrs_kategori_tindakan a\n" +
+                    "INNER JOIN im_simrs_kategori_tindakan_pelayanan b ON a.id_kategori_tindakan = b.id_kategori\n" +
+                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "WHERE c.tipe_pelayanan LIKE '"+kategori+"' \n";
+        }
+
+        String SQL = "SELECT " +
+                "a.id_kategori_tindakan, " +
+                "a.kategori_tindakan \n" +
                 "FROM im_simrs_kategori_tindakan a\n" +
                 "INNER JOIN im_simrs_kategori_tindakan_pelayanan b ON a.id_kategori_tindakan = b.id_kategori\n" +
-                "WHERE b.id_pelayanan LIKE :idPel";
+                "WHERE b.id_pelayanan LIKE :idPel \n"+ union;
 
         List<Object[]> results = new ArrayList<>();
         results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

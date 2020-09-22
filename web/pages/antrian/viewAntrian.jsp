@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GO-HEALTH</title>
+    <title>GO-MEDSYS NMU</title>
     <link rel="shortcut icon" href="<s:url value="/pages/images/logo-nmu.webp"/>"/>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -156,7 +156,7 @@
     <footer class="main-footer">
         <!-- To the right -->
         <div class="pull-right hidden-xs">
-            GO-HEALTH
+            GO-MEDSYS NMU
         </div>
         <!-- Default to the left -->
         <strong>Copyright &copy; 2019 <a href="#" style="color: #50d4a3">PT. Nusantara Medika Utama</a>.</strong> All rights reserved.

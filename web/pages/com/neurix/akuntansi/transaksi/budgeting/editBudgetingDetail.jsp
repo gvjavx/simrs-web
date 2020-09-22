@@ -119,8 +119,9 @@
                                     <tr bgcolor="#90ee90">
                                         <td style="width: 20%">COA</td>
                                         <td align="center">Keterangan</td>
-                                        <td align="center">Total</td>
+                                        <td align="center">Total Budget</td>
                                         <td align="center">Selisih</td>
+                                        <td align="center">Realisasi</td>
                                     </tr>
                                     </thead>
                                     <tbody id="body-budgeting">
@@ -210,7 +211,7 @@
                                                                 mapped = {};
                                                                 var data = [];
                                                                 dwr.engine.setAsync(false);
-                                                                PositionAction.typeHeadPosition(query,function (listdata) {
+                                                                PositionAction.typeAheadPosition(query,function (listdata) {
                                                                     data = listdata;
                                                                 });
                                                                 $.each(data, function (i, item) {
@@ -1107,16 +1108,23 @@
                     <div class="row">
                         <label class="col-md-2 col-md-offset-1">Qty</label>
                         <div class="col-md-6">
-                            <input type="number" class="form-control" id="edit-qty">
+                            <input type="number" class="form-control" id="edit-qty" onchange="hitungNilaiEdit()">
                         </div>
                     </div>
 
                     <div class="row">
                         <label class="col-md-2 col-md-offset-1">Nilai</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" id="edit-nilai">
+                            <input type="number" class="form-control" id="edit-nilai" onchange="hitungNilaiEdit()">
                         </div>
                     </div>
+                    <div class="row">
+                        <label class="col-md-2 col-md-offset-1">Nilai Total</label>
+                        <div class="col-md-6">
+                            <input type="number" class="form-control" id="edit-nilai-total" readonly>
+                        </div>
+                    </div>
+
 
                     <div class="alert alert-warning alert-dismissable" id="alert-error-modal" style="display: none">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -1148,6 +1156,7 @@
                         <td style="width: 50% ;">Nama Rincian</td>
                         <td style="width: 20% ;">Qty</td>
                         <td>Nilai</td>
+                        <td>Nilai Total</td>
                     </tr>
                     </thead>
                     <tbody id="body-add-pengadaan">
@@ -1193,6 +1202,7 @@
     var flagDivisi  = '<s:property value="budgeting.flagDivisi"/>';
     var flagMaster  = '<s:property value="budgeting.flagMaster"/>';
     var tipeCoa     = '<s:property value="budgeting.tipeCoa"/>';
+    var kodeRekening= '<s:property value="budgeting.kodeRekening"/>';
 
     var form = { "budgeting.tahun":tahun, "budgeting.branchId":unit, "budgeting.tipe":tipe };
 
@@ -1441,10 +1451,14 @@
                 BudgetingAction.getListPengadaan(id, function(list){
                     if (list != null){
                         $.each(list, function (i, item) {
+
+                            var total = parseInt(item.nilai) * parseInt(item.qty);
+
                             strPengadaan += '<tr>' +
                                 '<td><input type="hidden" id="id-add-'+i+'" value="'+item.idPengadaan+'"><input type="text" class="form form-control" id="nama-add-'+i+'" value="'+item.namPengadaan+'"/></td>' +
-                                '<td><input type="number" class="form form-control" id="qty-add-'+i+'" value="'+item.qty+'"/></td>' +
-                                '<td><input type="number" class="form form-control" id="nilai-add-'+i+'" value="'+item.nilai+'"/></td>' +
+                                '<td><input type="number" class="form form-control" id="qty-add-'+i+'" value="'+item.qty+'" onchange="hitungInvestasi(\''+n+'\')" /></td>' +
+                                '<td><input type="number" class="form form-control" id="nilai-add-'+i+'" value="'+item.nilai+'" onchange="hitungInvestasi(\''+n+'\')" /></td>' +
+                                '<td><input type="number" class="form form-control" id="total-nilai-add-'+i+'" value="'+formatRupiah(total)+'" readonly/></td>' +
                                 '</tr>';
                         });
                         n = list.length;
@@ -1459,13 +1473,31 @@
             } else {
                 $("#modal-edit").modal('show');
                 $("#edit-id").val(response.idBudgetingDetail);
+                $("#edit-master").val(response.masterId);
+                $("#edit-master-name").val(response.masterName);
                 $("#edit-divisi").val(response.divisiId);
                 $("#edit-divisi-name").val(response.divisiName);
                 $("#edit-qty").val(response.qty);
                 $("#edit-nilai").val(response.nilai);
+                var total = parseInt(response.nilai) * parseInt(response.qty);
+                $("#edit-nilai-total").val(formatRupiah(total));
             }
         });
 
+    }
+
+    function hitungInvestasi(id) {
+        var qty = $("#qty-add-"+id).val();
+        var nilai = $("#nilai-add-"+id).val();
+
+        var totalnilai = parseInt(nullEscape(nilai)) * parseInt(nullEscape(qty));
+        $("#total-nilai-add-"+id).val(formatRupiah(totalnilai));
+    }
+    function nullEscape(nilai) {
+        if (nilai == null || nilai == ""){
+            return 0;
+        }
+        return nilai;
     }
 
     function saveEdit() {
@@ -1489,13 +1521,23 @@
         });
     }
 
+    function hitungNilaiEdit() {
+        var qty     = $("#edit-qty").val();
+        var nilai   = $("#edit-nilai").val();
+
+        var totalnilai = parseInt(nullEscape(nilai)) * parseInt(nullEscape(qty));
+        console.log("hitung -> "+totalnilai);
+        $("#edit-nilai-total").val(formatRupiah(totalnilai));
+    }
+
     var n = 0;
     var strPengadaan = "";
     function addInputUpload() {
         strPengadaan += '<tr>' +
             '<td><input type="hidden" id="id-add-'+n+'"><input type="text" class="form form-control" id="nama-add-'+n+'"/></td>' +
-            '<td><input type="number" class="form form-control" id="qty-add-'+n+'"/></td>' +
-            '<td><input type="number" class="form form-control" id="nilai-add-'+n+'"/></td>' +
+            '<td><input type="number" class="form form-control" id="qty-add-'+n+'" onchange="hitungInvestasi(\''+n+'\')" /></td>' +
+            '<td><input type="number" class="form form-control" id="nilai-add-'+n+'" onchange="hitungInvestasi(\''+n+'\')" /></td>' +
+            '<td><input type="number" class="form form-control" id="total-nilai-add-'+n+'" readonly/></td>' +
             '</tr>';
         $("#body-add-pengadaan").html(strPengadaan);
         n++;
@@ -1552,7 +1594,7 @@
         var data = [];
         var data2 = [];
         dwr.engine.setAsync(true);
-        BudgetingAction.getListOfCoaBudgetingSession(function (response) {
+        BudgetingAction.getListOfCoaBudgetingSession(kodeRekening, function (response) {
 
 //            console.log(response);
             data = response;
@@ -1561,7 +1603,7 @@
 //                console.log(item.rekeningId);
                 data2.push({_id : item.rekeningId, level : item.level,  nama : item.namaKodeRekening, parent : item.parentId, coa : item.kodeRekening,
                     nilaiTotal : item.nilaiTotal, quartal1 : item.quartal1, quartal2: item.quartal2, quartal3 : item.quartal3, quartal4 : item.quartal4,
-                    semester1 : item.semester1, semester2:item.semester2, stLevel: item.stLevel, selisih : item.selisih});
+                    semester1 : item.semester1, semester2:item.semester2, stLevel: item.stLevel, selisih : item.selisih, realisasi:item.realisasi});
 
             });
             function hierarhySort(hashArr, key, result) {
@@ -1594,6 +1636,7 @@
                         '<td >' + data2[i].nama + '</td>' +
                         "<td align='right'>"+formatRupiah(data2[i].nilaiTotal)+"</td>"+
                         "<td align='right'>"+formatRupiah(data2[i].selisih)+"</td>"+
+                        "<td align='right'>"+formatRupiah(data2[i].realisasi)+"</td>"+
                         "</tr>";
                 } else {
                     strList += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
@@ -1602,6 +1645,7 @@
                         '<td >' + data2[i].nama + '</td>' +
                         "<td align='right'>"+formatRupiah(data2[i].nilaiTotal)+"</td>"+
                         "<td align='right'>"+formatRupiah(data2[i].selisih)+"</td>"+
+                        "<td align='right'>"+formatRupiah(data2[i].realisasi)+"</td>"+
                         "</tr>";
                 }
             }

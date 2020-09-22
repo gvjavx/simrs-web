@@ -3,8 +3,16 @@ package com.neurix.simrs.transaksi.rawatinap.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.ruangan.dao.RuanganDao;
+import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
+import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.moncairan.dao.MonCairanDao;
 import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
 import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
@@ -22,6 +30,8 @@ import com.neurix.simrs.transaksi.rawatinap.dao.RawatInapDao;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.rencanarawat.dao.ParameterRencanaRawatDao;
+import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.skorrawatinap.dao.KategoriSkorRanapDao;
 import com.neurix.simrs.transaksi.skorrawatinap.dao.MasterSkorRanapDao;
 import com.neurix.simrs.transaksi.skorrawatinap.dao.ParameterSkorRanapDao;
@@ -29,11 +39,16 @@ import com.neurix.simrs.transaksi.skorrawatinap.dao.SkorRanapDao;
 import com.neurix.simrs.transaksi.skorrawatinap.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.joda.time.Days;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,34 +69,38 @@ public class RawatInapBoImpl implements RawatInapBo {
     private MonPemberianObatDao monPemberianObatDao;
     private MonVitalSignDao monVitalSignDao;
     private PlanKegiatanRawatDao planKegiatanRawatDao;
+    private RuanganDao ruanganDao;
+    private HeaderCheckupDao headerCheckupDao;
+    private CheckupDetailDao checkupDetailDao;
+    private RiwayatTindakanDao riwayatTindakanDao;
 
-    public List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException{
+    public List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException {
         logger.info("[RawatInapBoImpl.getListEntityByCriteria] Start >>>>>>>");
         List<ItSimrsRawatInapEntity> entityList = new ArrayList<>();
 
         Map hsCriteria = new HashMap();
 
-        if (bean.getIdRawatInap() != null && !"".equalsIgnoreCase(bean.getIdRawatInap())){
+        if (bean.getIdRawatInap() != null && !"".equalsIgnoreCase(bean.getIdRawatInap())) {
             hsCriteria.put("id_rawat_inap", bean.getIdRawatInap());
         }
-        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
             hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         }
-        if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())){
+        if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())) {
             hsCriteria.put("no_checkup", bean.getNoCheckup());
         }
-        if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
+        if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())) {
             hsCriteria.put("id_ruangan", bean.getIdRuangan());
         }
-        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
             hsCriteria.put("flag", bean.getFlag());
         }
 
         try {
             entityList = rawatInapDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getListEntityByCriteria] Error when get data detail checkup entity ",e);
-            throw new GeneralBOException("Error when get data detail checkup entity "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getListEntityByCriteria] Error when get data detail checkup entity ", e);
+            throw new GeneralBOException("Error when get data detail checkup entity " + e.getMessage());
         }
 
         logger.info("[RawatInapBoImpl.getListEntityByCriteria] End <<<<<<<<");
@@ -96,12 +115,12 @@ public class RawatInapBoImpl implements RawatInapBo {
     public List<RawatInap> getSearchRawatInap(RawatInap bean) throws GeneralBOException {
         logger.info("[RawatInapBoImpl.getSearchRawatInap] Start >>>>>>>");
         List<RawatInap> results = new ArrayList<>();
-        if (bean != null){
+        if (bean != null) {
             try {
                 results = rawatInapDao.getSearchRawatInap(bean);
-            } catch (HibernateException e){
-                logger.error("[RawatInapBoImpl.getSearchRawatInap] Error when get data rawat inap",e);
-                throw new GeneralBOException("Error when get data detail checkup"+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("[RawatInapBoImpl.getSearchRawatInap] Error when get data rawat inap", e);
+                throw new GeneralBOException("Error when get data detail checkup" + e.getMessage());
             }
         }
         logger.info("[RawatInapBoImpl.getSearchRawatInap] End <<<<<<<<");
@@ -114,37 +133,37 @@ public class RawatInapBoImpl implements RawatInapBo {
 
         List<SkorRanap> skorRanaps = new ArrayList<>();
         List<ItSimrsSkorRanapEntity> skorRanapEntities = new ArrayList<>();
-        if (bean != null){
+        if (bean != null) {
 
             Map hsCriteria = new HashMap();
 
-            if (bean.getNoCheckup() != null){
+            if (bean.getNoCheckup() != null) {
                 hsCriteria.put("no_checkup", bean.getNoCheckup());
             }
-            if (bean.getIdDetailCheckup() != null){
+            if (bean.getIdDetailCheckup() != null) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
-            if (bean.getIdKategori() != null){
+            if (bean.getIdKategori() != null) {
                 hsCriteria.put("id_kategori", bean.getIdKategori());
             }
-            if (bean.getGroupId() != null){
+            if (bean.getGroupId() != null) {
                 hsCriteria.put("group_id", bean.getGroupId());
             }
-            if (bean.getStDate() != null){
+            if (bean.getStDate() != null) {
                 hsCriteria.put("date", bean.getStDate());
             }
 
-            if (bean.getGroupId() != null && !"".equalsIgnoreCase(bean.getGroupId())){
+            if (bean.getGroupId() != null && !"".equalsIgnoreCase(bean.getGroupId())) {
                 try {
                     skorRanapEntities = skorRanapDao.getByCriteria(hsCriteria);
-                } catch (HibernateException e){
-                    logger.error("[RawatInapBoImpl.getListSkorRanap] ERROR",e);
-                    throw new GeneralBOException("[RawatInapBoImpl.getListSkorRanap] ERROR"+e.getMessage());
+                } catch (HibernateException e) {
+                    logger.error("[RawatInapBoImpl.getListSkorRanap] ERROR", e);
+                    throw new GeneralBOException("[RawatInapBoImpl.getListSkorRanap] ERROR" + e.getMessage());
                 }
             }
 
 
-            if (skorRanapEntities.size() == 0){
+            if (skorRanapEntities.size() == 0) {
 
                 hsCriteria = new HashMap();
                 hsCriteria.put("id_kategori", bean.getIdKategori());
@@ -152,14 +171,14 @@ public class RawatInapBoImpl implements RawatInapBo {
                 List<ImSimrsParameterSkorRanapEntity> parameterSkorRanapEntities = new ArrayList<>();
                 try {
                     parameterSkorRanapEntities = parameterSkorRanapDao.getByCriteria(hsCriteria);
-                } catch (HibernateException e){
-                    logger.error("[RawatInapBoImpl.getListSkorRanap] ERROR",e);
-                    throw new GeneralBOException("[RawatInapBoImpl.getListSkorRanap] ERROR"+e.getMessage());
+                } catch (HibernateException e) {
+                    logger.error("[RawatInapBoImpl.getListSkorRanap] ERROR", e);
+                    throw new GeneralBOException("[RawatInapBoImpl.getListSkorRanap] ERROR" + e.getMessage());
                 }
 
-                if (parameterSkorRanapEntities.size() > 0){
+                if (parameterSkorRanapEntities.size() > 0) {
                     SkorRanap skorRanap;
-                    for (ImSimrsParameterSkorRanapEntity parameter : parameterSkorRanapEntities){
+                    for (ImSimrsParameterSkorRanapEntity parameter : parameterSkorRanapEntities) {
                         skorRanap = new SkorRanap();
                         skorRanap.setIdKategori(parameter.getIdKategori());
                         skorRanap.setIdParameter(parameter.getIdParameter());
@@ -170,7 +189,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                 }
             } else {
                 SkorRanap skorRanap;
-                for (ItSimrsSkorRanapEntity skorRanapEntity : skorRanapEntities){
+                for (ItSimrsSkorRanapEntity skorRanapEntity : skorRanapEntities) {
                     skorRanap = new SkorRanap();
                     skorRanap.setId(skorRanapEntity.getId());
                     skorRanap.setGroupId(skorRanapEntity.getGroupId());
@@ -203,13 +222,13 @@ public class RawatInapBoImpl implements RawatInapBo {
         List<ImSimrsKategoriSkorRanapEntity> kategoriSkorRanapEntities = new ArrayList<>();
         try {
             kategoriSkorRanapEntities = kategoriSkorRanapDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.ImSimrsKategoriSkorRanapEntity] ERROR",e);
-            throw new GeneralBOException("[RawatInapBoImpl.ImSimrsKategoriSkorRanapEntity] ERROR"+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.ImSimrsKategoriSkorRanapEntity] ERROR", e);
+            throw new GeneralBOException("[RawatInapBoImpl.ImSimrsKategoriSkorRanapEntity] ERROR" + e.getMessage());
         }
 
         ImSimrsKategoriSkorRanapEntity kategoriSkorRanapEntity = new ImSimrsKategoriSkorRanapEntity();
-        if (kategoriSkorRanapEntities.size() > 0){
+        if (kategoriSkorRanapEntities.size() > 0) {
             kategoriSkorRanapEntity = kategoriSkorRanapEntities.get(0);
         }
 
@@ -234,19 +253,19 @@ public class RawatInapBoImpl implements RawatInapBo {
     public CrudResponse saveAddSkorRanap(String noCheckup, String idDetail, List<ItSimrsSkorRanapEntity> skors) {
 
         CrudResponse response = new CrudResponse();
-        if (skors.size() > 0){
-            String groupId = "GRS"+getNextGroupSkorRanap();
-            for (ItSimrsSkorRanapEntity entity : skors){
-                entity.setId("SKI"+getNextSkorRanap());
+        if (skors.size() > 0) {
+            String groupId = "GRS" + getNextGroupSkorRanap();
+            for (ItSimrsSkorRanapEntity entity : skors) {
+                entity.setId("SKI" + getNextSkorRanap());
                 entity.setGroupId(groupId);
 
                 try {
                     skorRanapDao.addAndSave(entity);
                     response.setStatus("success");
-                } catch (HibernateException e){
-                    logger.error("[RawatInapBoImpl.saveAddSkorRanap] ERROR ",e);
+                } catch (HibernateException e) {
+                    logger.error("[RawatInapBoImpl.saveAddSkorRanap] ERROR ", e);
                     response.setStatus("error");
-                    response.setMsg("[RawatInapBoImpl.saveAddSkorRanap] ERROR "+e.getMessage());
+                    response.setMsg("[RawatInapBoImpl.saveAddSkorRanap] ERROR " + e.getMessage());
                 }
             }
         }
@@ -267,19 +286,19 @@ public class RawatInapBoImpl implements RawatInapBo {
         List<ItSimrsMonVitalSignEntity> monVitalSignEntities = new ArrayList<>();
         try {
             monVitalSignEntities = monVitalSignDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getListMonVitalSign] ERROR",e);
-            throw new GeneralBOException("[RawatInapBoImpl.getListMonVitalSign] ERROR"+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getListMonVitalSign] ERROR", e);
+            throw new GeneralBOException("[RawatInapBoImpl.getListMonVitalSign] ERROR" + e.getMessage());
         }
 
         List<MonVitalSign> monVitalSigns = new ArrayList<>();
-        if (monVitalSignEntities.size() > 0){
+        if (monVitalSignEntities.size() > 0) {
             MonVitalSign monVitalSign;
-            for (ItSimrsMonVitalSignEntity entity : monVitalSignEntities){
+            for (ItSimrsMonVitalSignEntity entity : monVitalSignEntities) {
 
                 boolean isShow = isShowDataByPlanKegiatan(entity.getId());
 
-                if (isShow){
+                if (isShow) {
                     monVitalSign = new MonVitalSign();
                     monVitalSign.setId(entity.getId());
                     monVitalSign.setNoCheckup(entity.getNoCheckup());
@@ -330,14 +349,14 @@ public class RawatInapBoImpl implements RawatInapBo {
         CrudResponse response = new CrudResponse();
         response.setStatus("error");
         response.setMsg("[RawatInapBoImpl.saveMonVitalSign] bean is null");
-        if (bean != null){
-            bean.setId("OVS"+getNextMonVitalSign());
+        if (bean != null) {
+            bean.setId("OVS" + getNextMonVitalSign());
             try {
                 monVitalSignDao.addAndSave(bean);
                 response.setStatus("success");
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 response.setStatus("error");
-                response.setMsg("[RawatInapBoImpl.saveMonVitalSign] ERROR "+ e.getMessage());
+                response.setMsg("[RawatInapBoImpl.saveMonVitalSign] ERROR " + e.getMessage());
             }
         }
         return response;
@@ -352,13 +371,13 @@ public class RawatInapBoImpl implements RawatInapBo {
         List<ItSimrsMonVitalSignEntity> monVitalSignEntities = new ArrayList<>();
         try {
             monVitalSignEntities = monVitalSignDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. ",e);
-            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. "+e);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. ", e);
+            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. " + e);
         }
 
-        if (monVitalSignEntities.size() > 0){
-            for (ItSimrsMonVitalSignEntity vitalSignEntity : monVitalSignEntities){
+        if (monVitalSignEntities.size() > 0) {
+            for (ItSimrsMonVitalSignEntity vitalSignEntity : monVitalSignEntities) {
                 vitalSignEntity.setJam(bean.getJam());
                 vitalSignEntity.setNadi(bean.getNadi());
                 vitalSignEntity.setNafas(bean.getNafas());
@@ -372,9 +391,9 @@ public class RawatInapBoImpl implements RawatInapBo {
 
                 try {
                     monVitalSignDao.updateAndSave(vitalSignEntity);
-                } catch (HibernateException e){
-                    logger.error("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. ",e);
-                    throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. "+e);
+                } catch (HibernateException e) {
+                    logger.error("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. ", e);
+                    throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. " + e);
                 }
 
                 updateFlagKegiatanRawat(vitalSignEntity.getId(), bean.getLastUpdateWho(), bean.getLastUpdate());
@@ -382,19 +401,19 @@ public class RawatInapBoImpl implements RawatInapBo {
         }
     }
 
-    private boolean isShowDataByPlanKegiatan(String idKategori){
+    private boolean isShowDataByPlanKegiatan(String idKategori) {
         boolean isShow = false;
 
         ItSimrsPlanKegiatanRawatEntity plan = new ItSimrsPlanKegiatanRawatEntity();
         try {
             plan = planKegiatanRawatDao.getById("idKategori", idKategori);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. ",e);
-            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. "+e);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. ", e);
+            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. " + e);
         }
 
-        if (plan != null && plan.getId() != null){
-            if ("Y".equalsIgnoreCase(plan.getFlagDikerjakan())){
+        if (plan != null && plan.getId() != null) {
+            if ("Y".equalsIgnoreCase(plan.getFlagDikerjakan())) {
                 isShow = true;
             }
         } else {
@@ -404,21 +423,21 @@ public class RawatInapBoImpl implements RawatInapBo {
         return isShow;
     }
 
-    private ItSimrsPlanKegiatanRawatEntity getPlanKegiatanRawatByIdKategori(String idKategori) throws GeneralBOException{
+    private ItSimrsPlanKegiatanRawatEntity getPlanKegiatanRawatByIdKategori(String idKategori) throws GeneralBOException {
 
         ItSimrsPlanKegiatanRawatEntity planKegiatanRawatEntity = new ItSimrsPlanKegiatanRawatEntity();
 
         try {
             planKegiatanRawatEntity = planKegiatanRawatDao.getById("idKategori", idKategori);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. ",e);
-            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. "+e);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. ", e);
+            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonVitalSign] ERROR. " + e);
         }
 
         return planKegiatanRawatEntity;
     }
 
-    private void updateFlagKegiatanRawat(String idKategori, String user, Timestamp time){
+    private void updateFlagKegiatanRawat(String idKategori, String user, Timestamp time) {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_kategori", idKategori);
@@ -426,13 +445,13 @@ public class RawatInapBoImpl implements RawatInapBo {
         List<ItSimrsPlanKegiatanRawatEntity> plans = new ArrayList<>();
         try {
             plans = planKegiatanRawatDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.updateFlagKegiatanRawat] ERROR. ",e);
-            throw new GeneralBOException("[RawatInapBoImpl.updateFlagKegiatanRawat] ERROR. "+e);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.updateFlagKegiatanRawat] ERROR. ", e);
+            throw new GeneralBOException("[RawatInapBoImpl.updateFlagKegiatanRawat] ERROR. " + e);
         }
 
-        if (plans.size() > 0){
-            for (ItSimrsPlanKegiatanRawatEntity planEntity : plans){
+        if (plans.size() > 0) {
+            for (ItSimrsPlanKegiatanRawatEntity planEntity : plans) {
                 planEntity.setLastUpdate(time);
                 planEntity.setLastUpdateWho(user);
                 planEntity.setAction("U");
@@ -440,9 +459,9 @@ public class RawatInapBoImpl implements RawatInapBo {
 
                 try {
                     planKegiatanRawatDao.updateAndSave(planEntity);
-                } catch (HibernateException e){
-                    logger.error("[RawatInapBoImpl.updateFlagKegiatanRawat] ERROR. ",e);
-                    throw new GeneralBOException("[RawatInapBoImpl.updateFlagKegiatanRawat] ERROR. "+e);
+                } catch (HibernateException e) {
+                    logger.error("[RawatInapBoImpl.updateFlagKegiatanRawat] ERROR. ", e);
+                    throw new GeneralBOException("[RawatInapBoImpl.updateFlagKegiatanRawat] ERROR. " + e);
                 }
             }
         }
@@ -461,18 +480,18 @@ public class RawatInapBoImpl implements RawatInapBo {
         List<ItSimrsMonCairanEntity> monCairanEntities = new ArrayList<>();
         try {
             monCairanEntities = monCairanDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getListMonCairan] ERROR",e);
-            throw new GeneralBOException("[RawatInapBoImpl.getListMonCairan] ERROR"+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getListMonCairan] ERROR", e);
+            throw new GeneralBOException("[RawatInapBoImpl.getListMonCairan] ERROR" + e.getMessage());
         }
 
         List<MonCairan> monCairans = new ArrayList<>();
-        if (monCairanEntities.size() > 0){
+        if (monCairanEntities.size() > 0) {
             MonCairan monCairan;
-            for (ItSimrsMonCairanEntity entity : monCairanEntities){
+            for (ItSimrsMonCairanEntity entity : monCairanEntities) {
 
                 boolean isShow = isShowDataByPlanKegiatan(entity.getId());
-                if (isShow){
+                if (isShow) {
                     monCairan = new MonCairan();
                     monCairan.setId(entity.getId());
                     monCairan.setNoCheckup(entity.getNoCheckup());
@@ -495,7 +514,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monCairan.setLastUpdateWho(entity.getLastUpdateWho());
                     monCairan.setStDate(stringDate(entity.getCreatedDate()));
                     monCairans.add(monCairan);
-                } else if  (bean.getIsMobile().equalsIgnoreCase("Y")){
+                } else if (bean.getIsMobile().equalsIgnoreCase("Y")) {
                     monCairan = new MonCairan();
                     monCairan.setId(entity.getId());
                     monCairan.setNoCheckup(entity.getNoCheckup());
@@ -529,14 +548,14 @@ public class RawatInapBoImpl implements RawatInapBo {
         CrudResponse response = new CrudResponse();
         response.setStatus("error");
         response.setMsg("[RawatInapBoImpl.saveMonCairan] bean is null");
-        if (bean != null){
-            bean.setId("OCR"+getNextMonCairan());
+        if (bean != null) {
+            bean.setId("OCR" + getNextMonCairan());
             try {
                 monCairanDao.addAndSave(bean);
                 response.setStatus("success");
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 response.setStatus("error");
-                response.setMsg("[RawatInapBoImpl.saveMonCairan] ERROR "+ e.getMessage());
+                response.setMsg("[RawatInapBoImpl.saveMonCairan] ERROR " + e.getMessage());
             }
         }
         return response;
@@ -552,13 +571,13 @@ public class RawatInapBoImpl implements RawatInapBo {
 
         try {
             monCairanEntities = monCairanDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.saveUpdateMonCairan] ERROR",e);
-            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonCairan] ERROR"+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.saveUpdateMonCairan] ERROR", e);
+            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonCairan] ERROR" + e.getMessage());
         }
 
-        if (monCairanEntities.size() > 0){
-            for (ItSimrsMonCairanEntity monCairanEntity : monCairanEntities){
+        if (monCairanEntities.size() > 0) {
+            for (ItSimrsMonCairanEntity monCairanEntity : monCairanEntities) {
 
                 monCairanEntity.setMacamCairan(bean.getMacamCairan());
                 monCairanEntity.setMelalui(bean.getMelalui());
@@ -577,9 +596,9 @@ public class RawatInapBoImpl implements RawatInapBo {
 
                 try {
                     monCairanDao.updateAndSave(monCairanEntity);
-                } catch (HibernateException e){
-                    logger.error("[RawatInapBoImpl.saveUpdateMonCairan] ERROR",e);
-                    throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonCairan] ERROR"+e.getMessage());
+                } catch (HibernateException e) {
+                    logger.error("[RawatInapBoImpl.saveUpdateMonCairan] ERROR", e);
+                    throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonCairan] ERROR" + e.getMessage());
                 }
 
                 updateFlagKegiatanRawat(monCairanEntity.getId(), bean.getLastUpdateWho(), bean.getLastUpdate());
@@ -603,18 +622,18 @@ public class RawatInapBoImpl implements RawatInapBo {
         List<ItSimrsMonPemberianObatEntity> pemberianObatEntities = new ArrayList<>();
         try {
             pemberianObatEntities = monPemberianObatDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getListMonCairan] ERROR",e);
-            throw new GeneralBOException("[RawatInapBoImpl.getListMonCairan] ERROR"+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getListMonCairan] ERROR", e);
+            throw new GeneralBOException("[RawatInapBoImpl.getListMonCairan] ERROR" + e.getMessage());
         }
 
         List<MonPemberianObat> monPemberianObats = new ArrayList<>();
-        if (pemberianObatEntities.size() > 0){
+        if (pemberianObatEntities.size() > 0) {
             MonPemberianObat monPemberianObat;
-            for (ItSimrsMonPemberianObatEntity entity : pemberianObatEntities){
+            for (ItSimrsMonPemberianObatEntity entity : pemberianObatEntities) {
 
                 boolean isShow = isShowDataByPlanKegiatan(entity.getId());
-                if (isShow){
+                if (isShow) {
                     monPemberianObat = new MonPemberianObat();
                     monPemberianObat.setId(entity.getId());
                     monPemberianObat.setNoCheckup(entity.getNoCheckup());
@@ -634,7 +653,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monPemberianObat.setStDate(stringDate(entity.getCreatedDate()));
                     monPemberianObat.setKategori(entity.getKategori());
                     monPemberianObats.add(monPemberianObat);
-                } else if  (bean.getIsMobile().equalsIgnoreCase("Y")){
+                } else if (bean.getIsMobile().equalsIgnoreCase("Y")) {
                     monPemberianObat = new MonPemberianObat();
                     monPemberianObat.setId(entity.getId());
                     monPemberianObat.setNoCheckup(entity.getNoCheckup());
@@ -665,14 +684,14 @@ public class RawatInapBoImpl implements RawatInapBo {
         CrudResponse response = new CrudResponse();
         response.setStatus("error");
         response.setMsg("[RawatInapBoImpl.saveMonPemberianObat] bean is null");
-        if (bean != null){
-            bean.setId("POT"+getNextMonPemberianObat());
+        if (bean != null) {
+            bean.setId("POT" + getNextMonPemberianObat());
             try {
                 monPemberianObatDao.addAndSave(bean);
                 response.setStatus("success");
-            } catch (HibernateException e){
+            } catch (HibernateException e) {
                 response.setStatus("error");
-                response.setMsg("[RawatInapBoImpl.saveMonPemberianObat] ERROR "+ e.getMessage());
+                response.setMsg("[RawatInapBoImpl.saveMonPemberianObat] ERROR " + e.getMessage());
             }
         }
         return response;
@@ -687,13 +706,13 @@ public class RawatInapBoImpl implements RawatInapBo {
         List<ItSimrsMonPemberianObatEntity> monPemberianObatEntities = new ArrayList<>();
         try {
             monPemberianObatEntities = monPemberianObatDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.saveUpdateMonPemberianObat] ERROR",e);
-            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonPemberianObat] ERROR"+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.saveUpdateMonPemberianObat] ERROR", e);
+            throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonPemberianObat] ERROR" + e.getMessage());
         }
 
-        if (monPemberianObatEntities.size() > 0){
-            for (ItSimrsMonPemberianObatEntity obatEntity : monPemberianObatEntities){
+        if (monPemberianObatEntities.size() > 0) {
+            for (ItSimrsMonPemberianObatEntity obatEntity : monPemberianObatEntities) {
 
                 obatEntity.setCaraPemberian(bean.getCaraPemberian());
                 obatEntity.setDosis(bean.getDosis());
@@ -706,9 +725,9 @@ public class RawatInapBoImpl implements RawatInapBo {
 
                 try {
                     monPemberianObatDao.updateAndSave(obatEntity);
-                } catch (HibernateException e){
-                    logger.error("[RawatInapBoImpl.saveUpdateMonPemberianObat] ERROR",e);
-                    throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonPemberianObat] ERROR"+e.getMessage());
+                } catch (HibernateException e) {
+                    logger.error("[RawatInapBoImpl.saveUpdateMonPemberianObat] ERROR", e);
+                    throw new GeneralBOException("[RawatInapBoImpl.saveUpdateMonPemberianObat] ERROR" + e.getMessage());
                 }
 
                 updateFlagKegiatanRawat(obatEntity.getId(), bean.getLastUpdateWho(), bean.getLastUpdate());
@@ -720,12 +739,12 @@ public class RawatInapBoImpl implements RawatInapBo {
     public List<MonVitalSign> getListGraf(MonVitalSign bean) {
 
         List<MonVitalSign> monVitalSigns = monVitalSignDao.getListGraf(bean);
-        if (monVitalSigns.size() > 0){
-            for (MonVitalSign monVitalSign : monVitalSigns){
+        if (monVitalSigns.size() > 0) {
+            for (MonVitalSign monVitalSign : monVitalSigns) {
 //                SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
                 SimpleDateFormat f = new SimpleDateFormat("MM/dd");
                 String stDate = f.format(monVitalSign.getCreatedDate());
-                monVitalSign.setStDate("tgl : "+stDate+", jam : "+monVitalSign.getJam());
+                monVitalSign.setStDate("tgl : " + stDate + ", jam : " + monVitalSign.getJam());
             }
         }
         return monVitalSigns;
@@ -741,11 +760,11 @@ public class RawatInapBoImpl implements RawatInapBo {
     @Override
     public List<RawatInap> getByCriteria(RawatInap bean) throws GeneralBOException {
         List<RawatInap> rawatInapList = new ArrayList<>();
-        if(bean != null){
+        if (bean != null) {
             List<ItSimrsRawatInapEntity> list = getListEntityByCriteria(bean);
-            if(list.size() > 0){
+            if (list.size() > 0) {
                 RawatInap rawatInap;
-                for (ItSimrsRawatInapEntity entity: list){
+                for (ItSimrsRawatInapEntity entity : list) {
                     rawatInap = new RawatInap();
                     rawatInap.setIdDetailCheckup(entity.getIdDetailCheckup());
                     rawatInap.setIdRawatInap(entity.getIdRawatInap());
@@ -768,13 +787,13 @@ public class RawatInapBoImpl implements RawatInapBo {
 
         try {
             entity = monVitalSignDao.getById("id", id);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getMonVitalSignById] ERROR",e);
-            throw new GeneralBOException("[RawatInapBoImpl.getMonVitalSignById] ERROR"+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getMonVitalSignById] ERROR", e);
+            throw new GeneralBOException("[RawatInapBoImpl.getMonVitalSignById] ERROR" + e.getMessage());
         }
 
         MonVitalSign monVitalSign = new MonVitalSign();
-        if (entity != null && entity.getId() != null){
+        if (entity != null && entity.getId() != null) {
             monVitalSign = new MonVitalSign();
             monVitalSign.setId(entity.getId());
             monVitalSign.setNoCheckup(entity.getNoCheckup());
@@ -805,13 +824,13 @@ public class RawatInapBoImpl implements RawatInapBo {
 
         try {
             entity = monCairanDao.getById("id", id);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getMonCairanById] ERROR",e);
-            throw new GeneralBOException("[RawatInapBoImpl.getMonCairanById] ERROR"+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getMonCairanById] ERROR", e);
+            throw new GeneralBOException("[RawatInapBoImpl.getMonCairanById] ERROR" + e.getMessage());
         }
 
         MonCairan monCairan = new MonCairan();
-        if (entity != null && entity.getId() != null){
+        if (entity != null && entity.getId() != null) {
             monCairan.setId(entity.getId());
             monCairan.setNoCheckup(entity.getNoCheckup());
             monCairan.setIdDetailCheckup(entity.getIdDetailCheckup());
@@ -843,9 +862,9 @@ public class RawatInapBoImpl implements RawatInapBo {
 
         try {
             entity = monPemberianObatDao.getById("id", id);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getMonCairanById] ERROR",e);
-            throw new GeneralBOException("[RawatInapBoImpl.getMonCairanById] ERROR"+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getMonCairanById] ERROR", e);
+            throw new GeneralBOException("[RawatInapBoImpl.getMonCairanById] ERROR" + e.getMessage());
         }
 
         MonPemberianObat monPemberianObat = new MonPemberianObat();
@@ -871,7 +890,7 @@ public class RawatInapBoImpl implements RawatInapBo {
         return monPemberianObat;
     }
 
-    private String stringDate(Timestamp datetime){
+    private String stringDate(Timestamp datetime) {
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
         return f.format(datetime);
     }
@@ -892,8 +911,8 @@ public class RawatInapBoImpl implements RawatInapBo {
         List<SkorRanap> skorRanaps = new ArrayList<>();
         try {
             skorRanaps = skorRanapDao.getListSumSkorRanap(noCheckup, idDetail, idkategori);
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getListSumSkorRanap] ERROR ",e);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getListSumSkorRanap] ERROR ", e);
         }
 
         return skorRanaps;
@@ -904,57 +923,419 @@ public class RawatInapBoImpl implements RawatInapBo {
         return rawatInapDao.getLastRuanganById(id);
     }
 
-    private String getNextSkorRanap(){
+    @Override
+    public List<RawatInap> getListTppri(RawatInap bean) throws GeneralBOException {
+        return rawatInapDao.getListTppri(bean);
+    }
+
+    @Override
+    public CrudResponse saveAdd(RawatInap bean) throws GeneralBOException {
+        logger.info("[RawatInapBoImpl.saveAdd] Start >>>>>>>>");
+        CrudResponse response = new CrudResponse();
+        if ("rawat_intensif".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                "rawat_isolasi".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                "kamar_operasi".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                "ruang_bersalin".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                "rawat_inap".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                "kembali_ke_inap".equalsIgnoreCase(bean.getTindakLanjut())) {
+
+            if ("rawat_inap".equalsIgnoreCase(bean.getTindakLanjut())) {
+                response = updateRawatInap(bean);
+            }
+
+            if (!"Y".equalsIgnoreCase(bean.getIsStay())) {
+                response = updateRawatInap(bean);
+            }
+
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
+            detailCheckup.setTindakLanjut(bean.getTindakLanjut());
+            detailCheckup.setLastUpdate(bean.getLastUpdate());
+            detailCheckup.setLastUpdateWho(bean.getLastUpdateWho());
+            if("Y".equalsIgnoreCase(bean.getIsStay())){
+                detailCheckup.setIsStay(bean.getIsStay());
+            }
+            if("kembali_ke_inap".equalsIgnoreCase(bean.getTindakLanjut())){
+                detailCheckup.setIsStay("N");
+            }
+            response = updateDetail(detailCheckup);
+            if ("success".equalsIgnoreCase(response.getStatus())) {
+                if (!"kembali_ke_inap".equalsIgnoreCase(bean.getTindakLanjut())){
+                    ItSimrsRawatInapEntity entity = new ItSimrsRawatInapEntity();
+                    MtSimrsRuanganEntity ruanganEntity = new MtSimrsRuanganEntity();
+                    if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())) {
+                        Ruangan ruangan = new Ruangan();
+                        ruangan.setIdRuangan(bean.getIdRuangan());
+                        List<MtSimrsRuanganEntity> listRuangan = getListEntityRuangan(ruangan);
+
+                        if (listRuangan.size() > 0) {
+                            ruanganEntity = listRuangan.get(0);
+                            if (ruanganEntity != null) {
+                                entity.setIdRawatInap("RNP" + rawatInapDao.getNextId());
+                                entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                                entity.setNoCheckup(bean.getNoCheckup());
+                                entity.setIdRuangan(ruanganEntity.getIdRuangan());
+                                entity.setTarif(ruanganEntity.getTarif());
+                                entity.setNamaRangan(ruanganEntity.getNamaRuangan());
+                                entity.setNoRuangan(ruanganEntity.getNoRuangan());
+                                entity.setFlag("Y");
+                                entity.setAction("C");
+                                entity.setCreatedDate(bean.getCreatedDate());
+                                entity.setLastUpdate(bean.getCreatedDate());
+                                entity.setCreatedWho(bean.getCreatedWho());
+                                entity.setLastUpdateWho(bean.getCreatedWho());
+                                entity.setTglMasuk(bean.getCreatedDate());
+                                entity.setStatus("1");
+
+                                try {
+
+                                    rawatInapDao.addAndSave(entity);
+
+                                    ruanganEntity.setSisaKuota(ruanganEntity.getSisaKuota() - 1);
+                                    ruanganEntity.setAction("U");
+                                    ruanganEntity.setLastUpdate(bean.getCreatedDate());
+                                    ruanganEntity.setLastUpdateWho(bean.getCreatedWho());
+
+                                    if (ruanganEntity.getSisaKuota() == 0) {
+                                        ruanganEntity.setStatusRuangan("N");
+                                    }
+
+                                    try {
+                                        ruanganDao.updateAndSave(ruanganEntity);
+                                        response.setStatus("success");
+                                        response.setMsg("berhasil");
+                                    } catch (HibernateException e) {
+                                        response.setStatus("error");
+                                        response.setMsg("Error When Saving data detail checkup " + e.getMessage());
+                                        logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan ", e);
+                                        throw new GeneralBOException("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan " + e.getMessage());
+                                    }
+
+                                } catch (HibernateException e) {
+                                    response.setStatus("error");
+                                    response.setMsg(" Error when save add Rawat Inap " + e.getMessage());
+                                    logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when save add Rawat Inap ", e);
+                                    throw new GeneralBOException("[CheckupDetailBoImpl.saveRawatInap] Error when save add  Rawat Inap " + e.getMessage());
+                                }
+                            }
+                        }
+                    }else{
+                        response.setStatus("error");
+                        response.setMsg("Errro Id Ruangan tidak ada...!");
+                    }
+                }
+            }else{
+                response.setStatus("error");
+                response.setMsg("Errro When update detail checkup...!");
+            }
+
+        } else {
+            HeaderCheckup checkup = new HeaderCheckup();
+            checkup.setNoCheckup(bean.getNoCheckup());
+            checkup.setLastUpdateWho(bean.getLastUpdateWho());
+            checkup.setLastUpdate(bean.getLastUpdate());
+            response = updateCheckup(checkup);
+            if ("success".equalsIgnoreCase(response.getStatus())) {
+                HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                detailCheckup.setIdDetailCheckup(bean.getIdDetailCheckup());
+                detailCheckup.setLastUpdateWho(bean.getLastUpdateWho());
+                detailCheckup.setLastUpdate(bean.getLastUpdate());
+                detailCheckup.setTindakLanjut(bean.getTindakLanjut());
+                detailCheckup.setCatatan(bean.getCatatan());
+                detailCheckup.setKeteranganSelesai(bean.getKeteranganSelesai());
+                detailCheckup.setStatusPeriksa("3");
+                response = updateDetail(detailCheckup);
+                if ("success".equalsIgnoreCase(response.getStatus())) {
+                    response = updateRawatInap(bean);
+                }
+            }
+        }
+
+        if (bean.getIdRuangLama() != null && !"".equalsIgnoreCase(bean.getIdRuangLama())) {
+            if (!"Y".equalsIgnoreCase(bean.getIsStay())) {
+                Ruangan ruangan = new Ruangan();
+                ruangan.setIdRuangan(bean.getIdRuangLama());
+                List<MtSimrsRuanganEntity> listRuangan = getListEntityRuangan(ruangan);
+                if (listRuangan.size() > 0) {
+                    MtSimrsRuanganEntity ruanganEntity = listRuangan.get(0);
+                    if (ruanganEntity != null) {
+                        ruanganEntity.setSisaKuota(ruanganEntity.getSisaKuota() + 1);
+                        ruanganEntity.setAction("U");
+                        ruanganEntity.setLastUpdate(bean.getCreatedDate());
+                        ruanganEntity.setLastUpdateWho(bean.getCreatedWho());
+                        ruanganEntity.setStatusRuangan("Y");
+                        try {
+                            ruanganDao.updateAndSave(ruanganEntity);
+                            response.setStatus("success");
+                            response.setMsg("berhasil");
+                        } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMsg("Error When Saving data detail checkup " + e.getMessage());
+                            logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan ", e);
+                            throw new GeneralBOException("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan " + e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+
+        logger.info("[RawatInapBoImpl.saveAdd] End <<<<<<<<");
+        return response;
+    }
+
+    @Override
+    public List<RawatInap> getRuanganRawatInap(RawatInap bean) throws GeneralBOException {
+        return rawatInapDao.getRuanganRawatInap(bean);
+    }
+
+    private CrudResponse updateCheckup(HeaderCheckup bean) {
+        logger.info("[RawatInapBoImpl.saveAdd] Start <<<<<<<<");
+        CrudResponse response = new CrudResponse();
+        ItSimrsHeaderChekupEntity entity = new ItSimrsHeaderChekupEntity();
+        try {
+            entity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+            if (entity != null) {
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setAction("U");
+                entity.setTglKeluar(bean.getLastUpdate());
+                try {
+                    headerCheckupDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg("Error, " + e.getMessage());
+                }
+            } else {
+                response.setStatus("error");
+                response.setMsg("No Checkup Tidak ditemukan...!");
+            }
+        } catch (HibernateException e) {
+            response.setStatus("error");
+            response.setMsg("Error, " + e.getMessage());
+        }
+        logger.info("[RawatInapBoImpl.saveAdd] End <<<<<<<<");
+        return response;
+    }
+
+    private CrudResponse updateDetail(HeaderDetailCheckup bean) {
+        logger.info("[RawatInapBoImpl.updateDetail] Start <<<<<<<<");
+        CrudResponse response = new CrudResponse();
+        ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+        try {
+            entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+            if (entity != null) {
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setAction("U");
+                if (bean.getStatusPeriksa() != null && !"".equalsIgnoreCase(bean.getStatusPeriksa())) {
+                    entity.setStatusPeriksa(bean.getStatusPeriksa());
+                }
+                if (bean.getTindakLanjut() != null && !"".equalsIgnoreCase(bean.getTindakLanjut())) {
+                    entity.setTindakLanjut(bean.getTindakLanjut());
+                }
+                if (bean.getCatatan() != null && !"".equalsIgnoreCase(bean.getCatatan())) {
+                    entity.setCatatan(bean.getCatatan());
+                }
+                if (bean.getKeteranganSelesai() != null && !"".equalsIgnoreCase(bean.getKeteranganSelesai())) {
+                    entity.setKeteranganSelesai(bean.getKeteranganSelesai());
+                }
+                if(bean.getIsStay() != null && !"".equalsIgnoreCase(bean.getIsStay())){
+                    if("N".equalsIgnoreCase(bean.getIsStay())){
+                        entity.setIsStay(null);
+                    }else{
+                        entity.setIsStay(bean.getIsStay());
+                    }
+                }
+                try {
+                    checkupDetailDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg("Error, " + e.getMessage());
+                }
+            } else {
+                response.setStatus("error");
+                response.setMsg("ID Checkup Tidak ditemukan...!");
+            }
+        } catch (HibernateException e) {
+            response.setStatus("error");
+            response.setMsg("Error, " + e.getMessage());
+        }
+        logger.info("[RawatInapBoImpl.updateDetail] End <<<<<<<<");
+        return response;
+    }
+
+    private CrudResponse updateRawatInap(RawatInap bean) {
+        logger.info("[RawatInapBoImpl.updateRawatInap] Start <<<<<<<<");
+        CrudResponse response = new CrudResponse();
+        ItSimrsRawatInapEntity entity = new ItSimrsRawatInapEntity();
+        try {
+            entity = rawatInapDao.getById("idRawatInap", bean.getIdRawatInap());
+            if (entity != null) {
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setAction("U");
+                entity.setTglKeluar(bean.getLastUpdate());
+                entity.setStatus("3");
+
+                try {
+                    rawatInapDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg("Error, " + e.getMessage());
+                }
+            } else {
+                response.setStatus("error");
+                response.setMsg("ID rawat inap Tidak ditemukan...!");
+            }
+        } catch (HibernateException e) {
+            response.setStatus("error");
+            response.setMsg("Error, " + e.getMessage());
+        }
+        logger.info("[RawatInapBoImpl.updateRawatInap] End <<<<<<<<");
+        return response;
+    }
+
+    public CrudResponse updateRiwayatKamar(RawatInap bean) {
+        logger.info("[RawatInapBoImpl.saveAdd] Start <<<<<<<<");
+        CrudResponse response = new CrudResponse();
+        List<RawatInap> rawatInapList = new ArrayList<>();
+        try {
+            rawatInapList = rawatInapDao.getRuanganRawatInap(bean.getIdDetailCheckup());
+            if (rawatInapList.size() > 0) {
+                for (RawatInap rawatInap: rawatInapList){
+                    Map hsCriteria = new HashMap();
+                    hsCriteria.put("id_tindakan", rawatInap.getIdRawatInap());
+                    List<ItSimrsRiwayatTindakanEntity> riwayatTindakanEntityList = new ArrayList<>();
+                    try {
+                        riwayatTindakanEntityList = riwayatTindakanDao.getByCriteria(hsCriteria);
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("When insert to riwayat unutk kamar...!, "+e.getMessage());
+                    }
+                    if(riwayatTindakanEntityList.isEmpty()){
+                        ItSimrsRiwayatTindakanEntity entity = new ItSimrsRiwayatTindakanEntity();
+                        entity.setIdRiwayatTindakan("RWT"+riwayatTindakanDao.getNextSeq());
+                        entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                        entity.setIdTindakan(rawatInap.getIdRawatInap());
+                        entity.setNamaTindakan("Kamar "+rawatInap.getNamaRangan());
+                        entity.setKeterangan("kamar");
+                        entity.setTotalTarif(new BigDecimal(rawatInap.getTarif().multiply(rawatInap.getLamakamar())));
+                        if("ptpn".equalsIgnoreCase(bean.getIdJenisPeriksa())){
+                            entity.setJenisPasien("bpjs");
+                        }else{
+                            entity.setJenisPasien(bean.getIdJenisPeriksa());
+                        }
+                        entity.setAction(bean.getAction());
+                        entity.setFlag(bean.getFlag());
+                        entity.setCreatedDate(bean.getCreatedDate());
+                        entity.setCreatedWho(bean.getCreatedWho());
+                        entity.setLastUpdate(bean.getLastUpdate());
+                        entity.setLastUpdateWho(bean.getLastUpdateWho());
+                        entity.setTanggalTindakan(rawatInap.getCreatedDate());
+                        entity.setIsKamar("Y");
+                        entity.setIdRuangan(rawatInap.getIdRuangan());
+
+                        try {
+                            riwayatTindakanDao.addAndSave(entity);
+                        }catch (HibernateException e){
+                            logger.error("[RiwayatTindakanBoImpl.saveAdd] error when insert riwayat tindakan, Found error :["+e.getMessage()+"]");
+                        }
+                    }
+                }
+            } else {
+                response.setStatus("error");
+                response.setMsg("ID Detail Checkup Tidak ditemukan...!");
+            }
+        } catch (HibernateException e) {
+            response.setStatus("error");
+            response.setMsg("Error, " + e.getMessage());
+        }
+        logger.info("[RawatInapBoImpl.saveAdd] End <<<<<<<<");
+        return response;
+    }
+
+    protected List<MtSimrsRuanganEntity> getListEntityRuangan(Ruangan bean) {
+        logger.info("[RawatInapBoImpl.getListRuangan] Start >>>>>>>>>");
+
+        List<MtSimrsRuanganEntity> results = new ArrayList<>();
+        Map hsCriteria = new HashMap();
+
+        if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())) {
+            hsCriteria.put("id_ruangan", bean.getIdRuangan());
+        }
+        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())) {
+            hsCriteria.put("status_ruangan", bean.getStatusRuangan());
+
+        }
+        hsCriteria.put("flag", "Y");
+
+        try {
+            results = ruanganDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getListRuangan] Error When get data ruangan");
+        }
+
+        logger.info("[RawatInapBoImpl.getListRuangan] End <<<<<<<<<");
+        return results;
+    }
+
+    private String getNextSkorRanap() {
         String id = "";
         try {
             id = skorRanapDao.getNextSeq();
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getNextSkorRanap] Error when get seq ",e);
-            throw new GeneralBOException("[RawatInapBoImpl.getNextSkorRanap] Error when get seq "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getNextSkorRanap] Error when get seq ", e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextSkorRanap] Error when get seq " + e.getMessage());
         }
         return id;
     }
 
-    private String getNextGroupSkorRanap(){
+    private String getNextGroupSkorRanap() {
         String id = "";
         try {
             id = skorRanapDao.getNextGroupSeq();
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getNextGroupSkorRanap] Error when get seq ",e);
-            throw new GeneralBOException("[RawatInapBoImpl.getNextGroupSkorRanap] Error when get seq "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getNextGroupSkorRanap] Error when get seq ", e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextGroupSkorRanap] Error when get seq " + e.getMessage());
         }
         return id;
     }
 
-    private String getNextMonCairan(){
+    private String getNextMonCairan() {
         String id = "";
         try {
             id = monCairanDao.getNextSeq();
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getNextMonCairan] Error when get seq ",e);
-            throw new GeneralBOException("[RawatInapBoImpl.getNextMonCairan] Error when get seq "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getNextMonCairan] Error when get seq ", e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextMonCairan] Error when get seq " + e.getMessage());
         }
         return id;
     }
 
-    private String getNextMonPemberianObat(){
+    private String getNextMonPemberianObat() {
         String id = "";
         try {
             id = monPemberianObatDao.getNextSeq();
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getNextMonPemberianObat] Error when get seq ",e);
-            throw new GeneralBOException("[RawatInapBoImpl.getNextMonPemberianObat] Error when get seq "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getNextMonPemberianObat] Error when get seq ", e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextMonPemberianObat] Error when get seq " + e.getMessage());
         }
         return id;
     }
 
-    private String getNextMonVitalSign(){
+    private String getNextMonVitalSign() {
         String id = "";
         try {
             id = monVitalSignDao.getNextSeq();
-        } catch (HibernateException e){
-            logger.error("[RawatInapBoImpl.getNextMonVitalSign] Error when get seq ",e);
-            throw new GeneralBOException("[RawatInapBoImpl.getNextMonVitalSign] Error when get seq "+e.getMessage());
+        } catch (HibernateException e) {
+            logger.error("[RawatInapBoImpl.getNextMonVitalSign] Error when get seq ", e);
+            throw new GeneralBOException("[RawatInapBoImpl.getNextMonVitalSign] Error when get seq " + e.getMessage());
         }
         return id;
     }
@@ -990,5 +1371,21 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     public void setPlanKegiatanRawatDao(PlanKegiatanRawatDao planKegiatanRawatDao) {
         this.planKegiatanRawatDao = planKegiatanRawatDao;
+    }
+
+    public void setRuanganDao(RuanganDao ruanganDao) {
+        this.ruanganDao = ruanganDao;
+    }
+
+    public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
+        this.headerCheckupDao = headerCheckupDao;
+    }
+
+    public void setCheckupDetailDao(CheckupDetailDao checkupDetailDao) {
+        this.checkupDetailDao = checkupDetailDao;
+    }
+
+    public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
+        this.riwayatTindakanDao = riwayatTindakanDao;
     }
 }

@@ -13,7 +13,9 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#rawat_inap').addClass('active');
+            $('#pel_ri_active, #bayar_rawat_inap').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
+            getKelasKamar();
         });
 
     </script>
@@ -67,24 +69,27 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"
-                                                  id="status" name="rawatInap.statusPeriksa"
-                                                  headerKey="" headerValue="[Select one]"
+                                        <s:select list="#{'3':'Selesai'}" cssStyle="margin-top: 7px"
+                                                  id="status" name="rawatInap.status"
+                                                  headerKey="1" headerValue="Periksa"
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
-                                        <s:action id="initComboKelas" namespace="/checkupdetail"
-                                                  name="getListComboKelasRuangan_checkupdetail"/>
-                                        <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"
-                                                  list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
-                                                  name="rawatInap.idKelas"
-                                                  listKey="idKelasRuangan"
-                                                  listValue="namaKelasRuangan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
+                                        <select style="margin-top: 7px" class="form-control select2" id="kelas_kamar" name="rawatInap.idKelas" onchange="listSelectRuangan(this.value)">
+                                            <option value=''>[Select One]</option>
+                                        </select>
+                                        <%--<s:action id="initComboKelas" namespace="/checkupdetail"--%>
+                                                  <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
+                                        <%--<s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"--%>
+                                                  <%--list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"--%>
+                                                  <%--name="rawatInap.idKelas"--%>
+                                                  <%--listKey="idKelasRuangan"--%>
+                                                  <%--listValue="namaKelasRuangan"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
                                     </div>
                                     <div class="col-sm-3" style="display: none;" id="load_ruang">
                                         <img border="0" src="<s:url value="/pages/images/spinner.gif"/>" style="cursor: pointer; width: 45px; height: 45px"><b style="color: #00a157;">Sedang diproses...</b></div>
@@ -176,11 +181,12 @@
                                 <td>Nama</td>
                                 <td>Desa</td>
                                 <td>Status</td>
+                                <td align="center">Jenis Pasien</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfRawatInap">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
@@ -188,13 +194,50 @@
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
-                                        <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{add_rawat_inap}">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                        </s:a>
-                                        <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                        <s:if test='#row.idJenisPeriksa == "asuransi"'>
+                                        <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:if>
+                                                <s:elseif test='#row.idJenisPeriksa == "umum"'>
+                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:elseif test='#row.idJenisPeriksa == "bpjs"'>
+                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:elseif test='#row.idJenisPeriksa == "ptpn"'>
+                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:elseif>
+                                                <s:else>
+                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                </s:else>
+                                                    <s:property value="jenisPeriksaPasien"></s:property>
+                                                </span>
+                                    </td>
+                                    <td align="center" style="vertical-align: middle">
+                                        <s:if test='#row.idJenisPeriksa == "umum"'>
+                                            <s:if test='#row.isBayar == "Y"'>
+                                                <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
+                                                    <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                    <s:param name="idx"><s:property value="idRawatInap"/></s:param>
+                                                </s:url>
+                                                <s:a href="%{add_rawat_inap}">
+                                                    <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                                </s:a>
+                                                <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                            </s:if>
+                                            <s:else>
+                                                <label class="label label-warning">Uang muka belum bayar</label>
+                                            </s:else>
+                                        </s:if>
+                                        <s:else>
+                                            <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="idx"><s:property value="idRawatInap"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{add_rawat_inap}">
+                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                            </s:a>
+                                            <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -210,38 +253,48 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
+    function getKelasKamar(){
+        var option = '<option value="">[Select One]</option>';
+        dwr.engine.setAsync(true);
+        CheckupDetailAction.getListKelasKamar('rawat_inap', function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="' + item.idKelasRuangan + '">' + item.namaKelasRuangan + '</option>';
+                });
+                $('#kelas_kamar').html(option);
+            }else{
+                $('#kelas_kamar').html(option);
+            }
+        });
+    }
+
     function printGelangPasien(noCheckup) {
         window.open('printGelangPasien_rawatinap.action?id=' + noCheckup, '_blank');
     }
 
     function listSelectRuangan(id){
-        var idx     = id.selectedIndex;
-        var idKelas = id.options[idx].value;
-        var option  = "";
+        var option  = "<option value=''>[Select One]</option>";;
         var flag    = false;
-
         $('#load_ruang').show();
         setTimeout(function () {
 
         },100);
-        if(idKelas != ''){
-            CheckupDetailAction.listRuangan(idKelas, flag, { callback: function (response) {
-                option = "<option value=''>[Select One]</option>";
-                if (response != null) {
+        if(id != ''){
+            CheckupDetailAction.listRuangan(id, flag, { callback: function (response) {
+                if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
                     });
+                    $('#nama_ruangan').html(option);
                 } else {
-                    option = option;
+                    $('#nama_ruangan').html(option);
                 }
                 $('#load_ruang').hide();
             }
             });
         }else{
-            option = "<option value=''>[Select One]</option>";
+            $('#nama_ruangan').html(option);
         }
-
-        $('#nama_ruangan').html(option);
     }
 </script>
 

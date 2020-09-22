@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_ceklist_operasi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_ceklist_operasi">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_ceklist_operasi"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -34,12 +38,14 @@
                             <td>Persiapan Pasien Pre Operasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_pre_operasi" class="hvr-grow" onclick="detailOperasi('pre_operasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pre_operasi" class="hvr-grow btn-hide" onclick="conOP('pre_operasi', 'ceklist_operasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_kondisi_pasien">
                             <td>Kondisi Pasien Saat Serah Terima</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_kondisi_pasien" class="hvr-grow" onclick="detailOperasi('kondisi_pasien')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_kondisi_pasien" class="hvr-grow btn-hide" onclick="conOP('kondisi_pasien', 'ceklist_operasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -591,6 +597,7 @@
                                 <label style="margin-left: 8px">TTD Perawat Pengirim</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_pengirim" width="220"
                                         onmouseover="paintTtd('ttd_pengirim')"></canvas>
+                                <input class="form-control" id="nama_terang_pengirim" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_pengirim')"><i
                                         class="fa fa-trash"></i> Clear
@@ -600,6 +607,7 @@
                                 <label style="margin-left: 8px">TTD Perawat Operasi</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_perawat" width="220"
                                         onmouseover="paintTtd('ttd_perawat')"></canvas>
+                                <input class="form-control" id="nama_terang_perawat" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_perawat')"><i
                                         class="fa fa-trash"></i> Clear
@@ -636,6 +644,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_penandaan_area"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_penandaan_area">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_penandaan_area"></p>
+                    </div>
                     <button class="btn btn-success" onclick="penandaAreaOperasi()"><i class="fa fa-plus"></i> Penanda Area Operasi</button>
                 </div>
                 <div class="box-body">
@@ -645,6 +657,7 @@
                             <td>Hasil Penandaan Area Operasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_penandaan_area" class="hvr-grow" onclick="detailOperasi('penandaan_area')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_penandaan_area" class="hvr-grow btn-hide" onclick="conOP('penandaan_area', 'penandaan_area')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -714,7 +727,7 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_op_ttd-penandaan"></p>
                 </div>
-                <div class="row">
+                <div class="row" style="display: none">
                     <div class="col-md-12">
                         <div class="col-md-7">
                             <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
@@ -736,12 +749,15 @@
                         <div class="col-md-6">
                             <b style="margin-left: 8px">Tanda Tangan Pasien</b>
                             <canvas onmouseover="paintTtd('op_ttd_pasien')" class="paint-canvas-ttd" id="op_ttd_pasien" width="380" height="300"></canvas>
+                            <input class="form-control" id="nama_terang_pasien" placeholder="Nama Terang">
                             <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('op_ttd_pasien')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
                         <div class="col-md-6">
                             <b style="margin-left: 8px">Tanda Tangan Dokter</b>
                             <canvas onmouseover="paintTtd('op_ttd_dokter')" class="paint-canvas-ttd" id="op_ttd_dokter" width="380" height="300"></canvas>
+                            <input class="form-control" id="nama_terang_dokter" placeholder="Nama Terang">
+                            <input style="margin-top: 3px" class="form-control" id="sip_dokter" placeholder="SIP">
                             <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('op_ttd_dokter')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
@@ -770,11 +786,15 @@
                 </h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-success alert-dismissible" style="display: none" id="warning_op_pra_anestesi">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_op_pra_anestesi"></p>
+                </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_pra_anestesi">
+                    <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                    <p id="msg_pra_anestesi"></p>
+                </div>
                 <div class="box-body btn-hide">
-                    <div class="alert alert-success alert-dismissible" style="display: none" id="warning_op_pra_anestesi">
-                        <h4><i class="icon fa fa-info"></i> Info!</h4>
-                        <p id="msg_op_pra_anestesi"></p>
-                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -786,7 +806,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a onclick="showModalOperasi('anamnesa')" style="cursor: pointer;"><i class="fa fa-plus"></i> Anamnesa</a></li>
                             <li><a onclick="showModalOperasi('pemeriksaan_fisik')" style="cursor: pointer;"><i class="fa fa-plus"></i> Pemeriksaan Fisik</a></li>
-                            <li><a onclick="showModalOperasi('pemeriksaan_penunjang')" style="cursor: pointer;"><i class="fa fa-plus"></i> Pemeriksaan Penunjang</a></li>
+                            <li><a onclick="showModalOperasi('pemeriksaan_penunjang')" style="cursor: pointer;"><i class="fa fa-plus"></i> Hasil Pemeriksaan Penunjang</a></li>
                             <li><a onclick="showModalOperasi('status_fisik')" style="cursor: pointer;"><i class="fa fa-plus"></i> Status Fisik</a></li>
                             <li><a onclick="showModalOperasi('persiapan_anestesi')" style="cursor: pointer;"><i class="fa fa-plus"></i> Persiapan Anestesi</a></li>
                         </ul>
@@ -799,30 +819,35 @@
                             <td>Anamnesa</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_anamnesa" class="hvr-grow" onclick="detailOperasi('anamnesa')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_anamnesa" class="hvr-grow btn-hide" onclick="conOP('anamnesa', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_pemeriksaan_fisik">
                             <td>Pemeriksaan Fisik</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_pemeriksaan_fisik" class="hvr-grow" onclick="detailOperasi('pemeriksaan_fisik')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pemeriksaan_fisik" class="hvr-grow btn-hide" onclick="conOP('pemeriksaan_fisik', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_pemeriksaan_penunjang">
-                            <td>Pemeriksaan Penunjang</td>
+                            <td>Hasil Pemeriksaan Penunjang</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_pemeriksaan_penunjang" class="hvr-grow" onclick="detailOperasi('pemeriksaan_penunjang')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_pemeriksaan_penunjang" class="hvr-grow btn-hide" onclick="conOP('pemeriksaan_penunjang', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_status_fisik">
                             <td>Status Fisik</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_status_fisik" class="hvr-grow" onclick="detailOperasi('status_fisik')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_status_fisik" class="hvr-grow btn-hide" onclick="conOP('status_fisik', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_persiapan_anestesi">
                             <td>Persiapan Anestesi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_persiapan_anestesi" class="hvr-grow" onclick="detailOperasi('persiapan_anestesi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_persiapan_anestesi" class="hvr-grow btn-hide" onclick="conOP('persiapan_anestesi', 'pra_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -1130,7 +1155,7 @@
                             <div class="col-md-4">
                                 <label>Suhu</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control suhu-pasien" id="cek_pf111">
+                                    <input class="form-control suhu-pasien" id="cek_pf111">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         C
                                     </div>
@@ -1169,13 +1194,21 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 10px">Kemampuan Buka Mulut</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="cek_pf155" style="margin-top: 10px">
+                                <input class="form-control" id="cek_pf155" style="margin-top: 10px" placeholder="cm">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Skala Malampahty</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="cek_pf166" style="margin-top: 7px">
+                                <%--<input class="form-control" id="cek_pf166" style="margin-top: 7px">--%>
+                                <select class="form-control" id="cek_pf166" style="margin-top: 7px">
+                                    <option value="">[Select One]</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -1212,7 +1245,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Pemeriksaan Penunjang
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Hasil Pemeriksaan Penunjang
                 </h4>
             </div>
             <div class="modal-body">
@@ -1224,7 +1257,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label>Pemeriksaan Penunjang</label>
+                                <label>Hasil Pemeriksaan Penunjang</label>
                                 <textarea class="form-control penunjang-medis" id="pp1" rows="5"></textarea>
                             </div>
                         </div>
@@ -1261,16 +1294,6 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Status Fisik Anestesi</label>
-                            <div class="col-md-3">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="Elektif" id="cek_st11" name="cek_st1" /><label for="cek_st11">Elektif</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02" style="margin-top: 7px">
-                                    <input type="radio" value="Emergency" id="cek_st12" name="cek_st1" /><label for="cek_st12">Emergency</label>
-                                </div>
-                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">ASA</label>
@@ -1297,6 +1320,18 @@
                             <div class="col-md-1">
                                 <div class="custom02" style="margin-top: 7px">
                                     <input type="radio" value="5" id="cek_st25" name="cek_st2" /><label for="cek_st25">5</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-3">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Elektif" id="cek_st11" name="cek_st1" /><label for="cek_st11">Elektif</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="custom02" style="margin-top: 7px">
+                                    <input type="radio" value="Emergency" id="cek_st12" name="cek_st1" /><label for="cek_st12">Emergency</label>
                                 </div>
                             </div>
                         </div>
@@ -1414,6 +1449,12 @@
                                 <textarea class="form-control" id="pa3" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Pesanan Pra Anestesi</label>
+                            <div class="col-md-7">
+                                <textarea class="form-control" id="pa4" style="margin-top: 7px"></textarea>
+                            </div>
+                        </div>
                     </div>
                     <hr class="garis">
                     <div class="row">
@@ -1422,6 +1463,8 @@
                                 <label style="margin-left: 8px">TTD Dokter Spesialis Anestesi</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_spesialis" width="220"
                                         onmouseover="paintTtd('ttd_spesialis')"></canvas>
+                                <input class="form-control" id="nama_terang_spesialis" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_spesialis" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_spesialis')"><i
                                         class="fa fa-trash"></i> Clear
@@ -1721,6 +1764,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_pindah_rr"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_pindah_rr">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_pindah_rr"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -1743,18 +1790,21 @@
                             <td>Penilain Pasca General Anestesi Pasien Dewasa (Aldrette Score)</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_rr_dewasa" class="hvr-grow" onclick="detailOperasi('rr_dewasa')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_rr_dewasa" class="hvr-grow btn-hide" onclick="conOP('rr_dewasa', 'pindah_rr')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_rr_anak_anak">
                             <td>Penilain Pasca General Anestesi Pasien Anak-Anak (Stewart Score)</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_rr_anak_anak" class="hvr-grow" onclick="detailOperasi('rr_anak_anak')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_rr_anak_anak" class="hvr-grow btn-hide" onclick="conOP('rr_anak_anak', 'pindah_rr')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         <tr id="row_op_rr_sab">
                             <td>Penilain Pasca Regional Anestesi Pasien SAB/Epidural (Bromage Score)</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_rr_sab" class="hvr-grow" onclick="detailOperasi('rr_sab')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_rr_sab" class="hvr-grow btn-hide" onclick="conOP('rr_sab', 'pindah_rr')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -2099,6 +2149,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_laporan_operasi"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_laporan_operasi">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_laporan_operasi"></p>
+                    </div>
                     <div class="btn-group btn-hide">
                         <button type="button" class="btn btn-success" onclick="showModalOperasi('add_laporan_operasi')"><i class="fa fa-plus"></i> Laporan Operasi
                         </button>
@@ -2111,6 +2165,7 @@
                             <td>Laporan Operasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_laporan_operasi" class="hvr-grow" onclick="detailOperasi('laporan_operasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_add_laporan_operasi" class="hvr-grow btn-hide" onclick="conOP('add_laporan_operasi', 'laporan_operasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -2326,7 +2381,7 @@
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4">Urgensi Operasi</label>
+                            <label class="col-md-4">Jenis Operasi</label>
                             <div class="col-md-2">
                                 <div class="custom02">
                                     <input type="radio" value="Bersih" id="lap151"
@@ -2352,7 +2407,7 @@
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4">Jenis Operasi</label>
+                            <label class="col-md-4">Posisi</label>
                             <div class="col-md-2">
                                 <div class="custom02">
                                     <input type="radio" value="Terlentang" id="lap161"
@@ -2394,9 +2449,118 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4">Urutan Operasi</label>
+                            <label class="col-md-12"><b>Urutan Operasi</b></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_1">1. Persiapan Operasi</label>
                             <div class="col-md-8">
-                                <textarea rows="10" class="form-control" id="lap19"></textarea>
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_2">2. Posisi Pasien</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_3">3. Desinfektan</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_4">4. Insisi kulit dan pembukaan lapangan operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_5">5. Pendapatan lapangan operasi dan kulit</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_6">6. Apa yang dilakukan</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_7">7. Penutupan lapangan Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_8">8. Komplikasi Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_9">9. Hasil Operasi</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_10">10. Diskripsi jaringan yang diambil</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_11">11. Lain-Lain yang perlu</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_12">12. Kesimpulan</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_13">13. Jumlah Perdarahan</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4" id="label_op_14">14. Kode implan (jika terpasang)</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control urutan_op"></textarea>
                             </div>
                         </div>
                     </div>
@@ -2404,9 +2568,11 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-offset-6 col-md-6">
-                                <label style="margin-left: 8px">TTD Perawat Operasi</label>
+                                <label style="margin-left: 8px">TTD Dokter Operator</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_lap_dokter" width="220"
                                         onmouseover="paintTtd('ttd_lap_dokter')"></canvas>
+                                <input class="form-control" id="nama_terang_sps" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control" id="sip_sps" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_lap_dokter')"><i
                                         class="fa fa-trash"></i> Clear

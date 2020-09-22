@@ -264,6 +264,8 @@ public class PeriksaRadiologiBoImpl implements PeriksaRadiologiBo {
                     periksaLabEntity.setTanggalSelesaiPeriksa(bean.getLastUpdate());
                     periksaLabEntity.setLastUpdate(bean.getLastUpdate());
                     periksaLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    periksaLabEntity.setUrlImg(bean.getUrlImg());
+                    periksaLabEntity.setIdPemeriksa(bean.getIdPemeriksa());
                     try {
                         periksaLabDao.updateAndSave(periksaLabEntity);
                         response.setStatus("success");
@@ -279,6 +281,11 @@ public class PeriksaRadiologiBoImpl implements PeriksaRadiologiBo {
 
         logger.info("[PeriksaRadiologiBoImpl.saveEdit] END <<<<<<");
         return response;
+    }
+
+    @Override
+    public ItSimrsPeriksaRadiologiEntity getEntityPeriksaRadiologi(String id) throws GeneralBOException {
+        return periksaRadiologiDao.getById("idPeriksaRadiologi", id);
     }
 
     private ImSimrsDokterEntity getMasterDokterById(String idDokter) throws GeneralBOException {

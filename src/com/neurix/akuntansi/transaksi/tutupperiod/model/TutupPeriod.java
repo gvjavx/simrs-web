@@ -36,6 +36,51 @@ public class TutupPeriod {
     private String periode;
     private String pasienId;
     private String kdBarang;
+    private String tipeJurnalId;
+    private String transId;
+    private String noJurnal;
+    private String flagDesemberA;
+    private String flagDesemberB;
+
+    public String getFlagDesemberA() {
+        return flagDesemberA;
+    }
+
+    public void setFlagDesemberA(String flagDesemberA) {
+        this.flagDesemberA = flagDesemberA;
+    }
+
+    public String getFlagDesemberB() {
+        return flagDesemberB;
+    }
+
+    public void setFlagDesemberB(String flagDesemberB) {
+        this.flagDesemberB = flagDesemberB;
+    }
+
+    public String getNoJurnal() {
+        return noJurnal;
+    }
+
+    public void setNoJurnal(String noJurnal) {
+        this.noJurnal = noJurnal;
+    }
+
+    public String getTransId() {
+        return transId;
+    }
+
+    public void setTransId(String transId) {
+        this.transId = transId;
+    }
+
+    public String getTipeJurnalId() {
+        return tipeJurnalId;
+    }
+
+    public void setTipeJurnalId(String tipeJurnalId) {
+        this.tipeJurnalId = tipeJurnalId;
+    }
 
     public String getKdBarang() {
         return kdBarang;

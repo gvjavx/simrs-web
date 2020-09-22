@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="butgetingAction" class="com.neurix.akuntansi.transaksi.budgetingnilaidasar.action.BudgetingNilaiDasarAction"
+          p:budgetingNilaiDasarBoProxy-ref="budgetingNilaiDasarBoProxy"
+    />
+
+    <bean id="budgetingNilaiDasarBo" class="com.neurix.akuntansi.transaksi.budgetingnilaidasar.bo.impl.BudgetingNilaiDasarBoImpl"
+          p:masterBudgetingNilaiDasarDao-ref="masterBudgetingNilaiDasarDao"
+          p:transBudgetingNilaiDasarDao-ref="transBudgetingNilaiDasarDao"
+    />
+
+    <bean id="budgetingNilaiDasarBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="budgetingNilaiDasarBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionBudgetingNilaiDasarInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionBudgetingNilaiDasarInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAddBudgeting">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEditBudgeting">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+
+    <bean id="masterBudgetingNilaiDasarDao" class="com.neurix.akuntansi.transaksi.budgetingnilaidasar.dao.MasterBudgetingNilaiDasarDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="transBudgetingNilaiDasarDao" class="com.neurix.akuntansi.transaksi.budgetingnilaidasar.dao.TransBudgetingNilaiDasarDao"
+          p:sessionFactory-ref="sessionFactory" />
+</beans>

@@ -13,6 +13,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_op_checklist_keselamatan_pasien"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_checklist_keselamatan_pasien">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_checklist_keselamatan_pasiena"></p>
+                    </div>
                     <button type="button" class="btn btn-success" onclick="showModalOperasi('add_checklist_keselamatan')"><i class="fa fa-plus"></i> Checklist
                     </button>
                 </div>
@@ -23,6 +27,7 @@
                             <td>Checklist Keselamatan Pasien Operasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_add_checklist_keselamatan" class="hvr-grow" onclick="detailOperasi('add_checklist_keselamatan')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="delete_add_checklist_keselamatan" class="hvr-grow btn-hide" onclick="conOP('add_checklist_keselamatan', 'checklist_keselamatan_pasien')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -278,6 +283,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row jarak">
+                        <div class="col-md-6">
+                            <label style="margin-left: 8px">TTD Anestesi</label>
+                            <canvas class="paint-canvas-ttd" id="ttd_anestesi" width="220"
+                                    onmouseover="paintTtd('ttd_anestesi')"></canvas>
+                            <input class="form-control" id="nama_terang_anestesi" placeholder="Nama Terang">
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                    onclick="removePaint('ttd_anestesi')"><i
+                                    class="fa fa-trash"></i> Clear
+                            </button>
+                        </div>
+                    </div>
                     <hr class="garis">
                     <div class="row">
                         <label class="col-md-12"><b>Sebelum Incisi (Fase Time Out)</b></label>
@@ -318,7 +335,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <label class="col-md-12"><b>Dokter Bedah</b></label>
+                        <label class="col-md-12"><b>Dokter Anestesi</b></label>
                     </div>
                     <div class="row">
                         <div class="form-group">
@@ -394,6 +411,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row jarak">
+                        <div class="col-md-6">
+                            <label style="margin-left: 8px">TTD Operator</label>
+                            <canvas class="paint-canvas-ttd" id="ttd_aperator" width="220"
+                                    onmouseover="paintTtd('ttd_aperator')"></canvas>
+                            <input class="form-control" id="nama_terang_aperator" placeholder="SIP">
+                            <input style="margin-top: 3px" class="form-control" id="sip_aperator" placeholder="SIP">
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                    onclick="removePaint('ttd_aperator')"><i
+                                    class="fa fa-trash"></i> Clear
+                            </button>
+                        </div>
+                    </div>
                     <hr class="garis">
                     <div class="row">
                         <label class="col-md-12"><b>Sebelum Check Out Kamar Operasi (Fase Sign Out)</b></label>
@@ -446,7 +476,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-1">4.</label>
+                            <label class="col-md-6">4. Apakah dipasang ?</label>
                             <div class="col-md-3">
                                 <div class="form-check">
                                     <input type="checkbox" name="kes32" id="kes321" value="Drain">
@@ -469,40 +499,16 @@
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <label style="margin-left: 8px">TTD Anestesi</label>
-                                <canvas class="paint-canvas-ttd" id="ttd_anestesi" width="220"
-                                        onmouseover="paintTtd('ttd_anestesi')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('ttd_anestesi')"><i
-                                        class="fa fa-trash"></i> Clear
-                                </button>
-                            </div>
-                            <div class="col-md-6">
-                                <label style="margin-left: 8px">TTD Operator</label>
-                                <canvas class="paint-canvas-ttd" id="ttd_aperator" width="220"
-                                        onmouseover="paintTtd('ttd_aperator')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('ttd_aperator')"><i
-                                        class="fa fa-trash"></i> Clear
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-offset-3 col-md-6">
-                                <label style="margin-left: 8px">TTD Perawat Sirkuler</label>
-                                <canvas class="paint-canvas-ttd" id="ttd_sirkuler" width="220"
-                                        onmouseover="paintTtd('ttd_sirkuler')"></canvas>
-                                <button style="margin-left: 8px" type="button" class="btn btn-danger"
-                                        onclick="removePaint('ttd_sirkuler')"><i
-                                        class="fa fa-trash"></i> Clear
-                                </button>
-                            </div>
+                    <div class="row jarak">
+                        <div class="col-md-6">
+                            <label style="margin-left: 8px">TTD Perawat Sirkuler</label>
+                            <canvas class="paint-canvas-ttd" id="ttd_sirkuler" width="220"
+                                    onmouseover="paintTtd('ttd_sirkuler')"></canvas>
+                            <input class="form-control" id="nama_terang_sirkuler" placeholder="SIP">
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                    onclick="removePaint('ttd_sirkuler')"><i
+                                    class="fa fa-trash"></i> Clear
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.paketperiksa.bo;
 
+import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
@@ -31,5 +32,7 @@ public interface PaketPeriksaBo{
     public List<PaketPeriksa> getListPaketIgd(String branchId) throws GeneralBOException;
     public MtSimrsPaketEntity getPaketEntityById(String id) throws GeneralBOException;
     public ItSimrsPaketPasienEntity getPaketPasienEntityByIdPaket(String id, String pasien) throws GeneralBOException;
+
+    public List<MasterVendor> getListPerusahaan() throws GeneralBOException;
 
 }

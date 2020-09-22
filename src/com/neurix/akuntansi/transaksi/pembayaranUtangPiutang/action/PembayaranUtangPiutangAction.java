@@ -6,6 +6,7 @@ import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.mappingJurnal.bo.MappingJurnalBo;
 import com.neurix.akuntansi.master.mappingJurnal.model.MappingJurnal;
 import com.neurix.akuntansi.master.tipeJurnal.bo.TipeJurnalBo;
+import com.neurix.akuntansi.master.trans.bo.TransBo;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
@@ -15,10 +16,13 @@ import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.bo.PembayaranUtangPiutangBo;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.EfakturDTO;
+import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.Lampiran;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail;
 import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.bo.CompanyBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.Company;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -196,6 +200,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultLampiran");
         session.removeAttribute("listOfResultPembayaranDetail");
 
         logger.info("[PembayaranUtangPiutangAction.add] stop process >>>");
@@ -217,6 +222,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultLampiran");
         session.removeAttribute("listOfResultPembayaranDetail");
 
         logger.info("[PembayaranUtangPiutangAction.addPemasukan] stop process >>>");
@@ -238,6 +244,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultLampiran");
         session.removeAttribute("listOfResultPembayaranDetail");
 
         logger.info("[PembayaranUtangPiutangAction.addKoreksi] stop process >>>");
@@ -454,6 +461,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         logger.info("[PembayaranUtangPiutangAction.saveAdd] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
+        List<Lampiran> lampiranList= (List<Lampiran>) session.getAttribute("listOfResultLampiran");
 
         PembayaranUtangPiutang pembayaranUtangPiutang = getPembayaranUtangPiutang();
         String userLogin = CommonUtil.userLogin();
@@ -546,7 +554,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 pembayaranUtangPiutang.setFlag("Y");
                 pembayaranUtangPiutang.setNoJurnal(billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N").getNoJurnal());
 
-                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList,lampiranList);
             }catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -601,7 +609,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 pembayaranUtangPiutang.setFlag("Y");
                 pembayaranUtangPiutang.setNoJurnal(billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N").getNoJurnal());
 
-                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+                pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList,lampiranList);
             }catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -632,6 +640,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         String noJurnal="";
         List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
+        List<Lampiran> lampiranList= (List<Lampiran>) session.getAttribute("listOfResultLampiran");
 
         PembayaranUtangPiutang pembayaranUtangPiutang = getPembayaranUtangPiutang();
         String userLogin = CommonUtil.userLogin();
@@ -679,7 +688,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             Jurnal jurnal = billingSystemBoProxy.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),data,pembayaranUtangPiutang.getBranchId(),pembayaranUtangPiutang.getKeterangan(),"N");
             noJurnal = jurnal.getNoJurnal();
             pembayaranUtangPiutang.setNoJurnal(noJurnal);
-            pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList);
+            pembayaranUtangPiutangBoProxy.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList,lampiranList);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -698,6 +707,118 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         logger.info("[PembayaranUtangPiutangAction.saveAddKoreksi] end process >>>");
         return "success_save_add_koreksi";
+    }
+
+    public String saveAddKoreksiPengajuan(String pengajuanId,String kodeRekeningLawan,String metodeBayar,String stJumlahPembayaran,
+                                          String stNetto,String stPpn,String stPph, String kodeVendor,String stUangMuka,String nip,
+                                          String buktiUangMuka,String noFakturPajak,String uploadFakturPajak,String keterangan,String branchId,
+                                          String divisiId,String sumberDana){
+        logger.info("[PembayaranUtangPiutangAction.saveAddKoreksiPengajuan] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        String noJurnal="";
+        List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
+        List<Lampiran> lampiranList= (List<Lampiran>) session.getAttribute("listOfResultLampiran");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+
+        //convert ke bigdecimal
+        BigDecimal netto = new BigDecimal(stNetto.replace(".",""));;
+        BigDecimal ppn = BigDecimal.ZERO;
+        BigDecimal pph = BigDecimal.ZERO;
+        BigDecimal nilaiUangMuka = new BigDecimal(stUangMuka.replace(".",""));
+        BigDecimal jumlahPembayaran = new BigDecimal(stJumlahPembayaran.replace(".",""));
+
+        if (!"".equalsIgnoreCase(stPpn)){
+            ppn = new BigDecimal(stPpn.replace(".",""));
+        }
+
+        if (!"".equalsIgnoreCase(stPph)){
+            pph = new BigDecimal(stPph.replace(".",""));
+        }
+
+        String tipeTransaksi="";///////>>>>>>>>>>>>>>>>>>>
+        if (nilaiUangMuka.add(pph).compareTo(jumlahPembayaran.add(ppn))<0){
+            tipeTransaksi = CommonConstant.TRANSAKSI_ID_PEMBAYARAN_PENGAJUAN_BIAYA_UM_KURANG; // TIPE TRANSAKSI UANG MUKA KURANG
+        }else{
+            tipeTransaksi = CommonConstant.TRANSAKSI_ID_PEMBAYARAN_PENGAJUAN_BIAYA_UM_LEBIH;; // TIPE TRANSAKSI UANG MUKA LEBIH ATAU PAS
+        }
+
+        PembayaranUtangPiutang pembayaranUtangPiutang = new PembayaranUtangPiutang();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        pembayaranUtangPiutang.setTipeTransaksi(tipeTransaksi);
+        pembayaranUtangPiutang.setBayar(jumlahPembayaran);
+        pembayaranUtangPiutang.setMetodePembayaran(metodeBayar);
+        pembayaranUtangPiutang.setNoSlipBank("");
+        pembayaranUtangPiutang.setBranchId(branchId);
+        pembayaranUtangPiutang.setKeterangan(keterangan);
+        pembayaranUtangPiutang.setTipePembayaran("KR");
+        pembayaranUtangPiutang.setTanggal(new Date(new java.util.Date().getTime()));
+
+        pembayaranUtangPiutang.setCreatedWho(userLogin);
+        pembayaranUtangPiutang.setLastUpdate(updateTime);
+        pembayaranUtangPiutang.setCreatedDate(updateTime);
+        pembayaranUtangPiutang.setLastUpdateWho(userLogin);
+        pembayaranUtangPiutang.setAction("C");
+        pembayaranUtangPiutang.setFlag("Y");
+
+        try {
+            //get parameter pembayaran
+            Map dataPostingJurnal = new HashMap();
+            Map kas = new HashMap();
+            String rekeningIdBayar = kodeRekeningBo.getRekeningIdByKodeRekening(metodeBayar);
+            kas.put("rekening_id",rekeningIdBayar);
+            kas.put("nilai",netto);
+
+            Map mapPpn = new HashMap();
+            mapPpn.put("master_id",kodeVendor);
+            mapPpn.put("nilai",ppn);
+
+            Map mapPph = new HashMap();
+            mapPph.put("master_id",kodeVendor);
+            mapPph.put("nilai",pph);
+
+            Map uangMuka = new HashMap();
+            uangMuka.put("master_id",nip);
+            uangMuka.put("bukti",buktiUangMuka);
+            uangMuka.put("nilai",nilaiUangMuka);
+
+            Map bebanPokok = new HashMap();
+            String rekeningId = kodeRekeningBo.getRekeningIdByKodeRekening(kodeRekeningLawan);
+            bebanPokok.put("nilai",jumlahPembayaran);
+            bebanPokok.put("rekening_id",rekeningId);
+            bebanPokok.put("divisi_id",divisiId);
+
+            dataPostingJurnal.put("metode_bayar",kas);
+            dataPostingJurnal.put("ppn_masukan",mapPpn);
+            dataPostingJurnal.put("pph",mapPph);
+            dataPostingJurnal.put("beban",bebanPokok);
+            dataPostingJurnal.put("uang_muka",uangMuka);
+            dataPostingJurnal.put("pengajuan_id",pengajuanId);
+            dataPostingJurnal.put("sumber_dana",sumberDana);
+
+            Jurnal jurnal = billingSystemBo.createJurnal(pembayaranUtangPiutang.getTipeTransaksi(),dataPostingJurnal,branchId,keterangan,"N");
+            noJurnal = jurnal.getNoJurnal();
+            pembayaranUtangPiutang.setNoJurnal(noJurnal);
+            pembayaranUtangPiutangBo.saveAddPembayaran(pembayaranUtangPiutang,pembayaranUtangPiutangDetailList,lampiranList);
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pembayaranUtangPiutangBo.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangAction.saveAddKoreksiPengajuan");
+            } catch (GeneralBOException e1) {
+                logger.error("[PembayaranUtangPiutangAction.saveAddKoreksiPengajuan] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
+            }
+            logger.error("[PembayaranUtangPiutangAction.saveAddKoreksiPengajuan] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
+        logger.info("[PembayaranUtangPiutangAction.saveAddKoreksiPengajuan] end process >>>");
+        return "success menambahkan koreksi pengajuan";
     }
 
     @Override
@@ -727,12 +848,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         session.removeAttribute("listPembayaranDetailModal");
         session.setAttribute("listOfResult", listOfsearchPembayaranUtangPiutang);
 
-        String branchId = CommonUtil.userBranchLogin();
-        if (branchId!=null){
-            searchPembayaranUtangPiutang.setBranchId(branchId);
-        }else{
-            searchPembayaranUtangPiutang.setBranchId("");
-        }
+        searchPembayaranUtangPiutang.setBranchIdUser(CommonUtil.userBranchLogin());
+
         setPembayaranUtangPiutang(searchPembayaranUtangPiutang);
         logger.info("[PembayaranUtangPiutangAction.search] end process <<<");
 
@@ -765,12 +882,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         session.removeAttribute("listPembayaranDetailModal");
         session.setAttribute("listOfResult", listOfsearchPembayaranUtangPiutang);
 
-        String branchId = CommonUtil.userBranchLogin();
-        if (branchId!=null){
-            searchPembayaranUtangPiutang.setBranchId(branchId);
-        }else{
-            searchPembayaranUtangPiutang.setBranchId("");
-        }
+        searchPembayaranUtangPiutang.setBranchIdUser(CommonUtil.userBranchLogin());
+
         setPembayaranUtangPiutang(searchPembayaranUtangPiutang);
         logger.info("[PembayaranUtangPiutangAction.searchPemasukan] end process <<<");
 
@@ -803,16 +916,46 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         session.removeAttribute("listPembayaranDetailModal");
         session.setAttribute("listOfResult", listOfsearchPembayaranUtangPiutang);
 
-        String branchId = CommonUtil.userBranchLogin();
-        if (branchId!=null){
-            searchPembayaranUtangPiutang.setBranchId(branchId);
-        }else{
-            searchPembayaranUtangPiutang.setBranchId("");
-        }
+        searchPembayaranUtangPiutang.setBranchIdUser(CommonUtil.userBranchLogin());
+
         setPembayaranUtangPiutang(searchPembayaranUtangPiutang);
         logger.info("[PembayaranUtangPiutangAction.searchKoreksi] end process <<<");
 
         return "success_koreksi";
+    }
+
+    public String searchKoreksiPengajuan() {
+        logger.info("[PembayaranUtangPiutangAction.searchKoreksiPengajuan] start process >>>");
+        PembayaranUtangPiutang searchPembayaranUtangPiutang = getPembayaranUtangPiutang();
+        List<PembayaranUtangPiutang> listOfsearchPembayaranUtangPiutang = new ArrayList();
+        try {
+            listOfsearchPembayaranUtangPiutang = pembayaranUtangPiutangBoProxy.getByCriteria(searchPembayaranUtangPiutang);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pembayaranUtangPiutangBoProxy.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[PembayaranUtangPiutangAction.searchKoreksiPengajuan] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PembayaranUtangPiutangAction.searchKoreksiPengajuan] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultKodeRekening");
+        session.removeAttribute("listPembayaranDetailModal");
+        session.setAttribute("listOfResult", listOfsearchPembayaranUtangPiutang);
+
+        searchPembayaranUtangPiutang.setBranchIdUser(CommonUtil.userBranchLogin());
+
+        setPembayaranUtangPiutang(searchPembayaranUtangPiutang);
+        logger.info("[PembayaranUtangPiutangAction.searchKoreksiPengajuan] end process <<<");
+
+        return "success_koreksi_pengajuan";
     }
 
     @Override
@@ -823,9 +966,12 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         PembayaranUtangPiutang data = new PembayaranUtangPiutang();
         if (branchId!=null){
             data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
         }else{
             data.setBranchId("");
         }
+
+
         setPembayaranUtangPiutang(data);
         session.removeAttribute("listOfResult");
         session.removeAttribute("listOfResultPembayaranDetail");
@@ -840,6 +986,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         PembayaranUtangPiutang data = new PembayaranUtangPiutang();
         if (branchId!=null){
             data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
         }else{
             data.setBranchId("");
         }
@@ -857,6 +1004,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         PembayaranUtangPiutang data = new PembayaranUtangPiutang();
         if (branchId!=null){
             data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
         }else{
             data.setBranchId("");
         }
@@ -865,6 +1013,24 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         session.removeAttribute("listOfResultPembayaranDetail");
         logger.info("[PembayaranUtangPiutangAction.initFormKoreksi] end process >>>");
         return "input_koreksi";
+    }
+
+    public String initFormKoreksiPengajuan() {
+        logger.info("[PembayaranUtangPiutangAction.initFormKoreksiPengajuan] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        String branchId = CommonUtil.userBranchLogin();
+        PembayaranUtangPiutang data = new PembayaranUtangPiutang();
+        if (branchId!=null){
+            data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
+        }else{
+            data.setBranchId("");
+        }
+        setPembayaranUtangPiutang(data);
+        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultPembayaranDetail");
+        logger.info("[PembayaranUtangPiutangAction.initFormKoreksiPengajuan] end process >>>");
+        return "input_koreksi_pengajuan";
     }
 
     public String saveDetailPembayaran(String kodeVendor,String namaVendor,String noNota,String jumlahPembayaran,
@@ -1134,6 +1300,35 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return result;
     }
 
+    public List<PembayaranUtangPiutangDetail> searchPengajuanBiaya(String branchId) {
+        logger.info("[PembayaranUtangPiutangAction.searchPengajuanBiaya] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        List<PembayaranUtangPiutangDetail> listDataDb = pembayaranUtangPiutangBo.searchPengajuanBiaya(branchId);
+        List<PembayaranUtangPiutangDetail> listDataSession = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
+        List<PembayaranUtangPiutangDetail> result= new ArrayList<>();
+        if (listDataSession==null){
+            result.addAll(listDataDb);
+        }else{
+            //jika sudah ada pada session tidak usah ditampilkan
+            for (PembayaranUtangPiutangDetail dataDb : listDataDb){
+                boolean ada = false;
+                for (PembayaranUtangPiutangDetail dataSession : listDataSession){
+                    if (dataDb.getNoNota().equalsIgnoreCase(dataSession.getNoNota())){
+                        ada=true;
+                        break;
+                    }
+                }
+                if (!ada){
+                    result.add(dataDb);
+                }
+            }
+        }
+        logger.info("[PembayaranUtangPiutangAction.searchPengajuanBiaya] end process >>>");
+        return result;
+    }
 
     public String getTipeMaster(String transaksiId) {
         logger.info("[PembayaranUtangPiutangAction.getTipeMaster] start process >>>");
@@ -1146,19 +1341,6 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         logger.info("[PembayaranUtangPiutangAction.getTipeMaster] end process >>>");
         return masterId;
-    }
-
-    public String getTipePengajuan(String transaksiId) {
-        logger.info("[PembayaranUtangPiutangAction.getTipePengajuan] start process >>>");
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
-
-        String tipePengajuan="";
-        ImTransEntity transEntity = pembayaranUtangPiutangBo.getTipeMaster(transaksiId);
-        tipePengajuan=transEntity.getFlagPengajuanBiaya();
-
-        logger.info("[PembayaranUtangPiutangAction.getTipePengajuan] end process >>>");
-        return tipePengajuan;
     }
 
     public String postingJurnal(String pembayaranId){
@@ -1195,6 +1377,7 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
 
         return "Sukses Posting Jurnal";
     }
+
 
     public String printReportBuktiPosting(){
         logger.info("[PembayaranUtangPiutangAction.printReportBuktiPosting] start process >>>");
@@ -1263,6 +1446,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         logger.info("[PembayaranUtangPiutangAction.printReportBuktiPosting] end process <<<");
         if ("KR".equalsIgnoreCase(tipeTransaksi)){
             return "print_report_bukti_posting_koreksi";
+        }else if ("KM".equalsIgnoreCase(tipeTransaksi)){
+            return "print_report_bukti_posting_masuk";
         }else{
             return "print_report_bukti_posting";
         }
@@ -1276,12 +1461,15 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         String itemFlag = "Y";
         PembayaranUtangPiutang modalPopUp = new PembayaranUtangPiutang();
         List<PembayaranUtangPiutangDetail> listDetail = new ArrayList<>();
+        List<Lampiran> lampiranList = new ArrayList<>();
         HttpSession session = ServletActionContext.getRequest().getSession();
         try {
             modalPopUp = init(itemId, itemFlag);
             if (modalPopUp!=null){
                 listDetail = pembayaranUtangPiutangBo.getDetailPembayaran(pembayaranId);
+                lampiranList = pembayaranUtangPiutangBo.getLampiranList(pembayaranId);
                 session.setAttribute("listPembayaranDetailModal",listDetail);
+                session.setAttribute("listOfResultLampiran",lampiranList);
             }
         } catch (GeneralBOException e) {
             Long logId = null;
@@ -1350,6 +1538,13 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
                 efakturDTO.setStatusApproval(err.getElementsByTagName("statusApproval").item(0).getTextContent());
                 efakturDTO.setStatusFaktur(err.getElementsByTagName("statusFaktur").item(0).getTextContent());
                 efakturDTO.setReferensi(err.getElementsByTagName("referensi").item(0).getTextContent());
+
+                //mengambil data company
+                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                CompanyBo companyBo= (CompanyBo) ctx.getBean("companyBoProxy");
+                String companyId = CommonUtil.companyIdLogin();
+                Company company = companyBo.getById(companyId);
+                efakturDTO.setNpwpPerusahaan(company.getNpwp());
             } else {
                 // success
             }
@@ -1357,6 +1552,119 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
             System.out.println(e);
         }
         return efakturDTO;
+    }
+
+    public String approvePembayaran(String pembayaranId,String who,String flag){
+        logger.info("[PembayaranUtangPiutangAction.approvePembayaran] start process >>>");
+        try {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PembayaranUtangPiutangBo pembayaranUtangPiutangBo = (PembayaranUtangPiutangBo) ctx.getBean("pembayaranUtangPiutangBoProxy");
+            PembayaranUtangPiutang data = new PembayaranUtangPiutang();
+            String userLogin = CommonUtil.userLogin();
+            String userIdLogin = CommonUtil.userIdLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            data.setPembayaranUtangPiutangId(pembayaranId);
+            data.setLastUpdateWho(userLogin);
+            data.setLastUpdate(updateTime);
+            data.setAction("U");
+
+            if ("keu".equalsIgnoreCase(who)){
+                data.setApprovalKeuanganFlag(flag);
+                data.setApprovalKeuanganId(userIdLogin);
+                data.setApprovalKeuanganName(userLogin);
+                data.setApprovalKeuanganDate(updateTime);
+            }else if ("kasub".equalsIgnoreCase(who)){
+                data.setApprovalKasubKeuanganFlag(flag);
+                data.setApprovalKasubKeuanganId(userIdLogin);
+                data.setApprovalKasubKeuanganName(userLogin);
+                data.setApprovalKasubKeuanganDate(updateTime);
+            }
+
+            pembayaranUtangPiutangBo.approvePembayaran(data);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = pembayaranUtangPiutangBoProxy.saveErrorMessage(e.getMessage(), "PembayaranUtangPiutangBO.approvePembayaran");
+            } catch (GeneralBOException e1) {
+                logger.error("[PembayaranUtangPiutangAction.approvePembayaran] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[PembayaranUtangPiutangAction.approvePembayaran] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[PembayaranUtangPiutangAction.approvePembayaran] end process <<<");
+
+        if ("Y".equalsIgnoreCase(flag)){
+            return "Sukses Approve";
+        }else{
+            return "Sukses Not Approve";
+        }
+    }
+
+    public String saveSessionLampiran(String namaLampiran , String fileUpload) {
+        logger.info("[PembayaranUtangPiutangAction.saveSessionLampiran] start process >>>");
+        String status="";
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Lampiran> lampiranList = (List<Lampiran>) session.getAttribute("listOfResultLampiran");
+
+        if (lampiranList==null){
+            lampiranList = new ArrayList<>();
+        }
+
+        Lampiran newData = new Lampiran();
+        newData.setNamaLampiran(namaLampiran);
+        newData.setUploadFile(fileUpload);
+        lampiranList.add(newData);
+        session.setAttribute("listOfResultLampiran",lampiranList);
+
+        logger.info("[PembayaranUtangPiutangAction.saveSessionLampiran] end process >>>");
+        return status;
+    }
+
+    public String deleteSessionLampiran(String namaLampiran){
+        logger.info("[PembayaranUtangPiutangAction.deleteSessionLampiran] start process >>>");
+        String status="";
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Lampiran> lampiranList = (List<Lampiran>) session.getAttribute("listOfResultLampiran");
+        List<Lampiran> lampirans = new ArrayList<>();
+        for (Lampiran data : lampiranList){
+            if (!namaLampiran.equalsIgnoreCase(data.getNamaLampiran())){
+                lampirans.add(data);
+            }
+        }
+
+        session.setAttribute("listOfResultLampiran",lampirans);
+
+        logger.info("[PembayaranUtangPiutangAction.deleteSessionLampiran] end process >>>");
+        return status;
+    }
+
+    public String loadImageSessionLaporan(String namaLampiran){
+        logger.info("[PembayaranUtangPiutangAction.loadImageSessionLaporan] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Lampiran> lampiranList = (List<Lampiran>) session.getAttribute("listOfResultLampiran");
+
+        String images="";
+        for (Lampiran lampiran : lampiranList){
+            if (namaLampiran.equalsIgnoreCase(lampiran.getNamaLampiran())){
+                images = lampiran.getUploadFile();
+            }
+        }
+
+        logger.info("[PembayaranUtangPiutangAction.loadImageSessionLaporan] end process >>>");
+        return images;
+    }
+
+    public List<Lampiran> loadSessionLampiran(){
+        logger.info("[PembayaranUtangPiutangAction.loadSessionLampiran] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<Lampiran> lampiranList = (List<Lampiran>) session.getAttribute("listOfResultLampiran");
+
+        logger.info("[PembayaranUtangPiutangAction.loadSessionLampiran] end process >>>");
+        return lampiranList;
     }
 
     private String dateFormater(String type) {

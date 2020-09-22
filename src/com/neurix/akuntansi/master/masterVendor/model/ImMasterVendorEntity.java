@@ -28,6 +28,24 @@ public class ImMasterVendorEntity implements Serializable {
     private String lastUpdateWho;
 
     private String isPtpn;
+    private String noRekening;
+    private String TipeVendor;
+
+    public String getNoRekening() {
+        return noRekening;
+    }
+
+    public void setNoRekening(String noRekening) {
+        this.noRekening = noRekening;
+    }
+
+    public String getTipeVendor() {
+        return TipeVendor;
+    }
+
+    public void setTipeVendor(String tipeVendor) {
+        TipeVendor = tipeVendor;
+    }
 
     public String getIsPtpn() {
         return isPtpn;

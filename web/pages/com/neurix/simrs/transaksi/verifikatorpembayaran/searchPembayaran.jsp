@@ -806,7 +806,6 @@
             $("#modal-loading-dialog").modal('show');
             $("#waiting-content").hide();
             $("#warning_fin_waiting").show();
-//            $("#msg_fin_error_waiting").text("Error. perbaikan");
         }
         if (tipe == "success"){
             $("#modal-loading-dialog").modal('hide');

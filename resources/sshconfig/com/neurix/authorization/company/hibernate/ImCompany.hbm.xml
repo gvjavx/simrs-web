@@ -106,6 +106,15 @@
         <property name="paramDapen">
             <column name="param_dapen"/>
         </property>
+        <property name="paramDapenPegawai">
+            <column name="param_dapen_pegawai"/>
+        </property>
+        <property name="biayaJabatan">
+            <column name="param_biaya_jabatan"/>
+        </property>
 
+        <property name="jamBatasAbsen">
+            <column name="jam_batas_absen"/>
+        </property>
     </class>
 </hibernate-mapping>

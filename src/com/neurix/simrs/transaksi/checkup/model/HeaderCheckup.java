@@ -137,6 +137,124 @@ public class HeaderCheckup {
     private String idDetailTindakan;
     private String idAntrianOnline;
     private String idTransaksiOnline;
+    private String tipePelayanan;
+
+    private String idLab;
+    private String isOrderLab;
+    private String lastIdDetailCheckup;
+    private String isStay;
+
+    private String penunjangMedis;
+    private String keluhanUtama;
+    private String suhu;
+    private String tensi;
+    private String nadi;
+    private String pernafasan;
+    private String kategoriPelayanan;
+
+    private String autoanamnesis;
+    private String heteroanamnesis;
+    private String catatan;
+    private String anamnese;
+    private String flagCloseTransaksi;
+    private String flagCover;
+    private String urlLab;
+
+    public String getUrlLab() {
+        return urlLab;
+    }
+
+    public void setUrlLab(String urlLab) {
+        this.urlLab = urlLab;
+    }
+
+    public String getFlagCloseTransaksi() {
+        return flagCloseTransaksi;
+    }
+
+    public void setFlagCloseTransaksi(String flagCloseTransaksi) {
+        this.flagCloseTransaksi = flagCloseTransaksi;
+    }
+
+    public String getFlagCover() {
+        return flagCover;
+    }
+
+    public void setFlagCover(String flagCover) {
+        this.flagCover = flagCover;
+    }
+
+    public String getAnamnese() {
+        return anamnese;
+    }
+
+    public void setAnamnese(String anamnese) {
+        this.anamnese = anamnese;
+    }
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
+    }
+
+    public String getAutoanamnesis() {
+        return autoanamnesis;
+    }
+
+    public void setAutoanamnesis(String autoanamnesis) {
+        this.autoanamnesis = autoanamnesis;
+    }
+
+    public String getHeteroanamnesis() {
+        return heteroanamnesis;
+    }
+
+    public void setHeteroanamnesis(String heteroanamnesis) {
+        this.heteroanamnesis = heteroanamnesis;
+    }
+
+    public String getIsStay() {
+        return isStay;
+    }
+
+    public void setIsStay(String isStay) {
+        this.isStay = isStay;
+    }
+
+    public String getIsOrderLab() {
+        return isOrderLab;
+    }
+
+    public void setIsOrderLab(String isOrderLab) {
+        this.isOrderLab = isOrderLab;
+    }
+
+    public String getLastIdDetailCheckup() {
+        return lastIdDetailCheckup;
+    }
+
+    public void setLastIdDetailCheckup(String lastIdDetailCheckup) {
+        this.lastIdDetailCheckup = lastIdDetailCheckup;
+    }
+
+    public String getIdLab() {
+        return idLab;
+    }
+
+    public void setIdLab(String idLab) {
+        this.idLab = idLab;
+    }
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
 
     public String getIdTransaksiOnline() {
         return idTransaksiOnline;
@@ -153,16 +271,6 @@ public class HeaderCheckup {
     public void setIdAntrianOnline(String idAntrianOnline) {
         this.idAntrianOnline = idAntrianOnline;
     }
-
-    private String anamnese;
-    private String penunjangMedis;
-    private String keluhanUtama;
-    private String suhu;
-    private String tensi;
-    private String nadi;
-    private String pernafasan;
-
-    private String kategoriPelayanan;
 
     public String getKategoriPelayanan() {
         return kategoriPelayanan;
@@ -218,14 +326,6 @@ public class HeaderCheckup {
 
     public void setPernafasan(String pernafasan) {
         this.pernafasan = pernafasan;
-    }
-
-    public String getAnamnese() {
-        return anamnese;
-    }
-
-    public void setAnamnese(String anamnese) {
-        this.anamnese = anamnese;
     }
 
     public String getIdDetailTindakan() {

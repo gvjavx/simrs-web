@@ -173,6 +173,11 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
     }
 
     @Override
+    public Boolean cekDiagnosa(DiagnosaRawat bean) throws GeneralBOException {
+        return diagnosaRawatDao.cekDiagnosa(bean);
+    }
+
+    @Override
     public List<ItSimrsDiagnosaRawatEntity> getListEntityDiagnosaRawat(DiagnosaRawat bean) throws GeneralBOException{
         logger.info("[DiagnosaRawatBoImpl.getListEntityDiagnosaRawat] Start >>>>>>>>>");
 
@@ -185,6 +190,9 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
         }
         if (bean.getOrderLastUpdate() != null && !"".equalsIgnoreCase(bean.getOrderLastUpdate())){
             hsCriteria.put("order_last", bean.getOrderLastUpdate());
+        }
+        if (bean.getOrderCreated() != null && !"".equalsIgnoreCase(bean.getOrderCreated())){
+            hsCriteria.put("order_created", bean.getOrderCreated());
         }
 
         List<ItSimrsDiagnosaRawatEntity> entities = new ArrayList<>();

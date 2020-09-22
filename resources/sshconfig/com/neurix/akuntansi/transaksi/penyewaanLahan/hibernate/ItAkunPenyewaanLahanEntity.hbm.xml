@@ -23,6 +23,9 @@
             <basic name="nilaiPpn">
                 <column name="nilai_ppn"/>
             </basic>
+            <basic name="nilaiPph">
+                <column name="nilai_pph"/>
+            </basic>
             <basic name="nilaiNetto">
                 <column name="nilai_netto"/>
             </basic>
@@ -73,6 +76,12 @@
             </basic>
             <basic name="noJurnal">
                 <column name="no_jurnal"/>
+            </basic>
+            <basic name="noFaktur">
+                <column name="no_faktur"/>
+            </basic>
+            <basic name="urlFakturImage">
+                <column name="url_faktur_image"/>
             </basic>
         </attributes>
     </entity>

@@ -198,7 +198,6 @@
                                                         <td>PPN Masukan B2(RP)</td>
                                                         <td>PPN Masukan B3 (RP)</td>
                                                         <td>Total (RP)</td>
-                                                        <td>Keterangan</td>
                                                         <td align="center">View</td>
                                                         <td align="center">Batal</td>
                                                         <td align="center">Approve</td>
@@ -214,7 +213,6 @@
                                                             <td style="text-align: right"><s:property value="stJumlahPpnMasukanB2"/></td>
                                                             <td style="text-align: right"><s:property value="stJumlahPpnMasukanB3"/></td>
                                                             <td style="text-align: right"><s:property value="stJumlahSeluruhnya"/></td>
-                                                            <td><s:property value="keterangan"/></td>
                                                             <td align="center">
                                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanSetorId}"/>" class="item-view">
                                                                     <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
@@ -340,13 +338,13 @@
                                     <br>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <%--<div class="form-group">
                                 <label class="col-md-4">Kas</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_kas_name" readonly="true" cssClass="form-control" />
                                     <br>
                                 </div>
-                            </div>
+                            </div>--%>
                             <br>
                             <div class="form-group">
                                 <div class="col-md-12">

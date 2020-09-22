@@ -58,8 +58,34 @@ public class PermintaanVendor{
     private Date tanggalFaktur;
     private String noInvoice;
     private String noDo;
-
     private String tipeTransaksi;
+    private String branchName;
+    private Date tglDo;
+    private Date tglInvoice;
+
+    public Date getTglDo() {
+        return tglDo;
+    }
+
+    public void setTglDo(Date tglDo) {
+        this.tglDo = tglDo;
+    }
+
+    public Date getTglInvoice() {
+        return tglInvoice;
+    }
+
+    public void setTglInvoice(Date tglInvoice) {
+        this.tglInvoice = tglInvoice;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
 
     public String getTipeTransaksi() {
         return tipeTransaksi;

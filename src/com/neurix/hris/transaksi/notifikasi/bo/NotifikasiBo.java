@@ -77,7 +77,9 @@ public interface NotifikasiBo extends BaseMasterBo<Notifikasi>{
 
     List<Notifikasi> getCutiTahunan();
 
-    List<Notifikasi> getPengajuanBiayaMenggantung();
+    List<Notifikasi> getPengajuanBiayaMenggantung(String branchId);
+
+    List<Notifikasi> getTerimaRkPengajuanBiaya(String branchId);
 
     List<Notifikasi> getCutiPanjang();
 

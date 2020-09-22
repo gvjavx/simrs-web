@@ -294,8 +294,9 @@
                                                             <display:column property="stTanggalAwal" sortable="true" title="Tanggal"  />
                                                             <display:column property="jamAwal" sortable="true" title="Jam Awal"  />
                                                             <display:column property="jamAkhir" sortable="true" title="Jam Akhir"  />
-                                                            <display:column property="lamaJam" sortable="true" title="Pengajuan"  />
-                                                            <display:column property="jamRealisasi" sortable="true" title="Realisasi"  />
+                                                            <display:column property="lamaJam" sortable="true" title="Pengajuan (Jam)"  />
+                                                            <display:column property="jamRealisasi" sortable="true" title="Absensi (Jam)"  />
+                                                            <display:column property="lamaHitungan" sortable="true" title="Realisasi (Jam)"  />
                                                             <display:column media="html" title="Approve Atasan">
                                                                 <s:if test="#attr.row.lemburApprove">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
@@ -306,7 +307,7 @@
                                                                 <s:else>
                                                                 </s:else>
                                                             </display:column>
-                                                            <display:column media="html" title="Refresh">
+                                                            <display:column media="html" title="Absensi">
                                                                 <s:if test="#attr.row.lemburApprove">
                                                                     <s:if test="#attr.row.adaAbsen">
                                                                         <s:if test="#attr.row.terRealisasi">

@@ -200,10 +200,8 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
         query = "SELECT * FROM\n" +
                 "\t(SELECT * FROM it_hris_jadwal_shift_kerja) kerja LEFT JOIN\n" +
                 "\t(SELECT * FROM it_hris_jadwal_shift_kerja_detail) kerjadetail ON kerja.jadwal_shift_kerja_id = kerjadetail.jadwal_shift_kerja_id LEFT JOIN\n" +
-                "\t(SELECT * FROM im_hris_group_shift) groupshift ON kerjadetail.group_shift_id = groupshift.group_shift_id LEFT JOIN\n" +
-                "\t(SELECT * FROM imt_hris_group_member) groupmember ON groupshift.group_id = groupmember.group_id LEFT JOIN\n" +
-                "\t(SELECT * FROM im_hris_shift) shift ON groupshift.shift_id = shift.shift_id\n" +
-                "WHERE groupmember.nip = :nip AND kerja.tanggal= :tanggal";
+                "\t(SELECT * FROM im_hris_shift) shift ON kerjadetail.shift_id = shift.shift_id\n" +
+                "WHERE kerjadetail.nip =:nip AND kerja.tanggal= :tanggal";
 
         List<Object[]> results = new ArrayList<Object[]>();
 
@@ -215,8 +213,8 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
 
         AbsensiPegawai add = new AbsensiPegawai();
         for (Object[] row : results) {
-            add.setJamMasuk(row[49].toString());
-            add.setJamPulang(row[50].toString());
+            add.setJamMasuk(row[35].toString());
+            add.setJamPulang(row[36].toString());
         }
         return add;
     }
@@ -410,7 +408,8 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
                 "WHERE nip = :nip\n" +
                 "AND tanggal BETWEEN :firstDate AND :lastDate\n" +
                 "AND branch_id = :branchId\n " +
-                "AND status_absensi NOT IN ('00', '08', '10', '11', '12', '13')";
+                "AND status_absensi NOT IN ('00', '08', '10', '11', '12', '13')\n" +
+                "ORDER BY tanggal ASC";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)

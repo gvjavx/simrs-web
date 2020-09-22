@@ -11,10 +11,8 @@ import org.hibernate.criterion.Restrictions;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,6 +47,12 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
         }
         if (mapCriteria.get("transaksi")!=null) {
             criteria.add(Restrictions.eq("transaksi", (String) mapCriteria.get("transaksi")));
+        }
+        if (mapCriteria.get("status_keuangan")!=null) {
+            criteria.add(Restrictions.eq("statusKeuangan", (String) mapCriteria.get("status_keuangan")));
+        }
+        if (mapCriteria.get("rk_id")!=null) {
+            criteria.add(Restrictions.eq("rkId", (String) mapCriteria.get("rk_id")));
         }
         if (mapCriteria.get("tanggal_dari")!=null && mapCriteria.get("tanggal_selesai")!=null) {
             criteria.add(Restrictions.between("tanggal",mapCriteria.get("tanggal_dari"),mapCriteria.get("tanggal_selesai")));
@@ -91,6 +95,16 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
         return "PBD"+sId;
     }
 
+    public String getNextRkId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_rk')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        Calendar cal = Calendar.getInstance();
+        String bulan = new SimpleDateFormat("MM").format(cal.getTime());
+        String tahun = new SimpleDateFormat("YY").format(cal.getTime());
+        String sId = String.format("%04d", iter.next());
+        sId = bulan+tahun+sId;
+        return "RK"+sId;
+    }
 
     public List<ItPengajuanBiayaDetailEntity> getListMasihMengajukan(String branchId, String divisiId) throws HibernateException {
         List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
@@ -114,7 +128,7 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
 
     public List<ItPengajuanBiayaDetailEntity> getDetailPengajuanForRk(String id) throws HibernateException {
         List<ItPengajuanBiayaDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPengajuanBiayaDetailEntity.class)
-                .add(Restrictions.eq("pengajuanBiayaId", id))
+                .add(Restrictions.eq("pengajuanBiayaDetailId", id))
                 .add(Restrictions.eq("approvalKeuanganKpFlag", "Y"))
                 .add(Restrictions.eq("statusKeuangan", "KP"))
                 .add(Restrictions.eq("flag", "Y"))
@@ -161,6 +175,44 @@ public class PengajuanBiayaDetailDao extends GenericDao<ItPengajuanBiayaDetailEn
                 pengajuanBiayaDetailEntity.setDivisiId((String) row[3]);
                 listOfResult.add(pengajuanBiayaDetailEntity);
             }
+        return listOfResult;
+    }
+
+    public List<ItPengajuanBiayaDetailEntity> getTerimaRkPengajuanBiaya(String branchId) {
+        List<ItPengajuanBiayaDetailEntity> listOfResult = new ArrayList<ItPengajuanBiayaDetailEntity>();
+        List<Object[]> results = new ArrayList<Object[]>();
+
+        String query = "select\n" +
+                "\trk_id,\n" +
+                "\tcoa_target,\n" +
+                "\tditerima_flag,\n" +
+                "\trk_dikirim\n" +
+                "from\n" +
+                "\tit_akun_pengajuan_biaya_detail\n" +
+                "WHERE\n" +
+                "\tditerima_flag is null\n" +
+                "\tand closed='Y'\n" +
+                "\tand rk_dikirim='Y'\n" +
+                "\tand flag='Y'\n" +
+                "\tand branch_id='"+branchId+"'\n" +
+                "GROUP BY\n" +
+                "\trk_id,\n" +
+                "\tcoa_target,\n" +
+                "\tditerima_flag,\n" +
+                "\trk_dikirim";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity = new ItPengajuanBiayaDetailEntity();
+            pengajuanBiayaDetailEntity.setRkId((String) row[0]);
+            pengajuanBiayaDetailEntity.setCoaTarget((String) row[1]);
+            pengajuanBiayaDetailEntity.setDiterimaFlag((String) row[2]);
+            pengajuanBiayaDetailEntity.setRkDikirim((String) row[3]);
+            listOfResult.add(pengajuanBiayaDetailEntity);
+        }
         return listOfResult;
     }
 

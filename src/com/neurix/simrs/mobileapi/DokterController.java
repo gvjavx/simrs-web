@@ -291,7 +291,7 @@ public class DokterController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("getDokterByPelayanan")) {
             listOfDokter = new ArrayList<>();
             try {
-               result = dokterBoProxy.getDokterByPelayanan(idPelayanan);
+               result = dokterBoProxy.getDokterByPelayanan(idPelayanan, null);
 
                for (Dokter item : result ){
                    DokterMobile dokterMobile = new DokterMobile();

@@ -86,6 +86,16 @@ public class ImBiodataEntity implements Serializable {
     private String flagPercobaan;
     private String nipLama;
 
+    private String divisiName;
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
+    }
+
     public String getFlagTunjanganSupervisi() {
         return flagTunjanganSupervisi;
     }
