@@ -203,6 +203,8 @@ public class TutuPeriodAction extends BaseTransactionAction {
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
+        boolean bulanBerjalan = "12a".equalsIgnoreCase(bulan) || "12b".equalsIgnoreCase(bulan);
+
         // set tipe period
         String tipePeriod = "";
         if ("12a".equalsIgnoreCase(bulan) || "12b".equalsIgnoreCase(bulan)){
@@ -274,6 +276,19 @@ public class TutuPeriodAction extends BaseTransactionAction {
             response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. "+e);
             return response;
         }
+
+        if (bulanBerjalan){
+            try {
+                tutupPeriodBo.updateSaldoAkhirBulanBerjalan(tutupPeriod);
+                response.setStatus("success");
+            } catch (GeneralBOException e){
+                logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR. ", e);
+                response.setStatus("error");
+                response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. "+e);
+                return response;
+            }
+        }
+
         return response;
     }
 

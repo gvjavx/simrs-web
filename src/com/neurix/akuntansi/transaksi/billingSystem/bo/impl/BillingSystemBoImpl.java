@@ -2529,10 +2529,10 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             // create jurnal
             createJurnalBalikAkhirTahun(tutupPeriod);
             // jika transaksi bulan berjalan maka update bulan berjalan;
-            boolean bulanBerjalan = "12a".equalsIgnoreCase(tutupPeriod.getTipePeriode()) || "12b".equalsIgnoreCase(tutupPeriod.getTipePeriode());
-            if (bulanBerjalan){
-                updateSaldoAkhirBulanBerjalan(tutupPeriod);
-            }
+//            boolean bulanBerjalan = "12a".equalsIgnoreCase(tutupPeriod.getTipePeriode()) || "12b".equalsIgnoreCase(tutupPeriod.getTipePeriode());
+//            if (bulanBerjalan){
+//                updateSaldoAkhirBulanBerjalan(tutupPeriod);
+//            }
 //            createSaldoAkhirTahun(tutupPeriod);
         }
 
@@ -2691,7 +2691,6 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 Map mapLabaRugi = new HashMap();
                 mapLabaRugi.put("rekening_id", kodeRekeningEntity.getRekeningId());
                 mapLabaRugi.put("nilai", nilaiPendapatan);
-                mapLabaRugi.put("master_id", "");
                 mapLabaRugi.put("divisi_id", "");
                 mapBiaya.add(mapLabaRugi);
             } else {
@@ -2699,6 +2698,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 Map mapLabaRugi = new HashMap();
                 mapLabaRugi.put("rekening_id", kodeRekeningEntity.getRekeningId());
                 mapLabaRugi.put("nilai", nilaiBiaya);
+                mapLabaRugi.put("master_id", "");
                 mapLabaRugi.put("divisi_id", "");
                 mapPendapatan.add(mapLabaRugi);
             }

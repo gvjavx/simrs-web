@@ -126,6 +126,31 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
         return tutupPeriods;
     }
 
+    public TutupPeriod getNoJurnalJurnalAkhirTahun(TutupPeriod bean){
+
+        String SQL = "SELECT no_jurnal, tanggal_jurnal, tipe_periode\n" +
+                "FROM it_akun_jurnal_akhir_tahun\n" +
+                "WHERE tipe_periode = :tipePeriode\n" +
+                "AND branch_id = :unit \n" +
+                "AND CAST(EXTRACT(YEAR FROM tanggal_jurnal) AS VARCHAR) = :tahun";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("tipePeriode", bean.getTipePeriode())
+                .setParameter("tahun", bean.getTahun())
+                .setParameter("unit", bean.getUnit())
+                .list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                TutupPeriod tutupPeriod = new TutupPeriod();
+                tutupPeriod.setNoJurnal(obj[0].toString());
+                tutupPeriod.setTipePeriode(obj[1].toString());
+                return tutupPeriod;
+            }
+        }
+        return null;
+    }
+
     public List<TutupPeriod> getListDetailJurnalAkhirTahunByCriteria(TutupPeriod bean){
 
 //        BigDecimal dcBulan = new BigDecimal(bean.getBulan());
