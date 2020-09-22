@@ -438,6 +438,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     public  List<Notifikasi> saveAddCuti ( CutiPegawai bean ) throws GeneralBOException {
         logger.info("[CutiPegawaiBoImpl.saveAdd] start process >>>");
         List<Notifikasi> notifikasiList = new ArrayList<>();
+
         //validasi
         List<ImBiodataEntity> biodataEntities = biodataDao.getDataBiodata(bean.getNip(),"","","","","Y");
         for (ImBiodataEntity biodata: biodataEntities){
@@ -458,12 +459,14 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 //        Date tanggalSekarang = new Date(c.getTimeInMillis());
 
         int tahunMasaKerja = year1-year2;
-
-        if (tahunMasaKerja<5){
-            String status ="Tanggal Pengajuan Cuti di Luar Tanggungan Harus Melewati 5 Tahun Masa Kerja";
-            logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error :, " + status);
-            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + status);
+        if (!"normal".equalsIgnoreCase(bean.getJenisCuti())){
+            if (tahunMasaKerja<5){
+                String status1 ="Tanggal Pengajuan Cuti di Luar Tanggungan Harus Melewati 5 Tahun Masa Kerja";
+                logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error :, " + status1);
+                throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + status1);
+            }
         }
+
 
         String atasanNip = null;
         String nip=bean.getNip(),cutiPegawaiId;
@@ -598,6 +601,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                         if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
                             itCutiPegawaiEntity1.setSisaCutiHari(BigInteger.valueOf(1095));
+
                         else
                             itCutiPegawaiEntity1.setSisaCutiHari(BigInteger.valueOf(12).subtract(bean.getLamaHariCuti()));
 

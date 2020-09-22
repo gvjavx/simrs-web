@@ -236,15 +236,8 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
-<<<<<<< HEAD
-            document.getElementById('bismillah').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
-=======
-            console.log(event);
-            console.log(data);
             document.getElementById('errorMessageCuti').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialogCuti');
->>>>>>> gitlab-akira/akira
         });
 
         function cancelBtn() {
@@ -679,11 +672,7 @@
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-<<<<<<< HEAD
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="bismillah"></p>
-=======
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessageCuti"></p>
->>>>>>> gitlab-akira/akira
                                                 </label>
                                             </div>
                                         </sj:dialog>
