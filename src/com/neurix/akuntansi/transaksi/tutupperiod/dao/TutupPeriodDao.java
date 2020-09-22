@@ -202,9 +202,11 @@ public class TutupPeriodDao extends GenericDao<ItAkunTutupPeriodEntity, String> 
 
                 if (tutupPeriod.getJumlahDebit().compareTo(tutupPeriod.getJumlahKredit()) == 1){
                     BigDecimal jumlah = tutupPeriod.getJumlahDebit().subtract(tutupPeriod.getJumlahKredit());
+                    tutupPeriod.setPosisi("D");
                     tutupPeriod.setSaldo(jumlah);
                 } else {
                     BigDecimal jumlah = tutupPeriod.getJumlahKredit().subtract(tutupPeriod.getJumlahDebit());
+                    tutupPeriod.setPosisi("K");
                     tutupPeriod.setSaldo(jumlah);
                 }
 

@@ -225,7 +225,23 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                         List<TutupPeriod> listJurnalAkhir = tutupPeriodDao.getListDetailJurnalAkhirTahunByCriteria(jurnalAkhirTahun);
                                         if (listJurnalAkhir.size() > 0){
                                             TutupPeriod jurnalAkhir = listJurnalAkhir.get(0);
-                                            saldoAkhirLalu.setSaldo(saldoAkhirLalu.getSaldo().subtract(jurnalAkhir.getSaldo()).abs());
+
+                                            if ("D".equalsIgnoreCase(jurnalAkhir.getPosisi())){
+                                                saldoAkhirLalu.setJumlahDebit(saldoAkhirLalu.getJumlahDebit().add(jurnalAkhir.getSaldo()));
+                                            } else {
+                                                // jika saldo akhir lalu adalah kredit maka akan menambah jumlah kredit
+                                                saldoAkhirLalu.setJumlahKredit(saldoAkhirLalu.getJumlahKredit().add(jurnalAkhir.getSaldo()));
+                                            }
+
+                                            if (saldoAkhirLalu.getJumlahDebit().compareTo(saldoAkhirLalu.getJumlahKredit()) == 1){
+                                                // jika debit lebih besar maka debit - kredit = saldo, posisi = debit
+                                                saldoAkhirLalu.setPosisi("D");
+                                                saldoAkhirLalu.setSaldo(saldoAkhirLalu.getJumlahDebit().subtract(saldoAkhirLalu.getJumlahKredit()));
+                                            } else {
+                                                // jika kredit lebih besar maka kredit - debit = saldo, posisi = kredit
+                                                saldoAkhirLalu.setPosisi("K");
+                                                saldoAkhirLalu.setSaldo(saldoAkhirLalu.getJumlahKredit().subtract(saldoAkhirLalu.getJumlahDebit()));
+                                            }
                                             break;
                                         }
                                     }
@@ -1412,11 +1428,11 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 //        Integer intTahunDepan = Integer.valueOf(bean.getTahun()) + 1;
 //        String tahunDepan = intTahunDepan.toString();
 
-        BatasTutupPeriod periodSaldoTerakhir = getLastBulanBerjalanSaldoAkhir(bean.getTahun(), bean.getUnit());
-        if (periodSaldoTerakhir != null){
-            // lock prosess bulan berjalan
-            lockProsesKoreksi(periodSaldoTerakhir);
-        }
+//        BatasTutupPeriod periodSaldoTerakhir = getLastBulanBerjalanSaldoAkhir(bean.getTahun(), bean.getUnit());
+//        if (periodSaldoTerakhir != null){
+//            // lock prosess bulan berjalan
+//            lockProsesKoreksi(periodSaldoTerakhir);
+//        }
 
         BatasTutupPeriod batasTutupPeriod = new BatasTutupPeriod();
         batasTutupPeriod.setUnit(bean.getUnit());
@@ -1689,7 +1705,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                 jurnalAkhirTahun.setTahun(bean.getTahun());
                                 jurnalAkhirTahun.setUnit(bean.getUnit());
                                 jurnalAkhirTahun.setRekeningId(saldoAkhirEntity.getRekeningId());
-                                jurnalAkhirTahun.setTipePeriode(tipePeriode[i]);
+                                jurnalAkhirTahun.setTipePeriode(tipePeriode[n]);
                                 List<TutupPeriod> listJurnalAkhir = tutupPeriodDao.getListDetailJurnalAkhirTahunByCriteria(jurnalAkhirTahun);
                                 if (listJurnalAkhir.size() > 0){
                                     TutupPeriod jurnalAkhir = listJurnalAkhir.get(0);

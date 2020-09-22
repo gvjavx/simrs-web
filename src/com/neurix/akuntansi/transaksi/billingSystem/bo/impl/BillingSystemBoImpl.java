@@ -2528,7 +2528,11 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
 
             // create jurnal
             createJurnalBalikAkhirTahun(tutupPeriod);
-
+            // jika transaksi bulan berjalan maka update bulan berjalan;
+            boolean bulanBerjalan = "12a".equalsIgnoreCase(tutupPeriod.getTipePeriode()) || "12b".equalsIgnoreCase(tutupPeriod.getTipePeriode());
+            if (bulanBerjalan){
+                updateSaldoAkhirBulanBerjalan(tutupPeriod);
+            }
 //            createSaldoAkhirTahun(tutupPeriod);
         }
 
@@ -2638,8 +2642,8 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                         for (SaldoAkhir saldoDetail : listSaldoAkhirDetail){
                             mapData.put("rekening_id",saldoAkhir.getRekeningId());
                             mapData.put("nilai",saldoDetail.getSaldo());
-                            mapData.put("master_id", saldoDetail.getMasterId());
-                            mapData.put("divisi_id", saldoDetail.getDivisiId());
+                            mapData.put("master_id", saldoDetail.getMasterId() == null ? "" : saldoDetail.getMasterId());
+                            mapData.put("divisi_id", saldoDetail.getDivisiId() == null ? "" : saldoDetail.getDivisiId());
                             mapPendapatan.add(mapData);
                             nilaiPendapatan = nilaiPendapatan.add(saldoDetail.getSaldo());
                         }
@@ -2657,7 +2661,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                         for (SaldoAkhir saldoDetail : listSaldoAkhirDetail){
                             mapData.put("rekening_id",saldoAkhir.getRekeningId());
                             mapData.put("nilai",saldoDetail.getSaldo());
-                            mapData.put("divisi_id", saldoDetail.getDivisiId());
+                            mapData.put("divisi_id", saldoDetail.getDivisiId() == null ? "" : saldoDetail.getDivisiId());
                             mapBiaya.add(mapData);
                             nilaiBiaya = nilaiBiaya.add(saldoDetail.getSaldo());
                         }
@@ -2709,13 +2713,15 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 periode = tutupPeriod.getBulan() +" "+ tutupPeriod.getTahun();
             }
 
+            String tipePeriod = tutupPeriod.getTipePeriode() == null || "".equalsIgnoreCase(tutupPeriod.getTipePeriode()) ? "12" : tutupPeriod.getTipePeriode();
+
             String catatan = "Jurnal Balik Tutup Tahun " +imBranches.getBranchName() + " Periode "+ periode;
 
             Integer lastDateOfMonth = CommonUtil.getLastDateOfMonth(formatToMM(tutupPeriod.getBulan()) +"-"+tutupPeriod.getTahun());
             String lastDate = tutupPeriod.getTahun() + "-" + tutupPeriod.getBulan() + "-" + lastDateOfMonth;
 
             try {
-                Jurnal jurnal = createJurnalTutupTahun(CommonConstant.TRANSAKSI_ID_KOREKSI_AKHIR_TAHUN, dataBilling, tutupPeriod.getUnit() ,catatan ,"Y", lastDate, tutupPeriod.getTipePeriode());
+                Jurnal jurnal = createJurnalTutupTahun(CommonConstant.TRANSAKSI_ID_KOREKSI_AKHIR_TAHUN, dataBilling, tutupPeriod.getUnit() ,catatan ,"Y", lastDate, tipePeriod);
 
                 // update batas tutup period
                 TutupPeriod period = new TutupPeriod();
@@ -2773,12 +2779,6 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
                 logger.error("[TutupPeriodAction.updateBatasTutupPeriod] ERROR when update setting batas. ", e);
                 throw new GeneralBOException("[BillingSystemBoImpl.updateBatasTutupPeriod] ERROR when update setting batas. "+e);
             }
-        }
-
-        // jika transaksi bulan berjalan maka update bulan berjalan;
-        boolean bulanBerjalan = "12a".equalsIgnoreCase(period.getTipePeriode()) || "12b".equalsIgnoreCase(period.getTipePeriode());
-        if (bulanBerjalan){
-            updateSaldoAkhirBulanBerjalan(period);
         }
     }
 

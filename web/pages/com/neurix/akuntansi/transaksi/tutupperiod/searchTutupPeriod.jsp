@@ -183,7 +183,7 @@
                   $("#des-b").show();
 //                  $("#des-a").hide();
               }
-                if (res.noJurnalKoreksi != ""){
+                if (res.noJurnalKoreksi != null && res.noJurnalKoreksi != ""){
                     $("#des-a").show();
     //                  $("#des-a").hide();
                 }
