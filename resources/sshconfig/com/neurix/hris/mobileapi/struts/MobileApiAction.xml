@@ -220,6 +220,9 @@
         <action name="rekening/*" class="com.neurix.simrs.mobileapi.RekeningTelemedicController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="historypegawai/*" class="com.neurix.hris.mobileapi.HistoryPegawaiController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

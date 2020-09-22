@@ -1,30 +1,23 @@
 package com.neurix.hris.transaksi.ijinKeluar.bo.impl;
 
-import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.dao.BranchDao;
-import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
-import com.neurix.authorization.position.model.Position;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.common.util.FirebasePushNotif;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.department.dao.DepartmentDao;
-import com.neurix.hris.master.department.model.Department;
 import com.neurix.hris.master.department.model.ImDepartmentEntity;
 import com.neurix.hris.master.golongan.dao.GolonganDao;
 import com.neurix.hris.master.golongan.model.Golongan;
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
 import com.neurix.hris.master.ijin.dao.IjinDao;
-import com.neurix.hris.master.ijin.model.Ijin;
 import com.neurix.hris.master.ijin.model.ImIjinEntity;
 import com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao;
-import com.neurix.hris.master.strukturJabatan.model.ImStrukturJabatanEntity;
-import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
 import com.neurix.hris.transaksi.absensi.dao.AbsensiPegawaiDao;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawaiEntity;
 import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
@@ -38,29 +31,22 @@ import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity;
 import com.neurix.hris.transaksi.notifikasi.dao.NotifikasiDao;
 import com.neurix.hris.transaksi.notifikasi.dao.NotifikasiFcmDao;
 import com.neurix.hris.transaksi.notifikasi.model.ImNotifikasiEntity;
-import com.neurix.hris.master.biodata.dao.BiodataDao;
-import com.neurix.hris.master.biodata.model.Biodata;
-import com.neurix.hris.master.biodata.model.ImBiodataEntity;
-import com.neurix.hris.transaksi.notifikasi.model.ItNotifikasiFcmEntity;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
-import com.sun.org.apache.bcel.internal.generic.I2F;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
-import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.text.ParseException;
 /**
  * Created by IntelliJ IDEA.
  * User: gondok
@@ -288,7 +274,7 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
                 imIjinKeluarEntity.setCancelNote(bean.getCancelNote());
 
                 if (!"Y".equalsIgnoreCase(bean.getCancelFlag())){
-                    if ("IJ013".equalsIgnoreCase(bean.getIjinId())){
+                    if ("Melahirkan".equalsIgnoreCase(bean.getIjinName())){
                         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                         try {
                             //tglMelahirkan
@@ -2285,5 +2271,25 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
         }
 
         return status;
+    }
+
+    @Override
+    public List<IjinKeluar> getHistoryIjinKeluarByMonth (String nip, String branchId, Date date) {
+        List<IjinKeluar> result = new ArrayList<>();
+        SimpleDateFormat dateFormat  = new SimpleDateFormat("YYYY");
+        String year = dateFormat.format(date);
+        dateFormat = new SimpleDateFormat("MM");
+        String month = dateFormat.format(date);
+        String firstDate = "01-" + month + "-" + year;
+        String lastDate = CommonUtil.getLastDayOfMonth() + "-" + month + "-" + year;
+
+        try {
+           result = ijinKeluarDao.getHistoryIjinKeluarByMonth(nip, branchId, firstDate, lastDate);
+        } catch (HibernateException e){
+            logger.error("[AbsensiBoImpl.getByCriteriaMesin] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        return result;
     }
 }

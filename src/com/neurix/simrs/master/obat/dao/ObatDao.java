@@ -340,7 +340,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return listOfResults;
     }
 
-    public Obat getSumStockObatGudangById(String id, String ket) {
+    public Obat getSumStockObatGudangById(String id, String ket, String branchId) {
 
         Obat obat = new Obat();
 
@@ -398,12 +398,12 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             List<Object[]> results1 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLMaster)
                     .setParameter("id1", id)
-                    .setParameter("branchId1", CommonUtil.userBranchLogin())
+                    .setParameter("branchId1", branchId)
                     .list();
 
             List<Object[]> results2 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLPoli)
                     .setParameter("id2", id)
-                    .setParameter("branchId2", CommonUtil.userBranchLogin())
+                    .setParameter("branchId2", branchId)
                     .list();
 
             String idObat = "";

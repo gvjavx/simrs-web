@@ -956,7 +956,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                 detailCheckup.setIsStay(bean.getIsStay());
             }
             if("kembali_ke_inap".equalsIgnoreCase(bean.getTindakLanjut())){
-                detailCheckup.setIsStay(null);
+                detailCheckup.setIsStay("N");
             }
             response = updateDetail(detailCheckup);
             if ("success".equalsIgnoreCase(response.getStatus())) {
@@ -1141,7 +1141,13 @@ public class RawatInapBoImpl implements RawatInapBo {
                 if (bean.getKeteranganSelesai() != null && !"".equalsIgnoreCase(bean.getKeteranganSelesai())) {
                     entity.setKeteranganSelesai(bean.getKeteranganSelesai());
                 }
-                entity.setIsStay(bean.getIsStay());
+                if(bean.getIsStay() != null && !"".equalsIgnoreCase(bean.getIsStay())){
+                    if("N".equalsIgnoreCase(bean.getIsStay())){
+                        entity.setIsStay(null);
+                    }else{
+                        entity.setIsStay(bean.getIsStay());
+                    }
+                }
                 try {
                     checkupDetailDao.updateAndSave(entity);
                     response.setStatus("success");

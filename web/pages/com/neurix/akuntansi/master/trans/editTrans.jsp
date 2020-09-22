@@ -111,7 +111,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'dokter':'Dokter'}" id="masterEdit" name="trans.master"
+                                <s:select list="#{'vendor':'vendor','dokter':'Dokter','pasien':'Pasien','karyawan':'Karyawan','pengajuan_biaya':'Pengajuan Biaya'}" id="masterEdit" name="trans.master"
                                           headerKey="vendor" headerValue="Vendor" cssClass="form-control" />
                             </table>
                         </td>
@@ -125,17 +125,6 @@
                                 <s:select list="#{'KM':'Kas Masuk', 'KK' : 'Kas Keluar', 'KR' : 'Koreksi'}"
                                           id="tipePembayaranEdit" name="trans.tipePembayaran"
                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Sumber Baru ?</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'N':'Tidak'}" id="flagSumberBaruEdit" name="trans.flagSumberBaru"
-                                          headerKey="Y" headerValue="Iya" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>

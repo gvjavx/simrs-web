@@ -3,6 +3,7 @@ package com.neurix.authorization.company.action;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
@@ -450,7 +451,7 @@ public class BranchAction extends BaseMasterAction {
         }
 
         for (Branch branch : listOfSearchBranch){
-            if (!("KP").equalsIgnoreCase(branch.getBranchId())){
+            if (!(CommonConstant.ID_KANPUS).equalsIgnoreCase(branch.getBranchId())){
                 listOfSearch.add(branch);
             }
         }

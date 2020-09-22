@@ -13,6 +13,7 @@
           p:branchDao-ref="branchDao"
           p:kelompokPositionDao-ref="kelompokPositionDao"
           p:profesiDao-ref="profesiDao"
+          p:positionBagianDao-ref="positionBagianDao"
     />
     <bean id="shiftBoProxy"
           class="org.springframework.aop.framework.ProxyFactoryBean"

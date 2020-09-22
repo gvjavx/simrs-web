@@ -169,6 +169,30 @@
                     $('#modal-inisialisasi').modal('hide');
                 }
             });
+            $.subscribe('errorDialog1', function (event, data) {
+                $('#modal-list').modal('hide');
+                document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+                $.publish('showErrorDialog');
+            });
+
+            $.subscribe('errorDialog2', function (event, data) {
+                $('#modal-reset').modal('hide');
+                document.getElementById('errorMessage1').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+                $.publish('showErrorDialog1');
+            });
+
+            $.subscribe('errorDialog3', function (event, data) {
+                $('#modal-reset-panjang').modal('hide');
+                document.getElementById('errorMessage2').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+                $.publish('showErrorDialog2');
+            });
+
+//            $.subscribe('errorDialog1', function (event, data) {
+//                if (event.originalEvent.request.status == 500){
+//                    alert('Peringatan!!! Terdapat ');
+//                    $('#modal-inisialisasi').modal('hide');
+//                }
+//            });
         })
     </script>
 </head>
@@ -401,7 +425,7 @@
                                                                         <s:a href="#"><i class="fa fa-calendar-check-o"></i> Reset Panjang</s:a>
                                                                     </li>
                                                                     <li id="btnInisialisasiCuti">
-                                                                        <s:a href="#"><i class="fa fa-user-plus"></i> Perbaikan Data Cuti</s:a>
+                                                                        <s:a href="#"><i class="fa fa-user-plus"></i> Inisialisasi Data Cuti</s:a>
                                                                     </li>
                                                                     <%--<li id="btnCutiMinus">--%>
                                                                         <%--<s:a href="#"><i class="fa fa-search"></i> Daftar Cuti Minus</s:a>--%>
@@ -557,6 +581,11 @@
                                                                     </s:else>
                                                                 </display:column>
                                                             </s:else>
+                                                            <display:setProperty name="paging.banner.item_name">CutiPegawai</display:setProperty>
+                                                            <display:setProperty name="paging.banner.items_name">CutiPegawai</display:setProperty>
+                                                            <display:setProperty name="export.excel.filename">CutiPegawai.xls</display:setProperty>
+                                                            <display:setProperty name="export.csv.filename">CutiPegawai.csv</display:setProperty>
+                                                            <display:setProperty name="export.pdf.filename">CutiPegawai.pdf</display:setProperty>
                                                         </display:table>
                                                     </td>
                                                 </tr>
@@ -713,10 +742,23 @@
                                    onBeforeTopics="beforeProcessSaveCutiBersama"
                                    onCompleteTopics="closeDialog,successDialog2"
                                    onSuccessTopics="successDialog2"
-                                   onErrorTopics="errorDialog">
+                                   onErrorTopics="errorDialog1">
                             <i class="fa fa-check"></i>
                             Save Cuti Bersama
                         </sj:submit>
+
+                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                   height="250" width="600" autoOpen="false" title="Error Dialog"
+                                   buttons="{
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                    }"
+                        >
+                            <div class="alert alert-error fade in">
+                                <label class="control-label" align="left">
+                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                </label>
+                            </div>
+                        </sj:dialog>
                     </center>
                     </div>
                     <br>
@@ -753,10 +795,23 @@
                                onBeforeTopics="beforeProcessSaveResetTahunan"
                                onCompleteTopics="closeDialog,successDialog3"
                                onSuccessTopics="successDialog3"
-                               onErrorTopics="errorDialog">
+                               onErrorTopics="errorDialog2">
                         <i class="fa fa-check"></i>
                         Save Reset Tahunan
                     </sj:submit>
+
+                        <sj:dialog id="error_dialog1" openTopics="showErrorDialog1" modal="true" resizable="false"
+                                   height="250" width="600" autoOpen="false" title="Error Dialog"
+                                   buttons="{
+                                                                        'OK':function() { $('#error_dialog1').dialog('close'); }
+                                                                    }"
+                        >
+                            <div class="alert alert-error fade in">
+                                <label class="control-label" align="left">
+                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage1"></p>
+                                </label>
+                            </div>
+                        </sj:dialog>
                 </center>
             </div>
             <br>
@@ -792,10 +847,23 @@
                                onBeforeTopics="beforeProcessSaveResetPanjang"
                                onCompleteTopics="closeDialog,successDialog4"
                                onSuccessTopics="successDialog4"
-                               onErrorTopics="errorDialog">
+                               onErrorTopics="errorDialog3">
                         <i class="fa fa-check"></i>
                         Save Reset Panjang
                     </sj:submit>
+
+                    <sj:dialog id="error_dialog2" openTopics="showErrorDialog2" modal="true" resizable="false"
+                               height="250" width="600" autoOpen="false" title="Error Dialog"
+                               buttons="{
+                                                                        'OK':function() { $('#error_dialog2').dialog('close'); }
+                                                                    }"
+                    >
+                        <div class="alert alert-error fade in">
+                            <label class="control-label" align="left">
+                                <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage2"></p>
+                            </label>
+                        </div>
+                    </sj:dialog>
                 </center>
             </div>
             <br>
@@ -853,7 +921,7 @@
                         </tr>
                     </table>
 
-                    <button type="button" id="btnSavePerbaikanSisaCuti" class="btn btn-success">Save Perbaikan</button>
+                    <button type="button" id="btnSavePerbaikanSisaCuti" class="btn btn-success">Save Inisialisasi</button>
                 </center>
             </div>
             <br>
@@ -1281,9 +1349,9 @@
     $('#btnSavePerbaikanSisaCuti').on('click', function () {
         CutiPegawaiAction.saveInisialisasi(function(data) {
             if (data!=""){
-                alert(data);
+                alert("Perbaikan Cuti Tidak Bisa Dilakukan , User Sudah Memiliki Data Cuti");
             }else{
-                alert("perbaikan berhasil");
+                alert("inisialisasi berhasil");
                 $('#modal-edit-inisialisasi').modal('hide');
                 $('#modal-inisialisasi').modal('hide');
             }

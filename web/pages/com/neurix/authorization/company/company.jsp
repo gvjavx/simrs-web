@@ -116,12 +116,14 @@
             $('#asumsiThr').prop('readonly', false);
             $('#asumsiPendidikan').prop('readonly', false);
             $('#asumsiJasprod').prop('readonly', false);
+            $('#periodeGaji').prop('disabled', false);
+            $('#paramDapen').prop('readonly', false);
+            $('#paramDapenPegawai').prop('readonly', false);
+            $('#biayaJabatan').prop('readonly', false);
 
             $('#maxBpjsTk').prop('readonly', false);
             $('#maxBpjsPensiun').prop('readonly', false);
             $('#maxBpjsKesehatan').prop('readonly', false);
-
-            $('periodeGaji').prop('readonly', false);
         }
 
         function onLoadPage() {
@@ -143,6 +145,10 @@
             $('#remainderJubileum').prop('readonly', true);
             $('#remainderPensiun').prop('readonly', true);
             $('#kursDolar').prop('readonly', true);
+            $('#periodeGaji').prop('disabled', true);
+            $('#paramDapen').prop('readonly', true);
+            $('#paramDapenPegawai').prop('readonly', true);
+            $('#biayaJabatan').prop('readonly', true);
 
             $('#asumsiThr').prop('readonly', true);
             $('#asumsiPendidikan').prop('readonly', true);
@@ -151,7 +157,6 @@
             $('#maxBpjsTk').prop('readonly', true);
             $('#maxBpjsPensiun').prop('readonly', true);
             $('#maxBpjsKesehatan').prop('readonly', true);
-            $('periodeGaji').prop('readonly', true);
 
             document.getElementById('firstButton').style.visibility='visible';
             document.getElementById('saveButton').style.visibility='hidden';
@@ -256,7 +261,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.passwordServer">Periode Gaji :</label>
+                                        <label class="control-label col-sm-3" for="company.periodeGaji">Periode Gaji :</label>
                                         <div class="col-sm-8">
                                             <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
                                             <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="periodeGaji"
@@ -264,7 +269,24 @@
                                                       headerValue="[Select one]"/>
                                         </div>
                                     </div>
-
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="company.paramDapen">% Dapen Perusahaan:</label>
+                                        <div class="col-sm-8">
+                                            <s:textfield id="paramDapen" name="company.paramDapen" type="number" required="true" cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="company.paramDapen">% Dapenbun Pegawai:</label>
+                                        <div class="col-sm-8">
+                                            <s:textfield id="paramDapenPegawai" name="company.paramDapenPegawai" type="number" required="true" cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="company.paramDapen">Biaya Jabatan:</label>
+                                        <div class="col-sm-8">
+                                            <s:textfield id="biayaJabatan" name="company.biayaJabatan" type="number" required="true" cssClass="form-control"/>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="company.defaultEmailSubject">Default Mail Subject :</label>
                                         <div class="col-sm-8">
@@ -446,17 +468,11 @@
                                                                 </label>
                                                             </div>
                                                         </sj:dialog>
-
                                                     </table>
                                                 </td>
-
-
                                             </div>
                                         </tr>
                                     </table>
-
-
-
                                 </div>
 
                             </div>

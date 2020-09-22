@@ -1,5 +1,6 @@
 package com.neurix.hris.transaksi.cutiPegawai.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -86,7 +87,8 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 .add(Restrictions.eq("cutiId", cutiId))
                 .add(Restrictions.ne("cancelFlag", "Y"))
                 .add(Restrictions.eq("approvalFlag", "Y"))
-                .addOrder(Order.desc("createdDate"))
+//                .addOrder(Order.desc("createdDate"))
+                .addOrder(Order.desc("cutiPegawaiId"))
                 .setMaxResults(1)
                 .list();
         return results;
@@ -155,6 +157,29 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 .list();
         return results;
     }
+
+    public List<ItCutiPegawaiEntity> getListCekCutiTahunan(String nip, String keterangan) throws HibernateException {
+        List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("keterangan",keterangan))
+                .add(Restrictions.eq("flagPerbaikan","Y"))
+                .add(Restrictions.eq("approvalFlag","Y"))
+                .add(Restrictions.ne("cancelFlag", "Y"))
+                .addOrder(Order.desc("cutiPegawaiId"))
+                .setMaxResults(1)
+                .list();
+        return results;
+    }
+
+    public List<ItCutiPegawaiEntity> getCekCuti(String nip) throws HibernateException {
+        List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
+
     public List<ItCutiPegawaiEntity> getListCutiPegawai(String term) throws HibernateException {
         List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
@@ -179,7 +204,8 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 .add(Restrictions.eq("cutiId",cutiId))
                 .add(Restrictions.eq("approvalFlag","Y"))
                 .add(Restrictions.ne("cancelFlag","Y"))
-                .addOrder(Order.desc("createdDate"))
+//                .addOrder(Order.desc("createdDate"))
+                .addOrder(Order.desc("cutiPegawaiId"))
                 .setMaxResults(1)
                 .list();
         return results;
@@ -680,6 +706,27 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
         return result;
     }
 
+    public List<ItCutiPegawaiEntity> getLastCuti(String nip){
+        List<ItCutiPegawaiEntity> listOfResult = new ArrayList<ItCutiPegawaiEntity>();
+        List<Object[]> results = new ArrayList<Object[]>();
+
+        String query = "SELECT * FROM it_hris_cuti_pegawai WHERE nip = '"+nip+"' AND approval_flag = 'Y' ORDER BY tanggal_dari DESC LIMIT 1";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results){
+            ItCutiPegawaiEntity entity = new ItCutiPegawaiEntity();
+            entity.setNip((String) row[1]);
+            entity.setTsTanggalDari((Timestamp) row[11]);
+            entity.setTsTanggalSelesai((Timestamp) row[12]);
+            listOfResult.add(entity);
+        }
+
+        return listOfResult;
+    }
+
     public String getTanggalPensiun(String nip){
         String result="";
         String query ="select tanggal_pensiun from im_hris_pegawai where nip ='"+nip+"'";
@@ -708,7 +755,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
     public List<ItCutiPegawaiEntity> getDataCuti(String nip) throws HibernateException {
         List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
                 .add(Restrictions.eq("nip", nip))
-                .add(Restrictions.eq("cutiId", "CT007"))
+                .add(Restrictions.eq("cutiId",  CommonConstant.CUTI_ID_DILUAR_TANGGUNJAWAB))
                 .list();
         return results;
 
@@ -719,7 +766,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
 
         List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
                 .add(Restrictions.eq("nip",nip))
-                .add(Restrictions.eq("cutiId","CT007"))
+                .add(Restrictions.eq("cutiId", CommonConstant.CUTI_ID_DILUAR_TANGGUNJAWAB))
                 .add(Restrictions.le("tanggalDari",tanggal))
                 .add(Restrictions.ge("tanggalSelesai",tanggal))
                 .add(Restrictions.eq("approvalFlag","Y"))

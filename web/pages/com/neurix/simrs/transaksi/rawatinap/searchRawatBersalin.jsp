@@ -13,7 +13,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#rawat_bersalin').addClass('active');
+            $('#pel_ri_active, #rawat_bersalin').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
             selectKamar();
         });
 

@@ -59,11 +59,57 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
         return total;
     }
 
+    public BigDecimal getPpnMasukanYangTelahDikreditkanUnit(PengajuanSetor search){
+        BigDecimal total = new BigDecimal(0);
+        String query="select \n" +
+                "\tsum(jumlah_ppn_masukan_b2) as jumlah_ppn_masukan_b2\n" +
+                "from \n" +
+                "\tit_akun_pengajuan_setor\n" +
+                "WHERE\n" +
+                "\tflag='Y'\n" +
+                "\tAND cancel_flag='N'\n" +
+                "\tAND approval_flag='Y'\n" +
+                "\tAND branch_id='"+search.getBranchId()+"'\n" +
+                "\tAND tahun='"+search.getTahun()+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.ZERO;
+        }
+        return total;
+    }
+
     public BigDecimal getPenyerahanYangTerutangPpn(PengajuanSetor search){
         BigDecimal total = new BigDecimal(0);
         String tahunSebelumnya = String.valueOf(Integer.parseInt(search.getTahun())-1);
         String query="SELECT\n" +
-                "\tjumlah_kredit\n" +
+                "\tsum(jumlah_kredit)*10/100 as ppn_penyerahan_terutang\n" +
+                "FROM\n" +
+                "\tit_akun_jurnal_detail jd\n" +
+                "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
+                "WHERE\t\n" +
+                "\trekening_id='"+ CommonConstant.REKENING_ID_PENDAPATAN_RJ +"'\n" +
+                "\tAND divisi_id='"+CommonConstant.KODERING_FARMASI_RJ+"'\n" +
+                "\tAND registered_flag='Y'\n" +
+                "\tAND tanggal_jurnal >='"+tahunSebelumnya+"-12-01'\n" +
+                "\tAND tanggal_jurnal < '"+search.getTahun()+"-"+search.getBulan()+"-01'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.ZERO;
+        }
+        return total;
+    }
+
+    public BigDecimal getDppPenyerahanYangTerutangPpnUnit(PengajuanSetor search){
+        BigDecimal total = new BigDecimal(0);
+        String tahunSebelumnya = String.valueOf(Integer.parseInt(search.getTahun())-1);
+        String query="SELECT\n" +
+                "\tsum(jumlah_kredit) as ppn_penyerahan_terutang\n" +
                 "FROM\n" +
                 "\tit_akun_jurnal_detail jd\n" +
                 "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
@@ -87,7 +133,7 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
         BigDecimal total = new BigDecimal(0);
         String tahunSebelumnya = String.valueOf(Integer.parseInt(search.getTahun())-1);
         String query="SELECT\n" +
-                "\tjumlah_kredit\n" +
+                "\tsum(jumlah_kredit) as penyerahan_tidak_terutang \n" +
                 "FROM\n" +
                 "\tit_akun_jurnal_detail jd\n" +
                 "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
@@ -95,6 +141,31 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
                 "\trekening_id='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
                 "\tAND divisi_id='"+CommonConstant.KODERING_FARMASI_RI+"'\n" +
                 "\tAND registered_flag='Y'\n" +
+                "\tAND tanggal_jurnal >='"+tahunSebelumnya+"-12-01'\n" +
+                "\tAND tanggal_jurnal < '"+search.getTahun()+"-"+search.getBulan()+"-01'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.ZERO;
+        }
+        return total;
+    }
+
+    public BigDecimal getPenyerahanTidakTerutangUnit(PengajuanSetor search){
+        BigDecimal total = new BigDecimal(0);
+        String tahunSebelumnya = String.valueOf(Integer.parseInt(search.getTahun())-1);
+        String query="SELECT\n" +
+                "\tsum(jumlah_kredit) as penyerahan_tidak_terutang \n" +
+                "FROM\n" +
+                "\tit_akun_jurnal_detail jd\n" +
+                "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
+                "WHERE\t\n" +
+                "\trekening_id='"+ CommonConstant.REKENING_ID_PENDAPATAN_RI +"'\n" +
+                "\tAND divisi_id='"+CommonConstant.KODERING_FARMASI_RI+"'\n" +
+                "\tAND registered_flag='Y'\n" +
+                "\tAND branch_id='"+search.getBranchId()+"'\n" +
                 "\tAND tanggal_jurnal >='"+tahunSebelumnya+"-12-01'\n" +
                 "\tAND tanggal_jurnal < '"+search.getTahun()+"-"+search.getBulan()+"-01'";
         Object results = this.sessionFactory.getCurrentSession()
@@ -203,7 +274,7 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
         BigDecimal total = new BigDecimal(0);
         String periodeSebelumnya = CommonUtil.periodeBulanSebelumnya(search.getBulan(),search.getTahun());
         String query="SELECT\n" +
-                "\tjumlah_kredit\n" +
+                "\tsum(jumlah_kredit) as jasa_rs \n" +
                 "FROM\n" +
                 "\tit_akun_jurnal_detail jd\n" +
                 "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
@@ -226,7 +297,7 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
         BigDecimal total = new BigDecimal(0);
         String periodeSebelumnya = CommonUtil.periodeBulanSebelumnya(search.getBulan(),search.getTahun());
         String query="SELECT\n" +
-                "\tjumlah_kredit\n" +
+                "\tsum(jumlah_kredit) as obat_ri \n" +
                 "FROM\n" +
                 "\tit_akun_jurnal_detail jd\n" +
                 "\tLEFT JOIN it_akun_jurnal j ON jd.no_jurnal = j.no_jurnal\n" +
@@ -244,5 +315,53 @@ public class PerhitunganPpnKdDao extends GenericDao<ItAkunPerhitunganPpnKdEntity
             total = BigDecimal.ZERO;
         }
         return total;
+    }
+
+    public BigDecimal getLastNilaiPiutangPajakKeluaran(String bulan,String tahun){
+        String periodeSebelumnya = CommonUtil.periodeBulanSebelumnya(bulan,tahun);
+        String bulanSebelumnya = periodeSebelumnya.split("-")[0];
+        String tahunSebelumnya = periodeSebelumnya.split("-")[1];
+        BigDecimal total = new BigDecimal(0);
+        String query="select \n" +
+                "  piutang_pajak_keluaran \n" +
+                "from \n" +
+                "  it_akun_perhitungan_ppn_kd \n" +
+                "where \n" +
+                "  bulan = '"+bulanSebelumnya+"' \n" +
+                "  and tahun = '"+tahunSebelumnya+"' \n" +
+                "  and tipe = 'B2' \n" +
+                "  and cancel_flag = 'N' \n" +
+                "  and flag = 'Y'\n";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.ZERO;
+        }
+        return total;
+    }
+
+    public String getLastBuktiPiutangPajakKeluaran(String bulan,String tahun){
+        String periodeSebelumnya = CommonUtil.periodeBulanSebelumnya(bulan,tahun);
+        String bulanSebelumnya = periodeSebelumnya.split("-")[0];
+        String tahunSebelumnya = periodeSebelumnya.split("-")[1];
+        String result = "";
+        String query="select \n" +
+                "  piutang_pajak_keluaran \n" +
+                "from \n" +
+                "  it_akun_perhitungan_ppn_kd \n" +
+                "where \n" +
+                "  bulan = '"+bulanSebelumnya+"' \n" +
+                "  and tahun = '"+tahunSebelumnya+"' \n" +
+                "  and cancel_flag = 'N' \n" +
+                "  and tipe = 'B2' \n" +
+                "  and flag = 'Y'\n";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = results.toString();
+        }
+        return result;
     }
 }

@@ -20,6 +20,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PengajuanBiayaAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KodeRekeningAction.js"/>'></script>
+
     <style>
         .pagebanner{
             background-color: #ededed;
@@ -244,8 +245,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <a id="btnApproveRk" style="display: none" type="button" class="btn btn-default btn-success"><i class="fa fa-arrow-right"></i> Buat Transaksi RK </a>
-                <a id="btnTerimaRk" style="display: none" type="button" class="btn btn-default btn-success"><i class="fa fa-arrow-right"></i> Terima RK</a>
+                <%--<a id="btnApproveRk" style="display: none" type="button" class="btn btn-default btn-success"><i class="fa fa-arrow-right"></i> Buat Transaksi RK </a>--%>
+                <%--<a id="btnTerimaRk" style="display: none" type="button" class="btn btn-default btn-success"><i class="fa fa-arrow-right"></i> Terima RK</a>--%>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
             </div>
         </div>
@@ -367,6 +368,52 @@
                         <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="mod_keterangan_atasan">
                         </div>
+                    </div>
+                    <div class="form-group upload-ipa">
+                        <label class="control-label col-sm-4" >Ijin Prinsip Atasan : </label>
+                        <div class="col-sm-6">
+                            <div class="input-group" id="img_file2">
+                                          <span class="input-group-btn">
+                                            <span class="btn btn-default btn-file btn-file-2">
+                                               Browse… <s:file id="imgInp2" accept=".jpg" name="fileUpload2"
+                                                               onchange="$('#img_file2').css('border','')"></s:file>
+                                            </span>
+                                            </span>
+                                <input type="text" class="form-control" readonly id="namaFile2">
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <a href="javascript:;" id="btnViewIpa">
+                                <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
+                            </a>
+                            <input type="hidden" class="form-control" id="status_upload">
+                        </div>
+                        <script>
+                            $('#btnViewIpa').click(function () {
+                                $('#modal-view-ipa').modal('show');
+                            })
+                        </script>
+                    </div>
+                    <div class="form-group view-ipa">
+                        <label class="control-label col-sm-4" >Ijin Prinsip Atasan : </label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" readonly id="namaFileUpload">
+                        </div>
+                        <div class="col-sm-1">
+                            <a href="javascript:;" id="btnViewIpaUploaded">
+                                <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
+                            </a>
+                        </div>
+                        <script>
+                            $('#btnViewIpaUploaded').click(function () {
+                                dwr.engine.setAsync(false);
+                                var pengajuanId = $('#modPengajuanBiayaDetailIdAtasan').val();
+                                PengajuanBiayaAction.searchPengajuanDetailImage(pengajuanId,function(data){
+                                    $("#my-image").attr("src", data);
+                                });
+                                $('#modal-view-ipa').modal('show');
+                            })
+                        </script>
                     </div>
                     <input type="hidden" class="form-control" id="mod_status_approve_atasan">
                 </form>
@@ -510,7 +557,27 @@
                             <input type="text" readonly class="form-control" id="mod_keterangan_keuangan">
                         </div>
                     </div>
-
+                    <div class="form-group view-ipa">
+                        <label class="control-label col-sm-4" >Ijin Prinsip Atasan : </label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" readonly id="namaFileUploadKeu">
+                        </div>
+                        <div class="col-sm-1">
+                            <a href="javascript:;" id="btnViewIpaUploadedKeu">
+                                <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
+                            </a>
+                        </div>
+                        <script>
+                            $('#btnViewIpaUploadedKeu').click(function () {
+                                dwr.engine.setAsync(false);
+                                var pengajuanId = $('#modPengajuanBiayaDetailId').val();
+                                PengajuanBiayaAction.searchPengajuanDetailImage(pengajuanId,function(data){
+                                    $("#my-image").attr("src", data);
+                                });
+                                $('#modal-view-ipa').modal('show');
+                            })
+                        </script>
+                    </div>
                     <input type="hidden" class="form-control" id="mod_status_approve">
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Metode Pembiayaan : </label>
@@ -569,7 +636,7 @@
                             <input type="text" readonly class="form-control" id="mod_tipe_keuangan_kp">
                         </div>
                     </div>
-                    <div class="form-group" id="view_no_kontrak_keuangan">
+                    <div class="form-group" id="view_no_kontrak_keuangan_kp">
                         <label class="control-label col-sm-4" >No. Kontrak: </label>
                         <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="mod_no_kontrak_keuangan_kp">
@@ -645,6 +712,27 @@
                         <div class="col-sm-6">
                             <input type="text" readonly class="form-control" id="mod_keterangan_keuangan_kp">
                         </div>
+                    </div>
+                    <div class="form-group view-ipa">
+                        <label class="control-label col-sm-4" >Ijin Prinsip Atasan : </label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" readonly id="namaFileUploadKeuKp">
+                        </div>
+                        <div class="col-sm-1">
+                            <a href="javascript:;" id="btnViewIpaUploadedKeuKp">
+                                <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
+                            </a>
+                        </div>
+                        <script>
+                            $('#btnViewIpaUploadedKeuKp').click(function () {
+                                dwr.engine.setAsync(false);
+                                var pengajuanId = $('#modPengajuanBiayaDetailIdKp').val();
+                                PengajuanBiayaAction.searchPengajuanDetailImage(pengajuanId,function(data){
+                                    $("#my-image").attr("src", data);
+                                });
+                                $('#modal-view-ipa').modal('show');
+                            })
+                        </script>
                     </div>
                     <input type="hidden" class="form-control" id="mod_status_approve_kp">
                     <%--<div class="form-group" id="kas_keuangan_kp">--%>
@@ -772,31 +860,6 @@
             </div>
             <div class="modal-body">
                 <div class="box">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <table style="width: 100%;" class="tabelDaftarStok table table-bordered">
-                            </table>
-                            <br>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="modal-daftar-stok">
-    <div class="modal-dialog modal-flat modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Stok Divisi</h4>
-            </div>
-            <div class="modal-body">
-                <div class="box">
                     <br>
                     <br>
                     <div class="row">
@@ -818,6 +881,33 @@
                             <table style="width: 100%;" class="tabelDaftarStok table table-bordered">
                             </table>
                             <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-ipa">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Ijin Prinsip Atasan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <canvas id="img_faktur_canvas2" class="img-responsive"></canvas>
+                            <img src="" class="img-responsive" id="my-image">
                         </div>
                     </div>
                 </div>
@@ -907,16 +997,16 @@
                         transaksi="Investasi";
                         break;
                 }
-                var approval ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" tipe="'+item.transaksi+'" keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" class="item-approve-atasan" >\n' +
+                var approval ='<td align="center"><a href="javascript:;" fileName="'+item.fileName+'" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" tipe="'+item.transaksi+'" keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" class="item-approve-atasan" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
-                var approvalKeuangan ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" tipe="'+item.transaksi+'" keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" class="item-approve-keuangan" >\n' +
+                var approvalKeuangan ='<td align="center"><a href="javascript:;" fileName="'+item.fileName+'" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" tipe="'+item.transaksi+'" keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" class="item-approve-keuangan" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
-                var approvalKeuanganKp ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" tipe="'+item.transaksi+'" keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" class="item-approve-keuangan-kp" >\n' +
+                var approvalKeuanganKp ='<td align="center"><a href="javascript:;" fileName="'+item.fileName+'" data="'+item.pengajuanBiayaDetailId+'" tanggal="'+item.stTanggal+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" tipe="'+item.transaksi+'" keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" class="item-approve-keuangan-kp" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
-                var terimaKeuangan ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" class="item-terima-keuangan-kp" tipe="'+item.transaksi+'"  keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" >\n' +
+                var terimaKeuangan ='<td align="center"><a href="javascript:;" fileName="'+item.fileName+'" data="'+item.pengajuanBiayaDetailId+'"  status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" budgetsd="'+item.stBudgetBiayaSdBulanIni+'" budgetterpakai="'+item.stBudgetTerpakai+'" budgetterpakaisd="'+item.stBudgetTerpakaiSdBulanIni+'" sisabudget="'+item.stSisaBudget+'" sisabudgetsd="'+item.stSisaBudgetSdBulanIni+'" noBudgetting="'+item.noBudgeting+'" class="item-terima-keuangan-kp" tipe="'+item.transaksi+'"  keperluan="'+item.keperluanName+'" noKontrak="'+item.noKontrak+'" >\n' +
                     '<img border="0" src="<s:url value="/pages/images/icon_approval.ico"/>" name="icon_edit">\n' +
                     '</a></td>';
                 var success ='<td align="center"><a href="javascript:;">\n' +
@@ -939,6 +1029,8 @@
                 }else if (item.statusApproval=="GM"&&item.statusUserApproval=="GM"){
                     approvalGM = approval;
                 }else if (item.statusApproval=="KE"&&item.statusUserApproval=="KE"){
+                    approvalKE = approvalKeuangan;
+                }else if (item.statusApproval=="KE"&&item.statusUserApproval=="KEKP"){
                     approvalKE = approvalKeuangan;
                 }else if (item.statusApproval=="KEKP"&&item.statusUserApproval=="KEKP"){
                     approvalKEKP = approvalKeuanganKp;
@@ -1032,13 +1124,13 @@
                 $('#mod_divisi_id').val(item.divisiId);
             });
 
-            PengajuanBiayaAction.cekApakahBolehRk(pengajuanId,function(data){
-                if (data.showBuatRk){
-                    $('#btnApproveRk').show();
-                }else if (data.showTerimaRk) {
-                    $('#btnTerimaRk').show();
-                }
-            });
+            // PengajuanBiayaAction.cekApakahBolehRk(pengajuanId,function(data){
+            //     if (data.showBuatRk){
+            //         $('#btnApproveRk').show();
+            //     }else if (data.showTerimaRk) {
+            //         $('#btnTerimaRk').show();
+            //     }
+            // });
             $('#mod_total_biaya').val(formatRupiahAngka(jumlah.toString()));
             $('.pengajuanBiayaTabel').append(tmp_table);
         });
@@ -1056,6 +1148,7 @@
         }
 
         $('#mod_jumlah_atasan').val(jumlah);
+        $('#status_upload').val("N");
         $('#modPengajuanBiayaDetailIdAtasan').val($(this).attr('data'));
         $('#mod_status_approve_atasan').val($(this).attr('status'));
         $('#mod_branch_id_atasan').val($(this).attr('unit'));
@@ -1071,13 +1164,24 @@
         $('#mod_sisa_budget_sd_atasan').val($(this).attr('sisabudgetsd'));
         $('#mod_keperluan_atasan').val($(this).attr('keperluan'));
         $('#mod_no_kontrak_atasan').val($(this).attr('noKontrak'));
+        $('#namaFileUpload').val($(this).attr('fileName'));
         $('#mod_tipe_atasan').val(tipeName);
+
+        if ($(this).attr('fileName')==''){
+            $('.upload-ipa').show();
+            $('.view-ipa').hide();
+        }else{
+            $('.upload-ipa').hide();
+            $('.view-ipa').show();
+            $('#img_faktur_canvas2').hide();
+        };
 
         if (tipe=="I"){
             $('#txt_budget_atasan').text("Nilai Kontrak (RP) :");
             $('#txt_budget_terpakai_atasan').text("Nilai Kontrak Realisasi (RP) :");
             $('#txt_sisa_budget_atasan').text("Sisa Nilai Kontrak (RP) :");
             $('#view_budget_sd_atasan').hide();
+            $('.btnViewStok').hide();
             $('#view_budget_terpakai_sd_atasan').hide();
             $('#view_sisa_budget_sd_atasan').hide();
             $('#view_no_kontrak_atasan').show();
@@ -1086,6 +1190,7 @@
             $('#txt_budget_terpakai_atasan').text("Budgeting terpakai Bulan Ini (RP) : ");
             $('#txt_sisa_budget_atasan').text("Sisa Budget Bulan Ini (RP) : ");
             $('#view_budget_sd_atasan').show();
+            $('.btnViewStok').show();
             $('#view_budget_terpakai_sd_atasan').show();
             $('#view_sisa_budget_sd_atasan').show();
             $('#view_no_kontrak_atasan').hide();
@@ -1101,14 +1206,17 @@
         var branchId = $('#mod_branch_id_atasan').val();
         var status = $('#mod_status_approve_atasan').val();
         var jumlah = $('#mod_jumlah_atasan').val();
-
+        var canvas = document.getElementById('img_faktur_canvas2');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        var statusUpload = $('#status_upload').val();
         var bolehDiubah = false;
         PengajuanBiayaAction.cekApakahPengajuanBisaDiubah(pengajuanId,jumlah,function(response) {
             bolehDiubah=response;
         });
         if (bolehDiubah){
             if (confirm("Apakah anda ingin menyetujui pengajuan biaya ini ?")){
-                PengajuanBiayaAction.saveApproveAtasanPengajuan(pengajuanId,status,jumlah,function() {
+                PengajuanBiayaAction.saveApproveAtasanPengajuan(pengajuanId,status,jumlah,dataURL,statusUpload,function() {
                     alert("Sukses Approve");
                     loadPengajuan(id,branchId);
                     $('#modal-approve-atasan').modal('hide');
@@ -1188,6 +1296,12 @@
             tipeName="Rutin";
         }
 
+        var branchId = $(this).attr('unit');
+
+        if (branchId=="KP") {
+            var option = '<option value="A">Kantor Pusat</option>';
+            $('#mod_status_keuangan').html(option);
+        }
         $('#mod_jumlah_keuangan').val(jumlah);
         $('#modPengajuanBiayaDetailId').val($(this).attr('data'));
         $('#mod_status_approve').val($(this).attr('status'));
@@ -1203,6 +1317,8 @@
         $('#mod_budget_terpakai_sd_keuangan').val($(this).attr('budgetterpakaisd'));
         $('#mod_sisa_budget_keuangan').val($(this).attr('sisabudget'));
         $('#mod_sisa_budget_sd_keuangan').val($(this).attr('sisabudgetsd'));
+        $('#namaFileUploadKeu').val($(this).attr('fileName'));
+        $('#img_faktur_canvas2').hide();
 
         $('#mod_keperluan_keuangan').val($(this).attr('keperluan'));
         $('#mod_no_kontrak_keuangan').val($(this).attr('noKontrak'));
@@ -1216,6 +1332,7 @@
             $('#view_budget_terpakai_sd_keuangan').hide();
             $('#view_sisa_budget_sd_keuangan').hide();
             $('#view_no_kontrak_keuangan').show();
+            $('.btnViewStok').hide();
         } else{
             $('#txt_budget_keuangan').text("Budgeting Bulan Ini (RP) : ");
             $('#txt_budget_terpakai_keuangan').text("Budgeting terpakai Bulan Ini (RP) : ");
@@ -1224,6 +1341,7 @@
             $('#view_budget_terpakai_sd_keuangan').show();
             $('#view_sisa_budget_sd_keuangan').show();
             $('#view_no_kontrak_keuangan').hide();
+            $('.btnViewStok').show();
         }
 
         $('#modal-approve-keuangan').find('.modal-title').text('Approve Pengajuan Biaya Keuangan');
@@ -1258,6 +1376,8 @@
         $('#mod_budget_terpakai_sd_keuangan_kp').val($(this).attr('budgetterpakaisd'));
         $('#mod_sisa_budget_keuangan_kp').val($(this).attr('sisabudget'));
         $('#mod_sisa_budget_sd_keuangan_kp').val($(this).attr('sisabudgetsd'));
+        $('#namaFileUploadKeuKp').val($(this).attr('fileName'));
+        $('#img_faktur_canvas2').hide();
 
         $('#mod_keperluan_keuangan_kp').val($(this).attr('keperluan'));
         $('#mod_no_kontrak_keuangan_kp').val($(this).attr('noKontrak'));
@@ -1271,6 +1391,7 @@
             $('#view_budget_terpakai_sd_keuangan_kp').hide();
             $('#view_sisa_budget_sd_keuangan_kp').hide();
             $('#view_no_kontrak_keuangan_kp').show();
+            $('.btnViewStok').hide();
         } else{
             $('#txt_budget_keuangan_kp').text("Budgeting Bulan Ini (RP) : ");
             $('#txt_budget_terpakai_keuangan_kp').text("Budgeting terpakai Bulan Ini (RP) : ");
@@ -1279,6 +1400,7 @@
             $('#view_budget_terpakai_sd_keuangan_kp').show();
             $('#view_sisa_budget_sd_keuangan_kp').show();
             $('#view_no_kontrak_keuangan_kp').hide();
+            $('.btnViewStok').show();
         }
 
         $('#modal-approve-keuangan-kp').find('.modal-title').text('Approve Pengajuan Biaya Keuangan Kantor Pusat');
@@ -1347,8 +1469,12 @@
         if (confirm("Apakah anda ingin menyetujui pengajuan biaya ini ?")){
             PengajuanBiayaAction.saveApproveKeuanganKpPengajuan(pengajuanId,status,approvalStatus,branchId,keterangan,jumlah,noBudgetting,divisiId,function(response) {
                 alert("Sukses Approve");
-                loadPengajuan(id,branchId);
-                $('#modal-approve-keuangan-kp').modal('hide');
+                if (response=="Y"){
+                    window.location.reload();
+                } else{
+                    loadPengajuan(id,branchId);
+                    $('#modal-approve-keuangan-kp').modal('hide');
+                }
             });
         }
     });
@@ -1434,17 +1560,19 @@
     });
 
     window.loadStok =  function(namaObat){
-        var tanggal = $('#tanggal').val();
-        var branchId = $('#branch_id_view').val();
-        var divisiId = $('#divisi_id_view').val();
+        var tanggal = $('.mod_tanggal_class').val();
+        var branchId = $('#mod_branch_id').val();
+        var divisiId = $('#mod_divisi_id').val();
         $('.tabelDaftarStok').find('tbody').remove();
         $('.tabelDaftarStok').find('thead').remove();
         dwr.engine.setAsync(false);
+        console.log(tanggal);
         var tmp_table = "";
         if (tanggal!=""&&branchId!=""&&divisiId!=""&&namaObat!=""){
             PengajuanBiayaAction.getStockPerDivisi(branchId,divisiId,tanggal,namaObat,function (result) {
                 tmp_table = "<thead style='font-size: 12px;' ><tr class='active'>"+
                     "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>ID Obat</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Nama Barang</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Qty</th>"+
                     "</tr></thead>";
@@ -1453,6 +1581,7 @@
                     var saldo = item.subTotalSaldo.replace(/[,]/g,"");
                     tmp_table += '<tr style="font-size: 11px;" ">' +
                         '<td align="center">' + (i + 1) + '</td>' +
+                        '<td align="center">' + item.idBarang+ '</td>' +
                         '<td align="center">' + item.namaBarang+ '</td>' +
                         '<td align="center">' + item.qty+ '</td>' +
                         "</tr>";
@@ -1469,7 +1598,7 @@
         }
     };
 
-    $('#btnViewStok').click(function () {
+    $('.btnViewStok').click(function () {
         $("#modal-daftar-stok").modal('show');
     });
     $('#btnSearchStok').click(function () {
@@ -1493,6 +1622,40 @@
         rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
         return rupiah;
     }
+    $(document).ready(function () {
+        var canvas = document.getElementById('img_faktur_canvas2');
+        var ctx = canvas.getContext('2d');
+
+        $(document).on('change', '.btn-file-2 :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file-2 :file').on('fileselect', function (event, label) {
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var img = new Image();
+                    img.onload = function () {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0);
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+                $('#status_upload').val("Y");
+            } else {
+                if (log) alert(log);
+            }
+        });
+    });
 </script>
 
 

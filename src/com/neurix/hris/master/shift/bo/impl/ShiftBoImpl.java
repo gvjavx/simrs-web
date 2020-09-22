@@ -6,6 +6,8 @@ import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.kelompokPosition.dao.KelompokPositionDao;
 import com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity;
+import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
+import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.master.profesi.dao.ProfesiDao;
 import com.neurix.hris.master.profesi.model.ImProfesiEntity;
 import com.neurix.hris.master.shift.bo.ShiftBo;
@@ -31,6 +33,15 @@ public class ShiftBoImpl implements ShiftBo {
     private BranchDao branchDao;
     private KelompokPositionDao kelompokPositionDao;
     private ProfesiDao profesiDao;
+    private PositionBagianDao positionBagianDao;
+
+    public PositionBagianDao getPositionBagianDao() {
+        return positionBagianDao;
+    }
+
+    public void setPositionBagianDao(PositionBagianDao positionBagianDao) {
+        this.positionBagianDao = positionBagianDao;
+    }
 
     public ProfesiDao getProfesiDao() {
         return profesiDao;
@@ -279,8 +290,8 @@ public class ShiftBoImpl implements ShiftBo {
 
                     if (listEntity.getProfesiId()!=null && !"".equalsIgnoreCase(listEntity.getProfesiId())){
 
-                        ImProfesiEntity profesiEntity = profesiDao.getById("profesiId",listEntity.getProfesiId());
-                        returnData.setProfesiName(profesiEntity.getProfesiName());
+                        ImPositionBagianEntity positionBagianEntity = positionBagianDao.getById("bagianId",listEntity.getProfesiId());
+                        returnData.setProfesiName(positionBagianEntity.getBagianName());
                     }else{
                         returnData.setProfesiName("");
                     }

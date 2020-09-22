@@ -256,7 +256,11 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         logger.info("[PembayaranUtangPiutangBoImpl.createJurnal] start process >>>");
         String noJurnal;
         String status;
-        userLogin = CommonUtil.userIdLogin();
+        if (data.get("user_id") != null ){
+            if(!data.get("user_id").toString().equalsIgnoreCase("")) {
+                userLogin = data.get("user_id").toString();
+            } else userLogin = CommonUtil.userIdLogin();
+        } else userLogin = CommonUtil.userIdLogin();
         updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         String tipeJurnalId;
         String sumber = null;

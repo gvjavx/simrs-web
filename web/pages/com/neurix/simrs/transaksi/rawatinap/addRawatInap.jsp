@@ -3726,6 +3726,7 @@
     var urlPages = "";
     var idRuangan = '<s:property value="rawatInap.idRuangan"/>';
     var namaRuangan = '<s:property value="rawatInap.namaRangan"/>';
+    var stayRuangan = '<s:property value="rawatInap.isStay"/>';
 
     if (month.length < 2) {
         month = "0"+month;
@@ -3767,26 +3768,36 @@
             $('#title-pages').text("Rawat Inap Pasien");
             $('#rawat_inap').addClass('active');
             urlPages = 'rawatinap';
+            $('#pel_ri_active, #bayar_rawat_inap').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'rawat_intensif'){
             $('#title-pages').text("Rawat Intensif Pasien");
             $('#rawat_intensif').addClass('active');
             urlPages = 'rawatintensif';
+            $('#pel_ri_active, #rawat_intensif').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'rawat_isolasi'){
             $('#title-pages').text("Rawat Isolasi Pasien");
             $('#rawat_isolasi').addClass('active');
             urlPages = 'rawatisolasi';
+            $('#pel_ri_active, #rawat_isolasi').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'kamar_operasi'){
             $('#title-pages').text("Rawat Operasi Pasien");
             $('#rawat_operasi').addClass('active');
             urlPages = 'rawatoperasi';
+            $('#pel_ri_active, #rawat_operasi').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'ruang_bersalin'){
             $('#title-pages').text("Rawat Bersalin Pasien");
             $('#rawat_bersalin').addClass('active');
             urlPages = 'rawatbersalin';
+            $('#pel_ri_active, #rawat_bersalin').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
         }
 
         $('#img_ktp').on('click', function(e){

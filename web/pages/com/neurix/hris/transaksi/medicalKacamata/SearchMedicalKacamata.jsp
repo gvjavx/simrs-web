@@ -433,7 +433,11 @@
                                             <display:column property="strTanggalPembayaran" sortable="true" title="Tanggal Pembayaran"  />
                                             <display:column property="strTanggalBerakhir" sortable="true" title="Tanggal Akhir"  />
                                             <display:column property="strBiaya" sortable="true" title="Jumlah"  />
-
+                                            <display:setProperty name="paging.banner.item_name">MedicalKacamata</display:setProperty>
+                                            <display:setProperty name="paging.banner.items_name">MedicalKacamata</display:setProperty>
+                                            <display:setProperty name="export.excel.filename">MedicalKacamata.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">MedicalKacamata.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">MedicalKacamata.pdf</display:setProperty>
                                         </display:table>
                                     </td>
                                 </tr>

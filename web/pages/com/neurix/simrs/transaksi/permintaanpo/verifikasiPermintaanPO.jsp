@@ -826,18 +826,18 @@
                     }
 
                     var batch = null;
-                    PermintaanVendorAction.getTransaksiObatByIdTrans(idDetail, noBt, function(res){
-                        if (res != null){
-                            batch = res;
-                            console.log(res);
-//                            $('#val_diskon').val(batc.diskon);
-//                            $('#app_diskon').val(formatRupiah(diskon));
-//                            $('#val_bruto').val(bruto);
-//                            $('#app_bruto').val(formatRupiah(bruto));
-//                            $('#val_netto').val(netto);
-//                            $('#app_netto').val(formatRupiah(netto));
-                        }
-                    });
+//                     PermintaanVendorAction.getTransaksiObatByIdTrans(idDetail, noBt, function(res){
+//                         if (res != null){
+//                             batch = res;
+//                             console.log(res);
+// //                            $('#val_diskon').val(batc.diskon);
+// //                            $('#app_diskon').val(formatRupiah(diskon));
+// //                            $('#val_bruto').val(bruto);
+// //                            $('#app_bruto').val(formatRupiah(bruto));
+// //                            $('#val_netto').val(netto);
+// //                            $('#app_netto').val(formatRupiah(netto));
+//                         }
+//                     });
 
                     if (batch != null){
                         $('#app_expired').val(batch.stExpDate);

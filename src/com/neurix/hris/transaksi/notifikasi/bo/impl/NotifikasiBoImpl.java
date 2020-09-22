@@ -2435,11 +2435,11 @@ public class NotifikasiBoImpl implements NotifikasiBo {
     }
 
     @Override
-    public List<Notifikasi> getPengajuanBiayaMenggantung(){
+    public List<Notifikasi> getPengajuanBiayaMenggantung(String branchId){
         List<ItPengajuanBiayaDetailEntity> pengajuanBiayaDetailEntityList= new ArrayList<>();
         List<Notifikasi> notifikasiList = new ArrayList<>();
 
-        pengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getPengajuanBiayaMenggantung(CommonUtil.userBranchLogin());
+        pengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getPengajuanBiayaMenggantung(branchId);
 
         if(pengajuanBiayaDetailEntityList.size() > 0){
             for(ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity : pengajuanBiayaDetailEntityList){
@@ -2448,6 +2448,24 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                 notifikasi.setStTanggalRealisasi(CommonUtil.convertDateToString(pengajuanBiayaDetailEntity.getTanggalRealisasi()));
                 notifikasi.setKeperluan(pengajuanBiayaDetailEntity.getKeperluan());
                 notifikasi.setDivisiName(pengajuanBiayaDetailEntity.getDivisiId());
+                notifikasi.setJmlApproval(String.valueOf(pengajuanBiayaDetailEntityList.size()));
+                notifikasiList.add(notifikasi);
+            }
+        }
+        return notifikasiList;
+    }
+
+    @Override
+    public List<Notifikasi> getTerimaRkPengajuanBiaya(String branchId){
+        List<ItPengajuanBiayaDetailEntity> pengajuanBiayaDetailEntityList= new ArrayList<>();
+        List<Notifikasi> notifikasiList = new ArrayList<>();
+
+        pengajuanBiayaDetailEntityList = pengajuanBiayaDetailDao.getTerimaRkPengajuanBiaya(branchId);
+
+        if(pengajuanBiayaDetailEntityList.size() > 0){
+            for(ItPengajuanBiayaDetailEntity pengajuanBiayaDetailEntity : pengajuanBiayaDetailEntityList){
+                Notifikasi notifikasi = new Notifikasi();
+                notifikasi.setRkId(pengajuanBiayaDetailEntity.getRkId());
                 notifikasi.setJmlApproval(String.valueOf(pengajuanBiayaDetailEntityList.size()));
                 notifikasiList.add(notifikasi);
             }

@@ -46,8 +46,47 @@ public class PengajuanBiaya extends BaseModel {
     private String stTanggalDari;
     private String stTanggalSelesai;
 
+    private boolean flagPosting = false;
+
     private boolean showBuatRk=true;
     private boolean showTerimaRk=false;
+
+    private String coaAjuanName;
+    private String coaTargetName;
+
+    private String branchIdUser;
+
+    public String getBranchIdUser() {
+        return branchIdUser;
+    }
+
+    public void setBranchIdUser(String branchIdUser) {
+        this.branchIdUser = branchIdUser;
+    }
+
+    public String getCoaAjuanName() {
+        return coaAjuanName;
+    }
+
+    public void setCoaAjuanName(String coaAjuanName) {
+        this.coaAjuanName = coaAjuanName;
+    }
+
+    public String getCoaTargetName() {
+        return coaTargetName;
+    }
+
+    public void setCoaTargetName(String coaTargetName) {
+        this.coaTargetName = coaTargetName;
+    }
+
+    public boolean isFlagPosting() {
+        return flagPosting;
+    }
+
+    public void setFlagPosting(boolean flagPosting) {
+        this.flagPosting = flagPosting;
+    }
 
     public String getKeteranganBatal() {
         return keteranganBatal;

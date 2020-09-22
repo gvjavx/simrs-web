@@ -556,6 +556,8 @@ public class CheckupController implements ModelDriven<Object> {
                 return listOfHeaderCheckup;
             case "getDetailHistoryPasien":
                 return listOfHeaderCheckup;
+            case "getListAntrian":
+                return listOfCheckup;
             default:
                 return model;
         }
@@ -1007,6 +1009,31 @@ public class CheckupController implements ModelDriven<Object> {
 
                     listOfHeaderCheckup.add(headerDetailCheckupMobile);
                 }
+            }
+        } else if(action.equalsIgnoreCase("getListAntrian")) {
+            List<HeaderCheckup> result = new ArrayList<>();
+
+            try{
+               result = checkupBoProxy.getListAntrian(branchId, idPoli);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupController.create] Error, " + e.getMessage());
+            }
+
+            if(result.size() > 0) {
+                for (HeaderCheckup item : result) {
+                    CheckupMobile checkupMobile = new CheckupMobile();
+                    checkupMobile.setIdPasien(item.getIdPasien());
+                    checkupMobile.setNamaPasien(item.getNama());
+                    checkupMobile.setDesa(item.getNamaDesa());
+                    checkupMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    checkupMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+                    checkupMobile.setBelumBayarUangMuka(item.getBelumBayarUangMuka());
+                    checkupMobile.setNoAntrian(item.getNoAntrian().toString());
+
+                    listOfCheckup.add(checkupMobile);
+                }
+
+
             }
         }
 

@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="buktiJKM" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="a49a14d5-e3a4-4699-826c-3b998a58d949">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.6500000000000004"/>
+	<property name="ireport.x" value="50"/>
+	<property name="ireport.y" value="840"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -40,7 +40,13 @@
 	<parameter name="reportParams.noSlipBank" class="java.lang.String"/>
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select * from it_akun_jurnal where no_jurnal = $P{noJurnal}]]>
+		<![CDATA[select
+	*
+from
+	it_akun_jurnal j LEFT JOIN
+	it_akun_pembayaran_utang_piutang up ON j.no_jurnal=up.no_jurnal
+where
+	j.no_jurnal = $P{noJurnal}]]>
 	</queryString>
 	<field name="no_jurnal" class="java.lang.String"/>
 	<field name="tipe_jurnal_id" class="java.lang.String"/>
@@ -48,7 +54,9 @@
 	<field name="sumber" class="java.lang.String"/>
 	<field name="sumber_dana_id" class="java.lang.String"/>
 	<field name="carry_over" class="java.lang.String"/>
-	<field name="mata_uang_id" class="java.lang.String"/>
+	<field name="mata_uang_id" class="java.lang.String">
+		<fieldDescription><![CDATA[Id Mata Uang]]></fieldDescription>
+	</field>
 	<field name="kurs" class="java.math.BigDecimal"/>
 	<field name="keterangan" class="java.lang.String"/>
 	<field name="flag" class="java.lang.String"/>
@@ -78,6 +86,24 @@
 	<field name="dpp_ditanggung" class="java.math.BigDecimal"/>
 	<field name="last_update_who" class="java.lang.String"/>
 	<field name="action" class="java.lang.String"/>
+	<field name="pengajuan_biaya_id" class="java.lang.String"/>
+	<field name="pembayaran_utang_piutang_id" class="java.lang.String"/>
+	<field name="tipe_transaksi" class="java.lang.String"/>
+	<field name="tanggal" class="java.sql.Date"/>
+	<field name="metode_bayar" class="java.lang.String"/>
+	<field name="bayar" class="java.math.BigDecimal"/>
+	<field name="no_slip_bank" class="java.lang.String"/>
+	<field name="registered_who" class="java.lang.String"/>
+	<field name="bank" class="java.lang.String"/>
+	<field name="tipe_pembayaran" class="java.lang.String"/>
+	<field name="approval_keuangan_flag" class="java.lang.String"/>
+	<field name="approval_keuangan_id" class="java.lang.String"/>
+	<field name="approval_keuangan_name" class="java.lang.String"/>
+	<field name="approval_keuangan_date" class="java.sql.Timestamp"/>
+	<field name="approval_kasub_keuangan_flag" class="java.lang.String"/>
+	<field name="approval_kasub_keuangan_id" class="java.lang.String"/>
+	<field name="approval_kasub_keuangan_name" class="java.lang.String"/>
+	<field name="approval_kasub_keuangan_date" class="java.sql.Timestamp"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -182,7 +208,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<reportElement key="line-1" x="-1" y="548" width="537" height="1" uuid="7d5f2fb2-bfc7-46ae-a4b5-3e62037ed526"/>
 			</line>
 			<staticText>
-				<reportElement key="staticText-1" x="1" y="565" width="65" height="15" uuid="f3fd8c48-88f7-4066-8bb4-1db1426ffc21"/>
+				<reportElement key="staticText-1" x="214" y="564" width="93" height="15" uuid="f3fd8c48-88f7-4066-8bb4-1db1426ffc21"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -195,7 +221,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Pembuat]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="70" y="565" width="65" height="15" uuid="9a079c07-db72-461c-95e0-5af48cbccfbe"/>
+				<reportElement key="staticText-1" x="321" y="564" width="93" height="15" uuid="9a079c07-db72-461c-95e0-5af48cbccfbe"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -208,20 +234,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Diperiksa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="139" y="565" width="65" height="15" uuid="76b1196a-9431-414a-a1fe-97aa5c8e3b36"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Diketahui]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-1" x="209" y="565" width="65" height="15" uuid="98123fdd-a351-42b2-870f-27bf65c6a9c8"/>
+				<reportElement key="staticText-1" x="430" y="564" width="93" height="15" uuid="98123fdd-a351-42b2-870f-27bf65c6a9c8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -233,45 +246,6 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<text><![CDATA[Disetujui]]></text>
 			</staticText>
-			<staticText>
-				<reportElement key="staticText-1" x="279" y="565" width="65" height="15" uuid="db22dad8-d292-4477-96e6-33c65b512ff8"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Diterima]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-1" x="349" y="565" width="65" height="15" uuid="cb8b936b-5c96-478c-82d5-ba25b4a7c135"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Dibukukan]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-1" x="445" y="565" width="65" height="15" uuid="b472d498-22b2-486b-aee9-bab92314a5cf"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Penyetor]]></text>
-			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="134" y="15" width="225" height="20" uuid="2ae9b0e8-3fbe-465e-876b-d126a4bfeac6"/>
 				<textElement textAlignment="Center">
@@ -280,25 +254,13 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$P{reportParams.reportName}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="448" y="649" width="65" height="1" uuid="32807995-71f3-4a6b-9d43-1bb7fa81218d"/>
+				<reportElement x="431" y="648" width="93" height="1" uuid="5efb8dbd-fc9f-4827-8e9e-c649f45a82f2"/>
 			</line>
 			<line>
-				<reportElement x="349" y="649" width="65" height="1" uuid="addc2216-dd64-4a4f-a926-12bafee9bfb7"/>
+				<reportElement x="321" y="648" width="93" height="1" uuid="18ca2de9-9f21-4cc1-9071-416fd80e1619"/>
 			</line>
 			<line>
-				<reportElement x="279" y="649" width="65" height="1" uuid="33370513-adab-4774-a006-c306ca6b3210"/>
-			</line>
-			<line>
-				<reportElement x="210" y="649" width="65" height="1" uuid="5efb8dbd-fc9f-4827-8e9e-c649f45a82f2"/>
-			</line>
-			<line>
-				<reportElement x="139" y="649" width="65" height="1" uuid="d6a56b6e-e0c5-4a3c-8c32-98b8643f306e"/>
-			</line>
-			<line>
-				<reportElement x="70" y="649" width="65" height="1" uuid="18ca2de9-9f21-4cc1-9071-416fd80e1619"/>
-			</line>
-			<line>
-				<reportElement x="1" y="649" width="65" height="1" uuid="3123d373-acaf-45a8-b4d1-30cd4be23281"/>
+				<reportElement x="214" y="648" width="93" height="1" uuid="3123d373-acaf-45a8-b4d1-30cd4be23281"/>
 			</line>
 			<line>
 				<reportElement key="line-1" x="0" y="242" width="537" height="1" uuid="886ef042-676b-4482-b0cd-8b5e267e3ef4"/>
@@ -817,6 +779,27 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tanggal_jurnal}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="234" y="585" width="55" height="55" uuid="6bcaa07c-46af-4cb6-9398-1082dd2d9dcf"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+$F{approval_keuangan_name},
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="339" y="585" width="55" height="55" uuid="ed2e444f-3e56-45a3-8160-ce9a20e3f762"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+$F{approval_kasub_keuangan_name},
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="445" y="585" width="55" height="55" uuid="86cf7913-0b13-4e1b-be46-d63509219641"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+$F{registered_user},
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.6105100000000048"/>
-	<property name="ireport.x" value="18"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -58,7 +58,6 @@
 	<field name="rk_dikirim" class="java.lang.String"/>
 	<field name="flag_batal" class="java.lang.String"/>
 	<field name="keterangan_batal" class="java.lang.String"/>
-	<field name="tanggal_realisasi" class="java.sql.Date"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -114,9 +113,7 @@
 				<reportElement x="512" y="-18" width="55" height="55" uuid="820d4c33-af22-45a6-8d53-c256a2d85165"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
 new com.google.zxing.qrcode.QRCodeWriter().encode(
-"Nama Report         : " + $P{reportTitle}+"\n"+
-"Pengajuan Biaya Id  : " + $P{pengajuanBiayaDetailId}+"\n"+
-"Unit                : " + $P{kota},
+$P{pengajuanBiayaDetailId},
 com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">

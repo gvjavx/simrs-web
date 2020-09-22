@@ -85,8 +85,17 @@
             <result name="init_add_koreksi">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/addKoreksi.jsp</result>
             <result name="success_save_add_koreksi">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/addKoreksi.jsp</result>
 
+            <result name="input_koreksi_pengajuan">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/SearchKoreksiPengajuan.jsp</result>
+            <result name="success_koreksi_pengajuan">/pages/com/neurix/akuntansi/transaksi/pembayaranUtangPiutang/SearchKoreksiPengajuan.jsp</result>
+
             <result name="print_report_bukti_posting" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/bukti.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+            <result name="print_report_bukti_posting_masuk" type="jasper">
+                <param name="location">/pages/report/com/neurix/akuntansi/buktiKasMasuk.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>

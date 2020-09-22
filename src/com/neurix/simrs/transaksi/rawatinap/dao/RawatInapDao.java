@@ -355,8 +355,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             String dateTo = "";
             String branchId = "%";
             String isKasir = "";
-
             String jenisPasien = "";
+
             if (!"".equalsIgnoreCase(type)) {
                 jenisPasien = "AND b.id_jenis_periksa_pasien = '" + type + "' \n";
             } else {
@@ -408,9 +408,13 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             }
 
             if ("Y".equalsIgnoreCase(bean.getIsKasir())) {
-                isKasir = "AND b.status_bayar IS NULL \n" +
-                        "AND b.flag_close_traksaksi = 'Y' \n" +
-                        "AND b.flag_cover = 'Y' \n";
+                if (bean.getStatusBayar() != null && !"".equalsIgnoreCase(bean.getStatusBayar())) {
+                    isKasir = "AND b.status_bayar = '" + bean.getStatusBayar() + "' \n";
+                } else {
+                    isKasir = "AND b.status_bayar IS NULL \n" +
+                            "AND b.flag_close_traksaksi = 'Y' \n" +
+                            "AND b.flag_cover = 'Y' \n";
+                }
             }
 
             String forSisaRekanan = "";

@@ -14,9 +14,11 @@ import com.neurix.simrs.bpjs.vclaim.model.RujukanResponse;
 import com.neurix.simrs.mobileapi.antrian.model.Antrian;
 import com.neurix.simrs.mobileapi.model.ResepOnlineMobile;
 import com.neurix.simrs.mobileapi.model.TelemedicineMobile;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsVideoRmEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.model.StatusAntrianTelemedic;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
@@ -111,6 +113,44 @@ public class TelemedicineController implements ModelDriven<Object> {
 
     private String batalEObat;
     private String idRekening;
+
+    private String username;
+    private String idDetailCheckup;
+
+    private String path1;
+    private String path2;
+
+    public String getPath1() {
+        return path1;
+    }
+
+    public void setPath1(String path1) {
+        this.path1 = path1;
+    }
+
+    public String getPath2() {
+        return path2;
+    }
+
+    public void setPath2(String path2) {
+        this.path2 = path2;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getIdRekening() {
         return idRekening;
@@ -460,6 +500,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setId(idTele);
             bean.setStatus(this.status);
 
+
             try {
                 telemedicBoProxy.saveEdit(bean, branchId, "");
 
@@ -758,6 +799,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setIdPelayanan(idPelayanan);
             bean.setFlag("Y");
             bean.setIsMobile("Y");
+            bean.setCreatedDate(now);
 
             List<AntrianTelemedic> result = new ArrayList<>();
 
@@ -1122,6 +1164,8 @@ public class TelemedicineController implements ModelDriven<Object> {
                 List<NotifikasiFcm> fcm = notifikasiFcmBoProxy.getByCriteria(notif);
                 FirebasePushNotif.sendNotificationFirebase(fcm.get(0).getTokenFcm(),"Resep Online", "Silahkan buka aplikasi untuk melakukan pembayaran resep", "BAYAR_RESEP", fcm.get(0).getOs(), null);
 
+                telemedicBoProxy.createNotifikasiAdmin(idTele, "tele", branchId, username, now, username + " telah  membuat resep");
+
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
             }
@@ -1271,6 +1315,9 @@ public class TelemedicineController implements ModelDriven<Object> {
             } catch (GeneralBOException e) {
                 logger.error("[TelemedicineController.insertResep] Error, " + e.getMessage());
             }
+
+            telemedicBoProxy.createNotifikasiAdmin(idTele, "tele", branchId, username, now, username + " telah approve struk asuransi   ");
+
         } else if (action.equalsIgnoreCase("createStrukAsuransi")) {
 
             List<ItSimrsAntrianTelemedicEntity> result = new ArrayList<>();
@@ -1375,8 +1422,13 @@ public class TelemedicineController implements ModelDriven<Object> {
             }
 
             model.setMessage(response.getStatus());
+        } else if (action.equalsIgnoreCase("cobaGabung")) {
+            try {
+                telemedicBoProxy.cobaGabung(path1, path2);
+            } catch (GeneralBOException e){
+                logger.error("[TelemedicineController.approveAsuransi] Error, " + e.getMessage());
+            }
         }
-
 
         logger.info("[TelemedicineController.create] end process POST / <<<");
         return new DefaultHttpHeaders("create").disableCaching();

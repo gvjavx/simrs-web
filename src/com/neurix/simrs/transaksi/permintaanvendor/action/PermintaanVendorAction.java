@@ -905,7 +905,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             } else {
 
                 Map mapPajakObat = new HashMap();
-                mapPajakObat.put("bukti", noDo);
+                mapPajakObat.put("bukti", noFaktur);
                 mapPajakObat.put("nilai", ppn);
                 mapPajakObat.put("master_id", requestVendor.getIdVendor());
 

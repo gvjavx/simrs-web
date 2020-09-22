@@ -137,7 +137,7 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                     "WHERE a.branch_id LIKE :branchId \n" +
                     "AND a.no_checkup LIKE :noCheckup \n" +
                     "AND b.id_detail_checkup LIKE :idDetail \n" + jenis +
-                    "ORDER BY c.keterangan\n";
+                    "ORDER BY c.tanggal_tindakan ASC\n";
 
             List<Object[]> result = new ArrayList<>();
 
@@ -194,7 +194,8 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                     "FROM it_simrs_riwayat_tindakan a\n" +
                     "WHERE a.id_detail_checkup = :idDet\n" +
                     "AND flag_update_klaim = 'Y'\n" +
-                    "ORDER BY a.keterangan, a.tanggal_tindakan ASC";
+                    "AND a.jenis_pasien = 'bpjs' \n" +
+                    "ORDER BY a.tanggal_tindakan ASC";
 
             List<Object[]> result = new ArrayList<>();
 

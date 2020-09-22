@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.pengajuanBiaya.model.ItAkunPengajuanBiayaRkEntity">
+        <table name="it_akun_pengajuan_biaya_rk" schema="public"/>
+        <attributes>
+            <id name="pengajuanBiayaRkId">
+                <column name="pengajuan_biaya_rk_id"/>
+            </id>
+            <basic name="noTransaksi">
+                <column name="no_transaksi"/>
+            </basic>
+            <basic name="masterId">
+                <column name="master_id"/>
+            </basic>
+            <basic name="jumlah">
+                <column name="jumlah"/>
+            </basic>
+            <basic name="status">
+                <column name="status"/>
+            </basic>
+            <basic name="tglInvoice">
+                <column name="jatuh_tempo"/>
+            </basic>
+            <basic name="rkId">
+                <column name="rk_id"/>
+            </basic>
+            <basic name="approveKeuFlag">
+                <column name="approve_keu_flag"/>
+            </basic>
+            <basic name="aproveKeuId">
+                <column name="aprove_keu_id"/>
+            </basic>
+            <basic name="approveKeuDate">
+                <column name="approve_keu_date"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="branchId">
+                <column name="branch_id"/>
+            </basic>
+            <basic name="tanggalPengajuan">
+                <column name="tanggal_pengajuan"/>
+            </basic>
+            <basic name="noFaktur">
+                <column name="no_faktur"/>
+            </basic>
+            <basic name="noInvoice">
+                <column name="no_invoice"/>
+            </basic>
+            <basic name="tglFaktur">
+                <column name="tgl_faktur"/>
+            </basic>
+            <basic name="tglDo">
+                <column name="tgl_do"/>
+            </basic>
+            <basic name="metodeBayar">
+                <column name="metode_bayar"/>
+            </basic>
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

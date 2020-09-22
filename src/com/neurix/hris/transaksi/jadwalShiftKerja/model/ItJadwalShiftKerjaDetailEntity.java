@@ -21,6 +21,10 @@ public class ItJadwalShiftKerjaDetailEntity implements Serializable {
     private String profesiName;
     private String profesiId;
     private String namaPegawai;
+    private String onCall;
+    private String flagPanggil;
+    private String panggilWho;
+    private Timestamp panggilDate;
 
     private Timestamp createdDate;
     private String flag;
@@ -28,6 +32,38 @@ public class ItJadwalShiftKerjaDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getFlagPanggil() {
+        return flagPanggil;
+    }
+
+    public void setFlagPanggil(String flagPanggil) {
+        this.flagPanggil = flagPanggil;
+    }
+
+    public String getPanggilWho() {
+        return panggilWho;
+    }
+
+    public void setPanggilWho(String panggilWho) {
+        this.panggilWho = panggilWho;
+    }
+
+    public Timestamp getPanggilDate() {
+        return panggilDate;
+    }
+
+    public void setPanggilDate(Timestamp panggilDate) {
+        this.panggilDate = panggilDate;
+    }
+
+    public String getOnCall() {
+        return onCall;
+    }
+
+    public void setOnCall(String onCall) {
+        this.onCall = onCall;
+    }
 
     public String getProfesiId() {
         return profesiId;

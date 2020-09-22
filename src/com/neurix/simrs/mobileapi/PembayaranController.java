@@ -61,6 +61,24 @@ public class PembayaranController implements ModelDriven<Object> {
     private String lon;
 
     private String idRekening;
+    private String username;
+    private String roleId;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
 
     public RekeningTelemedicBo getRekeningTelemedicBoProxy() {
         return rekeningTelemedicBoProxy;
@@ -311,7 +329,7 @@ public class PembayaranController implements ModelDriven<Object> {
                 logger.error("[PembayaranController.create] Error, " + e.getMessage());
             }
 
-
+            telemedicBoProxy.createNotifikasiAdmin(idTele, "tele", branchId, username, now, username + "telah upload bukti transfer " + keterangan);
         }
 
         if (action.equalsIgnoreCase("saveEditPembayaranResep")) {

@@ -240,7 +240,11 @@
                                             <display:column property="updateGolonganId" sortable="true" title="ID" />
                                             <display:column property="periode" sortable="true" title="Periode"  />
                                             <display:column property="branchName" sortable="true" title="Unit"  />
-
+                                            <display:setProperty name="paging.banner.item_name">UpdateGolongan</display:setProperty>
+                                            <display:setProperty name="paging.banner.items_name">UpdateGolongan</display:setProperty>
+                                            <display:setProperty name="export.excel.filename">UpdateGolongan.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">UpdateGolongan.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">UpdateGolongan.pdf</display:setProperty>
                                         </display:table>
                                     </td>
                                 </tr>

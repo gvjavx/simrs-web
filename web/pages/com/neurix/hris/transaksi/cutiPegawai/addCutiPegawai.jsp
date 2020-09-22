@@ -56,11 +56,24 @@
             var tanggalAkhir  = document.getElementById("tgl1").value;
             var sisaCuti  = document.getElementById("sisaCuti").value;
             var lamaCuti  = document.getElementById("lamaCuti").value;
+            var alamatCuti = document.getElementById("alamatCuti12").value;
             var ket="";
             var cek="";
+            var cekth="";
             var intSisaCuti = parseInt(sisaCuti);
             var intLamaCuti = parseInt(lamaCuti);
             var todayDate = new Date().toISOString().slice(0,10);
+
+            var startdate = $('#tgl2').datepicker('getDate');
+            var enddate = $('#tgl1').datepicker('getDate');
+            var d = new Date(startdate),
+                    year = '' + (d.getFullYear());
+            var d = new Date(enddate),
+                    year1 = '' + (d.getFullYear());
+
+            console.log("Tahun Awal "+year);
+            console.log("Tahun Akhir "+year1);
+
             LemburAction.testTanggal(tanggalAwal,tanggalAkhir,nipid, function (data) {
                 if (data != "") {
                     ket=data;
@@ -71,6 +84,11 @@
                   cek = data;
               }
             });
+            CutiPegawaiAction.cekTahunCuti(tanggalAwal,tanggalAkhir,nipid,function(data){
+                if (data!=""){
+                    cekth = data;
+                }
+            });
             if (intSisaCuti - intLamaCuti < 0){
                 var sisaCutiMsg ='Maaf, Sisa cuti yang anda ajukan sudah habis';
                 document.getElementById('errorMessageAddCuti').innerHTML = sisaCutiMsg;
@@ -79,15 +97,40 @@
 
             }
             else{
-                if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="") {
-                    if (confirm('Do you want to save this record?')) {
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
+                if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="" && alamatCuti != "") {
+                    if (year == year1){
 
-                    } else {
-                        // Cancel Submit comes with 1.8.0
+                        if (cekth == ''){
+                            if (confirm('Do you want to save this record?')) {
+                                event.originalEvent.options.submit = true;
+                                $.publish('showDialog');
+
+                            } else {
+                                // Cancel Submit comes with 1.8.0
+                                event.originalEvent.options.submit = false;
+                            }
+                        }else {
+                            if (confirm('Apakah ingin dilanjutkan? Cuti yang diajukan tahun depan dapat mereset cuti tahunan anda ke tahun berikutnya!!!')) {
+                                event.originalEvent.options.submit = true;
+                                $.publish('showDialog');
+
+                            } else {
+                                // Cancel Submit comes with 1.8.0
+                                event.originalEvent.options.submit = false;
+                            }
+                        }
+
+                    }else {
                         event.originalEvent.options.submit = false;
+                        var msg = "";
+
+                        if (year != year1) {
+                            msg += 'Tidak melakukan cuti normal di tahun yang berbeda<br/>';
+                        }
+                        document.getElementById('errorMessageAddCuti').innerHTML = msg;
+                        $.publish('showErrorValidationDialog');
                     }
+
                 } else {
                     event.originalEvent.options.submit = false;
                     var msg = "";
@@ -105,6 +148,9 @@
                     }
                     if ( tanggalAkhir == '') {
                         msg += 'Field <strong>Tanggal Akhir</strong> is required.' + '<br/>';
+                    }
+                    if (alamatCuti == ''){
+                        msg += 'Field <strong>Alamat Cuti</strong> is required.' + '<br/>';
                     }
                     if (ket != "") {
                         $('#tgl1').val("");
@@ -190,9 +236,10 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
-
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
+            console.log(event);
+            console.log(data);
+            document.getElementById('errorMessageCuti').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            $.publish('showErrorDialogCuti');
         });
 
         function cancelBtn() {
@@ -619,15 +666,15 @@
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog_cuti" openTopics="showErrorDialogCuti" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog_cuti').dialog('close'); }
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessageCuti"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>
@@ -835,6 +882,12 @@
                 }
                 $('#lamaCuti').val(days);
             }
+        }
+
+        if (enddate<startdate){
+            alert ('Tanggal yang dipilih salah');
+            $('#tgl2').val("");
+            $('#tgl1').val("");
         }
     });
 </script>

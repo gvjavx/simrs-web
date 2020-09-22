@@ -17,9 +17,8 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var nameTrans = document.getElementById("transNameAdd").value;
-            var tipePembayaran = document.getElementById("tipePembayaranAdd").value;
 
-            if (nameTrans != '' && tipePembayaran) {
+            if (nameTrans != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -36,10 +35,6 @@
                 if (nameTrans == '') {
                     msg += 'Field <strong>Nama Trans</strong> is required.' + '<br/>';
                 }
-                if (tipePembayaran == '') {
-                    msg += 'Field <strong>Tipe Pembayaran</strong> is required.' + '<br/>';
-                }
-
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
@@ -98,8 +93,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'dokter':'Dokter'}" id="masterAdd" name="trans.master"
-                                          headerKey="vendor" headerValue="Vendor" cssClass="form-control" />
+                                <s:select list="#{'vendor':'vendor','dokter':'Dokter','pasien':'Pasien','karyawan':'Karyawan','pengajuan_biaya':'Pengajuan Biaya'}" id="masterAdd" name="trans.master"
+                                          headerKey="" headerValue="" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>
@@ -111,22 +106,14 @@
                             <table>
                                 <s:select list="#{'KM':'Kas Masuk', 'KK' : 'Kas Keluar', 'KR' : 'Koreksi'}"
                                           id="tipePembayaranAdd" name="trans.tipePembayaran"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Sumber Baru ?</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'N':'Tidak'}" id="flagSumberBaruAdd" name="trans.flagSumberBaru"
-                                          headerKey="Y" headerValue="Iya" cssClass="form-control" />
+                                          headerKey="" headerValue="" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                 </table>
+                <br>
+                <span>NB: Kosongkan tipe pembayaran jika transaksi billing</span>
+                <br>
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

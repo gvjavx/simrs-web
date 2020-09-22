@@ -1242,14 +1242,19 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         Map mapPajakObat = new HashMap();
         String invoiceNumber = billingSystemBo.createInvoiceNumber(type, branchId);
 
-        if ("tunai".equalsIgnoreCase(jenis)){
+        if ("tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis)){
 
             mapJurnal.put("pendapatan_rawat_jalan_umum", listOfMapTindakanUmum);
 
             if ("JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)) {
 
                 transId = "12";
-                ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai tanpa Obat ";
+
+                if("bpjs".equalsIgnoreCase(jenis)){
+                    ketTerangan = "Closing Pasien Rawat Jalan Selisih Tidak dicover BPJS";
+                }else{
+                    ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai tanpa Obat ";
+                }
             }
             if ("JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)) {
 
@@ -1259,7 +1264,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 mapJurnal.put("ppn_keluaran", mapPajakObat);
 
                 transId = "15";
-                ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai dengan Obat ";
+                if("bpjs".equalsIgnoreCase(jenis)){
+                    ketTerangan = "Closing Pasien Rawat Jalan Selisih Tidak dicover BPJS";
+                }else{
+                    ketTerangan = "Closing Pasien Rawat Jalan Umum Tunai dengan Obat ";
+                }
             }
             if ("JRI".equalsIgnoreCase(type)) {
 
@@ -1270,7 +1279,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     ketTerangan = "Closing Pasien Rawat Inap Umum Tunai Terhadap Transitoris. ";
                 } else {
                     transId = "22";
-                    ketTerangan = "Closing Pasien Rawat Inap Umum Tunai ";
+                    if("bpjs".equalsIgnoreCase(jenis)){
+                        ketTerangan = "Closing Pasien Rawat Inap Selisih Tidak dicover BPJS";
+                    }else{
+                        ketTerangan = "Closing Pasien Rawat Inap Umum Tunai ";
+                    }
                 }
             }
         }
@@ -1279,7 +1292,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         // jika piutang
         String invNumber = "";
-        if ("non_tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis) || "asuransi".equalsIgnoreCase(jenis) || "paket_individu".equalsIgnoreCase(jenis)) {
+        if ("non_tunai".equalsIgnoreCase(jenis) || "asuransi".equalsIgnoreCase(jenis) || "paket_individu".equalsIgnoreCase(jenis)) {
 
             if (!"asuransi".equalsIgnoreCase(jenis)){
                 if (detailCheckupEntity != null && detailCheckupEntity.getInvoice() != null){
@@ -1296,10 +1309,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             if ("bpjs".equalsIgnoreCase(jenis)) {
 
                 //** BPJS **//
-
-                mapPiutang.put("bukti", invNumber);
-                mapPiutang.put("nilai", uangPiutang);
-                mapPiutang.put("master_id", masterId);
+//                mapPiutang.put("bukti", invNumber);
+//                mapPiutang.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "umum", "", "").add(ppnObat).add(allTindakanTransUmum).subtract(uangMuka));
+//                mapPiutang.put("master_id", masterId);
 //                mapPiutang.put("pasien_id", idPasien);
 
                 transId = "10";

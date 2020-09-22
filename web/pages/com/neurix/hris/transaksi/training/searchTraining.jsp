@@ -272,6 +272,11 @@
                                                 <display:column property="stTanggalStart" sortable="true" title="Tanggal Mulai"  />
                                                 <display:column property="stTanggalEnd" sortable="true" title="Tanggal Selesai"  />
                                                 <display:column property="iconApprove" sortable="true" title="Status Close"  />
+                                                <display:setProperty name="paging.banner.item_name">Training</display:setProperty>
+                                                <display:setProperty name="paging.banner.items_name">Training</display:setProperty>
+                                                <display:setProperty name="export.excel.filename">Training.xls</display:setProperty>
+                                                <display:setProperty name="export.csv.filename">Training.csv</display:setProperty>
+                                                <display:setProperty name="export.pdf.filename">Training.pdf</display:setProperty>
                                             </display:table>
                                         </td>
                                     </tr>

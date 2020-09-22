@@ -875,9 +875,8 @@
                                                             $('#btn-save').show();
                                                             $('#warning_pasien').hide();
                                                             $('#msg_pasien').text("");
+                                                            alertObatKronis(selectedObj.id);
                                                         }
-
-                                                        alertObatKronis(selectedObj.id);
 
                                                         $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
                                                         return selectedObj.id;
@@ -1318,7 +1317,7 @@
                                         <div class="form-group" id="form_no_kartu">
                                             <label class="col-md-4" style="margin-top: 10px">No Kartu</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="no_kartu" name="headerCheckup.noKartuAsuransi" cssStyle="margin-top: 7px" cssClass="form-control" onkeypress="var warn =$('#war_no_asuransi').is(':visible'); if (warn){$('#con_no_asuransi').show().fadeOut(3000);$('#war_no_asuransi').hide()}"></s:textfield>
+                                                <s:textfield autocomplete="off" id="no_kartu" name="headerCheckup.noKartuAsuransi" cssStyle="margin-top: 7px" cssClass="form-control" onkeypress="var warn =$('#war_no_asuransi').is(':visible'); if (warn){$('#con_no_asuransi').show().fadeOut(3000);$('#war_no_asuransi').hide()}"></s:textfield>
                                                 <span style="color: red; display: none" id="war_no_asuransi"><i
                                                         class="fa fa-times"></i> required</span>
                                                 <span style="color: green; display: none" id="con_no_asuransi"><i
@@ -2475,6 +2474,7 @@
                     option = option;
                 }
             });
+            $('#poli').val(idPelayanan).trigger('change');
         }
 
         var idDokter = '<s:property value="headerCheckup.idDokter"></s:property>';

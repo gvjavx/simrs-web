@@ -69,6 +69,7 @@
             var statusPegawai       = document.getElementById("statusPegawai1").value;
             var flag                = document.getElementById("flagAktif").value;
             var masaGolongan        = document.getElementById("poinLebih").value;
+            var shift               = document.getElementById("shift").value;
 
             if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '') {
                 if(flag == 'N'){
@@ -173,22 +174,49 @@
         });
 
         $.subscribe('beforeProcessSaveStudy', function (event, data){
-            if (confirm('Do you want to save this record?')){
-                event.originalEvent.options.submit = true;
-                $('#modal-edit').modal('hide');
-                $('#myFormDocument')[0].reset();
-                alert('Record has been Saved successfully.');
+            var studyName = document.getElementById("studyName").value;
+            var programStudy = document.getElementById("pendidikanProgramStudi").value;
+            var tahunAwal = document.getElementById("studyTahunAwal").value;
+            var tahunAkhir = document.getElementById("studyTahunAkhir").value;
+            dwr.engine.setAsync(false);
+            if( studyName != ''|| programStudy != ''|| tahunAwal != ''|| tahunAkhir !=''){
+                if (confirm('Do you want to save this record?')){
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
+                    $('#modal-edit').modal('hide');
+                    $('#myFormDocument')[0].reset();
+                    alert('Record has been Saved successfully.');
 //                loadSessionStudy();
 
-                <s:if test="isAdd()">
+                    <s:if test="isAdd()">
                     loadSessionStudy();
-                </s:if>
-                <s:else>
+                    </s:if>
+                    <s:else>
                     var nip = document.getElementById("nip1").value;
                     loadStudy(nip);
-                </s:else>
+                    </s:else>
+                } else{
+                    event.originalEvent.options.submit = false;
+                }
             } else{
                 event.originalEvent.options.submit = false;
+                var msg = "";
+                if (studyName == '') {
+                    msg += 'Field <strong>Study Name</strong> is required.' + '<br/>';
+                }
+                if (programStudy == '') {
+                    msg += 'Field <strong>Program Studi</strong> is required.' + '<br/>';
+                }
+                if (tahunAwal == '') {
+                    msg += 'Field <strong>Tahun Awal</strong> is required.' + '<br/>';
+                }
+                if (tahunAkhir == '') {
+                    msg += 'Field <strong>Tahun Akhir</strong> is required.' + '<br/>';
+                }
+                document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                $("#modal-edit").modal('hide');
+                $.publish('showErrorValidationDialog');
             }
         });
 
@@ -1066,9 +1094,8 @@
                                                           listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:elseif>
                                             <s:else>
-                                                <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan" disabled="true"
+                                                <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
                                                           listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                <s:hidden id="golongan1" name="biodata.golongan" />
                                             </s:else>
 
                                         </table>
@@ -1140,12 +1167,14 @@
                                             <s:if test="isDelete()">
                                                 <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
                                                           id="danaPensiun" name="biodata.danaPensiun" disabled="true"
-                                                          listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
+                                                          listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                <s:hidden id="danaPensiunHid" name="biodata.danaPensiun"/>
                                             </s:if>
                                             <s:else>
                                                 <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
                                                           id="danaPensiun" name="biodata.danaPensiun" listKey="danaPensiunId"
                                                           listValue="danaPensiun" disabled="true" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                <s:hidden id="danaPensiunHid" name="biodata.danaPensiun"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1320,6 +1349,25 @@
                                                 <s:select list="#comboPosition.listOfComboPosition" id="positionPltId" name="biodata.positionPltId"
                                                           listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
                                             </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Shift * :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:select list="#{'Y':'Y'}" id="shift" name="biodata.shift" disabled="true"
+                                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:select list="#{'Y':'Y'}" id="shift" name="biodata.shift"
+                                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                                            </s:else>
+
                                         </table>
                                     </td>
                                 </tr>
@@ -1886,111 +1934,111 @@
 </body>
 
 
-<div id="modal-edit-study" class="modal fade" role="dialog">
-    <div class="modal-dialog" style="width: 450px">
+<%--<div id="modal-edit-study" class="modal fade" role="dialog">--%>
+    <%--<div class="modal-dialog" style="width: 450px">--%>
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Edit Study</h4>
-            </div>
-            <div class="modal-body">
-                <s:url id="urlProcess" namespace="/study" action="editStudy_study"
-                       includeContext="false"/>
-                <s:form id="myFormDocument1" enctype="multipart/form-data" method="post" action="%{urlProcess}"
-                        theme="simple" cssClass="form-horizontal">
-                    <s:hidden name="addOrEdit"/>
-                    <s:hidden id="add" name="add"/>
-                    <s:hidden name="delete"/>
+        <%--<!-- Modal content-->--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header">--%>
+                <%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+                <%--<h4 class="modal-title">Edit Study</h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body">--%>
+                <%--<s:url id="urlProcess" namespace="/study" action="editStudy_study"--%>
+                       <%--includeContext="false"/>--%>
+                <%--<s:form id="myFormDocument1" enctype="multipart/form-data" method="post" action="%{urlProcess}"--%>
+                        <%--theme="simple" cssClass="form-horizontal">--%>
+                    <%--<s:hidden name="addOrEdit"/>--%>
+                    <%--<s:hidden id="add" name="add"/>--%>
+                    <%--<s:hidden name="delete"/>--%>
 
-                    <s:if test="isAddOrEdit()">
-                    <div style="display: none" class="form-group">
-                        <label class="control-label col-sm-3" >Id : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyId" name="study.studyId">
-                        </div>
-                    </div>
+                    <%--<s:if test="isAddOrEdit()">--%>
+                    <%--<div style="display: none" class="form-group">--%>
+                        <%--<label class="control-label col-sm-3" >Id : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="studyId" name="study.studyId">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="gender">Type Study :</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" id="studyTypeStudy" name="study.typeStudy">
-                                <option value="SD">SD</option>
-                                <option value="SMP">SMP</option>
-                                <option value="SMA">SMA</option>
-                                <option value="D1">Diploma D1</option>
-                                <option value="D2">Diploma D2</option>
-                                <option value="D3">Diploma D3</option>
-                                <option value="S1">Sarjana (S1)</option>
-                                <option value="S2">Sarjana (S2)</option>
-                                <option value="S3">Sarjana (S3)</option>
-                            </select>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" for="gender">Type Study :</label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<select class="form-control" id="studyTypeStudy" name="study.typeStudy">--%>
+                                <%--<option value="SD">SD</option>--%>
+                                <%--<option value="SMP">SMP</option>--%>
+                                <%--<option value="SMA">SMA</option>--%>
+                                <%--<option value="D1">Diploma D1</option>--%>
+                                <%--<option value="D2">Diploma D2</option>--%>
+                                <%--<option value="D3">Diploma D3</option>--%>
+                                <%--<option value="S1">Sarjana (S1)</option>--%>
+                                <%--<option value="S2">Sarjana (S2)</option>--%>
+                                <%--<option value="S3">Sarjana (S3)</option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Study Name : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyName" name="study.studyName">
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Study Name : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="studyName" name="study.studyName">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="gender">Fakultas :</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" id="studyFakultas1" name="study.studyFakultas" >
-                            </select>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" for="gender">Fakultas :</label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<select class="form-control" id="studyFakultas1" name="study.studyFakultas" >--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Program Studi : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Program Studi : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Tahun Awal : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Tahun Awal : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Tahun Lulus : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Tahun Lulus : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4">Ijazah (Jpeg) : </label>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4">Ijazah (Jpeg) : </label>--%>
 
-                        <div class="col-sm-8">
-                            <input type="file" id="file" class="form-control" name="fileUpload"/>
-                            <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
-                                   name="study.uploadFile" readonly />
-                        </div>
-                    </div>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="file" id="file" class="form-control" name="fileUpload"/>--%>
+                            <%--<input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"--%>
+                                   <%--name="study.uploadFile" readonly />--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="modal-footer">
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="myFormDocument1"
-                                   id="saveDocument1" name="save" onBeforeTopics="beforeProcessSaveStudy1"
-                                   onCompleteTopics="closeDialog,successDialogDocument1"
-                                   onSuccessTopics="successDialogDocument1" onErrorTopics="errorDialog">
-                            <i class="fa fa-check"></i>
-                            Save
-                        </sj:submit>
-                        <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
-                    </div>
-                    </s:if>
-                </s:form>
-            </div>
-        </div>
-    </div>
-</div>
+                    <%--<div class="modal-footer">--%>
+                        <%--<sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="myFormDocument1"--%>
+                                   <%--id="saveDocument1" name="save" onBeforeTopics="beforeProcessSaveStudy1"--%>
+                                   <%--onCompleteTopics="closeDialog,successDialogDocument1"--%>
+                                   <%--onSuccessTopics="successDialogDocument1" onErrorTopics="errorDialog">--%>
+                            <%--<i class="fa fa-check"></i>--%>
+                            <%--Save--%>
+                        <%--</sj:submit>--%>
+                        <%--<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>--%>
+                    <%--</div>--%>
+                    <%--</s:if>--%>
+                <%--</s:form>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
 
 
 <!-- Modal Edit-->
@@ -2160,7 +2208,7 @@
                             <s:action id="initComboBranch2" namespace="/admin/branch"
                                       name="initComboBranch2_branch"/>
                             <s:select list="#initComboBranch2.listOfComboBranch" id="branchIdRiwayatKerja"
-                                      name="biodata.branchId" onchange="listDivisiHistory();cekPerusahaanLain()"
+                                      name="biodata.branchId" onchange="listDivisiHistory(),cekPerusahaanLain();"
                                       listKey="branchId" listValue="branchName" headerKey=""
                                       headerValue="[Select one]" cssClass="form-control"/>
                         </div>
@@ -3089,8 +3137,7 @@
         if (id == "TP01") {
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
-            $('#point').removeAttr('disabled');
-            $('#danaPensiun').removeAttr('disabled');
+            // $('#danaPensiun').removeAttr('disabled');
 //            $('#masaTanam').prop('disabled', 'true');
             /*$('#statusGiling').prop('disabled', 'true');
             $('#strukturGaji').empty();

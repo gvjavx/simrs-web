@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.paketperiksa.action;
 
+import com.neurix.akuntansi.master.master.model.Master;
 import com.neurix.akuntansi.master.masterVendor.bo.MasterVendorBo;
 import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.action.BaseTransactionAction;
@@ -65,13 +66,11 @@ public class PaketPeriksaAction extends BaseTransactionAction {
     }
 
     public List<MasterVendor> getListMasterVendor(){
+        List<MasterVendor> res = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        MasterVendorBo masterVendorBo = (MasterVendorBo) ctx.getBean("masterVendorBoProxy");
-
-        MasterVendor masterVendor = new MasterVendor();
-        masterVendor.setFlag("Y");
-
-        return masterVendorBo.getByCriteria(masterVendor);
+        PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+        res = paketPeriksaBo.getListPerusahaan();
+        return res;
     }
 
     public List<PaketPeriksa> getListPaketPeriksa(){

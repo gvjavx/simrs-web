@@ -7,6 +7,7 @@ import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -36,6 +37,13 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
     public List<CutiPegawai> getBiodatawithCriteria(String query) throws GeneralBOException;
 
     List<CutiPegawai> getListCekNipCuti(String query) throws GeneralBOException;
+
+    List<CutiPegawai> getListNipCuti(String query) throws GeneralBOException;
+
+//    List<CutiPegawai> getListCekTahunCuti(String query) throws GeneralBOException;
+    String getListCekTahunCuti(Date tanggalAwal, Date tanggalAkhir, String nip);
+
+    String cekCutiTahunan(String nip, String keterangan);
 
     List<CutiPegawai> getHistoryCuti(String nip, String cutiId) throws GeneralBOException;
 

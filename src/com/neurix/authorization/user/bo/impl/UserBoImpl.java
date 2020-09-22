@@ -165,12 +165,15 @@ public class UserBoImpl implements UserBo {
             String statusCaption = "";
             String positionId = loginUser.getImPosition().getPositionId();
             String positionName = loginUser.getImPosition().getPositionName();
-            String divisiId="";
-            String divisiName="";
-            if (loginUser.getImDepartmentEntity()!=null){
-                divisiId = loginUser.getImDepartmentEntity().getDepartmentId();
-                divisiName = loginUser.getImDepartmentEntity().getDepartmentName();
-            }
+            String divisiId=loginUser.getImPosition().getDepartmentId();
+            String divisiName=loginUser.getImPosition().getDepartmentName();
+            String bagianId = loginUser.getImPosition().getBagianId();
+            String bagianName = loginUser.getImPosition().getBagianName();
+
+//            if (loginUser.getImDepartmentEntity()!=null){
+//                divisiId = loginUser.getImDepartmentEntity().getDepartmentId();
+//                divisiName = loginUser.getImDepartmentEntity().getDepartmentName();
+//            }
 
             try{
                 if(loginUser.getImBiodataEntity().getStatusCaption() != null){
@@ -251,6 +254,8 @@ public class UserBoImpl implements UserBo {
             userDetailsLogin.setDivisiName(divisiName);
             userDetailsLogin.setPositionId(positionId);
             userDetailsLogin.setPositionName(positionName);
+            userDetailsLogin.setBagianId(bagianId);
+            userDetailsLogin.setBagianName(bagianName);
 
             userDetailsLogin.setStatusCaption(statusCaption);
             userDetailsLogin.setPhotoUpload(photoUrl);
@@ -573,6 +578,22 @@ public class UserBoImpl implements UserBo {
                         menuNameString = "<li id=\"laporan_akuntansi1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-tasks\"></i><span> " + menuName + "</span></a></li>";
                     }else if (menuName.equalsIgnoreCase("Pembayaran Hutang Piutang")) {
                         menuNameString = "<li id=\"pembayaran_hutang_piutang1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-money\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Peralihan Biaya")) {
+                        menuNameString = "<li id=\"peralihan_biaya\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Rencana Kegiatan Rawat")) {
+                        menuNameString = "<li id=\"rencana_kegiatan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Rawat Intensif")) {
+                        menuNameString = "<li id=\"rawat_intensif\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Rawat Operasi")) {
+                        menuNameString = "<li id=\"rawat_operasi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Rawat Bersalin")) {
+                        menuNameString = "<li id=\"rawat_bersalin\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Rawat Isolasi")) {
+                        menuNameString = "<li id=\"rawat_isolasi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Periksa Lab")) {
+                        menuNameString = "<li id=\"periksa_lab\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Periksa Radiologi")) {
+                        menuNameString = "<li id=\"periksa_radiologi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }
@@ -685,6 +706,10 @@ public class UserBoImpl implements UserBo {
                             icon="<i class=\"fa fa-check-square-o\"></i>";
                         }else if (("Setting").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-cogs\"></i>";
+                        }else if (("Kas/Bank Masuk").equalsIgnoreCase(menuName)){
+                            icon="<i class=\"fa fa-money\"></i>";
+                        }else if (("Kas/Bank Keluar").equalsIgnoreCase(menuName)){
+                            icon="<i class=\"fa fa-money\"></i>";
                         }else if (("Obat").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-medkit\"></i>";
                             idLi = "obat_poli_active";
@@ -710,7 +735,7 @@ public class UserBoImpl implements UserBo {
                             idLi = "pendaftaran_active";
                             openLu = "pendaftaran_open";
                         }else if (("Ply. Rawat Inap").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-medkit\"></i>";
+                            icon="<i class=\"fa fa-bed\"></i>";
                             idLi = "pel_ri_active";
                             openLu = "pel_ri_open";
                         }else if (("Penunjang Medis").equalsIgnoreCase(menuName)){
@@ -2960,6 +2985,12 @@ public class UserBoImpl implements UserBo {
                     resultUserSessionLog.setStLoginTimestamp(CommonUtil.longDateFormat(itUserSessionLog.getLoginTimestamp()));
                     resultUserSessionLog.setLogoutTimestamp(itUserSessionLog.getLogoutTimestamp());
                     resultUserSessionLog.setStLogoutTimestamp(itUserSessionLog.getLogoutTimestamp()!=null ? CommonUtil.longDateFormat(itUserSessionLog.getLogoutTimestamp()) : "" );
+
+                    ImUsersPK usersPK = new ImUsersPK();
+                    usersPK.setId(itUserSessionLog.getUserName());
+                    ImUsers imUsers = userDao.getById(usersPK,"Y");
+
+                    resultUserSessionLog.setName(imUsers.getUserName());
 
                     if (itUserSessionLog.getLogoutTimestamp()!=null) {
                         resultUserSessionLog.setEnabledKill(false);

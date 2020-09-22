@@ -236,7 +236,7 @@ public class VendorBoImpl implements VendorBo {
     private String getNextIdVendor() {
         String id = "";
         try {
-            id = masterVendorDao.getNextVendorId();
+            id = masterVendorDao.getNextVendorUmumId();
         } catch (HibernateException e) {
             logger.error("[VendorBoImpl.getNextId] Error when get next id vendor", e);
         }

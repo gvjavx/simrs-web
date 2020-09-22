@@ -159,6 +159,19 @@
             <column name="not_approval_note" sql-type="text" not-null="false" />
         </property>
 
+        <property name="urlIpa">
+            <column name="url_ipa" />
+        </property>
+        <property name="rkDikirim">
+            <column name="rk_dikirim" />
+        </property>
+        <property name="coaTarget">
+            <column name="coa_target" />
+        </property>
+        <property name="rkId">
+            <column name="rk_id" />
+        </property>
+
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

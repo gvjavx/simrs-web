@@ -83,6 +83,8 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
     public String getDirektur() throws GeneralBOException;
     public String getKabidSdm() throws GeneralBOException;
 
+    void approvePayrollAks(Payroll bean) throws GeneralBOException;
+
     void approvePayrollUnit(Payroll bean) throws GeneralBOException;
 
     void approvePayrollSdm(Payroll bean) throws GeneralBOException;

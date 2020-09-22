@@ -258,9 +258,21 @@
     <include file="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/struts/ReportKeuanganKonsolAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/mappingpersengaji/struts/MappingPersenGajiAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/penyewaanLahan/struts/PenyewaanLahanAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollPtkp/struts/PayrollPtkpAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/master/tipeLaporan/struts/TipeLaporanAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/tipePayroll/struts/TipePayrollAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/statusAbsensi/struts/StatusAbsensiAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetingnilaidasar/struts/BudgetingNilaiDasarAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetinginvestasi/struts/BgInvestasiAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetingeksploitasi/struts/BgEksploitasiAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetingnominasi/struts/BgNominasiAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/transaksi/budgetingpendapatan/struts/BgPendapatanAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollPtkp/struts/PayrollPtkpAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/master/tipeLaporan/struts/TipeLaporanAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/tipePayroll/struts/TipePayrollAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/statusAbsensi/struts/StatusAbsensiAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/statusMutasi/struts/StatusMutasiAction.xml"/>
+
+    <include file="sshconfig/com/neurix/hris/master/jenisPegawai/struts/JenisPegawaiAction.xml"/>
+
 </struts>

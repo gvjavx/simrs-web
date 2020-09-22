@@ -749,42 +749,25 @@ public class LemburAction extends BaseMasterAction {
                 break;
             }
             if (iJamAwalKerja<iJamAwalDb){
-                hasil=hasil+SubtractJamAwalDanJamAkhir (jamAwal,sJamKerjaAwalDb,"positif");
+                hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,sJamKerjaAwalDb,"positif");
                 if (iJamAkhirKerja>iJamAkhirDb){
-                    hasil=hasil+SubtractJamAwalDanJamAkhir (sJamKerjaAkhirDb,jamAkhir,"positif");
+                    hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (sJamKerjaAkhirDb,jamAkhir,"positif");
                 }
             }
             if (iJamAwalKerja>=iJamAkhirDb){
-                hasil=hasil+SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
+                hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
+            }
+
+            if (iJamAwalKerja>=iJamAwalDb&&iJamAwalKerja<=iJamAkhirDb){
+                hasil = hasil+CommonUtil.SubtractJamAwalDanJamAkhir(sJamKerjaAkhirDb,jamAkhir,"positif");
             }
         }else{
-            hasil=SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
+            hasil=CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
         }
         sHasil = hasil.toString();
         return sHasil;
     }
 
-    public Double SubtractJamAwalDanJamAkhir (String jamAwal,String jamAkhir,String status) throws ParseException {
-        java.text.DateFormat df = new java.text.SimpleDateFormat("dd:MM:yyyy HH:mm");
-        java.util.Date date1 = df.parse("01:01:2000 "+jamAwal);
-        java.util.Date date2 = df.parse("01:01:2000 "+jamAkhir);
-        long diff = date2.getTime() - date1.getTime();
-        if (diff<0&&status.equalsIgnoreCase("positif")){
-            date2 = df.parse("02:01:2000 "+jamAkhir);
-            diff = date2.getTime() - date1.getTime();
-        }
-        int timeInSeconds = (int) (diff / 1000);
-        int hours, minutes;
-        hours = timeInSeconds / 3600;
-        timeInSeconds = timeInSeconds - (hours * 3600);
-        minutes = timeInSeconds / 60;
-        double hasil=hours;
-        if (minutes<15){hasil=hasil+0;}
-        else if (minutes<30){hasil=hasil+0.25;}
-        else if (minutes<45){hasil=hasil+0.50;}
-        else if (minutes<60){hasil=hasil+0.75;}
-        return hasil;
-    }
     public Double cekLembur (String nip,String stTanggal){
         Double hasil= (double) 0;
         Date tanggal = CommonUtil.convertStringToDate(stTanggal);
