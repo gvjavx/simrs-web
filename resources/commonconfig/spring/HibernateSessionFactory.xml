@@ -69,10 +69,11 @@
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
                 <!--<prop key="hibernate.connection.password">postgres</prop>-->
 
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_nmu</prop>
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">postgres</prop>
+
             </props>
         </property>
         <property name="mappingResources">
@@ -573,6 +574,7 @@
 
                 <value>sshconfig/com/neurix/hris/master/jenisPegawai/hibernate/ImHrisJenisPegawaiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/jenisPegawai/hibernate/ImHrisJenisPegawaiHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/rekananops/hibernate/ImSimrsRekananOpsEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

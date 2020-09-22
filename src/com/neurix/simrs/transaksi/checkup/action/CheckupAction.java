@@ -35,6 +35,8 @@ import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.rekammedis.bo.RekamMedisPasienBo;
 import com.neurix.simrs.master.rekammedis.model.RekamMedisPasien;
+import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
+import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.master.tindakanicd9.bo.TindakanICD9Bo;
@@ -3721,5 +3723,20 @@ public class CheckupAction extends BaseMasterAction {
         }
         logger.info("[CheckupAction.getListDokterByBranchId] END process >>>");
         return jenisObatList;
+    }
+
+    public List<RekananOps> getListRekananOps() {
+        logger.info("[CheckupAction.getListRekananOps] START process >>>");
+        List<RekananOps> rekananOpsList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
+        RekananOps rekananOps = new RekananOps();
+        try {
+            rekananOpsList = rekananOpsBo.getByCriteria(rekananOps);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error, " + e.getMessage());
+        }
+        logger.info("[CheckupAction.getListRekananOps] END process >>>");
+        return rekananOpsList;
     }
 }

@@ -12,7 +12,7 @@
     />
 
     <bean id="statusPasienController" class="com.neurix.simrs.mobileapi.StatusPasienController"
-        p:statusPasienBoProxy-ref="statusPasienBoProxy"
+        p:statusPasienBoProxy-ref="statusPasienBo"
     />
 
     <bean id="statusPasienBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

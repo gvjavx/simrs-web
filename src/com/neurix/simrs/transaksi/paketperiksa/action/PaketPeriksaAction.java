@@ -116,7 +116,7 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         return list;
     }
 
-    public CrudResponse savePaket(String idPelayanan, String namaPaket, BigDecimal tarifPaket, String jsonString) throws JSONException{
+    public CrudResponse savePaket(String namaPaket, BigDecimal tarifPaket, String jsonString) throws JSONException{
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -148,7 +148,6 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         paketPeriksa.setCreatedWho(userLogin);
         paketPeriksa.setLastUpdate(time);
         paketPeriksa.setLastUpdateWho(userLogin);
-        paketPeriksa.setIdPelayanan(idPelayanan);
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");

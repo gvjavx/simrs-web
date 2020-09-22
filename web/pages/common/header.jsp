@@ -468,6 +468,7 @@ apply the skin class to the body tag so the changes take effect.
             el.value = el.value.substring(0,el.value.length - 1);
         }
     }
+
     function formatRupiahAtas(angka) {
         if(angka != null && angka != '' && angka > 0){
             var reverse = angka.toString().split('').reverse().join(''),
@@ -610,6 +611,13 @@ apply the skin class to the body tag so the changes take effect.
             return myString;
         }else{
             return "";
+        }
+    }
+
+    function replaceTitik(val){
+        var res = 0;
+        if(val != ''){
+            res = val.replace(/[.]/g, '');
         }
     }
 
