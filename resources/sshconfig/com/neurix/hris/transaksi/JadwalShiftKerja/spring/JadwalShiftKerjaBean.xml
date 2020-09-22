@@ -8,6 +8,9 @@
     <bean id="jadwalShiftKerjaAction" class="com.neurix.hris.transaksi.jadwalShiftKerja.action.JadwalShiftKerjaAction"
           p:jadwalShiftKerjaBoProxy-ref="jadwalShiftKerjaBoProxy" />
 
+    <bean id="jadwalShiftKerjaController" class="com.neurix.hris.mobileapi.JadwalShiftController"
+          p:jadwalShiftKerjaBoProxy-ref="jadwalShiftKerjaBoProxy" />
+
     <bean id="jadwalShiftKerjaBo" class="com.neurix.hris.transaksi.jadwalShiftKerja.bo.impl.JadwalShiftKerjaBoImpl"
           p:jadwalShiftKerjaDao-ref="jadwalShiftKerjaDao"
           p:jadwalShiftKerjaDetailDao-ref="jadwalShiftKerjaDetailDao"

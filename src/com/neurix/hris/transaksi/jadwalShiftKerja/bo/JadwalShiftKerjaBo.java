@@ -37,4 +37,6 @@ public interface JadwalShiftKerjaBo extends BaseMasterBo<JadwalShiftKerja> {
     List<JadwalShiftKerjaDetail> getJadwalShiftKerjaByUnitAndProfesiAndTanggal(String branchId, Date tglFrom, Date tglTo, String profesiId) throws GeneralBOException;
 
     CrudResponse getListLibur(String tanggalAwal, String tanggalAkhir) throws GeneralBOException;
+
+    List<JadwalShiftKerjaDetail> getJadwalShiftThisMonth(String nip, String branchId, String profesiId) throws GeneralBOException;
 }
