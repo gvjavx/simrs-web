@@ -113,16 +113,16 @@
         <div class="col-sm-8" align="left">
             <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
             <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="shift.idBranch"
-                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Pilih Satu]"
+                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
                       cssClass="form-control"/>
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-sm-2">Grup :</label>
         <div class="col-sm-8" align="left">
-            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
-            <s:select list="#comboProfesi.listComboProfesi" id="kelompokPositionId" name="shift.profesiId"
-                      listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+            <s:action id="comboSubDiv" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
+            <s:select list="#comboSubDiv.comboListOfPositionBagian" id="kelompokPositionId" name="shift.profesiId"
+                      listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
             <%--<s:action id="comboKelompok" namespace="/kelompokPosition" name="initComboKelompokPosition_kelompokPosition"/>
             <s:select cssClass="form-control" list="#comboKelompok.listOfComboKelompokPosition" id="kelompokPositionId" name="shift.kelompokPositionId"
                       required="true" listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Pilih Satu]" />--%>

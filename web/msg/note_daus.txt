@@ -513,7 +513,13 @@ ALTER TABLE it_hris_payroll_jubileum ADD COLUMN tunjangan_fungsional numeric(25,
 ALTER TABLE it_hris_payroll_jubileum ADD COLUMN tunjangan_tambahan numeric(25,2);
 ALTER TABLE it_hris_payroll_jubileum ADD COLUMN pemondokan numeric(25,2);
 ALTER TABLE it_hris_payroll_jubileum ADD COLUMN komunikasi numeric(25,2);
-ALTER TABLE it_hris_payroll_jubileum ADD COLUMN keterangan_jubilium varchar(200);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN keterangan_jubilium varchar(lel200);
 
 ALTER TABLE im_company ADD COLUMN jam_batas_absen integer;
 update im_company set jam_batas_absen=3;
+
+--22-09-2020
+ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN on_call character varying(1);
+ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN flag_panggil character varying(1);
+ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN panggil_who character varying(100);
+ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN panggil_date timestamp without time zone;
