@@ -426,12 +426,28 @@
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
+                        <div class="alert alert-danger alert-dismissible" style="display: none"
+                             id="warning_paket">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_paket"></p>
+                        </div>
                         <div class="row">
-                            <div class="alert alert-danger alert-dismissible" style="display: none"
-                                 id="warning_paket">
-                                <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                                <p id="msg_paket"></p>
+                            <div class="col-md-6">
+                                <table class="table table-bordered table-striped"
+                                       style="margin-top: 20px; font-size: 12px" id="table_pelayanan">
+                                    <thead>
+                                    <tr bgcolor="#90ee90">
+                                        <td>Pelayanan</td>
+                                        <td width="20%" align="center">Urutan</td>
+                                        <td width="20%" align="center">Action</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body_pelayanan">
+                                    </tbody>
+                                </table>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group">
                                 <div class="col-md-3">
                                     <label>Nama Paket</label>
@@ -508,6 +524,7 @@
 <script type='text/javascript'>
 
     var idDetailCheckup = "";
+    var tempData = [];
 
     $(document).ready(function () {
         $('#paket_periksa').addClass('active');
@@ -689,7 +706,6 @@
         var qty = $('#tin_qty').val();
         var cek = false;
         var data = $('#table_tindakan').tableToJSON();
-        var tempData = [];
 
         if (idTindakan != '' && idTindakan != null && idKategori != null && qty > 0 && idKategori != '' && tarifPaket != '') {
 
@@ -722,8 +738,8 @@
             } else {
 
                 var table = '<tr id="row' + id + '">' +
-                    '<td>' + tin + '<input type="hidden" value="' + id + '" id="tindakan_id' + row + '">' + '</td>' +
                     '<td>' + namaPoli + '<input type="hidden" value="' + idPoli + '" id="poli_id' + row + '">' + '</td>' +
+                    '<td>' + tin + '<input type="hidden" value="' + id + '" id="tindakan_id' + row + '">' + '</td>' +
                     '<td align="center">' + qty + '<input type="hidden" value="' + idKategori + '" id="kategori_id' + row + '">' + '</td>' +
                     '<td align="center">' + formatRupiahAtas(tarifPaket) + '<input type="hidden" value="' + tarifPaket + '" id="tin_tarif_id' + row + '">' + '</td>' +
                     '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + id + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
@@ -750,6 +766,82 @@
         }
 
         hitungTotal();
+        tempSelectPoli(idPoli, namaPoli);
+    }
+
+    function tempSelectPoli(idPoli, namaPoli){
+        var data = $('#table_tindakan').tableToJSON();
+        var cek = false;
+        if(tempData.length > 0){
+            $.each(tempData, function (i, item) {
+                if(idPoli == item.id_pelayanan){
+                    cek = true;
+                }
+            });
+            if(!cek){
+                tempData.push({
+                    'id_pelayanan': idPoli,
+                    'pelayanan': namaPoli
+                });
+            }
+        }else{
+            tempData.push({
+                'id_pelayanan': idPoli,
+                'pelayanan': namaPoli
+            });
+        }
+        var option = '<option value="">[Select One]</option>';
+        var table = "";
+        var long = tempData.length;
+        $.each(tempData, function (i, item) {
+            option += '<option value="'+item.id_pelayanan+'">'+item.pelayanan+'</option>';
+            var urut = i + 1;
+            table +=
+                '<tr>' +
+                '<td>'+item.pelayanan+'</td>'+
+                '<td align="center">'+'<input id="urut_val_'+urut+'" onchange="setUrut(this.value, \''+urut+'\')" class="form-control" type="number" min="1" max="'+long+'" value="'+urut+'" disabled>'+
+                '<input type="hidden" id="urut_'+urut+'">'+'</td>'+
+                '<td align="center">'+
+                '<img id="btn_urut'+urut+'" onclick="setUrutanPelayanan(\''+urut+'\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">'+'</td>'+
+                '</tr>';
+        });
+        $('#body_pelayanan').html(table);
+        $('#lab_poli').html(option);
+    }
+
+    function setUrutanPelayanan(i){
+        var data = $('#table_pelayanan').tableToJSON();
+        var src = '<s:url value="/pages/images/icons8-save-25.png"/>';
+        $('#urut_val_'+i).attr('disabled', false);
+        $('#btn_urut'+i).removeAttr('src');
+        $('#btn_urut'+i).attr('src', src);
+        $('#btn_urut'+i).attr('onclick', 'saveUrutanPelayanan(\''+i+'\')');
+    }
+
+    function saveUrutanPelayanan(i){
+        var data = $('#table_tindakan').tableToJSON();
+        var nilai = $('#urut_val_'+i).val();
+        var cek = false;
+        $.each(data, function (i, item) {
+            var pem = $('#urut_'+i).val();
+            if(nilai == pem){
+               cek = true;
+           }
+        });
+        if(cek){
+            $('#warning_paket').show().fadeOut(5000);
+            $('#msg_paket').text("Nomor urutan pelayanan tidak boleh sama...!");
+        }else{
+            var src = '<s:url value="/pages/images/icons8-create-25.png"/>';
+            $('#btn_urut'+i).removeAttr('src');
+            $('#btn_urut'+i).attr('src', src);
+            $('#btn_urut'+i).attr('onclick', 'setUrutanPelayanan(\''+i+'\')');
+            $('#urut_val_'+i).attr('disabled', true);
+        }
+    }
+
+    function setUrut(val, id){
+        $('#urut_'+id).val(val);
     }
 
     function delRow(id) {
