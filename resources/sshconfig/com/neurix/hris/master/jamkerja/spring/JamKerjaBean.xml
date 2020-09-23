@@ -9,6 +9,10 @@
         p:jamKerjaBoProxy-ref="jamKerjaBoProxy"
           p:tipePegawaiBoProxy-ref="tipePegawaiBoProxy"
     />
+
+    <bean id="jadwalShiftController" class="com.neurix.hris.mobileapi.JadwalShiftController"
+          p:jamKerjaBoProxy-ref="jamKerjaBoProxy"
+    />
     <bean id="jamKerjaBo" class="com.neurix.hris.master.jamkerja.bo.impl.JamKerjaBoImpl"
          p:jamKerjaDao-ref="jamKerjaDao"
     />

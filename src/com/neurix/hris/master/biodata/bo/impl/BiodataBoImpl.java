@@ -2888,6 +2888,7 @@ public class BiodataBoImpl implements BiodataBo {
             biodata.setAction(imBiodata.getAction());
             biodata.setFlag(imBiodata.getFlag());
             biodata.setStatusPegawai(imBiodata.getStatusPegawai());
+            biodata.setShift(imBiodata.getShift());
             if(imBiodata.getFotoUpload() != null){
                 biodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
                         + imBiodata.getFotoUpload());

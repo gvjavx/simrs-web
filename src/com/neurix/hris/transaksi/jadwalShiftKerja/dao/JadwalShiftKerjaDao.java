@@ -257,7 +257,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
         return listOfResult;
     }
 
-    public List<JadwalShiftKerjaDetail> getJadwalShiftThisMonth(String nip, String branchId, String profesiId) {
+    public List<JadwalShiftKerjaDetail> getJadwalShiftByBulanTahun(String nip, String branchId, String profesiId, String firstDate, String lastDate) {
         String searchNip = "";
         String searchBranchId = "";
         String searchProfesiId = "";
@@ -274,17 +274,6 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
             searchProfesiId = " AND dt.profesi_id = " + " '" + profesiId + "' ";
         }
 
-        //ambil data jadwal shift untuk bulan ini
-        Date dateNow = CommonUtil.convertTimestampToDate(new Timestamp(System.currentTimeMillis()));
-
-        SimpleDateFormat dateFormat  = new SimpleDateFormat("YYYY");
-        String year = dateFormat.format(dateNow);
-        dateFormat = new SimpleDateFormat("MM");
-        String month = dateFormat.format(dateNow);
-
-        String firstDate = "01-" + month + "-" + year;
-        String lastDate = CommonUtil.getLastDayOfMonth() + "-" + month + "-" + year;
-
         List<JadwalShiftKerjaDetail> listOfResult = new ArrayList<>();
         List<Object[]> results = new ArrayList<>();
         String query = "SELECT \n" +
@@ -296,14 +285,16 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "dt.nip, \n" +
                 "dt.nama_pegawai, \n" +
                 "dt.profesi_name, \n" +
-                "sk.branch_id \n" +
+                "sk.branch_id, \n" +
+                "dt.on_call, \n" +
+                "dt.flag_panggil \n" +
                 "FROM it_hris_jadwal_shift_kerja_detail dt\n" +
                 "JOIN it_hris_jadwal_shift_kerja sk ON dt.jadwal_shift_kerja_id = sk.jadwal_shift_kerja_id\n" +
                 "JOIN im_hris_shift sf ON dt.shift_id = sf.shift_id\n" +
                 "WHERE dt.flag = 'Y'"  + searchNip + searchBranchId + searchProfesiId + "\n" +
                 "AND sk.tanggal >= '" + firstDate + "' \n" +
                 "AND sk.tanggal <= '" + lastDate + "' \n" +
-                "ORDER BY sk.tanggal ASC";
+                "ORDER BY sk.tanggal DESC";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -320,6 +311,8 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
             result.setNamaPegawai((String) row[6]);
             result.setProfesiName((String) row[7]);
             result.setBranchId((String) row[8]);
+            result.setOnCall((String) row[9]);
+            result.setFlagPanggil((String) row[10]);
             listOfResult.add(result);
         }
         return listOfResult;

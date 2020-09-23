@@ -20,6 +20,7 @@ import com.neurix.hris.master.profesi.dao.ProfesiDao;
 import com.neurix.hris.master.profesi.model.ImProfesiEntity;
 import com.neurix.hris.master.shift.dao.ShiftDao;
 import com.neurix.hris.master.shift.model.ImHrisShiftEntity;
+import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.dao.JadwalShiftKerjaDao;
 import com.neurix.hris.transaksi.jadwalShiftKerja.dao.JadwalShiftKerjaDetailDao;
@@ -735,13 +736,13 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
     }
 
     @Override
-    public List<JadwalShiftKerjaDetail> getJadwalShiftThisMonth(String nip, String branchId, String profesiId) {
+    public List<JadwalShiftKerjaDetail> getJadwalShiftByBulanTahun(String nip, String branchId, String profesiId, String tanggalAwal, String tanggalAkhir) {
         logger.info("[JadwalShiftKerjaBoImpl.getJadwalShift] start process >>>");
 
         List<JadwalShiftKerjaDetail> listOfResult = new ArrayList<>();
 
         try {
-            listOfResult = jadwalShiftKerjaDao.getJadwalShiftThisMonth(nip, branchId, profesiId);
+            listOfResult = jadwalShiftKerjaDao.getJadwalShiftByBulanTahun(nip, branchId, profesiId, tanggalAwal, tanggalAkhir);
         } catch (HibernateException e) {
             logger.error("[JadwalShiftKerjaBoImpl.getJadwalShift] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
