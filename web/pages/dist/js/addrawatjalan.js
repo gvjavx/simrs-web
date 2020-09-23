@@ -109,7 +109,7 @@ function hitungCoverBiaya() {
 
 function hitungStatusBiaya() {
     var jenis = $('#jenis_pasien').val();
-    if ("bpjs" == jenis || "rekanan" == jenis) {
+    if (NOSEP != '' && NOSEP != null) {
         CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RWJ", function (response) {
             $('#status_bpjs').show();
             if (response.tarifBpjs != null && response.tarifTindakan != null) {

@@ -186,7 +186,7 @@
                                     <s:hidden id="surat_rujukan" name="headerDetailCheckup.suratRujukan"/>
                                     <s:hidden id="is_laka" name="headerDetailCheckup.isLaka"/>
 
-                                    <s:if test='headerDetailCheckup.noSep != null'>
+                                    <s:if test='headerDetailCheckup.noSep != ""'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
@@ -2255,6 +2255,7 @@
     var tempidRm = "";
     var jenisTrans = 'rawat_jalan';
     var jenisPelayanan = '<s:property value="headerDetailCheckup.kategoriPelayanan"/>';
+    var NOSEP = '<s:property value="headerDetailCheckup.noSep"/>';
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
