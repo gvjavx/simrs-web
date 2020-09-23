@@ -137,16 +137,36 @@
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar"></i>
                                                         </div>
-                                                        <s:textfield id="loginTimestampFrom" name="jadwalShiftKerja.stTanggalAwal" size="12" cssClass="form-control pull-right"
-                                                                     required="false" cssStyle=""/>
+                                                        <s:textfield id="loginTimestampFrom" name="jadwalShiftKerja.stTanggalAwal" readonly="true" size="12" cssClass="form-control pull-right"
+                                                                     required="false" cssStyle="background-color: white"/>
+                                                        <script>
+                                                            $("#loginTimestampFrom").datepicker({
+                                                                setDate: new Date(),
+                                                                autoclose: true,
+                                                                changeMonth: true,
+                                                                changeYear:true,
+                                                                dateFormat:'dd-mm-yy'
+                                                            });
+                                                            $("#loginTimestampFrom").datepicker("setDate", new Date());
+                                                        </script>
                                                         <div class="input-group-addon">
                                                             s/d
                                                         </div>
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar"></i>
                                                         </div>
-                                                        <s:textfield id="loginTimestampTo" name="jadwalShiftKerja.stTanggalAkhir" size="12" cssClass="form-control pull-right"
-                                                                     required="false" cssStyle=""/>
+                                                        <s:textfield id="loginTimestampTo" name="jadwalShiftKerja.stTanggalAkhir" size="12" cssClass="form-control pull-right" readonly="true"
+                                                                     required="false" cssStyle="background-color: white"/>
+                                                        <script>
+                                                            $("#loginTimestampTo").datepicker({
+                                                                setDate: new Date(),
+                                                                autoclose: true,
+                                                                changeMonth: true,
+                                                                changeYear:true,
+                                                                dateFormat:'dd-mm-yy'
+                                                            });
+                                                            $("#loginTimestampTo").datepicker("setDate", new Date());
+                                                        </script>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -165,16 +185,6 @@
                                                     <td>
                                                         <a href="add_jadwalShiftKerja.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Jadwal Shift Kerja</a>
                                                     </td>
-                                                    <%--<td>
-                                                        <button type="button" id="btnAddJadwalOtomatis" class="btn btn-warning">
-                                                            <i class="fa fa-calendar-plus-o"></i> Tambah Otomatis
-                                                        </button>
-                                                    </td>--%>
-                                                    <%--<td>
-                                                        <button type="button" class="btn btn-warning" id="btnCetakJadwal">
-                                                            <i class="fa fa-print"></i> Print Jadwal Kerja
-                                                        </button>
-                                                    </td>--%>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_jadwalShiftKerja"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
@@ -182,53 +192,90 @@
                                                     </td>
                                                 </tr>
                                             </table>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-5"></label>
+                                                <div class="col-sm-5" style="display: none">
+
+                                                    <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                                               closeTopics="closeDialog" modal="true"
+                                                               resizable="false"
+                                                               height="250" width="600" autoOpen="false"
+                                                               title="Searching ...">
+                                                        Please don't close this window, server is processing your request ...
+                                                        <br>
+                                                        <center>
+                                                            <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                 src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                 name="image_indicator_write">
+                                                            <br>
+                                                            <img class="spin" border="0"
+                                                                 style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                 src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                 name="image_indicator_write">
+                                                        </center>
+                                                    </sj:dialog>
+                                                    <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
+                                                               resizable="false"
+                                                               closeOnEscape="false"
+                                                               height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                               buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                         window.location.reload(true);
+                                                                                     }
+                                                                            }"
+                                                    >
+                                                        <s:hidden id="close_pos"></s:hidden>
+                                                        <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                             name="icon_success">
+                                                        Record has been saved successfully.
+                                                    </sj:dialog>
+                                                    <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"
+                                                               resizable="false" cssStyle="text-align:left;"
+                                                               height="650" width="900" autoOpen="false" title="View Detail"
+                                                    >
+                                                        <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
+                                                                     alt="Loading..."/></center>
+                                                    </sj:dialog>
+                                                </div>
+                                            </div>
                                         </div>
                                         <br>
                                         <br>
-                                        <center>
-                                            <table id="showdata" width="80%">
-                                                <tr>
-                                                    <td align="center">
-                                                        <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading"
-                                                                   closeTopics="closeDialogLoading" modal="true"
-                                                                   resizable="false"
-                                                                   height="250" width="600" autoOpen="false"
-                                                                   title="Search Data ...">
-                                                            Please don't close this window, server is processing your request ...
-                                                            <br>
-                                                            <center>
-                                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
-                                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
-                                                                     name="image_indicator_write">
-                                                                <br>
-                                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
-                                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
-                                                                     name="image_indicator_write">
-                                                            </center>
-                                                        </sj:dialog>
-
-                                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="670" width="900" autoOpen="false"
-                                                                   title="Jadwal Shift Kerja">
-                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                                        </sj:dialog>
-                                                        <sj:dialog id="view_dialog_menu_jadwalShiftKerja" openTopics="showDialogMenuView" modal="true"
-                                                                   height="570" width="900" autoOpen="false"
-                                                                   title="Jadwal Shift Kerja">
-                                                        </sj:dialog>
-                                                        <s:set name="listOfJadwalShiftKerja" value="#session.listOfResultJadwalShiftKerja" scope="request" />
-                                                        <display:table name="listOfJadwalShiftKerja" class="tableJadwalShiftKerja table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_jadwalShiftKerja.action" export="true" id="row" style="font-size:10">
-                                                            <display:column property="jadwalShiftKerjaId" sortable="true" title="ID Jadwal" />
-                                                            <display:column property="jadwalShiftKerjaName" sortable="true" title="Nama Jadwal"  />
-                                                            <display:column property="branchName" sortable="true" title="Unit"  />
-                                                            <display:column property="stTanggal" sortable="true" title="Tanggal"  />
-                                                            <display:column property="namaPegawai" sortable="true" title="Nama"  />
-                                                            <display:column property="positionName" sortable="true" title="Posisi"  />
-                                                            <display:column property="profesiName" sortable="true" title="Grup"  />
-                                                            <display:column property="shiftName" sortable="true" title="Shift"  />
-                                                            <display:column property="onCall" sortable="true" title="On Call"  />
-                                                            <display:column media="html" title="Edit">
+                                        <div style="text-align: left !important;">
+                                            <div class="box-header with-border"></div>
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Jadwal Shift Kerja</h3>
+                                            </div>
+                                            <div class="box-body">
+                                                <table id="tableJadwalShiftKerja" class="tableJadwalShiftKerja table table-bordered table-striped" style="font-size: 11px">
+                                                    <thead >
+                                                    <tr bgcolor="#90ee90" style="text-align: center">
+                                                        <td>ID</td>
+                                                        <td>Unit</td>
+                                                        <td>Nama Jadwal</td>
+                                                        <td>Tanggal</td>
+                                                        <td>Nama</td>
+                                                        <td>Posisi </td>
+                                                        <td>Group </td>
+                                                        <td>Shift </td>
+                                                        <td align="center">Edit</td>
+                                                        <td align="center">On Call</td>
+                                                        <td align="center">Panggil</td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <s:iterator value="#session.listOfResultJadwalShiftKerja" var="row">
+                                                        <tr>
+                                                            <td style="text-align: center"><s:property value="jadwalShiftKerjaId"/></td>
+                                                            <td style="text-align: center"><s:property value="branchName"/></td>
+                                                            <td><s:property value="jadwalShiftKerjaName"/></td>
+                                                            <td><s:property value="stTanggal"/></td>
+                                                            <td><s:property value="namaPegawai"/></td>
+                                                            <td><s:property value="positionName"/></td>
+                                                            <td><s:property value="profesiName"/></td>
+                                                            <td><s:property value="shiftName"/></td>
+                                                            <td align="center">
                                                                 <s:if test="#attr.row.tamp">
                                                                     <s:if test="#attr.row.flagYes">
                                                                         <s:url var="urlEdit" namespace="/jadwalShiftKerja" action="edit_jadwalShiftKerja" escapeAmp="false">
@@ -240,35 +287,36 @@
                                                                         </s:a>
                                                                     </s:if>
                                                                 </s:if>
-                                                            </display:column>
-                                                            <display:column media="html" title="Panggil">
-                                                            <s:if test='#attr.row.hariIni'>
-                                                                <s:if test='#attr.row.onCall=="Y"'>
-                                                                    <s:if test='#attr.row.flagPanggil=="Y"' >
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
-                                                                    </s:if>
-                                                                    <s:else>
-                                                                        <a href="javascript:;"  id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>" tanggal="<s:property value="%{#attr.row.stTanggal}"/>" nama="<s:property value="%{#attr.row.namaPegawai}"/>" posisi="<s:property value="%{#attr.row.positionName}"/>" grup="<s:property value="%{#attr.row.profesiName}"/>" href="javascript:;" class="item-panggil">
-                                                                            <img border="0" src="<s:url value="/pages/images/icons8-call-25.png"/>">
-                                                                    </s:else>
+                                                            </td>
+                                                            <td align="center">
+                                                                <s:if test='#row.onCall == "Y"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>">
                                                                 </s:if>
-                                                            </s:if>
-                                                            <s:else>
+                                                            </td>
+                                                            <td align="center">
+                                                                <s:if test='#attr.row.hariIni'>
+                                                                <s:if test='#attr.row.onCall=="Y"'>
                                                                 <s:if test='#attr.row.flagPanggil=="Y"' >
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                 </s:if>
-                                                            </s:else>
-                                                            </display:column>
-                                                            <display:setProperty name="paging.banner.item_name">JadwalShiftKerja</display:setProperty>
-                                                            <display:setProperty name="paging.banner.items_name">JadwalShiftKerja</display:setProperty>
-                                                            <display:setProperty name="export.excel.filename">JadwalShiftKerja.xls</display:setProperty>
-                                                            <display:setProperty name="export.csv.filename">JadwalShiftKerja.csv</display:setProperty>
-                                                            <display:setProperty name="export.pdf.filename">JadwalShiftKerja.pdf</display:setProperty>
-                                                        </display:table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </center>
+                                                                <s:else>
+                                                                <a href="javascript:;"  id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>" tanggal="<s:property value="%{#attr.row.stTanggal}"/>" nama="<s:property value="%{#attr.row.namaPegawai}"/>" posisi="<s:property value="%{#attr.row.positionName}"/>" grup="<s:property value="%{#attr.row.profesiName}"/>" href="javascript:;" class="item-panggil">
+                                                                    <img border="0" src="<s:url value="/pages/images/icons8-call-25.png"/>">
+                                                                </s:else>
+                                                                </s:if>
+                                                                </s:if>
+                                                                <s:else>
+                                                                <s:if test='#attr.row.flagPanggil=="Y"' >
+                                                                <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                </s:if>
+                                                                </s:else>
+                                                            </td>
+                                                        </tr>
+                                                    </s:iterator>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </s:form>
                                 </td>
                             </tr>
@@ -449,10 +497,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
-                <%--</button>--%>
-                <%--<button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes--%>
-                <%--</button>--%>
             </div>
         </div>
     </div>
@@ -499,13 +543,6 @@
                 $("#modal-success-dialog").modal('show');
             }
         }
-
-        $('#loginTimestampFrom').datepicker({
-            dateFormat: 'dd-mm-yy'
-        });
-        $('#loginTimestampTo').datepicker({
-            dateFormat: 'dd-mm-yy'
-        });
 
         $('#btnAddJadwalOtomatis').on('click', function () {
             $('#modal-add-auto').find('.modal-title').text('Tambah Otomatis Jadwal Shift Kerja');
@@ -575,6 +612,9 @@
         });
         $('#ok_con').click(function () {
             window.location.reload();
-        })
+        });
+        $('#tableJadwalShiftKerja').DataTable({
+            "order": []
+        });
     });
 </script>

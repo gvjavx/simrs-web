@@ -16,6 +16,8 @@ import com.neurix.hris.master.groupShift.model.ImHrisGroupShift;
 import com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity;
 import com.neurix.hris.master.libur.dao.LiburDao;
 import com.neurix.hris.master.libur.model.ImLiburEntity;
+import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
+import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.master.profesi.dao.ProfesiDao;
 import com.neurix.hris.master.profesi.model.ImProfesiEntity;
 import com.neurix.hris.master.shift.dao.ShiftDao;
@@ -59,6 +61,19 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
     private PersonilPositionDao personilPositionDao;
     private ProfesiDao profesiDao;
     private LiburDao liburDao;
+    private PositionBagianDao positionBagianDao;
+
+    public PositionBagianDao getPositionBagianDao() {
+        return positionBagianDao;
+    }
+
+    public void setPositionBagianDao(PositionBagianDao positionBagianDao) {
+        this.positionBagianDao = positionBagianDao;
+    }
+
+    public LiburDao getLiburDao() {
+        return liburDao;
+    }
 
     public void setLiburDao(LiburDao liburDao) {
         this.liburDao = liburDao;
@@ -210,6 +225,10 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             itJadwalShiftKerjaDetailEntity.setShiftId(jadwalShiftKerjaDetail.getShiftId());
             itJadwalShiftKerjaDetailEntity.setProfesiId(jadwalShiftKerjaDetail.getProfesiid());
             itJadwalShiftKerjaDetailEntity.setProfesiName(jadwalShiftKerjaDetail.getProfesiName());
+            itJadwalShiftKerjaDetailEntity.setOnCall(jadwalShiftKerjaDetail.getOnCall());
+            itJadwalShiftKerjaDetailEntity.setFlagPanggil(jadwalShiftKerjaDetail.getFlagPanggil());
+            itJadwalShiftKerjaDetailEntity.setPanggilDate(jadwalShiftKerjaDetail.getPanggilDate());
+            itJadwalShiftKerjaDetailEntity.setPanggilWho(jadwalShiftKerjaDetail.getPanggilWho());
 
             itJadwalShiftKerjaDetailEntity.setFlag(bean.getFlag());
             itJadwalShiftKerjaDetailEntity.setAction(bean.getAction());
@@ -450,6 +469,10 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
                     returnJadwalShiftKerjaDetail.setPositionName(jadwalShiftKerjaDetailEntity.getPositionName());
                     returnJadwalShiftKerjaDetail.setNamaPegawai(jadwalShiftKerjaDetailEntity.getNamaPegawai());
                     returnJadwalShiftKerjaDetail.setNip(jadwalShiftKerjaDetailEntity.getNip());
+                    returnJadwalShiftKerjaDetail.setOnCall(jadwalShiftKerjaDetailEntity.getOnCall());
+                    returnJadwalShiftKerjaDetail.setFlagPanggil(jadwalShiftKerjaDetailEntity.getFlagPanggil());
+                    returnJadwalShiftKerjaDetail.setPanggilWho(jadwalShiftKerjaDetailEntity.getPanggilWho());
+                    returnJadwalShiftKerjaDetail.setPanggilDate(jadwalShiftKerjaDetailEntity.getPanggilDate());
 
                     List<ItPersonilPositionEntity> personilPositionEntities = personilPositionDao.getPersonilPosition(jadwalShiftKerjaDetailEntity.getNip());
                     for (ItPersonilPositionEntity personilPositionEntity : personilPositionEntities){
@@ -460,10 +483,10 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
                     ImHrisShiftEntity shiftEntity = shiftDao.getById("shiftId",jadwalShiftKerjaDetailEntity.getShiftId());
 
-                    ImProfesiEntity profesiEntity = profesiDao.getById("profesiId",jadwalShiftKerjaDetailEntity.getProfesiId());
+                    ImPositionBagianEntity bagianEntity = positionBagianDao.getById("bagianId",jadwalShiftKerjaDetailEntity.getProfesiId());
 
                     returnJadwalShiftKerjaDetail.setProfesiid(jadwalShiftKerjaDetailEntity.getProfesiId());
-                    returnJadwalShiftKerjaDetail.setProfesiName(profesiEntity.getProfesiName());
+                    returnJadwalShiftKerjaDetail.setProfesiName(bagianEntity.getBagianName());
                     returnJadwalShiftKerjaDetail.setShiftName(shiftEntity.getShiftName());
                     returnJadwalShiftKerjaDetail.setAction(jadwalShiftKerjaDetailEntity.getAction());
                     returnJadwalShiftKerjaDetail.setFlag(jadwalShiftKerjaDetailEntity.getFlag());
@@ -704,7 +727,7 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
         if (!"".equalsIgnoreCase(tanggalAwal) && !"".equalsIgnoreCase(tanggalAkhir)) {
             try {
-                imLiburEntityList = liburDao.getLiburRange(Date.valueOf(tanggalAwal), Date.valueOf(tanggalAkhir));
+                imLiburEntityList = liburDao.getLiburRange(CommonUtil.convertStringToDate(tanggalAwal), CommonUtil.convertStringToDate(tanggalAkhir));
             }
             catch (HibernateException e) {
                 response.setStatus("Error");
@@ -714,7 +737,7 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
         if (!"".equalsIgnoreCase(tanggalAwal)) {
             try {
-                imLiburEntityList = liburDao.getListLibur(Date.valueOf(tanggalAwal));
+                imLiburEntityList = liburDao.getListLibur(CommonUtil.convertStringToDate(tanggalAwal));
             }
             catch (HibernateException e) {
                 response.setStatus("Error");

@@ -776,26 +776,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             return null;
         }
         logger.info("[JadwalShiftKerjaAction.searchPegawaiByGrup] end process <<<");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<JadwalShiftKerjaDetail> listOfResult = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
-
-        if (listOfResult!=null){
-            for(JadwalShiftKerjaDetail jadwalShiftKerjaDetail : jadwalShiftKerjaDetailList){
-                boolean ada = false;
-                for (JadwalShiftKerjaDetail detail : listOfResult) {
-                    if (detail.getNip().equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())) {
-                        ada = true;
-                        break;
-                    }
-                }
-                if (!ada){
-                    finalResult.add(jadwalShiftKerjaDetail);
-                }
-            }
-        }else{
-            finalResult=jadwalShiftKerjaDetailList;
-        }
-        return finalResult;
+        return jadwalShiftKerjaDetailList;
     }
     public void savePegawaiShift(String nip , String nama,String posisi,String grup,String grupId, String shift,String shiftId,String onCall) {
         logger.info("[JadwalShiftKerjaAction.savePegawaiShift] start process >>>");
@@ -826,14 +807,14 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         logger.info("[JadwalShiftKerjaAction.savePegawaiShift] end process <<<");
         return listOfResult;
     }
-    public List<JadwalShiftKerjaDetail> deletePegawaiShift(String nip) {
+    public List<JadwalShiftKerjaDetail> deletePegawaiShift(String nip,String shift) {
         logger.info("[JadwalShiftKerjaAction.deletePegawaiShift] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<JadwalShiftKerjaDetail> listOfResult = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
         List<JadwalShiftKerjaDetail> finalResult = new ArrayList<>();
 
         for (JadwalShiftKerjaDetail detail : listOfResult){
-            if (!nip.equalsIgnoreCase(detail.getNip())){
+            if (!nip.equalsIgnoreCase(detail.getNip())||!shift.equalsIgnoreCase(detail.getShiftId())){
                 finalResult.add(detail);
             }
         }
@@ -935,6 +916,29 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             data.setGroupId(CommonUtil.userBagianId());
         }
         return data;
+    }
+
+    public JadwalShiftKerja cekJadwalKerja(String nip,String shiftId){
+        JadwalShiftKerja jadwalShiftKerja= new JadwalShiftKerja();
+        String status ="";
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<JadwalShiftKerjaDetail> listOfResult = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
+        int jumlahJadwal = 0;
+        if (listOfResult!=null){
+            for (JadwalShiftKerjaDetail jadwalShiftKerjaDetail : listOfResult){
+                if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())){
+                    jumlahJadwal++;
+                }
+                if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())&&shiftId.equalsIgnoreCase(jadwalShiftKerjaDetail.getShiftId())){
+                    status="Pegawai dengan shift ini sudah ada";
+                }
+            }
+        }
+
+        jadwalShiftKerja.setStatusSave(status);
+        jadwalShiftKerja.setJumlahJadwal(jumlahJadwal);
+        return jadwalShiftKerja;
     }
 
     @Override

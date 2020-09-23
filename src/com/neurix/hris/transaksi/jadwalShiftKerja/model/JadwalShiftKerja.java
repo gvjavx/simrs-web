@@ -44,6 +44,24 @@ public class JadwalShiftKerja extends BaseModel {
     private String flagPanggil;
     private String grupIdUser;
     private boolean adminHcm=false;
+    private Integer jumlahJadwal;
+    private String statusSave;
+
+    public String getStatusSave() {
+        return statusSave;
+    }
+
+    public void setStatusSave(String statusSave) {
+        this.statusSave = statusSave;
+    }
+
+    public Integer getJumlahJadwal() {
+        return jumlahJadwal;
+    }
+
+    public void setJumlahJadwal(Integer jumlahJadwal) {
+        this.jumlahJadwal = jumlahJadwal;
+    }
 
     public boolean isAdminHcm() {
         return adminHcm;
