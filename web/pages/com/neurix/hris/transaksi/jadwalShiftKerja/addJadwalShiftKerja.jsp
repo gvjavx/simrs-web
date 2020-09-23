@@ -199,16 +199,16 @@
                                                             <div class="input-group-addon">
                                                                 <i class="fa fa-calendar"></i>
                                                             </div>
-                                                            <s:textfield id="tglAwal" name="jadwalShiftKerja.stTanggalAwal" cssClass="form-control pull-right"
-                                                                         required="false" cssStyle=""/>
+                                                            <s:textfield id="tglAwal" name="jadwalShiftKerja.stTanggalAwal" cssClass="form-control pull-right" readonly="true"
+                                                                         required="false" cssStyle="background-color: white"/>
                                                             <div class="input-group-addon">
                                                                 s/d
                                                             </div>
                                                             <div class="input-group-addon">
                                                                 <i class="fa fa-calendar"></i>
                                                             </div>
-                                                            <s:textfield id="tglAkhir" name="jadwalShiftKerja.stTanggalAkhir" cssClass="form-control pull-right"
-                                                                         cssStyle=""/>
+                                                            <s:textfield id="tglAkhir" name="jadwalShiftKerja.stTanggalAkhir" cssClass="form-control pull-right" readonly="true"
+                                                                         cssStyle="background-color: white"/>
                                                         </div>
                                                     </table>
                                                 </td>
@@ -546,7 +546,7 @@
                     '<td align="center">' + item.shiftName + '</td>' +
                     '<td align="center">' + item.onCall + '</td>' +
                     '<td align="center">' +
-                    "<a href='javascript:;' class ='item-delete-shift' data ='"+item.nip+"' nama ='"+item.namaPegawai+"' posisi ='"+item.positionName+"' >" +
+                    "<a href='javascript:;' class ='item-delete-shift' data ='"+item.nip+"' nama ='"+item.namaPegawai+"' shift ='"+item.shiftId+"' posisi ='"+item.positionName+"' >" +
                     "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>'>"+
                     '</a>' +
                     '</td>' +
@@ -574,18 +574,33 @@
             alert(pesan);
         }else{
             dwr.engine.setAsync(false);
-
-            JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,grupId,shift,shiftId,onCall,function() {
-                resultPerson();
-                listPerson();
-            });
+            JadwalShiftKerjaAction.cekJadwalKerja(nip,shiftId,function (data) {
+                if (data.statusSave==""){
+                    if (data.jumlahJadwal===1){
+                        if (confirm("Sudah ada jadwal sebelumnya apakah anda ingin menambahkan shift gantung ?")) {
+                            JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,grupId,shift,shiftId,onCall,function() {
+                                resultPerson();
+                                listPerson();
+                            });
+                        }
+                    }else if (data.jumlahJadwal===0){
+                        JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,grupId,shift,shiftId,onCall,function() {
+                            resultPerson();
+                            listPerson();
+                        });
+                    }
+                } else{
+                    alert(data.statusSave);
+                }
+            })
         }
     });
     $('.shiftTable').on('click', '.item-delete-shift', function () {
         if (confirm("Apakah data ini ingin dihapus ?")){
             var nip = $(this).attr('data');
+            var shift = $(this).attr('shift');
             dwr.engine.setAsync(false);
-            JadwalShiftKerjaAction.deletePegawaiShift(nip,function() {
+            JadwalShiftKerjaAction.deletePegawaiShift(nip,shift,function() {
                 resultPerson();
             });
         }
