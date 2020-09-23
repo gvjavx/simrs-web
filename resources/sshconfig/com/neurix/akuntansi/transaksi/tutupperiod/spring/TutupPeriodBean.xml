@@ -59,9 +59,9 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="saldoAkhirDetailDao" class="com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDetailDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="saldoAkhirTahunDao" class="com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirTahunDao"
+    <bean id="saldoAkhirHistoryDao" class="com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirHistoryDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="saldoAkhirDetailTahunDao" class="com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDetailTahunDao"
+    <bean id="saldoAkhirDetailHistoryDao" class="com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDetailHistoryDao"
           p:sessionFactory-ref="sessionFactory" />
 
 

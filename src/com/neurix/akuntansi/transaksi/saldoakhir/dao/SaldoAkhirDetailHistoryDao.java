@@ -1,6 +1,6 @@
 package com.neurix.akuntansi.transaksi.saldoakhir.dao;
 
-import com.neurix.akuntansi.transaksi.saldoakhir.model.ItAkunSaldoAkhirDetailTahunEntity;
+import com.neurix.akuntansi.transaksi.saldoakhir.model.ItAkunSaldoAkhirDetailHistoryEntity;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -14,17 +14,17 @@ import java.util.Map;
 /**
  * Created by reza on 20/03/20.
  */
-public class SaldoAkhirDetailTahunDao extends GenericDao<ItAkunSaldoAkhirDetailTahunEntity, String> {
+public class SaldoAkhirDetailHistoryDao extends GenericDao<ItAkunSaldoAkhirDetailHistoryEntity, String> {
 
     @Override
-    protected Class<ItAkunSaldoAkhirDetailTahunEntity> getEntityClass() {
-        return ItAkunSaldoAkhirDetailTahunEntity.class;
+    protected Class<ItAkunSaldoAkhirDetailHistoryEntity> getEntityClass() {
+        return ItAkunSaldoAkhirDetailHistoryEntity.class;
     }
 
     @Override
-    public List<ItAkunSaldoAkhirDetailTahunEntity> getByCriteria(Map mapCriteria) {
+    public List<ItAkunSaldoAkhirDetailHistoryEntity> getByCriteria(Map mapCriteria) {
 
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItAkunSaldoAkhirDetailTahunEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItAkunSaldoAkhirDetailHistoryEntity.class);
         if (mapCriteria.get("saldo_akhir_id") != null){
             criteria.add(Restrictions.eq("saldoAkhirId", mapCriteria.get("saldo_akhir_id").toString()));
         }

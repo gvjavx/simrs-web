@@ -12,8 +12,8 @@ import com.neurix.akuntansi.transaksi.jurnal.dao.pending.JurnalPendingDao;
 import com.neurix.akuntansi.transaksi.jurnal.model.*;
 import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDao;
 import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDetailDao;
-import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDetailTahunDao;
-import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirTahunDao;
+import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirDetailHistoryDao;
+import com.neurix.akuntansi.transaksi.saldoakhir.dao.SaldoAkhirHistoryDao;
 import com.neurix.akuntansi.transaksi.saldoakhir.model.*;
 import com.neurix.akuntansi.transaksi.tutupperiod.bo.TutupPeriodBo;
 import com.neurix.akuntansi.transaksi.tutupperiod.dao.BatasTutupPeriodDao;
@@ -22,13 +22,10 @@ import com.neurix.akuntansi.transaksi.tutupperiod.model.BatasTutupPeriod;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItAkunTutupPeriodEntity;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.TutupPeriod;
-import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
-import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
-import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.joda.time.DateTime;
@@ -37,7 +34,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.*;
 import java.util.*;
-import java.util.Date;
 import java.util.stream.Collectors;
 
 /**
@@ -56,8 +52,8 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
     private TutupPeriodDao tutupPeriodDao;
     private CheckupDetailDao checkupDetailDao;
     private SaldoAkhirDetailDao saldoAkhirDetailDao;
-    private SaldoAkhirTahunDao saldoAkhirTahunDao;
-    private SaldoAkhirDetailTahunDao saldoAkhirDetailTahunDao;
+    private SaldoAkhirHistoryDao saldoAkhirHistoryDao;
+    private SaldoAkhirDetailHistoryDao saldoAkhirDetailHistoryDao;
 
     private JurnalPendingDao jurnalPendingDao;
     private JurnalDetailPendingDao jurnalDetailPendingDao;
@@ -421,7 +417,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                                 jurnalDetail.setJumlahKredit(new BigDecimal(0));
                             }
 
-                            ItAkunSaldoAkhirTahunEntity saldoAkhirEntity = new ItAkunSaldoAkhirTahunEntity();
+                            ItAkunSaldoAkhirHistoryEntity saldoAkhirEntity = new ItAkunSaldoAkhirHistoryEntity();
                             saldoAkhirEntity.setSaldoAkhirId(getNextSaldoAkhirTahunId());
                             saldoAkhirEntity.setBranchId(bean.getUnit());
                             saldoAkhirEntity.setPeriode(bean.getBulan()+"-"+bean.getTahun());
@@ -473,7 +469,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                             listOfTutupData.add(jurnalDetail);
 
                             try {
-                                saldoAkhirTahunDao.addAndSave(saldoAkhirEntity);
+                                saldoAkhirHistoryDao.addAndSave(saldoAkhirEntity);
 
                                 TutupPeriod saldoDetail = new TutupPeriod();
                                 saldoDetail.setUnit(saldoAkhirEntity.getBranchId());
@@ -890,7 +886,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         }
     }
 
-    public void saveSaldoAkhirDetailTutupTahun(TutupPeriod bean, ItAkunSaldoAkhirTahunEntity saldoAkhirEntity){
+    public void saveSaldoAkhirDetailTutupTahun(TutupPeriod bean, ItAkunSaldoAkhirHistoryEntity saldoAkhirEntity){
 
         List<TutupPeriod> nilaiJurnalPerDivisi = tutupPeriodDao.getListDetailJurnalByCriteriaPerDivisi(bean);
         if (nilaiJurnalPerDivisi.size() > 0){
@@ -927,7 +923,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
 //                }
 
 
-                ItAkunSaldoAkhirDetailTahunEntity detailEntity = new ItAkunSaldoAkhirDetailTahunEntity();
+                ItAkunSaldoAkhirDetailHistoryEntity detailEntity = new ItAkunSaldoAkhirDetailHistoryEntity();
                 detailEntity.setId(saldoAkhirEntity.getPeriode()+"-"+getNextSaldoAkhirDetailTahunId());
                 detailEntity.setSaldoAkhirId(saldoAkhirEntity.getSaldoAkhirId());
                 detailEntity.setBranchId(saldoAkhirEntity.getBranchId());
@@ -970,7 +966,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                 detailEntity.setPosisi(posisi);
 
                 try {
-                    saldoAkhirDetailTahunDao.addAndSave(detailEntity);
+                    saldoAkhirDetailHistoryDao.addAndSave(detailEntity);
                 } catch (HibernateException e){
                     logger.error("[TutupPeriodBoImpl.saveSaldoAkhirDetailTutupTahun] ERROR. ",e);
                     throw new GeneralBOException("[TutupPeriodBoImpl.saveSaldoAkhirDetailTutupTahun] ERROR. ",e);
@@ -1205,7 +1201,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                     parentPeriod.setBulan(bean.getBulan());
                     parentPeriod.setTahun(bean.getTahun());
 
-                    ItAkunSaldoAkhirTahunEntity saldoAkhirEntity = new ItAkunSaldoAkhirTahunEntity();
+                    ItAkunSaldoAkhirHistoryEntity saldoAkhirEntity = new ItAkunSaldoAkhirHistoryEntity();
                     saldoAkhirEntity.setSaldoAkhirId(getNextSaldoAkhirTahunId());
                     saldoAkhirEntity.setBranchId(bean.getUnit());
                     saldoAkhirEntity.setPeriode(bean.getBulan()+"-"+bean.getTahun());
@@ -1246,7 +1242,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
                     listOfMapingParents.add(parentPeriod);
 
                     try {
-                        saldoAkhirTahunDao.addAndSave(saldoAkhirEntity);
+                        saldoAkhirHistoryDao.addAndSave(saldoAkhirEntity);
                     } catch (HibernateException e){
                         logger.error("[TutupPeriodBoImpl.hitungAndUpdateParentAkhirTahun] ERROR. ",e);
                         throw new GeneralBOException("[TutupPeriodBoImpl.hitungAndUpdateParentAkhirTahun] ERROR. ",e);
@@ -1945,7 +1941,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
     private String getNextSaldoAkhirTahunId(){
         String id = "";
         try {
-            id = saldoAkhirTahunDao.getNextSeq();
+            id = saldoAkhirHistoryDao.getNextSeq();
         } catch (HibernateException e){
             logger.error("[TutupPeriodBoImpl.getNextSaldoAkhirTahunId] ERROR. ", e);
         }
@@ -1956,7 +1952,7 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
     private String getNextSaldoAkhirDetailTahunId(){
         String id = "";
         try {
-            id = saldoAkhirDetailTahunDao.getNextSeq();
+            id = saldoAkhirDetailHistoryDao.getNextSeq();
         } catch (HibernateException e){
             logger.error("[TutupPeriodBoImpl.getNextSaldoAkhirDetailTahunId] ERROR. ", e);
         }
@@ -2016,12 +2012,12 @@ public class TutupPeriodBoImpl implements TutupPeriodBo {
         this.jurnalDetailActivityPendingDao = jurnalDetailActivityPendingDao;
     }
 
-    public void setSaldoAkhirTahunDao(SaldoAkhirTahunDao saldoAkhirTahunDao) {
-        this.saldoAkhirTahunDao = saldoAkhirTahunDao;
+    public void setSaldoAkhirHistoryDao(SaldoAkhirHistoryDao saldoAkhirHistoryDao) {
+        this.saldoAkhirHistoryDao = saldoAkhirHistoryDao;
     }
 
-    public void setSaldoAkhirDetailTahunDao(SaldoAkhirDetailTahunDao saldoAkhirDetailTahunDao) {
-        this.saldoAkhirDetailTahunDao = saldoAkhirDetailTahunDao;
+    public void setSaldoAkhirDetailHistoryDao(SaldoAkhirDetailHistoryDao saldoAkhirDetailHistoryDao) {
+        this.saldoAkhirDetailHistoryDao = saldoAkhirDetailHistoryDao;
     }
 
 
