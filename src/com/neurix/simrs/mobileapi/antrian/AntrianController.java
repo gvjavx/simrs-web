@@ -33,7 +33,7 @@ public class AntrianController implements ModelDriven<Object> {
         List<HeaderCheckup> headerCheckupList = null;
 
         try {
-            headerCheckupList = checkupBoProxy.getListAntrian(branch, poli);
+            headerCheckupList = checkupBoProxy.getListAntrian(branch, "'"+poli+"'");
         } catch (GeneralBOException e) {
             logger.error("[AntrianController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + e + "] Found problem when searching data by criteria, please inform to your admin.", e);
             throw new GeneralBOException(e);
@@ -50,6 +50,12 @@ public class AntrianController implements ModelDriven<Object> {
                 checkup.setNamaDesa(entity.getNamaDesa());
                 checkup.setNamaKecamatan(entity.getNamaKecamatan());
                 checkup.setNamaPelayanan(entity.getNamaPelayanan());
+                checkup.setNoCheckup(entity.getNoCheckup());
+                checkup.setIdDetailCheckup(entity.getIdDetailCheckup());
+                checkup.setNoAntrian(entity.getNoAntrian());
+                checkup.setBelumBayarUangMuka(entity.getBelumBayarUangMuka());
+                checkup.setStatusBayar(entity.getStatusBayar());
+                checkup.setIdJenisPeriksaPasien(entity.getStatusBayar());
                 listOfAntrian.add(checkup);
             }
         }

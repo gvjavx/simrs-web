@@ -226,6 +226,9 @@
         <action name="jadwalshift/*" class="com.neurix.hris.mobileapi.JadwalShiftController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="antrianpoli/*" class="com.neurix.simrs.mobileapi.antrian.AntrianController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>
