@@ -7,7 +7,7 @@
     <bean id="rekananOpsBo" class="com.neurix.simrs.master.rekananops.bo.impl.RekananOpsBoImpl"
           p:rekananOpsDao-ref="rekananOpsDao"
     />
-    <bean id="ruanganBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+    <bean id="rekananOpsBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="rekananOpsBo">
         <property name="interceptorNames">
             <list>
@@ -17,7 +17,7 @@
         </property>
     </bean>
 
-    <bean id="transactionRuanganInterceptor"
+    <bean id="transactionRekananOpsInterceptor"
           class="org.springframework.transaction.interceptor.TransactionInterceptor"
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">

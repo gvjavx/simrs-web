@@ -88,6 +88,28 @@ public class RekananOpsBoImpl implements RekananOpsBo {
         return null;
     }
 
+    @Override
+    public RekananOps getDetailRekananOps(String id) throws GeneralBOException {
+        RekananOps rekananOps = new RekananOps();
+        try {
+            rekananOps = rekananOpsDao.getDetailRekananOps(id);
+        }catch (HibernateException e){
+            logger.error("Error when search detail rekanan ops,"+e.getMessage());
+        }
+        return rekananOps;
+    }
+
+    @Override
+    public RekananOps getDetailRekananOpsByDetail(String id) throws GeneralBOException {
+        RekananOps rekananOps = new RekananOps();
+        try {
+            rekananOps = rekananOpsDao.getRekananOpsByIdDetail(id);
+        }catch (HibernateException e){
+            logger.error("Error when search detail rekanan ops,"+e.getMessage());
+        }
+        return rekananOps;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

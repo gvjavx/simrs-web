@@ -1,5 +1,7 @@
 package com.neurix.simrs.master.rekananops.model;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -7,7 +9,7 @@ public class RekananOps {
     private String idRekananOps;
     private String nomorMaster;
     private String namaRekanan;
-    private Long diskon;
+    private BigDecimal diskon;
     private String isBpjs;
     private String flag;
     private String action;
@@ -49,11 +51,11 @@ public class RekananOps {
         this.namaRekanan = namaRekanan;
     }
 
-    public Long getDiskon() {
+    public BigDecimal getDiskon() {
         return diskon;
     }
 
-    public void setDiskon(Long diskon) {
+    public void setDiskon(BigDecimal diskon) {
         this.diskon = diskon;
     }
 

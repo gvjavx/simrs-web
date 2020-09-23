@@ -186,7 +186,7 @@
                                     <s:hidden id="surat_rujukan" name="headerDetailCheckup.suratRujukan"/>
                                     <s:hidden id="is_laka" name="headerDetailCheckup.isLaka"/>
 
-                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
+                                    <s:if test='headerDetailCheckup.noSep != null'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
@@ -297,7 +297,7 @@
                                                 <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
                                                     <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                 </s:elseif>
-                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
+                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "rekanan"'>
                                                     <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                 </s:elseif>
                                                 <s:else>
@@ -928,7 +928,7 @@
                                             <select class="form-control select2" id="keterangan" style="width: 100%"
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                                 <option value="">[Select One]</option>
-                                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "umum" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
+                                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "umum" || headerDetailCheckup.idJenisPeriksaPasien == "rekanan"'>
                                                     <option value="selesai">Selesai</option>
                                                     <option value="pindah_poli">Pindah Poli</option>
                                                     <option value="rawat_inap">Rawat Inap</option>

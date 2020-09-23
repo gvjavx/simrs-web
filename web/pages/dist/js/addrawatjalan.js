@@ -2,8 +2,8 @@ function getJenisResep() {
 
     strSelect = "";
     var arBodyJenisResep = [];
-    if (jenisPeriksaPasien == "ptpn") {
-        arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"}, {"nilai": "ptpn", "label": "PTPN"});
+    if (jenisPeriksaPasien == "rekanan") {
+        arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"}, {"nilai": "rekanan", "label": "Rekanan"});
     } else if (jenisPeriksaPasien == "asuransi") {
         arBodyJenisResep.push({"nilai": "asuransi", "label": "ASURANSI"}, {"nilai": "umum", "label": "UMUM"});
     } else if (jenisPeriksaPasien == "bpjs") {
@@ -109,7 +109,7 @@ function hitungCoverBiaya() {
 
 function hitungStatusBiaya() {
     var jenis = $('#jenis_pasien').val();
-    if ("bpjs" == jenis || "ptpn" == jenis) {
+    if ("bpjs" == jenis || "rekanan" == jenis) {
         CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RWJ", function (response) {
             $('#status_bpjs').show();
             if (response.tarifBpjs != null && response.tarifTindakan != null) {

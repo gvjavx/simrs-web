@@ -36,7 +36,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Verifikasi Transaksi Pasien BPJS / PTPN Rawat Jalan
+            Verifikasi Transaksi Pasien BPJS / Rekanan Rawat Jalan
         </h1>
     </section>
 
@@ -647,11 +647,11 @@
                                 total = (parseInt(total) + parseInt(tarif));
                             }
 
-                            if (jenisPasien == "ptpn") {
+                            if (jenisPasien == "rekanan") {
                                 $('#jp').show();
                                 var choice1 = "";
                                 var choice2 = "";
-                                if (item.jenisPasien == "ptpn") {
+                                if (item.jenisPasien == "rekanan") {
                                     choice1 = "selected";
                                 }
                                 if (item.jenisPasien == "bpjs") {
@@ -665,7 +665,7 @@
                                     "<td>" +
                                     '<select style="width: 100%;" class="form-control select-2" id="jenis_pasien_' + i + '" onchange="updateApproveFlag(\''+item.idRiwayatTindakan+'\', \''+i+'\', \''+idDetailCheckup+'\', this.value)" '+disabledJenis+'>' +
                                     '<option value="bpjs" ' + choice2 + '>BPJS</option>' +
-                                    '<option value="ptpn" ' + choice1 + '>PTPN</option>' +
+                                    '<option value="rekanan" ' + choice1 + '>REKANAN</option>' +
                                     '</select>' +
                                     "</td>" +
                                     // "<td align='center'>" + '<input value="' + statusVal + '" type="hidden" id="status' + i + '">' + '<img id="btn' + i + '" class="hvr-grow" style="cursor: pointer" ' + onclick + ' src="' + btn + '">' + "</td>" +
