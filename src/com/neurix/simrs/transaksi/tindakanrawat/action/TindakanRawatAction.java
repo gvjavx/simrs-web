@@ -23,6 +23,7 @@ import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -191,13 +192,15 @@ public class TindakanRawatAction extends BaseMasterAction {
             }else if("rekanan".equalsIgnoreCase(jenisTransaksi)){
                 if("Y".equalsIgnoreCase(ops.getIsBpjs())){
                     if(ops.getDiskon() != null){
-                        tindakanRawat.setTarif(tindakanResult.getTarifBpjs().multiply(new BigInteger(ops.getDiskon().toString())));
+                        BigDecimal hasil = new BigDecimal(tindakanResult.getTarif()).multiply(ops.getDiskon());
+                        tindakanRawat.setTarif(hasil.toBigInteger());
                     }else{
                         tindakanRawat.setTarif(tindakanResult.getTarifBpjs());
                     }
                 }else{
                     if(ops.getDiskon() != null){
-                        tindakanRawat.setTarif(tindakanResult.getTarif().multiply(new BigInteger(ops.getDiskon().toString())));
+                        BigDecimal hasil = new BigDecimal(tindakanResult.getTarif()).multiply(ops.getDiskon());
+                        tindakanRawat.setTarif(hasil.toBigInteger());
                     }else{
                         tindakanRawat.setTarif(tindakanResult.getTarif());
                     }
@@ -427,13 +430,15 @@ public class TindakanRawatAction extends BaseMasterAction {
             }else if("rekanan".equalsIgnoreCase(jenisTransaksi)){
                 if("Y".equalsIgnoreCase(ops.getIsBpjs())){
                     if(ops.getDiskon() != null){
-                        tindakanRawat.setTarif(tindakanResult.getTarifBpjs().multiply(new BigInteger(ops.getDiskon().toString())));
+                        BigDecimal hasil = new BigDecimal(tindakanResult.getTarif()).multiply(ops.getDiskon());
+                        tindakanRawat.setTarif(hasil.toBigInteger());
                     }else{
                         tindakanRawat.setTarif(tindakanResult.getTarifBpjs());
                     }
                 }else{
                     if(ops.getDiskon() != null){
-                        tindakanRawat.setTarif(tindakanResult.getTarif().multiply(new BigInteger(ops.getDiskon().toString())));
+                        BigDecimal hasil = new BigDecimal(tindakanResult.getTarif()).multiply(ops.getDiskon());
+                        tindakanRawat.setTarif(hasil.toBigInteger());
                     }else{
                         tindakanRawat.setTarif(tindakanResult.getTarif());
                     }

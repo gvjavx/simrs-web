@@ -290,20 +290,24 @@
                                             <table>
                                                 <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
                                                     <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                        <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
                                                 </s:if>
                                                 <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "umum"'>
                                                     <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                        <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
                                                 </s:elseif>
                                                 <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
                                                     <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                        <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
                                                 </s:elseif>
                                                 <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "rekanan"'>
                                                     <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                        <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property> <s:property value="headerDetailCheckup.namaRekanan"></s:property>
                                                 </s:elseif>
                                                 <s:else>
                                                     <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                        <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
                                                 </s:else>
-                                                    <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
                                                 </span>
                                             </table>
                                         </td>
@@ -2256,6 +2260,8 @@
     var jenisTrans = 'rawat_jalan';
     var jenisPelayanan = '<s:property value="headerDetailCheckup.kategoriPelayanan"/>';
     var NOSEP = '<s:property value="headerDetailCheckup.noSep"/>';
+    var IdAsuransi = '<s:property value="headerDetailCheckup.idAsuransi"/>';
+    var isBpjsRekanan = "";
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');

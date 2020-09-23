@@ -551,7 +551,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                                 }else{
                                     if(diskon != null){
                                         BigDecimal hasil = new BigDecimal(tindakanEntity.getTarifBpjs()).multiply(diskon);
-                                        tindakanRawatEntity.setTarif(new BigInteger(hasil.toString()));
+                                        tindakanRawatEntity.setTarif(hasil.toBigInteger());
                                     }
                                 }
                             } else {

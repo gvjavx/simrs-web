@@ -360,7 +360,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             if (!"".equalsIgnoreCase(type)) {
                 jenisPasien = "AND b.id_jenis_periksa_pasien = '" + type + "' \n";
             } else {
-                jenisPasien = "AND b.id_jenis_periksa_pasien IN ('bpjs', 'ptpn') \n";
+                jenisPasien = "AND b.id_jenis_periksa_pasien IN ('bpjs', 'rekanan') \n";
             }
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {

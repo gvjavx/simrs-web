@@ -586,6 +586,19 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setAsesmenLabel("Asesmen " + label);
             detailCheckup.setTipePelayanan(checkup.getTipePelayanan());
 
+            if("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())){
+                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
+                RekananOps ops = new RekananOps();
+                try {
+                  ops = rekananOpsBo.getDetailRekananOps(checkup.getIdAsuransi());
+                }catch (HibernateException e){
+                    logger.error("Error, "+e.getMessage());
+                }
+                if(ops != null){
+                    detailCheckup.setNamaRekanan(ops.getNamaRekanan());
+                }
+            }
             setHeaderDetailCheckup(detailCheckup);
 
         } else {
@@ -4222,7 +4235,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         riwayatTindakan.setNamaTindakan("Periksa " + namaLab + " " + entity.getLabName());
 
                         // paket lab
-                        if (!"".equalsIgnoreCase(idPaket)) {
+                        if (!"".equalsIgnoreCase(idPaket) && idPaket != null) {
 
                             // mencari berdasarkan id paket dan id lab
                             ItemPaket itemPaket = riwayatTindakanBo.getTarifPaketLab(idPaket, entity.getIdLab());
