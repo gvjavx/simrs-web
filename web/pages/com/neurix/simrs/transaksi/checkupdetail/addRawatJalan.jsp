@@ -2379,6 +2379,10 @@
             }
 
         });
+
+        console.log('-----');
+        var sep = '<s:property value="headerDetailCheckup.noSep"/>';
+        console.log(sep);
     });
 
     function loadModalRM(jenis) {
