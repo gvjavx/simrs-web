@@ -703,24 +703,24 @@ public class PermintaanVendorAction extends BaseMasterAction {
             tglInvoice = obj.getString("tgl_invoice");
             tglDo = obj.getString("tgl_do");
 
-            if(obj.getString("img_url") != null && !"".equalsIgnoreCase(obj.getString("img_url"))){
-                BASE64Decoder decoder = new BASE64Decoder();
-                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img_url"));
-                logger.info("Decoded upload data : " + decodedBytes.length);
-                String fileName = noFaktur+"-"+dateFormater("MM")+dateFormater("yy")+".png";
-                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_DOC_PO+fileName;
-                logger.info("File save path : " + uploadFile);
-                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-
-                if (image == null) {
-                    logger.error("Buffered Image is null");
-                }else{
-                    File f = new File(uploadFile);
-                    // write the image
-                    ImageIO.write(image, "png", f);
-                    permintaanVendor.setUrlDoc(fileName);
-                }
-            }
+//            if(obj.getString("img_url") != null && !"".equalsIgnoreCase(obj.getString("img_url"))){
+//                BASE64Decoder decoder = new BASE64Decoder();
+//                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img_url"));
+//                logger.info("Decoded upload data : " + decodedBytes.length);
+//                String fileName = noFaktur+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+//                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_DOC_PO+fileName;
+//                logger.info("File save path : " + uploadFile);
+//                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+//
+//                if (image == null) {
+//                    logger.error("Buffered Image is null");
+//                }else{
+//                    File f = new File(uploadFile);
+//                    // write the image
+//                    ImageIO.write(image, "png", f);
+//                    permintaanVendor.setUrlDoc(fileName);
+//                }
+//            }
         }
 
         List<ItSimrsDocPoEntity> docPoEntities = new ArrayList<>();
