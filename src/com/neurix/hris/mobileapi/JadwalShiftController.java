@@ -135,7 +135,7 @@ public class JadwalShiftController implements ModelDriven<Object> {
             logger.error("[JadwalShiftController.create] Error when saving error,", e);
         }
 
-        //Jika pegawai memiliki flag shift Y
+        //Jika pegawai memiliki flag shift Y, maka akan mengambil jadwal shift
         if (bio.getShift().equalsIgnoreCase("Y")) {
 
             List<JadwalShiftKerjaDetail> result = new ArrayList<>();
@@ -182,6 +182,7 @@ public class JadwalShiftController implements ModelDriven<Object> {
                     listOfJadwalShift.add(jadwalShiftMobile);
                 }
             }
+            //jika tidak memiliki flag shift Y, maka akan mengambil jam kerja
         } else {
             JamKerja bean = new JamKerja();
             bean.setBranchId(branchId);
