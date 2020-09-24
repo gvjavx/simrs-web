@@ -2,7 +2,10 @@ package com.neurix.simrs.transaksi.rawatinap.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;
+import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
@@ -73,6 +76,7 @@ public class RawatInapBoImpl implements RawatInapBo {
     private HeaderCheckupDao headerCheckupDao;
     private CheckupDetailDao checkupDetailDao;
     private RiwayatTindakanDao riwayatTindakanDao;
+    private RekananOpsDao rekananOpsDao;
 
     public List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException {
         logger.info("[RawatInapBoImpl.getListEntityByCriteria] Start >>>>>>>");
@@ -1220,17 +1224,37 @@ public class RawatInapBoImpl implements RawatInapBo {
                     }
                     if(riwayatTindakanEntityList.isEmpty()){
                         ItSimrsRiwayatTindakanEntity entity = new ItSimrsRiwayatTindakanEntity();
+                        RekananOps ops = new RekananOps();
                         entity.setIdRiwayatTindakan("RWT"+riwayatTindakanDao.getNextSeq());
                         entity.setIdDetailCheckup(bean.getIdDetailCheckup());
                         entity.setIdTindakan(rawatInap.getIdRawatInap());
                         entity.setNamaTindakan("Kamar "+rawatInap.getNamaRangan());
                         entity.setKeterangan("kamar");
-                        entity.setTotalTarif(new BigDecimal(rawatInap.getTarif().multiply(rawatInap.getLamakamar())));
-                        if("ptpn".equalsIgnoreCase(bean.getIdJenisPeriksa())){
+
+                        try {
+                            ops = rekananOpsDao.getRekananOpsByIdDetail(rawatInap.getIdDetailCheckup(), CommonUtil.userBranchLogin());
+                        }catch (HibernateException e){
+                            response.setStatus("error");
+                            response.setMsg("When insert to riwayat unutk kamar...!, "+e.getMessage());
+                        }
+
+                        if("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksa()) && "Y".equalsIgnoreCase(ops.getIsBpjs())){
                             entity.setJenisPasien("bpjs");
                         }else{
                             entity.setJenisPasien(bean.getIdJenisPeriksa());
                         }
+
+                        if("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksa())){
+                            if(ops.getDiskon() != null){
+                                BigDecimal desimal = (new BigDecimal(rawatInap.getTarif().multiply(rawatInap.getLamakamar())).multiply(ops.getDiskon()));
+                                entity.setTotalTarif(desimal);
+                            }else{
+                                entity.setTotalTarif(new BigDecimal(rawatInap.getTarif().multiply(rawatInap.getLamakamar())));
+                            }
+                        }else{
+                            entity.setTotalTarif(new BigDecimal(rawatInap.getTarif().multiply(rawatInap.getLamakamar())));
+                        }
+
                         entity.setAction(bean.getAction());
                         entity.setFlag(bean.getFlag());
                         entity.setCreatedDate(bean.getCreatedDate());
@@ -1387,5 +1411,9 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
         this.riwayatTindakanDao = riwayatTindakanDao;
+    }
+
+    public void setRekananOpsDao(RekananOpsDao rekananOpsDao) {
+        this.rekananOpsDao = rekananOpsDao;
     }
 }
