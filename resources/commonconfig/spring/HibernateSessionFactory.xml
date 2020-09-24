@@ -573,6 +573,7 @@
 
                 <value>sshconfig/com/neurix/hris/master/jenisPegawai/hibernate/ImHrisJenisPegawaiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/jenisPegawai/hibernate/ImHrisJenisPegawaiHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/transaksi/absensi/hibernate/ItHrisMesinAbsensiDetailOnCallEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

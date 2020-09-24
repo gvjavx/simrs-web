@@ -523,3 +523,27 @@ ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN on_call character varyi
 ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN flag_panggil character varying(1);
 ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN panggil_who character varying(100);
 ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN panggil_date timestamp without time zone;
+
+--24-09-2020
+
+CREATE TABLE public.it_hris_mesin_absensi_detail_on_call
+(
+    mesin_absensi_detail_on_call_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    pin character varying(10) COLLATE pg_catalog."default",
+    status character varying(2) COLLATE pg_catalog."default",
+    scan_date timestamp without time zone,
+    action character varying(1) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    last_update timestamp without time zone,
+    created_date timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT mesin_absensi_detail_on_call_id_pk PRIMARY KEY (mesin_absensi_detail_on_call_id)
+);
+
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN status_absensi_2 character varying(2);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN status_absensi_on_call character varying(2);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_masuk_2 character varying(5);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_masuk_on_call character varying(5);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_keluar_2 character varying(5);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_pulang_on_call character varying(5);
