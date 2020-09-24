@@ -5,7 +5,9 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.mobileapi.model.MesinAbsensiMobile;
 import com.neurix.hris.transaksi.absensi.bo.AbsensiBo;
 import com.neurix.hris.transaksi.absensi.bo.MesinAbsensiDetailBo;
+import com.neurix.hris.transaksi.absensi.model.ItHrisMesinAbsensiDetailOnCallEntity;
 import com.neurix.hris.transaksi.absensi.model.MesinAbsensiDetail;
+import com.neurix.hris.transaksi.absensi.model.MesinAbsensiDetailOnCall;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
@@ -177,6 +179,25 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
 
         if  (action.equalsIgnoreCase("saveAddOnCall")) {
 
+
+            MesinAbsensiDetailOnCall bean = new MesinAbsensiDetailOnCall();
+            bean.setPin(pin);
+            bean.setStatus("M");
+            bean.setScanDate(new Timestamp(System.currentTimeMillis()));
+            bean.setFlag("Y");
+            bean.setAction("C");
+            bean.setCreatedDate(now);
+            bean.setLastUpdate(now);
+            bean.setCreatedWho(username);
+            bean.setLastUpdateWho(username);
+
+            try {
+                absensiBoProxy.saveAddAbsensiOnCall(bean);
+                model.setMessage("Success");
+            } catch (GeneralBOException e) {
+                logger.error("AbsensiOnlineController.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving data AbsensiOnlineController, please info to your admin..." + e.getMessage());
+            }
         }
 
         logger.info("AbsensiOnlineController.create] end process POST /absensi <<<");

@@ -77,4 +77,6 @@ public interface AbsensiBo extends BaseMasterBo<AbsensiPegawai> {
     List<AbsensiPegawai> cronInquiry(AbsensiPegawai data);
 
     void saveAddAbsensi(List<AbsensiPegawai> absensiPegawaiList, AbsensiPegawai bean) throws GeneralBOException;
+
+    void saveAddAbsensiOnCall(MesinAbsensiDetailOnCall bean) throws GeneralBOException;
 }

@@ -6786,4 +6786,27 @@ public class AbsensiBoImpl implements AbsensiBo {
         }
         logger.info("[AbsensiPegawaiBoImpl.saveAddAbsensi] end process <<<");
     }
+
+    @Override
+    public void saveAddAbsensiOnCall(MesinAbsensiDetailOnCall bean) {
+
+        ItHrisMesinAbsensiDetailOnCallEntity entity = new ItHrisMesinAbsensiDetailOnCallEntity();
+        entity.setMesinAbsensiDetailOnCallId(mesinAbsensiDetailOnCallDao.getId());
+        entity.setPin(bean.getPin());
+        entity.setScanDate(bean.getScanDate());
+        entity.setStatus(bean.getStatus());
+        entity.setAction("C");
+        entity.setFlag("Y");
+        entity.setCreatedWho(bean.getCreatedWho());
+        entity.setCreatedDate(bean.getCreatedDate());
+        entity.setLastUpdate(bean.getLastUpdate());
+        entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+        try {
+            mesinAbsensiDetailOnCallDao.addAndSave(entity);
+        } catch (GeneralBOException e) {
+            logger.error("[AbsensiPegawaiBoImpl.saveAddAbsensiOnCall] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving new data Absensi Pegawai, please info to your admin..." + e.getMessage());
+        }
+    }
 }
