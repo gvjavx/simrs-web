@@ -903,6 +903,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         List<Notifikasi> notifCuti = jadwalShiftKerjaBo.savePanggilBerdasarkanId(data);
 
         for (Notifikasi notifikasi : notifCuti ){
+            notifikasiBo.saveAdd(notifikasi);
             notifikasiBo.sendNotif(notifikasi);
         }
     }
