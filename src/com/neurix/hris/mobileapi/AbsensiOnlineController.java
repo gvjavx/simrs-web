@@ -175,6 +175,9 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
             model.setScanDate(temp2[0]+":"+temp2[1]);
         }
 
+        if  (action.equalsIgnoreCase("saveAddOnCall")) {
+
+        }
 
         logger.info("AbsensiOnlineController.create] end process POST /absensi <<<");
         return new DefaultHttpHeaders("success")
