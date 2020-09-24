@@ -97,5 +97,24 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
+
+        <property name="statusAbsensi2">
+            <column name="status_absensi_2"/>
+        </property>
+        <property name="jamMasuk2">
+            <column name="jam_masuk_2"/>
+        </property>
+        <property name="jamPulang2">
+            <column name="jam_keluar_2"/>
+        </property>
+        <property name="statusAbsensiOnCall">
+            <column name="status_absensi_on_call"/>
+        </property>
+        <property name="jamMasukOnCall">
+            <column name="jam_masuk_on_call"/>
+        </property>
+        <property name="jamPulangOnCall">
+            <column name="jam_pulang_on_call"/>
+        </property>
     </class>
 </hibernate-mapping>
