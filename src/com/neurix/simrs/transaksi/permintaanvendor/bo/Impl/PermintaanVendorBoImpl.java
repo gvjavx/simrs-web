@@ -2070,6 +2070,11 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         return permintaanVendorDao.getListImg(idItem);
     }
 
+    @Override
+    public List<TransaksiObatBatch> getListBatchByJenisItem(String idItem, String jenis) throws GeneralBOException {
+        return permintaanVendorDao.getListBatchByJenis(idItem, jenis);
+    }
+
     // for get sequence id
 
     private String nextIdPermintanVendor() {

@@ -45,5 +45,5 @@ public interface PermintaanVendorBo {
     public void saveListDocVendor(List<ItSimrsDocPoEntity> docPoEntities) throws GeneralBOException;
     public List<DocPo> getListItemDoc(String idPermintaanVendor, String noBatch) throws GeneralBOException;
     public List<DocPo> getListImgByItem(String idItem) throws GeneralBOException;
-
+    public List<TransaksiObatBatch> getListBatchByJenisItem(String idItem, String jenis) throws GeneralBOException;
 }

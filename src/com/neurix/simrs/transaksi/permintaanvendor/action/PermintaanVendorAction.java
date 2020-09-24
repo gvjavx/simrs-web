@@ -1840,6 +1840,11 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return permintaanVendorBo.getListImgByItem(idItem);
     }
 
+    public List<TransaksiObatBatch> getListBatchByJenisItem(String idItem, String jenis) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+        return permintaanVendorBo.getListBatchByJenisItem(idItem, jenis);
+    }
 
     @Override
     public String downloadPdf() {
