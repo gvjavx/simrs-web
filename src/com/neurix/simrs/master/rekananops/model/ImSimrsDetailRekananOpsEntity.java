@@ -1,28 +1,28 @@
 package com.neurix.simrs.master.rekananops.model;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class ImSimrsRekananOpsEntity {
+public class ImSimrsDetailRekananOpsEntity {
+    private String idDetailRekananOps;
     private String idRekananOps;
-    private String nomorMaster;
-    private String namaRekanan;
+    private BigInteger diskon;
+    private String isBpjs;
+    private String branchId;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String tipe;
 
-    public String getTipe() {
-        return tipe;
+    public String getIdDetailRekananOps() {
+        return idDetailRekananOps;
     }
 
-    public void setTipe(String tipe) {
-        this.tipe = tipe;
+    public void setIdDetailRekananOps(String idDetailRekananOps) {
+        this.idDetailRekananOps = idDetailRekananOps;
     }
 
     public String getIdRekananOps() {
@@ -33,20 +33,28 @@ public class ImSimrsRekananOpsEntity {
         this.idRekananOps = idRekananOps;
     }
 
-    public String getNomorMaster() {
-        return nomorMaster;
+    public BigInteger getDiskon() {
+        return diskon;
     }
 
-    public void setNomorMaster(String nomorMaster) {
-        this.nomorMaster = nomorMaster;
+    public void setDiskon(BigInteger diskon) {
+        this.diskon = diskon;
     }
 
-    public String getNamaRekanan() {
-        return namaRekanan;
+    public String getIsBpjs() {
+        return isBpjs;
     }
 
-    public void setNamaRekanan(String namaRekanan) {
-        this.namaRekanan = namaRekanan;
+    public void setIsBpjs(String isBpjs) {
+        this.isBpjs = isBpjs;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 
     public String getFlag() {
@@ -101,10 +109,12 @@ public class ImSimrsRekananOpsEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ImSimrsRekananOpsEntity that = (ImSimrsRekananOpsEntity) o;
-        return Objects.equals(idRekananOps, that.idRekananOps) &&
-                Objects.equals(nomorMaster, that.nomorMaster) &&
-                Objects.equals(namaRekanan, that.namaRekanan) &&
+        ImSimrsDetailRekananOpsEntity that = (ImSimrsDetailRekananOpsEntity) o;
+        return Objects.equals(idDetailRekananOps, that.idDetailRekananOps) &&
+                Objects.equals(idRekananOps, that.idRekananOps) &&
+                Objects.equals(diskon, that.diskon) &&
+                Objects.equals(isBpjs, that.isBpjs) &&
+                Objects.equals(branchId, that.branchId) &&
                 Objects.equals(flag, that.flag) &&
                 Objects.equals(action, that.action) &&
                 Objects.equals(createdDate, that.createdDate) &&
@@ -115,6 +125,6 @@ public class ImSimrsRekananOpsEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idRekananOps, nomorMaster, namaRekanan, flag, action, createdDate, createdWho, lastUpdate, lastUpdateWho);
+        return Objects.hash(idDetailRekananOps, idRekananOps, diskon, isBpjs, branchId, flag, action, createdDate, createdWho, lastUpdate, lastUpdateWho);
     }
 }

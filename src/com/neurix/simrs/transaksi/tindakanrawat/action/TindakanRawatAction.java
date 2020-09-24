@@ -178,7 +178,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             RekananOps ops = new RekananOps();
             if("rekanan".equalsIgnoreCase(jenisTransaksi)){
                 try {
-                    ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetailCheckup);
+                    ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetailCheckup, userArea);
                 }catch (GeneralBOException e){
                     logger.error("Error, "+e.getMessage());
                     response.setStatus("error");
@@ -416,7 +416,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             RekananOps ops = new RekananOps();
             if("rekanan".equalsIgnoreCase(jenisTransaksi)){
                 try {
-                    ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetailCheckup);
+                    ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetailCheckup, userArea);
                 }catch (GeneralBOException e){
                     logger.error("Error, "+e.getMessage());
                     response.setStatus("error");

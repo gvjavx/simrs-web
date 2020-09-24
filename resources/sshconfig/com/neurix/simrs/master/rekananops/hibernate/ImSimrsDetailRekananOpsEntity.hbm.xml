@@ -2,17 +2,23 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
         version="2.0">
 
-    <entity class="com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity">
-        <table name="im_simrs_rekanan_ops" schema="public"/>
+    <entity class="com.neurix.simrs.master.rekananops.model.ImSimrsDetailRekananOpsEntity">
+        <table name="im_simrs_detail_rekanan_ops" schema="public" catalog="simrs"/>
         <attributes>
-            <id name="idRekananOps">
-                <column name="id_rekanan_ops"/>
+            <id name="idDetailRekananOps">
+                <column name="id_detail_rekanan_ops"/>
             </id>
-            <basic name="nomorMaster">
-                <column name="nomor_master"/>
+            <basic name="idRekananOps">
+                <column name="id_rekanan_ops"/>
             </basic>
-            <basic name="namaRekanan">
-                <column name="nama_rekanan"/>
+            <basic name="diskon">
+                <column name="diskon"/>
+            </basic>
+            <basic name="isBpjs">
+                <column name="is_bpjs"/>
+            </basic>
+            <basic name="branchId">
+                <column name="branch_id"/>
             </basic>
             <basic name="flag">
                 <column name="flag"/>
@@ -31,9 +37,6 @@
             </basic>
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
-            </basic>
-            <basic name="tipe">
-                <column name="tipe"/>
             </basic>
         </attributes>
     </entity>

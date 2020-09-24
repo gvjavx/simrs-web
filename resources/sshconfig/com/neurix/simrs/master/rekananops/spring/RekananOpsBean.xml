@@ -33,4 +33,7 @@
     <bean id="rekananOpsDao" class="com.neurix.simrs.master.rekananops.dao.RekananOpsDao"
           p:sessionFactory-ref="sessionFactory" />
 
+    <bean id="detailRekananOpsDao" class="com.neurix.simrs.master.rekananops.dao.DetailRekananOpsDao"
+          p:sessionFactory-ref="sessionFactory" />
+
 </beans>

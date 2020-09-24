@@ -2295,11 +2295,15 @@
     }
 
     function cekPtpn(value){
+        console.log(value);
         if(value != ''){
             var rekanan = value.split("|");
             var idRekananOps = rekanan[0];
             var isBpjs = rekanan[1];
             var tipeRekanan = rekanan[2];
+            console.log(idRekananOps);
+            console.log(isBpjs);
+            console.log(tipeRekanan);
 
             if(isBpjs == 'Y'){
                 $('#form_no_bpjs, #form_rujukan').show();

@@ -731,8 +731,6 @@ CREATE TABLE public.im_simrs_rekanan_ops
   id_rekanan_ops character varying(50) NOT NULL,
   nomor_master character varying(100),
   nama_rekanan character varying(100),
-  diskon bigint,
-  is_bpjs character varying(1),
   flag character varying(1),
   action character varying(1),
   created_date timestamp without time zone,
@@ -761,6 +759,28 @@ last_update_who = 'admin',
 tipe = 'ptpn'
 
 
+CREATE TABLE public.im_simrs_detail_rekanan_ops
+(
+  id_detail_rekanan_ops character varying(50) NOT NULL,
+  id_rekanan_ops character varying(50) NOT NULL,
+  diskon numeric,
+  is_bpjs character varying(1),
+  branch_id character varying(50),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT im_simrs_detail_rekanan_ops_pk PRIMARY KEY (id_detail_rekanan_ops)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.im_simrs_detail_rekanan_ops
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_detail_rekanan_ops;
 
 
 

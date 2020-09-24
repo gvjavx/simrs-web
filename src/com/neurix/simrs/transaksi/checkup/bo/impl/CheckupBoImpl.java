@@ -513,7 +513,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 if("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())){
                     RekananOps ops = new RekananOps();
                     try {
-                        ops = rekananOpsDao.getDetailRekananOps(bean.getIdAsuransi());
+                        ops = rekananOpsDao.getDetailRekananOps(bean.getIdAsuransi(), bean.getBranchId());
                     }catch (HibernateException e){
                         logger.error("Error when search diskon, "+e.getMessage());
                     }

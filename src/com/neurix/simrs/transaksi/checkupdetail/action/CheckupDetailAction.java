@@ -590,8 +590,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                 ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
                 RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
                 RekananOps ops = new RekananOps();
+                String userBranch = CommonUtil.userBranchLogin();
                 try {
-                  ops = rekananOpsBo.getDetailRekananOps(checkup.getIdAsuransi());
+                  ops = rekananOpsBo.getDetailRekananOps(checkup.getIdAsuransi(), userBranch);
                 }catch (HibernateException e){
                     logger.error("Error, "+e.getMessage());
                 }
@@ -4096,11 +4097,12 @@ public class CheckupDetailAction extends BaseMasterAction {
             OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
             CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
             RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
+            String userBranch = CommonUtil.userBranchLogin();
 
             RekananOps ops = new RekananOps();
             if("rekanan".equalsIgnoreCase(jenisPasien)){
                 try {
-                    ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetail);
+                    ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetail, userBranch);
                 }catch (GeneralBOException e){
                     logger.error("Error, "+e.getMessage());
                 }

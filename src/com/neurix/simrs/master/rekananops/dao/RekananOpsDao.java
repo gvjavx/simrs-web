@@ -36,11 +36,7 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
                 criteria.add(Restrictions.eq("nomorMaster", mapCriteria.get("nomor_master").toString()));
             }
 
-            if (mapCriteria.get("is_bpjs") != null) {
-                criteria.add(Restrictions.eq("isBpjs", mapCriteria.get("is_bpjs")));
-            }
-
-            if(mapCriteria.get("flag") != null){
+            if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
             }
         }
@@ -50,24 +46,62 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
         return results;
     }
 
-    public RekananOps getDetailRekananOps(String id){
-        RekananOps ops = new RekananOps();
-        if(id != null && !"".equalsIgnoreCase(id)){
+    public List<RekananOps> getComboRekananOps(String branchId) {
+        List<RekananOps> opsList = new ArrayList<>();
+        if (branchId != null && !"".equalsIgnoreCase(branchId)) {
             String SQL = "SELECT \n" +
-                    "id_rekanan_ops,\n" +
-                    "nomor_master,\n" +
-                    "nama_rekanan,\n" +
-                    "is_bpjs,\n" +
-                    "ROUND((((100 - diskon) / 100)), 2) as sisa_persen\n" +
-                    "FROM im_simrs_rekanan_ops\n" +
-                    "WHERE id_rekanan_ops = :id ";
+                    "a.id_rekanan_ops,\n" +
+                    "a.nomor_master,\n" +
+                    "a.nama_rekanan,\n" +
+                    "a.tipe,\n" +
+                    "b.is_bpjs,\n" +
+                    "ROUND((((100 - b.diskon) / 100)), 2) as sisa_persen\n" +
+                    "FROM im_simrs_rekanan_ops a\n" +
+                    "INNER JOIN im_simrs_detail_rekanan_ops b ON a.id_rekanan_ops = b.id_rekanan_ops\n" +
+                    "WHERE b.branch_id = :branchId \n";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("branchId", branchId)
+                    .list();
+
+            if (result.size() > 0) {
+                for (Object[] obj : result) {
+                    RekananOps rekananOps = new RekananOps();
+                    rekananOps.setIdRekananOps(obj[0] != null ? obj[0].toString() : "");
+                    rekananOps.setNomorMaster(obj[1] != null ? obj[1].toString() : "");
+                    rekananOps.setNamaRekanan(obj[2] != null ? obj[2].toString() : "");
+                    rekananOps.setTipe(obj[3] != null ? obj[3].toString() : "");
+                    rekananOps.setIsBpjs(obj[4] != null ? obj[4].toString() : "");
+                    rekananOps.setDiskon(obj[5] != null ? new BigDecimal(obj[5].toString()) : null);
+                    opsList.add(rekananOps);
+                }
+            }
+        }
+        return opsList;
+    }
+
+    public RekananOps getDetailRekananOps(String id, String branchId) {
+        RekananOps ops = new RekananOps();
+        if (id != null && !"".equalsIgnoreCase(id)) {
+            String SQL = "SELECT \n" +
+                    "a.id_rekanan_ops,\n" +
+                    "a.nomor_master,\n" +
+                    "a.nama_rekanan,\n" +
+                    "b.is_bpjs,\n" +
+                    "ROUND((((100 - b.diskon) / 100)), 2) as sisa_persen\n" +
+                    "FROM im_simrs_rekanan_ops a\n" +
+                    "INNER JOIN im_simrs_detail_rekanan_ops b ON a.id_rekanan_ops = b.id_rekanan_ops\n" +
+                    "WHERE a.id_rekanan_ops = :id \n" +
+                    "AND b.branch_id = :branchId \n";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", id)
+                    .setParameter("branchId", branchId)
                     .list();
 
-            if(result.size() > 0){
+            if (result.size() > 0) {
                 Object[] obj = result.get(0);
                 ops.setIdRekananOps(obj[0] != null ? obj[0].toString() : "");
                 ops.setNomorMaster(obj[1] != null ? obj[1].toString() : "");
@@ -79,25 +113,28 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
         return ops;
     }
 
-    public RekananOps getRekananOpsByIdDetail(String id){
+    public RekananOps getRekananOpsByIdDetail(String id, String branchId) {
         RekananOps ops = new RekananOps();
-        if(id != null && !"".equalsIgnoreCase(id)){
+        if (id != null && !"".equalsIgnoreCase(id)) {
             String SQL = "SELECT \n" +
                     "a.id_rekanan_ops,\n" +
                     "a.nomor_master,\n" +
                     "a.nama_rekanan,\n" +
-                    "a.is_bpjs,\n" +
-                    "ROUND((((100 - a.diskon) / 100)), 2) as sisa_persen\n" +
+                    "b.is_bpjs,\n" +
+                    "ROUND((((100 - b.diskon) / 100)), 2) as sisa_persen\n" +
                     "FROM im_simrs_rekanan_ops a\n" +
-                    "INNER JOIN it_simrs_header_detail_checkup b ON a.id_rekanan_ops = b.id_asuransi\n" +
-                    "WHERE b.id_detail_checkup = :id";
+                    "INNER JOIN im_simrs_detail_rekanan_ops b ON a.id_rekanan_ops = b.id_rekanan_ops\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup c ON a.id_rekanan_ops = c.id_asuransi\n" +
+                    "WHERE c.id_detail_checkup = :id \n"+
+                    "AND b.branch_id = :branchId \n";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", id)
+                    .setParameter("branchId", branchId)
                     .list();
 
-            if(result.size() > 0){
+            if (result.size() > 0) {
                 Object[] obj = result.get(0);
                 ops.setIdRekananOps(obj[0] != null ? obj[0].toString() : "");
                 ops.setNomorMaster(obj[1] != null ? obj[1].toString() : "");

@@ -575,6 +575,7 @@
                 <value>sshconfig/com/neurix/hris/master/jenisPegawai/hibernate/ImHrisJenisPegawaiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/jenisPegawai/hibernate/ImHrisJenisPegawaiHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/rekananops/hibernate/ImSimrsRekananOpsEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/rekananops/hibernate/ImSimrsDetailRekananOpsEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

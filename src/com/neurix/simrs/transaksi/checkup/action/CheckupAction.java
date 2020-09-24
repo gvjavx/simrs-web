@@ -967,7 +967,7 @@ public class CheckupAction extends BaseMasterAction {
 
                             if("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())){
                                 try {
-                                    ops = rekananOpsBo.getDetailRekananOps(checkup.getIdAsuransi());
+                                    ops = rekananOpsBo.getDetailRekananOps(checkup.getIdAsuransi(), userArea);
                                 }catch (GeneralBOException e){
                                     throw new GeneralBOException("Tidak dapat mencari diskon rekanan...!");
                                 }
@@ -3750,9 +3750,9 @@ public class CheckupAction extends BaseMasterAction {
         List<RekananOps> rekananOpsList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
-        RekananOps rekananOps = new RekananOps();
+        String userArea = CommonUtil.userBranchLogin();
         try {
-            rekananOpsList = rekananOpsBo.getByCriteria(rekananOps);
+            rekananOpsList = rekananOpsBo.getComboRekananOps(userArea);
         } catch (GeneralBOException e) {
             logger.error("Found Error, " + e.getMessage());
         }
@@ -3764,9 +3764,10 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.cekRekananOps] START process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
+        String userArea = CommonUtil.userBranchLogin();
         RekananOps rekananOps = new RekananOps();
         try {
-            rekananOps = rekananOpsBo.getDetailRekananOps(id);
+            rekananOps = rekananOpsBo.getDetailRekananOps(id, userArea);
         } catch (GeneralBOException e) {
             logger.error("Found Error, " + e.getMessage());
         }
@@ -3778,9 +3779,10 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.cekRekananOps] START process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
+        String userArea = CommonUtil.userBranchLogin();
         RekananOps rekananOps = new RekananOps();
         try {
-            rekananOps = rekananOpsBo.getDetailRekananOpsByDetail(id);
+            rekananOps = rekananOpsBo.getDetailRekananOpsByDetail(id, userArea);
         } catch (GeneralBOException e) {
             logger.error("Found Error, " + e.getMessage());
         }

@@ -11,6 +11,7 @@ public interface RekananOpsBo {
     public CrudResponse saveAdd(RekananOps bean) throws GeneralBOException;
     public CrudResponse saveEdit(RekananOps bean) throws GeneralBOException;
     public CrudResponse saveDelete(RekananOps bean) throws GeneralBOException;
-    public RekananOps getDetailRekananOps(String id) throws GeneralBOException;
-    public RekananOps getDetailRekananOpsByDetail(String id) throws GeneralBOException;
+    public RekananOps getDetailRekananOps(String id, String branchId) throws GeneralBOException;
+    public RekananOps getDetailRekananOpsByDetail(String id, String branchId) throws GeneralBOException;
+    public List<RekananOps> getComboRekananOps(String branchId) throws GeneralBOException;
 }

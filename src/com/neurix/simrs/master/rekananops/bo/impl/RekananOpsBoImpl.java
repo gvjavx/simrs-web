@@ -56,8 +56,6 @@ public class RekananOpsBoImpl implements RekananOpsBo {
                     rekananOps.setIdRekananOps(listEntity.getIdRekananOps());
                     rekananOps.setNomorMaster(listEntity.getNomorMaster());
                     rekananOps.setNamaRekanan(listEntity.getNamaRekanan());
-                    rekananOps.setIsBpjs(listEntity.getIsBpjs());
-                    rekananOps.setDiskon(listEntity.getDiskon());
                     rekananOps.setAction(listEntity.getAction());
                     rekananOps.setFlag(listEntity.getFlag());
                     rekananOps.setCreatedDate(listEntity.getCreatedDate());
@@ -89,10 +87,10 @@ public class RekananOpsBoImpl implements RekananOpsBo {
     }
 
     @Override
-    public RekananOps getDetailRekananOps(String id) throws GeneralBOException {
+    public RekananOps getDetailRekananOps(String id, String branchId) throws GeneralBOException {
         RekananOps rekananOps = new RekananOps();
         try {
-            rekananOps = rekananOpsDao.getDetailRekananOps(id);
+            rekananOps = rekananOpsDao.getDetailRekananOps(id, branchId);
         }catch (HibernateException e){
             logger.error("Error when search detail rekanan ops,"+e.getMessage());
         }
@@ -100,10 +98,21 @@ public class RekananOpsBoImpl implements RekananOpsBo {
     }
 
     @Override
-    public RekananOps getDetailRekananOpsByDetail(String id) throws GeneralBOException {
+    public RekananOps getDetailRekananOpsByDetail(String id, String branchId) throws GeneralBOException {
         RekananOps rekananOps = new RekananOps();
         try {
-            rekananOps = rekananOpsDao.getRekananOpsByIdDetail(id);
+            rekananOps = rekananOpsDao.getRekananOpsByIdDetail(id, branchId);
+        }catch (HibernateException e){
+            logger.error("Error when search detail rekanan ops,"+e.getMessage());
+        }
+        return rekananOps;
+    }
+
+    @Override
+    public List<RekananOps> getComboRekananOps(String branchId) throws GeneralBOException {
+        List<RekananOps> rekananOps = new ArrayList<>();
+        try {
+            rekananOps = rekananOpsDao.getComboRekananOps(branchId);
         }catch (HibernateException e){
             logger.error("Error when search detail rekanan ops,"+e.getMessage());
         }
