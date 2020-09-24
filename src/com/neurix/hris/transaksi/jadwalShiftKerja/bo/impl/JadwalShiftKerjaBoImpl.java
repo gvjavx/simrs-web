@@ -27,6 +27,7 @@ import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.dao.JadwalShiftKerjaDao;
 import com.neurix.hris.transaksi.jadwalShiftKerja.dao.JadwalShiftKerjaDetailDao;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.*;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
@@ -787,8 +788,15 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             jadwalShiftKerjaDetailDao.updateAndSave(jadwalShiftKerjaDetailEntity);
 
             //KIRIM NOTIFIKASI
-//            notif.setNip(jadwalShiftKerjaDetailEntity.getNip());
-//            notifikasiList.add(notif);
+            notif.setNip(jadwalShiftKerjaDetailEntity.getNip());
+            notif.setNoRequest(jadwalShiftKerjaDetailEntity.getJadwalShiftKerjaDetailId());
+            notif.setNote("Anda dipanggil untuk bertugas pada " + CommonUtil.convertTimestampToString(bean.getPanggilDate()));
+            notif.setCreatedWho("admin");
+            notif.setTo("self");
+            notif.setTipeNotifName("On Call");
+            notifikasiList.add(notif);
+
+
         }catch (Exception e){
             logger.error("[JadwalShiftKerjaBoImpl.savePanggilBerdasarkanId] Error, " + e.getMessage());
             throw new GeneralBOException("Error : " + e.getMessage());
