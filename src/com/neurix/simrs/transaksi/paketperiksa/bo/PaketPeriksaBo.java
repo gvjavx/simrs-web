@@ -16,7 +16,7 @@ public interface PaketPeriksaBo{
     public List<PaketPeriksa> getListPaketPeriksa(PaketPeriksa bean) throws GeneralBOException;
     public List<PaketPasien> getListPaketPasien(PaketPasien bean) throws GeneralBOException;
     public List<ItemPaket> getListItemPaket(ItemPaket bean) throws GeneralBOException;
-    public CrudResponse savePaketPeriksa(MtSimrsPaketEntity bean, List<MtSimrsItemPaketEntity> listItem) throws GeneralBOException;
+    public CrudResponse savePaketPeriksa(MtSimrsPaketEntity bean, List<MtSimrsItemPaketEntity> listItem, List<MtSimrsDetailPaketEntity> detailPaket) throws GeneralBOException;
     public CheckResponse savePaketPasien(PaketPasien bean) throws GeneralBOException;
     public void saveItemPaket(ItemPaket bean) throws GeneralBOException;
 

@@ -7,7 +7,6 @@
     <class name="com.neurix.simrs.master.lab.model.ImSimrsLabEntity" dynamic-update="true"
            table="im_simrs_lab" select-before-update="true" schema="public">
 
-
         <id name="idLab">
             <column name="id_lab" sql-type="varchar" length="10" not-null="true" />
         </id>
@@ -45,6 +44,8 @@
         <property name="tarif">
             <column name="tarif" sql-type="numeric" not-null="false" />
         </property>
-
+        <property name="branchId">
+            <column name="branch_id"/>
+        </property>
     </class>
 </hibernate-mapping>

@@ -18,6 +18,15 @@ public class ImSimrsLabEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private BigDecimal tarif;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public BigDecimal getTarif() {
         return tarif;

@@ -44,9 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by reza on 12/03/20.
- */
+
 public class PaketPeriksaAction extends BaseTransactionAction {
 
     public static transient Logger logger = Logger.getLogger(PaketPeriksaAction.class);
@@ -116,46 +114,61 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         return list;
     }
 
-    public CrudResponse savePaket(String namaPaket, BigDecimal tarifPaket, String jsonString) throws JSONException{
+    public CrudResponse savePaket(String namaPaket, String jsonString, String pelayanan){
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
-
-        CrudResponse response = new CrudResponse();
-
-        JSONArray json = new JSONArray(jsonString);
-        List<MtSimrsItemPaketEntity> itemPaketEntities = new ArrayList<>();
-        MtSimrsItemPaketEntity itemPaketEntity;
-        BigInteger harga = new BigInteger(String.valueOf(0));
-        for (int i = 0; i < json.length(); i++) {
-            JSONObject obj = json.getJSONObject(i);
-            itemPaketEntity = new MtSimrsItemPaketEntity();
-            itemPaketEntity.setIdItem(obj.getString("id_item"));
-            itemPaketEntity.setIdKategoriItem(obj.getString("kategori_item"));
-            itemPaketEntity.setJenisItem(obj.getString("jenis_item"));
-            itemPaketEntity.setHarga(new BigInteger(obj.get("tarif").toString()));
-            harga = harga.add(itemPaketEntity.getHarga());
-            itemPaketEntities.add(itemPaketEntity);
-        }
-
-        MtSimrsPaketEntity paketPeriksa = new MtSimrsPaketEntity();
-        paketPeriksa.setNamaPaket(namaPaket);
-        paketPeriksa.setTarif(new BigDecimal(harga));
-        paketPeriksa.setFlag("Y");
-        paketPeriksa.setAction("C");
-        paketPeriksa.setBranchId(CommonUtil.userBranchLogin());
-        paketPeriksa.setCreatedDate(time);
-        paketPeriksa.setCreatedWho(userLogin);
-        paketPeriksa.setLastUpdate(time);
-        paketPeriksa.setLastUpdateWho(userLogin);
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+        CrudResponse response = new CrudResponse();
 
         try {
-            response = paketPeriksaBo.savePaketPeriksa(paketPeriksa, itemPaketEntities);
-        } catch (GeneralBOException e){
+            JSONArray json = new JSONArray(jsonString);
+            List<MtSimrsItemPaketEntity> itemPaketEntities = new ArrayList<>();
+            MtSimrsItemPaketEntity itemPaketEntity;
+            BigInteger harga = new BigInteger(String.valueOf(0));
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject obj = json.getJSONObject(i);
+                itemPaketEntity = new MtSimrsItemPaketEntity();
+                itemPaketEntity.setIdItem(obj.getString("id_item"));
+                itemPaketEntity.setIdKategoriItem(obj.getString("kategori_item"));
+                itemPaketEntity.setJenisItem(obj.getString("jenis_item"));
+                itemPaketEntity.setHarga(new BigInteger(obj.get("tarif").toString()));
+                harga = harga.add(itemPaketEntity.getHarga());
+                itemPaketEntity.setIdPelayanan(obj.getString("id_pelayanan"));
+                itemPaketEntities.add(itemPaketEntity);
+            }
 
+            JSONArray jsonPel = new JSONArray(pelayanan);
+            List<MtSimrsDetailPaketEntity> detailPaketEntityList = new ArrayList<>();
+            for (int i = 0; i < jsonPel.length(); i++) {
+                JSONObject obj = jsonPel.getJSONObject(i);
+                MtSimrsDetailPaketEntity detailPaketEntity = new  MtSimrsDetailPaketEntity();
+                detailPaketEntity.setIdPelayanan(obj.getString("id_pelayanan"));
+                detailPaketEntity.setUrutan(new BigInteger(obj.getString("urutan")));
+                detailPaketEntityList.add(detailPaketEntity);
+            }
+
+            MtSimrsPaketEntity paketPeriksa = new MtSimrsPaketEntity();
+            paketPeriksa.setNamaPaket(namaPaket);
+            paketPeriksa.setTarif(new BigDecimal(harga));
+            paketPeriksa.setFlag("Y");
+            paketPeriksa.setAction("C");
+            paketPeriksa.setBranchId(CommonUtil.userBranchLogin());
+            paketPeriksa.setCreatedDate(time);
+            paketPeriksa.setCreatedWho(userLogin);
+            paketPeriksa.setLastUpdate(time);
+            paketPeriksa.setLastUpdateWho(userLogin);
+
+            try {
+                response = paketPeriksaBo.savePaketPeriksa(paketPeriksa, itemPaketEntities, detailPaketEntityList);
+            } catch (GeneralBOException e){
+                response.setStatus("error");
+                response.setMsg("Tidak dapat menyimpan data, dikarenakan terjadi kesalahan pada saat menyimpan...!");
+            }
+        }catch (JSONException e){
+            response.setStatus("error");
+            response.setMsg("Mohon maaf traksaksi tidak bisa dilanjutkan, JSON parse tidak bisa...!");
         }
 
         return response;

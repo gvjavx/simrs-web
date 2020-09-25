@@ -5,10 +5,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
-import com.neurix.simrs.transaksi.paketperiksa.dao.ItemPaketDao;
-import com.neurix.simrs.transaksi.paketperiksa.dao.KelasPaketDao;
-import com.neurix.simrs.transaksi.paketperiksa.dao.PaketDao;
-import com.neurix.simrs.transaksi.paketperiksa.dao.PaketPasienDao;
+import com.neurix.simrs.transaksi.paketperiksa.dao.*;
 import com.neurix.simrs.transaksi.paketperiksa.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -29,6 +26,7 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
     private KelasPaketDao kelasPaketDao;
     private PaketDao paketDao;
     private PaketPasienDao paketPasienDao;
+    private DetailPaketDao detailPaketDao;
 
     @Override
     public List<PaketPeriksa> getListPaketPeriksa(PaketPeriksa bean) throws GeneralBOException {
@@ -168,7 +166,7 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
     }
 
     @Override
-    public CrudResponse savePaketPeriksa(MtSimrsPaketEntity bean, List<MtSimrsItemPaketEntity> listItem) throws GeneralBOException {
+    public CrudResponse savePaketPeriksa(MtSimrsPaketEntity bean, List<MtSimrsItemPaketEntity> listItem, List<MtSimrsDetailPaketEntity> detailPaketEntityList) throws GeneralBOException {
 
         logger.info("[PaketPeriksaBoImpl.savePaketPeriksa] START >>>");
         CrudResponse response = new CrudResponse();
@@ -186,7 +184,6 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
             }
 
             if (listItem.size() > 0) {
-
                 for (MtSimrsItemPaketEntity itemPaketEntity : listItem) {
                     itemPaketEntity.setIdItemPaket(getNextItemPaketId());
                     itemPaketEntity.setIdPaket(bean.getIdPaket());
@@ -199,6 +196,27 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
 
                     try {
                         itemPaketDao.addAndSave(itemPaketEntity);
+                        response.setStatus("success");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
+                        logger.error("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. ", e);
+                        new GeneralBOException("[PaketPeriksaBoImpl.savePaketPeriksa] ERROR. " + e);
+                    }
+                }
+            }
+
+            if(detailPaketEntityList.size() > 0){
+                for (MtSimrsDetailPaketEntity detailPaketEntity : detailPaketEntityList) {
+                    detailPaketEntity.setIdPaket(bean.getIdPaket());
+                    detailPaketEntity.setFlag(bean.getFlag());
+                    detailPaketEntity.setAction(bean.getAction());
+                    detailPaketEntity.setCreatedDate(bean.getCreatedDate());
+                    detailPaketEntity.setCreatedWho(bean.getCreatedWho());
+                    detailPaketEntity.setLastUpdate(bean.getLastUpdate());
+                    detailPaketEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    try {
+                        detailPaketDao.addAndSave(detailPaketEntity);
                         response.setStatus("success");
                     } catch (HibernateException e) {
                         response.setStatus("error");
@@ -449,5 +467,9 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
 
     public void setPaketPasienDao(PaketPasienDao paketPasienDao) {
         this.paketPasienDao = paketPasienDao;
+    }
+
+    public void setDetailPaketDao(DetailPaketDao detailPaketDao) {
+        this.detailPaketDao = detailPaketDao;
     }
 }

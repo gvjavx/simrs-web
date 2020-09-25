@@ -1,13 +1,16 @@
 package com.neurix.simrs.master.labdetail.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
+import com.neurix.simrs.master.labdetail.model.LabDetail;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -82,5 +85,42 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
                 .list();
 
         return results;
+    }
+
+    public List<LabDetail> getDetailLab(String idLab, String branchId){
+        List<LabDetail> labDetailList = new ArrayList<>();
+        if(idLab != null && !"".equalsIgnoreCase(idLab)){
+            String SQL = "SELECT \n" +
+                    "a.id_lab,\n" +
+                    "b.id_lab_detail,\n" +
+                    "b.nama_detail_periksa,\n" +
+                    "b.satuan,\n" +
+                    "b.keterangan_acuan,\n" +
+                    "b.tarif\n" +
+                    "FROM im_simrs_lab a\n" +
+                    "INNER JOIN im_simrs_lab_detail b ON a.id_lab = b.id_lab\n" +
+                    "WHERE b.id_lab = :id\n" +
+                    "AND a.branch_id = :branchId";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idLab)
+                    .setParameter("branchId", branchId)
+                    .list();
+
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    LabDetail labDetail = new LabDetail();
+                    labDetail.setIdLab(obj[0] != null ? obj[0].toString() : "");
+                    labDetail.setIdLabDetail(obj[1] != null ? obj[1].toString() : "");
+                    labDetail.setNamaDetailPeriksa(obj[2] != null ? obj[2].toString() : "");
+                    labDetail.setSatuan(obj[3] != null ? obj[3].toString() : "");
+                    labDetail.setKetentuanAcuan(obj[4] != null ? obj[4].toString() : "");
+                    labDetail.setTarif(obj[5] != null ? (BigDecimal) obj[5] : null);
+                    labDetailList.add(labDetail);
+                }
+            }
+        }
+        return labDetailList;
     }
 }

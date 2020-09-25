@@ -10,4 +10,5 @@ import java.util.List;
 public interface LabDetailBo extends BaseMasterBo<LabDetail>{
     public List<LabDetail> getByCriteria(LabDetail bean) throws GeneralBOException;
     public ImSimrsLabDetailEntity getLabDetailEntityById(String idParameter) throws GeneralBOException;
+    public List<LabDetail> getDetaillab(String idLab, String branchId) throws GeneralBOException;
 }

@@ -246,7 +246,7 @@
                                                    onchange="$(this).css('border','')" value="1">
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="form_tarif_tindakan">
                                         <label class="col-md-3" style="margin-top: 7px">Tarif Tindakan</label>
                                         <div class="col-md-7">
                                             <input min="1" class="form-control" style="margin-top: 7px"
@@ -256,7 +256,7 @@
                                             <input type="hidden" id="h_tin_tarif">
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="form_tarif_tindakan_paket">
                                         <label class="col-md-3" style="margin-top: 7px">Tarif Paket</label>
                                         <div class="col-md-7">
                                             <input min="1" class="form-control" style="margin-top: 7px"
@@ -373,7 +373,7 @@
                                                id="cor_parameter"><i class="fa fa-check"></i> correct</p>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="form_lab_tarif">
                                         <label class="col-md-3" style="margin-top: 7px">Tarif Lab</label>
                                         <div class="col-md-7">
                                             <input min="1" class="form-control" style="margin-top: 7px"
@@ -383,7 +383,7 @@
                                             <input type="hidden" id="h_lab_tarif">
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="form_lab_tarif_paket">
                                         <label class="col-md-3" style="margin-top: 7px">Tarif Paket Lab</label>
                                         <div class="col-md-7">
                                             <input min="1" class="form-control" style="margin-top: 7px"
@@ -465,7 +465,7 @@
                                             Rp.
                                         </div>
                                         <input type="hidden" id="tarif_paket">
-                                        <input class="form-control" id="nominal_tarif_paket"
+                                        <input class="form-control" id="nominal_tarif_paket" disabled
                                                oninput="var warn =$('#war_tarif_paket').is(':visible'); if (warn){$('#cor_tarif_paket').show().fadeOut(3000);$('#war_tarif_paket').hide()}">
                                     </div>
                                     <p style="color: red; display: none;"
@@ -546,38 +546,45 @@
         var cekPersen = $('#persen').is(':checked');
         var jmlPersen = $('#jml_persen').val();
         if (var1 != '') {
-            var id = '';
-            if (var1.split("|")[0] != 'null' && var1.split("|")[0] != '') {
-                id = var1.split("|")[0];
-            }
-            if (id != '') {
-                TindakanAction.getDataTindakanById(id, function (tindakan) {
-                    if (tindakan != null && tindakan.idTindakan != null) {
-                        var tarif = "";
-                        if (cekPersen) {
-                            if (jmlPersen != '' && parseInt(jmlPersen) > 0) {
-                                var persen = 100 - parseInt(jmlPersen);
-                                var hasil = persen / 100;
-                                tarif = hasil * tindakan.tarif;
+            if ("all" == var1) {
+                $('#form_tarif_tindakan').hide();
+                $('#form_tarif_tindakan_paket').hide();
+            } else {
+                $('#form_tarif_tindakan').show();
+                $('#form_tarif_tindakan_paket').show();
+                var id = '';
+                if (var1.split("|")[0] != 'null' && var1.split("|")[0] != '') {
+                    id = var1.split("|")[0];
+                }
+                if (id != '') {
+                    TindakanAction.getDataTindakanById(id, function (tindakan) {
+                        if (tindakan != null && tindakan.idTindakan != null) {
+                            var tarif = "";
+                            if (cekPersen) {
+                                if (jmlPersen != '' && parseInt(jmlPersen) > 0) {
+                                    var persen = 100 - parseInt(jmlPersen);
+                                    var hasil = persen / 100;
+                                    tarif = hasil * tindakan.tarif;
+                                    $('#persen').attr('disabled', true);
+                                    $('#persen').attr('style', 'cursor:no-drop');
+                                    $('#jml_persen').attr('disabled', true);
+                                } else {
+                                    $('#warning_tindakan').show().fadeOut(5000);
+                                    $('#msg_tin').text("Diskon Tarif tidak boleh kosong dan 0...!");
+                                }
+                            } else {
+                                tarif = tindakan.tarif;
                                 $('#persen').attr('disabled', true);
                                 $('#persen').attr('style', 'cursor:no-drop');
                                 $('#jml_persen').attr('disabled', true);
-                            } else {
-                                $('#warning_tindakan').show().fadeOut(5000);
-                                $('#msg_tin').text("Diskon Tarif tidak boleh kosong dan 0...!");
                             }
-                        } else {
-                            tarif = tindakan.tarif;
-                            $('#persen').attr('disabled', true);
-                            $('#persen').attr('style', 'cursor:no-drop');
-                            $('#jml_persen').attr('disabled', true);
+                            $("#tin_tarif").val(formatRupiahAtas(tarif));
+                            $("#h_tin_tarif").val(tarif);
+                            $("#tin_tarif_paket").val(formatRupiahAtas(tarif));
+                            $("#h_tin_tarif_paket").val(tarif);
                         }
-                        $("#tin_tarif").val(formatRupiahAtas(tarif));
-                        $("#h_tin_tarif").val(tarif);
-                        $("#tin_tarif_paket").val(formatRupiahAtas(tarif));
-                        $("#h_tin_tarif_paket").val(tarif);
-                    }
-                });
+                    });
+                }
             }
         }
     }
@@ -585,33 +592,42 @@
     function getTarifLab(var1) {
         var cekPersen = $('#persen').is(':checked');
         var jmlPersen = $('#jml_persen').val();
-        LabDetailAction.labDetailEntityByIdLab(var1, function (response) {
-            if (response != null && response.idLabDetail != null) {
-                var tarif = "";
-                if (cekPersen) {
-                    if (jmlPersen != '' && parseInt(jmlPersen) > 0) {
-                        var persen = 100 - parseInt(jmlPersen);
-                        var hasil = persen / 100;
-                        tarif = hasil * response.tarif;
-                        $('#persen').attr('disabled', true);
-                        $('#persen').attr('style', 'cursor:no-drop');
-                        $('#jml_persen').attr('disabled', true);
-                    } else {
-                        $('#warning_lab').show().fadeOut(5000);
-                        $('#msg_lab').text("Diskon Tarif tidak boleh kosong dan 0...!");
+        if (var1 != '') {
+            if ("all" == var1) {
+                $('#form_lab_tarif').hide();
+                $('#form_lab_tarif_paket').hide();
+            } else {
+                $('#form_lab_tarif').show();
+                $('#form_lab_tarif_paket').show();
+                LabDetailAction.labDetailEntityByIdLab(var1, function (response) {
+                    if (response != null && response.idLabDetail != null) {
+                        var tarif = "";
+                        if (cekPersen) {
+                            if (jmlPersen != '' && parseInt(jmlPersen) > 0) {
+                                var persen = 100 - parseInt(jmlPersen);
+                                var hasil = persen / 100;
+                                tarif = hasil * response.tarif;
+                                $('#persen').attr('disabled', true);
+                                $('#persen').attr('style', 'cursor:no-drop');
+                                $('#jml_persen').attr('disabled', true);
+                            } else {
+                                $('#warning_lab').show().fadeOut(5000);
+                                $('#msg_lab').text("Diskon Tarif tidak boleh kosong dan 0...!");
+                            }
+                        } else {
+                            tarif = response.tarif;
+                            $('#persen').attr('disabled', true);
+                            $('#persen').attr('style', 'cursor:no-drop');
+                            $('#jml_persen').attr('disabled', true);
+                        }
+                        $("#lab_tarif").val(formatRupiahAtas(tarif));
+                        $("#lab_tarif_paket").val(formatRupiahAtas(tarif));
+                        $("#h_lab_tarif").val(tarif);
+                        $("#h_lab_tarif_paket").val(tarif);
                     }
-                } else {
-                    tarif = response.tarif;
-                    $('#persen').attr('disabled', true);
-                    $('#persen').attr('style', 'cursor:no-drop');
-                    $('#jml_persen').attr('disabled', true);
-                }
-                $("#lab_tarif").val(formatRupiahAtas(tarif));
-                $("#lab_tarif_paket").val(formatRupiahAtas(tarif));
-                $("#h_lab_tarif").val(tarif);
-                $("#h_lab_tarif_paket").val(tarif);
+                });
             }
-        });
+        }
     }
 
     function formatRupiah2(angka) {
@@ -676,7 +692,6 @@
         }
     }
 
-
     function showModal(select) {
 
         var id = "";
@@ -686,13 +701,13 @@
             $('#tin_qty').val('1');
             $('#load_tindakan, #warning_tindakan, #war_kategori, #war_tindakan, #war_perawat').hide();
             $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();
-            $('#modal-tindakan').modal('show');
+            // $('#modal-tindakan').modal('show');
 
         } else if (select == 4) {
             $('#lab_kategori, #lab_lab').val('').trigger('change');
             $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
             $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
-            $('#modal-lab').modal('show');
+            // $('#modal-lab').modal('show');
         }
     }
 
@@ -704,11 +719,13 @@
         var idTindakan = $('#tin_id_tindakan').val();
         var tarifPaket = $("#h_tin_tarif_paket").val();
         var qty = $('#tin_qty').val();
-        var cek = false;
         var data = $('#table_tindakan').tableToJSON();
+        var cekPersen = $('#persen').is(':checked');
+        var jmlPersen = $('#jml_persen').val();
+        var row = data.length;
+        var cek = false;
 
-        if (idTindakan != '' && idTindakan != null && idKategori != null && qty > 0 && idKategori != '' && tarifPaket != '') {
-
+        if (idTindakan != '' && idTindakan != null && idKategori != null && qty > 0 && idKategori != '') {
             var id = "";
             var tin = "";
 
@@ -721,34 +738,84 @@
                 tin = tindakan[1];
             }
 
-            var data = $('#table_tindakan').tableToJSON();
-            var row = data.length;
-            var cek = false;
+            if (idTindakan == "all") {
+                CheckupDetailAction.getListComboTindakan(idKategori, function (response) {
+                    if (response.length > 0) {
+                        var table = "";
+                        $.each(response, function (ix, itemx) {
+                            $.each(data, function (i, item) {
+                                var tin2 = $('#tindakan_id' + i).val();
+                                if (itemx.idTindakan == tin2) {
+                                    cek = true;
+                                }
+                            });
+                        });
+                        if (cek) {
+                            $('#warning_tindakan').show().fadeOut(5000);
+                            $('#msg_tin').text("Data tindakan sudah ada dalam list...!");
+                        } else {
+                            var setAppend = false;
+                            var isPersen = false;
+                            if (cekPersen) {
+                                if (jmlPersen != '' && parseInt(jmlPersen) > 0) {
+                                    setAppend = false;
+                                    isPersen = true;
+                                } else {
+                                    setAppend = true;
+                                }
+                            }
 
-            $.each(data, function (i, item) {
-                var tin2 = data[i]["Tindakan"];
-                if (tin == tin2) {
-                    cek = true;
-                }
-            });
+                            if (setAppend) {
+                                $('#warning_lab').show().fadeOut(5000);
+                                $('#msg_lab').text("Diskon Tarif tidak boleh kosong dan 0...!");
+                            } else {
+                                $.each(response, function (i, item) {
+                                    row = row + i;
+                                    var tarif = item.tarif;
+                                    if (isPersen) {
+                                        var persen = 100 - parseInt(jmlPersen);
+                                        var hasil = persen / 100;
+                                        tarif = hasil * item.tarif;
+                                    }
+                                    table += '<tr id="row' + item.idTindakan + '">' +
+                                        '<td>' + namaPoli + '<input type="hidden" value="' + idPoli + '" id="poli_id' + row + '">' + '</td>' +
+                                        '<td>' + item.tindakan + '<input type="hidden" value="' + item.idTindakan + '" id="tindakan_id' + row + '">' + '</td>' +
+                                        '<td align="center">' + qty + '<input type="hidden" value="' + idKategori + '" id="kategori_id' + row + '">' + '</td>' +
+                                        '<td align="center">' + formatRupiahAtas(tarif) + '<input type="hidden" value="' + tarif + '" id="tin_tarif_id' + row + '">' + '</td>' +
+                                        '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + item.idTindakan + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                                        '</tr>';
 
-            if (cek) {
-                $('#warning_tindakan').show().fadeOut(5000);
-                $('#msg_tin').text("Data tindakan sudah ada dalam list...!");
+                                });
+                            }
+                            $('#body_tindakan').append(table);
+                            $('#tin_id_tindakan').val('').trigger('change');
+                        }
+                    }
+                });
             } else {
+                $.each(data, function (i, item) {
+                    var tin2 = $('#tindakan_id' + i).val();
+                    if (id == tin2) {
+                        cek = true;
+                    }
+                });
+                if (cek) {
+                    $('#warning_tindakan').show().fadeOut(5000);
+                    $('#msg_tin').text("Data tindakan sudah ada dalam list...!");
+                } else {
+                    var table = '<tr id="row' + id + '">' +
+                        '<td>' + namaPoli + '<input type="hidden" value="' + idPoli + '" id="poli_id' + row + '">' + '</td>' +
+                        '<td>' + tin + '<input type="hidden" value="' + id + '" id="tindakan_id' + row + '">' + '</td>' +
+                        '<td align="center">' + qty + '<input type="hidden" value="' + idKategori + '" id="kategori_id' + row + '">' + '</td>' +
+                        '<td align="center">' + formatRupiahAtas(tarifPaket) + '<input type="hidden" value="' + tarifPaket + '" id="tin_tarif_id' + row + '">' + '</td>' +
+                        '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + id + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                        '</tr>';
 
-                var table = '<tr id="row' + id + '">' +
-                    '<td>' + namaPoli + '<input type="hidden" value="' + idPoli + '" id="poli_id' + row + '">' + '</td>' +
-                    '<td>' + tin + '<input type="hidden" value="' + id + '" id="tindakan_id' + row + '">' + '</td>' +
-                    '<td align="center">' + qty + '<input type="hidden" value="' + idKategori + '" id="kategori_id' + row + '">' + '</td>' +
-                    '<td align="center">' + formatRupiahAtas(tarifPaket) + '<input type="hidden" value="' + tarifPaket + '" id="tin_tarif_id' + row + '">' + '</td>' +
-                    '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + id + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
-                    '</tr>';
-
-                $('#body_tindakan').append(table);
-                $('#modal-tindakan').modal('hide');
-                // $('#poli').attr('disabled','');
-                $('#tin_id_tindakan').val('').trigger('change');
+                    $('#body_tindakan').append(table);
+                    // $('#modal-tindakan').modal('hide');
+                    // $('#poli').attr('disabled','');
+                    $('#tin_id_tindakan').val('').trigger('change');
+                }
             }
 
         } else {
@@ -766,86 +833,99 @@
         }
 
         hitungTotal();
+        // tempSelectPoli();
         tempSelectPoli(idPoli, namaPoli);
     }
 
-    function tempSelectPoli(idPoli, namaPoli){
+    function tempSelectPoli() {
         var data = $('#table_tindakan').tableToJSON();
-        var cek = false;
-        if(tempData.length > 0){
-            $.each(tempData, function (i, item) {
-                if(idPoli == item.id_pelayanan){
-                    cek = true;
+        if (data.length > 0) {
+            $.each(data, function (ix, itemx) {
+                var idPel = $('#poli_id' + ix).val();
+                var Pel = data[ix]["Pelayanan"];
+                var cekPoint = false;
+                if(tempData.length > 0){
+                    $.each(tempData, function (id, itemd) {
+                        if(idPel == itemd.id_pelayanan){
+                            cekPoint = true;
+                        }
+                    });
+                    if(!cekPoint){
+                        tempData.push({
+                            'id_pelayanan': idPel,
+                            'pelayanan': Pel
+                        });
+                    }
+                }else{
+                    tempData.push({
+                        'id_pelayanan': idPel,
+                        'pelayanan': Pel
+                    });
                 }
             });
-            if(!cek){
-                tempData.push({
-                    'id_pelayanan': idPoli,
-                    'pelayanan': namaPoli
-                });
-            }
-        }else{
-            tempData.push({
-                'id_pelayanan': idPoli,
-                'pelayanan': namaPoli
-            });
+        } else {
+            tempData = [];
         }
+
         var option = '<option value="">[Select One]</option>';
         var table = "";
         var long = tempData.length;
-        $.each(tempData, function (i, item) {
-            option += '<option value="'+item.id_pelayanan+'">'+item.pelayanan+'</option>';
-            var urut = i + 1;
-            table +=
-                '<tr>' +
-                '<td>'+item.pelayanan+'</td>'+
-                '<td align="center">'+'<input id="urut_val_'+urut+'" onchange="setUrut(this.value, \''+urut+'\')" class="form-control" type="number" min="1" max="'+long+'" value="'+urut+'" disabled>'+
-                '<input type="hidden" id="urut_'+urut+'">'+'</td>'+
-                '<td align="center">'+
-                '<img id="btn_urut'+urut+'" onclick="setUrutanPelayanan(\''+urut+'\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">'+'</td>'+
-                '</tr>';
-        });
+        if (long > 0) {
+            $.each(tempData, function (i, item) {
+                option += '<option value="' + item.id_pelayanan + '">' + item.pelayanan + '</option>';
+                var urut = i + 1;
+                table +=
+                    '<tr>' +
+                    '<td>' + item.pelayanan + '<input type="hidden" id="poli_id_' + urut + '" value="' + item.id_pelayanan + '">' + '</td>' +
+                    '<td align="center">' + '<input id="urut_val_' + urut + '" onchange="setUrut(this.value, \'' + urut + '\')" class="form-control" type="number" min="1" max="' + long + '" value="' + urut + '" disabled>' +
+                    '<input type="hidden" id="urut_' + urut + '">' + '</td>' +
+                    '<td align="center">' +
+                    '<img id="btn_urut' + urut + '" onclick="setUrutanPelayanan(\'' + urut + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                    '</tr>';
+            });
+        }
         $('#body_pelayanan').html(table);
         $('#lab_poli').html(option);
     }
 
-    function setUrutanPelayanan(i){
+    function setUrutanPelayanan(i) {
         var data = $('#table_pelayanan').tableToJSON();
         var src = '<s:url value="/pages/images/icons8-save-25.png"/>';
-        $('#urut_val_'+i).attr('disabled', false);
-        $('#btn_urut'+i).removeAttr('src');
-        $('#btn_urut'+i).attr('src', src);
-        $('#btn_urut'+i).attr('onclick', 'saveUrutanPelayanan(\''+i+'\')');
+        $('#urut_val_' + i).attr('disabled', false);
+        $('#btn_urut' + i).removeAttr('src');
+        $('#btn_urut' + i).attr('src', src);
+        $('#btn_urut' + i).attr('onclick', 'saveUrutanPelayanan(\'' + i + '\')');
     }
 
-    function saveUrutanPelayanan(i){
+    function saveUrutanPelayanan(i) {
         var data = $('#table_tindakan').tableToJSON();
-        var nilai = $('#urut_val_'+i).val();
+        var nilai = $('#urut_val_' + i).val();
         var cek = false;
         $.each(data, function (i, item) {
-            var pem = $('#urut_'+i).val();
-            if(nilai == pem){
-               cek = true;
-           }
+            var pem = $('#urut_' + i).val();
+            if (nilai == pem) {
+                cek = true;
+            }
         });
-        if(cek){
+        if (cek) {
             $('#warning_paket').show().fadeOut(5000);
             $('#msg_paket').text("Nomor urutan pelayanan tidak boleh sama...!");
-        }else{
+        } else {
             var src = '<s:url value="/pages/images/icons8-create-25.png"/>';
-            $('#btn_urut'+i).removeAttr('src');
-            $('#btn_urut'+i).attr('src', src);
-            $('#btn_urut'+i).attr('onclick', 'setUrutanPelayanan(\''+i+'\')');
-            $('#urut_val_'+i).attr('disabled', true);
+            $('#btn_urut' + i).removeAttr('src');
+            $('#btn_urut' + i).attr('src', src);
+            $('#btn_urut' + i).attr('onclick', 'setUrutanPelayanan(\'' + i + '\')');
+            $('#urut_val_' + i).attr('disabled', true);
         }
     }
 
-    function setUrut(val, id){
-        $('#urut_'+id).val(val);
+    function setUrut(val, id) {
+        $('#urut_' + id).val(val);
     }
 
     function delRow(id) {
         $('#row' + id).remove();
+        tempSelectPoli();
     }
 
     function listSelectLab(value) {
@@ -883,7 +963,7 @@
         if (value != '') {
             var labId = value.split("|");
             if (labId[0] != 'null' && labId[0] != '') {
-                LabDetailAction.listLabDetail(labId[0], function (response) {
+                LabDetailAction.getListComboParameter(labId[0], function (response) {
                     if (response.length > 0) {
                         option = option + '<option value="all">Select All</option>';
                         $.each(response, function (i, item) {
@@ -901,22 +981,22 @@
     }
 
     function saveLab() {
-
+        var poli = $('#lab_poli').val();
         var idKategori = $('#lab_kategori').val();
         var idLab = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
         var tarifAsli = $('#h_lab_tarif').val();
         var tarifPaket = $('#h_lab_tarif_paket').val();
         var namaParameter = $('#lab_parameter option:selected').text();
+        var data = $('#table_lab').tableToJSON();
+        var cekPersen = $('#persen').is(':checked');
+        var jmlPersen = $('#jml_persen').val();
+        var row = data.length;
+        var cek = false;
 
         if (idKategori != '' && idLab != '' && idParameter != '') {
             var idk = idKategori.split("|")[0];
             var idl = idLab.split("|")[0];
-
-            var data = $('#table_lab').tableToJSON();
-            var row = data.length;
-
-            var cek = false;
 
             $.each(data, function (i, item) {
                 var jen = $('#parameter_id' + i).val();
@@ -925,20 +1005,82 @@
                 }
             });
 
-            if (cek) {
-                $('#warning_lab').show().fadeOut(5000);
-                $('#msg_lab').text("Data sudah ada di dalam list...!");
+            if ("all" == idParameter) {
+                LabDetailAction.getListComboParameter(idl, function (response) {
+                    if (response.length > 0) {
+                        var table = "";
+                        $.each(response, function (ix, itemx) {
+                            $.each(data, function (i, item) {
+                                var jen = $('#parameter_id' + i).val();
+                                if (itemx.idLabDetail == jen) {
+                                    cek = true;
+                                }
+                            });
+                        });
+                        if (cek) {
+                            $('#warning_lab').show().fadeOut(5000);
+                            $('#msg_lab').text("Data sudah ada di dalam list...!");
+                        } else {
+                            var setAppend = false;
+                            var isPersen = false;
+                            if (cekPersen) {
+                                if (jmlPersen != '' && parseInt(jmlPersen) > 0) {
+                                    setAppend = false;
+                                    isPersen = true;
+                                } else {
+                                    setAppend = true;
+                                }
+                            }
+
+                            if (setAppend) {
+                                $('#warning_lab').show().fadeOut(5000);
+                                $('#msg_lab').text("Diskon Tarif tidak boleh kosong dan 0...!");
+                            } else {
+                                $.each(response, function (i, item) {
+                                    row = row + i;
+                                    var tarif = item.tarif;
+                                    if (isPersen) {
+                                        var persen = 100 - parseInt(jmlPersen);
+                                        var hasil = persen / 100;
+                                        tarif = hasil * item.tarif;
+                                    }
+                                    table += '<tr id="row' + item.idLabDetail + '">' +
+                                        '<td>' + idKategori.split("|")[1] +
+                                        '<input type="hidden" id="kategori_lab' + row + '" value="' + idk + '">' +
+                                        '<input type="hidden" id="poli_id' + row + '" value="' + poli + '">' +
+                                        '</td>' +
+                                        '<td>' + idLab.split("|")[1] + '<input type="hidden" id="lab_id' + row + '" value="' + idl + '">' + '</td>' +
+                                        '<td>' + item.namaDetailPeriksa + '<input type="hidden" id="parameter_id' + row + '" value="' + item.idLabDetail + '"></td>' +
+                                        '<td>' + formatRupiahAtas(item.tarif) + '</td>' +
+                                        '<td>' + formatRupiahAtas(tarif) + '<input type="hidden" id="lab_tarif_id' + row + '" value="' + tarif + '"></td>' +
+                                        '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + item.idLabDetail + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                                        '</tr>';
+                                });
+                                $('#body_lab').append(table);
+                                $('#lab_parameter').val('').trigger('change');
+                            }
+                        }
+                    }
+                });
             } else {
-                var table = '<tr id="row' + idl + '">' +
-                    '<td>' + idKategori.split("|")[1] + '<input type="hidden" id="kategori_lab' + row + '" value="' + idk + '">' + '</td>' +
-                    '<td>' + idLab.split("|")[1] + '<input type="hidden" id="lab_id' + row + '" value="' + idl + '">' + '</td>' +
-                    '<td>' + namaParameter + '<input type="hidden" id="parameter_id' + row + '" value="' + idParameter + '"></td>' +
-                    '<td>' + formatRupiahAtas(tarifAsli) + '</td>' +
-                    '<td>' + formatRupiahAtas(tarifPaket) + '<input type="hidden" id="lab_tarif_id' + row + '" value="' + tarifPaket + '"></td>' +
-                    '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + idl + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
-                    '</tr>';
-                $('#body_lab').append(table);
-                $('#lab_parameter').val('').trigger('change')
+                if (cek) {
+                    $('#warning_lab').show().fadeOut(5000);
+                    $('#msg_lab').text("Data sudah ada di dalam list...!");
+                } else {
+                    var table = '<tr id="row' + idl + '">' +
+                        '<td>' + idKategori.split("|")[1] +
+                        '<input type="hidden" id="kategori_lab' + row + '" value="' + idk + '">' +
+                        '<input type="hidden" id="poli_id' + row + '" value="' + poli + '">' +
+                        '</td>' +
+                        '<td>' + idLab.split("|")[1] + '<input type="hidden" id="lab_id' + row + '" value="' + idl + '">' + '</td>' +
+                        '<td>' + namaParameter + '<input type="hidden" id="parameter_id' + row + '" value="' + idParameter + '"></td>' +
+                        '<td>' + formatRupiahAtas(tarifAsli) + '</td>' +
+                        '<td>' + formatRupiahAtas(tarifPaket) + '<input type="hidden" id="lab_tarif_id' + row + '" value="' + tarifPaket + '"></td>' +
+                        '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + idl + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                        '</tr>';
+                    $('#body_lab').append(table);
+                    $('#lab_parameter').val('').trigger('change')
+                }
             }
 
         } else {
@@ -962,7 +1104,6 @@
         var tindakan = $('#table_tindakan').tableToJSON();
         var lab = $('#table_lab').tableToJSON();
 
-
         var totalTindakan = 0;
         $.each(tindakan, function (i, item) {
             var tarifTindakan = $('#tin_tarif_id' + i).val();
@@ -975,7 +1116,6 @@
             totalLab = parseInt(totalLab) + parseInt(tarifpaket);
         });
 
-
         var total = 0;
         total = totalTindakan + totalLab;
         $('#tarif_paket').val(total);
@@ -985,10 +1125,11 @@
     function savePaket() {
         var namaPaket = $('#nama_paket').val();
         var tarifPaket = $('#tarif_paket').val();
-
         var tindakan = $('#table_tindakan').tableToJSON();
         var lab = $('#table_lab').tableToJSON();
+        var pelayanan = $('#table_pelayanan').tableToJSON();
         var result = [];
+        var resultPel = [];
 
         $.each(tindakan, function (i, item) {
             var idPoli = $('#poli_id' + i).val();
@@ -1017,34 +1158,27 @@
                 'kategori_item': idLab,
                 'id_item': idParameter,
                 'jenis_item': jenisLab.toLowerCase(),
-                'tarif': tarifpaket
+                'tarif': tarifpaket,
+                'id_pelayanan': idPoli
             });
-
-            // if (idParameter != '' && idParameter != 'null') {
-            //     var params = idParameter.split(",");
-            //     for (i = 0; i < params.length; i++) {
-            //         result.push({
-            //             'kategori_item': idLab,
-            //             'id_item': params[i],
-            //             'jenis_item': jenisLab.toLowerCase(),
-            //             'tarif': tarifpaket
-            //         });
-            //     }
-            // } else {
-            //     result.push({
-            //         'kategori_item': idLab,
-            //         'id_item': params[i],
-            //         'jenis_item': jenisLab.toLowerCase(),
-            //         'tarif': tarifpaket
-            //     });
-            // }
         });
 
-        var jsonStinng = JSON.stringify(result);
+        $.each(pelayanan, function (i, item) {
+            i = i + 1
+            var idPoli = $('#poli_id_' + i).val();
+            var urutan = $('#urut_val_' + i).val();
+            resultPel.push({
+                'id_pelayanan': idPoli,
+                'id_urut': urutan
+            });
+        });
+
         if (result.length > 0 && namaPaket != '' && tarifPaket != '') {
             $("#waiting_dialog").dialog('open');
+            var jsonStinng = JSON.stringify(result);
+            var jsonStinngPel = JSON.stringify(resultPel);
             dwr.engine.setAsync(true);
-            PaketPeriksaAction.savePaket(namaPaket, tarifPaket, jsonStinng, {
+            PaketPeriksaAction.savePaket(namaPaket, jsonStinng, jsonStinngPel, {
                 callback: function (response) {
                     if (response.status == "success") {
                         $("#waiting_dialog").dialog('close');
@@ -1054,7 +1188,6 @@
                         $("#waiting_dialog").dialog('close');
                         $('#error_dialog').dialog('open');
                         $('#errorMessage').text(response.msg);
-
                     }
                 }
             });

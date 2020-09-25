@@ -758,7 +758,7 @@ last_update = '2020-09-22 00:00:00',
 last_update_who = 'admin',
 tipe = 'ptpn'
 
-
+-- 2020-09-24
 CREATE TABLE public.im_simrs_detail_rekanan_ops
 (
   id_detail_rekanan_ops character varying(50) NOT NULL,
@@ -781,6 +781,36 @@ ALTER TABLE public.im_simrs_detail_rekanan_ops
   OWNER TO postgres;
 
 CREATE SEQUENCE seq_detail_rekanan_ops;
+
+ALTER TABLE im_simrs_lab
+ADD COLUMN branch_id VARCHAR(100);
+
+-- 2020-09-25
+ALTER TABLE mt_simrs_item_paket_periksa
+ADD COLUMN id_pelayanan VARCHAR(100);
+
+CREATE TABLE public.mt_simrs_detail_paket
+(
+  id_detail_paket character varying(30) NOT NULL,
+  id_paket character varying(30),
+  id_pelayanan character varying(30),
+  urutan bigint,
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_detail_paket PRIMARY KEY (id_detail_paket)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.mt_simrs_detail_paket
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_detail_paket;
+
 
 
 

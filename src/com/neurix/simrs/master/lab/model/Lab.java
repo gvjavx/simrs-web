@@ -23,9 +23,17 @@ public class Lab extends BaseModel {
     private String stLastUpdate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-
     private BigDecimal tarif;
     private String stTarif;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public BigDecimal getTarif() {
         return tarif;
