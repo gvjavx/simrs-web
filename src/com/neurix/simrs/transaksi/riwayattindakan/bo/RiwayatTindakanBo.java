@@ -33,4 +33,5 @@ public interface RiwayatTindakanBo {
     public List<String> getListRuanganRiwayatTindakan(String idDetailCheckup, String keterangan) throws GeneralBOException;
     public MtSimrsItemPaketEntity getItemPaketEntity(String idPaket, String idItem) throws GeneralBOException;
     public ItemPaket getTarifPaketLab(String idPaket, String idLab) throws GeneralBOException;
+    public List<String> getListIdDetailCheckup(String noCheckup) throws GeneralBOException;
 }

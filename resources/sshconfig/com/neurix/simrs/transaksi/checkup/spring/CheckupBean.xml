@@ -81,6 +81,7 @@
           p:itemPaketDao-ref="itemPaketDao"
           p:labDetailDao-ref="labDetailDao"
           p:orderPeriksaLabDao-ref="orderPeriksaLabDao"
+          p:rekananOpsDao-ref="rekananOpsDao"
 
     />
 
@@ -147,4 +148,5 @@
 
     <bean id="headerCheckupLogDao" class="com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupLogDao"
           p:sessionFactory-ref="sessionFactory" />
+    <bean id="orderPeriksaLabDao"/>
 </beans>

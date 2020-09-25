@@ -20,6 +20,8 @@ import com.neurix.simrs.master.pasien.dao.UploadRekamMedicLamaDao;
 import com.neurix.simrs.master.pasien.model.ImSImrsRekamMedicLamaEntity;
 import com.neurix.simrs.master.pasien.model.ImSimrsUploadRekamMedicLamaEntity;
 import com.neurix.simrs.master.pasien.model.RekamMedicLama;
+import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;
+import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
@@ -156,6 +158,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private PeriksaRadiologiDao periksaRadiologiDao;
     private LabDetailDao labDetailDao;
     private OrderPeriksaLabDao orderPeriksaLabDao;
+    private RekananOpsDao rekananOpsDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -430,7 +433,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
                 detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
 
-                if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     detailCheckupEntity.setMetodePembayaran("non_tunai");
                 } else {
                     detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran() != null && !"".equalsIgnoreCase(bean.getMetodePembayaran()) ? bean.getMetodePembayaran() : null);
@@ -458,7 +461,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
                 }
 
-                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
                     detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
                     detailCheckupEntity.setRujuk(bean.getRujuk() != null ? bean.getRujuk() : null);
                     detailCheckupEntity.setKetRujukan(bean.getKetPerujuk() != null ? bean.getKetPerujuk() : null);
@@ -506,6 +509,22 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     saveDiagnosa(diagnosaRawat);
                 }
 
+                BigDecimal diskon = null;
+                if("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())){
+                    RekananOps ops = new RekananOps();
+                    try {
+                        ops = rekananOpsDao.getDetailRekananOps(bean.getIdAsuransi(), bean.getBranchId());
+                    }catch (HibernateException e){
+                        logger.error("Error when search diskon, "+e.getMessage());
+                    }
+
+                    if(ops != null){
+                        if(ops.getDiskon() != null && !"".equalsIgnoreCase(ops.getDiskon().toString())){
+                            diskon = ops.getDiskon();
+                        }
+                    }
+                }
+
                 if (bean.getTindakanList() != null && bean.getTindakanList().size() > 0) {
                     for (Tindakan tindakan : bean.getTindakanList()) {
                         List<ImSimrsTindakanEntity> tindakanEntities = getListEntityTindakan(tindakan);
@@ -526,8 +545,15 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                             tindakanRawatEntity.setAction("U");
                             tindakanRawatEntity.setApproveFlag("Y");
 
-                            if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
-                                tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());
+                            if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
+                                if("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                                    tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());
+                                }else{
+                                    if(diskon != null){
+                                        BigDecimal hasil = new BigDecimal(tindakanEntity.getTarifBpjs()).multiply(diskon);
+                                        tindakanRawatEntity.setTarif(hasil.toBigInteger());
+                                    }
+                                }
                             } else {
                                 tindakanRawatEntity.setTarif(tindakanEntity.getTarif());
                             }
@@ -539,10 +565,10 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                                 tindakanRawatDao.addAndSave(tindakanRawatEntity);
 
-                                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
 
                                     String jenPasien = "";
-                                    if ("ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                                    if ("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
                                         jenPasien = "bpjs";
                                     } else {
                                         jenPasien = bean.getIdJenisPeriksaPasien();
@@ -3062,5 +3088,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setOrderPeriksaLabDao(OrderPeriksaLabDao orderPeriksaLabDao) {
         this.orderPeriksaLabDao = orderPeriksaLabDao;
+    }
+
+    public void setRekananOpsDao(RekananOpsDao rekananOpsDao) {
+        this.rekananOpsDao = rekananOpsDao;
     }
 }

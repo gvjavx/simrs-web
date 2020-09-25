@@ -194,6 +194,16 @@ public class HeaderDetailCheckup extends BaseModel{
     private String justLab;
     private String flagSisa;
 
+    private String namaRekanan;
+
+    public String getNamaRekanan() {
+        return namaRekanan;
+    }
+
+    public void setNamaRekanan(String namaRekanan) {
+        this.namaRekanan = namaRekanan;
+    }
+
     public String getFlagSisa() {
         return flagSisa;
     }

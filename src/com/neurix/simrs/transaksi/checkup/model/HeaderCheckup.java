@@ -160,6 +160,16 @@ public class HeaderCheckup {
     private String flagCover;
     private String urlLab;
 
+    private String isRekananWithBpjs;
+
+    public String getIsRekananWithBpjs() {
+        return isRekananWithBpjs;
+    }
+
+    public void setIsRekananWithBpjs(String isRekananWithBpjs) {
+        this.isRekananWithBpjs = isRekananWithBpjs;
+    }
+
     public String getUrlLab() {
         return urlLab;
     }

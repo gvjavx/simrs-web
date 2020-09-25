@@ -209,7 +209,7 @@
                                                 <s:elseif test='#row.idJenisPeriksaPasien == "bpjs"'>
                                                     <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                 </s:elseif>
-                                                <s:elseif test='#row.idJenisPeriksaPasien == "ptpn"'>
+                                                <s:elseif test='#row.idJenisPeriksaPasien == "rekanan"'>
                                                     <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                 </s:elseif>
                                                 <s:else>

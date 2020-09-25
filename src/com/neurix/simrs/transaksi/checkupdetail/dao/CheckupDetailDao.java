@@ -421,7 +421,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND dt.is_kronis IS NULL \n" +
-                    "AND dt.id_jenis_periksa_pasien IN ('bpjs', 'ptpn') \n" +
+                    "AND dt.id_jenis_periksa_pasien IN ('bpjs', 'rekanan') \n" +
                     "AND dt.status_periksa LIKE :status";
 
             List<Object[]> results = new ArrayList<>();

@@ -364,4 +364,8 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
     public ItemPaket getTarifPaketLab(String idPaket, String idLab) throws GeneralBOException{
         return itemPaketDao.getSumTarifPaketLab(idPaket, idLab);
     }
+
+    public List<String> getListIdDetailCheckup(String noCheckup) throws GeneralBOException{
+        return riwayatTindakanDao.getListDetailCheckupByNoCheckup(noCheckup);
+    }
 }

@@ -314,4 +314,26 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
         List<ItSimrsRiwayatTindakanEntity> results = criteria.list();
         return results;
     }
+
+    public List<String> getListDetailCheckupByNoCheckup(String noCheckup) {
+
+        String SQL = "SELECT \n" +
+                "id_detail_checkup, \n" +
+                "no_checkup \n" +
+                "FROM it_simrs_header_detail_checkup\n" +
+                "WHERE no_checkup = :noCheckup ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("noCheckup", noCheckup)
+                .list();
+
+        List<String> listResults = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                listResults.add(obj[0].toString());
+            }
+        }
+
+        return listResults;
+    }
 }
