@@ -1114,3 +1114,10 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
       RENAME TO it_akun_saldo_akhir_detail_history;
 --
 
+-- 2020-09-25
+
+    UPDATE im_akun_mapping_jurnal SET kirim_list = 'Y'
+    WHERE keterangan = 'uang_muka'
+    AND trans_id NOT IN ('04','34');
+
+--

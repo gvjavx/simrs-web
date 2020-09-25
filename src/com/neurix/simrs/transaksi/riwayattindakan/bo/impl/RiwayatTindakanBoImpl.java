@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.riwayattindakan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.paketperiksa.dao.ItemPaketDao;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItemPaket;
 import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsItemPaketEntity;
@@ -365,7 +366,13 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         return itemPaketDao.getSumTarifPaketLab(idPaket, idLab);
     }
 
+    @Override
     public List<String> getListIdDetailCheckup(String noCheckup) throws GeneralBOException{
         return riwayatTindakanDao.getListDetailCheckupByNoCheckup(noCheckup);
+    }
+
+    @Override
+    public List<UangMuka> getListUangMukaByNoCheckup(String noCheckup) throws GeneralBOException {
+        return riwayatTindakanDao.getListUangMukaByNoCheckup(noCheckup);
     }
 }

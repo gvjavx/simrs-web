@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.riwayattindakan.bo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItemPaket;
 import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsItemPaketEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
@@ -34,4 +35,5 @@ public interface RiwayatTindakanBo {
     public MtSimrsItemPaketEntity getItemPaketEntity(String idPaket, String idItem) throws GeneralBOException;
     public ItemPaket getTarifPaketLab(String idPaket, String idLab) throws GeneralBOException;
     public List<String> getListIdDetailCheckup(String noCheckup) throws GeneralBOException;
+    public List<UangMuka> getListUangMukaByNoCheckup(String noCheckup) throws GeneralBOException;
 }

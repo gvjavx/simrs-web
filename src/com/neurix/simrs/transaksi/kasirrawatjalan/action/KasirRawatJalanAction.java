@@ -791,7 +791,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         BigDecimal nilai = new BigDecimal(0);
         try {
-            if (idRuangan != null || !"".equalsIgnoreCase(idRuangan)) {
+            if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)) {
                 // untuk tipe transaksi rawat inap
                 nilai = checkupDetailBo.getSumJumlahTindakanByJenisRI(idDetailCheckup, jenisPasien, keterangan, idRuangan);
             } else if (isNoCheckup){
@@ -810,8 +810,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 }
             } else {
 
-                // jika per detail checkup
-                nilai = checkupDetailBo.getSumJumlahTindakanByJenisRI(idDetailCheckup, jenisPasien, keterangan, idRuangan);
+                // jika per detail checkup selain RI
+                nilai = checkupDetailBo.getSumJumlahTindakanByJenis(idDetailCheckup, jenisPasien, keterangan);
             }
         } catch (GeneralBOException e){
             logger.error("[CheckupDetailAction.getJumlahNilaiBiayaByKeterangan] ERROR ", e);
@@ -1254,7 +1254,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             if ("uang_muka".equalsIgnoreCase(obj.getString("type").toString())) {
                 uangMuka = new BigDecimal(obj.getLong("nilai"));
             }
-            else if ("ppn_keluaran".equalsIgnoreCase(obj.getString("type").toString())) {
+            if ("ppn_keluaran".equalsIgnoreCase(obj.getString("type").toString())) {
                 ppnObat = new BigDecimal(obj.getLong("nilai"));
             }
 //            else if ("piutang_pasien_non_bpjs".equalsIgnoreCase(obj.getString("type").toString())) {
@@ -1276,8 +1276,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 //                mapJurnal.put(obj.getString("type").toString(), new BigDecimal(obj.getLong("nilai")));
 //            }
         }
-
-
 
         String ketTerangan = "";
         String transId = "";
@@ -1451,11 +1449,29 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         } else {
 
             // jika bukan piutang maka pakai map uang muka
-            Map mapUangMuka = new HashMap();
-            mapUangMuka.put("bukti", noNota);
-            mapUangMuka.put("nilai", uangMuka);
-            mapUangMuka.put("pasien_id", idPasien);
-            mapJurnal.put("uang_muka", mapUangMuka);
+            List<Map> listMapUangMuka = new ArrayList<>();
+            if (isNoCheckup){
+
+                List<UangMuka> listUangMuka = riwayatTindakanBo.getListUangMukaByNoCheckup(noCheckup);
+                if (listMapUangMuka.size() > 0){
+                    for (UangMuka dataUangMuka : listUangMuka){
+                        Map mapUangMuka = new HashMap();
+                        mapUangMuka.put("bukti", dataUangMuka.getId());
+                        mapUangMuka.put("nilai", dataUangMuka.getDibayar());
+                        mapUangMuka.put("pasien_id", idPasien);
+                        listMapUangMuka.add(mapUangMuka);
+                    }
+                }
+
+            } else {
+                Map mapUangMuka = new HashMap();
+                mapUangMuka.put("bukti", noNota);
+                mapUangMuka.put("nilai", uangMuka);
+                mapUangMuka.put("pasien_id", idPasien);
+                listMapUangMuka.add(mapUangMuka);
+            }
+
+            mapJurnal.put("uang_muka", listMapUangMuka);
         }
 
         if (!"".equalsIgnoreCase(transId)) {
