@@ -34,5 +34,6 @@ public interface PaketPeriksaBo{
     public ItSimrsPaketPasienEntity getPaketPasienEntityByIdPaket(String id, String pasien) throws GeneralBOException;
 
     public List<MasterVendor> getListPerusahaan() throws GeneralBOException;
+    public List<DetailPaket> getListPelayananPaket(DetailPaket bean) throws GeneralBOException;
 
 }

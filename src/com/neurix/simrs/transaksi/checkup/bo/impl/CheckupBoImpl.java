@@ -1073,7 +1073,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 }
             }
 
-
             if ("paket_perusahaan".equalsIgnoreCase(jenisPeriksa)) {
 
                 PaketPeriksa periksa = new PaketPeriksa();

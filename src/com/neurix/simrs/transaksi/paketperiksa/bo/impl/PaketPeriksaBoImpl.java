@@ -4,6 +4,7 @@ import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
+import com.neurix.simrs.transaksi.icu.model.ItSimrsDetailIcuEntity;
 import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
 import com.neurix.simrs.transaksi.paketperiksa.dao.*;
 import com.neurix.simrs.transaksi.paketperiksa.model.*;
@@ -172,7 +173,7 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
         CrudResponse response = new CrudResponse();
 
         if (bean != null) {
-            bean.setIdPaket(getNextItemPaketId());
+            bean.setIdPaket(getNextPaketPeriksaId());
             try {
                 paketDao.addAndSave(bean);
                 response.setStatus("success");
@@ -208,6 +209,7 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
 
             if(detailPaketEntityList.size() > 0){
                 for (MtSimrsDetailPaketEntity detailPaketEntity : detailPaketEntityList) {
+                    detailPaketEntity.setIdDetailPaket("DPK"+detailPaketDao.getNextSeq());
                     detailPaketEntity.setIdPaket(bean.getIdPaket());
                     detailPaketEntity.setFlag(bean.getFlag());
                     detailPaketEntity.setAction(bean.getAction());
@@ -406,6 +408,37 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
     @Override
     public List<MasterVendor> getListPerusahaan() throws GeneralBOException {
         return paketPasienDao.getListPerusahaan();
+    }
+
+    @Override
+    public List<DetailPaket> getListPelayananPaket(DetailPaket bean) throws GeneralBOException {
+        List<DetailPaket> detailPakets = new ArrayList<>();
+        if(bean != null){
+            Map hsCriteria = new HashMap();
+            if(bean.getIdDetailPaket() != null && !"".equalsIgnoreCase(bean.getIdDetailPaket())){
+                hsCriteria.put("id_detail_paket", bean.getIdDetailPaket());
+            }
+            if(bean.getIdPaket() != null && !"".equalsIgnoreCase(bean.getIdPaket())){
+                hsCriteria.put("id_paket", bean.getIdPaket());
+            }
+            hsCriteria.put("flag", "Y");
+            List<MtSimrsDetailPaketEntity> detailPaketEntityList = new ArrayList<>();
+            try {
+                detailPaketEntityList = detailPaketDao.getByCriteria(hsCriteria);
+            }catch (HibernateException e){
+                logger.error("Error"+e.getMessage());
+            }
+            if(detailPaketEntityList.size() > 0){
+                for (MtSimrsDetailPaketEntity entity: detailPaketEntityList){
+                    DetailPaket detailPaket = new DetailPaket();
+                    detailPaket.setIdDetailPaket(entity.getIdDetailPaket());
+                    detailPaket.setIdPaket(entity.getIdPaket());
+                    detailPaket.setUrutan(entity.getUrutan());
+                    detailPakets.add(detailPaket);
+                }
+            }
+        }
+        return detailPakets;
     }
 
     private String getNextPaketPeriksaId() {

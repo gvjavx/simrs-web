@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsDetailPaketEntity">
-        <table name="mt_simrs_detail_paket" schema="public" catalog="simrs"/>
+        <table name="mt_simrs_detail_paket" schema="public"/>
         <attributes>
             <id name="idDetailPaket">
                 <column name="id_detail_paket"/>

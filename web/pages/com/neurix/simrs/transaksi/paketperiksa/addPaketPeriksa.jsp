@@ -1169,7 +1169,7 @@
             var urutan = $('#urut_val_' + i).val();
             resultPel.push({
                 'id_pelayanan': idPoli,
-                'id_urut': urutan
+                'urutan': urutan
             });
         });
 

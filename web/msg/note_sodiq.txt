@@ -811,8 +811,30 @@ ALTER TABLE public.mt_simrs_detail_paket
 
 CREATE SEQUENCE seq_detail_paket;
 
+CREATE TABLE public.it_simrs_pelayanan_paket
+(
+  id_pelayanan_paket character varying(50) NOT NULL,
+  no_checkup character varying(50),
+  id_paket character varying(50),
+  id_detail_checkup character varying(50),
+  id_pelayanan character varying(50),
+  urutan bigint,
+  is_periksa character varying(1),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_pelayanan_paket PRIMARY KEY (id_pelayanan_paket)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_pelayanan_paket
+  OWNER TO postgres;
 
-
+CREATE SEQUENCE seq_pelayanan_paket;
 
 
 
