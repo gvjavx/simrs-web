@@ -1217,11 +1217,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "asuransi", keterangan, kode, ""));
                         listOfMapTindakanAsuransi.add(mapTindakan);
                     }
-
-
                 }
             }
-
         }
 
         String branchId = CommonUtil.userBranchLogin();
