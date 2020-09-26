@@ -3789,4 +3789,18 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.cekRekananOps] END process >>>");
         return rekananOps;
     }
+
+    public List<PelayananPaket> cekPelayananPaket(String noCheckup) {
+        logger.info("[CheckupAction.cekPelayananPaket] START process >>>");
+        List<PelayananPaket> pelayananPaketList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        try {
+            pelayananPaketList = checkupBo.getListPelayananPaket(noCheckup);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error, " + e.getMessage());
+        }
+        logger.info("[CheckupAction.cekPelayananPaket] END process >>>");
+        return pelayananPaketList;
+    }
 }

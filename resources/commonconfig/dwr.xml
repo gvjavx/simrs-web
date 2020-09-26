@@ -320,6 +320,7 @@
       <convert converter="bean" match="com.neurix.simrs.master.rekammedis.model.RekamMedisPasien"/>
       <convert converter="bean" match="com.neurix.simrs.master.jenisobat.model.JenisObat"/>
       <convert converter="bean" match="com.neurix.simrs.master.rekananops.model.RekananOps"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.PelayananPaket"/>
 
       <!--Team Dokter -->
       <create creator="new">

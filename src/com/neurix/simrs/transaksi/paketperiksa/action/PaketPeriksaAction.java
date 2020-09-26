@@ -95,17 +95,9 @@ public class PaketPeriksaAction extends BaseTransactionAction {
 
         List<PaketPeriksa> list = new ArrayList<>();
 
-        if("RJ".equalsIgnoreCase(tipe)){
+        if(tipe != null && !"".equalsIgnoreCase(tipe)){
             try {
-                list = paketPeriksaBo.getListPaketRawatJalan(CommonUtil.userBranchLogin());
-            }catch (GeneralBOException e){
-                logger.error("Found Error "+e.getMessage());
-            }
-        }
-
-        if("IGD".equalsIgnoreCase(tipe)){
-            try {
-                list = paketPeriksaBo.getListPaketIgd(CommonUtil.userBranchLogin());
+                list = paketPeriksaBo.getListPaket(CommonUtil.userBranchLogin(), tipe);
             }catch (GeneralBOException e){
                 logger.error("Found Error "+e.getMessage());
             }

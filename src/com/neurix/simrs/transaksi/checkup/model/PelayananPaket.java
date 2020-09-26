@@ -18,6 +18,15 @@ public class PelayananPaket {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idDokter;
+
+    public String getIdDokter() {
+        return idDokter;
+    }
+
+    public void setIdDokter(String idDokter) {
+        this.idDokter = idDokter;
+    }
 
     public String getIdPaket() {
         return idPaket;

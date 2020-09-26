@@ -82,6 +82,8 @@
           p:labDetailDao-ref="labDetailDao"
           p:orderPeriksaLabDao-ref="orderPeriksaLabDao"
           p:rekananOpsDao-ref="rekananOpsDao"
+          p:detailPaketDao-ref="detailPaketDao"
+          p:pelayananPaketDao-ref="pelayananPaketDao"
 
     />
 

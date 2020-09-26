@@ -359,11 +359,11 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
     }
 
     @Override
-    public List<PaketPeriksa> getListPaketRawatJalan(String branchId) throws GeneralBOException {
+    public List<PaketPeriksa> getListPaket(String branchId, String tipe) throws GeneralBOException {
         List<PaketPeriksa> list = new ArrayList<>();
         if (branchId != null && !"".equalsIgnoreCase(branchId)) {
             try {
-                list = paketPasienDao.getPaketPeriksaRawatJalan(branchId);
+                list = paketPasienDao.getPaketPeriksa(branchId, tipe);
             } catch (HibernateException e) {
                 logger.error("Found Error " + e.getMessage());
             }

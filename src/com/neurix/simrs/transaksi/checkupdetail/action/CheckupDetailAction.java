@@ -57,6 +57,7 @@ import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
+import com.neurix.simrs.transaksi.checkup.model.PelayananPaket;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 
@@ -502,6 +503,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         HeaderCheckup checkup = new HeaderCheckup();
         HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
         String jk = "";
 
@@ -586,17 +588,16 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setAsesmenLabel("Asesmen " + label);
             detailCheckup.setTipePelayanan(checkup.getTipePelayanan());
 
-            if("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())){
-                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
                 RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
                 RekananOps ops = new RekananOps();
                 String userBranch = CommonUtil.userBranchLogin();
                 try {
-                  ops = rekananOpsBo.getDetailRekananOps(checkup.getIdAsuransi(), userBranch);
-                }catch (HibernateException e){
-                    logger.error("Error, "+e.getMessage());
+                    ops = rekananOpsBo.getDetailRekananOps(checkup.getIdAsuransi(), userBranch);
+                } catch (HibernateException e) {
+                    logger.error("Error, " + e.getMessage());
                 }
-                if(ops != null){
+                if (ops != null) {
                     detailCheckup.setNamaRekanan(ops.getNamaRekanan());
                 }
             }
@@ -1100,13 +1101,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                     String jenisBayar = object.getString("metode_bayar");
                     String metodeBayar = "";
                     String justLab = "";
-                    if(object.has("just_lab")){
+                    if (object.has("just_lab")) {
                         justLab = object.getString("just_lab");
                     }
                     if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
-                        if(justLab != null && !"".equalsIgnoreCase(justLab)){
+                        if (justLab != null && !"".equalsIgnoreCase(justLab)) {
                             response.setStatus("success");
-                        }else{
+                        } else {
                             response = cekAllTindakanRawat(idDetailCheckup);
                         }
                         if ("success".equalsIgnoreCase(response.getStatus())) {
@@ -1135,7 +1136,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             detailCheckup.setLastUpdateWho(user);
                             detailCheckup.setLastUpdate(now);
                             detailCheckup.setFlagCloseTraksaksi("Y");
-                            if(justLab != null && !"".equalsIgnoreCase(justLab)){
+                            if (justLab != null && !"".equalsIgnoreCase(justLab)) {
                                 detailCheckup.setJustLab(justLab);
                             }
                             response = checkupDetailBo.updateDetailCheckup(detailCheckup);
@@ -1173,6 +1174,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             try {
                 JSONObject object = new JSONObject(data);
+                String noCheckup = object.getString("no_checkup");
                 String idDetailCheckup = object.getString("id_detail_checkup");
                 String tindakLanjut = object.getString("tindak_lanjut");
                 String jenisPasien = object.getString("jenis_pasien");
@@ -1186,6 +1188,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                 String idDokter = null;
                 String metodeBayar = null;
                 String uangMuka = null;
+                String urutan = null;
+                String idPaket = null;
 
                 if (object.has("rs_rujukan")) {
                     rsRujukan = object.getString("rs_rujukan");
@@ -1216,6 +1220,12 @@ public class CheckupDetailAction extends BaseMasterAction {
                 }
                 if (object.has("uang_muka")) {
                     uangMuka = object.getString("uang_muka");
+                }
+                if (object.has("urutan_paket")) {
+                    urutan = object.getString("urutan_paket");
+                }
+                if (object.has("id_paket")) {
+                    idPaket = object.getString("id_paket");
                 }
 
                 List<OrderPeriksaLab> orderPeriksaLab = new ArrayList<>();
@@ -1271,11 +1281,17 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                     if ("pindah_poli".equalsIgnoreCase(tindakLanjut)) {
                         response = pindahPoli(idDetailCheckup, poliLain, idDokter, metodeBayar, uangMuka);
+                    } else if ("lanjut_paket".equalsIgnoreCase(tindakLanjut)) {
+                        response = nextPaket(noCheckup, idDetailCheckup, urutan, idPaket);
+                    } else {
+                        response.setStatus("success");
                     }
 
                     try {
-                        response = checkupDetailBo.saveEdit(headerDetailCheckup);
-                        updateFlagPeriksaAntrianOnline(idDetailCheckup);
+                        if ("success".equalsIgnoreCase(response.getStatus())) {
+                            response = checkupDetailBo.saveEdit(headerDetailCheckup);
+                            updateFlagPeriksaAntrianOnline(idDetailCheckup);
+                        }
                     } catch (GeneralBOException e) {
                         response.setStatus("error");
                         response.setMsg("[Found Error] Terjadi kesalahan saat melakukan update data transaksi..!, " + e.getMessage());
@@ -1294,6 +1310,29 @@ public class CheckupDetailAction extends BaseMasterAction {
             response.setMsg("[Found Error] Data yang dikirim tidak lengkap...!");
         }
         logger.info("[CheckupDetailAction.savePeriksaPasien] END process >>>");
+        return response;
+    }
+
+    private CrudResponse nextPaket(String noCheckup, String idDetailCheckup, String urutan, String idPaket) {
+        CrudResponse response = new CrudResponse();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        String user = CommonUtil.userLogin();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        PelayananPaket paket = new PelayananPaket();
+        paket.setNoCheckup(noCheckup);
+        paket.setIdDetailCheckup(idDetailCheckup);
+        paket.setUrutan(new BigInteger(urutan));
+        paket.setIdPaket(idPaket);
+        paket.setLastUpdate(now);
+        paket.setLastUpdateWho(user);
+
+        try {
+            response = checkupBo.nextItemPaketToPeriksa(paket);
+        } catch (HibernateException e) {
+            response.setStatus("error");
+            response.setMsg("Error, " + e.getMessage());
+        }
         return response;
     }
 
@@ -3253,7 +3292,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 response = checkupDetailBo.updateRuanganInap(idRawatInap, idRuangan, idDetailCheckup, tanggal);
             } catch (GeneralBOException e) {
                 response.setStatus("error");
-                response.setMsg("Found Error, "+e.getMessage());
+                response.setMsg("Found Error, " + e.getMessage());
                 logger.error("[CheckupDetailAction.saveUpdateRuangan] Found problem when updating rawat inap, please inform to your admin.", e);
             }
         } else {
@@ -3269,7 +3308,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.savePindahRuangan] start process >>>");
         CrudResponse response = new CrudResponse();
         if (idRawatInapNew != null && !"".equalsIgnoreCase(idRawatInapNew) &&
-            idRawatInapPindah != null && !"".equalsIgnoreCase(idRawatInapPindah)) {
+                idRawatInapPindah != null && !"".equalsIgnoreCase(idRawatInapPindah)) {
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
@@ -3277,7 +3316,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 response = checkupDetailBo.updatePindahRuangan(idRawatInapNew, idRawatInapPindah);
             } catch (GeneralBOException e) {
                 response.setStatus("error");
-                response.setMsg("Found Error, "+e.getMessage());
+                response.setMsg("Found Error, " + e.getMessage());
                 logger.error("[CheckupDetailAction.savePindahRuangan] Found problem when updating rawat inap, please inform to your admin.", e);
             }
         } else {
@@ -4100,11 +4139,11 @@ public class CheckupDetailAction extends BaseMasterAction {
             String userBranch = CommonUtil.userBranchLogin();
 
             RekananOps ops = new RekananOps();
-            if("rekanan".equalsIgnoreCase(jenisPasien)){
+            if ("rekanan".equalsIgnoreCase(jenisPasien)) {
                 try {
                     ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetail, userBranch);
-                }catch (GeneralBOException e){
-                    logger.error("Error, "+e.getMessage());
+                } catch (GeneralBOException e) {
+                    logger.error("Error, " + e.getMessage());
                 }
             }
 
@@ -4253,13 +4292,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                         } else {
 
                             // jika bukan paket maka pakai tarif asli
-                            if("rekanan".equalsIgnoreCase(jenisPasien)){
-                                if(ops.getDiskon() != null){
+                            if ("rekanan".equalsIgnoreCase(jenisPasien)) {
+                                if (ops.getDiskon() != null) {
                                     riwayatTindakan.setTotalTarif(lab.getTarif().multiply(ops.getDiskon()));
-                                }else{
+                                } else {
                                     riwayatTindakan.setTotalTarif(lab.getTarif());
                                 }
-                            }else{
+                            } else {
                                 riwayatTindakan.setTotalTarif(lab.getTarif());
                             }
                         }
@@ -4321,13 +4360,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                             riwayatTindakan.setIdTindakan(entity.getIdPermintaanResep());
                             riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
                             riwayatTindakan.setNamaTindakan("Tarif Resep dengan No. Resep " + entity.getIdPermintaanResep());
-                            if("rekanan".equalsIgnoreCase(jenisPasien)){
-                                if(ops.getDiskon() != null){
+                            if ("rekanan".equalsIgnoreCase(jenisPasien)) {
+                                if (ops.getDiskon() != null) {
                                     riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()).multiply(ops.getDiskon()));
-                                }else{
+                                } else {
                                     riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()));
                                 }
-                            }else{
+                            } else {
                                 riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()));
                             }
                             riwayatTindakan.setKeterangan("resep");
@@ -4397,13 +4436,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 riwayatTindakan.setIdTindakan(gizi.getIdOrderGizi());
                                 riwayatTindakan.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
                                 riwayatTindakan.setNamaTindakan("Tarif Gizi dengan No. Gizi " + gizi.getIdOrderGizi());
-                                if("rekanan".equalsIgnoreCase(jenisPasien)){
-                                    if(ops.getDiskon() != null){
+                                if ("rekanan".equalsIgnoreCase(jenisPasien)) {
+                                    if (ops.getDiskon() != null) {
                                         riwayatTindakan.setTotalTarif(gizi.getTarifTotal().multiply(ops.getDiskon()));
-                                    }else{
+                                    } else {
                                         riwayatTindakan.setTotalTarif(gizi.getTarifTotal());
                                     }
-                                }else{
+                                } else {
                                     riwayatTindakan.setTotalTarif(gizi.getTarifTotal());
                                 }
 
@@ -4784,7 +4823,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     "15. Mengajukan usul, saran perbaikan atas perlakukan rumah sakit terhadap dirinya\n" +
                     "16. Menolak bimbingan rohani yang tidak sesuai dengan agama dan kepercayaan yang dianutnya\n" +
                     "17. Menggugat atau menuntut rumah sakit apabila rumah sakit diduga memberikan pelayanan yang tidak sesuai dengan standart baik secara perdata maupun pidana\n" +
-                    "18. Mengeluhkan pelayanan rumah sakit yang tidak sesuai dengan stardar pelayanan melalui media\n"+
+                    "18. Mengeluhkan pelayanan rumah sakit yang tidak sesuai dengan stardar pelayanan melalui media\n" +
                     "IV. Kewajiban Pasien dan Keluarga Pasien\n" +
                     "1. Mematuhi peraturan yang berlaku di Rumah Sakit Gatoel\n" +
                     "2. Menggunakan fasilitas rumah sakit " + branchName + " secara bertanggung jawab\n" +
@@ -4910,7 +4949,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             if ("CK03".equalsIgnoreCase(tipe)) {
                 return "print_lembar_konsultasi";
             }
-            if("CK04".equalsIgnoreCase(tipe)){
+            if ("CK04".equalsIgnoreCase(tipe)) {
                 return "print_hak_kewajiban_pasien";
             }
             if ("SP01".equalsIgnoreCase(tipe)) {
