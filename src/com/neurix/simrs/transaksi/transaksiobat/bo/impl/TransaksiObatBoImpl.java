@@ -136,6 +136,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 if (resepEntity != null) {
                     transaksiObatDetail.setJenisResep(resepEntity.getJenisResep());
                     transaksiObatDetail.setIdPelayananTujuan(resepEntity.getTujuanPelayanan());
+                    transaksiObatDetail.setIdPermintaanResep(resepEntity.getIdPermintaanResep());
                     ImSimrsPasienEntity pasienEntity = getEntityPasienById(resepEntity.getIdPasien());
                     if (pasienEntity != null) {
                         transaksiObatDetail.setNamaPasien(pasienEntity.getNama());

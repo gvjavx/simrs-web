@@ -2986,6 +2986,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                     }
                     retureObat.setIdTransaksiObatDetail(searchTransaksi.getIdTransaksiObatDetail());
                     retureObat.setIdPelayananTujuan(searchTransaksi.getIdPelayananTujuan());
+                    retureObat.setIdPermintaanResep(searchTransaksi.getIdPermintaanResep());
                 }
 
                 listBatchReture.add(retureObat);
