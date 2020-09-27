@@ -918,7 +918,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         return data;
     }
 
-    public JadwalShiftKerja cekJadwalKerja(String nip,String shiftId){
+    public JadwalShiftKerja cekJadwalKerja(String nip,String shiftId,String onCall){
         JadwalShiftKerja jadwalShiftKerja= new JadwalShiftKerja();
         String status ="";
 
@@ -932,6 +932,22 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
                 }
                 if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())&&shiftId.equalsIgnoreCase(jadwalShiftKerjaDetail.getShiftId())){
                     status="Pegawai dengan shift ini sudah ada";
+                    break;
+                }
+            }
+            if ("Y".equalsIgnoreCase(onCall)){
+                for (JadwalShiftKerjaDetail jadwalShiftKerjaDetail : listOfResult) {
+                    if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())) {
+                        status="Jadwal dengan On Call Hanya Bisa 1 Kali";
+                        break;
+                    }
+                }
+            }else{
+                for (JadwalShiftKerjaDetail jadwalShiftKerjaDetail : listOfResult){
+                    if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())&&"Y".equalsIgnoreCase(jadwalShiftKerjaDetail.getOnCall())){
+                        status="Jadwal dengan On Call Hanya Bisa 1 Kali";
+                        break;
+                    }
                 }
             }
         }

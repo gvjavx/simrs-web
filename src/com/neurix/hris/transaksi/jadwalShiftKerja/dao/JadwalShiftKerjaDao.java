@@ -66,6 +66,87 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
 
         return results;
     }
+
+    public List<JadwalShiftKerja> getByCriteriaJadwalShift(JadwalShiftKerja search) {
+        List<JadwalShiftKerja> jadwalShiftKerjaList = new ArrayList<>();
+        String query = "";
+        String searchUnit = "" ;
+        String searchGrup = "" ;
+        String searchNip = "" ;
+        String searchTanggalDari = "" ;
+        String searchTanggalSelesai = "" ;
+
+        if (search.getBranchId()!=null){
+            if(!search.getBranchId().equalsIgnoreCase("")){
+                searchUnit = " and j.branch_id = '" + search.getBranchId() + "' " ;
+            }
+        }
+        if (search.getGroupId()!=null){
+            if(!search.getGroupId().equalsIgnoreCase("")){
+                searchGrup = " and jd.profesi_id = '" + search.getGroupId() + "' " ;
+            }
+        }
+        if (search.getNip()!=null){
+            if(!search.getNip().equalsIgnoreCase("")){
+                searchNip = " and jd.nip = '" + search.getNip() + "' " ;
+            }
+        }
+        if (search.getStTanggalAwal()!=null){
+            if(!search.getStTanggalAwal().equalsIgnoreCase("")){
+                searchTanggalDari = " and j.tanggal >= '" + search.getStTanggalAwal() + "' " ;
+            }
+        }
+        if (search.getStTanggalAkhir()!=null){
+            if(!search.getStTanggalAkhir().equalsIgnoreCase("")){
+                searchTanggalSelesai = " and j.tanggal <= '" + search.getStTanggalAkhir() + "' " ;
+            }
+        }
+        query = "select\n" +
+                "\tj.jadwal_shift_kerja_id,\n" +
+                "\tb.branch_name,\n" +
+                "\tj.tanggal,\n" +
+                "\ts.jam_awal,\n" +
+                "\ts.jam_akhir,\n" +
+                "\tjd.profesi_name,\n" +
+                "\tjd.nama_pegawai,\n" +
+                "\tjd.position_name,\n" +
+                "\tjd.on_call,\n" +
+                "\tjd.flag_panggil,\n" +
+                "\tj.branch_id\n" +
+                "from\n" +
+                "\t( select * from it_hris_jadwal_shift_kerja) j\n" +
+                "\tleft join (select * from it_hris_jadwal_shift_kerja_detail where flag='Y') jd ON j.jadwal_shift_kerja_id = jd.jadwal_shift_kerja_id\n" +
+                "\tleft join ( select * from im_hris_shift ) s ON jd.shift_id = s.shift_id\n" +
+                "\tleft join ( select * from im_branches ) b ON b.branch_id = j.branch_id\n" +
+                "where\n" +
+                "\tj.flag='Y'\n" +
+                searchUnit + searchGrup + searchNip + searchTanggalDari + searchTanggalSelesai +
+                "\t order by j.tanggal desc,jam_awal asc,jd.profesi_name asc,position_name asc";
+
+        List<Object[]> results = new ArrayList<Object[]>();
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            JadwalShiftKerja jadwalShiftKerja = new JadwalShiftKerja();
+            jadwalShiftKerja.setJadwalShiftKerjaId((String) row[0]);
+            jadwalShiftKerja.setBranchName(row[1].toString());
+            jadwalShiftKerja.setTanggal((Date) row[2]);
+            jadwalShiftKerja.setShiftName(row[3].toString()+ " s/d "+row[4].toString());
+            jadwalShiftKerja.setProfesiName(row[5].toString());
+            jadwalShiftKerja.setNamaPegawai(row[6].toString());
+            jadwalShiftKerja.setPositionName(row[7].toString());
+            jadwalShiftKerja.setOnCall(row[8].toString());
+            jadwalShiftKerja.setFlagPanggil(row[9].toString());
+            jadwalShiftKerja.setBranchId(row[10].toString());
+
+            jadwalShiftKerjaList.add(jadwalShiftKerja);
+        }
+        return jadwalShiftKerjaList;
+    }
+
     public String getNextJadwalShiftKerjaId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_jadwal_shift_kerja')");
         Iterator<BigInteger> iter=query.list().iterator();

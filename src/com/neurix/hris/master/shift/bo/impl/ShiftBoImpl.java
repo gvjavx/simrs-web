@@ -259,7 +259,7 @@ public class ShiftBoImpl implements ShiftBo {
                 for(ImHrisShiftEntity listEntity : imHrisShiftList){
                     returnData = new Shift();
                     returnData.setShiftId(listEntity.getShiftId());
-                    returnData.setShiftName(listEntity.getShiftName());
+                    returnData.setShiftName(listEntity.getShiftName()+" | "+listEntity.getJamAwal()+" s/d "+listEntity.getJamAkhir());
                     returnData.setJamAwal(listEntity.getJamAwal());
                     returnData.setJamAkhir(listEntity.getJamAkhir());
                     returnData.setCreatedDate(listEntity.getCreatedDate());

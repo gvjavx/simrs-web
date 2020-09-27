@@ -17,6 +17,7 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <script type='text/javascript' src='<s:url value="/dwr/interface/JadwalShiftKerjaAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
     <style>
         .pagebanner{
             background-color: #ededed;
@@ -119,12 +120,55 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Nama Jadwal :</small></label>
+                                                    <label class="control-label"><small>NIP :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="jadwalName" name="jadwalShiftKerja.jadwalShiftKerjaName" cssClass="form-control"
-                                                                     required="false" cssStyle=""/>
+                                                        <s:textfield id="nip" name="jadwalShiftKerja.nip" required="true" disabled="false" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <script type='text/javascript'>
+                                                var functions, mapped;
+                                                $('#nip').typeahead({
+                                                    minLength: 1,
+                                                    source: function (query, process) {
+                                                        functions = [];
+                                                        mapped = {};
+                                                        var data = [];
+                                                        var unit = $('#branchid').val();
+                                                        if (unit==""){
+                                                            alert("unit is empty");
+                                                            $('#namaId').val("");
+                                                            $('#nip').val("");
+                                                        }else {
+                                                            dwr.engine.setAsync(false);
+                                                            CutiPegawaiAction.initComboPersonil(query, unit, function (listdata) {
+                                                                data = listdata;
+                                                            });
+                                                            $.each(data, function (i, item) {
+                                                                var labelItem = item.nip+" "+item.namaPegawai;
+                                                                mapped[labelItem] = {id: item.nip, label: labelItem,nama:item.namaPegawai};
+                                                                functions.push(labelItem);
+                                                            });
+                                                            process(functions);
+                                                        }
+                                                    },
+                                                    updater: function (item) {
+                                                        var selectedObj = mapped[item];
+                                                        var namaMember = selectedObj.label;
+                                                        document.getElementById("namaId").value = selectedObj.nama;
+                                                        return selectedObj.id;
+                                                    }
+                                                });
+                                            </script>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Nama :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield id="namaId" name="" required="true" readonly="true" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -251,14 +295,13 @@
                                                 <table id="tableJadwalShiftKerja" class="tableJadwalShiftKerja table table-bordered table-striped" style="font-size: 11px">
                                                     <thead >
                                                     <tr bgcolor="#90ee90" style="text-align: center">
-                                                        <td>ID</td>
-                                                        <td>Unit</td>
-                                                        <td>Nama Jadwal</td>
-                                                        <td>Tanggal</td>
-                                                        <td>Nama</td>
+                                                        <td>ID </td>
+                                                        <td>Unit </td>
+                                                        <td>Tanggal </td>
+                                                        <td>Shift </td>
+                                                        <td>Nama </td>
                                                         <td>Posisi </td>
                                                         <td>Group </td>
-                                                        <td>Shift </td>
                                                         <td align="center">Edit</td>
                                                         <td align="center">On Call</td>
                                                         <td align="center">Panggil</td>
@@ -269,12 +312,11 @@
                                                         <tr>
                                                             <td style="text-align: center"><s:property value="jadwalShiftKerjaId"/></td>
                                                             <td style="text-align: center"><s:property value="branchName"/></td>
-                                                            <td><s:property value="jadwalShiftKerjaName"/></td>
                                                             <td><s:property value="stTanggal"/></td>
+                                                            <td><s:property value="shiftName"/></td>
                                                             <td><s:property value="namaPegawai"/></td>
                                                             <td><s:property value="positionName"/></td>
                                                             <td><s:property value="profesiName"/></td>
-                                                            <td><s:property value="shiftName"/></td>
                                                             <td align="center">
                                                                 <s:if test="#attr.row.tamp">
                                                                     <s:if test="#attr.row.flagYes">
@@ -295,20 +337,31 @@
                                                             </td>
                                                             <td align="center">
                                                                 <s:if test='#attr.row.hariIni'>
-                                                                <s:if test='#attr.row.onCall=="Y"'>
-                                                                <s:if test='#attr.row.flagPanggil=="Y"' >
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                    <s:if test='#attr.row.onCall=="Y"'>
+                                                                        <s:if test='#attr.row.flagPanggil=="Y"'>
+                                                                            <img border="0"
+                                                                                 src="<s:url value="/pages/images/icon_success.ico"/>"
+                                                                                 name="icon_edit">
+                                                                        </s:if>
+                                                                        <s:else>
+                                                                        <a href="javascript:;"
+                                                                           id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>"
+                                                                           tanggal="<s:property value="%{#attr.row.stTanggal}"/>"
+                                                                           nama="<s:property value="%{#attr.row.namaPegawai}"/>"
+                                                                           posisi="<s:property value="%{#attr.row.positionName}"/>"
+                                                                           grup="<s:property value="%{#attr.row.profesiName}"/>"
+                                                                           href="javascript:;" class="item-panggil">
+                                                                            <img border="0"
+                                                                                 src="<s:url value="/pages/images/icons8-call-25.png"/>">
+                                                                        </s:else>
+                                                                    </s:if>
                                                                 </s:if>
                                                                 <s:else>
-                                                                <a href="javascript:;"  id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>" tanggal="<s:property value="%{#attr.row.stTanggal}"/>" nama="<s:property value="%{#attr.row.namaPegawai}"/>" posisi="<s:property value="%{#attr.row.positionName}"/>" grup="<s:property value="%{#attr.row.profesiName}"/>" href="javascript:;" class="item-panggil">
-                                                                    <img border="0" src="<s:url value="/pages/images/icons8-call-25.png"/>">
-                                                                </s:else>
-                                                                </s:if>
-                                                                </s:if>
-                                                                <s:else>
-                                                                <s:if test='#attr.row.flagPanggil=="Y"' >
-                                                                <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
-                                                                </s:if>
+                                                                    <s:if test='#attr.row.flagPanggil=="Y"'>
+                                                                        <img border="0"
+                                                                             src="<s:url value="/pages/images/icon_success.ico"/>"
+                                                                             name="icon_edit">
+                                                                    </s:if>
                                                                 </s:else>
                                                             </td>
                                                         </tr>
@@ -614,6 +667,7 @@
             window.location.reload();
         });
         $('#tableJadwalShiftKerja').DataTable({
+            "pageLength": 100,
             "order": []
         });
     });

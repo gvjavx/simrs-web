@@ -477,7 +477,7 @@
                 "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>On Call</th>" +
                 "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Jam Kerja</th>" +
                 "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Jam Kerja 2</th>" +
-                "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Lembur</th>" +
+                // "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Lembur</th>" +
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Pengajuan Lembur</th>" +
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Realisasi Lembur</th>" +
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Perhitungan Lembur</th>" +
@@ -493,8 +493,8 @@
                 "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Out</th>" +
                 "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>In</th>" +
                 "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Out</th>" +
-                "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Start</th>" +
-                "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>End</th>" +
+                // "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Start</th>" +
+                // "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>End</th>" +
                 "</tr>" +
                 "</thead>";
             var i = i;
@@ -520,8 +520,8 @@
                     '<td align="center" class="ceknull">' + item.jamPulang + '</td>' +
                     '<td align="center" class="ceknull">' + item.jamMasuk2 + '</td>' +
                     '<td align="center" class="ceknull">' + item.jamPulang2 + '</td>' +
-                    '<td align="center" class="ceknull">' + item.awalLembur + '</td>' +
-                    '<td align="center" class="ceknull">' + item.selesaiLembur + '</td>' +
+                    // '<td align="center" class="ceknull">' + item.awalLembur + '</td>' +
+                    // '<td align="center" class="ceknull">' + item.selesaiLembur + '</td>' +
                     '<td align="center">' + item.pengajuanLembur + '</td>' +
                     '<td align="center">' + item.realisasiJamLembur + '</td>' +
                     '<td align="center">' + item.jamLembur + '</td>' +

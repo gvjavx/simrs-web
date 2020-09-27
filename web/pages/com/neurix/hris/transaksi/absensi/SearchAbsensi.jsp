@@ -297,9 +297,17 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="absensiPegawai.branchId" required="true"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                                                        <s:if test='absensiPegawai.branchIdUser == "KP"'>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="absensiPegawai.branchId" disabled="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
+                                                            <s:hidden id="branchId" name="pembayaranUtangPiutang.branchId" />
+                                                        </s:else>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -318,18 +326,18 @@
                                                 </td>
                                             </tr>--%>
 
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Bagian :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:action id="comboBagian" namespace="/strukturJabatan" name="searchBagian_strukturJabatan"/>
-                                                        <s:select cssClass="form-control" list="#comboBagian.listComboStrukturJabatan" id="bagian" required="true"
-                                                                  listKey="bagian" listValue="bagianName" name="absensiPegawai.bagian" headerKey="" headerValue="" />
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                            <%--<tr>--%>
+                                                <%--<td>--%>
+                                                    <%--<label class="control-label"><small>Bagian :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<s:action id="comboBagian" namespace="/strukturJabatan" name="searchBagian_strukturJabatan"/>--%>
+                                                        <%--<s:select cssClass="form-control" list="#comboBagian.listComboStrukturJabatan" id="bagian" required="true"--%>
+                                                                  <%--listKey="bagian" listValue="bagianName" name="absensiPegawai.bagian" headerKey="" headerValue="" />--%>
+                                                    <%--</table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
                                             <tr>
                                                 <td></td>
                                                 <td><hr></td>
@@ -395,17 +403,6 @@
                                                 <td>
                                                     <table>
                                                         <s:select list="#{'Y':'Y','N':'N'}" id="lembur" name="absensiPegawai.lembur"
-                                                                  headerKey="" headerValue="" cssClass="form-control" />
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Ijin :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:select list="#{'Y':'Y','N':'N'}" id="ijin" name="absensiPegawai.ijin"
                                                                   headerKey="" headerValue="" cssClass="form-control" />
                                                     </table>
                                                 </td>

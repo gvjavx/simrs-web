@@ -547,3 +547,20 @@ ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_masuk_2 character varying(5);
 ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_masuk_on_call character varying(5);
 ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_keluar_2 character varying(5);
 ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_pulang_on_call character varying(5);
+
+CREATE TABLE public.im_hris_status_mutasi
+(
+    status_mutasi_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    status_mutasi_name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT im_hris_status_mutasi_pkey PRIMARY KEY (status_mutasi_id)
+);
+
+insert into im_hris_status_mutasi values ('P','Pensiun','C','Y','admin','2020-01-03 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('M','Mutasi','C','Y','admin','2020-01-01 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('R','Rotasi','C','Y','admin','2020-01-02 00:00:00','2020-01-01 00:00:00','admin');

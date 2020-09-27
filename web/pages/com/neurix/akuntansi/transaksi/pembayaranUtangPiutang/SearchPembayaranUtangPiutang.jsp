@@ -526,6 +526,7 @@
 <script>
     $(document).ready(function () {
         $('#tablePembayaranUtangPiutang').DataTable({
+            "pageLength": 50,
             "order": [[0, "desc"]]
         });
 

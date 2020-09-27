@@ -12,6 +12,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.model.Biodata;
+import com.neurix.hris.master.statusMutasi.bo.StatusMutasiBo;
+import com.neurix.hris.master.statusMutasi.model.StatusMutasi;
+import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.mutasi.bo.MutasiBo;
 import com.neurix.hris.transaksi.mutasi.model.ItMutasiDocEntity;
 import com.neurix.hris.transaksi.mutasi.model.ItMutasiEntity;
@@ -674,7 +677,7 @@ public class MutasiAction extends BaseMasterAction{
 
     public String saveAnggotaAdd(String nip, String personName, String branchLamaId, String branchLamaName, String divisiLamaId, String divisiLamaName,
                                String positionLamaId, String positionLamaName, String pjsLama, String menggantikanId, String menggantikanNama, String branchBaruId, String branchBaruName,
-                               String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName, String pjsBaru, String status, String tipe, String levelLama,
+                               String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName, String pjsBaru, String status, String levelLama,
                                   String levelBaru, String levelLamaName, String levelBaruName, String profesiLamaId, String profesiLamaName, String profesiBaruId, String profesiBaruName, String tipePegawai){
         logger.info("[SppdAction.saveAdd] start process >>>");
         String statusSave="";
@@ -683,6 +686,9 @@ public class MutasiAction extends BaseMasterAction{
         if(cekNip(nip)){
             try {
                 Mutasi mutasi = new Mutasi();
+                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                StatusMutasiBo statusMutasiBo = (StatusMutasiBo) ctx.getBean("statusMutasiBoProxy");
+
                 mutasi.setNip(nip);
                 mutasi.setNama(personName);
                 mutasi.setBranchLamaId(branchLamaId);
@@ -733,28 +739,14 @@ public class MutasiAction extends BaseMasterAction{
                 }
 
                 if (!("").equalsIgnoreCase(status)){
-                    if ("M".equalsIgnoreCase(status)){
-                        mutasi.setStatusName("Move");
-                    }
-                    else if ("R".equalsIgnoreCase(status)){
-                        mutasi.setStatusName("Resign");
-                    }
-                    else if ("P".equalsIgnoreCase(status)){
-                        mutasi.setStatusName("Pensiun");
-                    }
-                    else{
-                        mutasi.setStatusName("Move Holding");
+                    StatusMutasi search = new StatusMutasi();
+                    search.setFlag("Y");
+                    search.setStatusMutasiId(status);
+                    List<StatusMutasi> statusMutasiList = statusMutasiBo.getByCriteria(search);
+                    for (StatusMutasi statusMutasi : statusMutasiList){
+                        mutasi.setStatusName(statusMutasi.getStatusMutasiName());
                     }
                 }
-                mutasi.setTipeMutasi(tipe);
-                if (!("").equalsIgnoreCase(tipe)){
-                    if ("MT".equalsIgnoreCase(tipe)){
-                        mutasi.setTipeMutasiName("Mutasi");
-                    }else if ("RT".equalsIgnoreCase(tipe)){
-                        mutasi.setTipeMutasiName("Rotasi");
-                    }
-                }
-
 
                 //save to session
                 if (!("").equalsIgnoreCase(status)){

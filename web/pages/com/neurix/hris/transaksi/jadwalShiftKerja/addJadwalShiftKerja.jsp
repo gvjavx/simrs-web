@@ -374,32 +374,32 @@
                 <form class="form-horizontal" id="myForm">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-sm-offset-3 col-sm-1">
+                            <div class="col-sm-offset-2 col-sm-2">
                                 <label class="control-label">Grup</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-5">
                                 <s:action id="comboSubDiv" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
                                 <s:select list="#comboSubDiv.comboListOfPositionBagian" id="profesiId" name="shift.profesiId"
                                           listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" cssClass="form-control" onchange="listShift();listPerson()"/>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-offset-3 col-sm-1">
+                            <div class="col-sm-offset-2 col-sm-2">
                                 <label class="control-label">Shift</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-5">
                                 <s:action id="comboShift" namespace="/groupShift" name="initComboShift_groupShift"/>
                                 <s:select cssClass="form-control" list="#comboShift.listOfComboShift" id="ShiftId" name=""
                                           required="true" listKey="shiftId" listValue="shiftName" headerKey="" headerValue="[Select one]" />
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-offset-3 col-sm-1">
-                                <label class="control-label">On Call</label>
+                            <div class="col-sm-offset-2 col-sm-2">
+                                <label class="control-label">Jenis Shift</label>
                             </div>
-                            <div class="col-sm-4">
-                                <s:select list="#{'Y':'Y'}" id="onCall"
-                                          headerKey="N" headerValue="N" cssClass="form-control"/>
+                            <div class="col-sm-5">
+                                <s:select list="#{'Y':'On Call'}" id="onCall"
+                                          headerKey="N" headerValue="Normal" cssClass="form-control"/>
                             </div>
                         </div>
                         <br>
@@ -574,7 +574,7 @@
             alert(pesan);
         }else{
             dwr.engine.setAsync(false);
-            JadwalShiftKerjaAction.cekJadwalKerja(nip,shiftId,function (data) {
+            JadwalShiftKerjaAction.cekJadwalKerja(nip,shiftId,onCall,function (data) {
                 if (data.statusSave==""){
                     if (data.jumlahJadwal===1){
                         if (confirm("Sudah ada jadwal sebelumnya apakah anda ingin menambahkan shift gantung ?")) {
@@ -588,6 +588,8 @@
                             resultPerson();
                             listPerson();
                         });
+                    }else if (data.jumlahJadwal>3) {
+                        alert("Hanya bisa menambahkan maksimal 2 jadwal");
                     }
                 } else{
                     alert(data.statusSave);
