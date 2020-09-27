@@ -548,14 +548,13 @@ public class TesTelemedicController implements ModelDriven<Object> {
         try {
             kasirRawatJalanAction.savePembayaranTagihan(
                     "",
+                    "RS0104200035",
                     "",
-                    "",
-                    "",
-                    "DCM00001054",
+                    "Y",
                     "transfer",
                     "1.1.01.02.02",
-                    "",
-                    "",
+                    "JRJ",
+                    "tunai",
                     "01010101010101",
                     noCheckup
             );
