@@ -41,14 +41,18 @@ public class PelayananPaketDao extends GenericDao<ItSimrsPelayananPaketEntity, S
     public List<PelayananPaket> getListPelayananPaket(String noCheckup) {
         List<PelayananPaket> paketList = new ArrayList<>();
         String SQL = "SELECT\n" +
-                "id_pelayanan_paket,\n" +
-                "no_checkup,\n" +
-                "id_detail_checkup,\n" +
-                "urutan,\n" +
-                "is_periksa\n" +
-                "FROM it_simrs_pelayanan_paket\n" +
-                "WHERE no_checkup = :id \n" +
-                "ORDER BY urutan ASC";
+                "a.id_pelayanan_paket,\n" +
+                "a.no_checkup,\n" +
+                "a.id_detail_checkup,\n" +
+                "a.urutan,\n" +
+                "a.is_periksa,\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.id_paket\n" +
+                "FROM it_simrs_pelayanan_paket a\n" +
+                "INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                "WHERE a.no_checkup = :id \n" +
+                "ORDER BY a.urutan ASC";
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", noCheckup)
@@ -61,6 +65,9 @@ public class PelayananPaketDao extends GenericDao<ItSimrsPelayananPaketEntity, S
                 paket.setIdDetailCheckup(obj[2] != null ? obj[2].toString() : "");
                 paket.setUrutan(obj[3] != null ? (BigInteger) obj[3] : null);
                 paket.setIsPeriksa(obj[4] != null ? obj[4].toString() : "");
+                paket.setIdPelayanan(obj[5] != null ? obj[5].toString() : "");
+                paket.setNamaPelayanan(obj[6] != null ? obj[6].toString() : "");
+                paket.setIdPaket(obj[7] != null ? obj[7].toString() : "");
                 paketList.add(paket);
             }
         }

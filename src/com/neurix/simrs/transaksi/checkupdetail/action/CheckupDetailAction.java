@@ -1190,6 +1190,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 String uangMuka = null;
                 String urutan = null;
                 String idPaket = null;
+                String idPelayananPaket = null;
 
                 if (object.has("rs_rujukan")) {
                     rsRujukan = object.getString("rs_rujukan");
@@ -1226,6 +1227,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                 }
                 if (object.has("id_paket")) {
                     idPaket = object.getString("id_paket");
+                }
+                if (object.has("id_paket_pelayanan")) {
+                    idPelayananPaket = object.getString("id_paket_pelayanan");
                 }
 
                 List<OrderPeriksaLab> orderPeriksaLab = new ArrayList<>();
@@ -1282,7 +1286,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     if ("pindah_poli".equalsIgnoreCase(tindakLanjut)) {
                         response = pindahPoli(idDetailCheckup, poliLain, idDokter, metodeBayar, uangMuka);
                     } else if ("lanjut_paket".equalsIgnoreCase(tindakLanjut)) {
-                        response = nextPaket(noCheckup, idDetailCheckup, urutan, idPaket);
+                        response = nextPaket(noCheckup, idDetailCheckup, urutan, idPaket, idDokter, idPelayananPaket, poliLain);
                     } else {
                         response.setStatus("success");
                     }
@@ -1313,7 +1317,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return response;
     }
 
-    private CrudResponse nextPaket(String noCheckup, String idDetailCheckup, String urutan, String idPaket) {
+    private CrudResponse nextPaket(String noCheckup, String idDetailCheckup, String urutan, String idPaket, String idDokter, String idPelayananPaket,  String idPelayanan) {
         CrudResponse response = new CrudResponse();
         Timestamp now = new Timestamp(System.currentTimeMillis());
         String user = CommonUtil.userLogin();
@@ -1322,13 +1326,27 @@ public class CheckupDetailAction extends BaseMasterAction {
         PelayananPaket paket = new PelayananPaket();
         paket.setNoCheckup(noCheckup);
         paket.setIdDetailCheckup(idDetailCheckup);
+        paket.setIdDokter(idDokter);
+        paket.setIdPelayananPaket(idPelayananPaket);
         paket.setUrutan(new BigInteger(urutan));
         paket.setIdPaket(idPaket);
+        paket.setCreatedDate(now);
+        paket.setCreatedWho(user);
         paket.setLastUpdate(now);
         paket.setLastUpdateWho(user);
 
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        detailCheckup.setNoCheckup(noCheckup);
+        detailCheckup.setIdPelayanan(idPelayanan);
+        List<DokterTeam> teamList = new ArrayList<>();
+        DokterTeam dokterTeam = new DokterTeam();
+        dokterTeam.setIdDokter(idDokter);
+        dokterTeam.setIdPelayanan(idPelayanan);
+        teamList.add(dokterTeam);
+        detailCheckup.setDokterTeamList(teamList);
+
         try {
-            response = checkupBo.nextItemPaketToPeriksa(paket);
+            response = checkupBo.nextItemPaketToPeriksa(paket, detailCheckup);
         } catch (HibernateException e) {
             response.setStatus("error");
             response.setMsg("Error, " + e.getMessage());
