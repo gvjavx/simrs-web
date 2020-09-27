@@ -190,7 +190,7 @@
                         <table id="sortTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
-                                <td>ID Detail Checkup</td>
+                                <td>No Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
                                 <td>Jenis Pasien</td>
@@ -201,7 +201,7 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td><s:property value="idDetailCheckup"/></td>
+                                    <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="jenisPeriksaPasien"/></td>
@@ -255,8 +255,8 @@
                                     <td ><span id="no_rm"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>ID Detail Checkup </b></td>
-                                    <td><span id="no_detail_checkup"></span></td>
+                                    <td><b>No Checkup </b></td>
+                                    <td><span id="no_checkup"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>NIK</b></td>
@@ -445,9 +445,9 @@
                 if (res.idPasien != null) {
                     stopSpinner('spin_', idDetailCheckup);
                     dwr.engine.setAsync(false);
-                    listTindakan(idDetailCheckup);
-                    listResepPasien(idDetailCheckup);
-                    listLab(idDetailCheckup);
+                    listTindakan(noCheckup);
+                    listResepPasien(noCheckup);
+                    listLab(noCheckup);
                     var jk = "";
                     var alamat = res.namaDesa + ", " + res.namaKecamatan + ", " + res.namaKota;
                     var diagnosa = res.diagnosa + ", " + res.namaDiagnosa;
@@ -458,7 +458,7 @@
                     }
 
                     $('#no_rm').html(res.idPasien);
-                    $('#no_detail_checkup').html(idDetailCheckup);
+                    $('#no_checkup').html(noCheckup);
                     $('#nik').html(res.noKtp);
                     $('#nama').html(res.nama);
                     $('#jenis_kelamin').html(jk);
@@ -494,12 +494,12 @@
         });
     }
 
-    function listTindakan(idDetailCheckup) {
+    function listTindakan(noCheckup) {
 
         var table = "";
         var data = [];
         var trfTtl = 0;
-        TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
+        TindakanRawatAction.getListTindakanRawat(noCheckup, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     var tanggal = item.createdDate;
@@ -551,11 +551,11 @@
         });
     }
 
-    function listResepPasien(idDetailCheckup) {
+    function listResepPasien(noCheckup) {
 
         var table = "";
         var data = [];
-        PermintaanResepAction.listResepPasien(idDetailCheckup, function (response) {
+        PermintaanResepAction.getListRespPasien(noCheckup, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     var idResep = "";
@@ -592,10 +592,10 @@
         });
     }
 
-    function listLab(idDetailCheckup) {
+    function listLab(noCheckup) {
         var table = "";
         var data = [];
-        PeriksaLabAction.listOrderLab(idDetailCheckup, function (response) {
+        PeriksaLabAction.getListLab(noCheckup, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     var pemeriksaan = "-";

@@ -836,6 +836,10 @@ ALTER TABLE public.it_simrs_pelayanan_paket
 
 CREATE SEQUENCE seq_pelayanan_paket;
 
+--2020-09-27
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN ttd_pengirim VARCHAR(100);
+
 
 
 

@@ -138,7 +138,7 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                     "WHERE a.branch_id LIKE :branchId \n" +
                     "AND a.no_checkup LIKE :noCheckup \n" +
                     "AND b.id_detail_checkup LIKE :idDetail \n" + jenis +
-                    "ORDER BY c.tanggal_tindakan ASC\n";
+                    "ORDER BY b.id_detail_checkup ASC, c.tanggal_tindakan ASC\n";
 
             List<Object[]> result = new ArrayList<>();
 

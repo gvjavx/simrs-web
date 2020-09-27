@@ -315,20 +315,25 @@ public class VerifikatorAction extends BaseMasterAction {
         List<RiwayatTindakan> result = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         VerifikatorBo riwayatTindakanBo = (VerifikatorBo) ctx.getBean("verifikatorBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         RiwayatTindakan tindakanRawat = new RiwayatTindakan();
         tindakanRawat.setNoCheckup(noCheckup);
-        tindakanRawat.setIdDetailCheckup(idDetail);
         tindakanRawat.setBranchId(CommonUtil.userBranchLogin());
 
         CheckResponse response = new CheckResponse();
         response = cekAllTindakanRawat(idDetail);
         if ("success".equalsIgnoreCase(response.getStatus())) {
-            saveAddToRiwayatTindakan(idDetail, jenisPasien);
-            try {
-                result = riwayatTindakanBo.getListAllTindakan(tindakanRawat);
-            } catch (GeneralBOException e) {
-                logger.error("[VerifikatorAction.getListTindakanRawat] Error when get data tindakan rawat ", e);
+            List<HeaderDetailCheckup> detailCheckupList = checkupDetailBo.getIDDetailCheckup(noCheckup);
+            if(detailCheckupList.size() > 0){
+                for (HeaderDetailCheckup detail: detailCheckupList){
+                    saveAddToRiwayatTindakan(detail.getIdDetailCheckup(), jenisPasien);
+                }
+                try {
+                    result = riwayatTindakanBo.getListAllTindakan(tindakanRawat);
+                } catch (GeneralBOException e) {
+                    logger.error("[VerifikatorAction.getListTindakanRawat] Error when get data tindakan rawat ", e);
+                }
             }
         } else {
             RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
