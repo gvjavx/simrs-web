@@ -778,7 +778,8 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         logger.info("[ObatPoliBoImpl.updateAddStockGudang] END <<<<<<<<<<");
     }
 
-    private void updateAddStockPoli(TransaksiObatDetail bean, String idPoli) throws GeneralBOException {
+    @Override
+    public void updateAddStockPoli(TransaksiObatDetail bean, String idPoli) throws GeneralBOException {
         logger.info("[ObatPoliBoImpl.updateAddStockPoli] START >>>>>>>>>>");
 
         Obat obat = new Obat();
@@ -844,7 +845,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 obatPoliEntity.setQtyBiji(qtyBiji.add(bean.getQtyApprove()));
             }
 
-            obatPoliEntity.setExpiredDate(bean.getExpDate());
+//            obatPoliEntity.setExpiredDate(bean.getExpDate());
             obatPoliEntity.setAction("U");
             obatPoliEntity.setLastUpdate(bean.getLastUpdate());
             obatPoliEntity.setLastUpdateWho(bean.getLastUpdateWho());

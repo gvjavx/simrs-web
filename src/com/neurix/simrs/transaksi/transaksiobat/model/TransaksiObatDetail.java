@@ -88,6 +88,15 @@ public class TransaksiObatDetail extends BaseModel {
 
     private String ttdDokter;
     private BigInteger qtyAfter;
+    private BigInteger qtyReture;
+
+    public BigInteger getQtyReture() {
+        return qtyReture;
+    }
+
+    public void setQtyReture(BigInteger qtyReture) {
+        this.qtyReture = qtyReture;
+    }
 
     public BigInteger getQtyAfter() {
         return qtyAfter;
