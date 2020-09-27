@@ -1250,8 +1250,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             }
         }
 
-//        String branchId = CommonUtil.userBranchLogin();
-        String branchId = "RS01";
+        String branchId = CommonUtil.userBranchLogin();
+//        String branchId = "RS01";
         //** CARI APAKAH ADA TRANSITORIS **//
         boolean isTransitoris = false;
         BigDecimal allTindakanTransUmum = new BigDecimal(0);
@@ -1503,7 +1503,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         // kas
         mapJurnal.put("kas", mapKas);
-        mapJurnal.put("user_id", "kasirjalan");
+//        mapJurnal.put("user_id", "kasirjalan");
 
         if (!"".equalsIgnoreCase(transId)) {
             try {
