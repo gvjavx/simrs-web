@@ -378,6 +378,11 @@ public class MutasiAction extends BaseMasterAction{
             searchMutasi.setTanggalEfektif(CommonUtil.convertToTimestamp(searchMutasi.getStTanggalEfektif()));
         }
 
+        String branchId = CommonUtil.userBranchLogin();
+        if (branchId!=null){
+            searchMutasi.setBranchIdUser(branchId);
+        }
+
         try {
             listOfsearchMutasi = mutasiBoProxy.getByCriteria(searchMutasi);
         } catch (GeneralBOException e) {
@@ -517,62 +522,19 @@ public class MutasiAction extends BaseMasterAction{
         return SUCCESS;
     }
 
-    /*public String searchMutasiKualifikasi() {
-        logger.info("[MutasiAction.search] start process >>>");
-
-        Mutasi searchMutasi = getMutasi();
-        searchMutasi.setFlag("Y");
-        List<Mutasi> listOfsearchMutasi = new ArrayList();
-        List<Mutasi> finalSearchMutasi = new ArrayList();
-        try {
-            listOfsearchMutasi = mutasiBoProxy.getKualifikasi(searchMutasi);
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = mutasiBoProxy.saveErrorMessage(e.getMessage(), "MutasiBO.getByCriteria");
-            } catch (GeneralBOException e1) {
-                logger.error("[MutasiAction.search] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[MutasiAction.save] ," + "[" + logId + "] please inform to your admin.", e);
-            addActionError("Error, " + e + ", please inform to your admin" );
-            return ERROR;
-        }
-
-        if (listOfsearchMutasi.size()!=0){
-            Comparator<Mutasi> comparator = new Comparator<Mutasi>() {
-                @Override
-                public int compare(Mutasi left, Mutasi right) {
-                    String awal =left.getNip().replace("-","");
-                    String akhir =right.getNip().replace("-","");
-                    Long angka1 = Long.parseLong(awal);
-                    Long angka2 = Long.parseLong(akhir);
-                    return (int) (angka1-angka2);
-                }
-            };
-            Collections.sort(listOfsearchMutasi, comparator);
-            String nip="";
-            for (Mutasi mutasi:listOfsearchMutasi){
-                if (!mutasi.getNip().equalsIgnoreCase(nip)){
-                    finalSearchMutasi.add(mutasi);
-                    nip=mutasi.getNip();
-                }
-            }
-        }
-
-        HttpSession session = ServletActionContext.getRequest().getSession();
-
-        session.removeAttribute("listOfKualifikasi");
-        session.setAttribute("listOfKualifikasi", finalSearchMutasi);
-
-        return "input_kualifikasi";
-    }*/
-
     @Override
     public String initForm() {
         logger.info("[MutasiAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-
+        String branchId = CommonUtil.userBranchLogin();
+        Mutasi data = new Mutasi();
+        if (branchId!=null){
+            data.setBranchLamaId(branchId);
+            data.setBranchIdUser(branchId);
+        }else{
+            data.setBranchLamaId("");
+        }
+        setMutasi(data);
         session.removeAttribute("listOfResult");
         session.removeAttribute("listOfMutasi");
         logger.info("[MutasiAction.initForm] end process >>>");

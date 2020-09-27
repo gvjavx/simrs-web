@@ -105,7 +105,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Add Mutasi / Rotasi / Nonaktif
+            Add Mutasi / Nonaktif
         </h1>
     </section>
 
@@ -610,20 +610,16 @@
                     "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>NIP</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Nama</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Status</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Unit Lama</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Bagian Lama</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Divisi/Bidang Lama</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Jabatan Lama</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Profesi Lama</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Level</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>PJS Lama</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Menggantikan (NIP)</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Menggantikan (Nama)</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Unit Baru</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Bagian Baru</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Divisi/Bidang Baru</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Jabatan Baru</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Profesi Baru</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>PJS Baru</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Status</th>"+
                     "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
@@ -641,21 +637,16 @@
                         '</td>' +
                         '<td >' + item.nip + '</td>' +
                         '<td align="center">' + item.nama+ '</td>' +
+                        '<td align="center">' + item.statusName+ '</td>' +
                         '<td align="center">' + item.branchLamaName+ '</td>' +
                         '<td align="center">' + item.divisiLamaName+ '</td>' +
                         '<td align="center">' + item.positionLamaName+ '</td>' +
                         '<td align="center">' + item.profesiLamaName+ '</td>' +
                         '<td align="center">' + item.levelLamaName+ '</td>' +
-                        '<td align="center">' + item.pjsLama+ '</td>' +
-
-                        '<td align="center">' + item.penggantiNip+ '</td>' +
-                        '<td align="center">' + item.penggantiNama+ '</td>' +
-                        '<td align="center">' + item.branchBaruName+ '</td>' +
+                     '<td align="center">' + item.branchBaruName+ '</td>' +
                         '<td align="center">' + item.divisiBaruName+ '</td>' +
                         '<td align="center">' + item.positionBaruName+ '</td>' +
                         '<td align="center">' + item.profesiBaruName+ '</td>' +
-                        '<td align="center">' + item.pjs+ '</td>' +
-                        '<td align="center">' + item.statusName+ '</td>' +
                         "</tr>";
             });
             $('.sppdPersonTable').append(tmp_table);
@@ -680,7 +671,7 @@
             $('#modal-edit').modal('show');
             $('#myForm').attr('action', 'addPerson');
             $('.form-add').val("");
-            $('#modal-edit').find('.modal-title').text('Add Mutasi / Rotasi Nonaktif');
+            $('#modal-edit').find('.modal-title').text('Add Mutasi / Nonaktif');
         });
     });
 

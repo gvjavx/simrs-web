@@ -236,8 +236,6 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
-            console.log(event);
-            console.log(data);
             document.getElementById('errorMessageCuti').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialogCuti');
         });

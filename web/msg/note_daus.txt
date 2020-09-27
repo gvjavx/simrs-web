@@ -562,5 +562,9 @@ CREATE TABLE public.im_hris_status_mutasi
 );
 
 insert into im_hris_status_mutasi values ('P','Pensiun','C','Y','admin','2020-01-03 00:00:00','2020-01-01 00:00:00','admin');
-insert into im_hris_status_mutasi values ('M','Mutasi','C','Y','admin','2020-01-01 00:00:00','2020-01-01 00:00:00','admin');
-insert into im_hris_status_mutasi values ('R','Rotasi','C','Y','admin','2020-01-02 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('M','Mutasi Tempat Kerja','C','Y','admin','2020-01-01 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('R','Mutasi Bidang/Divisi','C','Y','admin','2020-01-02 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('PH','PHK','C','Y','admin','2020-01-04 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('MD','Meninggal Dunia','C','Y','admin','2020-01-05 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('KB','Kontrak Berakhir','C','Y','admin','2020-01-06 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('RS','Resign','C','Y','admin','2020-01-06 00:00:00','2020-01-01 00:00:00','admin');

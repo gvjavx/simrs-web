@@ -604,10 +604,23 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cutiPegawai.setAction("C");
             cutiPegawai.setFlag("Y");
 
-            List<Notifikasi> notifCuti = cutiPegawaiBoProxy.saveAddCuti(cutiPegawai);
+            try {
+                List<Notifikasi> notifCuti = cutiPegawaiBoProxy.saveAddCuti(cutiPegawai);
 
-            for (Notifikasi notifikasi : notifCuti ){
-                notifikasiBo.sendNotif(notifikasi);
+                for (Notifikasi notifikasi : notifCuti ){
+                    notifikasiBo.sendNotif(notifikasi);
+                }
+            }catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "cutiPegawaiBO.saveAdd");
+                } catch (GeneralBOException e1) {
+                    logger.error("[cutiPegawaiAction.saveAdd] Error when saving error,", e1);
+                    throw new GeneralBOException(e1.getMessage());
+                }
+                logger.error("[cutiPegawaiAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
             }
 
         }catch (GeneralBOException e) {
