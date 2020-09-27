@@ -2,15 +2,12 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
         version="2.0">
 
-    <entity class="com.neurix.akuntansi.transaksi.saldoakhir.model.ItAkunSaldoAkhirDetailTahunEntity">
-        <table name="it_akun_saldo_akhir_detail_tahun" schema="public" catalog="simrs"/>
+    <entity class="com.neurix.akuntansi.transaksi.saldoakhir.model.ItAkunSaldoAkhirHistoryEntity">
+        <table name="it_akun_saldo_history" schema="public" />
         <attributes>
-            <id name="id">
-                <column name="id"/>
-            </id>
-            <basic name="saldoAkhirId">
+            <id name="saldoAkhirId">
                 <column name="saldo_akhir_id"/>
-            </basic>
+            </id>
             <basic name="rekeningId">
                 <column name="rekening_id"/>
             </basic>
@@ -55,12 +52,6 @@
             </basic>
             <basic name="pasienId">
                 <column name="pasien_id"/>
-            </basic>
-            <basic name="divisiId">
-                <column name="divisi_id"/>
-            </basic>
-            <basic name="kdBarang">
-                <column name="kd_barang"/>
             </basic>
         </attributes>
     </entity>

@@ -119,6 +119,11 @@ public class RekananOpsBoImpl implements RekananOpsBo {
         return rekananOps;
     }
 
+    @Override
+    public ImSimrsRekananOpsEntity getRekananEntityById(String id) throws GeneralBOException {
+        return rekananOpsDao.getById("idRekananOps", id);
+    }
+
     public static Logger getLogger() {
         return logger;
     }

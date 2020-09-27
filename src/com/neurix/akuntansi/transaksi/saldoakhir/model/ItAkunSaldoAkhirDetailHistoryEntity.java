@@ -6,7 +6,8 @@ import java.sql.Timestamp;
 /**
  * Created by reza on 17/09/20.
  */
-public class ItAkunSaldoAkhirTahunEntity {
+public class ItAkunSaldoAkhirDetailHistoryEntity {
+    private String id;
     private String saldoAkhirId;
     private String rekeningId;
     private String periode;
@@ -23,6 +24,16 @@ public class ItAkunSaldoAkhirTahunEntity {
     private Timestamp lastUpdate;
     private String masterId;
     private String pasienId;
+    private String divisiId;
+    private String kdBarang;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getSaldoAkhirId() {
         return saldoAkhirId;
@@ -152,13 +163,30 @@ public class ItAkunSaldoAkhirTahunEntity {
         this.pasienId = pasienId;
     }
 
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
+
+    public String getKdBarang() {
+        return kdBarang;
+    }
+
+    public void setKdBarang(String kdBarang) {
+        this.kdBarang = kdBarang;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ItAkunSaldoAkhirTahunEntity that = (ItAkunSaldoAkhirTahunEntity) o;
+        ItAkunSaldoAkhirDetailHistoryEntity that = (ItAkunSaldoAkhirDetailHistoryEntity) o;
 
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (saldoAkhirId != null ? !saldoAkhirId.equals(that.saldoAkhirId) : that.saldoAkhirId != null) return false;
         if (rekeningId != null ? !rekeningId.equals(that.rekeningId) : that.rekeningId != null) return false;
         if (periode != null ? !periode.equals(that.periode) : that.periode != null) return false;
@@ -176,13 +204,16 @@ public class ItAkunSaldoAkhirTahunEntity {
         if (lastUpdate != null ? !lastUpdate.equals(that.lastUpdate) : that.lastUpdate != null) return false;
         if (masterId != null ? !masterId.equals(that.masterId) : that.masterId != null) return false;
         if (pasienId != null ? !pasienId.equals(that.pasienId) : that.pasienId != null) return false;
+        if (divisiId != null ? !divisiId.equals(that.divisiId) : that.divisiId != null) return false;
+        if (kdBarang != null ? !kdBarang.equals(that.kdBarang) : that.kdBarang != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = saldoAkhirId != null ? saldoAkhirId.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (saldoAkhirId != null ? saldoAkhirId.hashCode() : 0);
         result = 31 * result + (rekeningId != null ? rekeningId.hashCode() : 0);
         result = 31 * result + (periode != null ? periode.hashCode() : 0);
         result = 31 * result + (jumlahDebit != null ? jumlahDebit.hashCode() : 0);
@@ -198,6 +229,8 @@ public class ItAkunSaldoAkhirTahunEntity {
         result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
         result = 31 * result + (masterId != null ? masterId.hashCode() : 0);
         result = 31 * result + (pasienId != null ? pasienId.hashCode() : 0);
+        result = 31 * result + (divisiId != null ? divisiId.hashCode() : 0);
+        result = 31 * result + (kdBarang != null ? kdBarang.hashCode() : 0);
         return result;
     }
 }

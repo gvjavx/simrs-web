@@ -1495,7 +1495,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
         }
 
-        if (itCutiPegawaiEntities != null){
+        if (itCutiPegawaiEntities != null&&itCutiPegawaiEntities.size()!=0){
             Calendar calendar = Calendar.getInstance();
             Timestamp lastTglPengajuan = itCutiPegawaiEntities.get(0).getTsTanggalDari();
             calendar.setTime(lastTglPengajuan);
@@ -2709,7 +2709,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
-        if (itCutiPegawaiEntities != null){
+        if (itCutiPegawaiEntities != null&&itCutiPegawaiEntities.size()!=0){
             Calendar calendar = Calendar.getInstance();
             Timestamp lastTglPengajuan = itCutiPegawaiEntities.get(0).getTsTanggalDari();
             calendar.setTime(lastTglPengajuan);

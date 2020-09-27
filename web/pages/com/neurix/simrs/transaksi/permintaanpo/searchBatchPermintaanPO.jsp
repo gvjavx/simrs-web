@@ -9,6 +9,91 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
+        .bungkus {
+            width: 600px;
+            /*height: 100px;*/
+            max-width: 100%;
+            max-height: 100%;
+            margin: auto;
+            overflow: hidden;
+            margin-bottom: 70px;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 56.25%;
+            background: #ddd;
+        }
+
+        /* Images */
+
+        .carousel-img {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 100%;
+            -webkit-transition: opacity ease-out 0.5s;
+            transition: opacity ease-out 0.5s;
+        }
+
+        .carousel-img-displayed {
+            display: block;
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .carousel-img-hidden {
+            display: block;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .carousel-img-noDisplay {
+            display: none;
+        }
+
+        /* Flèches de défilement */
+
+        .carousel-arrow {
+            z-index: 3;
+            display: block;
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            top: 50%;
+            margin-top: 80px;
+            border-radius: 50%;
+            border: 0;
+            background-color: #fff;
+            background-image: url("http://res.cloudinary.com/dnqehhgmu/image/upload/v1509720334/blue-arrow_jk1ydw.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 16px 16px;
+            cursor: pointer;
+            -webkit-transition: background-size 0.15s ease-out;
+            transition: background-size 0.15s ease-out;
+        }
+
+        .carousel-arrow:hover,
+        .carousel-arrow:focus {
+            background-size: 22px 22px;
+        }
+
+        .carousel-arrow-next {
+            right: 20px;
+        }
+
+        .carousel-arrow-prev {
+            left: 20px;
+            -webkit-transform: rotateZ(180deg);
+            -ms-transform: rotate(180deg);
+            transform: rotateZ(180deg);
+        }
+
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanVendorAction.js"/>'></script>
     <script>
@@ -596,6 +681,33 @@
     </div>
 </div>
 
+
+<%--<div class="modal fade" id="modal-detail-rekam-medic-lama">--%>
+    <%--<div class="modal-dialog modal-lg">--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header" style="background-color: #00a65a">--%>
+                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
+                    <%--<span aria-hidden="true">&times;</span></button>--%>
+                <%--<h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Lama Pasien</h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body">--%>
+                <%--<div class="bungkus">--%>
+                    <%--<div class="carousel">--%>
+                        <%--<button onclick="carouselSwipe('carousel-arrow-prev')" type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>--%>
+                        <%--<button onclick="carouselSwipe('carousel-arrow-next')" type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>--%>
+                        <%--<div id="body-img-rm"></div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="modal-footer" style="background-color: #cacaca">--%>
+                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
+                <%--</button>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
+
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -1102,6 +1214,7 @@
 
     function viewUpload() {
         $("#modal-view-img").modal('show');
+//        $("#modal-detail-rekam-medic-lama").modal("show");
         var batch = $("#mod_batch").text();
         $("#body-img").html("");
         PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
@@ -1110,12 +1223,16 @@
             $.each(list, function (i, item) {
 
                 str += '<div class="row">' +
-                    '<div class="col-md-12">' +
-                    '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5>' +
-                    '</div>' +
-                    '<div class="col-md-12" id="body-img-'+item.idItem+'">';
-
-                str += '</div>' +
+                        '<div class="col-md-12" align="center">' +
+                        '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5>' +
+                            '<div class="bungkus">'+
+                                '<div class="carousel">' +
+                                    '<button onclick="carouselSwipe(\'carousel-arrow-prev\', \''+item.idItem+'\')" type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>'+
+                                    '<button onclick="carouselSwipe(\'carousel-arrow-next\', \''+item.idItem+'\')" type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>'+
+                                    '<div id="body-img-'+item.idItem+'"></div>'+
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
                     '</div>';
 
                 showImg(item.idItem);
@@ -1127,21 +1244,108 @@
 
     function showImg(idItem){
         var first = firstpath();
+        var indicator = "";
         PermintaanVendorAction.getListImg(idItem, function (listimg) {
             console.log(listimg);
-            var str = '<div class="row">';
+//            var str = '<div class="row">';
+            var str = '';
             $.each(listimg, function (n, img) {
 
-                str += '<div class="col-md-4" align="center">' +
-                    '<img src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" style="width: 300px"/>' +
-                    '</div>';
+//                str += '<div class="col-md-4" align="center">' +
+//                    '<img src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" style="width: 300px"/>' +
+//                    '</div>';
+
+                if(n == 0){
+                    str += '<img id="carousel-'+n+'-'+idItem+'" class="iditem-'+idItem+' carousel-img carousel-img-displayed" src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" alt="Foto Document PO" />';
+                }else{
+                    str += '<img id="carousel-'+n+'-'+idItem+'" class="iditem-'+idItem+' carousel-img carousel-img-noDisplay" src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" alt="Foto Document PO" />';
+                }
             });
-            str += '</div>' +
-                '<br>';
+//            str += '</div>' +
+//                '<br>';
+//            $("#body-img-"+idItem).html(str);
+            $("#indicator-img").html(indicator);
             $("#body-img-"+idItem).html(str);
         });
-
     }
+
+    function carouselSwipe(id, idItem) {
+
+        var currentImg = document.getElementsByClassName('iditem-'+idItem+' carousel-img-displayed')[0].id.substring(9);
+        console.log("currentImg -> " + currentImg);
+
+        var splitId = currentImg.split("-");
+        console.log("split id : ");
+        console.log(splitId);
+
+        //var newImg = parseInt(currentImg);
+        var newImg = parseInt(splitId[0]);
+        if (id == 'carousel-arrow-next') {
+            newImg++;
+//            if (newImg >= document.getElementsByClassName('carousel-img').length) {
+//                newImg = 0;
+//            }
+
+            if (newImg >= document.getElementsByClassName('iditem-'+splitId[1]).length) {
+                newImg = 0;
+            }
+        } else if (id == 'carousel-arrow-prev') {
+            newImg--;
+//            if (newImg<0) {
+//                newImg = document.getElementsByClassName('carousel-img').length-1;
+//            }
+            if (newImg<0) {
+                newImg = document.getElementsByClassName('iditem-'+splitId[1]).length-1;
+            }
+        }
+
+        document.getElementById('carousel-'+currentImg).className = 'iditem-'+splitId[1]+' carousel-img carousel-img-hidden';
+        var displayedCarousel = document.getElementById('carousel-'+newImg+'-'+idItem);
+//        console.log("id caurosel hidden --> " + 'carousel-'+newImg+'-'+idItem );
+//        console.log("display carousel --> ");
+//        console.log(displayedCarousel);
+        displayedCarousel.className = 'iditem-'+splitId[1]+' carousel-img carousel-img-hidden';
+        setTimeout(function() {
+            displayedCarousel.className = 'iditem-'+splitId[1]+' carousel-img carousel-img-displayed';
+        },20);
+
+        setTimeout(function() {
+            document.getElementById('carousel-'+currentImg).className = 'iditem-'+splitId[1]+' carousel-img carousel-img-noDisplay';
+        },520);
+    }
+
+    function viewDetailRekamMedicLama(headId) {
+        console.log("getByTypeRekamMedic ==> "+ headId);
+        var str = "";
+        var indicator = "";
+        CheckupAction.getListUploadRekamMedic(headId, function (response) {
+            if (response.length > 0){
+                $.each(response, function (i, item) {
+                    // if (i == 0){
+                    //     indicator += '<li data-target="#carouselExampleIndicators" data-slide-to="'+i+'" class="active"></li>';
+                    //     str += '<div class="carousel-item active">'+
+                    //            '<img class="d-block w-100" src="'+item.urlImg+'" alt="'+i+' slide">'+
+                    //            '</div>';
+                    // } else {
+                    //     indicator += '<li data-target="#carouselExampleIndicators" data-slide-to="'+i+'"></li>';
+                    //     str += '<div class="carousel-item">'+
+                    //         '<img class="d-block w-100" src="'+item.urlImg+'" alt="'+i+' slide">'+
+                    //         '</div>';
+                    // }
+                    if(i == 0){
+                        str += '<img id="carousel-'+i+'" class="carousel-img carousel-img-displayed" src="'+item.urlImg+'" alt="Foto Rekam Medik" />';
+                    }else{
+                        str += '<img id="carousel-'+i+'" class="carousel-img carousel-img-noDisplay" src="'+item.urlImg+'" alt="Foto Rekam Medik" />';
+                    }
+                });
+                $("#modal-detail-rekam-medic-lama").modal("show");
+                $("#indicator-img").html(indicator);
+                $("#body-img-rm").html(str);
+            }
+        })
+    }
+
+
 
 </script>
 

@@ -23,6 +23,60 @@ public class BatasTutupPeriod {
     private String stTglBatas;
     private String flagTutup;
     private String statusTanggal;
+    private String noJurnalKoreksi;
+    private String flagDesemberA;
+    private String flagDesemberB;
+    private String bulanName;
+    private String disableButton;
+    private String disableLock;
+
+    public String getDisableLock() {
+        return disableLock;
+    }
+
+    public void setDisableLock(String disableLock) {
+        this.disableLock = disableLock;
+    }
+
+    public String getDisableButton() {
+        return disableButton;
+    }
+
+    public void setDisableButton(String disableButton) {
+        this.disableButton = disableButton;
+    }
+
+    public String getNoJurnalKoreksi() {
+        return noJurnalKoreksi;
+    }
+
+    public void setNoJurnalKoreksi(String noJurnalKoreksi) {
+        this.noJurnalKoreksi = noJurnalKoreksi;
+    }
+
+    public String getFlagDesemberA() {
+        return flagDesemberA;
+    }
+
+    public void setFlagDesemberA(String flagDesemberA) {
+        this.flagDesemberA = flagDesemberA;
+    }
+
+    public String getFlagDesemberB() {
+        return flagDesemberB;
+    }
+
+    public void setFlagDesemberB(String flagDesemberB) {
+        this.flagDesemberB = flagDesemberB;
+    }
+
+    public String getBulanName() {
+        return bulanName;
+    }
+
+    public void setBulanName(String bulanName) {
+        this.bulanName = bulanName;
+    }
 
     public String getStatusTanggal() {
         return statusTanggal;

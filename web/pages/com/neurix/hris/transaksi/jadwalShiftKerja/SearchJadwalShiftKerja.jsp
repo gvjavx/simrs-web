@@ -83,8 +83,37 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="jadwalShiftKerja.branchId" required="true" listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
+                                                        <s:if test='jadwalShiftKerja.adminHcm'>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchid" name="jadwalShiftKerja.branchId"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="jadwalShiftKerja.branchId" disabled="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            <s:hidden id="branchid" name="jadwalShiftKerja.branchId" />
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Grup :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test='jadwalShiftKerja.adminHcm'>
+                                                            <s:action id="comboSubDiv" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
+                                                            <s:select list="#comboSubDiv.comboListOfPositionBagian" id="profesiId" name="jadwalShiftKerja.groupId"
+                                                                      listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:action id="comboSubDiv" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
+                                                            <s:select list="#comboSubDiv.comboListOfPositionBagian" id="profesiIdView" name="jadwalShiftKerja.groupId" disabled="true"
+                                                                      listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                            <s:hidden name="jadwalShiftKerja.groupId" id="profesiId" />
+                                                        </s:else>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -104,23 +133,21 @@
                                                     <label class="control-label"><small>Tanggal :</small></label>
                                                 </td>
                                                 <td>
-                                                    <table>
-                                                        <div class="input-group date">
-                                                            <div class="input-group-addon">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </div>
-                                                            <s:textfield id="loginTimestampFrom" name="jadwalShiftKerja.stTanggalAwal" size="7" cssClass="form-control pull-right"
-                                                                         required="false" cssStyle=""/>
-                                                            <div class="input-group-addon">
-                                                                s/d
-                                                            </div>
-                                                            <div class="input-group-addon">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </div>
-                                                            <s:textfield id="loginTimestampTo" name="jadwalShiftKerja.stTanggalAkhir" size="7" cssClass="form-control pull-right"
-                                                                         required="false" cssStyle=""/>
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
                                                         </div>
-                                                    </table>
+                                                        <s:textfield id="loginTimestampFrom" name="jadwalShiftKerja.stTanggalAwal" size="12" cssClass="form-control pull-right"
+                                                                     required="false" cssStyle=""/>
+                                                        <div class="input-group-addon">
+                                                            s/d
+                                                        </div>
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <s:textfield id="loginTimestampTo" name="jadwalShiftKerja.stTanggalAkhir" size="12" cssClass="form-control pull-right"
+                                                                     required="false" cssStyle=""/>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -192,6 +219,15 @@
                                                         <s:set name="listOfJadwalShiftKerja" value="#session.listOfResultJadwalShiftKerja" scope="request" />
                                                         <display:table name="listOfJadwalShiftKerja" class="tableJadwalShiftKerja table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_jadwalShiftKerja.action" export="true" id="row" style="font-size:10">
+                                                            <display:column property="jadwalShiftKerjaId" sortable="true" title="ID Jadwal" />
+                                                            <display:column property="jadwalShiftKerjaName" sortable="true" title="Nama Jadwal"  />
+                                                            <display:column property="branchName" sortable="true" title="Unit"  />
+                                                            <display:column property="stTanggal" sortable="true" title="Tanggal"  />
+                                                            <display:column property="namaPegawai" sortable="true" title="Nama"  />
+                                                            <display:column property="positionName" sortable="true" title="Posisi"  />
+                                                            <display:column property="profesiName" sortable="true" title="Grup"  />
+                                                            <display:column property="shiftName" sortable="true" title="Shift"  />
+                                                            <display:column property="onCall" sortable="true" title="On Call"  />
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test="#attr.row.tamp">
                                                                     <s:if test="#attr.row.flagYes">
@@ -200,19 +236,29 @@
                                                                             <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                         </s:url>
                                                                         <s:a href="%{urlEdit}">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                            <img border="0" src="<s:url value="/pages/images/icons8-create-25.png"/>" name="icon_edit">
                                                                         </s:a>
                                                                     </s:if>
                                                                 </s:if>
                                                             </display:column>
-                                                            <display:column property="jadwalShiftKerjaId" sortable="true" title="ID Jadwal" />
-                                                            <display:column property="jadwalShiftKerjaName" sortable="true" title="Nama Jadwal"  />
-                                                            <display:column property="branchName" sortable="true" title="Unit"  />
-                                                            <display:column property="tanggal" sortable="true" title="Tanggal"  />
-                                                            <display:column property="namaPegawai" sortable="true" title="Nama"  />
-                                                            <display:column property="positionName" sortable="true" title="Posisi"  />
-                                                            <display:column property="profesiName" sortable="true" title="Profesi"  />
-                                                            <display:column property="shiftName" sortable="true" title="Shift"  />
+                                                            <display:column media="html" title="Panggil">
+                                                            <s:if test='#attr.row.hariIni'>
+                                                                <s:if test='#attr.row.onCall=="Y"'>
+                                                                    <s:if test='#attr.row.flagPanggil=="Y"' >
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                    </s:if>
+                                                                    <s:else>
+                                                                        <a href="javascript:;"  id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>" tanggal="<s:property value="%{#attr.row.stTanggal}"/>" nama="<s:property value="%{#attr.row.namaPegawai}"/>" posisi="<s:property value="%{#attr.row.positionName}"/>" grup="<s:property value="%{#attr.row.profesiName}"/>" href="javascript:;" class="item-panggil">
+                                                                            <img border="0" src="<s:url value="/pages/images/icons8-call-25.png"/>">
+                                                                    </s:else>
+                                                                </s:if>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:if test='#attr.row.flagPanggil=="Y"' >
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
+                                                                </s:if>
+                                                            </s:else>
+                                                            </display:column>
                                                             <display:setProperty name="paging.banner.item_name">JadwalShiftKerja</display:setProperty>
                                                             <display:setProperty name="paging.banner.items_name">JadwalShiftKerja</display:setProperty>
                                                             <display:setProperty name="export.excel.filename">JadwalShiftKerja.xls</display:setProperty>
@@ -311,9 +357,149 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-panggil">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Panggil Pegawai On Call</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">ID Jadwal</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_id" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" >Tanggal</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_tanggal" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control"  />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Nama</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_nama" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" >Posisi</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_posisi" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Grup</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_grup" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-success" id="btnPanggil" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Panggil</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-loading-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Saving ...
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="waiting-content" style="text-align: center">
+                    <h4>Please don't close this window, server is processing your request ...</h4>
+                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                         name="image_indicator_write">
+                    <br>
+                    <img class="spin" border="0"
+                         style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                         name="image_indicator_write">
+                </div>
+
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_fin_error_waiting"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <%--<button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes--%>
+                <%--</button>--%>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-success-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Success
+                </h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                     name="icon_success">
+                Record has been saved successfully.
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <button type="button" class="btn btn-sm btn-success" id="ok_con"><i class="fa fa-check"></i> Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     $(document).ready(function() {
+        function showDialog(tipe) {
+            if (tipe == "loading"){
+                $("#modal-loading-dialog").modal('show');
+            }
+            if (tipe == "error"){
+                $("#modal-loading-dialog").modal('show');
+                $("#waiting-content").hide();
+                $("#warning_fin_waiting").show();
+//            $("#msg_fin_error_waiting").text("Error. perbaikan");
+            }
+            if (tipe == "success"){
+                $("#modal-loading-dialog").modal('hide');
+                $("#modal-success-dialog").modal('show');
+            }
+        }
+
         $('#loginTimestampFrom').datepicker({
             dateFormat: 'dd-mm-yy'
         });
@@ -364,5 +550,31 @@
                 alert("ada tanggal yang masih kosong");
             }
         });
+
+        $('.tableJadwalShiftKerja').on('click', '.item-panggil', function() {
+            $('#mod_id').val($(this).attr('id'));
+            $('#mod_tanggal').val($(this).attr('tanggal'));
+            $('#mod_nama').val($(this).attr('nama'));
+            $('#mod_posisi').val($(this).attr('posisi'));
+            $('#mod_grup').val($(this).attr('grup'));
+
+            $("#modal-panggil").modal('show');
+        });
+
+        $('#btnPanggil').click(function () {
+            var id = $('#mod_id').val();
+            if (confirm("Apakah anda ingin memanggil pegawai ini ?")){
+                showDialog("loading");
+                dwr.engine.setAsync(true);
+                JadwalShiftKerjaAction.savePanggilBerdasarkanId(id,function() {
+                    dwr.engine.setAsync(false);
+                    $('#modal-panggil').modal('hide');
+                    showDialog("success");
+                });
+            }
+        });
+        $('#ok_con').click(function () {
+            window.location.reload();
+        })
     });
 </script>

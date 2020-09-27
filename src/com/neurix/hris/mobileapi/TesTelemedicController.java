@@ -12,6 +12,7 @@ import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
+import com.neurix.simrs.transaksi.kasirrawatjalan.action.KasirRawatJalanAction;
 import com.neurix.simrs.transaksi.notifikasiadmin.bo.NotifikasiAdminBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
@@ -21,6 +22,7 @@ import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaran
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
+import org.json.JSONException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -212,6 +214,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "hitung":
                 hitiungselisi(this.tindakan, this.resep, this.pasien);
+                break;
+            case "bayar-tagihan-rj":
+                savePembayaranTagihan(this.id);
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -532,6 +537,33 @@ public class TesTelemedicController implements ModelDriven<Object> {
             System.out.println("Resep dibayar Pasien Dari Cover setelah Diolah (-) : " + dibayarDariResep);
         }
         System.out.println("Total dibayar Pasien : " + dibayarDariTindakan.add(dibayarDariResep));
+
+    }
+
+    public void savePembayaranTagihan(String noCheckup) {
+
+        // noCheckup = CKP00000125
+
+        KasirRawatJalanAction kasirRawatJalanAction = new KasirRawatJalanAction();
+        try {
+            kasirRawatJalanAction.savePembayaranTagihan(
+                    "",
+                    "RS0104200035",
+                    "",
+                    "Y",
+                    "transfer",
+                    "1.1.01.02.02",
+                    "JRJ",
+                    "tunai",
+                    "01010101010101",
+                    noCheckup
+            );
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.savePembayaranTagihan] Save Pembayaran Tagihan TEST. ",e);
+        } catch (JSONException e) {
+            logger.error("[TesTelemedicController.savePembayaranTagihan] Save Pembayaran Tagihan TEST JSON. ",e);
+            e.printStackTrace();
+        }
 
     }
 }

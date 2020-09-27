@@ -186,10 +186,18 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_LAMPIRAN = "/upload/lampiran/";
     public final static String RESOURCE_PATH_IPA = "/upload/ipa/";
     public final static String REK_BANK_BRI_TELE = "01041802112149";
+
+//    public final static String KODERING_FARMASI_RI = "02.02.01";
+//    public final static String KODERING_INSTALASI_RI = "03.04.01";
+//    public final static String KODERING_FARMASI_RJ = "02.01.01";
+//    public final static String REKENING_ID_PENDAPATAN_RI ="00304";
+//    public final static String REKENING_ID_PENDAPATAN_RJ ="00303";
+    public final static String JUNK_MASTER_PIUTANG_PPN = "JNK";
+    public final static String KODE_REKENING_LABA_RUGI = "3.3.00.00.02";
+
     public final static String KODERING_FARMASI_RI = "05.00.01";
     public final static String KODERING_INSTALASI_RI = "06.01.01";
     public final static String KODERING_FARMASI_RJ = "05.00.00";
-
 
     public final static String CUTI_ID_DILUAR_TANGGUNJAWAB = CommonUtil.getPropertyParams("cuti.id.diluar.tanggungjawab");
 

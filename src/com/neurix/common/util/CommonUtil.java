@@ -18,10 +18,15 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.*;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.Random;
+
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -183,6 +188,36 @@ public class  CommonUtil {
                 throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
             }
 
+        } else {
+            throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+        }
+    }
+
+    public static String userBagianId() throws UsernameNotFoundException {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
+                return userDetailsLogin.getBagianId();
+            } else {
+                throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+            }
+        } else {
+            throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+        }
+    }
+
+    public static String userBagianName() throws UsernameNotFoundException {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
+                return userDetailsLogin.getBagianName();
+            } else {
+                throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+            }
         } else {
             throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
         }
@@ -1251,6 +1286,13 @@ public class  CommonUtil {
             default:
                 return "";
         }
+    }
+
+    public static Integer getLastDateOfMonth(String dateString){
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("MM-yyyy");
+        YearMonth yearMonth = YearMonth.parse(dateString, pattern);
+        LocalDate date = yearMonth.atEndOfMonth();
+        return date.lengthOfMonth();
     }
 
     public static Double SubtractJamAwalDanJamAkhir(String jamAwal, String jamAkhir, String status) throws ParseException {
