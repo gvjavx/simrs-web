@@ -310,6 +310,7 @@
 
                     </div>
                 </div>
+
                 <input type="hidden" id="tin_id_detail_checkup">
                 <div class="box-body" style="display: none" id="form_status">
                     <div class="row">
@@ -572,6 +573,8 @@
                         CheckupAction.cekRekananOpsByDetail(idDetailCheckup, function (res) {
                             if(res.namaRekanan != null && res.namaRekanan != ''){
                                 $('#det_jenis_pasien').html(response.statusPeriksaName+" "+res.namaRekanan);
+                                $('#h_id_paket').val(res.idPaket);
+                                $('#h_is_bpjs').val(res.isBpjs);
                             }
                         });
                     }else{

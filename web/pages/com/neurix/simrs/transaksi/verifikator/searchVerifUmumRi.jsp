@@ -190,7 +190,7 @@
                         <table id="sortTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
-                                <td>ID Detail Checkup</td>
+                                <td>No Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
                                 <td>Jenis Pasien</td>
@@ -201,7 +201,7 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td><s:property value="idDetailCheckup"/></td>
+                                    <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="jenisPeriksaPasien"/></td>
@@ -278,6 +278,7 @@
                         <input type="hidden" id="h_jenis_pasien">
                         <input type="hidden" id="h_id_pelayanan">
                         <input type="hidden" id="h_metode_bayar">
+                        <input type="hidden" id="h_no_checkup">
 
                         <div class="col-md-6">
                             <table class="table table-striped" >
@@ -422,9 +423,9 @@
                 if (res.idPasien != null) {
                     stopSpinner('t_', idDetailCheckup);
                     dwr.engine.setAsync(false);
-                    listTindakan(idDetailCheckup);
-                    listResepPasien(idDetailCheckup);
-                    listLab(idDetailCheckup);
+                    listTindakan(noCheckup);
+                    listResepPasien(noCheckup);
+                    listLab(noCheckup);
                     var jk = "";
                     var alamat = res.namaDesa + ", " + res.namaKecamatan + ", " + res.namaKota;
                     var diagnosa = res.diagnosa + ", " + res.namaDiagnosa;
@@ -446,6 +447,7 @@
                     $('#diagnosa').html(diagnosa);
                     $('#h_id_pasien').val(res.idPasien);
                     $('#h_id_detail_pasien').val(res.idDetailCheckup);
+                    $('#h_no_checkup').val(noCheckup);
                     $('#h_id_pelayanan').val(res.idPelayanan);
                     $('#h_metode_bayar').val(res.metodePembayaran);
                     $('#h_jenis_pasien').val(res.idJenisPeriksaPasien);
@@ -463,7 +465,7 @@
         var table = "";
         var data = [];
         var trfTtl = 0;
-        TindakanRawatAction.listTindakanRawat(idDetailCheckup, function (response) {
+        TindakanRawatAction.getListTindakanRawat(idDetailCheckup, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     var tanggal = item.createdDate;
@@ -519,7 +521,7 @@
 
         var table = "";
         var data = [];
-        PermintaanResepAction.listResepPasien(idDetailCheckup, function (response) {
+        PermintaanResepAction.getListRespPasien(idDetailCheckup, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     var idResep = "";
@@ -559,7 +561,7 @@
     function listLab(idDetailCheckup) {
         var table = "";
         var data = [];
-        PeriksaLabAction.listOrderLab(idDetailCheckup, function (response) {
+        PeriksaLabAction.getListLab(idDetailCheckup, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     var pemeriksaan = "-";
@@ -579,8 +581,14 @@
                     if (item.idLab != null) {
                         pemeriksaan = item.idLab;
                     }
-                    if (item.statusPeriksaName != null) {
-                        status = item.statusPeriksaName;
+                    if (item.statusPeriksa != null) {
+                        if(item.statusPeriksa == "0"){
+                            status = "Antrian";
+                        }else if(item.statusPeriksa == "1"){
+                            status = "Periksa";
+                        }else{
+                            status = "Selesai";
+                        }
                     }
                     if (item.labName != null) {
                         lab = item.labName;
@@ -705,14 +713,23 @@
         var metodePembayaran = $('#h_metode_bayar').val();
         var jenisPasien = $('#h_jenis_pasien').val();
         var idDetailCheckup = $('#h_id_detail_pasien').val();
+        var noCheckup = $('#h_no_checkup').val();
+        var cekResep = $('#tabel_resep').tableToJSON();
+        var isResep = "N";
+        if(cekResep.length > 0){
+            isResep = "Y";
+        }
 
         data = {
+            'no_checkup':noCheckup,
             'id_pasien':idPasien,
             'id_detail_checkup': idDetailCheckup,
             'jenis_pasien': jenisPasien,
             'id_pelayanan': idPelayanan,
-            'metode_bayar': metodePembayaran
+            'metode_bayar': metodePembayaran,
+            'is_resep': isResep
         }
+
         var result = JSON.stringify(data);
         $('#save_fin').hide();
         $('#load_fin').show();
