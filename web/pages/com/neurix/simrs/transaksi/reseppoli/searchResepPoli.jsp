@@ -259,6 +259,9 @@
                                             <s:a href="%{add_print}" target="_blank">
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
                                             </s:a>
+                                            <s:if test='#row.ttdPasien == null || #row.ttdApoteker == null'>
+                                                <img class="hvr-grow" style="cursor: pointer;" src='<s:url value="/pages/images/icons8-autograph-20.png"/>' onclick="showttd('<s:property value="idPermintaanResep"/>')">
+                                            </s:if>
                                         </s:if>
                                         <s:else>
                                             <s:url var="add_proses" namespace="/reseppoli" action="searchResep_reseppoli" escapeAmp="false">
@@ -269,9 +272,6 @@
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                             </s:a>
                                         </s:else>
-                                        <s:if test='#row.ttdPasien == null || #row.ttdApoteker == null'>
-                                            <img class="hvr-grow" src='<s:url value="/pages/images/icons8-create-25.png"/>' onclick="showttd('<s:property value="idPermintaanResep"/>')">
-                                        </s:if>
                                     </td>
                                 </tr>
                             </s:iterator>

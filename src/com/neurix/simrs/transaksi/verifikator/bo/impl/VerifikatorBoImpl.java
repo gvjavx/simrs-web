@@ -258,7 +258,6 @@ public class VerifikatorBoImpl implements VerifikatorBo {
             List<HeaderDetailCheckup> detailCheckups = new ArrayList<>();
             String idDetailCheckup = "";
             for (RiwayatTindakan tindakan : list) {
-                HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
                 ItSimrsRiwayatTindakanEntity riwayatTindakanEntity = new ItSimrsRiwayatTindakanEntity();
                 riwayatTindakanEntity = riwayatTindakanDao.getById("idRiwayatTindakan", tindakan.getIdRiwayatTindakan());
                 if (riwayatTindakanEntity != null) {
@@ -272,11 +271,13 @@ public class VerifikatorBoImpl implements VerifikatorBo {
                         response.setMsg("found error, " + e.getMessage());
                         return response;
                     }
-                }
-                if(!idDetailCheckup.equalsIgnoreCase(tindakan.getIdDetailCheckup())){
-                    idDetailCheckup = tindakan.getIdDetailCheckup();
-                    detailCheckup.setIdDetailCheckup(tindakan.getIdDetailCheckup());
-                    detailCheckups.add(detailCheckup);
+
+                    HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                    if(!idDetailCheckup.equalsIgnoreCase(riwayatTindakanEntity.getIdDetailCheckup())){
+                        idDetailCheckup = riwayatTindakanEntity.getIdDetailCheckup();
+                        detailCheckup.setIdDetailCheckup(riwayatTindakanEntity.getIdDetailCheckup());
+                        detailCheckups.add(detailCheckup);
+                    }
                 }
             }
 

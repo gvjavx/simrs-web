@@ -472,7 +472,7 @@
                     $('#h_id_pelayanan').val(res.idPelayanan);
                     $('#h_metode_bayar').val(res.metodePembayaran);
                     $('#h_jenis_pasien').val(res.idJenisPeriksaPasien);
-                    $('#h_no_checkup').val(res.noChekcup);
+                    $('#h_no_checkup').val(noCheckup);
                     setLabelJenisPasien('jenis_pasien', res.idJenisPeriksaPasien);
                     $('#save_fin').show();
                     $('#load_fin').hide();
@@ -615,8 +615,14 @@
                     if (item.idLab != null) {
                         pemeriksaan = item.idLab;
                     }
-                    if (item.statusPeriksaName != null) {
-                        status = item.statusPeriksaName;
+                    if (item.statusPeriksa != null) {
+                        if(item.statusPeriksa == "0"){
+                            status = "Antrian";
+                        }else if(item.statusPeriksa == "1"){
+                            status = "Proses";
+                        }else{
+                            status = "Selesai";
+                        }
                     }
                     if (item.labName != null) {
                         lab = item.labName;
@@ -744,6 +750,7 @@
         var idDetailCheckup = $('#h_id_detail_pasien').val();
 
         data = {
+            'no_checkup':noCheckup,
             'id_pasien':idPasien,
             'id_detail_checkup': idDetailCheckup,
             'jenis_pasien': jenisPasien,
@@ -902,12 +909,19 @@
         $('#modal-confirm-dialog').modal('hide');
         var data = [];
         var dataDetail = "";
+        var noCheckup = $('#h_no_checkup').val();
         var idPasien = $('#h_id_pasien').val();
         var idPelayanan = $('#h_id_pelayanan').val();
         var idDetailCheckup = $('#h_id_detail_pasien').val();
         var coverBiaya = $('#h_cover_biaya').val();
         var pasienBayar = $('#h_pasien_bayar').val();
         var dataTable = $('#tbl_tindakan').tableToJSON();
+        var cekResep = $('#tabel_resep').tableToJSON();
+        var isResep = "N";
+        if(cekResep.length > 0){
+            isResep = "Y";
+        }
+
         for (var i = 0; i < dataTable.length - 3; i++){
             var idRiwayat = $('#h_id_riwayat_tindakan_'+i).val();
             var jenis = $('#cover_'+i).val();
@@ -916,12 +930,15 @@
                 'jenis_pasien':jenis
             });
         }
+
         dataDetail = {
+            'no_checkup':noCheckup,
             'id_pasien':idPasien,
             'id_detail_checkup': idDetailCheckup,
             'id_pelayanan': idPelayanan,
             'ditanggung_pasien': pasienBayar,
-            'cover_biaya': coverBiaya
+            'cover_biaya': coverBiaya,
+            'is_resep':isResep
         }
         var result1 = JSON.stringify(data);
         var result2 = JSON.stringify(dataDetail);

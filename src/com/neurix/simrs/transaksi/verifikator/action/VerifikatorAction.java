@@ -2473,8 +2473,10 @@ public class VerifikatorAction extends BaseMasterAction {
             }
             if (object != null) {
                 String idDetailCheckup = object.getString("id_detail_checkup");
+                String noChekcup = object.getString("no_checkup");
                 String idPelayanan = object.getString("id_pelayanan");
                 String idPasien = object.getString("id_pasien");
+                String isResep = object.getString("is_resep");
 
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
                 detailCheckup.setLastUpdateWho(user);
@@ -2495,20 +2497,20 @@ public class VerifikatorAction extends BaseMasterAction {
                 }
                 if (riwayatTindakanList.size() > 0) {
                     response = verifikatorBo.updateCoverAsuransi(riwayatTindakanList, detailCheckup);
-//                    if ("success".equalsIgnoreCase(response.getStatus())) {
-//                        JurnalResponse jurnalResponse = closingJurnalNonTunai("", idPelayanan, idPasien, "");
-//                        if (!"ptpn".equalsIgnoreCase(jurnalResponse.getStatus())) {
-//                            if ("error".equalsIgnoreCase(jurnalResponse.getStatus())) {
-//                                response.setStatus("error");
-//                                response.setMsg(jurnalResponse.getMsg());
-//                                return response;
-//                            } else if (!"".equalsIgnoreCase(jurnalResponse.getInvoice())) {
-//                                detailCheckup.setInvoice(jurnalResponse.getInvoice());
-//                                detailCheckup.setFlagCover("Y");
-//                                response = verifikatorBo.updateInvoice(detailCheckup);
-//                            }
-//                        }
-//                    }
+                    if ("success".equalsIgnoreCase(response.getStatus())) {
+                        JurnalResponse jurnalResponse = closingJurnalNonTunai(isResep, idPasien, noChekcup);
+                        if (!"rekanan".equalsIgnoreCase(jurnalResponse.getStatus())) {
+                            if ("error".equalsIgnoreCase(jurnalResponse.getStatus())) {
+                                response.setStatus("error");
+                                response.setMsg(jurnalResponse.getMsg());
+                                return response;
+                            } else if (!"".equalsIgnoreCase(jurnalResponse.getInvoice())) {
+                                detailCheckup.setInvoice(jurnalResponse.getInvoice());
+                                detailCheckup.setFlagCover("Y");
+                                response = verifikatorBo.updateInvoice(detailCheckup);
+                            }
+                        }
+                    }
                 }
             }
         } catch (JSONException e) {
@@ -2572,7 +2574,7 @@ public class VerifikatorAction extends BaseMasterAction {
             idPasien = checkupEntity.getIdPasien();
         }
 
-        if (!"ptpn".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())) {
+        if (!"rekanan".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())) {
             if (!"bpjs".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())) {
                 if ("asuransi".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())) {
 
@@ -2975,7 +2977,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 }
             }
         } else {
-            response.setStatus("ptpn");
+            response.setStatus("rekanan");
         }
 
         return response;

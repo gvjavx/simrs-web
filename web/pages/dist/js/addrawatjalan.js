@@ -1353,10 +1353,9 @@ function saveLab(id) {
 
     if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter != null) {
 
-        $('#save_lab').hide();
-        $('#load_lab').show();
-
         if (id != '') {
+            $('#save_lab').hide();
+            $('#load_lab').show();
             dwr.engine.setAsync(true);
             PeriksaLabAction.editOrderLab(id, idLab, idParameter, {
                 callback: function (response) {
@@ -1374,6 +1373,8 @@ function saveLab(id) {
             })
         } else {
             if(!cekTtd){
+                $('#save_lab').hide();
+                $('#load_lab').show();
                 dwr.engine.setAsync(true);
                 var ttd = convertToDataURL(pengirim);
                 PeriksaLabAction.saveOrderLab(idDetailCheckup, idLab, idParameter, ttd, {

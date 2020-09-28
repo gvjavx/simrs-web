@@ -283,7 +283,7 @@
                         <div class="col-md-6">
                             <table class="table table-striped" >
                                 <tr>
-                                    <td><b>Tempat, Tanggal Lahir</b></td>
+                                    <td><b>Tempat, Tgl Lahir</b></td>
                                     <td><span id="tgl"></span></td>
                                 </tr>
                                 <tr>
@@ -581,8 +581,14 @@
                     if (item.idLab != null) {
                         pemeriksaan = item.idLab;
                     }
-                    if (item.statusPeriksaName != null) {
-                        status = item.statusPeriksaName;
+                    if (item.statusPeriksa != null) {
+                        if(item.statusPeriksa == "0"){
+                            status = "Antrian";
+                        }else if(item.statusPeriksa == "1"){
+                            status = "Periksa";
+                        }else{
+                            status = "Selesai";
+                        }
                     }
                     if (item.labName != null) {
                         lab = item.labName;
@@ -708,6 +714,11 @@
         var jenisPasien = $('#h_jenis_pasien').val();
         var idDetailCheckup = $('#h_id_detail_pasien').val();
         var noCheckup = $('#h_no_checkup').val();
+        var cekResep = $('#tabel_resep').tableToJSON();
+        var isResep = "N";
+        if(cekResep.length > 0){
+            isResep = "Y";
+        }
 
         data = {
             'no_checkup':noCheckup,
@@ -715,7 +726,8 @@
             'id_detail_checkup': idDetailCheckup,
             'jenis_pasien': jenisPasien,
             'id_pelayanan': idPelayanan,
-            'metode_bayar': metodePembayaran
+            'metode_bayar': metodePembayaran,
+            'is_resep': isResep
         }
         var result = JSON.stringify(data);
         $('#save_fin').hide();
