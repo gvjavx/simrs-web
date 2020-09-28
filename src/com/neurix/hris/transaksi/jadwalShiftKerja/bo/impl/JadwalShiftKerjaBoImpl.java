@@ -787,13 +787,24 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             jadwalShiftKerjaDetailEntity.setPanggilDate(bean.getPanggilDate());
             jadwalShiftKerjaDetailDao.updateAndSave(jadwalShiftKerjaDetailEntity);
 
+            ImHrisShiftEntity shiftEntity = shiftDao.getById("shiftId", bean.getShiftId());
+
             //KIRIM NOTIFIKASI
             notif.setNip(jadwalShiftKerjaDetailEntity.getNip());
             notif.setNoRequest(jadwalShiftKerjaDetailEntity.getJadwalShiftKerjaDetailId());
-            notif.setNote("Anda dipanggil untuk bertugas pada " + CommonUtil.convertTimestampToString(bean.getPanggilDate()));
+            notif.setNote("Anda dipanggil untuk bertugas pada " + shiftEntity.getJamAwal() + " s/d " + shiftEntity.getJamAkhir());
             notif.setCreatedWho("admin");
             notif.setTo("self");
+            notif.setTipeNotifId("umum");
             notif.setTipeNotifName("On Call");
+            notif.setFromPerson(bean.getPanggilWho());
+            notif.setRead("N");
+            notif.setFlag("Y");
+            notif.setAction("C");
+            notif.setCreatedWho(bean.getPanggilWho());
+            notif.setLastUpdateWho(bean.getLastUpdateWho());
+            notif.setCreatedDate(bean.getPanggilDate());
+            notif.setLastUpdate(bean.getLastUpdate());
             notifikasiList.add(notif);
 
 
