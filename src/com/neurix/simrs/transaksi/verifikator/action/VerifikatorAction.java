@@ -2707,6 +2707,7 @@ public class VerifikatorAction extends BaseMasterAction {
                         // jika rawat inap
                         if ("JRI".equalsIgnoreCase(kode)){
                             for (String keterangan : listOfKeteranganRiwayat) {
+
                                 if ("kamar".equalsIgnoreCase(keterangan) || "tindakan".equalsIgnoreCase(keterangan)){
 
                                     // mencari list ruangan

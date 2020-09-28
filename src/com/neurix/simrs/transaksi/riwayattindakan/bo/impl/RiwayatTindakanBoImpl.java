@@ -375,4 +375,9 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
     public List<UangMuka> getListUangMukaByNoCheckup(String noCheckup) throws GeneralBOException {
         return riwayatTindakanDao.getListUangMukaByNoCheckup(noCheckup);
     }
+
+    @Override
+    public Boolean CheckIsRawatJalanByIdDetailCheckup(String idDetail) throws GeneralBOException {
+        return riwayatTindakanDao.checkIsPelayananRawatJalan(idDetail);
+    }
 }
