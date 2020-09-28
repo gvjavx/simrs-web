@@ -951,4 +951,31 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
         return transaksiStok;
     }
+
+    public Obat getLastEveragePricePerBiji(String idObat, String branchId){
+
+        String SQL = "SELECT a.id_obat, a.average_harga_biji, b.harga_jual \n" +
+                "FROM im_simrs_obat a \n" +
+                "INNER JOIN mt_simrs_harga_obat b ON b.id_obat = a.id_obat\n" +
+                "WHERE a.id_obat = :id \n" +
+                "AND a.branch_id = :unit \n" +
+                "ORDER BY a.created_date DESC LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("id", idObat)
+                .list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                Obat obat = new Obat();
+                obat.setIdObat(obj[0].toString());
+                obat.setAverageHargaBiji(obj[1] == null ? new BigDecimal(0) : (BigDecimal) obj[1]);
+                obat.setHargaJual(obj[2] == null ? new BigDecimal(0) : (BigDecimal) obj[2]);
+                return obat;
+            }
+        }
+
+        return null;
+    }
 }

@@ -56,6 +56,7 @@ import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
+import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
@@ -74,9 +75,11 @@ import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.*;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranOnlineEntity;
+import io.agora.recording.common.Common;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.directwebremoting.dwrp.Batch;
 import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -2945,6 +2948,90 @@ public class TransaksiObatAction extends BaseMasterAction {
 
     public void setTransaksiObatBoProxy(TransaksiObatBo transaksiObatBoProxy) {
         this.transaksiObatBoProxy = transaksiObatBoProxy;
+    }
+
+    // jsonString {[idObat : value, idbarang : value, qtyreture : value, jenisatuan : value]}
+    public CrudResponse retureResep(String idResep, String idApprovalObat,  String jsonString) throws JSONException{
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = CommonUtil.getCurrentDateTimes();
+        String branchId = CommonUtil.userBranchLogin();
+        List<TransaksiObatDetail> listBatchReture = null;
+        List<TransaksiObatDetail> listObatTidakDitanggung = null;
+        CrudResponse response = new CrudResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+
+        // colect dari jsoString dan insert ke listObatreture dan listObatTidakDitanggung;
+        if (jsonString != null && !"".equalsIgnoreCase(jsonString)) {
+            JSONArray json = new JSONArray(jsonString);
+            listBatchReture = new ArrayList<>();
+            listObatTidakDitanggung = new ArrayList<>();
+            for (int i = 0; i < json.length(); i++) {
+
+                JSONObject obj = json.getJSONObject(i);
+                TransaksiObatDetail retureObat = new TransaksiObatDetail();
+                if (!"".equalsIgnoreCase(obj.getString("qtyreture"))) {
+                  retureObat.setIdObat(obj.getString("idobat"));
+                  retureObat.setIdBarang(obj.getString("idbarang"));
+                  retureObat.setQtyApprove(new BigInteger(obj.getString("qtyreture")));
+                  retureObat.setJenisSatuan(obj.getString("jenisatuan"));
+                }
+
+                TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+                obatDetail.setIdApprovalObat(idApprovalObat);
+                obatDetail.setIdObat(idApprovalObat);
+
+                List<TransaksiObatDetail> listTransaksiObatDetail = transaksiObatBo.getSearchObatTransaksiByCriteria(obatDetail);
+                if (listTransaksiObatDetail.size() > 0){
+                    TransaksiObatDetail searchTransaksi = listTransaksiObatDetail.get(0);
+                    if ("umum".equalsIgnoreCase(searchTransaksi.getJenisResep())){
+                        listObatTidakDitanggung.add(retureObat);
+                    }
+                    retureObat.setIdTransaksiObatDetail(searchTransaksi.getIdTransaksiObatDetail());
+                    retureObat.setIdPelayananTujuan(searchTransaksi.getIdPelayananTujuan());
+                    retureObat.setIdPermintaanResep(searchTransaksi.getIdPermintaanResep());
+                }
+
+                listBatchReture.add(retureObat);
+            }
+        }
+
+        // create jurnal persediaan barang masuk;
+        // hitung harga rata-rata barang masuk;
+        if (listBatchReture.size() > 0){
+
+            for (TransaksiObatDetail retureObat : listBatchReture){
+                retureObat.setBranchId(branchId);
+                retureObat.setLastUpdate(time);
+                retureObat.setLastUpdateWho(userLogin);
+
+                transaksiObatBo.saveUpdateHargaRataBarangMasukKarnaReture(retureObat);
+            }
+        }
+
+        // create jurnal kas kluar untuk obat yang direture;
+        if (listObatTidakDitanggung.size() > 0){
+
+        }
+
+        TransaksiObatDetail beanUpdate = new TransaksiObatDetail();
+        beanUpdate.setLastUpdate(time);
+        beanUpdate.setLastUpdateWho(userLogin);
+
+        // save update jumlah direture
+        try {
+            transaksiObatBo.saveUpdateRetureObat(listBatchReture, beanUpdate);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.info("[TransaksiObatAction.retureResep] ERROR. ", e);
+            response.setMsg("[TransaksiObatAction.retureResep] ERROR. "+ e);
+            response.setStatus("error");
+            return response;
+        }
+
+        return response;
     }
 
 }

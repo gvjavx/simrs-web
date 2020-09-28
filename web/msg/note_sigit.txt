@@ -1123,3 +1123,15 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     AND trans_id NOT IN ('04','34');
 
 --
+
+-- 2020-09-27
+
+    ALTER TABLE mt_simrs_transaksi_obat_detail_batch
+    ADD COLUMN harga_jual numeric,
+    ADD COLUMN harga_rata numeric
+
+    ALTER TABLE mt_simrs_transaksi_obat_detail_batch
+    ADD COLUMN qty_reture bigint
+
+
+--
