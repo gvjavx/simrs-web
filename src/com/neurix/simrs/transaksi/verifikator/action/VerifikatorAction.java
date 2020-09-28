@@ -1146,7 +1146,7 @@ public class VerifikatorAction extends BaseMasterAction {
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
         ItSimrsHeaderChekupEntity headerChekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
         BigDecimal biayaCover = detailCheckupEntity.getTarifBpjs();
-        noKartu = " No. Kartu PTPN " + detailCheckupEntity.getNoKartuAsuransi();
+        noKartu = " No. Kartu Rekanan " + detailCheckupEntity.getNoKartuAsuransi();
 
         ImMasterEntity masterEntity = masterBo.getEntityMasterById(detailCheckupEntity.getIdAsuransi());
         if (masterEntity != null) {
@@ -1230,10 +1230,10 @@ public class VerifikatorAction extends BaseMasterAction {
                                 listOfMapTindakanBpjs.add(mapTindakan);
 
                                 mapTindakan = new HashMap();
-                                mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "ptpn"));
-                                mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "ptpn", keterangan, ruangan));
-                                mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "ptpn", keterangan, ruangan, ""));
-                                mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "ptpn", keterangan, kode, ruangan));
+                                mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "rekanan"));
+                                mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "rekanan", keterangan, ruangan));
+                                mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "rekanan", keterangan, ruangan, ""));
+                                mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "rekanan", keterangan, kode, ruangan));
                                 listOfMapTindakanPtpn.add(mapTindakan);
                             }
                         }
@@ -1247,10 +1247,10 @@ public class VerifikatorAction extends BaseMasterAction {
                         listOfMapTindakanBpjs.add(mapTindakan);
 
                         mapTindakan = new HashMap();
-                        mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "ptpn"));
-                        mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "ptpn", keterangan, ""));
-                        mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "ptpn", keterangan, "", ""));
-                        mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "ptpn", keterangan, kode, ""));
+                        mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "rekanan"));
+                        mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "rekanan", keterangan, ""));
+                        mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "rekanan", keterangan, "", ""));
+                        mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "rekanan", keterangan, kode, ""));
                         listOfMapTindakanPtpn.add(mapTindakan);
                     }
                 }
@@ -1265,10 +1265,10 @@ public class VerifikatorAction extends BaseMasterAction {
                 }
                 for (String keterangan : listOfKeteranganRiwayat) {
                     Map mapTindakan = new HashMap();
-                    mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "ptpn"));
-                    mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "ptpn", keterangan, ""));
-                    mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "ptpn", keterangan, "", ""));
-                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "ptpn", keterangan, kode, ""));
+                    mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "reakanan"));
+                    mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "reakanan", keterangan, ""));
+                    mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "reakanan", keterangan, "", ""));
+                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "reakanan", keterangan, kode, ""));
                     listOfMapTindakanPtpn.add(mapTindakan);
                 }
             }
