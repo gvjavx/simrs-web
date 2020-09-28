@@ -1152,9 +1152,9 @@ public class VerifikatorAction extends BaseMasterAction {
         if (masterEntity != null) {
             company = " " + masterEntity.getNama() + " ";
         } else {
-            logger.error("[VerivikatorAction.closingJurnalRekanan] Error Master PTPN tidak ditemukan");
+            logger.error("[VerivikatorAction.closingJurnalRekanan] Error Master Rekanan tidak ditemukan");
             response.setStatus("error");
-            response.setMsg("[VerivikatorAction.closingJurnalRekanan] Error Master PTPN tidak ditemukan");
+            response.setMsg("[VerivikatorAction.closingJurnalRekanan] Error Master Master tidak ditemukan");
             return response;
         }
 
@@ -1200,7 +1200,7 @@ public class VerifikatorAction extends BaseMasterAction {
             allTindakanTransBpjs = checkupDetailBo.getSumJumlajTindakanTransitorisByJenis(idDetailCheckup, "bpjs", "");
 
             // for ptpn;
-            allTindakanTransPtpn = checkupDetailBo.getSumJumlajTindakanTransitorisByJenis(idDetailCheckup, "ptpn", "");
+            allTindakanTransPtpn = checkupDetailBo.getSumJumlajTindakanTransitorisByJenis(idDetailCheckup, "rekanan", "");
 
             Map mapTransitoris = new HashMap();
             mapTransitoris.put("nilai", allTindakanTransBpjs.add(allTindakanTransPtpn));
@@ -1265,10 +1265,10 @@ public class VerifikatorAction extends BaseMasterAction {
                 }
                 for (String keterangan : listOfKeteranganRiwayat) {
                     Map mapTindakan = new HashMap();
-                    mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "reakanan"));
-                    mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "reakanan", keterangan, ""));
-                    mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "reakanan", keterangan, "", ""));
-                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "reakanan", keterangan, kode, ""));
+                    mapTindakan.put("master_id", getMasterIdByTipe(idDetailCheckup, "rekanan"));
+                    mapTindakan.put("divisi_id", getDivisiId(idDetailCheckup, "rekanan", keterangan, ""));
+                    mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "rekanan", keterangan, "", ""));
+                    mapTindakan.put("activity", getAcitivityList(idDetailCheckup, "rekanan", keterangan, kode, ""));
                     listOfMapTindakanPtpn.add(mapTindakan);
                 }
             }
@@ -1362,8 +1362,8 @@ public class VerifikatorAction extends BaseMasterAction {
 
                 Map mapPiutangPtpn = new HashMap();
 //                mapPiutangPtpn.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
-                mapPiutangPtpn.put("master_id", getMasterIdByTipe(idDetailCheckup, "ptpn"));
-                mapPiutangPtpn.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "ptpn", "", "", "").add(ppnObat));
+                mapPiutangPtpn.put("master_id", getMasterIdByTipe(idDetailCheckup, "rekanan"));
+                mapPiutangPtpn.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "rekanan", "", "", "").add(ppnObat));
 
                 if ("Y".equalsIgnoreCase(isResep)) {
 
@@ -1392,8 +1392,8 @@ public class VerifikatorAction extends BaseMasterAction {
 
                 Map mapPiutangPtpn = new HashMap();
 //                mapPiutangPtpn.put("bukti", billingSystemBo.createInvoiceNumber(kode, branchId));
-                mapPiutangPtpn.put("master_id", getMasterIdByTipe(idDetailCheckup, "ptpn"));
-                mapPiutangPtpn.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "ptpn", "", "", "").add(allTindakanTransPtpn));
+                mapPiutangPtpn.put("master_id", getMasterIdByTipe(idDetailCheckup, "rekanan"));
+                mapPiutangPtpn.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetailCheckup, "rekanan", "", "", "").add(allTindakanTransPtpn));
 
                 hsCriteria.put("piutang_pasien_bpjs", mapPiutangBpjs);
                 hsCriteria.put("piutang_pasien_ptpn", mapPiutangPtpn);
