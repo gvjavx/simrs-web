@@ -1133,3 +1133,44 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
 
 --
+
+-- 2020-09-28
+
+    ALTER TABLE mt_simrs_harga_obat
+    ADD COLUMN id_harga_obat VARCHAR(50),
+    ADD COLUMN margin int,
+    ADD COLUMN branch_id VARCHAR(5);
+
+    UPDATE mt_simrs_harga_obat a SET id_harga_obat = 'RS01' || a.id_obat, margin = '10', branch_id = 'RS01';
+
+    ALTER TABLE mt_simrs_harga_obat
+    DROP CONSTRAINT pk_harga_obat;
+
+    ALTER TABLE mt_simrs_harga_obat
+    ADD CONSTRAINT pk_harga_obat
+    PRIMARY KEY (id_harga_obat);
+
+    CREATE TABLE public.im_simrs_margin_obat
+    (
+        id_margin_obat character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_obat character varying(30) COLLATE pg_catalog."default",
+        standar_margin integer,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_date_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_simrs_margin_obat_pkey PRIMARY KEY (id_margin_obat)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_margin_obat
+        OWNER to postgres;
+
+    CREATE SEQUENCE seq_margin_obat;
+
+--

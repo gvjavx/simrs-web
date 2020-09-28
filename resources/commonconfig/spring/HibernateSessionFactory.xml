@@ -434,6 +434,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/notifikasiadmin/hibernate/ItNotifikasiAdminTelemedicEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/permintaanvendor/hibernate/ImUserVendorEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/permintaanvendor/hibernate/ItSimrsDocPoEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/marginobat/hibernate/ImSimrsMarginObatEntity.hbm.xml</value>
 
                 <!--Hibernate Config For Acountant Feature SIMRS is HERE-->
                 <value>sshconfig/com/neurix/akuntansi/master/kodeRekening/hibernate/ImKodeRekeningEntity.hbm.xml</value>

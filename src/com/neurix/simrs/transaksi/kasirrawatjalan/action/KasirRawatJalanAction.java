@@ -1105,10 +1105,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         if (isNoCheckup){
             List<String> listDetilCheckup = riwayatTindakanBo.getListIdDetailCheckup(noCheckup);
             if (listDetilCheckup.size() > 0){
-                for (String idDetailCheckup : listDetilCheckup){
-                    detailCheckupEntity = checkupDetailBo.getDetailCheckupById(idDetailCheckup);
-                    break;
-                }
+                String idDetailCheckup = listDetilCheckup.get(listDetilCheckup.size()-1);
+                detailCheckupEntity = checkupDetailBo.getDetailCheckupById(idDetailCheckup);
+//                for (String idDetailCheckup : listDetilCheckup){
+//                    break;
+//                }
             }
         }
 
@@ -1309,7 +1310,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         String transId = "";
 
         Map mapPajakObat = new HashMap();
-        String invoiceNumber = billingSystemBo.createInvoiceNumber(type, branchId);
+//        String invoiceNumber = billingSystemBo.createInvoiceNumber(type, branchId);
 
         if ("tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis)){
 
