@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.transaksiobat.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
@@ -194,7 +195,18 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
             telemdic = " AND b.id_transaksi_online is NULL \n";
         }
 
-        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, b.id_jenis_periksa_pasien, a.flag, a.id_transaksi_online  FROM mt_simrs_permintaan_resep a\n" +
+        String SQL = "SELECT \n" +
+                "a.id_permintaan_resep, \n" +
+                "a.id_detail_checkup, \n" +
+                "c.nama, \n" +
+                "d.keterangan, \n" +
+                "a.id_approval_obat, \n" +
+                "b.id_jenis_periksa_pasien, \n" +
+                "a.flag, \n" +
+                "a.id_transaksi_online, \n" +
+                "a.ttd_pasien, \n" +
+                "a.ttd_apoteker \n" +
+                "FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
@@ -244,6 +256,12 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 permintaanResep.setIdJenisPeriksa(obj[5].toString());
                 permintaanResep.setFlag(obj[6].toString());
                 permintaanResep.setKetJenisAntrian(obj[7] == null ? "Resep RS" : "Telemedic");
+                if(obj[8] != null){
+                    permintaanResep.setTtdPasien(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_PASIEN+obj[8].toString());
+                }
+                if(obj[9] != null){
+                    permintaanResep.setTtdApoteker(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_APOTEKER+obj[9].toString());
+                }
                 permintaanResepList.add(permintaanResep);
             }
         }

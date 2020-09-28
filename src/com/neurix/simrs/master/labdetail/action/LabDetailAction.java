@@ -404,4 +404,22 @@ public class LabDetailAction extends BaseMasterAction {
         LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
         return labDetailBo.getLabDetailEntityById(idParameter);
     }
+
+    public List<LabDetail> getListComboParameter(String idLab){
+        logger.info("[LabAction.getListComboParameter] start process >>>");
+        List<LabDetail> labDetailList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+
+        try {
+            labDetailList = labDetailBo.getDetaillab(idLab, branchId);
+        }catch (GeneralBOException e){
+            logger.error("[LabDetailAction.getListComboParameter] Error when get data lab detail ," + "Found problem when searching data, please inform to your admin.", e);
+        }
+
+        logger.info("[LabDetailAction.getListComboParameter] end process >>>");
+        return labDetailList;
+
+    }
 }

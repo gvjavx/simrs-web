@@ -25,6 +25,15 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private String approveFlag;
     private String keterangan;
     private String urlImg;
+    private String ttdPengirim;
+
+    public String getTtdPengirim() {
+        return ttdPengirim;
+    }
+
+    public void setTtdPengirim(String ttdPengirim) {
+        this.ttdPengirim = ttdPengirim;
+    }
 
     public String getUrlImg() {
         return urlImg;

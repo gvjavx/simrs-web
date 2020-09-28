@@ -283,6 +283,11 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         return permintaanResepDao.getById("idPermintaanResep", id);
     }
 
+    @Override
+    public List<PermintaanResep> getListResepPasien(String noCheckup) throws GeneralBOException {
+        return permintaanResepDao.getListResepPasien(noCheckup);
+    }
+
     private String getNextPermintaanResepId() throws GeneralBOException {
         String id = "";
         try {

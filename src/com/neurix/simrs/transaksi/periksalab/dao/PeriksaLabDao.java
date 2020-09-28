@@ -396,4 +396,47 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         }
         return lab;
     }
+
+    public List<PeriksaLab> getListLab(String noCheckup){
+        List<PeriksaLab> labList = new ArrayList<>();
+        String SQL = "SELECT \n" +
+                "a.id_periksa_lab,\n" +
+                "a.id_lab,\n" +
+                "d.nama_lab,\n" +
+                "a.status_periksa,\n" +
+                "a.id_detail_checkup,\n" +
+                "e.id_kategori_lab,\n" +
+                "e.nama_kategori,\n" +
+                "f.id_pelayanan,\n" +
+                "f.nama_pelayanan\n" +
+                "FROM it_simrs_periksa_lab a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
+                "INNER JOIN im_simrs_lab d ON a.id_lab = d.id_lab\n" +
+                "INNER JOIN im_simrs_kategori_lab e ON d.id_kategori_lab = e.id_kategori_lab\n" +
+                "LEFT JOIN im_simrs_pelayanan f ON b.id_pelayanan = f.id_pelayanan\n" +
+                "WHERE c.no_checkup = :id \n" +
+                "ORDER BY a.id_detail_checkup ASC";
+
+        List<Objects[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", noCheckup)
+                .list();
+        if(result.size() > 0){
+            for (Object[] obj: result){
+                PeriksaLab lab = new PeriksaLab();
+                lab.setIdPeriksaLab(obj[0] == null ? "" : obj[0].toString());
+                lab.setIdLab(obj[1] == null ? "" : obj[1].toString());
+                lab.setLabName(obj[2] == null ? "" : obj[2].toString());
+                lab.setStatusPeriksa(obj[3] == null ? "" : obj[3].toString());
+                lab.setIdDetailCheckup(obj[4] == null ? "" : obj[4].toString());
+                lab.setIdKategoriLab(obj[5] == null ? "" : obj[5].toString());
+                lab.setKategoriLabName(obj[6] == null ? "" : obj[6].toString());
+                lab.setIdPelayanan(obj[7] == null ? "" : obj[7].toString());
+                lab.setNamaPelayanan(obj[8] == null ? "" : obj[8].toString());
+                labList.add(lab);
+            }
+        }
+        return labList;
+    }
 }

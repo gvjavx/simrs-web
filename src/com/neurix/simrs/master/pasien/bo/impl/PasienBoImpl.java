@@ -476,14 +476,14 @@ public class PasienBoImpl implements PasienBo {
 
                     HeaderDetailCheckup detailCheckup = pasienDao.getLastCheckup(data.getIdPasien());
                     if (detailCheckup.getIdDetailCheckup() != null) {
-                        pasien.setIdPelayanan(detailCheckup.getIdPelayanan());
-                        pasien.setNoCheckuoUlang(detailCheckup.getNoCheckupUlang());
-                        pasien.setIdLastDetailCheckup(detailCheckup.getIdDetailCheckup());
-                        pasien.setIsOrderLab(detailCheckup.getIsOrderLab());
                         if (detailCheckup.getTglCekup() != null) {
                             String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(detailCheckup.getTglCekup());
                             pasien.setTglCheckup(formatDate);
                             pasien.setIsCheckupUlang("Y");
+                            pasien.setIdPelayanan(detailCheckup.getIdPelayanan());
+                            pasien.setNoCheckuoUlang(detailCheckup.getNoCheckupUlang());
+                            pasien.setIdLastDetailCheckup(detailCheckup.getIdDetailCheckup());
+                            pasien.setIsOrderLab(detailCheckup.getIsOrderLab());
                         }
                     }
                 }

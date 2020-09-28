@@ -284,9 +284,9 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         return "search";
     }
 
-    public List<RiwayatTindakan> getListTindakanRawat(String idDetail, String jenisPasien) {
+    public List<RiwayatTindakan> getListTindakanRawat(String noCheckup, String jenisPasien) {
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
-        if (idDetail != null && !"".equalsIgnoreCase(idDetail)) {
+        if (noCheckup != null && !"".equalsIgnoreCase(noCheckup)) {
             List<RiwayatTindakan> result = new ArrayList<>();
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
@@ -295,7 +295,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             if("bpjs".equalsIgnoreCase(jenisPasien) || "asuransi".equalsIgnoreCase(jenisPasien)){
                 tindakanRawat.setJenisPasien("umum");
             }
-            tindakanRawat.setIdDetailCheckup(idDetail);
+            tindakanRawat.setNoCheckup(noCheckup);
             tindakanRawat.setBranchId(CommonUtil.userBranchLogin());
 
             try {
@@ -670,28 +670,54 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
     }
 
-    public List<UangMuka> getListUangMuka(String idDetailCheckup, String statusBayar) {
+    public List<UangMuka> getListUangMuka(String noCheckup, String statusBayar) {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KasirRawatJalanBo kasirRawatJalanBo = (KasirRawatJalanBo) ctx.getBean("kasirRawatJalanBoProxy");
-        UangMuka uangMuka = new UangMuka();
-        uangMuka.setIdDetailCheckup(idDetailCheckup);
-        if(statusBayar != null && !"".equalsIgnoreCase(statusBayar)){
-            uangMuka.setStatusBayar(statusBayar);
-            uangMuka.setFlagRefund("Y");
-        }
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         List<UangMuka> obatDetailList = new ArrayList<>();
+        List<UangMuka> obatDetailListFinal = new ArrayList<>();
 
-        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
-            try {
-                obatDetailList = kasirRawatJalanBo.getListUangMuka(uangMuka);
-            } catch (GeneralBOException e) {
-                logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
-                addActionError("[TransaksiObatAction.searchResep] ERROR error when get searh resep. " + e.getMessage());
+        if (noCheckup != null && !"".equalsIgnoreCase(noCheckup)) {
+            List<HeaderDetailCheckup> detailCheckup = checkupDetailBo.getIDDetailCheckup(noCheckup);
+            if(statusBayar != null && !"".equalsIgnoreCase(statusBayar)){
+                if(detailCheckup.size() > 0){
+                    for (HeaderDetailCheckup detail: detailCheckup){
+                        UangMuka uangMuka = new UangMuka();
+                        uangMuka.setIdDetailCheckup(detail.getIdDetailCheckup());
+                        if(statusBayar != null && !"".equalsIgnoreCase(statusBayar)){
+                            uangMuka.setStatusBayar(statusBayar);
+                            uangMuka.setFlagRefund("Y");
+                        }
+                        try {
+                            obatDetailList = kasirRawatJalanBo.getListUangMuka(uangMuka);
+                        } catch (GeneralBOException e) {
+                            logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
+                        }
+                        if(obatDetailList.size() > 0){
+                            obatDetailListFinal.addAll(obatDetailList);
+                        }
+                    }
+                }
+            }else{
+                UangMuka uangMuka = new UangMuka();
+                uangMuka.setIdDetailCheckup(noCheckup);
+                if(statusBayar != null && !"".equalsIgnoreCase(statusBayar)){
+                    uangMuka.setStatusBayar(statusBayar);
+                    uangMuka.setFlagRefund("Y");
+                }
+                try {
+                    obatDetailList = kasirRawatJalanBo.getListUangMuka(uangMuka);
+                } catch (GeneralBOException e) {
+                    logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
+                }
+                if(obatDetailList.size() > 0){
+                    obatDetailListFinal.addAll(obatDetailList);
+                }
             }
         }
 
-        return obatDetailList;
+        return obatDetailListFinal;
     }
 
     public CrudResponse saveUangMuka(String id, String idPasien, String biaya, String jumlahDibayar, String metodeBayar, String kodeBank, String noRekening) {
@@ -1521,13 +1547,19 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 //** creat Jurnal **//
                 Jurnal jurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
 
-                HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-                detailCheckup.setIdDetailCheckup(idDetailCheckup);
-                detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-                detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
-                detailCheckup.setNoJurnal(jurnal.getNoJurnal());
-
-                checkupDetailBo.updateStatusBayarDetailCheckup(detailCheckup);
+                List<HeaderDetailCheckup> detailCheckupList = checkupDetailBo.getIDDetailCheckup(noCheckup);
+                List<HeaderDetailCheckup> list = new ArrayList<>();
+                if(detailCheckupList.size() > 0){
+                    for (HeaderDetailCheckup dtl: detailCheckupList){
+                        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                        detailCheckup.setIdDetailCheckup(dtl.getIdDetailCheckup());
+                        detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                        detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+                        detailCheckup.setNoJurnal(jurnal.getNoJurnal());
+                        list.add(detailCheckup);
+                    }
+                    checkupDetailBo.updateStatusBayarDetailCheckup(list);
+                }
                 response.setStatus("success");
             } catch (GeneralBOException e) {
                 logger.error("[KasirRawatJalanAction.savePembayaranTagihan] ERROR ",e);

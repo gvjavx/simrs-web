@@ -466,4 +466,25 @@ public class TindakanRawatAction extends BaseMasterAction {
         }
         return response;
     }
+
+    public List<TindakanRawat> getListTindakanRawat(String noCheckup){
+
+        logger.info("[TindakanRawatAction.getListTindakanRawat] start process >>>");
+        List<TindakanRawat> tindakanRawatList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
+
+        if(!"".equalsIgnoreCase(noCheckup) && noCheckup != null){
+            try {
+                tindakanRawatList = tindakanRawatBo.getListTindakanRawat(noCheckup);
+            }catch (GeneralBOException e){
+                logger.error("[TindakanRawatAction.getListTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+            logger.info("[TindakanRawatAction.getListTindakanRawat] start process >>>");
+            return tindakanRawatList;
+
+        }
+        return  tindakanRawatList;
+    }
 }

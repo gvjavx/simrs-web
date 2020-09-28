@@ -1833,7 +1833,9 @@ public class RawatInapAction extends BaseMasterAction {
                                     detail.setLastUpdate(now);
                                     detail.setLastUpdateWho(user);
                                     detail.setFlagTppri("Y");
-                                    finalResponse = checkupDetailBo.updateDetailCheckup(detail);
+                                    List<HeaderDetailCheckup> list = new ArrayList<>();
+                                    list.add(detail);
+                                    finalResponse = checkupDetailBo.updateDetailCheckup(list);
                                     if("success".equalsIgnoreCase(finalResponse.getStatus())){
                                         finalResponse = checkupDetailBo.saveAdd(headerDetailCheckup);
                                     }

@@ -255,6 +255,8 @@ public class VerifikatorBoImpl implements VerifikatorBo {
     public CrudResponse updateCoverAsuransi(List<RiwayatTindakan> list, HeaderDetailCheckup bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if (list.size() > 0) {
+            List<HeaderDetailCheckup> detailCheckups = new ArrayList<>();
+            String idDetailCheckup = "";
             for (RiwayatTindakan tindakan : list) {
                 ItSimrsRiwayatTindakanEntity riwayatTindakanEntity = new ItSimrsRiwayatTindakanEntity();
                 riwayatTindakanEntity = riwayatTindakanDao.getById("idRiwayatTindakan", tindakan.getIdRiwayatTindakan());
@@ -269,23 +271,32 @@ public class VerifikatorBoImpl implements VerifikatorBo {
                         response.setMsg("found error, " + e.getMessage());
                         return response;
                     }
+
+                    HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                    if(!idDetailCheckup.equalsIgnoreCase(riwayatTindakanEntity.getIdDetailCheckup())){
+                        idDetailCheckup = riwayatTindakanEntity.getIdDetailCheckup();
+                        detailCheckup.setIdDetailCheckup(riwayatTindakanEntity.getIdDetailCheckup());
+                        detailCheckups.add(detailCheckup);
+                    }
                 }
             }
 
-            if (bean.getIdDetailCheckup() != null) {
-                ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
-                detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
-                if (detailCheckupEntity != null) {
-                    detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
-                    detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                    detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
-                    try {
-                        checkupDetailDao.updateAndSave(detailCheckupEntity);
-                        response.setStatus("success");
-                        response.setMsg("Berhasil");
-                    } catch (HibernateException e) {
-                        response.setStatus("error");
-                        response.setMsg("found error, " + e.getMessage());
+            if (detailCheckups.size() > 0) {
+                for (HeaderDetailCheckup dtl: detailCheckups){
+                    ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
+                    detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", dtl.getIdDetailCheckup());
+                    if (detailCheckupEntity != null) {
+                        detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                        detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
+                        try {
+                            checkupDetailDao.updateAndSave(detailCheckupEntity);
+                            response.setStatus("success");
+                            response.setMsg("Berhasil");
+                        } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMsg("found error, " + e.getMessage());
+                        }
                     }
                 }
             }

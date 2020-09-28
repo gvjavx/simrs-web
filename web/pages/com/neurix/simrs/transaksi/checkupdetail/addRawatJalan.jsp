@@ -255,21 +255,21 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    <s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>
-                                        <tr>
-                                            <td><b>Metode Pembayaran</b></td>
-                                            <td>
-                                                <table>
-                                                    <script>
-                                                        var metode = '<s:property value="headerDetailCheckup.metodePembayaran"/>';
-                                                        var met = metode.replace("_", " ");
-                                                        var meto = convertSentenceCase(met);
-                                                        document.write(meto);
-                                                    </script>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </s:if>
+                                    <%--<s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>--%>
+                                        <%--<tr>--%>
+                                            <%--<td><b>Metode Pembayaran</b></td>--%>
+                                            <%--<td>--%>
+                                                <%--<table>--%>
+                                                    <%--<script>--%>
+                                                        <%--var metode = '<s:property value="headerDetailCheckup.metodePembayaran"/>';--%>
+                                                        <%--var met = metode.replace("_", " ");--%>
+                                                        <%--var meto = convertSentenceCase(met);--%>
+                                                        <%--document.write(meto);--%>
+                                                    <%--</script>--%>
+                                                <%--</table>--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
+                                    <%--</s:if>--%>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -284,31 +284,35 @@
                                 <%--<img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"--%>
                                 <%--style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">--%>
                                 <table class="table table-striped">
-                                    <tr>
+                                    <tr id="row_jenis_pasien">
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
                                                 <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
                                                     <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                         <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
+                                                    </span>
                                                 </s:if>
                                                 <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "umum"'>
                                                     <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                         <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
+                                                    </span>
                                                 </s:elseif>
                                                 <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
                                                     <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                         <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
+                                                    </span>
                                                 </s:elseif>
                                                 <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "rekanan"'>
                                                     <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                         <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property> <s:property value="headerDetailCheckup.namaRekanan"></s:property>
+                                                    </span>
                                                 </s:elseif>
                                                 <s:else>
                                                     <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                         <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
+                                                    </span>
                                                 </s:else>
-                                                </span>
                                             </table>
                                         </td>
                                     </tr>
@@ -430,6 +434,23 @@
                                 </sj:dialog>
                             </div>
                             <!-- /.col -->
+                        </div>
+                        <div class="row" id="form_detail_paket" style="display: none">
+                            <div class="col-md-12">
+                                <label><i class="fa fa-file-o"></i> Detail Pelayanan Paket</label>
+                            </div>
+                            <div class="col-md-6">
+                                <table style="font-size: 12px" class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <td>Pelayanan</td>
+                                        <td width="30%" align="center">Status</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body_detail_paket">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <%--<div class="row">--%>
                             <%--<div class="form-group">--%>
@@ -923,6 +944,11 @@
                             <h4><i class="icon fa fa-info"></i> Succes!</h4>
                             <p id="success_msg"></p>
                         </div>
+                        <input type="hidden" id="h_id_pelayanan_paket">
+                        <input type="hidden" id="h_urutan_paket">
+                        <input type="hidden" id="h_lanjut_paket">
+                        <input type="hidden" id="h_id_paket">
+                        <input type="hidden" id="h_id_pelayanan_paket_pilih">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
@@ -932,33 +958,33 @@
                                             <select class="form-control select2" id="keterangan" style="width: 100%"
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                                 <option value="">[Select One]</option>
-                                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "umum" || headerDetailCheckup.idJenisPeriksaPasien == "rekanan"'>
-                                                    <option value="selesai">Selesai</option>
-                                                    <option value="pindah_poli">Pindah Poli</option>
-                                                    <option value="rawat_inap">Rawat Inap</option>
-                                                    <option value="rawat_intensif">Rawat Intensif</option>
-                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                    <option value="kamar_operasi">Kamar Operasi</option>
-                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
-                                                    <option value="rujuk_rs_lain">Dirujuk</option>
-                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
-                                                </s:if>
-                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
-                                                    <option value="selesai">Selesai</option>
-                                                    <option value="pindah_poli">Pindah Poli</option>
-                                                    <option value="rawat_inap">Rawat Inap</option>
-                                                    <option value="rawat_intensif">Rawat Intensif</option>
-                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                    <option value="kamar_operasi">Kamar Operasi</option>
-                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
-                                                    <option value="rujuk_rs_lain">Dirujuk</option>
-                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
-                                                    <option value="lanjut_biaya">Lanjut Biaya</option>
-                                                </s:elseif>
-                                                <s:else>
-                                                    <option value="selesai">Selesai</option>
-                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
-                                                </s:else>
+                                                <%--<s:if test='headerDetailCheckup.idJenisPeriksaPasien == "umum" || headerDetailCheckup.idJenisPeriksaPasien == "rekanan"'>--%>
+                                                    <%--<option value="selesai">Selesai</option>--%>
+                                                    <%--<option value="pindah_poli">Pindah Poli</option>--%>
+                                                    <%--<option value="rawat_inap">Rawat Inap</option>--%>
+                                                    <%--<option value="rawat_intensif">Rawat Intensif</option>--%>
+                                                    <%--<option value="rawat_isolasi">Rawat Isolasi</option>--%>
+                                                    <%--<option value="kamar_operasi">Kamar Operasi</option>--%>
+                                                    <%--<option value="ruang_bersalin">Ruang Bersalin</option>--%>
+                                                    <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
+                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
+                                                <%--</s:if>--%>
+                                                <%--<s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>--%>
+                                                    <%--<option value="selesai">Selesai</option>--%>
+                                                    <%--<option value="pindah_poli">Pindah Poli</option>--%>
+                                                    <%--<option value="rawat_inap">Rawat Inap</option>--%>
+                                                    <%--<option value="rawat_intensif">Rawat Intensif</option>--%>
+                                                    <%--<option value="rawat_isolasi">Rawat Isolasi</option>--%>
+                                                    <%--<option value="kamar_operasi">Kamar Operasi</option>--%>
+                                                    <%--<option value="ruang_bersalin">Ruang Bersalin</option>--%>
+                                                    <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
+                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
+                                                    <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
+                                                <%--</s:elseif>--%>
+                                                <%--<s:else>--%>
+                                                    <%--<option value="selesai">Selesai</option>--%>
+                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
+                                                <%--</s:else>--%>
                                             </select>
                                         </div>
                                     </div>
@@ -1473,7 +1499,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    <p id="msg_lab"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -1517,7 +1543,7 @@
                         <div class="col-md-7">
                             <select class="form-control select2 parameter" multiple style="margin-top: 7px; width: 100%"
                                     id="lab_parameter"
-                                    onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()}; cekParameter()">
+                                    onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()};">
                                 <option value=''>[Select One]</option>
                             </select>
                         </div>
@@ -1526,6 +1552,24 @@
                                id="war_parameter"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_parameter"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <hr class="garis">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <span>Tanda Tangan</span>
+                        </div>
+                        <div class="col-md-7">
+                            <canvas style="margin-left: 0px" class="paint-canvas-ttd" id="ttd_pengirim" width="310"
+                                    onmouseover="paintTtd('ttd_pengirim')"></canvas>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-danger" style="margin-left: -20px"
+                                    onclick="removePaint('ttd_pengirim')"><i
+                                    class="fa fa-trash"></i> Clear
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -2262,6 +2306,7 @@
     var NOSEP = '<s:property value="headerDetailCheckup.noSep"/>';
     var IdAsuransi = '<s:property value="headerDetailCheckup.idAsuransi"/>';
     var isBpjsRekanan = "";
+    var isLanjutPaket = false;
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');
@@ -2387,9 +2432,10 @@
 
         });
 
-        console.log('-----');
-        var sep = '<s:property value="headerDetailCheckup.noSep"/>';
-        console.log(sep);
+        if(jenisPeriksaPasien == 'paket_perusahaan' || jenisPeriksaPasien == 'paket_individu'){
+            showDetailPaket();
+        }
+        setKeteranganPeriksa();
     });
 
     function loadModalRM(jenis) {

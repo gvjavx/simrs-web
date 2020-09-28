@@ -2266,9 +2266,8 @@
     }
 
     function listSelectPaket(tipe) {
-
         var option = "<option value=''>[Select One]</option>";
-        PaketPeriksaAction.getListPaketPeriksaByTipe("RJ", function (response) {
+        PaketPeriksaAction.getListPaketPeriksaByTipe("rawat_jalan", function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idPaket +"|"+ item.idPelayanan +"|"+ item.tarif + "'>" + item.namaPaket + "</option>";
@@ -2295,15 +2294,11 @@
     }
 
     function cekPtpn(value){
-        console.log(value);
         if(value != ''){
             var rekanan = value.split("|");
             var idRekananOps = rekanan[0];
             var isBpjs = rekanan[1];
             var tipeRekanan = rekanan[2];
-            console.log(idRekananOps);
-            console.log(isBpjs);
-            console.log(tipeRekanan);
 
             if(isBpjs == 'Y'){
                 $('#form_no_bpjs, #form_rujukan').show();

@@ -299,6 +299,7 @@
                                 <input type="hidden" id="fin_is_resep"/>
                                 <input type="hidden" id="fin_metode_bayar"/>
                                 <input type="hidden" id="fin_bukti"/>
+                                <input type="hidden" id="h_no_checkup"/>
                             </table>
                         </div>
                         <!-- /.col -->
@@ -570,7 +571,7 @@
                 }
             });
 
-            KasirRawatJalanAction.getListUangMuka(idDetailCheckup, "Y", function (response) {
+            KasirRawatJalanAction.getListUangMuka(idCheckup, "Y", function (response) {
                 console.log(response);
                 var str = "";
                 $.each(response, function(i, item){
@@ -582,7 +583,7 @@
                 $("#body_uang_muka").html(str);
             });
 
-            KasirRawatJalanAction.getListTindakanRawat(idDetailCheckup, idJenisPasien, function (response) {
+            KasirRawatJalanAction.getListTindakanRawat(idCheckup, idJenisPasien, function (response) {
                 dataTindakan = response;
                 if (dataTindakan != null) {
                     var total = 0;
@@ -766,6 +767,7 @@
             $('#fin_desa').html(desa);
             $('#body_tindakan_fin').html(table);
             $('#fin_id_detail_checkup').val(idDetailCheckup);
+            $('#h_no_checkup').val(idCheckup);
             $('#fin_metode_bayar').val(metode);
             $('#fin_bukti').val(bukti);
             console.log(metode);
@@ -852,13 +854,13 @@
         var metodeBayarDiAwal = $('#fin_metode_bayar').val();
         var bukti = $('#fin_bukti').val();
         var noRekening = $('#no_rekening').val();
+        var noCheckup = $('#h_no_checkup').val();
 
         $('#save_fin').hide();
         $('#load_fin').show();
         dwr.engine.setAsync(true);
         var jsonString =  JSON.stringify(mapBiaya);
-
-        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, bukti, isResep, idDetailCheckup, metodeBayarDiAkhir, kodeBank, "JRJ", metodeBayarDiAwal, noRekening, {
+        KasirRawatJalanAction.savePembayaranTagihan("", idPasien, "", isResep, metodeBayarDiAkhir, kodeBank, "JRJ", metodeBayarDiAwal, noRekening, noCheckup, {
             callback: function (response) {
                 console.log(response.msg);
                 if (response.status == "success") {

@@ -918,7 +918,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN tgl_invoice DATE,
     ADD COLUMN tgl_do DATE;
 --
-
+=====================================
+    --- DARI SINI SIH AKU COBAK ---
+=====================================
 -- 2020-09-11
 
      ALTER TABLE it_akun_perhitungan_budgeting

@@ -63,6 +63,9 @@
         <property name="urlImg">
             <column name="url_img"/>
         </property>
+        <property name="ttdPengirim">
+            <column name="ttd_pengirim"/>
+        </property>
 
     </class>
 </hibernate-mapping>

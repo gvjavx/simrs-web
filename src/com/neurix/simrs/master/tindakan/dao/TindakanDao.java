@@ -73,10 +73,13 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
 //                    "INNER JOIN im_simrs_tindakan_pelayanan b ON a.id_tindakan = b.id_tindakan\n" +
 //                    "WHERE a.id_kategori_tindakan LIKE :idKat\n" +
 //                    "AND b.id_pelayanan LIKE :idPel AND a.flag = 'Y' AND b.flag  = 'Y' \n";
-            String SQL = "SELECT\n" +
-                    "a.id_tindakan,\n" +
-                    "a.id_kategori_tindakan,\n" +
-                    "a.tindakan\n" +
+
+            String SQL = "SELECT\n"+
+                    "a.id_tindakan,\n"+
+                    "a.id_kategori_tindakan,\n"+
+                    "a.tindakan,\n"+
+                    "a.tarif,\n"+
+                    "a.tarif_bpjs\n"+
                     "FROM im_simrs_tindakan a\n" +
                     "WHERE a.id_kategori_tindakan LIKE :idKat\n" +
                     "AND a.flag = 'Y'\n";
@@ -96,6 +99,8 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                     tindakan.setIdTindakan(obj[0] == null ? "" : obj[0].toString());
                     tindakan.setIdKategoriTindakan(obj[1] == null ? "" : obj[1].toString());
                     tindakan.setTindakan(obj[2] == null ? "" : obj[2].toString());
+                    tindakan.setTarif(obj[3] == null ? null : (BigInteger) obj[3]);
+                    tindakan.setTarifBpjs(obj[4] == null ? null : (BigInteger) obj[4]);
                     tindakanList.add(tindakan);
                 }
             }

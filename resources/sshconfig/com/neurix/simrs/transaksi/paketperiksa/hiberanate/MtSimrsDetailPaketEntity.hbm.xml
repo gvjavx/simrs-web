@@ -2,23 +2,20 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
         version="2.0">
 
-    <entity class="com.neurix.simrs.master.rekananops.model.ImSimrsDetailRekananOpsEntity">
-        <table name="im_simrs_detail_rekanan_ops" schema="public"/>
+    <entity class="com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsDetailPaketEntity">
+        <table name="mt_simrs_detail_paket" schema="public"/>
         <attributes>
-            <id name="idDetailRekananOps">
-                <column name="id_detail_rekanan_ops"/>
+            <id name="idDetailPaket">
+                <column name="id_detail_paket"/>
             </id>
-            <basic name="idRekananOps">
-                <column name="id_rekanan_ops"/>
+            <basic name="idPaket">
+                <column name="id_paket"/>
             </basic>
-            <basic name="diskon">
-                <column name="diskon"/>
+            <basic name="idPelayanan">
+                <column name="id_pelayanan"/>
             </basic>
-            <basic name="isBpjs">
-                <column name="is_bpjs"/>
-            </basic>
-            <basic name="branchId">
-                <column name="branch_id"/>
+            <basic name="urutan">
+                <column name="urutan"/>
             </basic>
             <basic name="flag">
                 <column name="flag"/>

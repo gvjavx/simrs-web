@@ -148,12 +148,13 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 "a.no_telp,\n" +
                 "a.url_ktp,\n" +
                 "b.id_paket,\n" +
-                "c.id_pelayanan,\n" +
+                "d.id_pelayanan,\n" +
                 "c.nama_paket,\n" +
                 "c.tarif\n" +
                 "FROM im_simrs_pasien a\n" +
                 "INNER JOIN it_simrs_paket_pasien b ON a.id_pasien = b.id_pasien\n" +
                 "INNER JOIN mt_simrs_paket c ON b.id_paket = c.id_paket\n" +
+                "INNER JOIN (SELECT * FROM mt_simrs_detail_paket WHERE urutan = 1) d ON c.id_paket = d.id_paket \n"+
                 "WHERE b.flag = 'Y' AND a.nama ILIKE :search OR a.id_pasien ILIKE :search";
 
         List<Object[]> result = new ArrayList<>();
