@@ -153,61 +153,91 @@ public class JadwalShiftController implements ModelDriven<Object> {
                 logger.error("[JadwalShiftController.create] Error when saving error,", e);
             }
 
-            //Jika pegawai memiliki flag shift Y, maka akan mengambil jadwal shift
-            if (bio.getShift().equalsIgnoreCase("Y")) {
+            if(bio.getShift() != null) {
+                if (bio.getShift().equalsIgnoreCase("Y")) {
 
-                List<JadwalShiftKerjaDetail> result = new ArrayList<>();
-                listOfJadwalShift = new ArrayList<>();
-                String tanggalAwal;
-                String tanggalAkhir;
+                    List<JadwalShiftKerjaDetail> result = new ArrayList<>();
+                    listOfJadwalShift = new ArrayList<>();
+                    String tanggalAwal;
+                    String tanggalAkhir;
 
-                //jika bulan kosong, maka akan mencari absensi dalam setahun
-                if (!today.equalsIgnoreCase("Y")) {
-                    if (!bulan.equalsIgnoreCase("")) {
-                        tanggalAwal = "01-"+bulan+"-"+tahun;
+                    //jika bulan kosong, maka akan mencari absensi dalam setahun
+                    if (!today.equalsIgnoreCase("Y")) {
+                        if (!bulan.equalsIgnoreCase("")) {
+                            tanggalAwal = "01-" + bulan + "-" + tahun;
 
-                        //Mencari tanggal terakhir di bulan yg diinputkan
-                        Date dtTanggalAkhir = CommonUtil.convertStringToDate(tanggalAwal);
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(dtTanggalAkhir);
-                        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-                        tanggalAkhir = CommonUtil.convertDateToString(calendar.getTime());
+                            //Mencari tanggal terakhir di bulan yg diinputkan
+                            Date dtTanggalAkhir = CommonUtil.convertStringToDate(tanggalAwal);
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(dtTanggalAkhir);
+                            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+                            tanggalAkhir = CommonUtil.convertDateToString(calendar.getTime());
+                        } else {
+                            tanggalAwal = "01-01-" + tahun;
+                            tanggalAkhir = "31-12-" + tahun;
+                        }
                     } else {
-                        tanggalAwal = "01-01-"+tahun;
-                        tanggalAkhir = "31-12-"+tahun;
+                        Calendar calendar = Calendar.getInstance();
+                        tanggalAwal = CommonUtil.convertDateToString(calendar.getTime());
+                        tanggalAkhir = CommonUtil.convertDateToString(calendar.getTime());
                     }
-                } else {
-                    Calendar calendar = Calendar.getInstance();
-                   tanggalAwal = CommonUtil.convertDateToString(calendar.getTime());
-                   tanggalAkhir = CommonUtil.convertDateToString(calendar.getTime());
+
+
+                    try {
+                        result = jadwalShiftKerjaBoProxy.getJadwalShiftByBulanTahun(nip, branchId, profesiId, tanggalAwal, tanggalAkhir);
+                    } catch (GeneralBOException e) {
+                        logger.error("[JadwalShiftController.create] Error when saving error,", e);
+                    }
+
+                    if (result.size() > 0) {
+                        for (JadwalShiftKerjaDetail item : result) {
+                            JadwalShiftMobile jadwalShiftMobile = new JadwalShiftMobile();
+                            jadwalShiftMobile.setJadwalShiftKerjaDetailId(item.getJadwalShiftKerjaDetailId());
+                            jadwalShiftMobile.setJadwalName(item.getJadwalName());
+                            jadwalShiftMobile.setShiftName(item.getShiftName());
+                            jadwalShiftMobile.setJamAwal(item.getJamAwal());
+                            jadwalShiftMobile.setJamAkhir(item.getJamAkhir());
+                            jadwalShiftMobile.setNip(item.getNip());
+                            jadwalShiftMobile.setNamaPegawai(item.getNamaPegawai());
+                            jadwalShiftMobile.setProfesiName(item.getProfesiName());
+                            jadwalShiftMobile.setBranchId(item.getBranchId());
+                            jadwalShiftMobile.setOnCall(item.getOnCall());
+                            jadwalShiftMobile.setFlagPanggil(item.getFlagPanggil());
+
+                            listOfJadwalShift.add(jadwalShiftMobile);
+                        }
+                    }
+
                 }
+                //Jika pegawai memiliki flag shift Y, maka akan mengambil jadwal shift
+                else {
+                    JamKerja bean = new JamKerja();
+                    bean.setBranchId(branchId);
 
+                    List<JamKerja> result = new ArrayList<>();
+                    listOfJadwalShift = new ArrayList<>();
 
-                try {
-                    result = jadwalShiftKerjaBoProxy.getJadwalShiftByBulanTahun(nip, branchId, profesiId, tanggalAwal, tanggalAkhir);
-                } catch (GeneralBOException e) {
-                    logger.error("[JadwalShiftController.create] Error when saving error,", e);
-                }
+                    try {
+                        result = jamKerjaBoProxy.getByCriteria(bean);
+                    } catch (GeneralBOException e) {
+                        logger.error("[JadwalShiftController.create] Error when saving error,", e);
+                    }
 
-                if (result.size() > 0) {
-                    for (JadwalShiftKerjaDetail item : result){
-                        JadwalShiftMobile jadwalShiftMobile = new JadwalShiftMobile();
-                        jadwalShiftMobile.setJadwalShiftKerjaDetailId(item.getJadwalShiftKerjaDetailId());
-                        jadwalShiftMobile.setJadwalName(item.getJadwalName());
-                        jadwalShiftMobile.setShiftName(item.getShiftName());
-                        jadwalShiftMobile.setJamAwal(item.getJamAwal());
-                        jadwalShiftMobile.setJamAkhir(item.getJamAkhir());
-                        jadwalShiftMobile.setNip(item.getNip());
-                        jadwalShiftMobile.setNamaPegawai(item.getNamaPegawai());
-                        jadwalShiftMobile.setProfesiName(item.getProfesiName());
-                        jadwalShiftMobile.setBranchId(item.getBranchId());
-                        jadwalShiftMobile.setOnCall(item.getOnCall());
-                        jadwalShiftMobile.setFlagPanggil(item.getFlagPanggil());
+                    if (result.size() > 0) {
+                        for (JamKerja item : result) {
+                            JadwalShiftMobile jadwalShiftMobile = new JadwalShiftMobile();
+                            jadwalShiftMobile.setJamKerjaId(item.getJamKerjaId());
+                            jadwalShiftMobile.setHariName(item.getHariName());
+                            jadwalShiftMobile.setJamAwalKerja(item.getJamAwalKerja());
+                            jadwalShiftMobile.setJamAkhirKerja(item.getJamAkhirKerja());
+                            jadwalShiftMobile.setIstirahatAwal(item.getIstirahatAwal());
+                            jadwalShiftMobile.setIstirahatAkhir(item.getIstirahatAkhir());
+                            jadwalShiftMobile.setBranchName(item.getBranchName());
 
-                        listOfJadwalShift.add(jadwalShiftMobile);
+                            listOfJadwalShift.add(jadwalShiftMobile);
+                        }
                     }
                 }
-                //jika tidak memiliki flag shift Y, maka akan mengambil jam kerja
             } else {
                 JamKerja bean = new JamKerja();
                 bean.setBranchId(branchId);
@@ -217,12 +247,12 @@ public class JadwalShiftController implements ModelDriven<Object> {
 
                 try {
                     result = jamKerjaBoProxy.getByCriteria(bean);
-                } catch (GeneralBOException e){
+                } catch (GeneralBOException e) {
                     logger.error("[JadwalShiftController.create] Error when saving error,", e);
                 }
 
-                if (result.size()> 0) {
-                    for (JamKerja item : result){
+                if (result.size() > 0) {
+                    for (JamKerja item : result) {
                         JadwalShiftMobile jadwalShiftMobile = new JadwalShiftMobile();
                         jadwalShiftMobile.setJamKerjaId(item.getJamKerjaId());
                         jadwalShiftMobile.setHariName(item.getHariName());
@@ -236,6 +266,7 @@ public class JadwalShiftController implements ModelDriven<Object> {
                     }
                 }
             }
+
 
         logger.info("[JadwalShiftController.create] end process POST /jadwalShift <<<");
         return new DefaultHttpHeaders("index").disableCaching();

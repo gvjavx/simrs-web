@@ -79,4 +79,6 @@ public interface AbsensiBo extends BaseMasterBo<AbsensiPegawai> {
     void saveAddAbsensi(List<AbsensiPegawai> absensiPegawaiList, AbsensiPegawai bean) throws GeneralBOException;
 
     void saveAddAbsensiOnCall(MesinAbsensiDetailOnCall bean) throws GeneralBOException;
+
+    List<MesinAbsensiDetailOnCall> getAbsensiOnCallByCriteria(MesinAbsensiDetailOnCall bean) throws GeneralBOException;
 }

@@ -6809,4 +6809,39 @@ public class AbsensiBoImpl implements AbsensiBo {
             throw new GeneralBOException("Found problem when saving new data Absensi Pegawai, please info to your admin..." + e.getMessage());
         }
     }
+
+    @Override
+    public List<MesinAbsensiDetailOnCall> getAbsensiOnCallByCriteria(MesinAbsensiDetailOnCall bean) throws GeneralBOException {
+
+        List<ItHrisMesinAbsensiDetailOnCallEntity> entities = new ArrayList<>();
+        List<MesinAbsensiDetailOnCall> result = new ArrayList<>();
+        Map hsCriteria = new HashMap();
+
+        if  (bean.getPin() != null && !bean.getPin().equalsIgnoreCase("")) {
+            hsCriteria.put("pin", bean.getPin());
+        }
+        if (bean.getTanggalDari() != null) {
+            hsCriteria.put("tanggal_dari", bean.getTanggalDari());
+        }
+        hsCriteria.put("flag", "Y");
+
+        try {
+            entities = mesinAbsensiDetailOnCallDao.getByCriteria(hsCriteria);
+        } catch (GeneralBOException e){
+            logger.error("[AbsensiPegawaiBoImpl.getAbsensiOnCallByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving new data Absensi Pegawai, please info to your admin..." + e.getMessage());
+        }
+
+        for (ItHrisMesinAbsensiDetailOnCallEntity item : entities) {
+            MesinAbsensiDetailOnCall mesinAbsensiDetailOnCall = new MesinAbsensiDetailOnCall();
+            mesinAbsensiDetailOnCall.setMesinAbsensiDetailOnCallId(item.getMesinAbsensiDetailOnCallId());
+            mesinAbsensiDetailOnCall.setScanDate(item.getScanDate());
+            mesinAbsensiDetailOnCall.setStatus(item.getStatus());
+
+            result.add(mesinAbsensiDetailOnCall);
+        }
+
+        return result;
+
+    }
 }

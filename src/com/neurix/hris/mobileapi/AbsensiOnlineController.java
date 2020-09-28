@@ -179,7 +179,6 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
 
         if  (action.equalsIgnoreCase("saveAddOnCall")) {
 
-
             MesinAbsensiDetailOnCall bean = new MesinAbsensiDetailOnCall();
             bean.setPin(pin);
             bean.setStatus("M");
@@ -198,6 +197,28 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
                 logger.error("AbsensiOnlineController.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving data AbsensiOnlineController, please info to your admin..." + e.getMessage());
             }
+        }
+
+        if (action.equalsIgnoreCase("getAbsensiOnCall")) {
+
+            List<MesinAbsensiDetailOnCall> result = new ArrayList<>();
+
+            MesinAbsensiDetailOnCall bean = new MesinAbsensiDetailOnCall();
+            bean.setPin(pin);
+            bean.setTanggalDari(CommonUtil.convertToDate(tanggal));
+
+            try {
+               result = absensiBoProxy.getAbsensiOnCallByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("AbsensiOnlineController.getAbensi] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when get data AbsensiOnlineController, please info to your admin..." + e.getMessage());
+            }
+
+            //ambil jam absen yang terbaru
+            String[] temp = result.get(result.size()-1).getScanDate().toString().split(" ");
+            String[] temp2 = temp[1].split(":");
+
+            model.setScanDate(temp2[0]+":"+temp2[1]);
         }
 
         logger.info("AbsensiOnlineController.create] end process POST /absensi <<<");
