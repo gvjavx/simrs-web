@@ -117,6 +117,15 @@ public class AbsensiPegawai extends BaseModel {
     private String statusNameOnCall;
     private String flagPanggil;
     private String branchIdUser;
+    private String flagCutiGantiHari;
+
+    public String getFlagCutiGantiHari() {
+        return flagCutiGantiHari;
+    }
+
+    public void setFlagCutiGantiHari(String flagCutiGantiHari) {
+        this.flagCutiGantiHari = flagCutiGantiHari;
+    }
 
     public String getBranchIdUser() {
         return branchIdUser;

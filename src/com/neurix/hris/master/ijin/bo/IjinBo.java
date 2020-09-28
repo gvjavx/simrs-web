@@ -20,5 +20,5 @@ public interface IjinBo extends BaseMasterBo<Ijin> {
     public List<Ijin> getComboLamaIjinWithCriteria(String query) throws GeneralBOException;
     public List<Ijin> getComboIjinIdWithCriteria(String query) throws GeneralBOException;
 
-    List<Ijin> getComboIjinIdWithKelamin(String nip) throws GeneralBOException;
+    List<Ijin> getComboIjinIdWithKelamin(String nip,String flagDiajukanAdmin) throws GeneralBOException;
 }

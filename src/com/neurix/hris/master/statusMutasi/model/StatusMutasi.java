@@ -5,6 +5,15 @@ import com.neurix.common.model.BaseModel;
 public class StatusMutasi extends BaseModel {
     private String statusMutasiId;
     private String statusMutasiName;
+    private String flagGajiProporsional;
+
+    public String getFlagGajiProporsional() {
+        return flagGajiProporsional;
+    }
+
+    public void setFlagGajiProporsional(String flagGajiProporsional) {
+        this.flagGajiProporsional = flagGajiProporsional;
+    }
 
     public String getStatusMutasiId() {
         return statusMutasiId;

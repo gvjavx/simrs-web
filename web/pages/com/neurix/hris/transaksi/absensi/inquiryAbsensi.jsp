@@ -485,6 +485,7 @@
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Status On Call</th>" +
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Status</th>" +
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Status 2</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Cuti Ganti Hari</th>" +
                 "</tr>" +
                 "<tr class='active'>" +
                 "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>In</th>" +
@@ -529,6 +530,7 @@
                     '<td align="center" class="ceknull">' + item.statusNameOnCall + '</td>' +
                     '<td align="center" class="ceknull">' + item.statusName + '</td>' +
                     '<td align="center" class="ceknull">' + item.statusName2 + '</td>' +
+                    '<td align="center" class="ceknull">' + item.flagCutiGantiHari + '</td>' +
                     "</tr>";
             });
             $('.absensiDetailTable').append(tmp_table);

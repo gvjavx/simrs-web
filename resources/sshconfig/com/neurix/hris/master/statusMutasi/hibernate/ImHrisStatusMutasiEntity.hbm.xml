@@ -11,6 +11,9 @@
             <basic name="statusMutasiName">
                 <column name="status_mutasi_name"/>
             </basic>
+            <basic name="flagGajiProporsional">
+                <column name="flag_gaji_proporsional"/>
+            </basic>
             <basic name="action">
                 <column name="action"/>
             </basic>

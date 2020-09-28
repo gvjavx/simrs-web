@@ -130,12 +130,30 @@ public class Biodata extends BaseModel {
     private String flagBpjsKs;
     private String flagBpjsTk;
     private String flagPercobaan;
+    private String flagDokterKso;
+    private String jenisPegawai;
 
     private Date tanggalPraPensiun;
     private String stTanggalPraPensiun;
     private String nipLama;
     private String pendidikanTerakhir;
     private String strLastUpdate;
+
+    public String getJenisPegawai() {
+        return jenisPegawai;
+    }
+
+    public void setJenisPegawai(String jenisPegawai) {
+        this.jenisPegawai = jenisPegawai;
+    }
+
+    public String getFlagDokterKso() {
+        return flagDokterKso;
+    }
+
+    public void setFlagDokterKso(String flagDokterKso) {
+        this.flagDokterKso = flagDokterKso;
+    }
 
     public String getProfesiName() {
         return profesiName;

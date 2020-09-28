@@ -332,6 +332,8 @@ public class StatusMutasiAction extends BaseMasterAction {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
+            statusMutasi.setFlagGajiProporsional("N");
+
             statusMutasi.setCreatedWho(userLogin);
             statusMutasi.setLastUpdate(updateTime);
             statusMutasi.setCreatedDate(updateTime);

@@ -456,6 +456,9 @@
         <property name="totalLain11Bulan">
             <column name="total_lain_11_bulan" sql-type="numeric" length="15" precision="2" not-null="false" />
         </property>
+        <property name="proporsiGaji">
+            <column name="proporsi_gaji" />
+        </property>
 
         <!--peralihan-->
         <property name="peralihanGapok">

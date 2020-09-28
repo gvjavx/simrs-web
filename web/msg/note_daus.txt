@@ -391,9 +391,9 @@ ALTER TABLE im_company ADD COLUMN param_dapen numeric (10,5);
 update im_akun_trans set tipe_pembayaran=null where trans_id IN ('69','70','68','67','66');
 
 -- 21-08-2020
+ALTER TABLE im_mesin_absensi ADD COLUMN branch_id character varying (10);
 update im_mesin_absensi set mesin_address='10.88.70.232:8080',branch_id='KP';
 ALTER TABLE im_mesin_absensi ADD COLUMN last_get timestamp without time zone;
-ALTER TABLE im_mesin_absensi ADD COLUMN branch_id character varying (10);
 
 update im_functions set func_name='Kas/Bank Masuk' where func_name='Kas Masuk';
 update im_functions set func_name='Kas/Bank Keluar' where func_name='Kas Keluar';
@@ -568,3 +568,37 @@ insert into im_hris_status_mutasi values ('PH','PHK','C','Y','admin','2020-01-04
 insert into im_hris_status_mutasi values ('MD','Meninggal Dunia','C','Y','admin','2020-01-05 00:00:00','2020-01-01 00:00:00','admin');
 insert into im_hris_status_mutasi values ('KB','Kontrak Berakhir','C','Y','admin','2020-01-06 00:00:00','2020-01-01 00:00:00','admin');
 insert into im_hris_status_mutasi values ('RS','Resign','C','Y','admin','2020-01-06 00:00:00','2020-01-01 00:00:00','admin');
+
+ALTER TABLE im_hris_pegawai ADD COLUMN flag_dokter_kso character varying(1);
+update im_hris_pegawai set flag_dokter_kso='N';
+
+CREATE TABLE public.im_hris_jenis_pegawai
+(
+    jenis_pegawai_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    jenis_pegawai_name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    CONSTRAINT im_hris_jenis_pegawai_pkey PRIMARY KEY (jenis_pegawai_id)
+);
+
+ALTER TABLE im_hris_pegawai ADD COLUMN jenis_pegawai character varying(20);
+insert into im_hris_jenis_pegawai values ('plt','Plt','Y','C','admin','admin','2020-01-03 00:00:00','2020-01-01 00:00:00');
+insert into im_hris_jenis_pegawai values ('pjt','PJS','Y','C','admin','admin','2020-01-03 00:00:00','2020-01-01 00:00:00');
+insert into im_hris_jenis_pegawai values ('percobaan','Percobaan','Y','C','admin','admin','2020-01-03 00:00:00','2020-01-01 00:00:00');
+insert into im_hris_jenis_pegawai values ('pegawai_baru','Pegawai Baru','Y','C','admin','admin','2020-01-03 00:00:00','2020-01-01 00:00:00');
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN flag_cuti_ganti_hari character varying(1);
+
+ALTER TABLE im_hris_ijin ADD COLUMN flag_diajukan_admin character varying(1);
+update im_hris_ijin set flag_diajukan_admin='N';
+
+ALTER TABLE im_hris_status_mutasi ADD COLUMN flag_gaji_proporsional character varying(1);
+update im_hris_status_mutasi set flag_gaji_proporsional='N';
+update im_hris_status_mutasi set flag_gaji_proporsional='Y' where status_mutasi_id='RS';
+update im_hris_status_mutasi set flag_gaji_proporsional='Y' where status_mutasi_id='KB';
+
+ALTER TABLE it_hris_payroll ADD COLUMN proporsi_gaji numeric(10,6);
+

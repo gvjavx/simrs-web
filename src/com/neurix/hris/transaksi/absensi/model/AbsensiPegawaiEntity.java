@@ -75,6 +75,15 @@ public class AbsensiPegawaiEntity implements Serializable {
     private String jamPulangOnCall;
     private String statusNameOnCall;
     private String flagPanggil;
+    private String flagCutiGantiHari;
+
+    public String getFlagCutiGantiHari() {
+        return flagCutiGantiHari;
+    }
+
+    public void setFlagCutiGantiHari(String flagCutiGantiHari) {
+        this.flagCutiGantiHari = flagCutiGantiHari;
+    }
 
     public String getStatusAbsensi2() {
         return statusAbsensi2;

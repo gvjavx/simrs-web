@@ -6,12 +6,22 @@ import java.util.Objects;
 public class ImHrisStatusMutasiEntity {
     private String statusMutasiId;
     private String statusMutasiName;
+    private String flagGajiProporsional;
+
     private String action;
     private String flag;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    public String getFlagGajiProporsional() {
+        return flagGajiProporsional;
+    }
+
+    public void setFlagGajiProporsional(String flagGajiProporsional) {
+        this.flagGajiProporsional = flagGajiProporsional;
+    }
 
     public String getStatusMutasiId() {
         return statusMutasiId;

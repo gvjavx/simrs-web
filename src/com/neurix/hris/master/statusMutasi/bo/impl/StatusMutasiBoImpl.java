@@ -191,6 +191,7 @@ public class StatusMutasiBoImpl implements StatusMutasiBo {
 
                 imStatusMutasiEntity.setStatusMutasiId(statusMutasiId);
                 imStatusMutasiEntity.setStatusMutasiName(bean.getStatusMutasiName());
+                imStatusMutasiEntity.setFlagGajiProporsional(bean.getFlagGajiProporsional());
                 imStatusMutasiEntity.setFlag(bean.getFlag());
                 imStatusMutasiEntity.setAction(bean.getAction());
                 imStatusMutasiEntity.setCreatedWho(bean.getCreatedWho());
@@ -257,7 +258,7 @@ public class StatusMutasiBoImpl implements StatusMutasiBo {
                     returnStatusMutasi = new StatusMutasi();
                     returnStatusMutasi.setStatusMutasiId(statusMutasiEntity.getStatusMutasiId());
                     returnStatusMutasi.setStatusMutasiName(statusMutasiEntity.getStatusMutasiName());
-                    ;
+                    returnStatusMutasi.setFlagGajiProporsional(statusMutasiEntity.getFlagGajiProporsional());
 
                     returnStatusMutasi.setCreatedWho(statusMutasiEntity.getCreatedWho());
                     returnStatusMutasi.setCreatedDate(statusMutasiEntity.getCreatedDate());

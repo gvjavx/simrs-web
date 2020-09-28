@@ -156,6 +156,16 @@ public class Payroll extends BaseModel {
     private String stPeralihanSankhus;
     private String stPeralihanTunjangan;
 
+    private BigDecimal proporsiGaji;
+
+    public BigDecimal getProporsiGaji() {
+        return proporsiGaji;
+    }
+
+    public void setProporsiGaji(BigDecimal proporsiGaji) {
+        this.proporsiGaji = proporsiGaji;
+    }
+
     public String getApprovalAksFlag() {
         return approvalAksFlag;
     }

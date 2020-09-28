@@ -2,6 +2,8 @@ package com.neurix.hris.master.mappingpersengaji.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.jenisPegawai.dao.JenisPegawaiDao;
+import com.neurix.hris.master.jenisPegawai.model.ImHrisJenisPegawaiEntity;
 import com.neurix.hris.master.mappingpersengaji.bo.MappingPersenGajiBo;
 import com.neurix.hris.master.mappingpersengaji.dao.MappingPersenGajiDao;
 import com.neurix.hris.master.mappingpersengaji.dao.MappingPersenGajiHistoryDao;
@@ -23,6 +25,23 @@ public class MappingPersenGajiBoImpl implements MappingPersenGajiBo {
     private static transient Logger logger = Logger.getLogger(MappingPersenGajiBoImpl.class);
     private MappingPersenGajiDao mappingPersenGajiDao;
     private MappingPersenGajiHistoryDao mappingPersenGajiHistoryDao;
+    private JenisPegawaiDao jenisPegawaiDao;
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        MappingPersenGajiBoImpl.logger = logger;
+    }
+
+    public JenisPegawaiDao getJenisPegawaiDao() {
+        return jenisPegawaiDao;
+    }
+
+    public void setJenisPegawaiDao(JenisPegawaiDao jenisPegawaiDao) {
+        this.jenisPegawaiDao = jenisPegawaiDao;
+    }
 
     public MappingPersenGajiHistoryDao getMappingPersenGajiHistoryDao() {
         return mappingPersenGajiHistoryDao;
@@ -288,14 +307,11 @@ public class MappingPersenGajiBoImpl implements MappingPersenGajiBo {
                     mappingPersenGaji.setLastUpdate(entity.getLastUpdate());
                     mappingPersenGaji.setLastUpdateWho(entity.getLastUpdateWho());
 
-                    if ("plt".equalsIgnoreCase(entity.getNamaMappingPersenGaji()))
-                        mappingPersenGaji.setStrNamaMappingPersenGaji("PLT");
-                    else if ("pjs".equalsIgnoreCase(entity.getNamaMappingPersenGaji()))
-                        mappingPersenGaji.setStrNamaMappingPersenGaji("PJS");
-                    else if ("percobaan".equalsIgnoreCase(entity.getNamaMappingPersenGaji()))
-                        mappingPersenGaji.setStrNamaMappingPersenGaji("Percobaan");
-                    else if ("pegawai_baru".equalsIgnoreCase(entity.getNamaMappingPersenGaji()))
-                        mappingPersenGaji.setStrNamaMappingPersenGaji("Pegawai Baru");
+                    ImHrisJenisPegawaiEntity jenisPegawaiEntity = jenisPegawaiDao.getById("jenisPegawaiId",entity.getNamaMappingPersenGaji());
+
+                    if (jenisPegawaiEntity!=null){
+                        mappingPersenGaji.setStrNamaMappingPersenGaji(jenisPegawaiEntity.getJenisPegawaiName());
+                    }
 
                     if ("gaji_golongan".equalsIgnoreCase(entity.getJenisGaji()))
                         mappingPersenGaji.setStrJenisGaji("Gaji Pokok");

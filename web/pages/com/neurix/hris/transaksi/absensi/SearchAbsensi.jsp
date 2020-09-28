@@ -493,17 +493,17 @@
                                                                     </s:if>
                                                                 </s:if>
                                                             </display:column>
-                                                            <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                                <s:if test="#attr.row.cekAdmin">
-                                                                    <s:url var="urlDelete" namespace="/absensi" action="delete_absensi" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                    </s:url>
-                                                                    <sj:a onClickTopics="showDialogMenuView" href="%{urlDelete}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                                    </sj:a>
-                                                                </s:if>
-                                                            </display:column>
+                                                            <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
+                                                                <%--<s:if test="#attr.row.cekAdmin">--%>
+                                                                    <%--<s:url var="urlDelete" namespace="/absensi" action="delete_absensi" escapeAmp="false">--%>
+                                                                        <%--<s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>--%>
+                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                                    <%--</s:url>--%>
+                                                                    <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlDelete}">--%>
+                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                                                    <%--</sj:a>--%>
+                                                                <%--</s:if>--%>
+                                                            <%--</display:column>--%>
                                                             <%--<display:column media="html" title="Edit" style="text-align:center;font-size:9">--%>
                                                                 <%--<s:if test="#attr.row.cekAdmin">--%>
                                                                     <%--<s:url var="urlEdit" namespace="/absensi" action="editAbsensi_absensi" escapeAmp="false">--%>
@@ -534,6 +534,7 @@
                                                             <display:column property="ijin" sortable="true" title="ijin" style="text-align:center" />
                                                             <display:column property="lembur" sortable="true" title="lembur" style="text-align:center" />
                                                             <display:column property="realisasiJamLembur" sortable="true" title="Realisasi Lembur" style="text-align:center" />
+                                                            <display:column property="flagCutiGantiHari" sortable="true" title="Cuti Ganti Hari" style="text-align:center" />
                                                             <display:setProperty name="paging.banner.item_name">Absensi</display:setProperty>
                                                             <display:setProperty name="paging.banner.items_name">Absensi</display:setProperty>
                                                             <display:setProperty name="export.excel.filename">Absensi.xls</display:setProperty>

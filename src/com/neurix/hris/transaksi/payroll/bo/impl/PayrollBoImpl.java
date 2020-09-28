@@ -908,7 +908,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
         if(nip != null){
             //Cek Apakah PKWT atau bukan, jika Y, maka hitung berapa lama user menjadi PKWT, digunakan tabel pegawai dan pegawai history
-            ImBiodataEntity imPegawai = biodataDao.getById("nip", nip, "Y");
+            ImBiodataEntity imPegawai = biodataDao.getById("nip", nip);
             if(imPegawai != null){
                 datePkwtAwal = new Timestamp(imPegawai.getTanggalAktif().getTime());
                 tanggalMasuk = new DateTime(datePkwtAwal.getTime());
@@ -995,7 +995,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         BigDecimal hutangPajak = new BigDecimal(0);
         if(kelompokId.equalsIgnoreCase("KL00")){
             ImBiodataEntity biodata = null;
-            biodata = biodataDao.getById("nip", nip, "Y");
+            biodata = biodataDao.getById("nip", nip);
             persentaseHutangPph = biodata.getPersentasiHutangPph();
         }
 
@@ -1619,6 +1619,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             String tahun="";
             BigDecimal paramDapen = BigDecimal.ZERO;
             BigDecimal paramDapenPegawai = BigDecimal.ZERO;
+            BigDecimal proporsiGaji = BigDecimal.ONE;
             try {
                 ImCompany company = companyDao.getCompanyInfo("Y");
                 if (!("").equalsIgnoreCase(company.getPeriodeGaji())){
@@ -1634,6 +1635,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 String strWhere = "";
                 itPayroll = payrollDao.getDataEdit(bean.getBranchId(), strWhere);
                 imBranches = branchDao.getListBranchById(bean.getBranchId());
+
+                //untuk yang resign dll proporsional
+                if (("Y").equalsIgnoreCase(bean.getFlagPayroll())) {
+                    itPayroll.addAll(payrollDao.getDataEditPegawaiNonAktif(bean.getBranchId(), strWhere,bean.getBulan(),bean.getTahun()));
+                }
 
                 if (imBranches.size()>0&&imBranches.size()<2){
                     for (ImBranches branchLoop: imBranches){
@@ -1732,6 +1738,21 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 }
                 // payroll yg diproses hanya karyawan tetap dan pkwt dalam masa kerja tersebut
                 for (ItPayrollEntity payrollEntity : itPayroll) {
+
+                    //menghitung pengali proporsional
+                    if (payrollEntity.getTanggalEfektif()!=null){
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(payrollEntity.getTanggalEfektif());
+                        double day = cal.get(Calendar.DAY_OF_MONTH);
+                        double maxday = cal.getActualMaximum(Calendar.DATE);
+                        double prop = day/maxday;
+                        proporsiGaji = BigDecimal.valueOf(prop);
+
+                        if ("040419950015".equalsIgnoreCase(payrollEntity.getNip())){
+                            int a = 1;
+                        }
+                    }
+
                     //validasi untuk yang melakukan cuti di luar tanggung jawab
                     List<ItCutiPegawaiEntity> listOrangCutiDiLuarTanggungJawab = cutiPegawaiDao.getListCekCutiLuarTanggungan(payrollEntity.getNip(),bean.getBulan(),bean.getTahun());
                     if (listOrangCutiDiLuarTanggungJawab.size()!=0){
@@ -1912,14 +1933,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                     //update 31-05-2020
                     //persentase dari gaji
-                    String tipeGaji ="";
-                    if ("Y".equalsIgnoreCase(biodataEntity.getFlagPercobaan())){
-                        tipeGaji="percobaan";
-                    }else if ("Y".equalsIgnoreCase(biodataEntity.getFlagPjs())){
-                        tipeGaji="pjs";
-                    }else if ("Y".equalsIgnoreCase(biodataEntity.getFlagPlt())){
-                        tipeGaji="plt";
-                    }
+                    String tipeGaji =biodataEntity.getJenisPegawai();
 
                     if (!"".equalsIgnoreCase(tipeGaji)){
                         List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(tipeGaji);
@@ -2990,8 +3004,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payroll.setGajiKotorNilai(jumlahGajiKotor);
 
                     gajiBersih = jumlahGajiKotor.subtract(totalC);
+
+                    //Hitung proporsional
+                    gajiBersih = gajiBersih.multiply(proporsiGaji);
+
                     payroll.setTotalGajiBersih(CommonUtil.numbericFormat(gajiBersih, "###,###"));
                     payroll.setTotalGajiBersihNilai(gajiBersih);
+                    payroll.setProporsiGaji(proporsiGaji);
 
                     if (flagTestTambahanLain.equalsIgnoreCase("N")){
                         listOfResult.add(payroll);
@@ -5605,6 +5624,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             itPayrollEntity.setTotalPensiun(payroll1.getTotalPensiunNilai());
             itPayrollEntity.setTotalJubileum(payroll1.getTotalKaliJubileumNilai());
             itPayrollEntity.setGajiBersih(payroll1.getTotalGajiBersihNilai());
+            itPayrollEntity.setProporsiGaji(payroll1.getProporsiGaji());
 
             itPayrollEntity.setAction(bean.getAction());
             itPayrollEntity.setFlag(bean.getFlag());
@@ -6671,6 +6691,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 payroll.setLastUpdate(itPayrollEntity.getLastUpdate());
                 payroll.setLastUpdateWho(itPayrollEntity.getLastUpdateWho());
                 payroll.setStApprovalDate(tanggal);
+                payroll.setProporsiGaji(itPayrollEntity.getProporsiGaji());
 
                 payroll.setStApprovalDate(tanggal);
                 payroll.setFlagPromosiOn(cekPromosi(itPayrollEntity.getNip()));
@@ -6712,7 +6733,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 if(tipePegawai.equalsIgnoreCase("TP01") && itPayrollEntity.getFlagPensiun().equalsIgnoreCase("Y")){
                     //cek pensiun dan tanggal pensiun
                     //Direktur tidak mendapatkan pensiun
-                    ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", itPayrollEntity.getNip(), "Y");
+                    ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", itPayrollEntity.getNip());
                     if(itPayrollEntity.getImPosition() != null){
                         if(!itPayrollEntity.getImPosition().getKelompokId().equalsIgnoreCase("KL01")){
                             if(cekPensiunSys(payroll.getNip()).equalsIgnoreCase("")){
@@ -7523,7 +7544,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         payroll.setCentangPerumahan(itPayrollEntity2.getCentangPerumahan());*/
 
         ImBiodataEntity biodata = null;
-        biodata = biodataDao.getById("nip", payroll.getNip(), "Y");
+        biodata = biodataDao.getById("nip", payroll.getNip());
         List<ItPayrollEntity> payrollPensiunList = null;
         payrollPensiunList = payrollDao.cekPensiun(payroll.getNip());
         itPayrollEntity2.setNettoPensiun(BigDecimal.valueOf(0));
@@ -9041,7 +9062,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         List<PayrollUpahHarian> payrollUpahHarianList = new ArrayList<>();
         java.sql.Date awal = CommonUtil.convertStringToDate(upahHarian.getStTanggalAwal());
         java.sql.Date akhir = CommonUtil.convertStringToDate(upahHarian.getStTanggalAkhir());
-        ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", upahHarian.getNip(), "Y");
+        ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", upahHarian.getNip());
 
         String stTanggalAwal = upahHarian.getStTanggalAwal();
         String splitAwal[] = stTanggalAwal.split("-");
@@ -9159,7 +9180,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         List<PayrollUpahHarian> payrollUpahHarianList = new ArrayList<>();
         java.sql.Date awal = CommonUtil.convertStringToDate(upahHarian.getStTanggalAwal());
         java.sql.Date akhir = CommonUtil.convertStringToDate(upahHarian.getStTanggalAkhir());
-        ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", upahHarian.getNip(), "Y");
+        ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", upahHarian.getNip());
 
         String stTanggalAwal = upahHarian.getStTanggalAwal();
         String splitAwal[] = stTanggalAwal.split("-");
@@ -21172,7 +21193,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     //digunakan untuk mengcek bulan aktif pada tahun ini (Apakah di tahun ini user pensiun, jika pensiun dihitung hanya bulan aktif saja)
     private int cekBulanAktifPensiun(String nip, String tahun){
         int hasil = 12;
-        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip, "Y");
+        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip);
 
         Date dateTglPensiun;
         String strTglPensiun;
@@ -21206,7 +21227,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     //cek Bulan Aktif masuk, karena thr dapat dari thr ke thr
     private int cekBulanThr(String nip, Date tanggal){
         int hasil = 0;
-        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip, "Y");
+        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip);
         DateTime tanggalAktif = new DateTime(imPegawai.getTanggalMasuk());
         DateTime tanggalProses = new DateTime(tanggal);
 
@@ -21268,7 +21289,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         DateTime tanggalAktif = new DateTime();
 
 
-        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip, "Y");
+        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip);
         strTgl= "01-"+bulan+"-"+tahun;
         tgl = CommonUtil.convertStringToDate(strTgl);
         if (imPegawai.getTipePegawai().equalsIgnoreCase("TP01")){
@@ -21289,7 +21310,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     //digunakan untuk mengcek bulan aktif pada tahun ini (Apakah di tahun ini user pensiun, jika pensiun dihitung hanya bulan aktif saja)
     private String pembulatanTanggalPensiun(String nip, String tahun){
         int hasil = 12;
-        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip, "Y");
+        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip);
 
         Date dateTglPensiun;
         String strTglPensiun;

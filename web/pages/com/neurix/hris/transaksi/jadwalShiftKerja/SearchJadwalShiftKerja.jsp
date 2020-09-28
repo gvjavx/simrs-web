@@ -85,9 +85,17 @@
                                                 <td>
                                                     <table>
                                                         <s:if test='jadwalShiftKerja.adminHcm'>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchid" name="jadwalShiftKerja.branchId"
-                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            <s:if test='jadwalShiftKerja.branchIdUser=="KP"'>
+                                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                                <s:select list="#initComboBranch.listOfComboBranch" id="branchid" name="jadwalShiftKerja.branchId"
+                                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                                <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="jadwalShiftKerja.branchId" disabled="true"
+                                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                <s:hidden id="branchid" name="jadwalShiftKerja.branchId" />
+                                                            </s:else>
                                                         </s:if>
                                                         <s:else>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
@@ -183,16 +191,6 @@
                                                         </div>
                                                         <s:textfield id="loginTimestampFrom" name="jadwalShiftKerja.stTanggalAwal" readonly="true" size="12" cssClass="form-control pull-right"
                                                                      required="false" cssStyle="background-color: white"/>
-                                                        <script>
-                                                            $("#loginTimestampFrom").datepicker({
-                                                                setDate: new Date(),
-                                                                autoclose: true,
-                                                                changeMonth: true,
-                                                                changeYear:true,
-                                                                dateFormat:'dd-mm-yy'
-                                                            });
-                                                            $("#loginTimestampFrom").datepicker("setDate", new Date());
-                                                        </script>
                                                         <div class="input-group-addon">
                                                             s/d
                                                         </div>
@@ -201,16 +199,6 @@
                                                         </div>
                                                         <s:textfield id="loginTimestampTo" name="jadwalShiftKerja.stTanggalAkhir" size="12" cssClass="form-control pull-right" readonly="true"
                                                                      required="false" cssStyle="background-color: white"/>
-                                                        <script>
-                                                            $("#loginTimestampTo").datepicker({
-                                                                setDate: new Date(),
-                                                                autoclose: true,
-                                                                changeMonth: true,
-                                                                changeYear:true,
-                                                                dateFormat:'dd-mm-yy'
-                                                            });
-                                                            $("#loginTimestampTo").datepicker("setDate", new Date());
-                                                        </script>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -299,6 +287,7 @@
                                                         <td>Unit </td>
                                                         <td>Tanggal </td>
                                                         <td>Shift </td>
+                                                        <td>Nama Shift </td>
                                                         <td>Nama </td>
                                                         <td>Posisi </td>
                                                         <td>Group </td>
@@ -314,6 +303,7 @@
                                                             <td style="text-align: center"><s:property value="branchName"/></td>
                                                             <td><s:property value="stTanggal"/></td>
                                                             <td><s:property value="shiftName"/></td>
+                                                            <td><s:property value="shiftName2"/></td>
                                                             <td><s:property value="namaPegawai"/></td>
                                                             <td><s:property value="positionName"/></td>
                                                             <td><s:property value="profesiName"/></td>

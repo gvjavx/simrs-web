@@ -1,5 +1,6 @@
 package com.neurix.hris.transaksi.ijinKeluar.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
@@ -267,6 +268,19 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
                 .list();
         return results;
     }
+
+    public List<IjinKeluarEntity> getListIjinGantiHariByNipAndTanggal(String nip , Date tanggal) throws HibernateException {
+        List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("approvalFlag", "Y"))
+                .add(Restrictions.ne("cancelFlag","Y"))
+                .add(Restrictions.eq("ijinId", CommonConstant.IJIN_GANTI_HARI))
+                .add(Restrictions.ge("tanggalAkhir",tanggal))
+                .add(Restrictions.le("tanggalAwal",tanggal))
+                .list();
+        return results;
+    }
+
     public List<IjinKeluarEntity> getListTestTanggal(Date tanggal,String nip) throws HibernateException {
         List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
                 .add(Restrictions.eq("nip", nip))

@@ -433,6 +433,7 @@
                                                             <display:column style="text-align:right;" property="totalC" sortable="true" title="Pot. Tnp. PPh" />
                                                             <display:column style="text-align:right;" property="pphGaji" sortable="true" title="PPh" />
                                                             <display:column style="text-align:right;" property="totalGajiBersih" sortable="true" title="Gaji Bersih" />
+                                                            <display:column style="text-align:center;" property="proporsiGaji" sortable="true" title="Proporsi Gaji" />
                                                             <display:column style="text-align:right;" property="totalRapel" sortable="true" title="Rapel" />
                                                             <display:column style="text-align:right;" property="totalThr" sortable="true" title="Thr" />
                                                             <display:column style="text-align:right;" property="totalPendidikan" sortable="true" title="Pendidikan" />

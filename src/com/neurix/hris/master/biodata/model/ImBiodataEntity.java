@@ -85,8 +85,26 @@ public class ImBiodataEntity implements Serializable {
     private String flagBpjsTk;
     private String flagPercobaan;
     private String nipLama;
+    private String flagDokterKso;
 
     private String divisiName;
+    private String jenisPegawai;
+
+    public String getJenisPegawai() {
+        return jenisPegawai;
+    }
+
+    public void setJenisPegawai(String jenisPegawai) {
+        this.jenisPegawai = jenisPegawai;
+    }
+
+    public String getFlagDokterKso() {
+        return flagDokterKso;
+    }
+
+    public void setFlagDokterKso(String flagDokterKso) {
+        this.flagDokterKso = flagDokterKso;
+    }
 
     public String getDivisiName() {
         return divisiName;

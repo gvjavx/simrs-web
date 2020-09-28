@@ -857,7 +857,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 }
 
             }else {
-                throw new GeneralBOException("Peringatan!!! Reset Cuti Tahunan Sudah Dilakukan di tahun berikutnya");
+                throw new GeneralBOException("Peringatan!!! Pengajuan cuti tidak bisa dilakukan karena reset cuti tahunan sudah dilakukan di tahun berikutnya.");
             }
         }
         logger.info("[CutiPegawaiBoImpl.saveAdd] end process <<<");

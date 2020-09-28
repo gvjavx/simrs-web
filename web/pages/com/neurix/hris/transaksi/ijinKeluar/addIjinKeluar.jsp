@@ -43,6 +43,18 @@
             return (iDateDiff + 1); // add 1 because dates are inclusive
         }
 
+        function calcHolidays(dDate1, dDate2) { // input given as Date objects
+            var iWeeks, iDateDiff, iAdjust = 0;
+            if (dDate2 < dDate1) return -1; // error code if dates transposed
+            var iWeekday1 = dDate1.getDay(); // day of week
+            var iWeekday2 = dDate2.getDay();
+            iWeekday1 = (iWeekday1 == 0) ? 7 : iWeekday1; // change Sunday from 0 to 7
+            iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
+            if ((iWeekday1 > 5) && (iWeekday2 > 5)) iAdjust = 1; // adjustment if both days on weekend
+
+            return (iAdjust + 1); // add 1 because dates are inclusive
+        }
+
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
@@ -305,10 +317,10 @@
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                <s:select list="#comboGolongan.listComboGolongan" id="golonganId124" name="ijinKeluar.golonganId"
-                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true" />
-                                <s:textfield  id="golonganId33" cssStyle="display: none" name="ijinKeluar.golonganId" required="false" readonly="true" cssClass="form-control"/>
+                                    <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                    <s:select list="#comboGolongan.listComboGolongan" id="golonganId124" name="ijinKeluar.golonganId"
+                                              listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true" />
+                                    <s:textfield  id="golonganId33" cssStyle="display: none" name="ijinKeluar.golonganId" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -327,6 +339,7 @@
                                 $(document).ready(function() {
                                     $('#ijinId1').change(function() {
                                         var namaijin= $('#ijinId1').val();
+                                        var data;
                                         dwr.engine.setAsync(false);
                                         IjinAction.initComboLamaIjin(namaijin, function (listdata) {
                                             data = listdata;
@@ -578,7 +591,7 @@
 
         nipid=document.getElementById("nipId").value;
         $('#nipId').change(function() {
-            var nip;
+            var nip,data;
             nip=document.getElementById("nipId").value;
             dwr.engine.setAsync(false);
             IjinKeluarAction.initComboSisaIjinKeluarId(nip, function (listdata) {
@@ -611,19 +624,26 @@
         var startdate =$('#tgl3').datepicker('getDate');
         var enddate =$('#tgl2').datepicker('getDate');
         var days = calcBusinessDays(startdate,enddate);
+        var ijinId = $('#ijinId1').val();
         var jmllibur;
         dwr.engine.setAsync(false);
         IjinKeluarAction.calculateLibur(tglawal,tglakhir, function (listdata) {
             jmllibur = listdata;
         });
-        $('#lamaId').val(days-jmllibur);
+        if (ijinId=="IJ035"){
+            IjinKeluarAction.calculateLiburWeekend(tglawal,tglakhir, function (listdata) {
+                jmllibur += listdata;
+            });
+            $('#lamaId').val(jmllibur);
+        } else{
+            $('#lamaId').val(days-jmllibur);
+        }
         var max =parseInt(document.getElementById("maxIjin").value);
         if (enddate<startdate){
             alert ('Tanggal yang dipilih salah');
                     $('#tgl2').val("");
         }
         if (max != "-"){
-            console.log("test opname");
             if (days>max){
                 alert ("maaf anda melebihi ijin maksimal");
                 $('#lamaId').val("");

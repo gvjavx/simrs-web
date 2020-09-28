@@ -46,6 +46,15 @@ public class JadwalShiftKerja extends BaseModel {
     private boolean adminHcm=false;
     private Integer jumlahJadwal;
     private String statusSave;
+    private String shiftName2;
+
+    public String getShiftName2() {
+        return shiftName2;
+    }
+
+    public void setShiftName2(String shiftName2) {
+        this.shiftName2 = shiftName2;
+    }
 
     public String getStatusSave() {
         return statusSave;

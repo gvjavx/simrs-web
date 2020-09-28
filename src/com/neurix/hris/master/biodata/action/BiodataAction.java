@@ -81,6 +81,15 @@ public class BiodataAction extends BaseMasterAction{
     private Reward reward;
     private Sertifikat sertifikat;
     private PelatihanJabatanUser pelatihanJabatanUser;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public PelatihanJabatanUser getPelatihanJabatanUser() {
         return pelatihanJabatanUser;
@@ -224,7 +233,7 @@ public class BiodataAction extends BaseMasterAction{
     public Biodata init(String kode, String flag){
         logger.info("[BiodataAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        List<Biodata> listOfResult = (List<Biodata>) session.getAttribute("listOfResult");
+        List<Biodata> listOfResult = (List<Biodata>) session.getAttribute("listOfResultBiodata");
 
         if(kode != null && !"".equalsIgnoreCase(kode)){
             if(listOfResult != null){
@@ -312,7 +321,11 @@ public class BiodataAction extends BaseMasterAction{
         session.removeAttribute("positionIdForSmk");
 
         logger.info("[BiodataAction.add] stop process >>>");
-        return "init_add_user";
+        if ("dokter".equalsIgnoreCase(getTipe())){
+            return "init_add_dokter";
+        }else{
+            return "init_add_user";
+        }
     }
 
     @Override
@@ -356,8 +369,18 @@ public class BiodataAction extends BaseMasterAction{
         }
 
         setAddOrEdit(true);
+
+        //remove session
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listSertifikat");
+
         logger.info("[BiodataAction.edit] end process >>>");
-        return "init_add_user";
+
+        if ("N".equalsIgnoreCase(editBiodata.getFlagDokterKso())){
+            return "init_add_user";
+        }else{
+            return "init_add_dokter";
+        }
     }
 
     @Override
@@ -404,7 +427,11 @@ public class BiodataAction extends BaseMasterAction{
         setDelete(true);
         logger.info("[BiodataAction.delete] end process <<<");
 
-        return "init_add_user";
+        if ("N".equalsIgnoreCase(deleteBiodata.getFlagDokterKso())){
+            return "init_add_user";
+        }else{
+            return "init_add_dokter";
+        }
     }
 
     @Override
@@ -635,19 +662,19 @@ public class BiodataAction extends BaseMasterAction{
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
                     if (editBiodata.getStTanggalLahir() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalLahir())) {
-                        editBiodata.setTanggalLahir(CommonUtil.convertToDate(editBiodata.getStTanggalLahir()));
+                        editBiodata.setTanggalLahir(CommonUtil.convertToDate(editBiodata.getStTanggalLahir().replace(",","").replace(" ","")));
                     }
 
                     if (editBiodata.getStTanggalPensiun() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalPensiun())) {
-                        editBiodata.setTanggalPensiun(CommonUtil.convertToDate(editBiodata.getStTanggalPensiun()));
+                        editBiodata.setTanggalPensiun(CommonUtil.convertToDate(editBiodata.getStTanggalPensiun().replace(",","").replace(" ","")));
                     }
 
                     if (editBiodata.getStTanggalMasuk() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalMasuk())) {
-                        editBiodata.setTanggalMasuk(CommonUtil.convertToDate(editBiodata.getStTanggalMasuk()));
+                        editBiodata.setTanggalMasuk(CommonUtil.convertToDate(editBiodata.getStTanggalMasuk().replace(",","").replace(" ","")));
                     }
 
                     if (editBiodata.getStTanggalAktif() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalAktif())) {
-                        editBiodata.setTanggalAktif(CommonUtil.convertToDate(editBiodata.getStTanggalAktif()));
+                        editBiodata.setTanggalAktif(CommonUtil.convertToDate(editBiodata.getStTanggalAktif().replace(",","").replace(" ","")));
                     }
 
                     if (editBiodata.getStTanggalPraPensiun() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalPraPensiun())){
@@ -710,12 +737,13 @@ public class BiodataAction extends BaseMasterAction{
                 //add
                 try {
                     Biodata biodata = getBiodata();
-                    String golonganId = biodata.getGolongan().replace(",","");
+                    String golonganId ="";
+                    if ("N".equalsIgnoreCase(biodata.getFlagDokterKso())){
+                        golonganId = biodata.getGolongan().replace(",","");
+                    }
+
                     biodata.setGolongan(golonganId);
                     biodata.setGolonganId(golonganId);
-                    String golonganId2 = biodata.getGolongan().replace(" ","");
-                    biodata.setGolongan(golonganId2);
-                    biodata.setGolonganId(golonganId2);
                     String userLogin = CommonUtil.userLogin();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -767,7 +795,6 @@ public class BiodataAction extends BaseMasterAction{
                     biodata.setCreatedWho(userLogin);
                     biodata.setLastUpdate(updateTime);
                     biodata.setCreatedDate(updateTime);
-//                    biodata.setTanggalAktif(CommonUtil.convertTimestampToDate(updateTime));
                     biodata.setLastUpdateWho(userLogin);
                     biodata.setAction("C");
                     biodata.setStatusCaption("Online");
@@ -789,7 +816,7 @@ public class BiodataAction extends BaseMasterAction{
 
 
                 HttpSession session = ServletActionContext.getRequest().getSession();
-                session.removeAttribute("listOfResult");
+                session.removeAttribute("listOfResultBiodata");
                 session.removeAttribute("listKeluarga");
                 session.removeAttribute("listStudy");
                 session.removeAttribute("listPengalamanKerja");
@@ -970,7 +997,7 @@ public class BiodataAction extends BaseMasterAction{
 
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultBiodata");
 
         logger.info("[pengalamanKerjaAction.saveAdd] end process >>>");
         return "success_save_add";
@@ -1010,8 +1037,8 @@ public class BiodataAction extends BaseMasterAction{
 
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-        session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult", listOfsearchBiodata);
+        session.removeAttribute("listOfResultBiodata");
+        session.setAttribute("listOfResultBiodata", listOfsearchBiodata);
 
         logger.info("[BiodataAction.search] end process <<<");
 
@@ -1043,7 +1070,7 @@ public class BiodataAction extends BaseMasterAction{
 
         biodata = data;
 
-        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultBiodata");
         logger.info("[BiodataAction.initForm] end process >>>");
         return INPUT;
     }
@@ -1080,7 +1107,7 @@ public class BiodataAction extends BaseMasterAction{
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listKeluarga");
-        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultBiodata");
         session.removeAttribute("listSppdPersonAnggota");
         session.setAttribute("listSppdPersonAnggota", sppdRerouteList);
 
@@ -2135,35 +2162,17 @@ public class BiodataAction extends BaseMasterAction{
         }
     }
 
-    public void saveAddSertifikat(String nip, String jenis, String tanggalPengesahan, String masaBerlaku, String masaBerakhir, String nama, String lembaga, String tempatPelaksana,
-                                  String nilai, String lulus, String prestasi){
+    public void saveAddSertifikat(String nip, String jenis, String nama, String lembaga, String nilai, String lulus){
         logger.info("[BiodataAction.saveAddSertifikat] start process >>>");
 
         try {
             Sertifikat sertifikat = new Sertifikat();
             sertifikat.setNip(nip);
             sertifikat.setJenis(jenis);
-            sertifikat.setStTanggalPengesahan(tanggalPengesahan);
-            sertifikat.setStMasaBerlaku(masaBerlaku);
-            sertifikat.setStMasaBerakhir(masaBerakhir);
             sertifikat.setNama(nama);
             sertifikat.setLembaga(lembaga);
-            sertifikat.setTempatPelaksana(tempatPelaksana);
             sertifikat.setNilai(Double.parseDouble(nilai));
             sertifikat.setLulus(lulus);
-            sertifikat.setPrestasiGrade(prestasi);
-
-            if(tanggalPengesahan != null && !"".equalsIgnoreCase(tanggalPengesahan)){
-                sertifikat.setTanggalPengesahan(CommonUtil.convertStringToDate(tanggalPengesahan));
-            }
-
-            if(masaBerlaku != null && !"".equalsIgnoreCase(masaBerlaku)){
-                sertifikat.setMasaBerlaku(CommonUtil.convertStringToDate(masaBerlaku));
-            }
-
-            if(masaBerakhir!= null && !"".equalsIgnoreCase(masaBerakhir)){
-                sertifikat.setMasaBerakhir(CommonUtil.convertStringToDate(masaBerakhir));
-            }
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -2954,7 +2963,7 @@ public class BiodataAction extends BaseMasterAction{
         logger.info("[BiodataAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultBiodata");
         logger.info("[BiodataAction.initForm] end process >>>");
         return "bidataDanBatih";
     }

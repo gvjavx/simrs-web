@@ -116,5 +116,8 @@
         <property name="jamPulangOnCall">
             <column name="jam_pulang_on_call"/>
         </property>
+        <property name="flagCutiGantiHari">
+            <column name="flag_cuti_ganti_hari"/>
+        </property>
     </class>
 </hibernate-mapping>

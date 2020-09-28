@@ -44,6 +44,8 @@
           p:tunjLainPegawaiDao-ref="tunjLainPegawaiDao"
           p:golonganPkwtDao-ref="golonganPkwtDao"
           p:profesiDao-ref="profesiDao"
+          p:mutasiDao-ref="mutasiDao"
+          p:dokterDao-ref="dokterDao"
     />
 
     <bean id="biodataBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -40,8 +40,9 @@ public class IjinDao extends GenericDao<ImIjinEntity, String> {
             if (mapCriteria.get("ijin_name")!=null) {
                 criteria.add(Restrictions.ilike("ijinName", "%" + (String)mapCriteria.get("ijin_name") + "%"));
             }
-
-
+            if (mapCriteria.get("flag_diajukan_admin")!=null) {
+                criteria.add(Restrictions.eq("flagDiajukanAdmin", (String) mapCriteria.get("flag_diajukan_admin")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
@@ -71,14 +72,17 @@ public class IjinDao extends GenericDao<ImIjinEntity, String> {
         return "HI"+sId;
     }
 
-    public List<ImIjinEntity> getListIjin(String term) throws HibernateException {
+    public List<ImIjinEntity> getListIjin(String term,String flagPengajuanAdmin) throws HibernateException {
 
-        List<ImIjinEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImIjinEntity.class)
-                .add(Restrictions.ilike("ijinName",term))
-                .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("ijinId"))
-                .list();
+        Criteria criteria= this.sessionFactory.getCurrentSession().createCriteria(ImIjinEntity.class);
+        criteria.add(Restrictions.ilike("ijinName",term));
+        criteria.add(Restrictions.eq("flag", "Y"));
+        if (flagPengajuanAdmin!=null){
+            criteria.add(Restrictions.eq("flagDiajukanAdmin", "N"));
+        }
+        criteria.addOrder(Order.asc("ijinId"));
 
+        List<ImIjinEntity> results = criteria.list();
         return results;
     }
 
