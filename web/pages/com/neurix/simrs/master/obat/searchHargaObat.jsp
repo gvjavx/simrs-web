@@ -169,7 +169,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Harga Obat</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Obat</td>
@@ -183,8 +183,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfPeriksaLab" var="row">
-                                <tr>
+                            <s:iterator value="#session.listOfResult" var="row">
+                                <s:if test='#row.flagKurangMargin == "Y"'>
+                                    <tr style="background-color: #d9534f; color: #ffffff">
+                                </s:if>
+                                <s:else>
+                                    <tr>
+                                </s:else>
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property value="merk"/></td>
