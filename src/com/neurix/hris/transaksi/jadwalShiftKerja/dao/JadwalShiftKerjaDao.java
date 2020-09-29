@@ -250,7 +250,8 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "\tsh.jam_akhir,\n" +
                 "\tjd.branch_id,\n" +
                 "\tbr.branch_name,\n" +
-                "\tdk.kuota\n" +
+                "\tdk.kuota,\n" +
+                "\tjdd.flag_libur\n" +
                 "FROM \n" +
                 "\tim_simrs_dokter dk\n" +
                 "\tINNER JOIN im_simrs_dokter_pelayanan dpl ON dk.id_dokter = dpl.id_dokter\n" +
@@ -294,6 +295,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
             result.setBranchId((String) row[7]);
             result.setBranchName((String) row[8]);
             result.setKuota((String) row[9]);
+            result.setFlagLibur((String) row[10]);
             listOfResult.add(result);
         }
         return listOfResult;
