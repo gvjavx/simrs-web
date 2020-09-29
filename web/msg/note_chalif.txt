@@ -214,5 +214,27 @@ ALTER TABLE public.it_hris_mesin_absensi_detail_oncall
   ALTER TABLE public.im_branches ADD lat VARCHAR(100) NULL
   ALTER TABLE public.im_branches ADD lon VARCHAR(100) NULL
 
+--2020-09-29
+  ALTER TABLE public.im_company ADD jarak_absen_mobile BIGINT NULL
+
+  UPDATE public.im_branches SET lat='-7.4580813' WHERE branch_id = 'KP';
+  UPDATE public.im_branches SET lon='112.436756' WHERE branch_id = 'KP';
+
+  UPDATE public.im_branches SET lat='-7.4809955' WHERE branch_id = 'RS01';
+  UPDATE public.im_branches SET lon='112.4328425' WHERE branch_id = 'RS01';
+
+  UPDATE public.im_branches SET lat='-7.7629538' WHERE branch_id = 'RS02';
+  UPDATE public.im_branches SET lon='112.1957391' WHERE branch_id = 'RS02';
+
+  UPDATE public.im_branches SET lat='-8.1681698' WHERE branch_id = 'RS03';
+  UPDATE public.im_branches SET lon='113.7028963' WHERE branch_id = 'RS03';
+
+  UPDATE public.im_branches SET lat='-8.1255408' WHERE branch_id = 'RS04';
+  UPDATE public.im_branches SET lon='112.2053721' WHERE branch_id = 'RS04';
+
+
+
+
+
 
 
