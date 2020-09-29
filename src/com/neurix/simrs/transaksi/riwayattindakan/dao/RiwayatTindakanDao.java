@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.riwayattindakan.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
@@ -367,5 +368,22 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
         }
 
         return listResults;
+    }
+
+    public Boolean checkIsPelayananRawatJalan(String idDetailCheckup){
+
+        String SQL = "SELECT c.id_pelayanan, c.divisi_id, c.tipe_pelayanan FROM it_simrs_header_detail_checkup a\n" +
+                "INNER JOIN im_simrs_pelayanan c ON c.id_pelayanan = a.id_pelayanan\n" +
+                "WHERE a.id_detail_checkup = :idDetail \n" +
+                "AND tipe_pelayanan = 'rawat_jalan'";
+
+        List<Object[]> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetailCheckup)
+                .list();
+
+        if (objects.size() > 0){
+            return true;
+        }
+        return false;
     }
 }

@@ -214,12 +214,14 @@
 <div class="modal fade" id="modal-obat">
     <div class="modal-dialog modal-flat">
         <div class="modal-content">
+
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Edit Harga Obat</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger" id="alert-margin" style="display: none;">Harga Item Kurang dari Standart Margin.</div>
                 <div class="alert alert-success alert-dismissible" style="display: none" id="success_obat">
                     <h4><i class="icon fa fa-ban"></i> Success !</h4>
                     <p id="">Berhasil menyimpan </p>
@@ -269,25 +271,36 @@
                 </div>
                 <div class="row" style="margin-top: 7px">
                     <div class="form-group">
-                        <label class="col-md-5" style="margin-top: 7px">Harga</label>
-                        <div class="col-md-7">
-                            <input type="number" id="mod-harga-net" onchange="hitungDiskon()" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-top: 7px">
-                    <div class="form-group">
                         <label class="col-md-5" style="margin-top: 7px">Diskon</label>
                         <div class="col-md-7">
                             <input type="number" id="mod-diskon" onchange="hitungDiskon()" class="form-control">
                         </div>
                     </div>
                 </div>
+
+                <div class="row" style="margin-top: 7px">
+                    <div class="form-group">
+                        <label class="col-md-5" style="margin-top: 7px">Margin (%)</label>
+                        <div class="col-md-7">
+                            <input type="number" id="mod-margin" onchange="hitungHargaJual()" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 7px">
+                    <div class="form-group">
+                        <label class="col-md-5" style="margin-top: 7px">Harga</label>
+                        <div class="col-md-7">
+                            <input type="number" id="mod-harga-net" onchange="hitungMargin()" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row" style="margin-top: 7px">
                     <div class="form-group">
                         <label class="col-md-5" style="margin-top: 7px">Harga Jual</label>
                         <div class="col-md-7">
-                            <input type="number" id="mod-harga-jual" class="form-control" readonly="true">
+                            <input type="number" id="mod-harga-jual" class="form-control" readonly>
                         </div>
                     </div>
                 </div>
@@ -325,12 +338,16 @@
 
     function saveObat(id, idBarang){
 
+        if (checkMargin())
+            return false;
+
         var net = $("#mod-harga-net").val();
         var diskon = $("#mod-diskon").val();
         var jual = $("#mod-harga-jual").val();
+        var margin = $("#mod-margin").val();
 
         var arJson = [];
-        arJson.push({"harga_net":net, "diskon":diskon, "harga_jual":jual});
+        arJson.push({"harga_net":net, "diskon":diskon, "harga_jual":jual, "margin" : margin});
         var stJson = JSON.stringify(arJson);
         ObatAction.saveHargaObat(id, idBarang, stJson, function (response) {
            if (response.status == "success"){
@@ -367,7 +384,38 @@
                $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\',\''+idBarang+'\')');
            }
         });
+    }
 
+    function hitungMargin() {
+
+        var harga       = $("#mod-harga-net").val();
+        var hargarata   = $("#mod-harga-rata").val();
+
+        var selisih = parseFloat(harga) - parseFloat(hargarata);
+        var margin = parseFloat(selisih) / parseFloat(harga) * 100;
+        $("#mod-margin").val(parseInt(margin));
+        $("#mod-harga-jual").val(harga);
+        checkMargin();
+    }
+
+    function hitungHargaJual() {
+        var margin      = $("#mod-margin").val();
+        var hargarata   = $("#mod-harga-rata").val();
+
+        var selisih = parseFloat(hargarata) * parseFloat(margin) / 100;
+        var harga   = parseFloat(hargarata) + selisih;
+
+        $("#mod-harga-net").val(parseInt(harga));
+        $("#mod-harga-jual").val(parseInt(harga));
+        checkMargin();
+    }
+
+    function checkMargin() {
+        var margin = $("#mod-margin").val();
+        if (parseInt(margin) < 10){
+            $("#alert-margin").show().fadeOut(7000);
+            return true;
+        }
     }
 
     function listSelectObatEdit(idObat){

@@ -1023,9 +1023,11 @@ public class ObatBoImpl implements ObatBo {
         if (bean.getIdObat() != null && bean.getIdBarang() != null) {
 
             Map hsCriteria = new HashMap();
-            hsCriteria.put("id_obat", bean.getIdObat());
+            hsCriteria.put("id_harga_obat", bean.getIdHargaObat());
             List<MtSimrsHargaObatEntity> hargaObatEntities = hargaObatDao.getByCriteria(hsCriteria);
             if (hargaObatEntities.size() > 0) {
+
+                // update harga obat entities
                 for (MtSimrsHargaObatEntity obatEntity : hargaObatEntities) {
                     obatEntity.setHargaJual(bean.getHargaJual());
                     obatEntity.setDiskon(bean.getDiskon());
@@ -1042,6 +1044,8 @@ public class ObatBoImpl implements ObatBo {
                     }
                 }
             } else {
+
+                // add harga obat entities
                 Obat obat = new Obat();
                 obat.setIdObat(bean.getIdObat());
                 obat.setIdBarang(bean.getIdBarang());
@@ -1050,6 +1054,7 @@ public class ObatBoImpl implements ObatBo {
                     ImSimrsObatEntity obatEntity = obatEntities.get(0);
 
                     MtSimrsHargaObatEntity hargaObatEntity = new MtSimrsHargaObatEntity();
+                    hargaObatEntity.setIdHargaObat(bean.getIdHargaObat());
                     hargaObatEntity.setIdObat(obatEntity.getIdObat());
                     hargaObatEntity.setNamaObat(obatEntity.getNamaObat());
                     hargaObatEntity.setHargaBeli(obatEntity.getHargaTerakhir());

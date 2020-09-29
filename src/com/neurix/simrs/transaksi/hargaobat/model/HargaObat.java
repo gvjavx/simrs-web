@@ -8,6 +8,7 @@ import java.sql.Timestamp;
  */
 public class HargaObat {
 
+    private String idHargaObat;
     private String idObat;
     private String namaObat;
     private BigDecimal hargaBeli;
@@ -23,6 +24,14 @@ public class HargaObat {
     private String lastUpdateWho;
     private String satuan;
     private String idBarang;
+
+    public String getIdHargaObat() {
+        return idHargaObat;
+    }
+
+    public void setIdHargaObat(String idHargaObat) {
+        this.idHargaObat = idHargaObat;
+    }
 
     public String getIdBarang() {
         return idBarang;

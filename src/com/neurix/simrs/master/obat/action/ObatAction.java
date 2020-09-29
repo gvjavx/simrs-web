@@ -535,6 +535,7 @@ public class ObatAction extends BaseMasterAction {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
+        String branchId = CommonUtil.userBranchLogin();
 
         // maping untuk parameter lainnua
         JSONArray json = new JSONArray(jsonString);
@@ -545,6 +546,7 @@ public class ObatAction extends BaseMasterAction {
         HargaObat hargaObat = new HargaObat();
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
+            hargaObat.setIdHargaObat(idObat+branchId);
             hargaObat.setIdObat(idObat);
             hargaObat.setIdBarang(idBarang);
             hargaObat.setHargaNet(new BigDecimal(obj.getString("harga_net")));

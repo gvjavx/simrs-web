@@ -36,4 +36,5 @@ public interface RiwayatTindakanBo {
     public ItemPaket getTarifPaketLab(String idPaket, String idLab) throws GeneralBOException;
     public List<String> getListIdDetailCheckup(String noCheckup) throws GeneralBOException;
     public List<UangMuka> getListUangMukaByNoCheckup(String noCheckup) throws GeneralBOException;
+    public Boolean CheckIsRawatJalanByIdDetailCheckup(String idDetail) throws GeneralBOException;
 }

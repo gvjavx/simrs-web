@@ -26,9 +26,15 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
     public List<MtSimrsHargaObatEntity> getByCriteria(Map mapCriteria) {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MtSimrsHargaObatEntity.class);
+
+        if (mapCriteria.get("id_harga_obat") != null){
+            criteria.add(Restrictions.eq("idHargaObat", mapCriteria.get("id_harga_obat").toString()));
+        }
+
         if (mapCriteria.get("id_obat") != null){
             criteria.add(Restrictions.eq("idObat", mapCriteria.get("id_obat").toString()));
         }
+
         if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         }
@@ -61,7 +67,7 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 "ho.diskon,\n" +
                 "ob.id_barang\n" +
                 "FROM im_simrs_obat ob\n" +
-                "INNER JOIN (SELECT id_obat, MAX(id_barang) as id_barang FROM im_simrs_obat GROUP BY id_obat ) obb ON obb.id_obat = ob.id_obat AND obb.id_barang = ob.id_barang\n" +
+                "INNER JOIN (SELECT id_obat, MAX(id_barang) as id_barang FROM im_simrs_obat WHERE branch_id :branch GROUP BY id_obat ) obb ON obb.id_obat = ob.id_obat AND obb.id_barang = ob.id_barang\n" +
                 "LEFT JOIN mt_simrs_harga_obat ho ON ho.id_obat = ob.id_obat\n" +
                 "WHERE ob.id_obat LIKE :id \n" +
                 "AND ob.branch_id = :branch ";
