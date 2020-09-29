@@ -602,3 +602,5 @@ update im_hris_status_mutasi set flag_gaji_proporsional='Y' where status_mutasi_
 
 ALTER TABLE it_hris_payroll ADD COLUMN proporsi_gaji numeric(10,6);
 
+ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN flag_libur character varying(1);
+update it_hris_jadwal_shift_kerja_detail set flag_libur='N';

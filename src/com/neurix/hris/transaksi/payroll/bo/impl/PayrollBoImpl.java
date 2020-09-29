@@ -1747,10 +1747,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         double maxday = cal.getActualMaximum(Calendar.DATE);
                         double prop = day/maxday;
                         proporsiGaji = BigDecimal.valueOf(prop);
-
-                        if ("040419950015".equalsIgnoreCase(payrollEntity.getNip())){
-                            int a = 1;
-                        }
                     }
 
                     //validasi untuk yang melakukan cuti di luar tanggung jawab
@@ -2285,6 +2281,23 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         if (payrollPensiunList.size() > 0) {
                             gajiPensiun = BigDecimal.valueOf(0);
                         }
+
+                        //Menghitung proporsional
+                        gaji = gaji.multiply(proporsiGaji);
+                        santunanKhusus = santunanKhusus.multiply(proporsiGaji);
+                        tunjJabatanStruktural = tunjJabatanStruktural.multiply(proporsiGaji);
+                        tunjStruktural = tunjStruktural.multiply(proporsiGaji);
+                        tunjStrategis = tunjStrategis.multiply(proporsiGaji);
+                        tunjPeralihan = tunjPeralihan.multiply(proporsiGaji);
+                        tunjLain = tunjLain.multiply(proporsiGaji);
+                        tunjTambahan = tunjTambahan.multiply(proporsiGaji);
+                        pemondokan = pemondokan.multiply(proporsiGaji);
+                        komunikasi = komunikasi.multiply(proporsiGaji);
+                        tunjanganRumah = tunjanganRumah.multiply(proporsiGaji);
+                        tunjanganListrik = tunjanganListrik.multiply(proporsiGaji);
+                        tunjanganAir = tunjanganAir.multiply(proporsiGaji);
+                        tunjanganBbm = tunjanganBbm.multiply(proporsiGaji);
+                        totalRlab = totalRlab.multiply(proporsiGaji);
 
                         //perhitungan pph gaji karyawan
                         payrollPph = kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
@@ -3004,9 +3017,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payroll.setGajiKotorNilai(jumlahGajiKotor);
 
                     gajiBersih = jumlahGajiKotor.subtract(totalC);
-
-                    //Hitung proporsional
-                    gajiBersih = gajiBersih.multiply(proporsiGaji);
 
                     payroll.setTotalGajiBersih(CommonUtil.numbericFormat(gajiBersih, "###,###"));
                     payroll.setTotalGajiBersihNilai(gajiBersih);

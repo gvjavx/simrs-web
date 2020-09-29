@@ -40,4 +40,6 @@ public interface JadwalShiftKerjaBo extends BaseMasterBo<JadwalShiftKerja> {
     CrudResponse getListLibur(String tanggalAwal, String tanggalAkhir) throws GeneralBOException;
 
     List<Notifikasi> savePanggilBerdasarkanId(JadwalShiftKerjaDetail bean);
+
+    void saveLiburBerdasarkanId(JadwalShiftKerjaDetail bean);
 }

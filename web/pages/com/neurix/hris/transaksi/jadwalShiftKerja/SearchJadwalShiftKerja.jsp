@@ -294,6 +294,7 @@
                                                         <td align="center">Edit</td>
                                                         <td align="center">On Call</td>
                                                         <td align="center">Panggil</td>
+                                                        <td align="center">Libur</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -352,6 +353,22 @@
                                                                              src="<s:url value="/pages/images/icon_success.ico"/>"
                                                                              name="icon_edit">
                                                                     </s:if>
+                                                                </s:else>
+                                                            </td>
+                                                            <td align="center">
+                                                                <s:if test='#row.flagLibur == "Y"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>">
+                                                                </s:if>
+                                                                <s:else>
+                                                                <a href="javascript:;"
+                                                                   id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>"
+                                                                   tanggal="<s:property value="%{#attr.row.stTanggal}"/>"
+                                                                   nama="<s:property value="%{#attr.row.namaPegawai}"/>"
+                                                                   posisi="<s:property value="%{#attr.row.positionName}"/>"
+                                                                   grup="<s:property value="%{#attr.row.profesiName}"/>"
+                                                                   href="javascript:;" class="item-libur">
+                                                                    <img border="0"
+                                                                         src="<s:url value="/pages/images/icons8-weekend-25.png"/>">
                                                                 </s:else>
                                                             </td>
                                                         </tr>
@@ -512,6 +529,72 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-libur">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Liburkan Pegawai</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">ID Jadwal</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_id_libur" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" >Tanggal</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_tanggal_libur" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control"  />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Nama</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_nama_libur" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" >Posisi</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_posisi_libur" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Grup</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_grup_libur" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-success" id="btnLibur" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Libur</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-loading-dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -641,6 +724,16 @@
             $("#modal-panggil").modal('show');
         });
 
+        $('.tableJadwalShiftKerja').on('click', '.item-libur', function() {
+            $('#mod_id_libur').val($(this).attr('id'));
+            $('#mod_tanggal_libur').val($(this).attr('tanggal'));
+            $('#mod_nama_libur').val($(this).attr('nama'));
+            $('#mod_posisi_libur').val($(this).attr('posisi'));
+            $('#mod_grup_libur').val($(this).attr('grup'));
+
+            $("#modal-libur").modal('show');
+        });
+
         $('#btnPanggil').click(function () {
             var id = $('#mod_id').val();
             if (confirm("Apakah anda ingin memanggil pegawai ini ?")){
@@ -649,6 +742,18 @@
                 JadwalShiftKerjaAction.savePanggilBerdasarkanId(id,function() {
                     dwr.engine.setAsync(false);
                     $('#modal-panggil').modal('hide');
+                    showDialog("success");
+                });
+            }
+        });
+        $('#btnLibur').click(function () {
+            var id = $('#mod_id_libur').val();
+            if (confirm("Apakah anda ingin liburkan jadwal pegawai ini ?")){
+                showDialog("loading");
+                dwr.engine.setAsync(true);
+                JadwalShiftKerjaAction.saveLiburBerdasarkanId(id,function() {
+                    dwr.engine.setAsync(false);
+                    $('#modal-libur').modal('hide');
                     showDialog("success");
                 });
             }

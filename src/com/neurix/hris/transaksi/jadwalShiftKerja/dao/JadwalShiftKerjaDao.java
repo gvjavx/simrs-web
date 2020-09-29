@@ -113,7 +113,8 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "\tjd.on_call,\n" +
                 "\tjd.flag_panggil,\n" +
                 "\tj.branch_id,\n" +
-                "\ts.shift_name\n" +
+                "\ts.shift_name,\n" +
+                "\tjd.flag_libur\n" +
                 "from\n" +
                 "\t( select * from it_hris_jadwal_shift_kerja) j\n" +
                 "\tleft join (select * from it_hris_jadwal_shift_kerja_detail where flag='Y') jd ON j.jadwal_shift_kerja_id = jd.jadwal_shift_kerja_id\n" +
@@ -143,6 +144,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
             jadwalShiftKerja.setFlagPanggil(row[9].toString());
             jadwalShiftKerja.setBranchId(row[10].toString());
             jadwalShiftKerja.setShiftName2(row[11].toString());
+            jadwalShiftKerja.setFlagLibur(row[12].toString());
 
             jadwalShiftKerjaList.add(jadwalShiftKerja);
         }

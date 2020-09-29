@@ -907,6 +907,20 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         }
     }
 
+    public void saveLiburBerdasarkanId(String id){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
+        JadwalShiftKerjaDetail data = new JadwalShiftKerjaDetail();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        data.setJadwalShiftKerjaDetailId(id);
+        data.setFlagPanggil("Y");
+        data.setLastUpdate(updateTime);
+        data.setLastUpdateWho(userLogin);
+
+        jadwalShiftKerjaBo.saveLiburBerdasarkanId(data);
+    }
+
     public JadwalShiftKerja searchUserBagian(){
         JadwalShiftKerja data = new JadwalShiftKerja();
         String roleId = CommonUtil.roleIdAsLogin();

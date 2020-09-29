@@ -20,6 +20,7 @@ public class JadwalShiftKerjaDetail extends BaseModel {
     private String shiftId;
     private String shiftGroupId;
     private String onCall;
+    private String flagLibur;
 
     private String positionName;
     private String shiftName;
@@ -29,6 +30,14 @@ public class JadwalShiftKerjaDetail extends BaseModel {
     private String flagPanggil;
     private String panggilWho;
     private Timestamp panggilDate;
+
+    public String getFlagLibur() {
+        return flagLibur;
+    }
+
+    public void setFlagLibur(String flagLibur) {
+        this.flagLibur = flagLibur;
+    }
 
     public String getPanggilWho() {
         return panggilWho;

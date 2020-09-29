@@ -287,6 +287,7 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
                     itJadwalShiftKerjaDetailEntity.setShiftId(jadwalShiftKerjaDetail.getShiftId());
                     itJadwalShiftKerjaDetailEntity.setOnCall(jadwalShiftKerjaDetail.getOnCall());
                     itJadwalShiftKerjaDetailEntity.setFlagPanggil("N");
+                    itJadwalShiftKerjaDetailEntity.setFlagLibur("N");
 
                     itJadwalShiftKerjaDetailEntity.setFlag(bean.getFlag());
                     itJadwalShiftKerjaDetailEntity.setAction(bean.getAction());
@@ -730,5 +731,20 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
 
         return notifikasiList;
+    }
+
+    @Override
+    public void saveLiburBerdasarkanId(JadwalShiftKerjaDetail bean){
+        try {
+            ItJadwalShiftKerjaDetailEntity jadwalShiftKerjaDetailEntity = jadwalShiftKerjaDetailDao.getById("jadwalShiftKerjaDetailId",bean.getJadwalShiftKerjaDetailId());
+            jadwalShiftKerjaDetailEntity.setFlagLibur(bean.getFlagLibur());
+            jadwalShiftKerjaDetailEntity.setLastUpdate(bean.getLastUpdate());
+            jadwalShiftKerjaDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            jadwalShiftKerjaDetailDao.updateAndSave(jadwalShiftKerjaDetailEntity);
+
+        }catch (Exception e){
+            logger.error("[JadwalShiftKerjaBoImpl.savePanggilBerdasarkanId] Error, " + e.getMessage());
+            throw new GeneralBOException("Error : " + e.getMessage());
+        }
     }
 }

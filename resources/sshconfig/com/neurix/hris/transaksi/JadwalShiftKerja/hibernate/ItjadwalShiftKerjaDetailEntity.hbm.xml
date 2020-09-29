@@ -39,6 +39,9 @@
         <property name="flagPanggil">
             <column name="flag_panggil"/>
         </property>
+        <property name="flagLibur">
+            <column name="flag_libur"/>
+        </property>
         <property name="panggilWho">
             <column name="panggil_who"/>
         </property>
