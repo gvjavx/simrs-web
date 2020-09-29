@@ -32,6 +32,23 @@ public class ProfilBiodata implements Serializable {
     private String nipLama;
     private String fotoUpload;
     private String pathFoto;
+    private String flagShift;
+
+    public String getPayrollId() {
+        return payrollId;
+    }
+
+    public void setPayrollId(String payrollId) {
+        this.payrollId = payrollId;
+    }
+
+    public String getFlagShift() {
+        return flagShift;
+    }
+
+    public void setFlagShift(String flagShift) {
+        this.flagShift = flagShift;
+    }
 
     public String getFotoUpload() {
         return fotoUpload;

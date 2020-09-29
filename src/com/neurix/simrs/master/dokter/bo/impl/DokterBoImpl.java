@@ -236,7 +236,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                 }
                 Map map = new HashMap<>();
                 map.put("position_id", bean.getPositionId());
-                String koderingPosition = positionDao.getKodringPosition(map);
+                String koderingPosition = positionDao.getKodringPosition(map).split("\\.")[2];
 
                 String branchId = CommonUtil.userBranchLogin();
                 Map map1 = new HashMap<>();

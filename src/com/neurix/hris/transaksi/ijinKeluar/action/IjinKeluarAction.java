@@ -1954,4 +1954,30 @@ public class IjinKeluarAction extends BaseMasterAction {
             return "";
         }
     }
+
+    public  Integer calculateLiburWeekend (String stTanggalAwal , String stTanggalAkhir) throws ParseException {
+        int jumlahHari = 0;
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+        java.sql.Date tanggalAwal = new java.sql.Date(sdf1.parse(stTanggalAwal).getTime());
+        java.sql.Date tanggalAkhir = new java.sql.Date(sdf1.parse(stTanggalAkhir).getTime());
+
+        Calendar start = Calendar.getInstance();
+        start.setTime(tanggalAwal);
+        Calendar end = Calendar.getInstance();
+        end.setTime(tanggalAkhir);
+        end.add(Calendar.DATE,1);
+        java.util.Date date;
+
+        for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+            Calendar tanggal = Calendar.getInstance();
+            tanggal.setTime(date);
+            int day = tanggal.get(Calendar.DAY_OF_WEEK);
+
+            if (day == 1||day==7){
+                jumlahHari++;
+            }
+        }
+        return jumlahHari;
+    }
 }

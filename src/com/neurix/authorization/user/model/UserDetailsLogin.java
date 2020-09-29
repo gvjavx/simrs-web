@@ -46,6 +46,24 @@ public class UserDetailsLogin implements UserDetails, Serializable {
     private boolean isUserCredentialsNonExpired = false;
     private boolean isEnabled = false;
     private String flagFingerMoblie;
+    private String bagianId;
+    private String bagianName;
+
+    public String getBagianId() {
+        return bagianId;
+    }
+
+    public void setBagianId(String bagianId) {
+        this.bagianId = bagianId;
+    }
+
+    public String getBagianName() {
+        return bagianName;
+    }
+
+    public void setBagianName(String bagianName) {
+        this.bagianName = bagianName;
+    }
 
     public String getFlagFingerMoblie() {
         return flagFingerMoblie;

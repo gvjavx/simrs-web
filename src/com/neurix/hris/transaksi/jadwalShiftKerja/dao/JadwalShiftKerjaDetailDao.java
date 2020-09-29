@@ -45,6 +45,9 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
             if (mapCriteria.get("shift_group_id")!=null) {
                 criteria.add(Restrictions.eq("shiftGroupId", (String) mapCriteria.get("shift_group_id")));
             }
+            if (mapCriteria.get("profesi_id")!=null) {
+                criteria.add(Restrictions.eq("profesiId", (String) mapCriteria.get("profesi_id")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
@@ -69,7 +72,7 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
         List<Object[]> results = new ArrayList<Object[]>();
         String tipeWhere = "";
         if(!("").equalsIgnoreCase(kelompokPositionId)){
-            tipeWhere += "AND position.profesi_id = '"+kelompokPositionId+"' \n";
+            tipeWhere += "AND position_pegawai.bagian_id = '"+kelompokPositionId+"' \n";
         }
         if(!("").equalsIgnoreCase(branchId)){
             tipeWhere += "AND posisi.branch_id = '"+branchId+"' \n";
@@ -77,7 +80,7 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
         String query = "SELECT\n" +
                 "pegawai.nip,\n" +
                 "\tpegawai.nama_pegawai,\n" +
-                "\tposition.profesi_name,\n" +
+                "\tposition_bagian.nama_bagian,\n" +
                 "\tposition_pegawai.position_name\n" +
                 "FROM\n" +
                 "\tim_hris_profesi_pegawai position \n" +
@@ -85,6 +88,7 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
                 "\tLEFT JOIN im_hris_pegawai pegawai ON pegawai.nip = posisi.nip\n" +
                 "\tLEFT JOIN im_hris_profesi_pegawai profesi ON profesi.profesi_id=position.profesi_id\n" +
                 "\tLEFT JOIN im_position position_pegawai ON posisi.position_id = position_pegawai.position_id\n" +
+                "\tLEFT JOIN im_hris_position_bagian position_bagian ON position_pegawai.bagian_id = position_bagian.bagian_id\n" +
                 "WHERE\n" +
                 "\tpegawai.shift='Y' AND\n" +
                 "\tpegawai.flag='Y' AND\n" +

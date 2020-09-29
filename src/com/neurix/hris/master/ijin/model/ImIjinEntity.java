@@ -17,12 +17,22 @@ public class ImIjinEntity implements Serializable {
     private Long jumlahIjin;
     private String gender;
     private String tipeHari;
+    private String flagDiajukanAdmin;
+
     private String flag;
     private String action;
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getFlagDiajukanAdmin() {
+        return flagDiajukanAdmin;
+    }
+
+    public void setFlagDiajukanAdmin(String flagDiajukanAdmin) {
+        this.flagDiajukanAdmin = flagDiajukanAdmin;
+    }
 
     public String getTipeHari() {
         return tipeHari;

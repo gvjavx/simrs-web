@@ -116,5 +116,8 @@
         <property name="jamBatasAbsen">
             <column name="jam_batas_absen"/>
         </property>
+        <property name="jarakAbsenMobile">
+            <column name="jarak_absen_mobile"/>
+        </property>
     </class>
 </hibernate-mapping>

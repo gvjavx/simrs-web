@@ -165,12 +165,15 @@ public class UserBoImpl implements UserBo {
             String statusCaption = "";
             String positionId = loginUser.getImPosition().getPositionId();
             String positionName = loginUser.getImPosition().getPositionName();
-            String divisiId="";
-            String divisiName="";
-            if (loginUser.getImDepartmentEntity()!=null){
-                divisiId = loginUser.getImDepartmentEntity().getDepartmentId();
-                divisiName = loginUser.getImDepartmentEntity().getDepartmentName();
-            }
+            String divisiId=loginUser.getImPosition().getDepartmentId();
+            String divisiName=loginUser.getImPosition().getDepartmentName();
+            String bagianId = loginUser.getImPosition().getBagianId();
+            String bagianName = loginUser.getImPosition().getBagianName();
+
+//            if (loginUser.getImDepartmentEntity()!=null){
+//                divisiId = loginUser.getImDepartmentEntity().getDepartmentId();
+//                divisiName = loginUser.getImDepartmentEntity().getDepartmentName();
+//            }
 
             try{
                 if(loginUser.getImBiodataEntity().getStatusCaption() != null){
@@ -251,6 +254,8 @@ public class UserBoImpl implements UserBo {
             userDetailsLogin.setDivisiName(divisiName);
             userDetailsLogin.setPositionId(positionId);
             userDetailsLogin.setPositionName(positionName);
+            userDetailsLogin.setBagianId(bagianId);
+            userDetailsLogin.setBagianName(bagianName);
 
             userDetailsLogin.setStatusCaption(statusCaption);
             userDetailsLogin.setPhotoUpload(photoUrl);
@@ -3153,5 +3158,20 @@ public class UserBoImpl implements UserBo {
 
         logger.info("[UserBoImpl.getUserByIdDevice] end process <<<");
         return user;
+    }
+
+    @Override
+    public List<User> getUserByRoleAndBranch(String roleId,String branchId) throws GeneralBOException {
+        logger.info("[UserBoImpl.getUserByRoleAndBranch] start process <<<");
+        List<User> result = new ArrayList<>();
+
+        try {
+            result = userDao.getUserByBranchAndRole(branchId,roleId);
+        } catch (GeneralBOException e){
+            logger.info("[UserBoImpl.getUserByRoleAndBranch] error get user id device");
+        }
+
+        logger.info("[UserBoImpl.getUserByRoleAndBranch] end process <<<");
+        return result;
     }
 }

@@ -2323,7 +2323,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         String stTanggalSekarang= CommonUtil.convertDateToString(tanggalSekarang);
         Calendar cal = Calendar.getInstance();
         cal.setTime(tanggalSekarang);
-        cal.add(Calendar.MONTH, 12);
+        cal.add(Calendar.MONTH, 6);
         Date bulanke6 = cal.getTime();
 
         java.sql.Date tanggalBulan6 = new java.sql.Date(bulanke6.getTime());

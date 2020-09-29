@@ -16,14 +16,19 @@ import com.neurix.hris.master.groupShift.model.ImHrisGroupShift;
 import com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity;
 import com.neurix.hris.master.libur.dao.LiburDao;
 import com.neurix.hris.master.libur.model.ImLiburEntity;
+import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
+import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.master.profesi.dao.ProfesiDao;
 import com.neurix.hris.master.profesi.model.ImProfesiEntity;
 import com.neurix.hris.master.shift.dao.ShiftDao;
 import com.neurix.hris.master.shift.model.ImHrisShiftEntity;
+import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.dao.JadwalShiftKerjaDao;
 import com.neurix.hris.transaksi.jadwalShiftKerja.dao.JadwalShiftKerjaDetailDao;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.*;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -35,6 +40,7 @@ import javax.servlet.http.HttpSession;
 import javax.xml.ws.Response;
 import java.sql.*;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -57,6 +63,19 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
     private PersonilPositionDao personilPositionDao;
     private ProfesiDao profesiDao;
     private LiburDao liburDao;
+    private PositionBagianDao positionBagianDao;
+
+    public PositionBagianDao getPositionBagianDao() {
+        return positionBagianDao;
+    }
+
+    public void setPositionBagianDao(PositionBagianDao positionBagianDao) {
+        this.positionBagianDao = positionBagianDao;
+    }
+
+    public LiburDao getLiburDao() {
+        return liburDao;
+    }
 
     public void setLiburDao(LiburDao liburDao) {
         this.liburDao = liburDao;
@@ -208,11 +227,19 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             itJadwalShiftKerjaDetailEntity.setShiftId(jadwalShiftKerjaDetail.getShiftId());
             itJadwalShiftKerjaDetailEntity.setProfesiId(jadwalShiftKerjaDetail.getProfesiid());
             itJadwalShiftKerjaDetailEntity.setProfesiName(jadwalShiftKerjaDetail.getProfesiName());
+            itJadwalShiftKerjaDetailEntity.setOnCall(jadwalShiftKerjaDetail.getOnCall());
+            itJadwalShiftKerjaDetailEntity.setFlagLibur(jadwalShiftKerjaDetail.getFlagLibur());
+            itJadwalShiftKerjaDetailEntity.setFlagPanggil(jadwalShiftKerjaDetail.getFlagPanggil());
+            itJadwalShiftKerjaDetailEntity.setPanggilDate(jadwalShiftKerjaDetail.getPanggilDate());
+            itJadwalShiftKerjaDetailEntity.setPanggilWho(jadwalShiftKerjaDetail.getPanggilWho());
 
             itJadwalShiftKerjaDetailEntity.setFlag(bean.getFlag());
             itJadwalShiftKerjaDetailEntity.setAction(bean.getAction());
             itJadwalShiftKerjaDetailEntity.setCreatedWho(bean.getCreatedWho());
             itJadwalShiftKerjaDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            itJadwalShiftKerjaDetailEntity.setCreatedDate(bean.getCreatedDate());
+            itJadwalShiftKerjaDetailEntity.setLastUpdate(bean.getLastUpdate());
+
             try {
                 // insert into database
                 jadwalShiftKerjaDetailDao.addAndSave(itJadwalShiftKerjaDetailEntity);
@@ -264,6 +291,9 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
                     itJadwalShiftKerjaDetailEntity.setProfesiName(jadwalShiftKerjaDetail.getProfesiName());
                     itJadwalShiftKerjaDetailEntity.setProfesiId(jadwalShiftKerjaDetail.getProfesiid());
                     itJadwalShiftKerjaDetailEntity.setShiftId(jadwalShiftKerjaDetail.getShiftId());
+                    itJadwalShiftKerjaDetailEntity.setOnCall(jadwalShiftKerjaDetail.getOnCall());
+                    itJadwalShiftKerjaDetailEntity.setFlagPanggil("N");
+                    itJadwalShiftKerjaDetailEntity.setFlagLibur("N");
 
                     itJadwalShiftKerjaDetailEntity.setFlag(bean.getFlag());
                     itJadwalShiftKerjaDetailEntity.setAction(bean.getAction());
@@ -293,82 +323,64 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
         List<JadwalShiftKerja> listOfResult = new ArrayList();
 
         if (searchBean != null) {
-            Map hsCriteria = new HashMap();
+            JadwalShiftKerja search = new JadwalShiftKerja();
+            search.setNip(searchBean.getNip());
+            search.setBranchId(searchBean.getBranchId());
+            search.setGroupId(searchBean.getGroupId());
 
-            if (searchBean.getJadwalShiftKerjaName() != null && !"".equalsIgnoreCase(searchBean.getJadwalShiftKerjaName())) {
-                hsCriteria.put("jadwal_shift_kerja_name", searchBean.getJadwalShiftKerjaName());
+            if (!"".equalsIgnoreCase(searchBean.getStTanggalAwal())){
+                Date tanggalAwal = CommonUtil.convertStringToDate(searchBean.getStTanggalAwal());
+                search.setStTanggalAwal(CommonUtil.convertDateToString2(tanggalAwal));
             }
-            if (searchBean.getBranchId() != null && !"".equalsIgnoreCase(searchBean.getBranchId())) {
-                hsCriteria.put("branch_id", searchBean.getBranchId());
-            }
-            if (searchBean.getStTanggalAwal() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTanggalAwal()))) {
-                Timestamp tanggalDari = CommonUtil.convertToTimestamp(searchBean.getStTanggalAwal());
-                hsCriteria.put("tanggal_dari", tanggalDari);
-            }
-            if (searchBean.getStTanggalAkhir() != null && !"".equalsIgnoreCase(String.valueOf(searchBean.getStTanggalAkhir()))) {
-                Timestamp tanggalSelesai = CommonUtil.convertToTimestamp(searchBean.getStTanggalAkhir());
-                hsCriteria.put("tanggal_selesai", tanggalSelesai);
-            }
-            hsCriteria.put("flag", "Y");
 
+            if (!"".equalsIgnoreCase(searchBean.getStTanggalAkhir())){
+                Date tanggalAkhir = CommonUtil.convertStringToDate(searchBean.getStTanggalAkhir());
+                search.setStTanggalAkhir(CommonUtil.convertDateToString2(tanggalAkhir));
+            }
 
-            List<ItJadwalShiftKerjaEntity> itJadwalShiftKerjaEntity = null;
             try {
-
-                itJadwalShiftKerjaEntity = jadwalShiftKerjaDao.getByCriteria(hsCriteria);
+                listOfResult = jadwalShiftKerjaDao.getByCriteriaJadwalShift(search);
             } catch (HibernateException e) {
                 logger.error("[JadwalShiftKerjaBoImpl.getSearchJadwalShiftKerjaByCriteria] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
-            List<ItJadwalShiftKerjaDetailEntity> jadwalShiftKerjaDetails = new ArrayList<>();
-            JadwalShiftKerja returnJadwalShiftKerja;
-            String jadwalKerjaId=null;
-            if(itJadwalShiftKerjaEntity != null){
-                List<ImBranches> branch = new ArrayList<>();
-                for(ItJadwalShiftKerjaEntity jadwalShiftKerjaEntity : itJadwalShiftKerjaEntity){
-                    Map hsCriteria7=new HashMap();
-                    hsCriteria7.put("flag","Y");
-                    hsCriteria7.put("jadwal_shift_kerja_id",jadwalShiftKerjaEntity.getJadwalShiftKerjaId());
-                    jadwalShiftKerjaDetails=jadwalShiftKerjaDetailDao.getByCriteria(hsCriteria7);
-                    for (ItJadwalShiftKerjaDetailEntity itJadwalShiftKerjaDetailEntity :jadwalShiftKerjaDetails){
-                        returnJadwalShiftKerja = new JadwalShiftKerja();
-                        if (jadwalShiftKerjaEntity.getJadwalShiftKerjaId().equals(jadwalKerjaId)){
-                            returnJadwalShiftKerja.setJadwalShiftKerjaId("");
-                            returnJadwalShiftKerja.setTanggal(null);
-                            returnJadwalShiftKerja.setBranchId("");
-                            returnJadwalShiftKerja.setTamp(false);
-                        } else {
-                            jadwalKerjaId=jadwalShiftKerjaEntity.getJadwalShiftKerjaId();
-                            returnJadwalShiftKerja.setJadwalShiftKerjaId(jadwalShiftKerjaEntity.getJadwalShiftKerjaId());
-                            returnJadwalShiftKerja.setJadwalShiftKerjaName(jadwalShiftKerjaEntity.getJadwalShiftKerjaName());
-                            returnJadwalShiftKerja.setTanggal(jadwalShiftKerjaEntity.getTanggal());
-                            returnJadwalShiftKerja.setBranchId(jadwalShiftKerjaEntity.getBranchId());
-                            returnJadwalShiftKerja.setKeterangan(jadwalShiftKerjaEntity.getKeterangan());
 
-                            if (jadwalShiftKerjaEntity.getBranchId()!=null){
-                                Map hsCriteria2 = new HashMap();
-                                hsCriteria2.put("flag","Y");
-                                hsCriteria2.put("branch_id",jadwalShiftKerjaEntity.getBranchId());
-                                branch = branchDao.getByCriteria(hsCriteria2);
-                                for (ImBranches imBranches : branch){
-                                    returnJadwalShiftKerja.setBranchName(imBranches.getBranchName());
-                                }
-                            }
-                        }
-                        ImHrisShiftEntity imHrisShiftEntity = shiftDao.getById("shiftId",itJadwalShiftKerjaDetailEntity.getShiftId(),"Y");
-                        returnJadwalShiftKerja.setShiftName(imHrisShiftEntity.getShiftName());
-                        returnJadwalShiftKerja.setNamaPegawai(itJadwalShiftKerjaDetailEntity.getNamaPegawai());
-                        returnJadwalShiftKerja.setPositionName(itJadwalShiftKerjaDetailEntity.getPositionName());
-                        returnJadwalShiftKerja.setProfesiName(itJadwalShiftKerjaDetailEntity.getProfesiName());
-                        returnJadwalShiftKerja.setAction(jadwalShiftKerjaEntity.getAction());
-                        returnJadwalShiftKerja.setFlag(jadwalShiftKerjaEntity.getFlag());
-                        returnJadwalShiftKerja.setCreatedWho(jadwalShiftKerjaEntity.getCreatedWho());
-                        returnJadwalShiftKerja.setCreatedDate(jadwalShiftKerjaEntity.getCreatedDate());
-                        returnJadwalShiftKerja.setLastUpdate(jadwalShiftKerjaEntity.getLastUpdate());
+            String jadwalKerjaId = null;
+            for (JadwalShiftKerja jadwalShiftKerja : listOfResult){
+                java.util.Date tanggalSekarang = null;
+                try{
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    tanggalSekarang = sdf.parse(sdf.format(new java.util.Date()));
 
-                        listOfResult.add(returnJadwalShiftKerja);
-                    }
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.HOUR_OF_DAY, 0);
+                    cal.set(Calendar.MINUTE, 0);
+                    cal.set(Calendar.SECOND, 0);
+                    cal.set(Calendar.MILLISECOND, 0);
+                    tanggalSekarang = cal.getTime();
+
+                }catch (Exception e){
+                    logger.error(e);
                 }
+
+                java.util.Date tanggalJadwal = CommonUtil.dateSqltoDateUtil(jadwalShiftKerja.getTanggal());
+                if (tanggalSekarang!=null && tanggalSekarang.equals(tanggalJadwal)){
+                    jadwalShiftKerja.setHariIni(true);
+                }
+
+                jadwalShiftKerja.setStTanggal(CommonUtil.convertDateToString(jadwalShiftKerja.getTanggal()));
+
+                if (jadwalShiftKerja.getJadwalShiftKerjaId().equals(jadwalKerjaId)){
+                    jadwalShiftKerja.setJadwalShiftKerjaId("");
+                    jadwalShiftKerja.setTanggal(null);
+                    jadwalShiftKerja.setStTanggal("");
+                    jadwalShiftKerja.setBranchId("");
+                    jadwalShiftKerja.setBranchName("");
+                    jadwalShiftKerja.setTamp(false);
+                }else{
+                    jadwalKerjaId=jadwalShiftKerja.getJadwalShiftKerjaId();
+                }
+                jadwalShiftKerja.setFlag("Y");
             }
         }
         logger.info("[JadwalShiftKerjaBoImpl.getByCriteria] end process <<<");
@@ -415,7 +427,11 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
                     returnJadwalShiftKerjaDetail.setPositionName(jadwalShiftKerjaDetailEntity.getPositionName());
                     returnJadwalShiftKerjaDetail.setNamaPegawai(jadwalShiftKerjaDetailEntity.getNamaPegawai());
                     returnJadwalShiftKerjaDetail.setNip(jadwalShiftKerjaDetailEntity.getNip());
-
+                    returnJadwalShiftKerjaDetail.setOnCall(jadwalShiftKerjaDetailEntity.getOnCall());
+                    returnJadwalShiftKerjaDetail.setFlagPanggil(jadwalShiftKerjaDetailEntity.getFlagPanggil());
+                    returnJadwalShiftKerjaDetail.setPanggilWho(jadwalShiftKerjaDetailEntity.getPanggilWho());
+                    returnJadwalShiftKerjaDetail.setPanggilDate(jadwalShiftKerjaDetailEntity.getPanggilDate());
+                    returnJadwalShiftKerjaDetail.setFlagLibur(jadwalShiftKerjaDetailEntity.getFlagLibur());
                     List<ItPersonilPositionEntity> personilPositionEntities = personilPositionDao.getPersonilPosition(jadwalShiftKerjaDetailEntity.getNip());
                     for (ItPersonilPositionEntity personilPositionEntity : personilPositionEntities){
                         ImPosition position = positionDao.getById("positionId",personilPositionEntity.getPositionId());
@@ -425,10 +441,10 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
                     ImHrisShiftEntity shiftEntity = shiftDao.getById("shiftId",jadwalShiftKerjaDetailEntity.getShiftId());
 
-                    ImProfesiEntity profesiEntity = profesiDao.getById("profesiId",jadwalShiftKerjaDetailEntity.getProfesiId());
+                    ImPositionBagianEntity bagianEntity = positionBagianDao.getById("bagianId",jadwalShiftKerjaDetailEntity.getProfesiId());
 
                     returnJadwalShiftKerjaDetail.setProfesiid(jadwalShiftKerjaDetailEntity.getProfesiId());
-                    returnJadwalShiftKerjaDetail.setProfesiName(profesiEntity.getProfesiName());
+                    returnJadwalShiftKerjaDetail.setProfesiName(bagianEntity.getBagianName());
                     returnJadwalShiftKerjaDetail.setShiftName(shiftEntity.getShiftName());
                     returnJadwalShiftKerjaDetail.setAction(jadwalShiftKerjaDetailEntity.getAction());
                     returnJadwalShiftKerjaDetail.setFlag(jadwalShiftKerjaDetailEntity.getFlag());
@@ -669,7 +685,7 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
         if (!"".equalsIgnoreCase(tanggalAwal) && !"".equalsIgnoreCase(tanggalAkhir)) {
             try {
-                imLiburEntityList = liburDao.getLiburRange(Date.valueOf(tanggalAwal), Date.valueOf(tanggalAkhir));
+                imLiburEntityList = liburDao.getLiburRange(CommonUtil.convertStringToDate(tanggalAwal), CommonUtil.convertStringToDate(tanggalAkhir));
             }
             catch (HibernateException e) {
                 response.setStatus("Error");
@@ -679,7 +695,7 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
         if (!"".equalsIgnoreCase(tanggalAwal)) {
             try {
-                imLiburEntityList = liburDao.getListLibur(Date.valueOf(tanggalAwal));
+                imLiburEntityList = liburDao.getListLibur(CommonUtil.convertStringToDate(tanggalAwal));
             }
             catch (HibernateException e) {
                 response.setStatus("Error");
@@ -697,5 +713,78 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
         }
 
         return response;
+    }
+
+    @Override
+    public List<JadwalShiftKerjaDetail> getJadwalShiftByBulanTahun(String nip, String branchId, String profesiId, String tanggalAwal, String tanggalAkhir) {
+        logger.info("[JadwalShiftKerjaBoImpl.getJadwalShift] start process >>>");
+
+        List<JadwalShiftKerjaDetail> listOfResult = new ArrayList<>();
+
+        try {
+            listOfResult = jadwalShiftKerjaDao.getJadwalShiftByBulanTahun(nip, branchId, profesiId, tanggalAwal, tanggalAkhir);
+        } catch (HibernateException e) {
+            logger.error("[JadwalShiftKerjaBoImpl.getJadwalShift] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[JadwalShiftKerjaBoImpl.getJadwalShift] end process >>>");
+        return listOfResult;
+    }
+
+    public List<Notifikasi> savePanggilBerdasarkanId(JadwalShiftKerjaDetail bean){
+        List<Notifikasi> notifikasiList = new ArrayList<>();
+        Notifikasi notif = new Notifikasi();
+
+        try {
+            ItJadwalShiftKerjaDetailEntity jadwalShiftKerjaDetailEntity = jadwalShiftKerjaDetailDao.getById("jadwalShiftKerjaDetailId",bean.getJadwalShiftKerjaDetailId());
+            jadwalShiftKerjaDetailEntity.setFlagPanggil(bean.getFlagPanggil());
+            jadwalShiftKerjaDetailEntity.setPanggilWho(bean.getPanggilWho());
+            jadwalShiftKerjaDetailEntity.setPanggilDate(bean.getPanggilDate());
+            jadwalShiftKerjaDetailDao.updateAndSave(jadwalShiftKerjaDetailEntity);
+
+            ImHrisShiftEntity shiftEntity = shiftDao.getById("shiftId", bean.getShiftId());
+
+            //KIRIM NOTIFIKASI
+            notif.setNip(jadwalShiftKerjaDetailEntity.getNip());
+            notif.setNoRequest(jadwalShiftKerjaDetailEntity.getJadwalShiftKerjaDetailId());
+            notif.setNote("Anda dipanggil untuk bertugas pada " + shiftEntity.getJamAwal() + " s/d " + shiftEntity.getJamAkhir());
+            notif.setCreatedWho("admin");
+            notif.setTo("self");
+            notif.setTipeNotifId("umum");
+            notif.setTipeNotifName("On Call");
+            notif.setFromPerson(bean.getPanggilWho());
+            notif.setRead("N");
+            notif.setFlag("Y");
+            notif.setAction("C");
+            notif.setCreatedWho(bean.getPanggilWho());
+            notif.setLastUpdateWho(bean.getLastUpdateWho());
+            notif.setCreatedDate(bean.getPanggilDate());
+            notif.setLastUpdate(bean.getLastUpdate());
+            notifikasiList.add(notif);
+
+
+        }catch (Exception e){
+            logger.error("[JadwalShiftKerjaBoImpl.savePanggilBerdasarkanId] Error, " + e.getMessage());
+            throw new GeneralBOException("Error : " + e.getMessage());
+        }
+
+
+        return notifikasiList;
+    }
+
+    @Override
+    public void saveLiburBerdasarkanId(JadwalShiftKerjaDetail bean){
+        try {
+            ItJadwalShiftKerjaDetailEntity jadwalShiftKerjaDetailEntity = jadwalShiftKerjaDetailDao.getById("jadwalShiftKerjaDetailId",bean.getJadwalShiftKerjaDetailId());
+            jadwalShiftKerjaDetailEntity.setFlagLibur(bean.getFlagLibur());
+            jadwalShiftKerjaDetailEntity.setLastUpdate(bean.getLastUpdate());
+            jadwalShiftKerjaDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            jadwalShiftKerjaDetailDao.updateAndSave(jadwalShiftKerjaDetailEntity);
+
+        }catch (Exception e){
+            logger.error("[JadwalShiftKerjaBoImpl.savePanggilBerdasarkanId] Error, " + e.getMessage());
+            throw new GeneralBOException("Error : " + e.getMessage());
+        }
     }
 }

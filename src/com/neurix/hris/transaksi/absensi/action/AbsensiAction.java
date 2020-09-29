@@ -256,17 +256,15 @@ public class AbsensiAction extends BaseMasterAction {
         logger.info("[absensiAction.add] start process >>>");
         AbsensiPegawai addAbsensiPegawai = new AbsensiPegawai();
         String branchId = CommonUtil.userBranchLogin();
-//        Biodata data = new Biodata();
-        if (branchId != null){
-            addAbsensiPegawai.setBranchId(branchId);
-        }else {
-            addAbsensiPegawai.setBranchId("");
+        AbsensiPegawai data = new AbsensiPegawai();
+        if (branchId!=null){
+            data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
+        }else{
+            data.setBranchId("");
         }
 
-        absensiPegawai = addAbsensiPegawai;
-
-//        setAbsensiPegawai(addAbsensiPegawai);
-        setAbsensiPegawai(absensiPegawai);
+        setAbsensiPegawai(data);
         setAddOrEdit(true);
         setAdd(true);
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -917,7 +915,9 @@ public class AbsensiAction extends BaseMasterAction {
         logger.info("[AbsensiAction.search] start process >>>");
         AbsensiPegawai searchAbsensiPegawai = getAbsensiPegawai();
         List<AbsensiPegawai> listOfSearchAbsensiPegawai = new ArrayList();
-        String role = CommonUtil.roleAsLogin();
+        String branchId = CommonUtil.userBranchLogin();
+        searchAbsensiPegawai.setBranchIdUser(branchId);
+
         try {
             listOfSearchAbsensiPegawai = absensiBoProxy.getByCriteria(searchAbsensiPegawai);
         } catch (GeneralBOException e) {
@@ -1090,7 +1090,17 @@ public class AbsensiAction extends BaseMasterAction {
     public String initForm() {
         logger.info("[absensiAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
+        String branchId = CommonUtil.userBranchLogin();
+        AbsensiPegawai data = new AbsensiPegawai();
+        if (branchId!=null){
+            data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
+        }else{
+            data.setBranchId("");
+        }
 
+
+        setAbsensiPegawai(data);
         session.removeAttribute("listOfResultAbsensi");
         session.removeAttribute("listOfResultMesinAbsensi");
         logger.info("[absensiAction.initForm] end process >>>");

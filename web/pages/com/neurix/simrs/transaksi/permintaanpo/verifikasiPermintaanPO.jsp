@@ -826,18 +826,18 @@
                     }
 
                     var batch = null;
-                    PermintaanVendorAction.getTransaksiObatByIdTrans(idDetail, noBt, function(res){
-                        if (res != null){
-                            batch = res;
-                            console.log(res);
-//                            $('#val_diskon').val(batc.diskon);
-//                            $('#app_diskon').val(formatRupiah(diskon));
-//                            $('#val_bruto').val(bruto);
-//                            $('#app_bruto').val(formatRupiah(bruto));
-//                            $('#val_netto').val(netto);
-//                            $('#app_netto').val(formatRupiah(netto));
-                        }
-                    });
+//                     PermintaanVendorAction.getTransaksiObatByIdTrans(idDetail, noBt, function(res){
+//                         if (res != null){
+//                             batch = res;
+//                             console.log(res);
+// //                            $('#val_diskon').val(batc.diskon);
+// //                            $('#app_diskon').val(formatRupiah(diskon));
+// //                            $('#val_bruto').val(bruto);
+// //                            $('#app_bruto').val(formatRupiah(bruto));
+// //                            $('#val_netto').val(netto);
+// //                            $('#app_netto').val(formatRupiah(netto));
+//                         }
+//                     });
 
                     if (batch != null){
                         $('#app_expired').val(batch.stExpDate);
@@ -849,7 +849,7 @@
                         $('#app_expired').val('');
                         $('#app_qty_app').val(jml);
                     }
-                    $("#harga-awal").val(formatRupiah(harga));
+                    $("#harga-awal").val(formatRupiah(nullEscape(harga)));
                     $('#app_qty').val(qty);
                     $('#app_lembar_perbox, #kon_lembar').val(lembarPerBox);
                     $('#app_biji_perlembar, #kon_biji').val(bijiPerlembar);
@@ -873,11 +873,11 @@
 //                    }
 
                     $('#val_diskon').val(nullEscape (diskon));
-                    $('#app_diskon').val(formatRupiah(diskon));
+                    $('#app_diskon').val(formatRupiah(nullEscape(diskon)));
                     $('#val_bruto').val(nullEscape(bruto));
-                    $('#app_bruto').val(formatRupiah(bruto));
+                    $('#app_bruto').val(formatRupiah(nullEscape(bruto)));
                     $('#val_netto').val(nullEscape(netto));
-                    $('#app_netto').val(formatRupiah(netto));
+                    $('#app_netto').val(formatRupiah(nullEscape(netto)));
 
                     $('#save_approve').attr('onclick', 'confirmSaveApprove(\'' + selectedObj.id + '\', \'' + idDetail + '\', \'' + selectedObj.idPabrik + '\', \'' + noBt + '\')').show();
                     $('#save_approve').show();

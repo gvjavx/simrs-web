@@ -192,16 +192,16 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
         return results;
     }
 
-    public AbsensiPegawai getSearchJadwalShift(String nip, Date tanggal) throws HibernateException{
-
+    public List<AbsensiPegawai> getSearchJadwalShift(String nip, Date tanggal) throws HibernateException{
+        List<AbsensiPegawai> absensiPegawaiList = new ArrayList<>();
         String id = "";
         String query = "";
 
-        query = "SELECT * FROM\n" +
+        query = "SELECT jam_awal,jam_akhir FROM\n" +
                 "\t(SELECT * FROM it_hris_jadwal_shift_kerja) kerja LEFT JOIN\n" +
-                "\t(SELECT * FROM it_hris_jadwal_shift_kerja_detail) kerjadetail ON kerja.jadwal_shift_kerja_id = kerjadetail.jadwal_shift_kerja_id LEFT JOIN\n" +
+                "\t(SELECT * FROM it_hris_jadwal_shift_kerja_detail where on_call='N') kerjadetail ON kerja.jadwal_shift_kerja_id = kerjadetail.jadwal_shift_kerja_id LEFT JOIN\n" +
                 "\t(SELECT * FROM im_hris_shift) shift ON kerjadetail.shift_id = shift.shift_id\n" +
-                "WHERE kerjadetail.nip =:nip AND kerja.tanggal= :tanggal";
+                "WHERE kerjadetail.nip =:nip AND kerja.tanggal= :tanggal and flag_libur='N' ORDER BY jam_awal";
 
         List<Object[]> results = new ArrayList<Object[]>();
 
@@ -211,12 +211,43 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
                 .setParameter("nip", nip)
                 .list();
 
-        AbsensiPegawai add = new AbsensiPegawai();
         for (Object[] row : results) {
-            add.setJamMasuk(row[35].toString());
-            add.setJamPulang(row[36].toString());
+            AbsensiPegawai add = new AbsensiPegawai();
+            add.setJamMasuk(row[0].toString());
+            add.setJamPulang(row[1].toString());
+
+            absensiPegawaiList.add(add);
         }
-        return add;
+        return absensiPegawaiList;
+    }
+
+    public List<AbsensiPegawai> getSearchJadwalShiftOnCall(String nip, Date tanggal) throws HibernateException{
+        List<AbsensiPegawai> absensiPegawaiList = new ArrayList<>();
+        String query = "";
+
+        query = "SELECT jam_awal,jam_akhir,flag_panggil FROM\n" +
+                "\t(SELECT * FROM it_hris_jadwal_shift_kerja) kerja LEFT JOIN\n" +
+                "\t(SELECT * FROM it_hris_jadwal_shift_kerja_detail where on_call='Y') kerjadetail ON kerja.jadwal_shift_kerja_id = kerjadetail.jadwal_shift_kerja_id LEFT JOIN\n" +
+                "\t(SELECT * FROM im_hris_shift) shift ON kerjadetail.shift_id = shift.shift_id\n" +
+                "WHERE kerjadetail.nip =:nip AND kerja.tanggal= :tanggal and flag_libur='N' ORDER BY jam_awal";
+
+        List<Object[]> results = new ArrayList<Object[]>();
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("tanggal", tanggal)
+                .setParameter("nip", nip)
+                .list();
+
+        for (Object[] row : results) {
+            AbsensiPegawai add = new AbsensiPegawai();
+            add.setJamMasuk(row[0].toString());
+            add.setJamPulang(row[1].toString());
+            add.setFlagPanggil(row[2].toString());
+
+            absensiPegawaiList.add(add);
+        }
+        return absensiPegawaiList;
     }
 
     //digunakan untuk lembur

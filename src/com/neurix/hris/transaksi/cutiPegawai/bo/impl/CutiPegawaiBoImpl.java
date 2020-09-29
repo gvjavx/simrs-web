@@ -438,6 +438,36 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     public  List<Notifikasi> saveAddCuti ( CutiPegawai bean ) throws GeneralBOException {
         logger.info("[CutiPegawaiBoImpl.saveAdd] start process >>>");
         List<Notifikasi> notifikasiList = new ArrayList<>();
+
+        //validasi
+        List<ImBiodataEntity> biodataEntities = biodataDao.getDataBiodata(bean.getNip(),"","","","","Y");
+        for (ImBiodataEntity biodata: biodataEntities){
+            bean.setTanggalAktif(biodata.getTanggalAktif());
+        }
+
+        Calendar c = Calendar.getInstance();
+        java.util.Date tanggalSekarang = new java.util.Date(c.getTimeInMillis());
+        c.setTime(tanggalSekarang);
+        int year1 = c.get(Calendar.YEAR);
+
+        ImBiodataEntity biodataEntity = biodataEntities.get(0);
+        Calendar d = Calendar.getInstance();
+        java.util.Date tanggalAktif = new java.util.Date(biodataEntity.getTanggalAktif().getTime());
+        d.setTime(tanggalAktif);
+        int year2 = d.get(Calendar.YEAR);
+
+//        Date tanggalSekarang = new Date(c.getTimeInMillis());
+
+        int tahunMasaKerja = year1-year2;
+        if (!"normal".equalsIgnoreCase(bean.getJenisCuti())){
+            if (tahunMasaKerja<5){
+                String status1 ="Tanggal Pengajuan Cuti di Luar Tanggungan Harus Melewati 5 Tahun Masa Kerja";
+                logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error :, " + status1);
+                throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + status1);
+            }
+        }
+
+
         String atasanNip = null;
         String nip=bean.getNip(),cutiPegawaiId;
         if (bean!=null) {
@@ -479,7 +509,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                             cutiPegawaiID = cutiPegawaiDao.getNextCutiPegawaiId();
                         } catch (HibernateException e) {
                             logger.error("[CutiPegawaiBoImpl.saveCutiBersama] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when getting sequence cutiPegawai Id , please info to your admin..." + e.getMessage());
+                                throw new GeneralBOException("Found problem when getting sequence cutiPegawai Id , please info to your admin..." + e.getMessage());
                         }
                         // creating object entity serializable
                         ItCutiPegawaiEntity itCutiPegawaiEntity = new ItCutiPegawaiEntity();
@@ -571,6 +601,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                         if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
                             itCutiPegawaiEntity1.setSisaCutiHari(BigInteger.valueOf(1095));
+
                         else
                             itCutiPegawaiEntity1.setSisaCutiHari(BigInteger.valueOf(12).subtract(bean.getLamaHariCuti()));
 
@@ -826,7 +857,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 }
 
             }else {
-                throw new GeneralBOException("Peringatan!!! Reset Cuti Tahunan Sudah Dilakukan di tahun berikutnya");
+                throw new GeneralBOException("Peringatan!!! Pengajuan cuti tidak bisa dilakukan karena reset cuti tahunan sudah dilakukan di tahun berikutnya.");
             }
         }
         logger.info("[CutiPegawaiBoImpl.saveAdd] end process <<<");
@@ -1495,7 +1526,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
         }
 
-        if (itCutiPegawaiEntities != null){
+        if (itCutiPegawaiEntities != null&&itCutiPegawaiEntities.size()!=0){
             Calendar calendar = Calendar.getInstance();
             Timestamp lastTglPengajuan = itCutiPegawaiEntities.get(0).getTsTanggalDari();
             calendar.setTime(lastTglPengajuan);
@@ -2709,7 +2740,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
-        if (itCutiPegawaiEntities != null){
+        if (itCutiPegawaiEntities != null&&itCutiPegawaiEntities.size()!=0){
             Calendar calendar = Calendar.getInstance();
             Timestamp lastTglPengajuan = itCutiPegawaiEntities.get(0).getTsTanggalDari();
             calendar.setTime(lastTglPengajuan);

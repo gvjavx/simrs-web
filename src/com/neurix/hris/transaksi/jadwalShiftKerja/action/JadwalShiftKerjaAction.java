@@ -15,6 +15,8 @@ import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalKerjaDTO;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.simrs.transaksi.CrudResponse;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
@@ -116,7 +118,14 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
     public String add() {
         logger.info("[JadwalShiftKerjaAction.add] start process >>>");
         JadwalShiftKerja addJadwalShiftKerja = new JadwalShiftKerja();
+        addJadwalShiftKerja.setBranchId(CommonUtil.userBranchLogin());
+        addJadwalShiftKerja.setBranchIdUser(CommonUtil.userBranchLogin());
+        String roleId = CommonUtil.roleIdAsLogin();
+        if (roleId.equalsIgnoreCase(CommonConstant.ROLE_ID_ADMIN)){
+            addJadwalShiftKerja.setAdminHcm(true);
+        }
         setJadwalShiftKerja(addJadwalShiftKerja);
+
         setAddOrEdit(true);
         setAdd(true);
 
@@ -283,8 +292,14 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         logger.info("[JadwalShiftKerjaAction.search] start process >>>");
 
         JadwalShiftKerja searchjadwalShiftKerja = getJadwalShiftKerja();
+        String roleId = CommonUtil.roleIdAsLogin();
         List<JadwalShiftKerja> listOfSearchJadwalShiftKerja = new ArrayList();
-        String role = CommonUtil.roleAsLogin();
+
+        searchjadwalShiftKerja.setBranchIdUser(CommonUtil.userBranchLogin());
+        if (roleId.equalsIgnoreCase(CommonConstant.ROLE_ID_ADMIN)){
+            searchjadwalShiftKerja.setAdminHcm(true);
+        }
+
         try {
             listOfSearchJadwalShiftKerja = jadwalShiftKerjaBoProxy.getByCriteria(searchjadwalShiftKerja);
         } catch (GeneralBOException e) {
@@ -319,6 +334,20 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         session.removeAttribute("listOfResultJadwalShiftKerja");
         session.removeAttribute("ListOfResultGroupShift");
         session.removeAttribute("listOfResultPegawaiShift");
+
+        String branchIdUser = CommonUtil.userBranchLogin();
+        String roleId = CommonUtil.roleIdAsLogin();
+
+        JadwalShiftKerja jadwalShiftKerja = new JadwalShiftKerja();
+        jadwalShiftKerja.setBranchIdUser(branchIdUser);
+        jadwalShiftKerja.setBranchId(branchIdUser);
+        jadwalShiftKerja.setGroupId(CommonUtil.userBagianId());
+        if (roleId.equalsIgnoreCase(CommonConstant.ROLE_ID_ADMIN)){
+            jadwalShiftKerja.setAdminHcm(true);
+            jadwalShiftKerja.setGroupId("");
+        }
+
+        setJadwalShiftKerja(jadwalShiftKerja);
         logger.info("[JadwalShiftKerjaAction.initForm] end process >>>");
         return INPUT;
     }
@@ -480,6 +509,8 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
 
             jadwalShiftKerja.setLastUpdate(updateTime);
             jadwalShiftKerja.setLastUpdateWho(userLogin);
+            jadwalShiftKerja.setCreatedDate(updateTime);
+            jadwalShiftKerja.setCreatedWho(userLogin);
             jadwalShiftKerja.setAction("U");
             jadwalShiftKerja.setFlag("Y");
 
@@ -747,28 +778,9 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             return null;
         }
         logger.info("[JadwalShiftKerjaAction.searchPegawaiByGrup] end process <<<");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<JadwalShiftKerjaDetail> listOfResult = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
-
-        if (listOfResult!=null){
-            for(JadwalShiftKerjaDetail jadwalShiftKerjaDetail : jadwalShiftKerjaDetailList){
-                boolean ada = false;
-                for (JadwalShiftKerjaDetail detail : listOfResult) {
-                    if (detail.getNip().equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())) {
-                        ada = true;
-                        break;
-                    }
-                }
-                if (!ada){
-                    finalResult.add(jadwalShiftKerjaDetail);
-                }
-            }
-        }else{
-            finalResult=jadwalShiftKerjaDetailList;
-        }
-        return finalResult;
+        return jadwalShiftKerjaDetailList;
     }
-    public void savePegawaiShift(String nip , String nama,String posisi,String grup,String grupId, String shift,String shiftId) {
+    public void savePegawaiShift(String nip , String nama,String posisi,String grup,String grupId, String shift,String shiftId,String onCall) {
         logger.info("[JadwalShiftKerjaAction.savePegawaiShift] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<JadwalShiftKerjaDetail> listOfResult = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
@@ -783,6 +795,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         result.setProfesiid(grupId);
         result.setShiftName(shift);
         result.setShiftId(shiftId);
+        result.setOnCall(onCall);
         listOfResult.add(result);
 
         session.setAttribute("listOfResultPegawaiShift",listOfResult);
@@ -796,14 +809,14 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         logger.info("[JadwalShiftKerjaAction.savePegawaiShift] end process <<<");
         return listOfResult;
     }
-    public List<JadwalShiftKerjaDetail> deletePegawaiShift(String nip) {
+    public List<JadwalShiftKerjaDetail> deletePegawaiShift(String nip,String shift) {
         logger.info("[JadwalShiftKerjaAction.deletePegawaiShift] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<JadwalShiftKerjaDetail> listOfResult = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
         List<JadwalShiftKerjaDetail> finalResult = new ArrayList<>();
 
         for (JadwalShiftKerjaDetail detail : listOfResult){
-            if (!nip.equalsIgnoreCase(detail.getNip())){
+            if (!nip.equalsIgnoreCase(detail.getNip())||!shift.equalsIgnoreCase(detail.getShiftId())){
                 finalResult.add(detail);
             }
         }
@@ -875,6 +888,89 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
         response = jadwalShiftKerjaBo.getListLibur(tanggalAwal, tanggalAkhir);
         return response;
+    }
+
+    public void savePanggilBerdasarkanId(String id){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
+        NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+        JadwalShiftKerjaDetail data = new JadwalShiftKerjaDetail();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        data.setJadwalShiftKerjaDetailId(id);
+        data.setFlagPanggil("Y");
+        data.setPanggilDate(updateTime);
+        data.setPanggilWho(userLogin);
+
+        List<Notifikasi> notifCuti = jadwalShiftKerjaBo.savePanggilBerdasarkanId(data);
+
+        for (Notifikasi notifikasi : notifCuti ){
+            notifikasiBo.sendNotif(notifikasi);
+        }
+    }
+
+    public void saveLiburBerdasarkanId(String id){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
+        JadwalShiftKerjaDetail data = new JadwalShiftKerjaDetail();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        data.setJadwalShiftKerjaDetailId(id);
+        data.setFlagLibur("Y");
+        data.setLastUpdate(updateTime);
+        data.setLastUpdateWho(userLogin);
+
+        jadwalShiftKerjaBo.saveLiburBerdasarkanId(data);
+    }
+
+    public JadwalShiftKerja searchUserBagian(){
+        JadwalShiftKerja data = new JadwalShiftKerja();
+        String roleId = CommonUtil.roleIdAsLogin();
+        if (roleId.equalsIgnoreCase(CommonConstant.ROLE_ID_ADMIN)){
+            data.setAdminHcm(true);
+        }else{
+            data.setGroupId(CommonUtil.userBagianId());
+        }
+        return data;
+    }
+
+    public JadwalShiftKerja cekJadwalKerja(String nip,String shiftId,String onCall){
+        JadwalShiftKerja jadwalShiftKerja= new JadwalShiftKerja();
+        String status ="";
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<JadwalShiftKerjaDetail> listOfResult = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
+        int jumlahJadwal = 0;
+        if (listOfResult!=null){
+            for (JadwalShiftKerjaDetail jadwalShiftKerjaDetail : listOfResult){
+                if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())){
+                    jumlahJadwal++;
+                }
+                if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())&&shiftId.equalsIgnoreCase(jadwalShiftKerjaDetail.getShiftId())){
+                    status="Pegawai dengan shift ini sudah ada";
+                    break;
+                }
+            }
+            if ("Y".equalsIgnoreCase(onCall)){
+                for (JadwalShiftKerjaDetail jadwalShiftKerjaDetail : listOfResult) {
+                    if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())) {
+                        status="Jadwal dengan On Call Hanya Bisa 1 Kali";
+                        break;
+                    }
+                }
+            }else{
+                for (JadwalShiftKerjaDetail jadwalShiftKerjaDetail : listOfResult){
+                    if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())&&"Y".equalsIgnoreCase(jadwalShiftKerjaDetail.getOnCall())){
+                        status="Jadwal dengan On Call Hanya Bisa 1 Kali";
+                        break;
+                    }
+                }
+            }
+        }
+
+        jadwalShiftKerja.setStatusSave(status);
+        jadwalShiftKerja.setJumlahJadwal(jumlahJadwal);
+        return jadwalShiftKerja;
     }
 
     @Override

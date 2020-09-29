@@ -9,6 +9,9 @@
     <bean id="companyAction" class="com.neurix.authorization.company.action.CompanyAction"
           p:companyBoProxy-ref="companyBoProxy"/>
 
+    <bean id="companyController" class="com.neurix.hris.mobileapi.CompanyController"
+          p:companyBoProxy-ref="companyBoProxy"/>
+
     <bean id="companyBoProxy"
           class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="companyBo">

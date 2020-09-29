@@ -202,6 +202,7 @@ public class IjinBoImpl implements IjinBo {
                 imIjinEntity.setJumlahIjin(bean.getJumlahIjin());
                 imIjinEntity.setGender(bean.getGender());
                 imIjinEntity.setTipeHari(bean.getTipeHari());
+                imIjinEntity.setFlagDiajukanAdmin("N");
                 imIjinEntity.setFlag(bean.getFlag());
                 imIjinEntity.setAction(bean.getAction());
                 imIjinEntity.setCreatedWho(bean.getCreatedWho());
@@ -247,6 +248,9 @@ public class IjinBoImpl implements IjinBo {
             }
             if (searchBean.getTipeHari() != null && !"".equalsIgnoreCase(searchBean.getTipeHari())) {
                 hsCriteria.put("tipeHari", searchBean.getTipeHari());
+            }
+            if (searchBean.getFlagDiajukanAdmin() != null && !"".equalsIgnoreCase(searchBean.getFlagDiajukanAdmin())) {
+                hsCriteria.put("flag_diajukan_admin", searchBean.getFlagDiajukanAdmin());
             }
 
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
@@ -315,7 +319,7 @@ public class IjinBoImpl implements IjinBo {
 
         List<ImIjinEntity> listIjin = null;
         try {
-            listIjin = ijinDao.getListIjin(criteria);
+            listIjin = ijinDao.getListIjin(criteria,"N");
         } catch (HibernateException e) {
             logger.error("[UserBoImpl.getComboUserWithCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
@@ -405,7 +409,7 @@ public class IjinBoImpl implements IjinBo {
     }
 
     @Override
-    public List<Ijin> getComboIjinIdWithKelamin(String nip) throws GeneralBOException {
+    public List<Ijin> getComboIjinIdWithKelamin(String nip,String flagDiajukanAdmin) throws GeneralBOException {
         logger.info("[IjinBoImpl.getComboIjinIdWithKelamin] start process >>>");
         List<Ijin> listComboIjin = new ArrayList();
         List<ImIjinEntity> listIjin = null;
@@ -418,7 +422,7 @@ public class IjinBoImpl implements IjinBo {
         }
         if (biodataEntity.getGender()!=null){
             try {
-                listIjin = ijinDao.getListIjin("%");
+                listIjin = ijinDao.getListIjin("%",flagDiajukanAdmin);
             } catch (HibernateException e) {
                 logger.error("[IjinBoImpl.getComboIjinIdWithKelamin] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());

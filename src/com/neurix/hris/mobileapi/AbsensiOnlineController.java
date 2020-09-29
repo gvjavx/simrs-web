@@ -5,7 +5,9 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.mobileapi.model.MesinAbsensiMobile;
 import com.neurix.hris.transaksi.absensi.bo.AbsensiBo;
 import com.neurix.hris.transaksi.absensi.bo.MesinAbsensiDetailBo;
+import com.neurix.hris.transaksi.absensi.model.ItHrisMesinAbsensiDetailOnCallEntity;
 import com.neurix.hris.transaksi.absensi.model.MesinAbsensiDetail;
+import com.neurix.hris.transaksi.absensi.model.MesinAbsensiDetailOnCall;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
@@ -167,6 +169,7 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
                 throw new GeneralBOException("Found problem when get data AbsensiOnlineController, please info to your admin..." + e.getMessage());
             }
 
+            //ambil jam absen yang terbaru
             String[] temp = result.get(result.size()-1).getScanDate().toString().split(" ");
             String[] temp2 = temp[1].split(":");
 
@@ -174,6 +177,49 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
             model.setScanDate(temp2[0]+":"+temp2[1]);
         }
 
+        if  (action.equalsIgnoreCase("saveAddOnCall")) {
+
+            MesinAbsensiDetailOnCall bean = new MesinAbsensiDetailOnCall();
+            bean.setPin(pin);
+            bean.setStatus("M");
+            bean.setScanDate(new Timestamp(System.currentTimeMillis()));
+            bean.setFlag("Y");
+            bean.setAction("C");
+            bean.setCreatedDate(now);
+            bean.setLastUpdate(now);
+            bean.setCreatedWho(username);
+            bean.setLastUpdateWho(username);
+
+            try {
+                absensiBoProxy.saveAddAbsensiOnCall(bean);
+                model.setMessage("Success");
+            } catch (GeneralBOException e) {
+                logger.error("AbsensiOnlineController.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving data AbsensiOnlineController, please info to your admin..." + e.getMessage());
+            }
+        }
+
+        if (action.equalsIgnoreCase("getAbsensiOnCall")) {
+
+            List<MesinAbsensiDetailOnCall> result = new ArrayList<>();
+
+            MesinAbsensiDetailOnCall bean = new MesinAbsensiDetailOnCall();
+            bean.setPin(pin);
+            bean.setTanggalDari(CommonUtil.convertToDate(tanggal));
+
+            try {
+               result = absensiBoProxy.getAbsensiOnCallByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("AbsensiOnlineController.getAbensi] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when get data AbsensiOnlineController, please info to your admin..." + e.getMessage());
+            }
+
+            //ambil jam absen yang terbaru
+            String[] temp = result.get(result.size()-1).getScanDate().toString().split(" ");
+            String[] temp2 = temp[1].split(":");
+
+            model.setScanDate(temp2[0]+":"+temp2[1]);
+        }
 
         logger.info("AbsensiOnlineController.create] end process POST /absensi <<<");
         return new DefaultHttpHeaders("success")

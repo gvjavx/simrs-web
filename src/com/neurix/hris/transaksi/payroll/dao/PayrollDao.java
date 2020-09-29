@@ -13,7 +13,6 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.security.Timestamp;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
@@ -139,6 +138,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  ON danaPensiun.dana_pensiun_id = pegawai.dana_pensiun\n" +
                 "WHERE pegawai.flag = 'Y'\n" +
                 "AND posisi.flag = 'Y'\n" +
+                "AND pegawai.flag_dokter_kso = 'N'\n" +
                 "AND posisi.branch_id = '"+branchId+"'\n" +
                 strWhere+"\n" +
                 "ORDER BY position.kelompok_id";
@@ -214,6 +214,155 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 result.setProfesiId((String) row[37]);
             }
             result.setBiodataGaji(BigDecimal.valueOf(Double.parseDouble(row[38].toString())));
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
+
+    public List<ItPayrollEntity> getDataEditPegawaiNonAktif(String branchId, String strWhere,String bulan,String tahun){
+        List<ItPayrollEntity> listOfResult = new ArrayList<ItPayrollEntity>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT DISTINCT \n" +
+                "  pegawai.nip,\n" +
+                "  pegawai.nama_pegawai,\n" +
+                "  posisi.branch_id,\n" +
+                "  branch.branch_name,\n" +
+                "  position.department_id,\n" +
+                "  department.department_name,\n" +
+                "  posisi.position_id,\n" +
+                "  position.position_name,\n" +
+                "  pegawai.golongan_id,\n" +
+                "  golongan.grade_level,\n" +
+                "  position.kelompok_id,\n" +
+                "  pegawai.point,\n" +
+                "  pegawai.status_keluarga,\n" +
+                "  pegawai.jumlah_anak,\n" +
+                "  branch.multifikator,\n" +
+                "  pegawai.zakat_profesi,\n" +
+                "  pegawai.jenis_kelamin,\n" +
+                "  pegawai.dana_pensiun, \n" +
+                "  pegawai.tanggal_aktif, \n" +
+                "  pegawai.tanggal_pensiun, \n" +
+                "  pegawai.tipe_pegawai, \n" +
+                "  pegawai.struktur_gaji, \n" +
+                "  pegawai.gaji, \n" +
+                "  tipePegawai.tipe_pegawai_name, \n" +
+                "  position.kelompok_id,\n" +
+                "  pegawai.status_giling,\n" +
+                "  danaPensiun.dana_pensiun as nama_dana_pensiun,\n" +
+                "  posisi.pjs_flag,\n" +
+                "  pegawai.npwp,\n" +
+                "  pegawai.status_pegawai, \n" +
+                "  pegawai.golongan_dapen, \n" +
+                "  pegawai.golongan_dapen_nusindo,  \n" +
+                "  pegawai.poin_lebih,  branch.umr, \n" +
+                "  pegawai.golongan_dapen_id, \n" +
+                "  pegawai.masa_kerja_gol, \n" +
+                "  pegawai.tgl_akhir_kontrak, \n" +
+                "  posisi.profesi_id,\n" +
+                "  pegawai.gaji,\n" +
+                "  mj.tanggal_efektif\n" +
+                "   FROM im_hris_pegawai pegawai\n" +
+                "LEFT JOIN it_hris_pegawai_position posisi\n" +
+                "  ON posisi.nip = pegawai.nip\n" +
+                "LEFT JOIN im_branches branch\n" +
+                "  ON branch.branch_id = posisi.branch_id\n" +
+                "LEFT JOIN im_position position\n" +
+                "  ON position.position_id = posisi.position_id\n" +
+                "LEFT JOIN im_hris_department department\n" +
+                "  ON department.department_id = position.department_id\n" +
+                "LEFT JOIN im_hris_golongan golongan\n" +
+                "  ON golongan.golongan_id = pegawai.golongan_id\n" +
+                "LEFT JOIN im_hris_tipe_pegawai tipePegawai\n" +
+                "  ON tipePegawai.tipe_pegawai_id = pegawai.tipe_pegawai\n" +
+                "LEFT JOIN im_hris_payroll_dana_pensiun danaPensiun\n" +
+                "  ON danaPensiun.dana_pensiun_id = pegawai.dana_pensiun\n" +
+                "LEFT JOIN it_hris_mutasi_jabatan mj ON mj.nip=pegawai.nip\n" +
+                "LEFT JOIN im_hris_status_mutasi sm ON sm.status_mutasi_id = mj.status\n" +
+                "WHERE pegawai.flag = 'N'\n" +
+                "AND posisi.flag = 'N'\n" +
+                "AND pegawai.flag_dokter_kso = 'N'\n" +
+                "AND posisi.branch_id = '"+branchId+"'\n" +
+                 strWhere +
+                "AND to_char(mj.tanggal_efektif, 'MM-YYYY') = '"+bulan+"-"+tahun+"'\n" +
+                "AND sm.flag_gaji_proporsional='Y'\n" +
+                "ORDER BY position.kelompok_id";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            ItPayrollEntity result  = new ItPayrollEntity();
+            result.setNip((String) row[0]);
+            result.setNama((String) row[1]);
+            result.setBranchId((String) row[2]);
+            result.setBranchName((String) row[3]);
+            result.setDepartmentId((String) row[4]);
+            result.setDepartmentName((String) row[5]);
+            result.setPositionId((String) row[6]);
+            result.setPositionName((String) row[7]);
+            result.setGolonganId((String) row[8]);
+
+            Integer level = 0;
+            if (row[9]!=null){
+                level = (Integer) row[9];
+            }
+
+            result.setGolonganName(String.valueOf(level));
+            result.setKelompokId((String) row[10]);
+            if (row[11]!=null){
+                result.setPoint(Integer.parseInt(row[11].toString()));
+            }else{
+                result.setPoint(0);
+            }
+            result.setStatusKeluarga((String) row[12]);
+
+            if (row[13]!=null){
+                result.setJumlahAnak(Integer.valueOf(row[13].toString()));
+            }else{
+                result.setJumlahAnak(0);
+            }
+
+            if (row[14]!=null){
+                result.setMultifikator(Double.valueOf(row[14].toString()).intValue() + "");
+            }
+            result.setFlagZakat((String) row[15]);
+            result.setGender((String) row[16]);
+            result.setDanaPensiun((String) row[17]);
+            result.setTanggalAktif((Date) row[18]);
+            result.setTanggalPensiun((Date) row[19]);
+            result.setTipePegawai((String) row[20]);
+            result.setStrukturGaji((String) row[21]);
+            if (row[22]!=null){
+                result.setBiodataGaji(BigDecimal.valueOf(Double.parseDouble(row[22].toString())));
+            }
+            result.setTipePegawaiName((String) row[23]);
+            result.setKelompokId((String) row[24]);
+            result.setStatusGiling((String) row[25]);
+            result.setDanaPensiunName((String) row[26]);
+            result.setFlagPjs((String) row[27]);
+            result.setNpwp((String) row[28]);
+            result.setStatusPegawai((String) row[29]);
+            result.setGolonganDapen((String) row[30]);
+            result.setGolonganDapenNusindo((String) row[31]);
+            result.setPointLebih(Integer.parseInt(row[32].toString()));
+            if (row[33]!=null){
+                result.setUmr(BigDecimal.valueOf(Double.parseDouble(row[33].toString())));
+            }
+            result.setGolonganDapenId((String) row[34]);
+            result.setMasaKerjaGol((Integer)row[35]);
+            if (row[36]!=null){
+                result.setTanggalAkhirKontrak((Date)row[36]);
+            }
+            if (row[37]!=null){
+                result.setProfesiId((String) row[37]);
+            }
+            result.setBiodataGaji(BigDecimal.valueOf(Double.parseDouble(row[38].toString())));
+            Timestamp tanggalEfektif =(Timestamp) row[39];
+            result.setTanggalEfektif(new Date (tanggalEfektif.getTime()));
+
             listOfResult.add(result);
         }
         return listOfResult;

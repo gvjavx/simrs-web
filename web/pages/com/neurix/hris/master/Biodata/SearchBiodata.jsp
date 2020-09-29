@@ -680,8 +680,20 @@
                                         </sj:submit>
                                     </td>
                                     <td>
-
-                                        <a href="add_biodata.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Biodata</a>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Add Biodata</button>
+                                            <button type="button" class="btn btn-success dropdown-toggle"
+                                                    data-toggle="dropdown" style="height: 34px">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="add_biodata.action?tipe=karyawan">
+                                                    <i class="fa fa-user-plus"></i>Karyawan Kantor</a></li>
+                                                <li><a href="add_biodata.action?tipe=dokter">
+                                                    <i class="fa fa-user-plus"></i>Dokter KSO</a></li>
+                                            </ul>
+                                        </div>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_biodata"/>'">
@@ -704,7 +716,7 @@
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
-                                        <s:set name="listOfbiodata" value="#session.listOfResult" scope="request" />
+                                        <s:set name="listOfbiodata" value="#session.listOfResultBiodata" scope="request" />
                                         <display:table name="listOfbiodata" class="table table-condensed table-striped table-hover listOfbiodata"
                                                        requestURI="paging_displaytag_biodata.action" export="true" id="row" pagesize="40" style="font-size:10">
                                             <display:column media="html" title="Edit">

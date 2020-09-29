@@ -248,6 +248,8 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setTarifPayorId(imBranches.getTarifPayorId());
                     resultBranch.setPayorCd(imBranches.getTarifPayorId());
                     resultBranch.setCoderNik(imBranches.getCoderNik());
+                    resultBranch.setLat(imBranches.getLat());
+                    resultBranch.setLon(imBranches.getLon());
 
                     listOfResultBranch.add(resultBranch);
                 }

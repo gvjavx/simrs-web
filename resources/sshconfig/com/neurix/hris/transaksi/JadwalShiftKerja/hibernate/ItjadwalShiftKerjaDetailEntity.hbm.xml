@@ -33,6 +33,21 @@
         <property name="namaPegawai">
             <column name="nama_pegawai" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="onCall">
+            <column name="on_call"/>
+        </property>
+        <property name="flagPanggil">
+            <column name="flag_panggil"/>
+        </property>
+        <property name="flagLibur">
+            <column name="flag_libur"/>
+        </property>
+        <property name="panggilWho">
+            <column name="panggil_who"/>
+        </property>
+        <property name="panggilDate">
+            <column name="panggil_date"/>
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
