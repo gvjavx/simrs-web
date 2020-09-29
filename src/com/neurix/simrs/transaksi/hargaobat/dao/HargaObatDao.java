@@ -106,6 +106,13 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 Integer intMargin       = margin.intValue();
 
                 obat.setMargin(intMargin);
+
+                if (obat.getStandarMargin() != null){
+                    if (obat.getStandarMargin().compareTo(obat.getStandarMargin()) == 1){
+                        obat.setFlagKurangMargin("Y");
+                    }
+                }
+
                 obats.add(obat);
             }
         }
