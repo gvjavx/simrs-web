@@ -210,4 +210,9 @@ WITH (
 ALTER TABLE public.it_hris_mesin_absensi_detail_oncall
   OWNER TO postgres;
 
+--2020-09-21
+  ALTER TABLE public.im_branches ADD lat VARCHAR(100) NULL
+  ALTER TABLE public.im_branches ADD lon VARCHAR(100) NULL
+
+
 

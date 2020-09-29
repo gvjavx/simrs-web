@@ -71,6 +71,43 @@ public class JadwalShiftKerjaDetail extends BaseModel {
         this.onCall = onCall;
     }
 
+    private String jadwalName;
+    private String jamAwal;
+    private String jamAkhir;
+    private String branchId;
+
+    public String getJadwalName() {
+        return jadwalName;
+    }
+
+    public void setJadwalName(String jadwalName) {
+        this.jadwalName = jadwalName;
+    }
+
+    public String getJamAwal() {
+        return jamAwal;
+    }
+
+    public void setJamAwal(String jamAwal) {
+        this.jamAwal = jamAwal;
+    }
+
+    public String getJamAkhir() {
+        return jamAkhir;
+    }
+
+    public void setJamAkhir(String jamAkhir) {
+        this.jamAkhir = jamAkhir;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getProfesiid() {
         return profesiid;
     }

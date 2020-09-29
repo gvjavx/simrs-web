@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.jadwalShiftKerja.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -10,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -335,6 +337,67 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
             result.setNip((String) row[0]);
             result.setNamaPegawai((String) row[1]);
             result.setShiftName((String) row[2]);
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
+
+    public List<JadwalShiftKerjaDetail> getJadwalShiftByBulanTahun(String nip, String branchId, String profesiId, String firstDate, String lastDate) {
+        String searchNip = "";
+        String searchBranchId = "";
+        String searchProfesiId = "";
+
+        if (nip != null && !nip.equalsIgnoreCase("")) {
+            searchNip = " AND dt.nip = " + " '" + nip + "' ";
+        }
+
+        if (branchId != null && !branchId.equalsIgnoreCase("")) {
+            searchBranchId = " AND sk.branch_id = " + " '" + branchId + "' ";
+        }
+
+        if (profesiId != null && !profesiId.equalsIgnoreCase("")) {
+            searchProfesiId = " AND dt.profesi_id = " + " '" + profesiId + "' ";
+        }
+
+        List<JadwalShiftKerjaDetail> listOfResult = new ArrayList<>();
+        List<Object[]> results = new ArrayList<>();
+        String query = "SELECT \n" +
+                "dt.jadwal_shift_kerja_detail_id, \n" +
+                "sk.jadwal_name, \n" +
+                "sf.shift_name, \n" +
+                "sf.jam_awal, \n" +
+                "sf.jam_akhir, \n" +
+                "dt.nip, \n" +
+                "dt.nama_pegawai, \n" +
+                "dt.profesi_name, \n" +
+                "sk.branch_id, \n" +
+                "dt.on_call, \n" +
+                "dt.flag_panggil \n" +
+                "FROM it_hris_jadwal_shift_kerja_detail dt\n" +
+                "JOIN it_hris_jadwal_shift_kerja sk ON dt.jadwal_shift_kerja_id = sk.jadwal_shift_kerja_id\n" +
+                "JOIN im_hris_shift sf ON dt.shift_id = sf.shift_id\n" +
+                "WHERE dt.flag = 'Y'"  + searchNip + searchBranchId + searchProfesiId + "\n" +
+                "AND sk.tanggal >= '" + firstDate + "' \n" +
+                "AND sk.tanggal <= '" + lastDate + "' \n" +
+                "ORDER BY sk.tanggal DESC";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results ) {
+            JadwalShiftKerjaDetail result = new JadwalShiftKerjaDetail();
+            result.setJadwalShiftKerjaDetailId((String) row[0]);
+            result.setJadwalName(((String) row[1]));
+            result.setShiftName((String) row[2]);
+            result.setJamAwal((String) row[3]);
+            result.setJamAkhir((String) row[4]);
+            result.setNip((String) row[5]);
+            result.setNamaPegawai((String) row[6]);
+            result.setProfesiName((String) row[7]);
+            result.setBranchId((String) row[8]);
+            result.setOnCall((String) row[9]);
+            result.setFlagPanggil((String) row[10]);
             listOfResult.add(result);
         }
         return listOfResult;

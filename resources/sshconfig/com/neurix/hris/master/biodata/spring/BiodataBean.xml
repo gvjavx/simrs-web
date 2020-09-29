@@ -11,6 +11,9 @@
     <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
           p:biodataBoProxy-ref="biodataBoProxy" />
 
+    <bean id="jadwalShiftController" class="com.neurix.hris.mobileapi.JadwalShiftController"
+          p:biodataBoProxy-ref="biodataBoProxy" />
+
     <bean id="personalAction" class="com.neurix.hris.master.biodata.action.BiodataAction"
           p:biodataBoProxy-ref="biodataBoProxy" />
 

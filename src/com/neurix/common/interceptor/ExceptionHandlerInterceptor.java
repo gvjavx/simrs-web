@@ -164,6 +164,10 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
             } else if ("/mobileapi/historypegawai".equalsIgnoreCase(namespace)) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
+            } else if ("/mobileapi/jadwalshift".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
+            } else if ("/mobileapi/antrianpoli".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
             }
             else {
 

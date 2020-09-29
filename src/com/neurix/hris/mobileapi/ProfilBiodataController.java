@@ -76,6 +76,7 @@ public class ProfilBiodataController implements ModelDriven<Object> {
             model.setPathFoto(bio.getPathFoto());
             model.setFotoUpload(bio.getFotoUpload());
             model.setNoTelp(bio.getNoTelp());
+            model.setFlagShift(bio.getShift());
         }
         logger.info("[BiodataController.create] end process POST /activity <<<");
         return new DefaultHttpHeaders("success").disableCaching();

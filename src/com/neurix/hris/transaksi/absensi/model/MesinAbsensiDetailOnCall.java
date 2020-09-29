@@ -3,6 +3,7 @@ package com.neurix.hris.transaksi.absensi.model;
 import com.neurix.common.model.BaseModel;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 public class MesinAbsensiDetailOnCall extends BaseModel {
@@ -10,6 +11,24 @@ public class MesinAbsensiDetailOnCall extends BaseModel {
     private String pin;
     private String status;
     private Timestamp scanDate;
+    private Date tanggalDari;
+    private Date tanggalSelesai;
+
+    public Date getTanggalDari() {
+        return tanggalDari;
+    }
+
+    public void setTanggalDari(Date tanggalDari) {
+        this.tanggalDari = tanggalDari;
+    }
+
+    public Date getTanggalSelesai() {
+        return tanggalSelesai;
+    }
+
+    public void setTanggalSelesai(Date tanggalSelesai) {
+        this.tanggalSelesai = tanggalSelesai;
+    }
 
     public String getMesinAbsensiDetailOnCallId() {
         return mesinAbsensiDetailOnCallId;
