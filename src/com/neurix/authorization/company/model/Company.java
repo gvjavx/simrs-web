@@ -42,6 +42,16 @@ public class Company extends BaseModel implements Serializable {
     private BigDecimal paramDapenPegawai;
     private BigDecimal biayaJabatan;
 
+    private BigInteger jarakAbsenMobile;
+
+    public BigInteger getJarakAbsenMobile() {
+        return jarakAbsenMobile;
+    }
+
+    public void setJarakAbsenMobile(BigInteger jarakAbsenMobile) {
+        this.jarakAbsenMobile = jarakAbsenMobile;
+    }
+
     public BigDecimal getParamDapenPegawai() {
         return paramDapenPegawai;
     }
