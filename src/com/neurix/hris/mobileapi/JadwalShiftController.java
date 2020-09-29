@@ -171,15 +171,15 @@ public class JadwalShiftController implements ModelDriven<Object> {
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(dtTanggalAkhir);
                             calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-                            tanggalAkhir = CommonUtil.convertDateToString(calendar.getTime());
+                            tanggalAkhir = CommonUtil.convertDateToString2(calendar.getTime());
                         } else {
-                            tanggalAwal = "01-01-" + tahun;
-                            tanggalAkhir = "31-12-" + tahun;
+                            tanggalAwal = tahun+"-01-01";
+                            tanggalAkhir = tahun+"-12-31";
                         }
                     } else {
                         Calendar calendar = Calendar.getInstance();
-                        tanggalAwal = CommonUtil.convertDateToString(calendar.getTime());
-                        tanggalAkhir = CommonUtil.convertDateToString(calendar.getTime());
+                        tanggalAwal = CommonUtil.convertDateToString2(calendar.getTime());
+                        tanggalAkhir = CommonUtil.convertDateToString2(calendar.getTime());
                     }
 
 

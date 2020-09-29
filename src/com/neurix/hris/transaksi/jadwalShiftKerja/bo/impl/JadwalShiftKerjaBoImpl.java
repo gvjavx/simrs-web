@@ -739,7 +739,7 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             jadwalShiftKerjaDetailEntity.setPanggilDate(bean.getPanggilDate());
             jadwalShiftKerjaDetailDao.updateAndSave(jadwalShiftKerjaDetailEntity);
 
-            ImHrisShiftEntity shiftEntity = shiftDao.getById("shiftId", bean.getShiftId());
+            ImHrisShiftEntity shiftEntity = shiftDao.getById("shiftId", jadwalShiftKerjaDetailEntity.getShiftId());
 
             //KIRIM NOTIFIKASI
             notif.setNip(jadwalShiftKerjaDetailEntity.getNip());
