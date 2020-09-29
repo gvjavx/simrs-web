@@ -26,9 +26,15 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
     public List<MtSimrsHargaObatEntity> getByCriteria(Map mapCriteria) {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MtSimrsHargaObatEntity.class);
+
+        if (mapCriteria.get("id_harga_obat") != null){
+            criteria.add(Restrictions.eq("idHargaObat", mapCriteria.get("id_harga_obat").toString()));
+        }
+
         if (mapCriteria.get("id_obat") != null){
             criteria.add(Restrictions.eq("idObat", mapCriteria.get("id_obat").toString()));
         }
+
         if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         }
