@@ -222,6 +222,10 @@
             <filter-chain pattern="/mobileapi/antrianpoli/*" filters="none" />
             <filter-chain pattern="/mobileapi/antrianpoli/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/company" filters="none" />
+            <filter-chain pattern="/mobileapi/company/*" filters="none" />
+            <filter-chain pattern="/mobileapi/company/*/**" filters="none" />
+
 
             <filter-chain pattern="/**/*"
                           filters="

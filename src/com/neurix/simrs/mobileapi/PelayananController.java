@@ -300,6 +300,7 @@ public class PelayananController implements ModelDriven<Object> {
                 result.setBranchId(item.getBranchId());
                 result.setBranchName(item.getBranchName());
                 result.setKuota(item.getKuota());
+                result.setFlagLibur(item.getFlagLibur());
 
                 try {
                     listAntianOnline = antrianOnlineBoProxy.getAntrianByCriteria(item.getIdPelayanan(), item.getIdDokter(), "", CommonUtil.convertStringToDate(tglCheckup), item.getJamAwal(), item.getJamAkhir(), branchId);

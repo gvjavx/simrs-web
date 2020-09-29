@@ -18,6 +18,15 @@ public class JadwalPelayananDTO extends BaseModel {
     private String branchId;
     private String branchName;
     private String kuota;
+    private String flagLibur;
+
+    public String getFlagLibur() {
+        return flagLibur;
+    }
+
+    public void setFlagLibur(String flagLibur) {
+        this.flagLibur = flagLibur;
+    }
 
     public String getKuota() {
         return kuota;

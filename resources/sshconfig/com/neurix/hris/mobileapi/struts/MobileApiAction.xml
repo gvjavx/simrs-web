@@ -229,6 +229,9 @@
         <action name="antrianpoli/*" class="com.neurix.simrs.mobileapi.antrian.AntrianController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="company/*" class="com.neurix.hris.mobileapi.CompanyController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

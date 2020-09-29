@@ -208,6 +208,7 @@ public class CompanyBoImpl implements CompanyBo {
             resultCompany.setParamDapen(imCompany.getParamDapen());
             resultCompany.setParamDapenPegawai(imCompany.getParamDapenPegawai());
             resultCompany.setBiayaJabatan(imCompany.getBiayaJabatan());
+            resultCompany.setJarakAbsenMobile(imCompany.getJarakAbsenMobile());
         }
 
         logger.info("[CompanyBoImpl.getBranchById] end process <<<");

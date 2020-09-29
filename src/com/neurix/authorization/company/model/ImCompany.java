@@ -145,6 +145,15 @@ public class ImCompany implements Serializable {
     private BigDecimal biayaJabatan;
 
     private Integer jamBatasAbsen;
+    private BigInteger jarakAbsenMobile;
+
+    public BigInteger getJarakAbsenMobile() {
+        return jarakAbsenMobile;
+    }
+
+    public void setJarakAbsenMobile(BigInteger jarakAbsenMobile) {
+        this.jarakAbsenMobile = jarakAbsenMobile;
+    }
 
     public Integer getJamBatasAbsen() {
         return jamBatasAbsen;

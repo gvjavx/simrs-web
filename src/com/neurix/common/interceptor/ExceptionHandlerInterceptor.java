@@ -168,6 +168,8 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
             } else if ("/mobileapi/antrianpoli".equalsIgnoreCase(namespace)) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
+            } else if ("/mobileapi/company".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
             }
             else {
 
