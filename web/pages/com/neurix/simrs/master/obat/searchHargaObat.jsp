@@ -380,6 +380,7 @@
                    $("#mod-harga-net").val(item.hargaNet);
                    $("#mod-diskon").val(item.diskon);
                    $("#mod-harga-jual").val(item.hargaJual);
+                   $("#mod-margin").val(item.margin);
                });
                $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\',\''+idBarang+'\')');
            }
@@ -391,8 +392,9 @@
         var harga       = $("#mod-harga-net").val();
         var hargarata   = $("#mod-harga-rata").val();
 
-        var selisih = parseFloat(harga) - parseFloat(hargarata);
-        var margin = parseFloat(selisih) / parseFloat(harga) * 100;
+        var selisih     = parseFloat(harga) - parseFloat(hargarata);
+        var margin      = parseFloat(selisih) / parseFloat(hargarata) * 100;
+
         $("#mod-margin").val(parseInt(margin));
         $("#mod-harga-jual").val(harga);
         checkMargin();

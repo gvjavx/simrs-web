@@ -24,6 +24,24 @@ public class HargaObat {
     private String lastUpdateWho;
     private String satuan;
     private String idBarang;
+    private Integer margin;
+    private String branchId;
+
+    public Integer getMargin() {
+        return margin;
+    }
+
+    public void setMargin(Integer margin) {
+        this.margin = margin;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public String getIdHargaObat() {
         return idHargaObat;
