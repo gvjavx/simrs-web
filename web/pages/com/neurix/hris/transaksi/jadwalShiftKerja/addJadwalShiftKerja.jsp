@@ -59,12 +59,25 @@
                     dwr.engine.setAsync(false);
                     JadwalShiftKerjaAction.cekTanggal(unit,tglAwal,tglAkhir,function(listdata) {
                         var rowCount = $('.shiftTable tr').length;
-                        console.log(rowCount);
-                        if (listdata=="00"){
-                            if (confirm('Do you want to save this record?')) {
-                                JadwalShiftKerjaAction.cekLibur(awal,akhir,function(response) {
-                                    if (response.status=="error"){
-                                        if (confirm("ini adalah hari libur. Ingin melanjutkan?")){
+                        if (rowCount!=null&&rowCount>1){
+                            if (listdata=="00"){
+                                if (confirm('Do you want to save this record?')) {
+                                    JadwalShiftKerjaAction.cekLibur(awal,akhir,function(response) {
+                                        if (response.status=="error"){
+                                            if (confirm("ini adalah hari libur. Ingin melanjutkan?")){
+                                                event.originalEvent.options.submit = true;
+                                                $.publish('showDialog');
+                                                // if (confirm('Do you want to save this record?')) {
+                                                //     event.originalEvent.options.submit = true;
+                                                //     $.publish('showDialog');
+                                                // } else {
+                                                //     // Cancel Submit comes with 1.8.0
+                                                //     event.originalEvent.options.submit = false;
+                                                // }
+                                            }else{
+                                                event.originalEvent.options.submit = false;
+                                            }
+                                        } else{
                                             event.originalEvent.options.submit = true;
                                             $.publish('showDialog');
                                             // if (confirm('Do you want to save this record?')) {
@@ -74,46 +87,28 @@
                                             //     // Cancel Submit comes with 1.8.0
                                             //     event.originalEvent.options.submit = false;
                                             // }
-                                        }else{
-                                            event.originalEvent.options.submit = false;
                                         }
-                                    } else{
-                                        event.originalEvent.options.submit = true;
-                                        $.publish('showDialog');
-                                        // if (confirm('Do you want to save this record?')) {
-                                        //     event.originalEvent.options.submit = true;
-                                        //     $.publish('showDialog');
-                                        // } else {
-                                        //     // Cancel Submit comes with 1.8.0
-                                        //     event.originalEvent.options.submit = false;
-                                        // }
-                                    }
-                                });
-                            } else {
+                                    });
+                                } else {
+                                    // Cancel Submit comes with 1.8.0
+                                    event.originalEvent.options.submit = false;
+                                }
+                            } else{
                                 // Cancel Submit comes with 1.8.0
                                 event.originalEvent.options.submit = false;
+                                var msg = "Tanggal ini sudah ada";
+                                document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                                $.publish('showErrorValidationDialog');
                             }
                         } else{
                             // Cancel Submit comes with 1.8.0
                             event.originalEvent.options.submit = false;
-                            var msg = "Tanggal ini sudah ada";
+                            var msg = '<strong>Daftar pegawai shift kerja masih kosong</strong>.' + '<br/>';
                             document.getElementById('errorValidationMessage').innerHTML = msg;
 
                             $.publish('showErrorValidationDialog');
                         }
-
-                        // var rowCount = $('.shiftTable tr').length;
-                        // if (rowCount!=null&&rowCount>1){
-                        //     console.log(rowCount);
-                        //
-                        // } else{
-                        //     // Cancel Submit comes with 1.8.0
-                        //     event.originalEvent.options.submit = false;
-                        //     var msg = '<strong>Daftar pegawai shift kerja masih kosong</strong>.' + '<br/>';
-                        //     document.getElementById('errorValidationMessage').innerHTML = msg;
-                        //
-                        //     $.publish('showErrorValidationDialog');
-                        // }
 
                     });
                 } else {
@@ -621,6 +616,7 @@
             dwr.engine.setAsync(false);
             JadwalShiftKerjaAction.deletePegawaiShift(nip,shift,function() {
                 resultPerson();
+                $('.odd').remove();
             });
         }
     });
