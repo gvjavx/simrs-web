@@ -2430,7 +2430,6 @@
 
 <div id="modal-pelatihanJabatan" class="modal fade" role="dialog">
     <div class="modal-dialog" style="width: 500px">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -2439,62 +2438,69 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="myFormPelatihanJabatan">
-
                     <div style="display: none" class="form-group">
                         <label class="control-label col-sm-3" >Id : </label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="pelatihanId" >
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Jenis :</label>
-                        <div class="col-sm-8">
-                            <%--<input type="text" class="form-control" id="pelatihanJenis">--%>
-                                <s:action id="initComboJenis" namespace="/pelatihanJabatan" name="searchKelompok_pelatihanJabatan"/>
-                                <s:select list="#initComboJenis.comboListOfPelatihanJabatan" id="pelatihanJenis"
-                                          listKey="pelatihanId" listValue="pelatihanName" cssClass="form-control"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Lembaga :</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pelatihanLembaga">
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Nama Pelatihan :</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="namaPelatihan">
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Tahun :</label>
+                        <label class="control-label col-sm-4" >Judul Pelatihan :</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pelatihanTahun">
+                            <input type="text" class="form-control" id="judulPelatihan">
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Status:</label>
+                        <label class="control-label col-sm-4" >Penyelenggara :</label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="pelatihanStatus">
-                                <option value="lulus">Lulus</option>
-                                <option value="tidak">Tidak</option>
+                            <input type="text" class="form-control" id="pelatihanLembaga">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Lama Pelatihan :</label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" id="jumlahJamPelatihan">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Sertifikasi :</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="sertifikasiPelatihan">
+                                <option value="Y">Ya</option>
+                                <option value="N">Tidak</option>
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Nilai:</label>
+                        <label class="control-label col-sm-4" >Tanggal Pelatihan :</label>
                         <div class="col-sm-8">
-                            <input onkeyup="checkDec(this);" type="text" class="form-control" id="pelatihanNilai">
+                            <input type="text" class="form-control" id="tanggalPelatihan" readonly style="background-color: #fff">
+                            <script>
+                                $('#tanggalPelatihan').datepicker({
+                                    dateFormat: 'dd-mm-yy'
+                                });
+                            </script>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Masa Berlaku Sert.:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="masaBerlakuSertifikat">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Sertifikat (Jpeg) : </label>
+                        <div class="col-sm-8">
+                            <input type="file" id="fileSertifikat"  accept=".jpg" class="form-control" name="fileUpload"/>
+                            <input type="hidden" id="base64sertifikat" />
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -2516,61 +2522,54 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="myFormDeletePelatihanJabatan">
-
                     <div style="display: none" class="form-group">
                         <label class="control-label col-sm-3" >Id : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="deletePelatihanId" >
+                            <input type="text" class="form-control" id="delpelatihanId" readonly >
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Jenis :</label>
+                        <label class="control-label col-sm-4" >Nama Pelatihan :</label>
                         <div class="col-sm-8">
-                            <s:action id="initComboJenis" namespace="/pelatihanJabatan" name="searchKelompok_pelatihanJabatan"/>
-                            <s:select list="#initComboJenis.comboListOfPelatihanJabatan" id="deletePelatihanJenis" disabled="true"
-                                      listKey="pelatihanId" listValue="pelatihanName" cssClass="form-control"/>
+                            <input type="text" class="form-control" id="delnamaPelatihan" readonly>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Lembaga :</label>
+                        <label class="control-label col-sm-4" >Judul Pelatihan :</label>
                         <div class="col-sm-8">
-                            <input type="text" disabled class="form-control" id="deletePelatihanLembaga">
+                            <input type="text" class="form-control" id="deljudulPelatihan" readonly>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Angkatan :</label>
+                        <label class="control-label col-sm-4" >Penyelenggara :</label>
                         <div class="col-sm-8">
-                            <input type="text" disabled class="form-control" id="deletePelatihanAngkatan">
+                            <input type="text" class="form-control" id="delpelatihanLembaga" readonly>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Tahun :</label>
+                        <label class="control-label col-sm-4" >Lama Pelatihan :</label>
                         <div class="col-sm-8">
-                            <input type="text" disabled class="form-control" id="deletePelatihanTahun">
+                            <input type="number" class="form-control" id="deljumlahJamPelatihan" readonly>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Status:</label>
+                        <label class="control-label col-sm-4" >Sertifikasi :</label>
                         <div class="col-sm-8">
-                            <select class="form-control" disabled id="deletePelatihanStatus">
-                                <option value="lulus">Lulus</option>
-                                <option value="tidak">Tidak</option>
-                            </select>
+                            <input type="text" class="form-control" id="delsertifikasiPelatihan" readonly>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Nilai:</label>
+                        <label class="control-label col-sm-4" >Tanggal Pelatihan :</label>
                         <div class="col-sm-8">
-                            <input onkeyup="checkDec(this);" type="text" disabled class="form-control" id="deletePelatihanNilai">
+                            <input type="text" class="form-control" id="deltanggalPelatihan" readonly>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Masa Berlaku Sert.:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="delmasaBerlakuSertifikat" readonly>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -2963,6 +2962,24 @@
             <div class="modal-footer">
                 <button id="btnDelete" type="button" class="btn btn-default btn-info">Delete</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-view-lampiran" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Sertifikat</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-responsive" id="my-image2">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -3612,8 +3629,8 @@
         }
 
         function loadSertifikat(nip) {
-            $('.sertifikatTable').find('tbody').remove();
-            $('.sertifikatTable').find('thead').remove();
+            $('.pelatihanJabatanTable').find('tbody').remove();
+            $('.pelatihanJabatanTable').find('thead').remove();
             dwr.engine.setAsync(false);
             var tmp_table = "";
             BiodataAction.searchDataSertifikat(nip, function (listdata) {
@@ -3621,36 +3638,30 @@
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Pengesahan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Masa Berlaku</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Masa Berakhir</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Sertifikat</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Lembaga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tempat Pelaksana</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jumlah Hari</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nilai</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Prestasi</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>View</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                 "</tr></thead>";
                 </s:if>
                 <s:else>
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Pengesahan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Masa Berlaku</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Masa Berakhir</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Sertifikat</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Lembaga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tempat Pelaksana</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jumlah Hari</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nilai</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Prestasi</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml. Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>View</th>" +
+                    "</tr></thead>";
                 </s:else>
 
 
@@ -3658,18 +3669,19 @@
                 $.each(listdata, function (i, item) {
                     <s:if test="isAddOrEdit()">
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
+                            '<td align="center" >' + (i + 1) + '</td>' +
                             '<td >' + item.jenis+ '</td>' +
-                            '<td >' + item.stTanggalPengesahan + '</td>' +
-                            '<td align="center">' + item.stMasaBerlaku+ '</td>' +
-                            '<td align="center">' + item.stMasaBerakhir+ '</td>' +
-                            '<td align="center">' + item.nama+ '</td>' +
+                            '<td >' + item.nama + '</td>' +
                             '<td align="center">' + item.lembaga+ '</td>' +
-                            '<td align="center">' + item.tempatPelaksana+ '</td>' +
                             '<td align="center">' + item.jumlahHari+ '</td>' +
-                            '<td align="center">' + item.nilai+ '</td>' +
                             '<td align="center">' + item.lulus+ '</td>' +
+                            '<td align="center">' + item.stTanggalPengesahan+ '</td>' +
                             '<td align="center">' + item.prestasiGrade+ '</td>' +
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-view-lampiran' sertifikat ='" + item.tempatPelaksana+ "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                            '</a>' +
+                            '</td>' +
                             '<td align="center">' +
                             "<a href='javascript:;' class ='item-edit' data ='" + item.sertifikatId+ "' >" +
                             "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
@@ -3684,22 +3696,23 @@
                     </s:if>
                     <s:else>
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.jenis+ '</td>' +
-                            '<td >' + item.stTanggalPengesahan + '</td>' +
-                            '<td align="center">' + item.stMasaBerlaku+ '</td>' +
-                            '<td align="center">' + item.stMasaBerakhir+ '</td>' +
-                            '<td align="center">' + item.nama+ '</td>' +
-                            '<td align="center">' + item.lembaga+ '</td>' +
-                            '<td align="center">' + item.tempatPelaksana+ '</td>' +
-                            '<td align="center">' + item.jumlahHari+ '</td>' +
-                            '<td align="center">' + item.nilai+ '</td>' +
-                            '<td align="center">' + item.lulus+ '</td>' +
-                            '<td align="center">' + item.prestasiGrade+ '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.jenis+ '</td>' +
+                        '<td >' + item.nama + '</td>' +
+                        '<td align="center">' + item.lembaga+ '</td>' +
+                        '<td align="center">' + item.jumlahHari+ '</td>' +
+                        '<td align="center">' + item.lulus+ '</td>' +
+                        '<td align="center">' + item.stTanggalPengesahan+ '</td>' +
+                        '<td align="center">' + item.prestasiGrade+ '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-lampiran' sertifikat ='" + item.tempatPelaksana+ "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:else>
                 });
-                $('.sertifikatTable').append(tmp_table);
+                $('.pelatihanJabatanTable').append(tmp_table);
             });
 
         }
@@ -3709,31 +3722,35 @@
             $('.pelatihanJabatanTable').find('thead').remove();
             dwr.engine.setAsync(false);
             var tmp_table = "";
-            BiodataAction.searchDataPelatihanJabatan(nip, function (listdata) {
+            BiodataAction.searchDataSertifikat(nip, function (listdata) {
 
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Lembaga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Angkatan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tahun</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Status</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nilai</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>View</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 </s:if>
                 <s:else>
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Lembaga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Angkatan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tahun</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Status</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nilai</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>View</th>" +
+                    "</tr></thead>";
                 </s:else>
 
 
@@ -3741,40 +3758,51 @@
                 $.each(listdata, function (i, item) {
                     <s:if test="isAddOrEdit()">
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.pelatihanJabatanName+ '</td>' +
-                            '<td >' + item.lembaga + '</td>' +
-                            '<td align="center">' + item.angkatan+ '</td>' +
-                            '<td align="center">' + item.tahun+ '</td>' +
-                            '<td align="center">' + item.status+ '</td>' +
-                            '<td align="center">' + item.nilai+ '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.pelatihanUserId+ "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.pelatihanUserId+ "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td align="center" >' + (i + 1) + '</td>' +
+                        '<td >' + item.jenis + '</td>' +
+                        '<td >' + item.nama + '</td>' +
+                        '<td align="center">' + item.lembaga + '</td>' +
+                        '<td align="center">' + item.jumlahHari + '</td>' +
+                        '<td align="center">' + item.lulus + '</td>' +
+                        '<td align="center">' + item.stTanggalPengesahan + '</td>' +
+                        '<td align="center">' + item.prestasiGrade + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-lampiran' sertifikat ='" + item.tempatPelaksana+ "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.sertifikatId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.sertifikatId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:if>
                     <s:else>
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.pelatihanJabatanName+ '</td>' +
-                            '<td >' + item.lembaga + '</td>' +
-                            '<td align="center">' + item.angkatan+ '</td>' +
-                            '<td align="center">' + item.tahun+ '</td>' +
-                            '<td align="center">' + item.status+ '</td>' +
-                            '<td align="center">' + item.nilai+ '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.jenis + '</td>' +
+                        '<td >' + item.nama + '</td>' +
+                        '<td align="center">' + item.lembaga + '</td>' +
+                        '<td align="center">' + item.jumlahHari + '</td>' +
+                        '<td align="center">' + item.lulus + '</td>' +
+                        '<td align="center">' + item.stTanggalPengesahan + '</td>' +
+                        '<td align="center">' + item.prestasiGrade + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-lampiran' sertifikat ='" + item.tempatPelaksana+ "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:else>
                 });
-                $('.pelatihanJabatanTable').append(tmp_table);
-            });
-
+            })
+            $('.pelatihanJabatanTable').append(tmp_table);
         }
 
         function loadRiwayatPendidikan(nip) {
@@ -4834,64 +4862,134 @@
             </s:else>
         });
 
+        function handleFileSelect(evt) {
+            var f = evt.target.files[0]; // FileList object
+            var reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = (function(theFile) {
+                return function(e) {
+                    var binaryData = e.target.result;
+                    //Converting Binary Data to base 64
+                    var base64String = window.btoa(binaryData);
+                    //showing file converted to base64
+                    document.getElementById('base64sertifikat').value = base64String;
+                };
+            })(f);
+            // Read in the image file as a data URL.
+            reader.readAsBinaryString(f);
+        }
+
+        // Check for the File API support.
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            document.getElementById('fileSertifikat').addEventListener('change', handleFileSelect, false);
+        } else {
+            alert('The File APIs are not fully supported in this browser.');
+        }
+
         $('#btnSavePelatihan').click(function () {
             var url = $('#myFormPelatihanJabatan').attr('action');
             var data = $('#myFormPelatihanJabatan').serialize();
 
             var id = document.getElementById("pelatihanId").value;
             var nip = document.getElementById("nip1").value;
-            var nama = document.getElementById("namaPelatihan").value;
-            var jenis = document.getElementById("pelatihanJenis").value;
-            var lembaga = document.getElementById("pelatihanLembaga").value;
-            var tahun = document.getElementById("pelatihanTahun").value;
-            var status = document.getElementById("pelatihanStatus").value;
-            var nilai = document.getElementById("pelatihanNilai").value;
+            var namaPelatihan = document.getElementById("namaPelatihan").value;
+            var judulPelatihan = document.getElementById("judulPelatihan").value;
+            var penyelenggara = document.getElementById("pelatihanLembaga").value;
+            var jumlahJamPelatihan = document.getElementById("jumlahJamPelatihan").value;
+            var sertifikatPelatihan = document.getElementById("sertifikasiPelatihan").value;
+            var tanggalPelatihan = document.getElementById("tanggalPelatihan").value;
+            var masaBerlakuSertifikat = document.getElementById("masaBerlakuSertifikat").value;
+            var gambar = document.getElementById("base64sertifikat").value;
 
-            if (url == 'addPelatihanJabatan') {
-                if (jenis == ''||lembaga==""||tahun==""||status==""||nilai==""||nama=="") {
-                    var msg="Field \n"
-                    if (jenis==""){
-                        msg+="- Jenis \n";
+            if (nip == ''||namaPelatihan==""||judulPelatihan==""||penyelenggara==""||jumlahJamPelatihan==""
+                ||sertifikatPelatihan==""||tanggalPelatihan==""||masaBerlakuSertifikat=="") {
+                var msg="Field \n"
+                if (nip==""){
+                    msg+="- NIP \n";
+                }
+                if (namaPelatihan==""){
+                    msg+="- Nama Pelatihan \n";
+                }
+                if (judulPelatihan==""){
+                    msg+="- Judul Pelatihan \n";
+                }
+                if (penyelenggara==""){
+                    msg+="- Penyelenggara \n";
+                }
+                if (jumlahJamPelatihan==""){
+                    msg+="- Jumlah Jam Pelatihan \n";
+                }
+                if (sertifikatPelatihan==""){
+                    msg+="- Sertifikat Pelatihan \n";
+                }
+                if (tanggalPelatihan==""){
+                    msg+="- TanggalPelatihan \n";
+                }
+                if (masaBerlakuSertifikat==""){
+                    msg+="- Masa Berlaku Sertifikat \n";
+                }
+                msg+="Wajib diisi";
+                alert(msg);
+            } else {
+                var result = '';
+                <s:if test="isAdd()">
+                if (url == 'addPelatihanJabatan') {
+                    if (jenis == '') {
+                        alert('Semua Field Harus Diisi !');
+                    } else {
+                        if (confirm('Apakah anda yakin ingin menyimpan data?')) {
+                            dwr.engine.setAsync(false);
+                            BiodataAction.saveAddSertifikat(nip, namaPelatihan , judulPelatihan , penyelenggara , jumlahJamPelatihan ,
+                                sertifikatPelatihan , tanggalPelatihan , masaBerlakuSertifikat,gambar, function () {
+                                    alert('Data Berhasil Disimpan');
+                                    $('#modal-sertifikat').modal('hide');
+                                    $('#myFormSertifikat')[0].reset();
+                                    loadSessionSertifikat();
+                                });
+                        }
                     }
-                    if (lembaga==""){
-                        msg+="- Lembaga \n";
-                    }
-                    if (tahun==""){
-                        msg+="- Tahun \n";
-                    }
-                    if (status==""){
-                        msg+="- Status \n";
-                    }
-                    if (nama==""){
-                        msg+="- Nama Pelatihan \n";
-                    }
-                    if (nilai==""){
-                        msg+="- Nilai \n";
-                    }
-                    msg+="Wajib diisi";
-                    alert(msg);
                 } else {
-                    if (confirm('Apakah anda yakin ingin menyimpan data?')) {
+                    if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
-                        BiodataAction.saveAddSertifikat(nip, jenis, nama,lembaga,nilai, status, function (listdata) {
-                                alert('Data Berhasil Disimpan');
-                                $('#modal-pelatihanJabatan').modal('hide');
-                                $('#myFormPelatihanJabatan')[0].reset();
+                        BiodataAction.initEditSertifikat(id, nip, namaPelatihan , judulPelatihan , penyelenggara , jumlahJamPelatihan ,
+                            sertifikatPelatihan , tanggalPelatihan , masaBerlakuSertifikat,gambar, function () {
+                                alert('Data Successfully Updated');
+                                $('#modal-sertifikat').modal('hide');
+                                $('#myFormSertifikat')[0].reset();
                                 loadSessionSertifikat();
                             });
                     }
                 }
-            } else {
-                if (confirm('Apakah anda yakin ingin mengedit data ini ?')) {
-                    dwr.engine.setAsync(false);
-                    BiodataAction.initEditSertifikat(id, nip, jenis, tanggalPengesahan, masaBerlaku, masaBerakhir, nama, lembaga, tempatPelaksana,
-                        nilai, lulus, prestasi, function (listdata) {
+                </s:if>
+                <s:else>
+                if (url == 'addPelatihanJabatan') {
+                    if (jenis == '') {
+                        alert('Jenis Pelatihan Harus Diisi');
+                    } else {
+                        if (confirm('Are you sure you want to save this Record?')) {
+                            dwr.engine.setAsync(false);
+                            BiodataAction.saveAddDataPelatihan(nip, namaPelatihan , judulPelatihan , penyelenggara , jumlahJamPelatihan ,
+                                sertifikatPelatihan , tanggalPelatihan , masaBerlakuSertifikat,gambar, function () {
+                                alert('Data Successfully Added');
+                                $('#modal-pelatihanJabatan').modal('hide');
+                                $('#myFormPelatihanJabatan')[0].reset();
+                                loadPelatihanJabatan(nip);
+                            });
+                        }
+                    }
+                } else {
+                    if (confirm('Are you sure you want to save this Record?')) {
+                        dwr.engine.setAsync(false);
+                        BiodataAction.saveEditPelatihan(id, nip, namaPelatihan , judulPelatihan , penyelenggara , jumlahJamPelatihan ,
+                            sertifikatPelatihan , tanggalPelatihan , masaBerlakuSertifikat,gambar, function () {
                             alert('Data Successfully Updated');
-                            $('#modal-sertifikat').modal('hide');
-                            $('#myFormSertifikat')[0].reset();
-                            loadSessionSertifikat();
+                            $('#modal-pelatihanJabatan').modal('hide');
+                            $('#myFormPelatihanJabatan')[0].reset();
+                            loadPelatihanJabatan(nip);
                         });
+                    }
                 }
+                </s:else>
             }
         });
 
@@ -4963,7 +5061,6 @@
                 }
             }
             </s:else>
-
         });
 
         $(".nav-tabs a").click(function () {
@@ -5496,34 +5593,40 @@
             $('#myFormSertifikat').attr('action', 'editSertifikat');
         });
 
+        $('.pelatihanJabatanTable').on('click', '.item-view-lampiran', function(){
+            var data = $(this).attr('sertifikat');
+            dwr.engine.setAsync(false);
+            BiodataAction.loadImageSertifikat(data,function (result) {
+                $("#my-image2").attr("src", result);
+            });
+            $('#modal-view-lampiran').find('.modal-title').text("Sertifikat");
+            $('#modal-view-lampiran').modal('show');
+        });
+
         $('.pelatihanJabatanTable').on('click', '.item-edit', function () {
             var id = $(this).attr('data');
             <s:if test="isAdd()">
-            BiodataAction.initSearchPelatihan(id, function (listdata) {
-
-                $('#sertifikatId').val(listdata.sertifikatId);
-                $('#nip1').val(listdata.nip);
-                $('#sertifikatJenis').val(listdata.jenis);
-                $('#sertifikatTanggalPengesahan').val(listdata.stTanggalPengesahan);
-                $('#sertifikatMasaBerlaku').val(listdata.stMasaBerlaku);
-                $('#sertifikatMasaBerakhir').val(listdata.stMasaBerakhir);
-                $('#sertifikatNama').val(listdata.nama);
-                $('#sertifikatLembaga').val(listdata.lembaga);
-                $('#sertifikatTempatPelaksana').val(listdata.tempatPelaksana);
-                $('#sertifikatNilai').val(listdata.nilai);
-                $('#sertifikatLulus').val(listdata.lulus);
-                $('#sertifikatPrestasi').val(listdata.prestasiGrade);
+            BiodataAction.initSearchPelatihan(id, function (data) {
+                $('#pelatihanId').val(data.sertifikatId);
+                $('#namaPelatihan').val(data.jenis);
+                $('#judulPelatihan').val(data.nama);
+                $('#pelatihanLembaga').val(data.lembaga);
+                $('#jumlahJamPelatihan').val(data.jumlahHari);
+                $('#sertifikasiPelatihan').val(data.lulus);
+                $('#tanggalPelatihan').val(data.stTanggalPengesahan);
+                $('#masaBerlakuSertifikat').val(data.prestasiGrade);
             });
             </s:if>
             <s:else>
-            BiodataAction.searchDataEditPelatihan(id, function (listdata) {
-                $('#pelatihanId').val(listdata.pelatihanUserId);
-                $('#pelatihanJenis').val(listdata.pelatihanJabatanId);
-                $('#pelatihanLembaga').val(listdata.lembaga);
-                $('#pelatihanAngkatan').val(listdata.angkatan);
-                $('#pelatihanTahun').val(listdata.tahun);
-                $('#pelatihanStatus').val(listdata.status).change();
-                $('#pelatihanNilai').val(listdata.nilai);
+            BiodataAction.searchDataEditSertifikat(id, function (data) {
+                $('#pelatihanId').val(data.sertifikatId);
+                $('#namaPelatihan').val(data.jenis);
+                $('#judulPelatihan').val(data.nama);
+                $('#pelatihanLembaga').val(data.lembaga);
+                $('#jumlahJamPelatihan').val(data.jumlahHari);
+                $('#sertifikasiPelatihan').val(data.lulus);
+                $('#tanggalPelatihan').val(data.stTanggalPengesahan);
+                $('#masaBerlakuSertifikat').val(data.prestasiGrade);
             });
             </s:else>
 
@@ -5537,19 +5640,15 @@
             var nip = document.getElementById("nip1").value;
 
             <s:if test="isAdd()">
-            BiodataAction.initSearchSertifikat(id, function (listdata) {
-                $('#deleteSertifikatId').val(listdata.sertifikatId);
-                $('#deleteNip1').val(listdata.nip);
-                $('#deleteSertifikatJenis').val(listdata.jenis);
-                $('#deleteSertifikatTanggalPengesahan').val(listdata.stTanggalPengesahan);
-                $('#deleteSertifikatMasaBerlaku').val(listdata.stMasaBerlaku);
-                $('#deleteSertifikatMasaBerakhir').val(listdata.stMasaBerakhir);
-                $('#deleteSertifikatNama').val(listdata.nama);
-                $('#deleteSertifikatLembaga').val(listdata.lembaga);
-                $('#deleteSertifikatTempatPelaksana').val(listdata.tempatPelaksana);
-                $('#deleteSertifikatNilai').val(listdata.nilai);
-                $('#deleteSertifikatLulus').val(listdata.lulus);
-                $('#deleteSertifikatPrestasi').val(listdata.prestasiGrade);
+            BiodataAction.initSearchSertifikat(id, function (data) {
+                $('#delpelatihanId').val(data.sertifikatId);
+                $('#delnamaPelatihan').val(data.jenis);
+                $('#deljudulPelatihan').val(data.nama);
+                $('#delpelatihanLembaga').val(data.lembaga);
+                $('#deljumlahJamPelatihan').val(data.jumlahHari);
+                $('#delsertifikasiPelatihan').val(data.lulus);
+                $('#deltanggalPelatihan').val(data.stTanggalPengesahan);
+                $('#delmasaBerlakuSertifikat').val(data.prestasiGrade);
             });
 
             $('#deleteModalSertifikat').modal('show');
@@ -5565,20 +5664,21 @@
             });
             </s:if>
             <s:else>
-            BiodataAction.searchDataEditPelatihan(id, function (listdata) {
-                $('#deletePelatihanId').val(listdata.pelatihanUserId);
-                $('#deletePelatihanJenis').val(listdata.pelatihanJabatanId);
-                $('#deletePelatihanLembaga').val(listdata.lembaga);
-                $('#deletePelatihanAngkatan').val(listdata.angkatan);
-                $('#deletePelatihanTahun').val(listdata.tahun);
-                $('#deletePelatihanStatus').val(listdata.status).change();
-                $('#deletePelatihanNilai').val(listdata.nilai);
+            BiodataAction.searchDataEditSertifikat(id, function (data) {
+                $('#delpelatihanId').val(data.sertifikatId);
+                $('#delnamaPelatihan').val(data.jenis);
+                $('#deljudulPelatihan').val(data.nama);
+                $('#delpelatihanLembaga').val(data.lembaga);
+                $('#deljumlahJamPelatihan').val(data.jumlahHari);
+                $('#delsertifikasiPelatihan').val(data.lulus);
+                $('#deltanggalPelatihan').val(data.stTanggalPengesahan);
+                $('#delmasaBerlakuSertifikat').val(data.prestasiGrade);
             });
 
             $('#deleteModalPelatihan').modal('show');
             $('#btnDeletePelatihan').unbind().click(function () {
                 if (confirm('Are you sure you want to Delete this Record?')) {
-                    BiodataAction.saveDeletePelatihanJabatan(id, function (listdata) {
+                    BiodataAction.saveDeleteSertifikat(id, function (listdata) {
                         $('#deleteModalPelatihan').modal('hide');
                         $('#myFormDeletePelatihanJabatan')[0].reset();
                         alert('Record has been Deleted successfully.');

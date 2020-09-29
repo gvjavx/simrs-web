@@ -183,6 +183,7 @@ public class CommonConstant {
 
 
     public final static String RESOURCE_PATH_FAKTUR_PAJAK = "/upload/faktur_pajak/";
+    public final static String RESOURCE_PATH_SERTIFIKAT = "/upload/sertifikat/";
     public final static String RESOURCE_PATH_LAMPIRAN = "/upload/lampiran/";
     public final static String RESOURCE_PATH_IPA = "/upload/ipa/";
     public final static String REK_BANK_BRI_TELE = "01041802112149";
