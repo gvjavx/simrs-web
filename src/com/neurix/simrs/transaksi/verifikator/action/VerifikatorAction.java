@@ -842,9 +842,9 @@ public class VerifikatorAction extends BaseMasterAction {
             if (detail != null) {
 
                 RekananOps ops = new RekananOps();
-                if("rekanan".equalsIgnoreCase(headerDetailCheckup.getIdJenisPeriksaPasien())){
+                if("rekanan".equalsIgnoreCase(detail.getIdJenisPeriksaPasien())){
                     try {
-                        ops = rekananOpsBo.getDetailRekananOpsByDetail(headerDetailCheckup.getIdDetailCheckup(), unitId);
+                        ops = rekananOpsBo.getDetailRekananOpsByDetail(detail.getIdDetailCheckup(), unitId);
                     } catch (GeneralBOException e) {
                         logger.error("Error, " + e.getMessage());
                     }
@@ -1169,17 +1169,17 @@ public class VerifikatorAction extends BaseMasterAction {
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
         ItSimrsHeaderChekupEntity headerChekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
         BigDecimal biayaCover = detailCheckupEntity.getTarifBpjs();
-        noKartu = " No. Kartu PTPN " + detailCheckupEntity.getNoKartuAsuransi();
+        noKartu = " No. Kartu REKANAN " + detailCheckupEntity.getNoKartuAsuransi();
 
-        ImMasterEntity masterEntity = masterBo.getEntityMasterById(detailCheckupEntity.getIdAsuransi());
-        if (masterEntity != null) {
-            company = " " + masterEntity.getNama() + " ";
-        } else {
-            logger.error("[VerivikatorAction.closingJurnalRekanan] Error Master PTPN tidak ditemukan");
-            response.setStatus("error");
-            response.setMsg("[VerivikatorAction.closingJurnalRekanan] Error Master PTPN tidak ditemukan");
-            return response;
-        }
+//        ImMasterEntity masterEntity = masterBo.getEntityMasterById(detailCheckupEntity.getIdAsuransi());
+//        if (masterEntity != null) {
+//            company = " " + masterEntity.getNama() + " ";
+//        } else {
+//            logger.error("[VerivikatorAction.closingJurnalRekanan] Error Master PTPN tidak ditemukan");
+//            response.setStatus("error");
+//            response.setMsg("[VerivikatorAction.closingJurnalRekanan] Error Master PTPN tidak ditemukan");
+//            return response;
+//        }
 
         // MENDAPATKAN SEMUA NILAI TINDAKAN DAN RESEP
         String isResep = "N";
@@ -2504,6 +2504,8 @@ public class VerifikatorAction extends BaseMasterAction {
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
                 detailCheckup.setLastUpdateWho(user);
                 detailCheckup.setLastUpdate(updateTime);
+                detailCheckup.setNoCheckup(noChekcup);
+
                 if (object.getString("cover_biaya") != null && !"".equalsIgnoreCase(object.getString("cover_biaya"))) {
                     detailCheckup.setCoverBiaya(new BigDecimal(object.getString("cover_biaya")));
                 } else {

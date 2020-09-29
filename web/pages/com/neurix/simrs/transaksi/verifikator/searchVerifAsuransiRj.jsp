@@ -789,7 +789,6 @@
     }
 
     function listTindakanApprove(noCheckup, idDetailCheckup, jenis) {
-
         var table = "";
         var data = [];
         var trfTtl = 0;

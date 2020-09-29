@@ -1439,7 +1439,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    <p id="msg_lab"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -1492,6 +1492,24 @@
                                id="war_parameter"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_parameter"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <hr class="garis">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <span>Tanda Tangan</span>
+                        </div>
+                        <div class="col-md-7">
+                            <canvas style="margin-left: 0px" class="paint-canvas-ttd" id="ttd_pengirim" width="310"
+                                    onmouseover="paintTtd('ttd_pengirim')"></canvas>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-danger" style="margin-left: -20px"
+                                    onclick="removePaint('ttd_pengirim')"><i
+                                    class="fa fa-trash"></i> Clear
+                            </button>
                         </div>
                     </div>
                 </div>
