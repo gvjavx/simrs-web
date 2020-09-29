@@ -228,6 +228,7 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             itJadwalShiftKerjaDetailEntity.setProfesiId(jadwalShiftKerjaDetail.getProfesiid());
             itJadwalShiftKerjaDetailEntity.setProfesiName(jadwalShiftKerjaDetail.getProfesiName());
             itJadwalShiftKerjaDetailEntity.setOnCall(jadwalShiftKerjaDetail.getOnCall());
+            itJadwalShiftKerjaDetailEntity.setFlagLibur(jadwalShiftKerjaDetail.getFlagLibur());
             itJadwalShiftKerjaDetailEntity.setFlagPanggil(jadwalShiftKerjaDetail.getFlagPanggil());
             itJadwalShiftKerjaDetailEntity.setPanggilDate(jadwalShiftKerjaDetail.getPanggilDate());
             itJadwalShiftKerjaDetailEntity.setPanggilWho(jadwalShiftKerjaDetail.getPanggilWho());
@@ -236,6 +237,9 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             itJadwalShiftKerjaDetailEntity.setAction(bean.getAction());
             itJadwalShiftKerjaDetailEntity.setCreatedWho(bean.getCreatedWho());
             itJadwalShiftKerjaDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            itJadwalShiftKerjaDetailEntity.setCreatedDate(bean.getCreatedDate());
+            itJadwalShiftKerjaDetailEntity.setLastUpdate(bean.getLastUpdate());
+
             try {
                 // insert into database
                 jadwalShiftKerjaDetailDao.addAndSave(itJadwalShiftKerjaDetailEntity);
@@ -427,7 +431,7 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
                     returnJadwalShiftKerjaDetail.setFlagPanggil(jadwalShiftKerjaDetailEntity.getFlagPanggil());
                     returnJadwalShiftKerjaDetail.setPanggilWho(jadwalShiftKerjaDetailEntity.getPanggilWho());
                     returnJadwalShiftKerjaDetail.setPanggilDate(jadwalShiftKerjaDetailEntity.getPanggilDate());
-
+                    returnJadwalShiftKerjaDetail.setFlagLibur(jadwalShiftKerjaDetailEntity.getFlagLibur());
                     List<ItPersonilPositionEntity> personilPositionEntities = personilPositionDao.getPersonilPosition(jadwalShiftKerjaDetailEntity.getNip());
                     for (ItPersonilPositionEntity personilPositionEntity : personilPositionEntities){
                         ImPosition position = positionDao.getById("positionId",personilPositionEntity.getPositionId());

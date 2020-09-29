@@ -58,6 +58,8 @@
                     }
                     dwr.engine.setAsync(false);
                     JadwalShiftKerjaAction.cekTanggal(unit,tglAwal,tglAkhir,function(listdata) {
+                        var rowCount = $('.shiftTable tr').length;
+                        console.log(rowCount);
                         if (listdata=="00"){
                             if (confirm('Do you want to save this record?')) {
                                 JadwalShiftKerjaAction.cekLibur(awal,akhir,function(response) {
@@ -99,6 +101,20 @@
 
                             $.publish('showErrorValidationDialog');
                         }
+
+                        // var rowCount = $('.shiftTable tr').length;
+                        // if (rowCount!=null&&rowCount>1){
+                        //     console.log(rowCount);
+                        //
+                        // } else{
+                        //     // Cancel Submit comes with 1.8.0
+                        //     event.originalEvent.options.submit = false;
+                        //     var msg = '<strong>Daftar pegawai shift kerja masih kosong</strong>.' + '<br/>';
+                        //     document.getElementById('errorValidationMessage').innerHTML = msg;
+                        //
+                        //     $.publish('showErrorValidationDialog');
+                        // }
+
                     });
                 } else {
                     event.originalEvent.options.submit = false;
@@ -557,6 +573,7 @@
                 "pageLength": 20,
                 "bDestroy":true
             });
+
         });
     };
     $('.groupShiftTable').on('click', '.item-add-shift', function () {

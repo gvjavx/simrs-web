@@ -509,6 +509,8 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
 
             jadwalShiftKerja.setLastUpdate(updateTime);
             jadwalShiftKerja.setLastUpdateWho(userLogin);
+            jadwalShiftKerja.setCreatedDate(updateTime);
+            jadwalShiftKerja.setCreatedWho(userLogin);
             jadwalShiftKerja.setAction("U");
             jadwalShiftKerja.setFlag("Y");
 

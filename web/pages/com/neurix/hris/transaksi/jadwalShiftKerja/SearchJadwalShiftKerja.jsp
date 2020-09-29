@@ -360,15 +360,17 @@
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>">
                                                                 </s:if>
                                                                 <s:else>
-                                                                <a href="javascript:;"
-                                                                   id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>"
-                                                                   tanggal="<s:property value="%{#attr.row.stTanggal}"/>"
-                                                                   nama="<s:property value="%{#attr.row.namaPegawai}"/>"
-                                                                   posisi="<s:property value="%{#attr.row.positionName}"/>"
-                                                                   grup="<s:property value="%{#attr.row.profesiName}"/>"
-                                                                   href="javascript:;" class="item-libur">
-                                                                    <img border="0"
-                                                                         src="<s:url value="/pages/images/icons8-weekend-25.png"/>">
+                                                                    <s:if test='#row.flagDokterKso=="Y"'>
+                                                                    <a href="javascript:;"
+                                                                       id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>"
+                                                                       tanggal="<s:property value="%{#attr.row.stTanggal}"/>"
+                                                                       nama="<s:property value="%{#attr.row.namaPegawai}"/>"
+                                                                       posisi="<s:property value="%{#attr.row.positionName}"/>"
+                                                                       grup="<s:property value="%{#attr.row.profesiName}"/>"
+                                                                       href="javascript:;" class="item-libur">
+                                                                        <img border="0"
+                                                                             src="<s:url value="/pages/images/icons8-weekend-25.png"/>">
+                                                                    </s:if>
                                                                 </s:else>
                                                             </td>
                                                         </tr>

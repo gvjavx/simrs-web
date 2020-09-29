@@ -64,12 +64,21 @@
 
                 if (tanggalEfektif != '') {
                     if (isNaN(mydate) == false) {
-                       if (confirm('Do you want to save this record?')) {
-                            event.originalEvent.options.submit = true;
-                            $.publish('showDialog');
-                       } else {
+                        var rowCount = $('.sppdPersonTable tr').length;
+                        if (rowCount>1){
+                            if (confirm('Do you want to save this record?')) {
+                                event.originalEvent.options.submit = true;
+                                $.publish('showDialog');
+                            } else {
+                                event.originalEvent.options.submit = false;
+                            }
+                        } else{
                             event.originalEvent.options.submit = false;
-                       }
+                            var msg = "";
+                            msg += '<strong>Daftar pegawai yang akan di mutasi / nonaktifkan masih kosong</strong>.' + '<br/>';
+                            document.getElementById('errorValidationMessage').innerHTML = msg;
+                            $.publish('showErrorValidationDialog');
+                        }
                     }else{
                         event.originalEvent.options.submit = false;
                         var msg = "";
@@ -568,7 +577,6 @@
 </html>
 
 <script>
-
     window.changePegawai = function (id) {
         if (id == "TP01") {
             $('#golongan1Group').show();
@@ -584,7 +592,6 @@
     };
 
     window.listDivisi= function(){
-        console.log("disini");
         var branch = document.getElementById("branchBaruId1").value;
         $('#divisiBaruId2').empty();
         PositionAction.searchDivisi2(branch, function(listdata){
@@ -606,7 +613,7 @@
         MutasiAction.searchMutasiPerson(function(listdata){
             tmp_table = "<thead style='font-size: 10px;' ><tr class='active'>"+
                     "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Edit</th>"+
+                    // "<th style='text-align: center; background-color:  #90ee90'>Edit</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>NIP</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Nama</th>"+
@@ -625,11 +632,11 @@
             $.each(listdata, function (i, item) {
                 tmp_table += '<tr style="font-size: 10px;" ">' +
                         '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-edit' data ='"+item.nip+"' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
-                        '</a>' +
-                        '</td>' +
+                        <%--'<td align="center">' +--%>
+                        <%--"<a href='javascript:;' class ='item-edit' data ='"+item.nip+"' >" +--%>
+                        <%--"<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+--%>
+                        <%--'</a>' +--%>
+                        <%--'</td>' +--%>
                         '<td align="center">' +
                         "<a href='javascript:;' class ='item-delete' data ='"+item.nip+"' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
@@ -662,10 +669,10 @@
             changeYear: true
         });
 
-
         $('#btnAddMutasi').click(function(){
             cekStatusMutasi();
             $('#nip2').prop("readonly", true);
+            $('#statusMutasi').removeAttr("disabled");
             $('#myForm')[0].reset();
             $("#btnSave").html('Save');
             $('#modal-edit').modal('show');
@@ -817,8 +824,9 @@
                 $('#branchLamaId1').val(item.branchLamaId).change();
                 $('#positionLamaId1').val(item.positionLamaId).change();
                 $('#divisiLamaId1').val(item.divisiLamaId).change();
+                $('#profesiBaruId1').val(item.profesiId).change();
+
                 $('#tipePegawai1').val(item.tipePegawai).change();
-                console.log(item.tipePegawai);
                 if (item.tipePegawai == 'TP01'){
                     $('#golonganLamaId1').val(item.levelLama).change();
                 }else {
@@ -860,6 +868,7 @@
         $("#branchBaruId1").prop("disabled", true);
         $("#positionBaruId1").prop("disabled", true);
         $("#divisiBaruId2").prop("disabled", true);
+        $("#profesiBaruId1").prop("disabled", true);
         $("#penggantiId").prop("disabled", true);
         $("#pjsBaru").prop("disabled", true);
         $("#btnSave").html('Delete');
@@ -997,16 +1006,13 @@
         }else{
             var msg="";
             if (personName==""){
-                msg+="Nama pegawai masih kosong";
+                msg+="Nama pegawai masih kosong \n";
             }
             if (branchLamaId=="") {
-                msg+="Branch masih kosong";
-            }
-            if (tipe=="") {
-                msg+="Tipe masih belum dipilih";
+                msg+="Branch masih kosong \n";
             }
             if (status=="") {
-                msg+="Status masih belum dipilih";
+                msg+="Status masih belum dipilih \n";
             }
             alert(msg);
         }
