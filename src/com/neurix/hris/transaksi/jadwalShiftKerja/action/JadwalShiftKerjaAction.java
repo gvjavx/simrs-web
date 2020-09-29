@@ -914,7 +914,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         data.setJadwalShiftKerjaDetailId(id);
-        data.setFlagPanggil("Y");
+        data.setFlagLibur("Y");
         data.setLastUpdate(updateTime);
         data.setLastUpdateWho(userLogin);
 
