@@ -757,4 +757,19 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
         return notifikasiList;
     }
+
+    @Override
+    public List<JadwalPelayananDTO> getListJadwalDokter(String branchId, String idPelayanan, String notLike) throws GeneralBOException {
+        logger.info("[JadwalShiftKerjaBoImpl.getListJadwalDokter] start process >>>");
+        List<JadwalPelayananDTO> list = new ArrayList<>();
+        if(branchId != null && !"".equalsIgnoreCase(branchId) && idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+            try {
+                list = jadwalShiftKerjaDao.getListJadwalDokter(branchId, idPelayanan, notLike);
+            }catch (HibernateException e){
+                logger.error("[JadwalShiftKerjaBoImpl.getListJadwalDokter], error mencari jadwal shift kerja dokter");
+            }
+        }
+        logger.info("[JadwalShiftKerjaBoImpl.getListJadwalDokter] end process >>>");
+        return list;
+    }
 }

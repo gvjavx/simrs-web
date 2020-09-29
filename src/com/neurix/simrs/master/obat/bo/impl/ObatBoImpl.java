@@ -1069,6 +1069,8 @@ public class ObatBoImpl implements ObatBo {
                     hargaObatEntity.setCreatedWho(bean.getCreatedWho());
                     hargaObatEntity.setLastUpdate(bean.getLastUpdate());
                     hargaObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    hargaObatEntity.setMargin(bean.getMargin());
+                    hargaObatEntity.setBranchId(bean.getBranchId());
 
                     try {
                         hargaObatDao.addAndSave(hargaObatEntity);

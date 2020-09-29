@@ -19,6 +19,35 @@ public class JadwalPelayananDTO extends BaseModel {
     private String branchName;
     private String kuota;
 
+    //sodiq, 29-09-2020
+    private String sip;
+    private String kodeDpjp;
+    private String flagLibur;
+
+    public String getFlagLibur() {
+        return flagLibur;
+    }
+
+    public void setFlagLibur(String flagLibur) {
+        this.flagLibur = flagLibur;
+    }
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
+
+    public String getKodeDpjp() {
+        return kodeDpjp;
+    }
+
+    public void setKodeDpjp(String kodeDpjp) {
+        this.kodeDpjp = kodeDpjp;
+    }
+
     public String getKuota() {
         return kuota;
     }

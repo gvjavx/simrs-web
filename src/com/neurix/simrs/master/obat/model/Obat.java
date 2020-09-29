@@ -78,6 +78,24 @@ public class Obat extends BaseModel {
     private String namaPelayanan;
     private String type;
     private String bentuk;
+    private Integer standarMargin;
+    private Integer margin;
+
+    public Integer getMargin() {
+        return margin;
+    }
+
+    public void setMargin(Integer margin) {
+        this.margin = margin;
+    }
+
+    public Integer getStandarMargin() {
+        return standarMargin;
+    }
+
+    public void setStandarMargin(Integer standarMargin) {
+        this.standarMargin = standarMargin;
+    }
 
     public String getBentuk() {
         return bentuk;

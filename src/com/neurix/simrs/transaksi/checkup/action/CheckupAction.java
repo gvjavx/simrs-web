@@ -10,6 +10,8 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
+import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalPelayananDTO;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
 import com.neurix.simrs.bpjs.eklaim.bo.impl.EklaimBoImpl;
 import com.neurix.simrs.bpjs.eklaim.model.*;
@@ -965,10 +967,10 @@ public class CheckupAction extends BaseMasterAction {
                             BigDecimal tarifRsObatKemoterapi = new BigDecimal(0);
                             BigDecimal tarifRsSewaAlat = new BigDecimal(0);
 
-                            if("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())){
+                            if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
                                 try {
                                     ops = rekananOpsBo.getDetailRekananOps(checkup.getIdAsuransi(), userArea);
-                                }catch (GeneralBOException e){
+                                } catch (GeneralBOException e) {
                                     throw new GeneralBOException("Tidak dapat mencari diskon rekanan...!");
                                 }
                             }
@@ -979,10 +981,10 @@ public class CheckupAction extends BaseMasterAction {
 
                                     BigDecimal tarif = new BigDecimal(entity.getTarifBpjs());
 
-                                    if("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())){
-                                        if(ops.getDiskon() != null){
+                                    if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
+                                        if (ops.getDiskon() != null) {
                                             tarif = new BigDecimal(entity.getTarifBpjs()).multiply(ops.getDiskon());
-                                        }else{
+                                        } else {
                                             tarif = new BigDecimal(entity.getTarifBpjs());
                                         }
                                     }
@@ -1659,17 +1661,25 @@ public class CheckupAction extends BaseMasterAction {
         return headerDetailCheckupList;
     }
 
-    public List<Dokter> listOfDokter(String idPelayanan, String notLike) {
+    public List<JadwalPelayananDTO> listOfDokter(String idPelayanan, String notLike) {
         logger.info("[CheckupAction.listOfDokter] start process >>>");
-
-        List<Dokter> dokterList = new ArrayList<>();
+        List<JadwalPelayananDTO> dokterList = new ArrayList<>();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
+        JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+//        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
+//            try {
+//                dokterList = dokterBo.getDokterByPelayanan(idPelayanan, notLike);
+//            } catch (GeneralBOException e) {
+//                logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
+//            }
+//        }
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             try {
-                dokterList = dokterBo.getDokterByPelayanan(idPelayanan, notLike);
+                dokterList = jadwalShiftKerjaBo.getListJadwalDokter(idPelayanan, branchId, notLike);
             } catch (GeneralBOException e) {
                 logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
             }

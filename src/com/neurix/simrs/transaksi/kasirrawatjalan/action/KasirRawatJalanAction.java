@@ -1657,7 +1657,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     text = " pada Bank " + getNamaBank(kodeBank);
                 }
 
-                String catatan = ketTerangan + " untuk No Pasien " + idPasien + " No. Checkup " + noCheckup != null && !"".equalsIgnoreCase(noCheckup) ? noCheckup : detailCheckupEntity.getNoCheckup() + " menggunakan metode " + metodeBayar + text + noKartu;
+                String ketNoCheckup = noCheckup != null && !"".equalsIgnoreCase(noCheckup) ? noCheckup : detailCheckupEntity.getNoCheckup();
+                String catatan = ketTerangan + " untuk No Pasien " + idPasien + " No. Checkup " + ketNoCheckup + " menggunakan metode " + metodeBayar + text + noKartu;
                 if (!"".equalsIgnoreCase(noRekening)) {
                     catatan = catatan + " No. Kartu Pembayaran " + noRekening;
                 }
