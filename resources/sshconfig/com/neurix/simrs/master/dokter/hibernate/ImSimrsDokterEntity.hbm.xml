@@ -63,6 +63,9 @@
         <property name="sip">
             <column name="sip"/>
         </property>
+        <property name="kuotaOnSite">
+            <column name="kuota_on_site"/>
+        </property>
 
     </class>
 </hibernate-mapping>

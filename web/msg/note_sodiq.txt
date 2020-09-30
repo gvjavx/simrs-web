@@ -840,6 +840,10 @@ CREATE SEQUENCE seq_pelayanan_paket;
 ALTER TABLE it_simrs_periksa_lab
 ADD COLUMN ttd_pengirim VARCHAR(100);
 
+--2020-09-30
+ALTER TABLE im_simrs_dokter
+ADD COLUMN kuota_on_site bigint;
+
 
 
 

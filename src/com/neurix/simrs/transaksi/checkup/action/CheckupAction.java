@@ -1669,21 +1669,22 @@ public class CheckupAction extends BaseMasterAction {
         DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
         String branchId = CommonUtil.userBranchLogin();
-//        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
+
+        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
+            try {
+                dokterList = jadwalShiftKerjaBo.getListJadwalDokter(branchId, idPelayanan, notLike);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
+            }
+        }
+
+        //        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
 //            try {
 //                dokterList = dokterBo.getDokterByPelayanan(idPelayanan, notLike);
 //            } catch (GeneralBOException e) {
 //                logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
 //            }
 //        }
-
-        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
-            try {
-                dokterList = jadwalShiftKerjaBo.getListJadwalDokter(idPelayanan, branchId, notLike);
-            } catch (GeneralBOException e) {
-                logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
-            }
-        }
 
         logger.info("[CheckupAction.listOfDokter] end process >>>");
         return dokterList;

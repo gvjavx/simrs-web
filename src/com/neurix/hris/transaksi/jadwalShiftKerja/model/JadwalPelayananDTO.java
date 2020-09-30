@@ -2,6 +2,7 @@ package com.neurix.hris.transaksi.jadwalShiftKerja.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.math.BigInteger;
 import java.sql.Date;
 
 public class JadwalPelayananDTO extends BaseModel {
@@ -23,6 +24,15 @@ public class JadwalPelayananDTO extends BaseModel {
     private String sip;
     private String kodeDpjp;
     private String flagLibur;
+    private BigInteger kuotaOnSite;
+
+    public BigInteger getKuotaOnSite() {
+        return kuotaOnSite;
+    }
+
+    public void setKuotaOnSite(BigInteger kuotaOnSite) {
+        this.kuotaOnSite = kuotaOnSite;
+    }
 
     public String getFlagLibur() {
         return flagLibur;

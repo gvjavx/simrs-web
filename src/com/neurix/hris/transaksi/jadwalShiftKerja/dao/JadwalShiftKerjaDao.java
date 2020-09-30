@@ -262,7 +262,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
         String notLikeDokter = "";
 
         if(noteLike != null && !"".equalsIgnoreCase(noteLike)){
-            notLikeDokter = "AND a.id_dokter IN ("+noteLike+")";
+            notLikeDokter = "AND a.id_dokter IN ("+noteLike+") \n";
         }
 
         String SQL = "SELECT\n" +
@@ -271,6 +271,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "a.sip,\n" +
                 "a.kode_dpjp,\n" +
                 "a.kuota_tele,\n" +
+                "a.kuota_on_site,\n" +
                 "d.tanggal,\n" +
                 "e.jam_awal,\n" +
                 "e.jam_akhir,\n" +
@@ -285,6 +286,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "WHERE e.branch_id = :branchId\n" +
                 "AND d.tanggal = CURRENT_DATE\n" + notLikeDokter +
                 "AND b.id_pelayanan = :idPelayanan\n";
+
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("branchId", branchId)
@@ -299,11 +301,12 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 jadwalPelayananDTO.setSip(obj[2] != null ? (String) obj[2] : "");
                 jadwalPelayananDTO.setKodeDpjp(obj[3] != null ? (String) obj[3] : "");
                 jadwalPelayananDTO.setKuota(obj[4] != null ? (String) obj[4] : "");
-                jadwalPelayananDTO.setTanggal(obj[5] != null ? (Date) obj[5] : null);
-                jadwalPelayananDTO.setJamAwal(obj[6] != null ? (String) obj[6] : "");
-                jadwalPelayananDTO.setJamAkhir(obj[7] != null ? (String) obj[7] : "");
-                jadwalPelayananDTO.setFlagLibur(obj[8] != null ? (String) obj[8] : "");
-                jadwalPelayananDTO.setIdPelayanan(obj[9] != null ? (String) obj[9] : "");
+                jadwalPelayananDTO.setKuotaOnSite(obj[5] != null ? (BigInteger) obj[5] : null);
+                jadwalPelayananDTO.setTanggal(obj[6] != null ? (Date) obj[6] : null);
+                jadwalPelayananDTO.setJamAwal(obj[7] != null ? (String) obj[7] : "");
+                jadwalPelayananDTO.setJamAkhir(obj[8] != null ? (String) obj[8] : "");
+                jadwalPelayananDTO.setFlagLibur(obj[9] != null ? (String) obj[9] : "");
+                jadwalPelayananDTO.setIdPelayanan(obj[10] != null ? (String) obj[10] : "");
                 pelayananDTOList.add(jadwalPelayananDTO);
             }
         }
