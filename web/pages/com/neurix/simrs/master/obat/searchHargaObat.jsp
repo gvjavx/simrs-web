@@ -189,6 +189,9 @@
                                 <s:if test='#row.flagKurangMargin == "Y"'>
                                     <tr style="background-color: #d9534f; color: #ffffff">
                                 </s:if>
+                                <s:elseif test='#row.flagKurangMargin == "R"'>
+                                    <tr style="background-color: #EBEADF; color: #ffffff">
+                                </s:elseif>
                                 <s:else>
                                     <tr>
                                 </s:else>
@@ -280,9 +283,9 @@
                 </div>
                 <div class="row" style="margin-top: 7px">
                     <div class="form-group">
-                        <label class="col-md-5" style="margin-top: 7px">Diskon</label>
+                        <label class="col-md-5" style="margin-top: 7px">Standar Margin (%)</label>
                         <div class="col-md-7">
-                            <input type="number" id="mod-diskon" onchange="hitungDiskon()" class="form-control">
+                            <input type="number" id="mod-standar-margin" class="form-control" readonly>
                         </div>
                     </div>
                 </div>
@@ -301,6 +304,15 @@
                         <label class="col-md-5" style="margin-top: 7px">Harga</label>
                         <div class="col-md-7">
                             <input type="number" id="mod-harga-net" onchange="hitungMargin()" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 7px">
+                    <div class="form-group">
+                        <label class="col-md-5" style="margin-top: 7px">Diskon</label>
+                        <div class="col-md-7">
+                            <input type="number" id="mod-diskon" onchange="hitungDiskon()" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -390,6 +402,7 @@
                    $("#mod-diskon").val(item.diskon);
                    $("#mod-harga-jual").val(item.hargaJual);
                    $("#mod-margin").val(item.margin);
+                   $("#mod-standar-margin").val(item.standarMargin);
                });
                $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\',\''+idBarang+'\')');
            }
@@ -423,7 +436,8 @@
 
     function checkMargin() {
         var margin = $("#mod-margin").val();
-        if (parseInt(margin) < 10){
+        var standar = $("#mod-standar-margin").val() == null ? 0 : $("#mod-standar-margin").val();
+        if (parseInt(margin) < parseInt(standar)){
             $("#alert-margin").show().fadeOut(7000);
             return true;
         }

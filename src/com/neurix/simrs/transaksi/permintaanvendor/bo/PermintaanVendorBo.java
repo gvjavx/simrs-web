@@ -69,6 +69,7 @@ public interface PermintaanVendorBo {
     public List<DocPo> getListImgByItem(String idItem) throws GeneralBOException;
 
     public List<TransaksiObatBatch> getListBatchByJenisItem(String idItem, String jenis) throws GeneralBOException;
+    public List<TransaksiObatBatch> getListBatchByJenisItem(String idItem, String jenis, String idApproval, String batch) throws GeneralBOException;
 
     public void updateAllNewAverageHargaByObatId(String idObat, BigDecimal avgBox, BigDecimal avgLembar, BigDecimal avgBiji, String branchId) throws GeneralBOException;
 }

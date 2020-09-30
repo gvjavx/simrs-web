@@ -105,10 +105,11 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" >
         <!-- Your Page Content Here -->
         <div class="row">
             <div class="col-md-12">
+                <%--<div class="box box-primary" style="box-shadow: 5px 10px 18px #555; border-radius: 10px;">--%>
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-plus-square"></i> Data Input PO</h3>

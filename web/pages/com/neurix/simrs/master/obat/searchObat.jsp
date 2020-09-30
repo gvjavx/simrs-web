@@ -65,6 +65,7 @@
                     <div class="box-body">
                         <div class="form-group">
                             <s:form id="obatForm" method="post" namespace="/obat" action="search_obat.action" theme="simple" cssClass="form-horizontal">
+                                <s:hidden name="obat.isKp"/>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Kode Produksi Obat</label>
                                     <div class="col-sm-4">
@@ -99,9 +100,6 @@
                                                   name="obat.idObat"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
-                                        <%--<s:textfield id="nama_pasien" name="obat.namaObat"--%>
-                                                     <%--required="false" readonly="false"--%>
-                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -220,28 +218,11 @@
                             <s:iterator value="#session.listOfResult" status="listOfPeriksaLab" var="row">
                                 <s:if test='#row.isMinStok == "Y"'>
                                     <tr bgcolor="#dd4b39">
-                                        <td><s:property value="namaObat"/></td>
-                                        <td><s:property escape="false" value="jenisObat"/></td>
-                                        <td><s:property value="lembarPerBox"/></td>
-                                        <td><s:property value="bijiPerLembar"/></td>
-                                        <td><s:property value="qtyBox"/></td>
-                                        <td><s:property value="qtyLembar"/></td>
-                                        <td><s:property value="qtyBiji"/></td>
-                                        <td><s:property value="minStok"/></td>
-                                        <td align="center" width="13%">
-                                            <img onclick="detailObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="merk"/>','<s:property value="jenisObat"/>','<s:property value="minStok"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
-                                            <img onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>','<s:property value="minStok"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                            <s:url var="print_id_pabrik" namespace="/obat" action="printIDPabrik_obat" escapeAmp="false">
-                                                <s:param name="idPabrik"><s:property value="idPabrik"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{print_id_pabrik}" target="_blank">
-                                                <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
-                                            </s:a>
-                                        </td>
-                                    </tr>
                                 </s:if>
                                 <s:else>
                                     <tr>
+                                </s:else>
+
                                         <td><s:property value="namaObat"/></td>
                                         <td><s:property escape="false" value="jenisObat"/></td>
                                         <td><s:property value="lembarPerBox"/></td>
@@ -252,7 +233,9 @@
                                         <td><s:property value="minStok"/></td>
                                         <td align="center" width="13%">
                                             <img onclick="detailObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="merk"/>','<s:property value="jenisObat"/>','<s:property value="minStok"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
+                                        <s:if test='obat.isKp == "Y"'>
                                             <img onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>','<s:property value="minStok"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                        </s:if>
                                             <s:url var="print_id_pabrik" namespace="/obat" action="printIDPabrik_obat" escapeAmp="false">
                                                 <s:param name="idPabrik"><s:property value="idPabrik"/></s:param>
                                             </s:url>
@@ -261,7 +244,28 @@
                                             </s:a>
                                         </td>
                                     </tr>
-                                </s:else>
+                                <%--<s:else>--%>
+                                    <%--<tr>--%>
+                                        <%--<td><s:property value="namaObat"/></td>--%>
+                                        <%--<td><s:property escape="false" value="jenisObat"/></td>--%>
+                                        <%--<td><s:property value="lembarPerBox"/></td>--%>
+                                        <%--<td><s:property value="bijiPerLembar"/></td>--%>
+                                        <%--<td><s:property value="qtyBox"/></td>--%>
+                                        <%--<td><s:property value="qtyLembar"/></td>--%>
+                                        <%--<td><s:property value="qtyBiji"/></td>--%>
+                                        <%--<td><s:property value="minStok"/></td>--%>
+                                        <%--<td align="center" width="13%">--%>
+                                            <%--<img onclick="detailObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="merk"/>','<s:property value="jenisObat"/>','<s:property value="minStok"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">--%>
+                                            <%--<img onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>','<s:property value="minStok"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">--%>
+                                            <%--<s:url var="print_id_pabrik" namespace="/obat" action="printIDPabrik_obat" escapeAmp="false">--%>
+                                                <%--<s:param name="idPabrik"><s:property value="idPabrik"/></s:param>--%>
+                                            <%--</s:url>--%>
+                                            <%--<s:a href="%{print_id_pabrik}" target="_blank">--%>
+                                                <%--<img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">--%>
+                                            <%--</s:a>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                <%--</s:else>--%>
                             </s:iterator>
                             </tbody>
                         </table>

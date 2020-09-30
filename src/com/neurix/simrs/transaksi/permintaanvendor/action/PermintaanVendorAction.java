@@ -25,6 +25,7 @@ import com.neurix.simrs.master.vendor.model.Vendor;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
+import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.*;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
@@ -1844,6 +1845,15 @@ public class PermintaanVendorAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
         return permintaanVendorBo.getListBatchByJenisItem(idItem, jenis);
+    }
+
+    public List<TransaksiObatBatch> getListBatchByJenisItem(String idItem, String jenis, String idPermintaan, String batch) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        MtSimrsPermintaanVendorEntity permintaanVendorEntity = permintaanVendorBo.getPermintaanVendorEntityById(idPermintaan);
+
+        return permintaanVendorBo.getListBatchByJenisItem(idItem, jenis, permintaanVendorEntity.getIdApprovalObat(), batch);
     }
 
     @Override

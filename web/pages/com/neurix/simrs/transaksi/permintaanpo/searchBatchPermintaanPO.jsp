@@ -343,12 +343,10 @@
                 <div class="box">
                     <table class="table table-striped table-bordered" id="tabel_approve">
                         <thead>
-                        <%--<td>ID</td>--%>
                         <td>Nama Obat</td>
                         <td align="center">Qty Request</td>
                         <td align="center">Qty Approve</td>
                         <td>Jenis Satuan</td>
-                        <%--<td align="center">Harga (Rp.)</td>--%>
                         <td align="center">Diskon</td>
                         <td align="center">Bruto</td>
                         <td align="center">Netto</td>
@@ -361,62 +359,21 @@
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="box-body">
-                    <%--<div class="row">--%>
-
-                        <%--<div class="col-md-6">--%>
-                            <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4">No Faktur</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                    <%--<input class="form-control" id="app_no_faktur">--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4" style="margin-top: 7px">Tanggal Faktur</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                    <%--<input style="margin-top: 7px" class="form-control datepicker2 datemask2" id="app_tgl_faktur">--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4" style="margin-top: 7px">Foto Doc PO</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                    <%--<div class="input-group" style="margin-top: 7px" id="app_doc">--%>
-                                    <%--<span class="input-group-btn">--%>
-                                    <%--<span class="btn btn-default btn-file">--%>
-                                    <%--Browse… <input type="file" id="imgInp" accept=".jpg" onchange="$('#img_file').css('border','')">--%>
-                                    <%--</span>--%>
-                                    <%--</span>--%>
-                                    <%--<input type="text" class="form-control" readonly>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<canvas id="img_canvas" style="border: solid 1px #ccc; display: none"></canvas>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-6">--%>
-                            <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4">No Invoice</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                    <%--<input class="form-control" id="app_no_invoice">--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="form-group">--%>
-                                <%--<label class="col-md-4" style="margin-top: 7px">No DO</label>--%>
-                                <%--<div class="col-md-8">--%>
-                                    <%--<input style="margin-top: 7px" class="form-control" id="app_no_do">--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-
                     <div class="row">
                         <div class="col-md-6">
                             <table class="table table-striped">
                                 <tr>
                                     <td width="40%">No. Faktur Pajak</td>
-                                    <td><input type="text" class="form-control" id="app_no_faktur"/></td>
+                                    <td><input type="text" class="form-control" id="app_no_faktur" onchange="checkAvail(this.value, 'faktur')"/></td>
+                                    <input type="hidden" id="avail-no-faktur" value=""/>
                                 </tr>
                                 <tr>
                                     <td>Tanggal Faktur</td>
                                     <td><input type="date" class="form-control" id="app_tgl_faktur"/></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><div class="alert alert-danger" id="alert-faktur" style="display: none">No Faktur Telah Dipakai</div></td>
                                 </tr>
                             </table>
                         </div>
@@ -435,11 +392,16 @@
                             <table class="table table-striped">
                                 <tr>
                                     <td width="40%">No. Invoice</td>
-                                    <td><input type="text" class="form-control" id="app_no_invoice"/></td>
+                                    <td><input type="text" class="form-control" id="app_no_invoice" onchange="checkAvail(this.value, 'invoice')" /></td>
+                                    <input type="hidden" id="avail-no-invoice" value=""/>
                                 </tr>
                                 <tr>
                                     <td width="40%">Tgl Jatuh Tempo</td>
                                     <td><input type="date" class="form-control" id="tgl-invoice"/></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><div class="alert alert-danger" id="alert-invoice" style="display: none">No Invoice Telah Dipakai</div></td>
                                 </tr>
                             </table>
                         </div>
@@ -457,11 +419,16 @@
                             <table class="table table-striped">
                                 <tr>
                                     <td width="40%">No. DO</td>
-                                    <td><input type="text" class="form-control" id="app_no_do"/></td>
+                                    <td><input type="text" class="form-control" id="app_no_do" onchange="checkAvail(this.value, 'do')"/></td>
+                                    <input type="hidden" id="avail-no-do" value=""/>
                                 </tr>
                                 <tr>
                                     <td width="40%">Tgl Do</td>
                                     <td><input type="date" class="form-control" id="tgl-do"/></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><div class="alert alert-danger" id="alert-do" style="display: none">No DO Telah Dipakai</div></td>
                                 </tr>
                             </table>
                         </div>
@@ -486,6 +453,8 @@
                             </table>
                         </div>
                     </div>
+
+                    <div class="alert alert-danger" id="alert-panel" style="display: none;"></div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -835,6 +804,11 @@
         nFaktur     = 0;
         nInvoice    = 0;
         nDo         = 0;
+
+        $("#avail-no-faktur").val("");
+        $("#avail-no-invoice").val("");
+        $("#avail-no-do").val("");
+
         $('#modal-approve').modal({show:true, backdrop:'static'});
         var table = [];
         var noBatch = null;
@@ -923,11 +897,66 @@
         });
     }
 
+    function checkAvail(idItem, jenis) {
+        console.log("idItem -> "+ idItem);
+        console.log("jenis -> "+ jenis);
+
+        var batch = $("#mod_batch").text();
+        var idTransakasi = $("#no_po").text();
+
+        PermintaanVendorAction.getListBatchByJenisItem(idItem, jenis, idTransakasi, batch, function (res) {
+            if (res != null && res.length > 0){
+                $.each(res, function (i,item) {
+
+                    if (jenis == "faktur"){
+                        $("#avail-no-faktur").val(item.noFaktur);
+                        $("#alert-faktur").show();
+                    } else {
+                        $("#avail-no-faktur").val("");
+                        $("#alert-faktur").hide();
+                    }
+                    if (jenis == "invoice"){
+                        $("#avail-no-invoice").val(item.noInvoice);
+                        $("#alert-invoice").show();
+                    } else {
+                        $("#avail-no-invoice").val("");
+                        $("#alert-invoice").hide();
+                    }
+                    if (jenis == "do"){
+                        $("#avail-no-do").val(item.noDo);
+                        $("#alert-do").show();
+                    } else {
+                        $("#avail-no-do").val("");
+                        $("#alert-do").hide();
+                    }
+                });
+            } else {
+                if (jenis == "faktur"){
+                    $("#avail-no-faktur").val("");
+                    $("#alert-faktur").hide();
+                }
+                if (jenis == "invoice"){
+                    $("#avail-no-invoice").val("");
+                    $("#alert-invoice").hide();
+                }
+                if (jenis == "do"){
+                    $("#avail-no-do").val("");
+                    $("#alert-do").hide();
+                }
+            }
+        });
+    }
+
     function confirmBatch(noBatch){
         n           = 0;
         nFaktur     = 0;
         nInvoice    = 0;
         nDo         = 0;
+
+        $("#avail-no-faktur").val("");
+        $("#avail-no-invoice").val("");
+        $("#avail-no-do").val("");
+
         $('#modal-approve').modal({show:true, backdrop:'static'});
         var table = [];
         $('#body_approve').html('');
@@ -1025,6 +1054,16 @@
 
         var tglInvoice  = $('#tgl-invoice').val();
         var tglDo       = $('#tgl-do').val();
+
+        var availFaktur     = $("#avail-no-faktur").val();
+        var availInvoice    = $("#avail-no-invoice").val();
+        var availDo         = $("#avail-no-do").val();
+
+        if (availDo != "" || availFaktur != "" || availInvoice != ""){
+            $("#alert-panel").show().fadeOut(5000);
+            $("#alert-panel").html("Nomor Telah Ada.");
+            return false;
+        }
 
 //        if (tgl == null || tgl == ""){
 //            return alert("tanggal tidak ditemukan");
@@ -1321,17 +1360,6 @@
         CheckupAction.getListUploadRekamMedic(headId, function (response) {
             if (response.length > 0){
                 $.each(response, function (i, item) {
-                    // if (i == 0){
-                    //     indicator += '<li data-target="#carouselExampleIndicators" data-slide-to="'+i+'" class="active"></li>';
-                    //     str += '<div class="carousel-item active">'+
-                    //            '<img class="d-block w-100" src="'+item.urlImg+'" alt="'+i+' slide">'+
-                    //            '</div>';
-                    // } else {
-                    //     indicator += '<li data-target="#carouselExampleIndicators" data-slide-to="'+i+'"></li>';
-                    //     str += '<div class="carousel-item">'+
-                    //         '<img class="d-block w-100" src="'+item.urlImg+'" alt="'+i+' slide">'+
-                    //         '</div>';
-                    // }
                     if(i == 0){
                         str += '<img id="carousel-'+i+'" class="carousel-img carousel-img-displayed" src="'+item.urlImg+'" alt="Foto Rekam Medik" />';
                     }else{

@@ -881,7 +881,8 @@
         } else {
 
             $("#alert-panel").show().fadeOut(5000);
-            $("#alert-panel").html("Document Harus Dilengkapi.");
+//            $("#alert-panel").html("Document Harus Dilengkapi.");
+            $("#alert-panel").html("Nomor Telah Ada.");
         }
     }
 
