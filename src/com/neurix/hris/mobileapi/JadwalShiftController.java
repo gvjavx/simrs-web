@@ -164,10 +164,10 @@ public class JadwalShiftController implements ModelDriven<Object> {
                     //jika bulan kosong, maka akan mencari absensi dalam setahun
                     if (!today.equalsIgnoreCase("Y")) {
                         if (!bulan.equalsIgnoreCase("")) {
-                            tanggalAwal = "01-" + bulan + "-" + tahun;
+                            tanggalAwal = tahun +"-" + bulan +"-01";
 
                             //Mencari tanggal terakhir di bulan yg diinputkan
-                            Date dtTanggalAkhir = CommonUtil.convertStringToDate(tanggalAwal);
+                            Date dtTanggalAkhir = CommonUtil.convertStringToDate2(tanggalAwal);
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(dtTanggalAkhir);
                             calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
