@@ -81,6 +81,24 @@ public class Obat extends BaseModel {
     private Integer standarMargin;
     private Integer margin;
     private String flagKurangMargin;
+    private String flagGeneric;
+    private String isKp;
+
+    public String getIsKp() {
+        return isKp;
+    }
+
+    public void setIsKp(String isKp) {
+        this.isKp = isKp;
+    }
+
+    public String getFlagGeneric() {
+        return flagGeneric;
+    }
+
+    public void setFlagGeneric(String flagGeneric) {
+        this.flagGeneric = flagGeneric;
+    }
 
     public String getFlagKurangMargin() {
         return flagKurangMargin;

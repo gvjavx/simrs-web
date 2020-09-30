@@ -1235,6 +1235,44 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN min_stok bigint;
 
     ALTER TABLE im_simrs_header_obat
-    ADD COLUMN merk varchar(100)
+    ADD COLUMN merk varchar(100);
+
+    -- insert data header obat
+    INSERT INTO im_simrs_header_obat
+    (id_obat,
+    nama_obat,
+    id_pabrik,
+    lembar_per_box,
+    biji_per_lembar,
+    min_stok,
+    merk
+    )
+    SELECT
+    id_obat,
+    nama_obat,
+    id_pabrik,
+    lembar_per_box,
+    biji_per_lembar,
+    min_stok,
+    merk
+    FROM im_simrs_obat
+    GROUP BY
+    id_obat,
+    nama_obat,
+    id_pabrik,
+    lembar_per_box,
+    biji_per_lembar,
+    min_stok,
+    merk;
+
+    -- end
+
+    UPDATE im_simrs_header_obat SET
+    flag = 'Y',
+    action = 'C',
+    created_date = now(),
+    created_who = 'migrasi_admin',
+    last_update = now(),
+    last_update_who = 'migrasi_admin';
 
 --

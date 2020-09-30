@@ -144,6 +144,7 @@ public class CommonConstant {
     public final static String BRANCH_RS01 = "RS01";
     public final static String BRANCH_RS02 = "RS02";
     public final static String BRANCH_RS03 = "RS03";
+    public final static String BRANCH_KP = "KP";
 
     public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("upload.folder");
     //    public static final String RESOURCE_IMAGE_TTD = "C:/Users/pc001/Pictures/";

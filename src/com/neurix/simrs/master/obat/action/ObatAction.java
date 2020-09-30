@@ -187,11 +187,18 @@ public class ObatAction extends BaseMasterAction {
     @Override
     public String initForm() {
         logger.info("[ObatAction.initForm] START >>>>>>>");
+        String userBranch = CommonUtil.userBranchLogin();
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
-        setObat(new Obat());
+        Obat obat = new Obat();
+        if (CommonConstant.BRANCH_KP.equalsIgnoreCase(userBranch)){
+            obat.setIsKp("Y");
+        }
+
+        setObat(obat);
+
         logger.info("[ObatAction.initForm] END <<<<<<<");
         return "search";
     }

@@ -120,10 +120,11 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <button type="button" class="btn btn-primary" onclick="showModal()">
-                                            <i class="fa fa-plus"></i> Tambah Obat
-                                        </button>
-
+                                        <s:if test='obat.isKp == "Y"'>
+                                            <button type="button" class="btn btn-primary" onclick="showModal()">
+                                                <i class="fa fa-plus"></i> Tambah Obat
+                                            </button>
+                                        </s:if>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-primary"><i class="fa fa-print"></i> Print Report</button>
                                             <button type="button" class="btn btn-primary dropdown-toggle"
