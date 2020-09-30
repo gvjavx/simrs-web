@@ -8,6 +8,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisobat.dao.JenisObatDao;
 import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
+import com.neurix.simrs.master.kategoripersediaan.dao.KategoriPersedianDao;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.dao.*;
 import com.neurix.simrs.master.obat.model.*;
@@ -66,6 +67,16 @@ public class ObatBoImpl implements ObatBo {
     private KandunganObatDetailDao kandunganObatDetailDao;
     private KandunganObatDao kandunganObatDao;
     private BentukBarangDao bentukBarangDao;
+    private HeaderObatDao headerObatDao;
+    private KategoriPersedianDao kategoriPersedianDao;
+
+    public void setKategoriPersedianDao(KategoriPersedianDao kategoriPersedianDao) {
+        this.kategoriPersedianDao = kategoriPersedianDao;
+    }
+
+    public void setHeaderObatDao(HeaderObatDao headerObatDao) {
+        this.headerObatDao = headerObatDao;
+    }
 
     public void setBentukBarangDao(BentukBarangDao bentukBarangDao) {
         this.bentukBarangDao = bentukBarangDao;
@@ -991,7 +1002,7 @@ public class ObatBoImpl implements ObatBo {
         String id = "";
 
         try {
-            id = obatDao.getNextId();
+            id = headerObatDao.getNextId();
         } catch (HibernateException e) {
             logger.error("[ObatBoImpl.getIdNextObat] ERROR WHEN GET data id obat, " + e.getMessage());
             throw new GeneralBOException("[ObatBoImpl.getIdNextObat] ERROR WHEN GET data id obat, " + e.getMessage());
