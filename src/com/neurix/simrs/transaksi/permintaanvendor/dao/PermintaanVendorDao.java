@@ -382,13 +382,13 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
 
             String where = "";
             if ("faktur".equalsIgnoreCase(jenis))
-                where = "WHERE no_faktur = '"+idItem+"' \n";
+                where = "WHERE a.no_faktur = '"+idItem+"' \n";
 
             if ("invoice".equalsIgnoreCase(jenis))
-                where = "WHERE no_invoice = '"+idItem+"' \n";
+                where = "WHERE a.no_invoice = '"+idItem+"' \n";
 
             if ("do".equalsIgnoreCase(jenis))
-                where = "WHERE no_do = '"+idItem+"' \n";
+                where = "WHERE a.no_do = '"+idItem+"' \n";
 
             String SQL = "SELECT a.no_faktur, a.tanggal_faktur, a.no_invoice, a.no_do, a.jenis \n" +
                     "FROM mt_simrs_transaksi_obat_detail_batch a\n" +
