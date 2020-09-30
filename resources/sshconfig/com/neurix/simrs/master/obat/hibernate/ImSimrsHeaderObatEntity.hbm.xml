@@ -50,6 +50,12 @@
             <basic name="idKategoriPersediaan">
                 <column name="id_kategori_persediaan"/>
             </basic>
+            <basic name="minStok">
+                <column name="min_stok"/>
+            </basic>
+            <basic name="merk">
+                <column name="merk"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

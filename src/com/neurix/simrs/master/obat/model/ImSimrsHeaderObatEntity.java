@@ -22,6 +22,24 @@ public class ImSimrsHeaderObatEntity {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String idKategoriPersediaan;
+    private BigInteger minStok;
+    private String merk;
+
+    public String getMerk() {
+        return merk;
+    }
+
+    public void setMerk(String merk) {
+        this.merk = merk;
+    }
+
+    public BigInteger getMinStok() {
+        return minStok;
+    }
+
+    public void setMinStok(BigInteger minStok) {
+        this.minStok = minStok;
+    }
 
     public String getIdObat() {
         return idObat;
