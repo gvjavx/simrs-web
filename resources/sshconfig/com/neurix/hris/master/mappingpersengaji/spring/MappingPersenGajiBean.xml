@@ -11,6 +11,7 @@
     <bean id="mappingPersenGajiBo" class="com.neurix.hris.master.mappingpersengaji.bo.impl.MappingPersenGajiBoImpl"
           p:mappingPersenGajiDao-ref="mappingPersenGajiDao"
           p:mappingPersenGajiHistoryDao-ref="mappingPersenGajiHistoryDao"
+          p:jenisPegawaiDao-ref="jenisPegawaiDao"
     />
 
     <bean id="mappingPersenGajiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -249,6 +249,7 @@
                             },
                             updater: function (item) {
                                 var selectedObj = mapped[item];
+                                console.log(selectedObj);
                                 var namaMember = selectedObj.label;
                                 $('#divisiId12').val(selectedObj.divisi).change();
                                 $('#divisiId33').val(selectedObj.divisi).change();
