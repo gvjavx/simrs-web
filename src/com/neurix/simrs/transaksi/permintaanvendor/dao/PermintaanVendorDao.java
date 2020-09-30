@@ -394,7 +394,7 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
                     "FROM mt_simrs_transaksi_obat_detail_batch a\n" +
                     "INNER JOIN mt_simrs_transaksi_obat_detail b on b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n"
                     + where +
-                    "AND (b.id_approval_obat, a.no_batch) = ( :idApproval, :noBatch )";
+                    "AND (b.id_approval_obat, a.no_batch) != ( :idApproval, :noBatch )";
 
             List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idApproval", idTransaksi)
