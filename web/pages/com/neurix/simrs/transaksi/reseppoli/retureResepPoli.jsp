@@ -208,6 +208,8 @@
             $.publish('showErrorDialog');
         });
 
+        var n = 1;
+
     </script>
 </head>
 
@@ -425,8 +427,18 @@
                                             </s:else>
                                         </div>
                                     </td>
-                                    <td><input type="number" class="form-control"/></td>
+                                    <td>
+                                        <input type="number" class="form-control" id='qty-reture-<s:property value="idObat"/>' />
+                                        <input type="hidden" id='id-obat-<s:property value="idObat"/>' value='<s:property value="idObat" />' />
+                                        <input type="hidden" id='id-barang-<s:property value="idObat"/>' value='<s:property value="idBarang" />' />
+                                    </td>
                                     <td><s:property value="jenisSatuan"/></td>
+                                    <script>
+                                        var idobat = '<s:property value="idObat" />';
+                                        $("#qty-reture-"+idobat).attr("class", 'form-control qty-reture-'+n);
+                                        $("#id-obat-"+idobat).attr("class", 'form-control id-obat-'+n);
+                                        n++;
+                                    </script>
                                 </tr>
                             </s:iterator>
                             </tbody>

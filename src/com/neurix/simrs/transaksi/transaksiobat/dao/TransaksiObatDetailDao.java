@@ -156,6 +156,47 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         return obatDetailEntities;
     }
 
+    public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResep(String idPermintaanResep){
+
+        String SQL = "SELECT\n" +
+                "a.id_barang,\n" +
+                "a.id_transaksi_obat_detail,\n" +
+                "b.id_approval_obat,\n" +
+                "b.id_obat, \n" +
+                "a.qty_approve,\n" +
+                "b.jenis_satuan,\n" +
+                "b.flag_verifikasi\n" +
+                "FROM (SELECT * FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y') a \n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail b ON b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n" +
+                "INNER JOIN mt_simrs_permintaan_resep c ON c.id_approval_obat = b.id_approval_obat\n" +
+                "WHERE c.id_permintaan_resep LIKE :idPermintaanResep ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idPermintaanResep", idPermintaanResep)
+                .list();
+
+        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+
+        if (results.size() > 0)
+        {
+            for (Object[] obj : results)
+            {
+                TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+                obatDetail.setIdBarang(obj[0].toString());
+                obatDetail.setIdTransaksiObatDetail(obj[1].toString());
+                obatDetail.setIdApprovalObat(obj[2].toString());
+                obatDetail.setIdObat(obj[3].toString());
+                obatDetail.setQty((BigInteger) obj[4]);
+                obatDetail.setJenisSatuan(obj[5].toString());
+                obatDetail.setFlagVerifikasi(obj[6] == null ? "" : obj[6].toString());
+                obatDetailList.add(obatDetail);
+            }
+        }
+
+        return obatDetailList;
+    }
+
+
     public List<PermintaanResep> getListResepPasien(PermintaanResep bean){
 
         String isUmum        = "%";

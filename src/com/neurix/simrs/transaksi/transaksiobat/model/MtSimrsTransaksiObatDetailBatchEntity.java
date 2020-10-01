@@ -43,6 +43,15 @@ public class MtSimrsTransaksiObatDetailBatchEntity implements Serializable {
     private Date tglInvoice;
     private BigDecimal hargaJual;
     private BigDecimal hargaRata;
+    private BigInteger qtyReture;
+
+    public BigInteger getQtyReture() {
+        return qtyReture;
+    }
+
+    public void setQtyReture(BigInteger qtyReture) {
+        this.qtyReture = qtyReture;
+    }
 
     public BigDecimal getHargaJual() {
         return hargaJual;

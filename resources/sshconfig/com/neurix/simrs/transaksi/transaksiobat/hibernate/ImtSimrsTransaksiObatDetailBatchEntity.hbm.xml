@@ -99,5 +99,8 @@
         <property name="hargaRata">
             <column name="harga_rata" sql-type="date"  />
         </property>
+        <property name="qtyReture">
+            <column name="qty_reture" sql-type="bigint"  />
+        </property>
     </class>
 </hibernate-mapping>

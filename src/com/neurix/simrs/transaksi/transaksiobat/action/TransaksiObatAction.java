@@ -609,35 +609,19 @@ public class TransaksiObatAction extends BaseMasterAction {
             }
         }
 
-        String userLogin = CommonUtil.userLogin();
-        Timestamp time = new Timestamp(System.currentTimeMillis());
-        PermintaanResep permintaanResep = new PermintaanResep();
-        permintaanResep.setIdPermintaanResep(idPermintaan);
-        permintaanResep.setLastUpdate(time);
-        permintaanResep.setLastUpdateWho(userLogin);
-
-        try {
-            transaksiObatBoProxy.updateAntrianResep(permintaanResep);
-        } catch (GeneralBOException e) {
-            logger.error("[TransaksiObatAction.searchResepReture] ERROR error update status antrian resep. ", e);
-            addActionError("[TransaksiObatAction.searchResepReture] ERROR error update status antrian resep. " + e.getMessage());
-        }
-
-
         TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
         transaksiObatDetail.setIdPermintaanResep(idPermintaan);
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
 
-        if (transaksiObatDetail != null) {
+        if (idPermintaan != null && !"".equalsIgnoreCase(idPermintaan)) {
 
-            if (transaksiObatDetail.getIdPermintaanResep() != null && !"".equalsIgnoreCase(transaksiObatDetail.getIdPermintaanResep())) {
-                try {
-                    obatDetailList = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(transaksiObatDetail);
-                } catch (GeneralBOException e) {
-                    logger.error("[TransaksiObatAction.searchResepReture] ERROR error when get searh resep. ", e);
-                    addActionError("[TransaksiObatAction.searchResepReture] ERROR error when get searh resep. " + e.getMessage());
-                }
+            try {
+                obatDetailList = transaksiObatBoProxy.getListTransaksiObatDetailBatchByIdResep(idPermintaan);
+            } catch (GeneralBOException e) {
+                logger.error("[TransaksiObatAction.searchResepReture] ERROR error when get searh resep. ", e);
+                addActionError("[TransaksiObatAction.searchResepReture] ERROR error when get searh resep. " + e.getMessage());
             }
+
         }
 
         BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
@@ -812,6 +796,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         BigInteger total = new BigInteger(String.valueOf("0"));
         if (transaksiObatDetails != null && transaksiObatDetails.size() > 0) {
             for (TransaksiObatDetail trans : transaksiObatDetails) {
+                trans.setTotalHarga(trans.getTotalHarga() == null ? new BigInteger(String.valueOf(0)) : trans.getTotalHarga());
                 total = total.add(trans.getTotalHarga());
             }
         }
