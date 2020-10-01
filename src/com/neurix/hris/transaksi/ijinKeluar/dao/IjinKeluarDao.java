@@ -7,6 +7,7 @@ import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity;
+import com.neurix.hris.transaksi.lembur.model.LemburEntity;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -509,5 +510,51 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
         }
 
         return ijinKeluarList;
+    }
+
+    public String cekPengajuanDiTanggalYangSama(Date tanggal,String nip) throws HibernateException {
+        String results = "";
+
+        List<IjinKeluarEntity> ijinKeluarEntityList = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.or(
+                        Restrictions.isNull("approvalFlag"),
+                        Restrictions.eq("approvalFlag", "Y")
+                ))
+                .add(Restrictions.eq("cancelFlag", "N"))
+                .add(Restrictions.le("tanggalAwal",tanggal))
+                .add(Restrictions.ge("tanggalAkhir",tanggal))
+                .list();
+
+        List<LemburEntity> lemburEntityList = this.sessionFactory.getCurrentSession().createCriteria(LemburEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.or(
+                        Restrictions.isNull("approvalFlag"),
+                        Restrictions.eq("approvalFlag", "Y")
+                ))
+                .add(Restrictions.le("tanggalAwalSetuju",tanggal))
+                .add(Restrictions.ge("tanggalAkhirSetuju",tanggal))
+                .list();
+
+        List<ItCutiPegawaiEntity> cutiPegawaiEntityList = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.or(
+                        Restrictions.isNull("approvalFlag"),
+                        Restrictions.eq("approvalFlag", "Y")
+                ))
+                .add(Restrictions.eq("cancelFlag", "N"))
+                .add(Restrictions.le("tanggalDari",tanggal))
+                .add(Restrictions.ge("tanggalSelesai",tanggal))
+                .add(Restrictions.eq("flagPerbaikan","N"))
+                .list();
+
+        if (ijinKeluarEntityList.size()>0){
+            results = "ERROR : sudah mengajukan Dispensasi di tanggal ini";
+        } else if (lemburEntityList.size()>0) {
+            results = "ERROR : sudah mengajukan Lembur di tanggal ini";
+        } else if (cutiPegawaiEntityList.size()>0) {
+            results = "ERROR : sudah mengajukan Cuti di tanggal ini";
+        }
+        return results;
     }
 }

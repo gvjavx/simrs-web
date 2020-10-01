@@ -101,15 +101,15 @@ public class CompanyBoImpl implements CompanyBo {
                 else
                     imCompanyOld.setIuranPerusahaanJkmJkk(BigDecimal.valueOf(0.0));
 
-                if (companyNew.getParamDapen() != null)
-                    imCompanyOld.setParamDapen(companyNew.getParamDapen());
-                else
-                    imCompanyOld.setParamDapen(BigDecimal.valueOf(0.0));
-
-                if (companyNew.getParamDapenPegawai() != null)
-                    imCompanyOld.setParamDapenPegawai(companyNew.getParamDapenPegawai());
-                else
-                    imCompanyOld.setParamDapenPegawai(BigDecimal.valueOf(0.0));
+//                if (companyNew.getParamDapen() != null)
+//                    imCompanyOld.setParamDapen(companyNew.getParamDapen());
+//                else
+//                    imCompanyOld.setParamDapen(BigDecimal.valueOf(0.0));
+//
+//                if (companyNew.getParamDapenPegawai() != null)
+//                    imCompanyOld.setParamDapenPegawai(companyNew.getParamDapenPegawai());
+//                else
+//                    imCompanyOld.setParamDapenPegawai(BigDecimal.valueOf(0.0));
 
                 if (companyNew.getBiayaJabatan() != null)
                     imCompanyOld.setBiayaJabatan(companyNew.getBiayaJabatan());

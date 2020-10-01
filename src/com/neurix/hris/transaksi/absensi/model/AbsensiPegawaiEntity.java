@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.absensi.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -76,6 +77,16 @@ public class AbsensiPegawaiEntity implements Serializable {
     private String statusNameOnCall;
     private String flagPanggil;
     private String flagCutiGantiHari;
+
+    private BigInteger telat;
+
+    public BigInteger getTelat() {
+        return telat;
+    }
+
+    public void setTelat(BigInteger telat) {
+        this.telat = telat;
+    }
 
     public String getFlagCutiGantiHari() {
         return flagCutiGantiHari;

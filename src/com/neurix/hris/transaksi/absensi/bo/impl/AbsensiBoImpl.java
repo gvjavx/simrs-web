@@ -752,6 +752,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             absensiPegawaiEntity.setStatusAbsensiOnCall(bean.getStatusAbsensiOnCall());
             absensiPegawaiEntity.setJamMasukOnCall(bean.getJamMasukOnCall());
             absensiPegawaiEntity.setJamPulangOnCall(bean.getJamPulangOnCall());
+            absensiPegawaiEntity.setTelat(bean.getTelat());
 
             absensiPegawaiEntity.setCreatedWho(bean.getCreatedWho());
             absensiPegawaiEntity.setLastUpdate(bean.getLastUpdate());
@@ -5353,7 +5354,6 @@ public class AbsensiBoImpl implements AbsensiBo {
 
         //mengambil absensi per orang
         for (ImBiodataEntity biodata : biodataList){
-
             AbsensiPegawai absensiPegawai = new AbsensiPegawai();
             if ("".equalsIgnoreCase(biodata.getPin())||biodata.getPin()==null){}
             else{
@@ -5383,6 +5383,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     absensiPegawai.setJamLembur((double)0);
                     absensiPegawai.setBiayaLembur((double)0);
                     absensiPegawai.setFlagCutiGantiHari("N");
+                    absensiPegawai.setTelat(BigInteger.valueOf(0));
 
                     absensiPegawai.setAction(data.getAction());
                     absensiPegawai.setFlag(data.getFlag());
@@ -5507,6 +5508,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 if (tsJamAwalFinger==null||tsJamAkhirFinger==null){
                                     absensiPegawai.setStatusAbsensi("03");
                                 }else if (tsJamAwalFinger.compareTo(tsJamMasukKantor)>0){
+                                    absensiPegawai.setTelat(BigInteger.valueOf(CommonUtil.compareTwoTimeStamps(tsJamAwalFinger,tsJamMasukKantor,"menit")));
                                     absensiPegawai.setStatusAbsensi("02");
                                 }else if (tsJamAkhirFinger.compareTo(tsJamPulangKantor)<0){
                                     absensiPegawai.setStatusAbsensi("14");
@@ -6095,6 +6097,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         if (tsJamAwalFinger==null||tsJamAkhirFinger==null){
                                             statusA="03";
                                         }else if (tsJamAwalFinger.compareTo(tsTanggalAwalShift)>0){
+                                            absensiPegawai.setTelat(BigInteger.valueOf(CommonUtil.compareTwoTimeStamps(tsJamAwalFinger,tsTanggalAwalShift,"menit")));
                                             statusA="02";
                                         }else if (tsJamAkhirFinger.compareTo(tsTanggalBesokShift)<0){
                                             statusA="14";
@@ -6362,6 +6365,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         if (tsJamAwalFinger == null || tsJamAkhirFinger == null) {
                                             statusA = "03";
                                         } else if (tsJamAwalFinger.compareTo(tsTanggalAwalShift) > 0) {
+                                            absensiPegawai.setTelat(BigInteger.valueOf(CommonUtil.compareTwoTimeStamps(tsJamAwalFinger,tsTanggalAwalShift,"menit")));
                                             statusA = "02";
                                         } else if (tsJamAkhirFinger.compareTo(tsTanggalBesokShift) < 0) {
                                             statusA = "14";
@@ -6795,6 +6799,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     absensiPegawaiEntity.setJamMasukOnCall(dataAbsen.getJamMasukOnCall());
                     absensiPegawaiEntity.setJamPulangOnCall(dataAbsen.getJamPulangOnCall());
                     absensiPegawaiEntity.setFlagCutiGantiHari(dataAbsen.getFlagCutiGantiHari());
+                    absensiPegawaiEntity.setTelat(dataAbsen.getTelat());
 
                     absensiPegawaiEntity.setCreatedWho(bean.getCreatedWho());
                     absensiPegawaiEntity.setLastUpdate(bean.getLastUpdate());

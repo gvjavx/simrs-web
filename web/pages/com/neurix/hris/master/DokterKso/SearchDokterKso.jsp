@@ -41,7 +41,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Dokter KSO
+            Dokter Tamu
         </h1>
     </section>
     <!-- Main content -->
@@ -50,7 +50,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Dokter KSO</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Dokter Tamu</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -67,7 +67,7 @@
                                         <table>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Dokter KSO ID :</small></label>
+                                                    <label class="control-label"><small>Dokter Tamu ID :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -183,7 +183,7 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <a href="add_dokterkso.action" class="btn btn-success" ><i class="fa fa-plus"></i>Add Dokter Kso</a>
+                                                        <a href="add_dokterkso.action" class="btn btn-success" ><i class="fa fa-plus"></i>Add Dokter Tamu</a>
                                                         <%--<s:url var="urlAdd" namespace="/dokterkso" action="add_dokterkso" escapeAmp="false">--%>
                                                         <%--</s:url>--%>
                                                         <%--<sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">--%>
@@ -224,17 +224,17 @@
                                                         </sj:dialog>
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="500" width="600" autoOpen="false"
-                                                                   title="Dokter KSO ">
+                                                                   title="Dokter Tamu ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
                                                         <sj:dialog id="view_dialog_menu_pendapatan" openTopics="showDialogMenuView" modal="true"
                                                                    height="570" width="700" autoOpen="false"
-                                                                   title="Dokter KSO">
+                                                                   title="Dokter Tamu">
                                                         </sj:dialog>
                                                         <sj:dialog id="view_dialog_keterangan" openTopics="showDialogMenuKeterangan" modal="true"
                                                                    height="680" width="700" autoOpen="false"
-                                                                   title="Dokter KSO">
+                                                                   title="Dokter Tamu">
                                                         </sj:dialog>
 
                                                         <s:set name="listOfsearchDokterKso" value="#session.listOfResultDokterKso" scope="request" />
@@ -275,7 +275,7 @@
                                                                     </s:a>
                                                                 </s:if>
                                                             </display:column>
-                                                            <display:column property="dokterKsoId" sortable="true" title="ID Dokter KSO" />
+                                                            <display:column property="dokterKsoId" sortable="true" title="ID Dokter Tamu" />
                                                             <display:column property="nip" sortable="true" title="NIP Dokter"  />
                                                             <display:column property="namaDokter" sortable="true" title="Nama Dokter"  />
                                                             <display:column property="branchName" sortable="true" title="Unit"  />

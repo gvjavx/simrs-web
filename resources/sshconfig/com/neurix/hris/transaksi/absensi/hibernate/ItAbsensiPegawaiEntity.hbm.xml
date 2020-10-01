@@ -119,5 +119,8 @@
         <property name="flagCutiGantiHari">
             <column name="flag_cuti_ganti_hari"/>
         </property>
+        <property name="telat">
+            <column name="telat"/>
+        </property>
     </class>
 </hibernate-mapping>

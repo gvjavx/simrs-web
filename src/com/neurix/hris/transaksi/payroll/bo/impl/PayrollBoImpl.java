@@ -139,6 +139,15 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     private MappingPersenGajiDao mappingPersenGajiDao;
     private KodeRekeningDao kodeRekeningDao;
     private MappingJurnalDao mappingJurnalDao;
+    private PayrollDanaPensiunDao payrollDanaPensiunDao;
+
+    public PayrollDanaPensiunDao getPayrollDanaPensiunDao() {
+        return payrollDanaPensiunDao;
+    }
+
+    public void setPayrollDanaPensiunDao(PayrollDanaPensiunDao payrollDanaPensiunDao) {
+        this.payrollDanaPensiunDao = payrollDanaPensiunDao;
+    }
 
     public MappingJurnalDao getMappingJurnalDao() {
         return mappingJurnalDao;
@@ -1624,8 +1633,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 ImCompany company = companyDao.getCompanyInfo("Y");
                 if (!("").equalsIgnoreCase(company.getPeriodeGaji())){
                     tahun=company.getPeriodeGaji();
-                    paramDapen = company.getParamDapen();
-                    paramDapenPegawai = company.getParamDapenPegawai();
                 }else{
                     String status = "Error : tidak ditemukan periode gaji pada Company";
                     logger.error("[PayrollBoImpl.dataAddPayroll] "+status);
@@ -2245,6 +2252,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         //perhitungan iuran pensiun
                         if (payrollEntity.getDanaPensiun() != null) {
                             if (!payrollEntity.getDanaPensiun().equalsIgnoreCase("")){
+                                ImPayrollDanaPensiunEntity payrollDanaPensiunEntity = payrollDanaPensiunDao.getById("danaPensiunId",payrollEntity.getDanaPensiun());
+                                if (payrollDanaPensiunEntity!=null){
+                                    paramDapen = payrollDanaPensiunEntity.getPersentasePers();
+                                    paramDapenPegawai = payrollDanaPensiunEntity.getPersentaseKary();
+                                }
+
                                 if (payrollEntity.getDanaPensiun().equalsIgnoreCase("DP01")){
                                     gajiPensiun = getDapenDplkSimRs(payrollEntity.getGolonganDapenId(), payrollEntity.getMasaKerjaGol());
                                     iuranDapenPensiunPeg = getIuranPensiunPegSimRs(payrollEntity.getGolonganId());
@@ -3301,20 +3314,20 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         if (!"".equalsIgnoreCase(npwp)){
             if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
                 hasil = BigDecimal.valueOf(0.05).multiply(pkp);
-            }else if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(250000000)) <= 0){
+            }else if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(200000000)) <= 0){
                 hasil = BigDecimal.valueOf(2500000).add((BigDecimal.valueOf(0.15).multiply(pkp.subtract(BigDecimal.valueOf(50000000))))) ;
-            }else if(pkp.compareTo(BigDecimal.valueOf(250000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
-                hasil = BigDecimal.valueOf(32500000).add((BigDecimal.valueOf(0.25).multiply((pkp.subtract(BigDecimal.valueOf(250000000))))));
+            }else if(pkp.compareTo(BigDecimal.valueOf(200000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
+                hasil = BigDecimal.valueOf(30000000).add((BigDecimal.valueOf(0.25).multiply((pkp.subtract(BigDecimal.valueOf(250000000))))));
             }else{
                 hasil = BigDecimal.valueOf(95000000).add(BigDecimal.valueOf(0.3).multiply(pkp.subtract(BigDecimal.valueOf(500000000))));
             }
         }else{
             if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
                 hasil = BigDecimal.valueOf(0.06).multiply(pkp);
-            }else if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(250000000)) <= 0){
+            }else if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(200000000)) <= 0){
                 hasil = BigDecimal.valueOf(2500000).add((BigDecimal.valueOf(0.18).multiply(pkp.subtract(BigDecimal.valueOf(50000000))))) ;
-            }else if(pkp.compareTo(BigDecimal.valueOf(250000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
-                hasil = BigDecimal.valueOf(32500000).add((BigDecimal.valueOf(0.3).multiply((pkp.subtract(BigDecimal.valueOf(250000000))))));
+            }else if(pkp.compareTo(BigDecimal.valueOf(200000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
+                hasil = BigDecimal.valueOf(30000000).add((BigDecimal.valueOf(0.3).multiply((pkp.subtract(BigDecimal.valueOf(250000000))))));
             }else{
                 hasil = BigDecimal.valueOf(95000000).add(BigDecimal.valueOf(0.36).multiply(pkp.subtract(BigDecimal.valueOf(500000000))));
             }

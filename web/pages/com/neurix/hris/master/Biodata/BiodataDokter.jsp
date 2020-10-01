@@ -826,7 +826,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Dokter KSO * :</small></label>
+                                        <label class="control-label"><small>Dokter Tamu * :</small></label>
                                     </td>
                                     <td>
                                         <table>

@@ -108,7 +108,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Grup :</small></label>
+                                                    <label class="control-label"><small>Sub Divisi :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -290,7 +290,7 @@
                                                         <td>Nama Shift </td>
                                                         <td>Nama </td>
                                                         <td>Posisi </td>
-                                                        <td>Group </td>
+                                                        <td>Sub Divisi </td>
                                                         <td align="center">Edit</td>
                                                         <td align="center">On Call</td>
                                                         <td align="center">Panggil</td>
@@ -360,15 +360,17 @@
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>">
                                                                 </s:if>
                                                                 <s:else>
-                                                                <a href="javascript:;"
-                                                                   id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>"
-                                                                   tanggal="<s:property value="%{#attr.row.stTanggal}"/>"
-                                                                   nama="<s:property value="%{#attr.row.namaPegawai}"/>"
-                                                                   posisi="<s:property value="%{#attr.row.positionName}"/>"
-                                                                   grup="<s:property value="%{#attr.row.profesiName}"/>"
-                                                                   href="javascript:;" class="item-libur">
-                                                                    <img border="0"
-                                                                         src="<s:url value="/pages/images/icons8-weekend-25.png"/>">
+                                                                    <s:if test='#row.flagDokterKso=="Y"'>
+                                                                    <a href="javascript:;"
+                                                                       id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>"
+                                                                       tanggal="<s:property value="%{#attr.row.stTanggal}"/>"
+                                                                       nama="<s:property value="%{#attr.row.namaPegawai}"/>"
+                                                                       posisi="<s:property value="%{#attr.row.positionName}"/>"
+                                                                       grup="<s:property value="%{#attr.row.profesiName}"/>"
+                                                                       href="javascript:;" class="item-libur">
+                                                                        <img border="0"
+                                                                             src="<s:url value="/pages/images/icons8-weekend-25.png"/>">
+                                                                    </s:if>
                                                                 </s:else>
                                                             </td>
                                                         </tr>
@@ -510,7 +512,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Grup</label>
+                                <label class="col-md-4">Sub Divisi</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_grup" onkeypress="$(this).css('border','')" readonly="true"
                                                  cssClass="form-control" />
@@ -575,7 +577,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Grup</label>
+                                <label class="col-md-4">Sub Divisi</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_grup_libur" onkeypress="$(this).css('border','')" readonly="true"
                                                  cssClass="form-control" />

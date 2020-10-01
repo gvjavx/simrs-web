@@ -20,7 +20,7 @@ public interface IjinKeluarBo extends BaseMasterBo<IjinKeluar> {
     public void saveDelete(IjinKeluar bean) throws GeneralBOException;
     public void saveEdit(IjinKeluar bean) throws GeneralBOException;
 
-    public void savePengajuanBatal(IjinKeluar bean) throws GeneralBOException;
+    public List<Notifikasi> savePengajuanBatal(IjinKeluar bean) throws GeneralBOException;
     public void saveTolakPengajuanBatal(IjinKeluar bean) throws GeneralBOException;
 
     void saveEditIjinKeluarKantor(IjinKeluar bean) throws GeneralBOException;
@@ -55,4 +55,6 @@ public interface IjinKeluarBo extends BaseMasterBo<IjinKeluar> {
 
     List<IjinKeluar> getListCekNipIjinKeluar(String query) throws GeneralBOException;
     List<IjinKeluar> getHistoryIjinKeluarByMonth(String nip, String branchId, Date date) throws GeneralBOException;
+
+    List<Notifikasi> saveCancel(IjinKeluar bean) throws GeneralBOException;
 }

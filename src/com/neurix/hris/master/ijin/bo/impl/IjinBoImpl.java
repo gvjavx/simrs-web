@@ -143,7 +143,6 @@ public class IjinBoImpl implements IjinBo {
                 imIjinHistoryEntity.setId(idHistory);
                 imIjinHistoryEntity.setIjinId(bean.getIjinId());
                 imIjinHistoryEntity.setIjinName(imIjinEntity.getIjinName());
-                imIjinEntity.setGender(bean.getGender());
                 imIjinHistoryEntity.setJumlahIjin(imIjinEntity.getJumlahIjin());
                 imIjinHistoryEntity.setFlag(imIjinEntity.getFlag());
                 imIjinHistoryEntity.setAction(imIjinEntity.getAction());
@@ -152,8 +151,11 @@ public class IjinBoImpl implements IjinBo {
                 imIjinHistoryEntity.setCreatedWho(imIjinEntity.getCreatedWho());
                 imIjinHistoryEntity.setCreatedDate(imIjinEntity.getCreatedDate());
 
+                imIjinEntity.setGender(bean.getGender());
+                imIjinEntity.setAgama(bean.getAgama());
                 imIjinEntity.setIjinId(bean.getIjinId());
                 imIjinEntity.setIjinName(bean.getIjinName());
+                imIjinEntity.setTipeHari(bean.getTipeHari());
                 imIjinEntity.setJumlahIjin(bean.getJumlahIjin());
                 imIjinEntity.setFlag(bean.getFlag());
                 imIjinEntity.setAction(bean.getAction());
@@ -209,6 +211,7 @@ public class IjinBoImpl implements IjinBo {
                 imIjinEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 imIjinEntity.setCreatedDate(bean.getCreatedDate());
                 imIjinEntity.setLastUpdate(bean.getLastUpdate());
+                imIjinEntity.setAgama(bean.getAgama());
 
                 try {
                     // insert into database
@@ -245,6 +248,9 @@ public class IjinBoImpl implements IjinBo {
 
             if (searchBean.getGender() != null && !"".equalsIgnoreCase(searchBean.getGender())) {
                 hsCriteria.put("gender", searchBean.getGender());
+            }
+            if (searchBean.getAgama() != null && !"".equalsIgnoreCase(searchBean.getAgama())) {
+                hsCriteria.put("agama", searchBean.getAgama());
             }
             if (searchBean.getTipeHari() != null && !"".equalsIgnoreCase(searchBean.getTipeHari())) {
                 hsCriteria.put("tipeHari", searchBean.getTipeHari());
@@ -284,6 +290,32 @@ public class IjinBoImpl implements IjinBo {
 
                     returnIjin.setGender(ijinEntity.getGender());
                     returnIjin.setTipeHari(ijinEntity.getTipeHari());
+                    returnIjin.setAgama(ijinEntity.getAgama());
+                    returnIjin.setFlagDiajukanAdmin(ijinEntity.getFlagDiajukanAdmin());
+
+                    switch (ijinEntity.getAgama()){
+                        case "all":
+                            returnIjin.setAgamaName("Semua");
+                            break;
+                        case "islam":
+                            returnIjin.setAgamaName("Islam");
+                            break;
+                        case "kristen":
+                            returnIjin.setAgamaName("Kristen");
+                            break;
+                        case "katolik":
+                            returnIjin.setAgamaName("Katolik");
+                            break;
+                        case "hindu":
+                            returnIjin.setAgamaName("Hindu");
+                            break;
+                        case "budha":
+                            returnIjin.setAgamaName("Buddha");
+                            break;
+                        case "kong hu cu":
+                            returnIjin.setAgamaName("Kong Hu Cu");
+                            break;
+                    }
 
                     returnIjin.setCreatedWho(ijinEntity.getCreatedWho());
                     returnIjin.setCreatedDate(ijinEntity.getCreatedDate());
@@ -435,6 +467,13 @@ public class IjinBoImpl implements IjinBo {
                     else if (!imIjinEntity.getGender().equalsIgnoreCase(biodataEntity.getGender())){
                         bisa=false;
                     }
+
+                    if (imIjinEntity.getAgama()==null){}
+                    else if(("all").equalsIgnoreCase(imIjinEntity.getAgama())){}
+                    else if (!imIjinEntity.getAgama().equalsIgnoreCase(biodataEntity.getAgama())){
+                        bisa=false;
+                    }
+
                     if (bisa){
                         Ijin itemComboIjin = new Ijin();
                         itemComboIjin.setIjinId(imIjinEntity.getIjinId());

@@ -18,6 +18,7 @@ public class ImIjinEntity implements Serializable {
     private String gender;
     private String tipeHari;
     private String flagDiajukanAdmin;
+    private String agama;
 
     private String flag;
     private String action;
@@ -25,6 +26,14 @@ public class ImIjinEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getAgama() {
+        return agama;
+    }
+
+    public void setAgama(String agama) {
+        this.agama = agama;
+    }
 
     public String getFlagDiajukanAdmin() {
         return flagDiajukanAdmin;

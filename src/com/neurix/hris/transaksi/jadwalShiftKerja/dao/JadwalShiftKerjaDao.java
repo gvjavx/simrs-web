@@ -117,12 +117,14 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "\tj.branch_id,\n" +
                 "\ts.shift_name,\n" +
                 "\tjd.flag_libur,\n" +
-                "\tjd.jadwal_shift_kerja_detail_id\n" +
+                "\tjd.jadwal_shift_kerja_detail_id,\n" +
+                "\tbio.flag_dokter_kso\n" +
                 "from\n" +
                 "\t( select * from it_hris_jadwal_shift_kerja) j\n" +
                 "\tleft join (select * from it_hris_jadwal_shift_kerja_detail where flag='Y') jd ON j.jadwal_shift_kerja_id = jd.jadwal_shift_kerja_id\n" +
                 "\tleft join ( select * from im_hris_shift ) s ON jd.shift_id = s.shift_id\n" +
                 "\tleft join ( select * from im_branches ) b ON b.branch_id = j.branch_id\n" +
+                "\tleft join ( select * from im_hris_pegawai ) bio ON bio.nip = jd.nip\n" +
                 "where\n" +
                 "\tj.flag='Y'\n" +
                 searchUnit + searchGrup + searchNip + searchTanggalDari + searchTanggalSelesai +
@@ -149,6 +151,11 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
             jadwalShiftKerja.setShiftName2(row[11].toString());
             jadwalShiftKerja.setFlagLibur(row[12].toString());
             jadwalShiftKerja.setJadwalShiftKerjaDetailId(row[13].toString());
+            if (row[14]!=null){
+                jadwalShiftKerja.setFlagDokterKso(row[14].toString());
+            }else{
+                jadwalShiftKerja.setFlagDokterKso("N");
+            }
 
             jadwalShiftKerjaList.add(jadwalShiftKerja);
         }

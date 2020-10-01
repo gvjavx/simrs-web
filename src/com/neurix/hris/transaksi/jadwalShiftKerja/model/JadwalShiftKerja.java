@@ -48,6 +48,15 @@ public class JadwalShiftKerja extends BaseModel {
     private String statusSave;
     private String shiftName2;
     private String flagLibur;
+    private String flagDokterKso;
+
+    public String getFlagDokterKso() {
+        return flagDokterKso;
+    }
+
+    public void setFlagDokterKso(String flagDokterKso) {
+        this.flagDokterKso = flagDokterKso;
+    }
 
     public String getFlagLibur() {
         return flagLibur;
