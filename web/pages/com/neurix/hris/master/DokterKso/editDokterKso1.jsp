@@ -134,7 +134,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Edit Dokter KSO
+            Edit Dokter Tamu
         </h1>
     </section>
     <!-- Main content -->
@@ -143,7 +143,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-pencil"></i> Edit Dokter KSO</h3>
+                        <h3 class="box-title"><i class="fa fa-pencil"></i> Edit Dokter Tamu</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -163,7 +163,7 @@
                                         <table >
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Dokter KSO ID :</small></label>
+                                                    <label class="control-label"><small>Dokter Tamu ID :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>

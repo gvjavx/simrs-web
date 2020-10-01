@@ -139,6 +139,15 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     private MappingPersenGajiDao mappingPersenGajiDao;
     private KodeRekeningDao kodeRekeningDao;
     private MappingJurnalDao mappingJurnalDao;
+    private PayrollDanaPensiunDao payrollDanaPensiunDao;
+
+    public PayrollDanaPensiunDao getPayrollDanaPensiunDao() {
+        return payrollDanaPensiunDao;
+    }
+
+    public void setPayrollDanaPensiunDao(PayrollDanaPensiunDao payrollDanaPensiunDao) {
+        this.payrollDanaPensiunDao = payrollDanaPensiunDao;
+    }
 
     public MappingJurnalDao getMappingJurnalDao() {
         return mappingJurnalDao;
@@ -1624,8 +1633,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 ImCompany company = companyDao.getCompanyInfo("Y");
                 if (!("").equalsIgnoreCase(company.getPeriodeGaji())){
                     tahun=company.getPeriodeGaji();
-                    paramDapen = company.getParamDapen();
-                    paramDapenPegawai = company.getParamDapenPegawai();
                 }else{
                     String status = "Error : tidak ditemukan periode gaji pada Company";
                     logger.error("[PayrollBoImpl.dataAddPayroll] "+status);
@@ -2245,6 +2252,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         //perhitungan iuran pensiun
                         if (payrollEntity.getDanaPensiun() != null) {
                             if (!payrollEntity.getDanaPensiun().equalsIgnoreCase("")){
+                                ImPayrollDanaPensiunEntity payrollDanaPensiunEntity = payrollDanaPensiunDao.getById("danaPensiunId",payrollEntity.getDanaPensiun());
+                                if (payrollDanaPensiunEntity!=null){
+                                    paramDapen = payrollDanaPensiunEntity.getPersentasePers();
+                                    paramDapenPegawai = payrollDanaPensiunEntity.getPersentaseKary();
+                                }
+
                                 if (payrollEntity.getDanaPensiun().equalsIgnoreCase("DP01")){
                                     gajiPensiun = getDapenDplkSimRs(payrollEntity.getGolonganDapenId(), payrollEntity.getMasaKerjaGol());
                                     iuranDapenPensiunPeg = getIuranPensiunPegSimRs(payrollEntity.getGolonganId());

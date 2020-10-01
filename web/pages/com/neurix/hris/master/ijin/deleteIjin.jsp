@@ -168,7 +168,18 @@
                             </table>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Agama :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'islam':'Islam', 'kristen' : 'Kristen', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
+                                            'budha' : 'Buddha', 'kong hu cu' : 'Kong Hu Cu'}" headerKey="all" headerValue="Semua" id="agama1" name="ijin.agama" disabled="true"
+                                          cssClass="form-control" />
+                            </table>
+                        </td>
+                    </tr>
                 </table>
 
 

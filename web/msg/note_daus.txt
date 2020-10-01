@@ -604,3 +604,11 @@ ALTER TABLE it_hris_payroll ADD COLUMN proporsi_gaji numeric(10,6);
 
 ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN flag_libur character varying(1);
 update it_hris_jadwal_shift_kerja_detail set flag_libur='N';
+
+ALTER TABLE im_hris_ijin ADD COLUMN agama character varying(100);
+update im_hris_ijin set agama='all';
+
+update im_functions set flag='Y' where func_id=1237;
+
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN telat bigint;
+update it_hris_absensi_pegawai set telat=0;

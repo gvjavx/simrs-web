@@ -583,6 +583,13 @@ public class LemburBoImpl implements LemburBo {
             for (ItPersonilPositionEntity personilPositionEntity : personilPositionEntityList){
                 bean.setBranchId(personilPositionEntity.getBranchId());
             }
+
+            if ("KS".equalsIgnoreCase(imBiodataEntity.getStatusPegawai())){
+                String status= "ERROR : Karyawan dengan status Pimpinan tidak bisa mengajukan Lembur";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
+
             itLemburEntity.setLemburId(lemburId);
             itLemburEntity.setNip(bean.getNip());
             itLemburEntity.setPegawaiName(bean.getPegawaiName());
@@ -732,6 +739,31 @@ public class LemburBoImpl implements LemburBo {
         List<Notifikasi> notifikasiList = new ArrayList<>();
 
         if (bean != null) {
+            Calendar start = Calendar.getInstance();
+            start.setTime(bean.getTanggalAwal());
+            Calendar end = Calendar.getInstance();
+            end.setTime(bean.getTanggalAkhir());
+            end.add(Calendar.DATE,1);
+            java.util.Date date;
+
+            for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+                Date tanggal = CommonUtil.dateUtiltoDateSql(date);
+                String statusValidasi ="";
+
+                //validasi jika tanggal itu sudah diajukan
+                try {
+                    statusValidasi = ijinKeluarDao.cekPengajuanDiTanggalYangSama(tanggal,bean.getNip());
+                }catch (HibernateException e){
+                    logger.error("[LemburBoImpl.saveAddIjinKeluar] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                }
+
+                if (!"".equalsIgnoreCase(statusValidasi)){
+                    logger.error("[LemburBoImpl.saveAddIjinKeluar] Error, " + statusValidasi);
+                    throw new GeneralBOException(statusValidasi);
+                }
+            }
+
             // search data kelompok_id from im_positions by parameter parent
             List<ImPosition> imPositionList = null;
             try {
@@ -742,8 +774,6 @@ public class LemburBoImpl implements LemburBo {
             }
 
             if ("KL44".equalsIgnoreCase(imPositionList.get(0).getKelompokId())){
-
-
                 String lemburId;
                 Map hsCriteria = new HashMap();
                 if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {

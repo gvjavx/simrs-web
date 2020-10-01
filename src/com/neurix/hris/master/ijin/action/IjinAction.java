@@ -487,6 +487,7 @@ public class IjinAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         IjinBo ijinBo = (IjinBo) ctx.getBean("ijinBoProxy");
         String flagDiajukanAdmin;
+        String agama;
         if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
             flagDiajukanAdmin=null;
         }else{

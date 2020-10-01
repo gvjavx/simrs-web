@@ -108,7 +108,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Grup :</small></label>
+                                                    <label class="control-label"><small>Sub Divisi :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -290,7 +290,7 @@
                                                         <td>Nama Shift </td>
                                                         <td>Nama </td>
                                                         <td>Posisi </td>
-                                                        <td>Group </td>
+                                                        <td>Sub Divisi </td>
                                                         <td align="center">Edit</td>
                                                         <td align="center">On Call</td>
                                                         <td align="center">Panggil</td>
@@ -512,7 +512,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Grup</label>
+                                <label class="col-md-4">Sub Divisi</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_grup" onkeypress="$(this).css('border','')" readonly="true"
                                                  cssClass="form-control" />
@@ -577,7 +577,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Grup</label>
+                                <label class="col-md-4">Sub Divisi</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_grup_libur" onkeypress="$(this).css('border','')" readonly="true"
                                                  cssClass="form-control" />

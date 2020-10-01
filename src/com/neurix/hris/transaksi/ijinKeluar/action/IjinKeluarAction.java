@@ -1633,6 +1633,8 @@ public class IjinKeluarAction extends BaseMasterAction {
             IjinKeluar cancelIjinKeluar = getIjinKeluar();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
             cancelIjinKeluar.setCancelFlag("Y");
             cancelIjinKeluar.setCancelDate(updateTime);
@@ -1642,7 +1644,11 @@ public class IjinKeluarAction extends BaseMasterAction {
             cancelIjinKeluar.setAction("U");
             cancelIjinKeluar.setFlag("Y");
 
-            ijinKeluarBoProxy.saveEdit(cancelIjinKeluar);
+            List<Notifikasi> notifikasiList = ijinKeluarBoProxy.saveCancel(cancelIjinKeluar);
+
+            for (Notifikasi notifikasi : notifikasiList){
+                notifikasiBo.sendNotif(notifikasi);
+            }
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -1667,6 +1673,8 @@ public class IjinKeluarAction extends BaseMasterAction {
             IjinKeluar cancelIjinKeluar = getIjinKeluar();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
             cancelIjinKeluar.setFlagPengajuanBatal("Y");
             cancelIjinKeluar.setLastUpdateWho(userLogin);
@@ -1674,7 +1682,12 @@ public class IjinKeluarAction extends BaseMasterAction {
             cancelIjinKeluar.setAction("U");
             cancelIjinKeluar.setFlag("Y");
 
-            ijinKeluarBoProxy.savePengajuanBatal(cancelIjinKeluar);
+            List<Notifikasi> notifikasiList = ijinKeluarBoProxy.savePengajuanBatal(cancelIjinKeluar);
+
+            for (Notifikasi notifikasi : notifikasiList){
+                notifikasiBo.sendNotif(notifikasi);
+            }
+
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

@@ -691,7 +691,7 @@
                                                 <li><a href="add_biodata.action?tipe=karyawan">
                                                     <i class="fa fa-user-plus"></i>Karyawan Kantor</a></li>
                                                 <li><a href="add_biodata.action?tipe=dokter">
-                                                    <i class="fa fa-user-plus"></i>Dokter KSO</a></li>
+                                                    <i class="fa fa-user-plus"></i>Dokter Tamu</a></li>
                                             </ul>
                                         </div>
                                     </td>
