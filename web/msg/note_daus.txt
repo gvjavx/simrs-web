@@ -612,3 +612,22 @@ update im_functions set flag='Y' where func_id=1237;
 
 ALTER TABLE it_hris_absensi_pegawai ADD COLUMN telat bigint;
 update it_hris_absensi_pegawai set telat=0;
+
+CREATE SEQUENCE IF NOT EXISTS seq_history_on_call INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+
+
+CREATE TABLE public.it_hris_history_on_call
+(
+    history_on_call_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    jadwal_shift_kerja_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    panggil_date timestamp without time zone NOT NULL,
+    nip character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    created_who character varying COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying COLLATE pg_catalog."default" NOT NULL,
+    keterangan_panggil character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT it_hris_history_on_call_pkey PRIMARY KEY (history_on_call_id)
+);
