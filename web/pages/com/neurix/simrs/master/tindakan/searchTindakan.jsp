@@ -9,13 +9,16 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
+        .jarak_atas {
+            margin-top: 7px
+        }
     </style>
 
-    <script type='text/javascript' src='<s:url value="/dwr/interface/VendorAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
     <script type='text/javascript'>
 
         $(document).ready(function () {
-            $('#vendor_obat').addClass('active');
+            $('#tindakan').addClass('active');
         });
 
     </script>
@@ -32,7 +35,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Data Vendor
+            Data Tindakan
         </h1>
     </section>
 
@@ -43,43 +46,64 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Data Vendor</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Data Tindakan</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="vendorForm" method="post" namespace="/vendor" action="search_vendor.action"
+                            <s:form id="tindakanForm" method="post" namespace="/tindakan"
+                                    action="search_tindakan.action"
                                     theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">NPWP</label>
+                                    <label class="control-label col-sm-4">ID Tindakan</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="npwp" name="vendor.npwp"
+                                        <s:textfield id="id_tindakan" name="tindakan.idTindakan"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Nama</label>
+                                    <label class="control-label col-sm-4">Nama Tindakan</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="vendor.namaVendor"
+                                        <s:textfield id="nama_tindakan" name="tindakan.tindakan"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Kategori Tindakan</label>
+                                    <div class="col-sm-4">
+                                        <s:action id="initComboKategori" namespace="/tindakan"
+                                                  name="initComboKategori_tindakan"/>
+                                        <s:select list="#initComboKategori.listOfComboKategoriTindakan"
+                                                  id="idKategoriTindakan" name="tindakan.idKategoriTindakan"
+                                                  listKey="idKategoriTindakan" listValue="kategoriTindakan" headerKey=""
+                                                  headerValue="[Select one]" cssClass="form-control select2"
+                                                  cssStyle="width: 100%"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Flag</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="tindakan.flag"
+                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2"
+                                                  cssStyle="width: 100%"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="vendorForm"
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="tindakanForm"
                                                    id="search" name="search"
                                                    onClickTopics="showDialogLoading"
                                                    onCompleteTopics="closeDialogLoading">
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_vendor.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_tindakan.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-                                        <a onclick="addVendor()" class="btn btn-primary"><i class="fa fa-plus"></i>
-                                            Add Vendor</a>
+                                        <a onclick="addTindakan()" class="btn btn-primary"><i class="fa fa-plus"></i>
+                                            Tambah Tindakan</a>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -134,28 +158,33 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Tindakan</h3>
                     </div>
                     <div class="box-body">
                         <table id="sortTable" class="table table-bordered table-striped tablePasien">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID Vendor</td>
-                                <td>Nama</td>
-                                <td>Npwp</td>
-                                <td>email</td>
+                                <td>ID Tindakan</td>
+                                <td>Nama Tindakan</td>
+                                <td>Tarif (Rp.)</td>
+                                <td>Tarif BPJS (Rp.)</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" var="row">
+                            <s:iterator value="#session.listOfResultTindakan" var="row">
                                 <tr>
-                                    <td><s:property value="idVendor"/></td>
-                                    <td><s:property value="namaVendor"/></td>
-                                    <td><s:property value="npwp"/></td>
-                                    <td><s:property value="email"/></td>
+                                    <td><s:property value="idTindakan"/></td>
+                                    <td><s:property value="tindakan"/></td>
+                                    <td><s:property value="tarif"/></td>
+                                    <td><s:property value="tarifBpjs"/></td>
                                     <td align="center">
-                                        <img class="hvr-grow" onclick="editVendor('<s:property value="idVendor"/>','<s:property value="namaVendor"/>','<s:property value="npwp"/>','<s:property value="email"/>','<s:property value="noTelp"/>','<s:property value="alamat"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-create-25.png"/>">
+                                        <img class="hvr-grow"
+                                             onclick="editVendor('<s:property value="idVendor"/>','<s:property
+                                                     value="namaVendor"/>','<s:property value="npwp"/>','<s:property
+                                                     value="email"/>','<s:property value="noTelp"/>','<s:property
+                                                     value="alamat"/>')" style="cursor: pointer"
+                                             src="<s:url value="/pages/images/icons8-create-25.png"/>">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -170,12 +199,13 @@
 </div>
 
 <div class="modal fade" id="modal-add">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> <span id="set_judul"></span></h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> <span id="set_judul"></span>
+                </h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_add">
@@ -184,73 +214,100 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Vendor</label>
+                        <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
                         <div class="col-md-7">
-                            <input class="form-control" id="set_nama_vendor"
-                                   oninput="var warn =$('#war_set_nama_vendor').is(':visible'); if (warn){$('#cor_set_nama_vendor').show().fadeOut(3000);$('#war_set_nama_vendor').hide()}">
+                            <input class="form-control" id="set_nama_tindakan"
+                                   oninput="var warn =$('#war_set_nama_tindakan').is(':visible'); if (warn){$('#cor_set_nama_tindakan').show().fadeOut(3000);$('#war_set_nama_tindakan').hide()}">
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_nama_vendor">
+                               id="war_set_nama_tindakan">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_nama_vendor"><i class="fa fa-check"></i> correct</p>
+                               id="cor_set_nama_tindakan"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Npwp</label>
+                        <label class="col-md-3" style="margin-top: 7px">Kategori Tindakan</label>
                         <div class="col-md-7">
-                            <input class="form-control" id="set_npwp" style="margin-top: 7px"
-                                   oninput="var warn =$('#war_set_npwp').is(':visible'); if (warn){$('#cor_set_npwp').show().fadeOut(3000);$('#war_set_npwp').hide()}">
+                            <select class="form-control select2" style="width: 100%" id="set_kategori_tindakan"
+                                    onchange="var warn =$('#war_set_kategori_tindakan').is(':visible'); if (warn){$('#cor_set_kategori_tindakan').show().fadeOut(3000);$('#war_set_kategori_tindakan').hide()}">
+                            </select>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_npwp">
+                               id="war_set_kategori_tindakan">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_npwp"><i class="fa fa-check"></i> correct</p>
+                               id="cor_set_kategori_tindakan"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Email</label>
+                        <label class="col-md-3" style="margin-top: 7px">Tarif</label>
                         <div class="col-md-7">
-                            <input class="form-control" id="set_email" style="margin-top: 7px"
-                                   oninput="var warn =$('#war_set_email').is(':visible'); if (warn){$('#cor_set_email').show().fadeOut(3000);$('#war_set_email').hide()}">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input class="form-control" id="set_tarif"
+                                       oninput="var warn =$('#war_set_tarif').is(':visible'); if (warn){$('#cor_set_tarif').show().fadeOut(3000);$('#war_set_tarif').hide()}; convertRpAtas(this.id, this.value, 'h_tarif')">
+                                <input type="hidden" id="h_tarif">
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_email">
+                               id="war_set_tarif">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_email"><i class="fa fa-check"></i> correct</p>
+                               id="cor_set_tarif"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">No Telp</label>
+                        <label class="col-md-3" style="margin-top: 7px">Tarif BPJS</label>
                         <div class="col-md-7">
-                            <input class="form-control" id="set_telp" style="margin-top: 7px"
-                                   oninput="var warn =$('#war_set_telp').is(':visible'); if (warn){$('#cor_set_telp').show().fadeOut(3000);$('#war_set_telp').hide()}">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input class="form-control" id="set_tarif_bpjs"
+                                       oninput="var warn =$('#war_set_tarif_bpjs').is(':visible'); if (warn){$('#cor_set_tarif_bpjs').show().fadeOut(3000);$('#war_set_tarif_bpjs').hide()}; convertRpAtas(this.id, this.value, 'h_tarif_bpjs')">
+                                <input type="hidden" id="h_tarif_bpjs">
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_telp">
+                               id="war_set_tarif_bpjs">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_telp"><i class="fa fa-check"></i> correct</p>
+                               id="cor_set_tarif_bpjs"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Alamat</label>
+                        <label class="col-md-3" style="margin-top: 7px">Diskon</label>
                         <div class="col-md-7">
-                            <textarea rows="3" class="form-control" id="set_alamat" style="margin-top: 7px"
-                                      oninput="var warn =$('#war_set_alamat').is(':visible'); if (warn){$('#cor_set_alamat').show().fadeOut(3000);$('#war_set_alamat').hide()}"></textarea>
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input rows="3" class="form-control" id="set_diskon"
+                                       oninput="var warn =$('#war_set_diskon').is(':visible'); if (warn){$('#cor_set_diskon').show().fadeOut(3000);$('#war_set_diskon').hide()}; convertRpAtas(this.id, this.value, 'h_diskon')">
+                                <input type="hidden" id="h_diskon">
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_alamat">
+                               id="war_set_diskon">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_alamat"><i class="fa fa-check"></i> correct</p>
+                               id="cor_set_diskon"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>
@@ -269,113 +326,13 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-edit">
-    <div class="modal-dialog modal-flat">
+<div class="modal fade" id="modal-view">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Edit Vendor</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_edit">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_edit"></p>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Vendor</label>
-                        <div class="col-md-7">
-                            <input class="form-control" id="edit_nama_vendor" readonly
-                                   oninput="var warn =$('#war_edit_nama_vendor').is(':visible'); if (warn){$('#cor_edit_nama_vendor').show().fadeOut(3000);$('#war_edit_nama_vendor').hide()}">
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_edit_nama_vendor">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_edit_nama_vendor"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Npwp</label>
-                        <div class="col-md-7">
-                            <input class="form-control" id="edit_npwp" readonly style="margin-top: 7px"
-                                   oninput="var warn =$('#war_edit_npwp').is(':visible'); if (warn){$('#cor_edit_npwp').show().fadeOut(3000);$('#war_edit_npwp').hide()}">
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_edit_npwp">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_edit_npwp"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Email</label>
-                        <div class="col-md-7">
-                            <input class="form-control" id="edit_email" style="margin-top: 7px"
-                                   oninput="var warn =$('#war_edit_email').is(':visible'); if (warn){$('#cor_edit_email').show().fadeOut(3000);$('#war_edit_email').hide()}">
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_edit_email">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_edit_email"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">No Telp</label>
-                        <div class="col-md-7">
-                            <input class="form-control" id="edit_telp" style="margin-top: 7px"
-                                   oninput="var warn =$('#war_edit_telp').is(':visible'); if (warn){$('#cor_edit_telp').show().fadeOut(3000);$('#war_edit_telp').hide()}">
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_edit_telp">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_edit_telp"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Alamat</label>
-                        <div class="col-md-7">
-                            <textarea class="form-control" id="edit_alamat" style="margin-top: 7px"
-                                      oninput="var warn =$('#war_edit_alamat').is(':visible'); if (warn){$('#cor_edit_alamat').show().fadeOut(3000);$('#war_edit_alamat').hide()}"></textarea>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_edit_alamat">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_edit_alamat"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button type="button" class="btn btn-success" id="save_edit"><i
-                        class="fa fa-arrow-right"></i> Save
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_edit"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-detail">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Detail Data Pasien</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Detail Data Tindakan</h4>
             </div>
             <div class="modal-body">
                 <div class="box-body">
@@ -384,15 +341,15 @@
                             <img id="img_ktp" style="height: 200px; width: 100%">
                             <table class="table table-striped" style="margin-top: 20px">
                                 <tr>
-                                    <td><b>ID Pasien</b></td>
+                                    <td><b>ID Tindakan</b></td>
                                     <td><span id="an_id_pasien"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>NIK</b></td>
+                                    <td><b>Nama Tindakan</b></td>
                                     <td><span id="an_nik"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Nama</b></td>
+                                    <td><b>Kategori Tindakan</b></td>
                                     <td><span id="an_nama"></span></td>
                                 </tr>
                             </table>
@@ -401,41 +358,20 @@
                         <div class="col-md-6">
                             <table class="table table-striped">
                                 <tr>
-                                    <td><b>Jenis Kelamin</b></td>
+                                    <td><b>Tarif</b></td>
                                     <td><span id="an_jenis_kelamin"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Tempat, Tgl Lahir</b></td>
+                                    <td><b>Tarif BPJS</b></td>
                                     <td><span id="an_tgl"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Agama</b></td>
+                                    <td><b>Diskon</b></td>
                                     <td><span id="an_agama"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Suku</b></td>
+                                    <td><b>Kategori INA BPJS</b></td>
                                     <td><span id="an_suku"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Alamat</b></td>
-                                    <td><span id="an_alamat"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Desa</b></td>
-                                    <td><span id="an_desa"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Kecamatan</b></td>
-                                    <td><span id="an_kecamatan"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Kabupaten</b></td>
-                                    <td><span id="an_kabupaten"></span></td>
-                                </tr>
-
-                                <tr>
-                                    <td><b>Provinsi</b></td>
-                                    <td><span id="an_provinsi"></span></td>
                                 </tr>
                             </table>
                         </div>
@@ -473,55 +409,38 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-success-pasien">
-    <div class="modal-dialog modal-flat">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"></h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-success alert-dismissible">
-                    <h4><i class="icon fa fa-info"></i> Info!</h4>
-                    Berhasil melakukan registrasi fingerprint
-                </div>
-            </div>
-            <input id="val_id_pasien" type="hidden">
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" onclick="pasienSuccess()"><i class="fa fa-check"></i> OK
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script type='text/javascript'>
 
-    function addVendor() {
+    function addTindakan() {
+        getKategoriTindakan();
+        $('#save_add').attr('onclick', 'saveTindakan("")');
+        $('#set_judul').text("Tambah Tindakan");
         $('#modal-add').modal({show: true, backdrop: 'static'});
-        $('#save_add').attr('onclick','saveVendor("")');
-        $('#set_judul').text("Tambah Vendor");
     }
 
-    function saveVendor(idVendor) {
-
+    function saveTindakan(id) {
         var data = "";
-        var nama = $('#set_nama_vendor').val();
-        var npwp = $('#set_npwp').val();
-        var email = $('#set_email').val();
-        var noTelp = $('#set_telp').val();
-        var alamat = $('#set_alamat').val();
+        var nama = $('#set_nama_tindakan').val();
+        var idKategori = $('#set_kategori_tindakan').val();
+        var tarif = $('#h_tarif').val();
+        var tarifBpjs = $('#h_tarif_bpjs').val();
+        var diskon = $('#h_diskon').val();
 
-        if(nama != '' && npwp != '' && email != '' && noTelp != '' && alamat != ''){
+        if (nama != '' && idKategori != '' && tarif != '' && tarifBpjs != '' && diskon != '') {
 
-            if(idVendor != ''){
+            if (id != '') {
                 $('#save_add').hide();
                 $('#load_add').show();
-                data = {'id_vendor':idVendor,'nama_vendor':nama,'npwp':npwp,'email':email,'no_telp':noTelp,'alamat':alamat};
+                data = {
+                    'id_kategori_tindakan': idKategori,
+                    'tarif': tarif,
+                    'tarif_bpjs': tarifBpjs,
+                    'diskon': diskon,
+                    'id_header_tindakan': nama
+                };
                 var dataString = JSON.stringify(data);
                 dwr.engine.setAsync(true);
-                VendorAction.saveEditVendor(dataString, {
+                TindakanAction.saveEdit(dataString, {
                     callback: function (response) {
                         if (response.status == "success") {
                             $('#modal-add').modal('hide');
@@ -537,13 +456,19 @@
                         }
                     }
                 });
-            }else{
+            } else {
                 $('#save_add').hide();
                 $('#load_add').show();
-                data = {'nama_vendor':nama,'npwp':npwp,'email':email,'no_telp':noTelp,'alamat':alamat};
+                data = {
+                    'id_kategori_tindakan': idKategori,
+                    'tarif': tarif,
+                    'tarif_bpjs': tarifBpjs,
+                    'diskon': diskon,
+                    'id_header_tindakan': nama
+                };
                 var dataString = JSON.stringify(data);
                 dwr.engine.setAsync(true);
-                VendorAction.saveVendor(dataString, {
+                TindakanAction.saveAdd(dataString, {
                     callback: function (response) {
                         if (response.status == "success") {
                             $('#modal-add').modal('hide');
@@ -560,40 +485,51 @@
                     }
                 });
             }
-        }else{
+        } else {
             $('#warning_add').show().fadeOut(5000);
             $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
 
-            if(nama == ''){
-                $('#war_set_nama_vendor').show();
+            if (nama == '') {
+                $('#war_set_nama_tindakan').show();
             }
-            if(npwp == ''){
-                $('#war_set_npwp').show();
+            if (idKategori == '') {
+                $('#war_set_kategori_tindakan').show();
             }
-            if(email == ''){
-                $('#war_set_email').show();
+            if (tarif == '') {
+                $('#war_set_tarif').show();
             }
-            if(noTelp == ''){
-                $('#war_set_telp').show();
+            if (tarifBpjs == '') {
+                $('#war_set_tarif_bpjs').show();
             }
-            if(alamat == ''){
-                $('#war_set_alamat').show();
+            if (diskon == '') {
+                $('#war_set_diskon').show();
             }
         }
     }
 
     function editVendor(idVendor, nama, npwp, email, noTelp, alamat) {
-
-        $('#set_nama_vendor').val(nama);
-        $('#set_npwp').val(npwp);
-        $('#set_email').val(email);
-        $('#set_telp').val(noTelp);
-        $('#set_alamat').val(alamat);
-        $('#modal-add').modal({show:true, backdrop:'static'});
-        $('#save_add').attr('onclick','saveVendor(\''+idVendor+'\')');
+        $('#set_nama_tindakan').val(nama);
+        $('#set_kategori_tindakan').val(npwp);
+        $('#set_tarif').val(email);
+        $('#set_tarif_bpjs').val(noTelp);
+        $('#set_diskon').val(alamat);
+        $('#modal-add').modal({show: true, backdrop: 'static'});
+        $('#save_add').attr('onclick', 'saveVendor(\'' + idVendor + '\')');
         $('#set_judul').text("Edit Vendor");
     }
 
+    function getKategoriTindakan(){
+        var option = '<option value="">[Select One]</option>';
+        TindakanAction.getComboKategoriTindakan(function (res) {
+            console.log(res);
+            $.each(res, function (i, item) {
+                if(res.length > 0){
+                    option += '<option value="'+item.idKtegoriTindakan+'">'+item.kategoriTindakan+'</option>'
+                }
+            })
+            $('#set_kategori_tindakan').html(option);
+        });
+    }
 
 
 </script>

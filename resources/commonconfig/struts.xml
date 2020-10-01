@@ -272,7 +272,7 @@
     <include file="sshconfig/com/neurix/hris/master/tipePayroll/struts/TipePayrollAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/statusAbsensi/struts/StatusAbsensiAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/statusMutasi/struts/StatusMutasiAction.xml"/>
-
     <include file="sshconfig/com/neurix/hris/master/jenisPegawai/struts/JenisPegawaiAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/tindakan/struts/HeaderTindakanAction.xml"/>
 
 </struts>

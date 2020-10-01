@@ -844,6 +844,52 @@ ADD COLUMN ttd_pengirim VARCHAR(100);
 ALTER TABLE im_simrs_dokter
 ADD COLUMN kuota_on_site bigint;
 
+CREATE TABLE public.mt_simrs_ruangan_tempat_tidur
+(
+  id_tempat_tidur character varying(30) NOT NULL,
+  id_ruangan character varying(30) NOT NULL,
+  nama_tempat_tidur character varying(100),
+  status character varying(1),
+  flag character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  action character varying(1),
+  CONSTRAINT pk_id_tempat_tidur PRIMARY KEY (id_tempat_tidur)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.mt_simrs_ruangan_tempat_tidur
+  OWNER TO postgres;
+
+ALTER TABLE im_simrs_header_tindakan
+RENAME id TO id_header_tindakan;
+
+ALTER TABLE im_simrs_header_tindakan
+DROP id_kategori_tindakan;
+
+ALTER TABLE im_simrs_header_tindakan
+ADD COLUMN kategori_ina_bpjs character varying(100);
+
+ALTER TABLE im_simrs_kategori_tindakan
+ADD COLUMN branch_id VARCHAR(50);
+
+--2020-10-01
+ALTER TABLE im_simrs_header_tindakan
+ADD COLUMN id_kategori_nota VARCHAR(100);
+
+INSERT INTO im_functions VALUES
+(2341, 'All Tindakan', '/headertindakan/initForm_headertindakan.action', 3, 2, now(), 'admin', now(), 'admin', 'Y','C', 2341),
+(2342, 'init', '/headertindakan/initForm_headertindakan.action', 2341, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2343, 'search', '/headertindakan/search_headertindakan.action', 2341, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2341, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2342, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2343, 32, 'Y', now(), now(), 'admin', 'admin');
+
 
 
 

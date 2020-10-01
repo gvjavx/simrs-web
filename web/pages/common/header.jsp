@@ -621,6 +621,13 @@ apply the skin class to the body tag so the changes take effect.
         }
     }
 
+    function convertRpAtas(id, val, idHidden) {
+        $('#'+id).val(formatRupiahAtas2(val));
+        if(idHidden != '' && idHidden != null){
+            $('#'+idHidden).val(val);
+        }
+    }
+
 </script>
 
 

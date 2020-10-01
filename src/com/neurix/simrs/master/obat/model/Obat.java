@@ -80,6 +80,15 @@ public class Obat extends BaseModel {
     private String bentuk;
     private Integer standarMargin;
     private Integer margin;
+    private String flagKurangMargin;
+
+    public String getFlagKurangMargin() {
+        return flagKurangMargin;
+    }
+
+    public void setFlagKurangMargin(String flagKurangMargin) {
+        this.flagKurangMargin = flagKurangMargin;
+    }
 
     public Integer getMargin() {
         return margin;

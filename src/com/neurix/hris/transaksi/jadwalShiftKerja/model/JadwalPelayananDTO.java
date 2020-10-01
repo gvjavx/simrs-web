@@ -25,6 +25,15 @@ public class JadwalPelayananDTO extends BaseModel {
     private String kodeDpjp;
     private String flagLibur;
     private BigInteger kuotaOnSite;
+    private BigInteger kuotaTerpakai;
+
+    public BigInteger getKuotaTerpakai() {
+        return kuotaTerpakai;
+    }
+
+    public void setKuotaTerpakai(BigInteger kuotaTerpakai) {
+        this.kuotaTerpakai = kuotaTerpakai;
+    }
 
     public BigInteger getKuotaOnSite() {
         return kuotaOnSite;

@@ -361,6 +361,8 @@
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsBentukBarangEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/telemedic/hibernate/ImSimrsRekeningTelemedicEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsHeaderTindakanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsHeaderObatEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/kategoripersediaan/hibernate/ImSimrsKategoriPersediaanEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsKategoriResikoJatuhEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsParameterResikoJatuhEntity.hbm.xml</value>

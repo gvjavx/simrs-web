@@ -12,6 +12,7 @@ import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
@@ -27,147 +28,73 @@ import java.util.Map;
  */
 public class TindakanBoImpl implements TindakanBo {
     private static transient Logger logger = Logger.getLogger(TindakanBoImpl.class);
-
     private TindakanDao tindakanDao;
 
     @Override
-    public void saveDelete(Tindakan bean) throws GeneralBOException {
-        logger.info("[TindakanBoImpl.saveDelete] start process");
-
-        if (bean != null) {
-            String idTindakan = bean.getIdTindakan();
-            String status = cekBeforeDelete(idTindakan);
-            if (!status.equalsIgnoreCase("exist")){
-                ImSimrsTindakanEntity entity = null;
-                try {
-                    // Get data from database by ID
-                    entity = tindakanDao.getById("idTindakan", idTindakan);
-                } catch (HibernateException e) {
-                    logger.error("[TindakanBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when searching data tindakan by idTindakan, please inform to your admin...," + e.getMessage());
-                }
-
-                if (entity != null) {
-                    // Modify from bean to entity serializable
-                    entity.setIdTindakan(idTindakan);
-                    entity.setFlag(bean.getFlag());
-                    entity.setAction(bean.getAction());
-                    entity.setLastUpdate(bean.getLastUpdate());
-                    entity.setLastUpdateWho(bean.getLastUpdateWho());
-
-                    try {
-                        // Delete (Edit) into database
-                        tindakanDao.updateAndSave(entity);
-                    } catch (HibernateException e) {
-                        logger.error("[TindakanBoImpl.saveDelete] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when saving update data Tindakan, please info to your admin..." + e.getMessage());
-                    }
-
-
-                } else {
-                    logger.error("[TindakanBoImpl.saveDelete] Error, not found data Tindakan with request id, please check again your data ...");
-                    throw new GeneralBOException("Error, not found data Ruangan with request id, please check again your data ...");
-                }
-            }else {
-                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan pada data Transaksi");
-            }
-        }
-
-        logger.info("[TindakanBoImpl.saveDelete] End <<<<<<<");
-    }
-
-    @Override
-    public void saveEdit(Tindakan bean) throws GeneralBOException {
+    public CrudResponse saveEdit(Tindakan bean) throws GeneralBOException {
         logger.info("[TindakanBoImpl.saveEdit] Start >>>>>>>");
-
+        CrudResponse response = new CrudResponse();
         if (bean != null) {
-
-            String idTindakan = bean.getIdTindakan();
             ImSimrsTindakanEntity simrsTindakanEntity = null;
             try {
-                // Get data from database by ID
-                simrsTindakanEntity = tindakanDao.getById("idTindakan", idTindakan);
-                //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
+                simrsTindakanEntity = tindakanDao.getById("idTindakan", bean.getIdTindakan());
+                response.setStatus("success");
+                response.setMsg("Oke!");
             } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg("Mohon maaf... Terjadi kesalahan saat mencari ID tindakan...!");
                 logger.error("[TindakanBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data Tindakan by idTindakan, please inform to your admin...," + e.getMessage());
             }
-
             if (simrsTindakanEntity != null) {
-                if (bean.getTindakan().equalsIgnoreCase(simrsTindakanEntity.getTindakan())){
-                    simrsTindakanEntity.setIdTindakan(bean.getIdTindakan());
-                    simrsTindakanEntity.setTindakan(bean.getTindakan());
+                if (bean.getTindakan().equalsIgnoreCase(simrsTindakanEntity.getTindakan())) {
                     simrsTindakanEntity.setIdKategoriTindakan(bean.getIdKategoriTindakan());
-                    simrsTindakanEntity.setTarif(bean.getTarif());
-                    simrsTindakanEntity.setTarifBpjs(bean.getTarifBpjs());
-                    simrsTindakanEntity.setKategoriInaBpjs(bean.getIdKategoriTindakanIna());
-                    simrsTindakanEntity.setBranchId(bean.getBranchId());
-                    simrsTindakanEntity.setDiskon(bean.getDiskon());
+                    if(bean.getTarif() != null){
+                        simrsTindakanEntity.setTarif(bean.getTarif());
+                    }
+                    if(bean.getTarifBpjs() != null){
+                        simrsTindakanEntity.setTarifBpjs(bean.getTarifBpjs());
+                    }
+                    if(bean.getDiskon() != null){
+                        simrsTindakanEntity.setDiskon(bean.getDiskon());
+                    }
                     simrsTindakanEntity.setFlag(bean.getFlag());
                     simrsTindakanEntity.setAction(bean.getAction());
                     simrsTindakanEntity.setLastUpdate(bean.getLastUpdate());
                     simrsTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
+                    simrsTindakanEntity.setIdHeaderTindakan(bean.getIdHeaderTindakan());
                     try {
                         tindakanDao.updateAndSave(simrsTindakanEntity);
+                        response.setStatus("success");
+                        response.setMsg("Oke!");
                     } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Mohon maaf... Terjadi kesalahan saat edit tindakan...!");
                         logger.error("[TindakanBoImpl.saveAdd] Error when Updating data ruangan", e);
-                        throw new GeneralBOException(" Error when Updating data ruangan " + e.getMessage());
-                    }
-                }else {
-                    String status = cekStatus(bean.getTindakan());
-                    if (!status.equalsIgnoreCase("exist")){
-                        simrsTindakanEntity.setIdTindakan(bean.getIdTindakan());
-                        simrsTindakanEntity.setTindakan(bean.getTindakan());
-                        simrsTindakanEntity.setIdKategoriTindakan(bean.getIdKategoriTindakan());
-                        simrsTindakanEntity.setTarif(bean.getTarif());
-                        simrsTindakanEntity.setTarifBpjs(bean.getTarifBpjs());
-                        simrsTindakanEntity.setKategoriInaBpjs(bean.getIdKategoriTindakanIna());
-                        simrsTindakanEntity.setBranchId(bean.getBranchId());
-                        simrsTindakanEntity.setDiskon(bean.getDiskon());
-                        simrsTindakanEntity.setFlag(bean.getFlag());
-                        simrsTindakanEntity.setAction(bean.getAction());
-                        simrsTindakanEntity.setLastUpdate(bean.getLastUpdate());
-                        simrsTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-                        try {
-                            tindakanDao.updateAndSave(simrsTindakanEntity);
-                        } catch (HibernateException e) {
-                            logger.error("[TindakanBoImpl.saveAdd] Error when Updating data ruangan", e);
-                            throw new GeneralBOException(" Error when Updating data ruangan " + e.getMessage());
-                        }
-                    }else {
-                        throw new GeneralBOException("Maaf Data dengan Nama Tindakan Tersebut Sudah Ada");
                     }
                 }
-            } else {
-                logger.error("[TindakanBoImpl.saveAdd] Error when get entity ruangan is null");
-                throw new GeneralBOException("  Error when get entity ruangan is null");
+            }else{
+                response.setStatus("error");
+                response.setMsg("Mohon maaf... Tidak dapat menemukan ID tindakan...!");
             }
-
-        } else {
-            logger.error("[TindakanBoImpl.saveAdd] Error when saving data ruangan data is null");
-            throw new GeneralBOException(" Error when saving data ruangan data is null");
         }
-
         logger.info("[TindakanBoImpl.saveEdit] End <<<<<<<");
+        return response;
     }
 
     @Override
-    public Tindakan saveAdd(Tindakan bean) throws GeneralBOException {
+    public CrudResponse saveAdd(Tindakan bean) throws GeneralBOException {
         logger.info("[TindakanBoImpl.saveAdd] start process >>>");
-        if (bean!=null) {
+        CrudResponse response = new CrudResponse();
+        if (bean != null) {
             String status = cekStatus(bean.getTindakan());
             String tindakanId;
-            if (!status.equalsIgnoreCase("exist")){
+            if (!status.equalsIgnoreCase("exist")) {
                 try {
-                    // Generating ID, get from postgre sequence
                     tindakanId = tindakanDao.getNextPelayananId();
                 } catch (HibernateException e) {
                     logger.error("[TindakanBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when getting sequence tindakanId id, please info to your admin..." + e.getMessage());
                 }
-                // creating object entity serializable
                 ImSimrsTindakanEntity entity = new ImSimrsTindakanEntity();
                 entity.setIdTindakan(tindakanId);
                 entity.setTindakan(bean.getTindakan());
@@ -183,21 +110,23 @@ public class TindakanBoImpl implements TindakanBo {
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
                 entity.setCreatedDate(bean.getCreatedDate());
                 entity.setLastUpdate(bean.getLastUpdate());
-
+                entity.setIdHeaderTindakan(bean.getIdHeaderTindakan());
                 try {
-                    // insert into database
                     tindakanDao.addAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
                 } catch (HibernateException e) {
                     logger.error("[TindakanImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data Tindakan, please info to your admin..." + e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg("Gagal menyimpan data tindakan dikarenakan, " + e.getMessage());
                 }
-            }else{
-                throw new GeneralBOException("Maaf Data dengan Nama Tindakan Tersebut Sudah Ada");
+            } else {
+                response.setStatus("error");
+                response.setMsg("Maaf Data dengan Nama Tindakan Tersebut Sudah Ada");
             }
         }
-
         logger.info("[TindakanImpl.saveAdd] end process <<<");
-        return null;
+        return response;
     }
 
     @Override
@@ -205,9 +134,9 @@ public class TindakanBoImpl implements TindakanBo {
         logger.info("[TindakanBoImpl.getByCriteria] Start >>>>>>>");
         List<Tindakan> results = new ArrayList<>();
 
-        if (bean != null){
+        if (bean != null) {
             List<ImSimrsTindakanEntity> entityList = getListEntityTindakan(bean);
-            if (!entityList.isEmpty()){
+            if (!entityList.isEmpty()) {
                 results = setToTindakanTemplate(entityList);
             }
         }
@@ -217,18 +146,13 @@ public class TindakanBoImpl implements TindakanBo {
     }
 
     @Override
-    public List<Tindakan> getAll() throws GeneralBOException {
-        return null;
-    }
-
-    @Override
     public List<Tindakan> getComboBoxTindakan(Tindakan bean) throws GeneralBOException {
         List<Tindakan> tindakanList = new ArrayList<>();
-        if(bean != null){
+        if (bean != null) {
             try {
                 tindakanList = tindakanDao.getListComboBoxTindakan(bean);
-            }catch (HibernateException e){
-                logger.error("Found Error"+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("Found Error" + e.getMessage());
             }
         }
         return tindakanList;
@@ -239,29 +163,42 @@ public class TindakanBoImpl implements TindakanBo {
         return tindakanDao.getById("idTindakan", idTindakan);
     }
 
-    protected List<ImSimrsTindakanEntity> getListEntityTindakan(Tindakan bean) throws GeneralBOException{
+    @Override
+    public List<Tindakan> getDataTindakan(Tindakan bean) throws GeneralBOException {
+        List<Tindakan> tindakanList = new ArrayList<>();
+        if (bean != null) {
+            try {
+                tindakanList = tindakanDao.getListDataTindakan(bean);
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+        }
+        return tindakanList;
+    }
+
+    protected List<ImSimrsTindakanEntity> getListEntityTindakan(Tindakan bean) throws GeneralBOException {
         logger.info("[TindakanBoImpl.getListEntityTindakan] Start >>>>>>>");
         List<ImSimrsTindakanEntity> results = new ArrayList<>();
 
         Map hsCiteria = new HashMap();
 
-        if (bean.getIdTindakan() != null && !"".equalsIgnoreCase(bean.getIdTindakan())){
+        if (bean.getIdTindakan() != null && !"".equalsIgnoreCase(bean.getIdTindakan())) {
             hsCiteria.put("id_tindakan", bean.getIdTindakan());
         }
-        if (bean.getTindakan() != null && !"".equalsIgnoreCase(bean.getTindakan())){
+        if (bean.getTindakan() != null && !"".equalsIgnoreCase(bean.getTindakan())) {
             hsCiteria.put("tindakan", bean.getTindakan());
         }
-        if (bean.getIdKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakan())){
+        if (bean.getIdKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakan())) {
             hsCiteria.put("id_kategori_tindakan", bean.getIdKategoriTindakan());
         }
-        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
             hsCiteria.put("branch_id", bean.getBranchId());
         }
-        if (bean.getIsIna() != null && !"".equalsIgnoreCase(bean.getIsIna())){
+        if (bean.getIsIna() != null && !"".equalsIgnoreCase(bean.getIsIna())) {
             hsCiteria.put("is_ina", bean.getIsIna());
         }
         hsCiteria.put("flag", "Y");
-        if (bean.getIdKategoriTindakanIna() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakanIna())){
+        if (bean.getIdKategoriTindakanIna() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakanIna())) {
             hsCiteria.put("kategori_ina_bpjs", bean.getIdKategoriTindakanIna());
         }
         if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
@@ -276,7 +213,7 @@ public class TindakanBoImpl implements TindakanBo {
 
         try {
             results = tindakanDao.getByCriteria(hsCiteria);
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[TindakanBoImpl.getListEntityTindakan] Error when get data tindakan ", e);
         }
 
@@ -284,12 +221,12 @@ public class TindakanBoImpl implements TindakanBo {
         return results;
     }
 
-    protected List<Tindakan> setToTindakanTemplate(List<ImSimrsTindakanEntity> entities) throws GeneralBOException{
+    protected List<Tindakan> setToTindakanTemplate(List<ImSimrsTindakanEntity> entities) throws GeneralBOException {
         logger.info("[TindakanBoImpl.setToTindakanTemplate] Start >>>>>>>");
         List<Tindakan> results = new ArrayList<>();
 
         Tindakan tindakan;
-        for (ImSimrsTindakanEntity entity : entities){
+        for (ImSimrsTindakanEntity entity : entities) {
             tindakan = new Tindakan();
             tindakan.setIdTindakan(entity.getIdTindakan());
             tindakan.setTindakan(entity.getTindakan());
@@ -299,11 +236,10 @@ public class TindakanBoImpl implements TindakanBo {
             tindakan.setKategoriInaBpjs(entity.getKategoriInaBpjs());
             tindakan.setTarif(entity.getTarif());
             tindakan.setTarifBpjs(entity.getTarifBpjs());
-            if (entity.getDiskon() != null){
-                tindakan.setStDiskon(CommonUtil.numbericFormat(entity.getDiskon(),"###,###")+"%");
+            if (entity.getDiskon() != null) {
+                tindakan.setStDiskon(CommonUtil.numbericFormat(entity.getDiskon(), "###,###") + "%");
                 tindakan.setDiskon(entity.getDiskon());
-            }
-            else{
+            } else {
                 tindakan.setStDiskon("-");
             }
             tindakan.setFlag(entity.getFlag());
@@ -316,7 +252,7 @@ public class TindakanBoImpl implements TindakanBo {
             tindakan.setLastUpdateWho(entity.getLastUpdateWho());
 
             ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-            if (entity.getBranchId() != null){
+            if (entity.getBranchId() != null) {
                 Branch branch = new Branch();
                 BranchBo branchBo = (BranchBo) context.getBean("branchBoProxy");
                 branch.setBranchId(entity.getBranchId());
@@ -324,11 +260,11 @@ public class TindakanBoImpl implements TindakanBo {
                 List<Branch> branches = branchBo.getByCriteria(branch);
                 String branchName = branches.get(0).getBranchName();
                 tindakan.setBranchName(branchName);
-            }else {
+            } else {
                 tindakan.setBranchName("-");
             }
 
-            if (entity.getIdKategoriTindakan() != null){
+            if (entity.getIdKategoriTindakan() != null) {
                 KategoriTindakan kategoriTindakan = new KategoriTindakan();
                 KategoriTindakanBo kategoriTindakanBo = (KategoriTindakanBo) context.getBean("kategoriTindakanBoProxy");
                 kategoriTindakan.setIdKategoriTindakan(entity.getIdKategoriTindakan());
@@ -336,11 +272,11 @@ public class TindakanBoImpl implements TindakanBo {
                 List<KategoriTindakan> kategoriTindakans = kategoriTindakanBo.getByCriteria(kategoriTindakan);
                 String kategoriTindakanName = kategoriTindakans.get(0).getKategoriTindakan();
                 tindakan.setNamaKategoriTindakan(kategoriTindakanName);
-            }else {
+            } else {
                 tindakan.setNamaKategoriTindakan("-");
             }
 
-            if (entity.getKategoriInaBpjs() != null){
+            if (entity.getKategoriInaBpjs() != null) {
                 KategoriTindakanIna kategoriTindakanIna = new KategoriTindakanIna();
                 KategoriTindakanInaBo kategoriTindakanInaBo = (KategoriTindakanInaBo) context.getBean("kategoriTindakanInaBoProxy");
                 kategoriTindakanIna.setId(entity.getKategoriInaBpjs());
@@ -348,7 +284,7 @@ public class TindakanBoImpl implements TindakanBo {
                 List<KategoriTindakanIna> kategoriTindakanInas = kategoriTindakanInaBo.getByCriteria(kategoriTindakanIna);
                 String kategoriTindakanInaName = kategoriTindakanInas.get(0).getNama();
                 tindakan.setNamaKategoriTindakanIna(kategoriTindakanInaName);
-            }else {
+            } else {
                 tindakan.setNamaKategoriTindakanIna("-");
             }
 
@@ -363,13 +299,8 @@ public class TindakanBoImpl implements TindakanBo {
         this.tindakanDao = tindakanDao;
     }
 
-    @Override
-    public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
-        return null;
-    }
-
-    public String cekStatus(String namaTindakan)throws GeneralBOException{
-        String status ="";
+    public String cekStatus(String namaTindakan) throws GeneralBOException {
+        String status = "";
         List<ImSimrsTindakanEntity> entities = new ArrayList<>();
         try {
             entities = tindakanDao.getDataTindakan(namaTindakan);
@@ -377,16 +308,16 @@ public class TindakanBoImpl implements TindakanBo {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
-        if (entities.size()>0){
+        if (entities.size() > 0) {
             status = "exist";
-        }else{
-            status="notExits";
+        } else {
+            status = "notExits";
         }
         return status;
     }
 
-    public String cekBeforeDelete(String idTindakan)throws GeneralBOException{
-        String status ="";
+    public String cekBeforeDelete(String idTindakan) throws GeneralBOException {
+        String status = "";
         List<ImSimrsTindakanEntity> entities = new ArrayList<>();
         try {
             entities = tindakanDao.cekData(idTindakan);
@@ -394,10 +325,10 @@ public class TindakanBoImpl implements TindakanBo {
             logger.error("[TindakanBoImpl.cekBeforeDelete] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
-        if (entities.size()>0){
+        if (entities.size() > 0) {
             status = "exist";
-        }else{
-            status="notExits";
+        } else {
+            status = "notExits";
         }
         return status;
     }

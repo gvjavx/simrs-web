@@ -277,15 +277,28 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "e.jam_akhir,\n" +
                 "c.flag_libur,\n" +
                 "b.id_pelayanan,\n" +
+                "f.kurang,\n" +
                 "e.branch_id\n" +
                 "FROM im_simrs_dokter a\n" +
                 "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
                 "INNER JOIN it_hris_jadwal_shift_kerja_detail c ON a.id_dokter = c.nip\n" +
                 "INNER JOIN it_hris_jadwal_shift_kerja d ON c.jadwal_shift_kerja_id = d.jadwal_shift_kerja_id\n" +
                 "INNER JOIN im_hris_shift e ON c.shift_id = e.shift_id\n" +
+                "LEFT JOIN (\n" +
+                "SELECT\n" +
+                "COUNT(c.id_dokter) as kurang,\n" +
+                "c.id_dokter\n" +
+                "FROM it_simrs_header_checkup a \n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "INNER JOIN it_simrs_dokter_team c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                "WHERE a.created_date = CURRENT_DATE\n" +
+                "AND d.tipe_pelayanan IN ('rawat_jalan','igd')\n" +
+                "GROUP BY c.id_dokter\n" +
+                ") f ON a.id_dokter = f.id_dokter\n" +
                 "WHERE e.branch_id = :branchId\n" +
                 "AND d.tanggal = CURRENT_DATE\n" + notLikeDokter +
-                "AND b.id_pelayanan = :idPelayanan\n";
+                "AND b.id_pelayanan = :idPelayanan";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -307,6 +320,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 jadwalPelayananDTO.setJamAkhir(obj[8] != null ? (String) obj[8] : "");
                 jadwalPelayananDTO.setFlagLibur(obj[9] != null ? (String) obj[9] : "");
                 jadwalPelayananDTO.setIdPelayanan(obj[10] != null ? (String) obj[10] : "");
+                jadwalPelayananDTO.setKuotaTerpakai(obj[11] != null ? (BigInteger) obj[11] : null);
                 pelayananDTOList.add(jadwalPelayananDTO);
             }
         }

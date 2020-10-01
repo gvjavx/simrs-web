@@ -2,23 +2,17 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
         version="2.0">
 
-    <entity class="com.neurix.simrs.master.tindakan.model.ImSimrsHeaderTindakanEntity">
-        <table name="im_simrs_header_tindakan" schema="public"/>
+    <entity class="com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity">
+        <table name="im_simrs_kategori_persediaan" schema="public" />
         <attributes>
-            <id name="idHeaderTindakan">
-                <column name="id_header_tindakan"/>
+            <id name="idKategoriPersediaan">
+                <column name="id_kategori_persediaan"/>
             </id>
-            <basic name="namaTindakan">
-                <column name="nama_tindakan"/>
+            <basic name="nama">
+                <column name="nama"/>
             </basic>
-            <basic name="standardCost">
-                <column name="standard_cost"/>
-            </basic>
-            <basic name="diskon">
-                <column name="diskon"/>
-            </basic>
-            <basic name="hargaDiskon">
-                <column name="harga_diskon"/>
+            <basic name="rekeningId">
+                <column name="rekening_id"/>
             </basic>
             <basic name="flag">
                 <column name="flag"/>
@@ -37,12 +31,6 @@
             </basic>
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
-            </basic>
-            <basic name="kategoriInaBpjs">
-                <column name="kategori_ina_bpjs"/>
-            </basic>
-            <basic name="idKategoriNota">
-                <column name="id_kategori_nota"/>
             </basic>
         </attributes>
     </entity>

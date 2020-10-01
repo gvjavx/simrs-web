@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -138,6 +139,72 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 .list();
 
         return results;
+    }
+
+    public List<Tindakan> getListDataTindakan(Tindakan bean){
+        List<Tindakan> tindakanList = new ArrayList<>();
+        String flag = "Y";
+        String condition = "";
+        if(bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            flag = bean.getFlag();
+        }
+        if(bean.getIdHeaderTindakan() != null && !"".equalsIgnoreCase(bean.getIdHeaderTindakan())){
+            condition = "AND a.id_header_tindakan = '"+bean.getIdHeaderTindakan()+"' \n";
+        }
+        if(bean.getIdTindakan() != null && !"".equalsIgnoreCase(bean.getIdTindakan())){
+            condition = condition + "AND b.id_tindakan = '"+bean.getIdTindakan()+"' \n";
+        }
+        if(bean.getTindakan() != null && !"".equalsIgnoreCase(bean.getIdTindakan())){
+            condition = condition + "AND a.nama_tindakan = '"+bean.getIdTindakan()+"' \n";
+        }
+        if(bean.getTindakan() != null && !"".equalsIgnoreCase(bean.getTindakan())){
+            condition = condition + "AND a.id_header_tindakan ILIKE '%"+bean.getTindakan()+"%' \n";
+        }
+        if(bean.getIsIna() != null && !"".equalsIgnoreCase(bean.getIsIna())){
+            condition = condition + "AND b.is_ina = '"+bean.getIsIna()+"' \n";
+        }
+        if(bean.getIdKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakan())){
+            condition = condition + "AND b.id_kategori_tindakan = '"+bean.getIdKategoriTindakan()+"' \n";
+        }
+        String SQL = "SELECT \n" +
+                "a.id_header_tindakan,\n" +
+                "a.nama_tindakan,\n" +
+                "a.kategori_ina_bpjs,\n" +
+                "a.id_kategori_nota,\n" +
+                "b.id_tindakan,\n" +
+                "b.tarif,\n" +
+                "b.tarif_bpjs,\n" +
+                "b.diskon,\n" +
+                "b.is_ina,\n" +
+                "b.id_kategori_tindakan,\n" +
+                "c.kategori_tindakan\n" +
+                "FROM im_simrs_header_tindakan a\n" +
+                "INNER JOIN im_simrs_tindakan b ON  a.id_header_tindakan = b.id_header_tindakan\n" +
+                "INNER JOIN im_simrs_kategori_tindakan c ON b.id_kategori_tindakan = c.id_kategori_tindakan\n" +
+                "WHERE b.flag = 'Y' \n" + condition;
+
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("flag", flag)
+                .list();
+        if(result.size() > 0){
+            for (Object[] obj: result){
+                Tindakan tindakan = new Tindakan();
+                tindakan.setIdHeaderTindakan(obj[0] != null ? obj[0].toString() : null);
+                tindakan.setTindakan(obj[1] != null ? obj[1].toString() : null);
+                tindakan.setKategoriInaBpjs(obj[2] != null ? obj[2].toString() : null);
+                tindakan.setIdKategoriNota(obj[3] != null ? obj[3].toString() : null);
+                tindakan.setIdTindakan(obj[4] != null ? obj[4].toString() : null);
+                tindakan.setTarif(obj[5] != null ? (BigInteger) obj[5] : null);
+                tindakan.setTarifBpjs(obj[6] != null ? (BigInteger) obj[6] : null);
+                tindakan.setDiskon(obj[7] != null ? (BigDecimal) obj[7] : null);
+                tindakan.setIsIna(obj[8] != null ? obj[8].toString() : null);
+                tindakan.setIdKategoriTindakan(obj[9] != null ? obj[9].toString() : null);
+                tindakan.setNamaKategoriTindakan(obj[10] != null ? obj[10].toString() : null);
+                tindakanList.add(tindakan);
+            }
+        }
+        return tindakanList;
     }
 
 }

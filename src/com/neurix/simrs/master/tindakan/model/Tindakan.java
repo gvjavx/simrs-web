@@ -32,6 +32,33 @@ public class Tindakan {
     private BigDecimal diskon;
     private String isIna;
     private String kategoriInaBpjs;
+    private String idHeaderTindakan;
+    private String idKategoriNota;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getIdKategoriNota() {
+        return idKategoriNota;
+    }
+
+    public void setIdKategoriNota(String idKategoriNota) {
+        this.idKategoriNota = idKategoriNota;
+    }
+
+    public String getIdHeaderTindakan() {
+        return idHeaderTindakan;
+    }
+
+    public void setIdHeaderTindakan(String idHeaderTindakan) {
+        this.idHeaderTindakan = idHeaderTindakan;
+    }
 
     public String getKategoriInaBpjs() {
         return kategoriInaBpjs;

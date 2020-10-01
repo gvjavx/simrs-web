@@ -29,6 +29,9 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
             if (mapCriteria.get("kategori_tindakan") != null) {
                 criteria.add(Restrictions.ilike("kategoriTindakan", "%" + (String)mapCriteria.get("kategori_tindakan") + "%"));
             }
+            if (mapCriteria.get("branch_id") != null) {
+                criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
+            }
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
             }

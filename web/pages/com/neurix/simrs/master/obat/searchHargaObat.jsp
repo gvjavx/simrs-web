@@ -169,12 +169,14 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Harga Obat</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Obat</td>
                                 <td>Nama Obat</td>
                                 <td>Merk</td>
+                                <td>Margin</td>
+                                <td>Standar Margin</td>
                                 <td>Harga Rata-rata (Bijian)</td>
                                 <td>Harga</td>
                                 <td>Diskon</td>
@@ -183,11 +185,18 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfPeriksaLab" var="row">
-                                <tr>
+                            <s:iterator value="#session.listOfResult" var="row">
+                                <s:if test='#row.flagKurangMargin == "Y"'>
+                                    <tr style="background-color: #d9534f; color: #ffffff">
+                                </s:if>
+                                <s:else>
+                                    <tr>
+                                </s:else>
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property value="merk"/></td>
+                                    <td><s:property value="margin"/></td>
+                                    <td><s:property value="standarMargin"/></td>
                                     <td align="right"><script>document.write(formatRupiah('<s:property value="averageHargaBiji"/>'))</script></td>
                                     <td align="right"><script>document.write(formatRupiah('<s:property value="hargaNet"/>'))</script></td>
                                     <td><s:property value="diskon"/>%</td>

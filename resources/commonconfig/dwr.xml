@@ -837,6 +837,13 @@
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.notifikasiadmin.model.ItNotifikasiAdminTelemedicEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.notifikasiadmin.model.NotifikasiAdmin"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.tindakan.action.HeaderTindakanAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.HeaderTindakan"/>
+      <convert converter="bean" match="com.neurix.simrs.master.kategoritindakanina.model.KategoriTindakanIna"/>
+
   </allow>
 
 </dwr>

@@ -4,10 +4,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
-/**
- * Created by reza on 13/08/20.
- */
-public class ImSimrsHeaderTindakanEntity {
+public class HeaderTindakan {
     private String idHeaderTindakan;
     private String namaTindakan;
     private BigInteger standardCost;

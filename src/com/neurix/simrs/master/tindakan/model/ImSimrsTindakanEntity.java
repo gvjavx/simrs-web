@@ -27,6 +27,15 @@ public class ImSimrsTindakanEntity implements Serializable{
     private String branchId;
     private BigDecimal diskon;
     private String isIna;
+    private String idHeaderTindakan;
+
+    public String getIdHeaderTindakan() {
+        return idHeaderTindakan;
+    }
+
+    public void setIdHeaderTindakan(String idHeaderTindakan) {
+        this.idHeaderTindakan = idHeaderTindakan;
+    }
 
     public String getIsIna() {
         return isIna;

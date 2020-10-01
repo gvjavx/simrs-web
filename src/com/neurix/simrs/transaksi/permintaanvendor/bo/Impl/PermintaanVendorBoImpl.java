@@ -1009,7 +1009,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             throw new GeneralBOException("[PermintaanVendorBoImpl.updateAddStockGudang] ERROR." + e.getMessage());
         }
 
-        updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji());
+        updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji(), bean.getBranchId());
         saveTransaksiStok(newObatEntity, bean.getIdVendor(), bean.getIdPelayanan());
 
         logger.info("[PermintaanVendorBoImpl.updateAddStockGudang] END <<<");
@@ -1398,11 +1398,12 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     }
 
     @Override
-    public void updateAllNewAverageHargaByObatId(String idObat, BigDecimal avgBox, BigDecimal avgLembar, BigDecimal avgBiji) throws GeneralBOException {
+    public void updateAllNewAverageHargaByObatId(String idObat, BigDecimal avgBox, BigDecimal avgLembar, BigDecimal avgBiji, String branchId) throws GeneralBOException {
         logger.info("[PermintaanVendorBoImpl.updateAllNewAverageHargaByObatId] START >>>");
 
         Obat obat = new Obat();
         obat.setIdObat(idObat);
+        obat.setBranchId(branchId);
 
         List<ImSimrsObatEntity> obatEntities = getListEntityObat(obat);
 
