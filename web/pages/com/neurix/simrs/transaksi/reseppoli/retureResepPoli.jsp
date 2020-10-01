@@ -391,11 +391,12 @@
                                 <td align="center">Harga Satuan (Rp.)</td>
                                 <td align="center">Harga Total (Rp.)</td>
                                 <td width="21%">Scan ID Obat</td>
+                                <td width="21%">Qty Reture</td>
                                 <td>Jenis Satuan</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResultResep" id="listOfResultResep">
+                            <s:iterator value="#session.listOfResultRetureResep" id="listOfResultResep" var="row">
                                 <tr>
                                     <td><s:property value="namaObat"/></td>
                                     <td align="center"><s:property value="qty"/></td>
@@ -424,6 +425,7 @@
                                             </s:else>
                                         </div>
                                     </td>
+                                    <td><input type="number" class="form-control"/></td>
                                     <td><s:property value="jenisSatuan"/></td>
                                 </tr>
                             </s:iterator>
