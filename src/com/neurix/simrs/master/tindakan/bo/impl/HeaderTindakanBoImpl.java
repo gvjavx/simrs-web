@@ -24,10 +24,13 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
         List<ImSimrsHeaderTindakanEntity> results = new ArrayList<>();
         Map hsCiteria = new HashMap();
         if (bean.getIdHeaderTindakan() != null && !"".equalsIgnoreCase(bean.getIdHeaderTindakan())) {
-            hsCiteria.put("id__header_tindakan", bean.getIdHeaderTindakan());
+            hsCiteria.put("id_header_tindakan", bean.getIdHeaderTindakan());
         }
         if (bean.getNamaTindakan() != null && !"".equalsIgnoreCase(bean.getNamaTindakan())) {
             hsCiteria.put("nama_tindakan", bean.getNamaTindakan());
+        }
+        if (bean.getKategoriInaBpjs() != null && !"".equalsIgnoreCase(bean.getKategoriInaBpjs())) {
+            hsCiteria.put("kategori_ina", bean.getKategoriInaBpjs());
         }
         if (bean.getStandardCost() != null && !"".equalsIgnoreCase(bean.getStandardCost().toString())) {
             hsCiteria.put("standart_cost", bean.getStandardCost());
@@ -110,6 +113,9 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                     response.setMsg("Error saat insert ke database...!, dikarenakan "+ e.getMessage());
                     logger.error(e.getMessage());
                 }
+            }else{
+                response.setStatus("error");
+                response.setMsg("Mohon Maaf ID tindakan tidak bisa digenerate");
             }
         }
         return response;
@@ -130,17 +136,16 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                 logger.error(e.getMessage());
             }
             if(entity != null){
-                ImSimrsHeaderTindakanEntity imSimrsHeaderTindakanEntity = new ImSimrsHeaderTindakanEntity();
-                imSimrsHeaderTindakanEntity.setNamaTindakan(bean.getNamaTindakan());
-                imSimrsHeaderTindakanEntity.setStandardCost(bean.getStandardCost());
-                imSimrsHeaderTindakanEntity.setDiskon(bean.getDiskon());
-                imSimrsHeaderTindakanEntity.setHargaDiskon(bean.getHargaDiskon());
-                imSimrsHeaderTindakanEntity.setAction(bean.getAction());
-                imSimrsHeaderTindakanEntity.setFlag(bean.getFlag());
-                imSimrsHeaderTindakanEntity.setLastUpdate(bean.getLastUpdate());
-                imSimrsHeaderTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setNamaTindakan(bean.getNamaTindakan());
+                entity.setStandardCost(bean.getStandardCost());
+                entity.setDiskon(bean.getDiskon());
+                entity.setHargaDiskon(bean.getHargaDiskon());
+                entity.setAction(bean.getAction());
+                entity.setFlag(bean.getFlag());
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
                 try {
-                    headerTindakanDao.addAndSave(imSimrsHeaderTindakanEntity);
+                    headerTindakanDao.updateAndSave(entity);
                     response.setStatus("success");
                     response.setMsg("success");
                 }catch (HibernateException e){
@@ -148,6 +153,9 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                     response.setMsg("Error saat update ke database...!, dikarenakan "+ e.getMessage());
                     logger.error(e.getMessage());
                 }
+            }else{
+                response.setStatus("error");
+                response.setMsg("Mohon maaf ID tindakan tidak ditemukan...!");
             }
         }
         return response;

@@ -890,6 +890,9 @@ INSERT INTO im_func_roles VALUES
 (2342, 32, 'Y', now(), now(), 'admin', 'admin'),
 (2343, 32, 'Y', now(), now(), 'admin', 'admin');
 
+ALTER TABLE im_simrs_tindakan
+ADD COLUMN id_pelayanan VARCHAR(50);
+
 
 
 

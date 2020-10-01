@@ -1205,6 +1205,7 @@
 
     function convertRp(id, val) {
         $('#' + id).val(formatRupiahAtas2(val));
+        val = val.replace(/[.]/g, '');
         $('#h_' + id).val(val);
     }
 

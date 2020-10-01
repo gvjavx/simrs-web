@@ -63,6 +63,7 @@ public class HeaderTindakanAction extends BaseTransactionAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", headerTindakanList);
+        setHeaderTindakan(tindakan);
 
         return "search";
     }
@@ -70,7 +71,7 @@ public class HeaderTindakanAction extends BaseTransactionAction {
     @Override
     public String initForm() {
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResultTindakan");
+        session.removeAttribute("listOfResult");
         HeaderTindakan headerTindakan = new HeaderTindakan();
         setHeaderTindakan(headerTindakan);
         return "search";
@@ -121,7 +122,8 @@ public class HeaderTindakanAction extends BaseTransactionAction {
             JSONObject object = new JSONObject(data);
             if(object != null){
                 HeaderTindakan headerTindakan = new HeaderTindakan();
-                headerTindakan.setNamaTindakan(object.getString("id_kategori_tindakan"));
+                headerTindakan.setIdHeaderTindakan(object.getString("id_tindakan"));
+                headerTindakan.setNamaTindakan(object.getString("nama_tindakan"));
                 headerTindakan.setKategoriInaBpjs(object.getString("kategori_ina_bpjs"));
                 headerTindakan.setStandardCost(new BigInteger(object.getString("tarif")));
                 headerTindakan.setDiskon(new BigDecimal(object.getString("diskon")));
@@ -151,6 +153,7 @@ public class HeaderTindakanAction extends BaseTransactionAction {
         CrudResponse response = new CrudResponse();
         try {
             HeaderTindakan headerTindakan = new HeaderTindakan();
+            headerTindakan.setIdHeaderTindakan(id);
             headerTindakan.setLastUpdate(updateTime);
             headerTindakan.setLastUpdateWho(userLogin);
             headerTindakan.setAction("D");

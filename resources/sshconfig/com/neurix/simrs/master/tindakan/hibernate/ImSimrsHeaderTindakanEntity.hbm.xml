@@ -41,9 +41,6 @@
             <basic name="kategoriInaBpjs">
                 <column name="kategori_ina_bpjs"/>
             </basic>
-            <basic name="idKategoriNota">
-                <column name="id_kategori_nota"/>
-            </basic>
         </attributes>
     </entity>
 </entity-mappings>

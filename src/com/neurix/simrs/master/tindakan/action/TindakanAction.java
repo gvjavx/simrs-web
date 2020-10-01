@@ -10,12 +10,15 @@ import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
 import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import com.neurix.simrs.master.kategoritindakanina.bo.KategoriTindakanInaBo;
 import com.neurix.simrs.master.kategoritindakanina.model.KategoriTindakanIna;
+import com.neurix.simrs.master.tindakan.bo.HeaderTindakanBo;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
+import com.neurix.simrs.master.tindakan.model.HeaderTindakan;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
@@ -174,9 +177,9 @@ public class TindakanAction extends BaseTransactionAction {
             data.setBranchUser("");
             data.setBranchId("");
         }
-        tindakan = data;
+        setTindakan(data);
 
-        session.removeAttribute("listOfResultTindakan");
+        session.removeAttribute("listOfResult");
         logger.info("[TindakanAction.initForm] end process >>>");
 
         return "search";
@@ -221,6 +224,36 @@ public class TindakanAction extends BaseTransactionAction {
             logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
         }
         return listOfKategoriTidakans;
+    }
+
+    public List<HeaderTindakan> getComboTindakan() {
+        List<HeaderTindakan> tindakanList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        HeaderTindakanBo headerTindakanBo = (HeaderTindakanBo) ctx.getBean("headerTindakanBoProxy");
+        HeaderTindakan headerTindakan = new HeaderTindakan();
+        headerTindakan.setFlag("Y");
+
+        try {
+            tindakanList = headerTindakanBo.getByCriteria(headerTindakan);
+        } catch (GeneralBOException e) {
+            logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+        return tindakanList;
+    }
+
+    public List<Branch> getComboBranch() {
+        List<Branch> branchList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        Branch branch = new Branch();
+        branch.setFlag("Y");
+
+        try {
+            branchList = branchBo.getByCriteria(branch);
+        } catch (GeneralBOException e) {
+            logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+        return branchList;
     }
 
     public String initComboKategoriIna() {
@@ -282,21 +315,33 @@ public class TindakanAction extends BaseTransactionAction {
         CrudResponse response = new CrudResponse();
 
         try {
-            JSONObject object = new JSONObject(data);
-            if(object != null){
-                Tindakan tindakan = new Tindakan();
-                tindakan.setIdKategoriTindakan(object.getString("id_kategori_tindakan"));
-                tindakan.setTarifBpjs(new BigInteger(object.getString("tarif")));
-                tindakan.setTarifBpjs(new BigInteger(object.getString("tarif_bpjs")));
-                tindakan.setDiskon(new BigDecimal(object.getString("diskon")));
-                tindakan.setIdHeaderTindakan(object.getString("id_header_tindakan"));
-                tindakan.setCreatedWho(userLogin);
-                tindakan.setLastUpdate(updateTime);
-                tindakan.setCreatedDate(updateTime);
-                tindakan.setLastUpdateWho(userLogin);
-                tindakan.setAction("C");
-                tindakan.setFlag("Y");
-                response = tindakanBo.saveAdd(tindakan);
+            JSONArray json = new JSONArray(data);
+            List<Tindakan> tindakanList = new ArrayList<>();
+            if(json != null){
+                for (int i = 0; i < json.length(); i++){
+                    JSONObject object = new JSONObject(i);
+                    Tindakan tindakan = new Tindakan();
+                    tindakan.setIdKategoriTindakan(object.getString("id_kategori_tindakan"));
+                    tindakan.setIdHeaderTindakan(object.getString("id_header_tindakan"));
+                    tindakan.setIdPelayanan(object.getString("id_pelayanan"));
+                    tindakan.setTarif(new BigInteger(object.getString("tarif")));
+                    tindakan.setTarifBpjs(new BigInteger(object.getString("tarif_bpjs")));
+                    tindakan.setDiskon(new BigDecimal(object.getString("diskon")));
+                    tindakan.setCreatedWho(userLogin);
+                    tindakan.setLastUpdate(updateTime);
+                    tindakan.setCreatedDate(updateTime);
+                    tindakan.setLastUpdateWho(userLogin);
+                    tindakan.setAction("C");
+                    tindakan.setFlag("Y");
+                    tindakanList.add(tindakan);
+                }
+
+                if(tindakanList.size() > 0){
+                    response = tindakanBo.saveAdd(tindakanList);
+                }else{
+                    response.setStatus("error");
+                    response.setMsg("Mohon maaf data tindakan tidak ada...!");
+                }
             }else{
                 response.setStatus("error");
                 response.setMsg("Mohon maaf data tindakan tidak ada...!");

@@ -20,15 +20,6 @@ public class ImSimrsHeaderTindakanEntity {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String kategoriInaBpjs;
-    private String idKategoriNota;
-
-    public String getIdKategoriNota() {
-        return idKategoriNota;
-    }
-
-    public void setIdKategoriNota(String idKategoriNota) {
-        this.idKategoriNota = idKategoriNota;
-    }
 
     public String getKategoriInaBpjs() {
         return kategoriInaBpjs;

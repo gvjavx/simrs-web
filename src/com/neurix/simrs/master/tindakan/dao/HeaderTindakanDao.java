@@ -24,7 +24,13 @@ public class HeaderTindakanDao extends GenericDao<ImSimrsHeaderTindakanEntity, S
     public List<ImSimrsHeaderTindakanEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.getSessionFactory().getCurrentSession().createCriteria(ImSimrsHeaderTindakanEntity.class);
         if (mapCriteria.get("id_header_tindakan") != null){
-            criteria.add(Restrictions.eq("idHeaderTindakan", mapCriteria.get("id_header_tindakan").toString()));
+            criteria.add(Restrictions.ilike("idHeaderTindakan", "%"+mapCriteria.get("id_header_tindakan").toString()+"%"));
+        }
+        if (mapCriteria.get("nama_tindakan") != null){
+            criteria.add(Restrictions.ilike("namaTindakan", "%"+mapCriteria.get("nama_tindakan").toString()+"%"));
+        }
+        if (mapCriteria.get("kategori_ina") != null){
+            criteria.add(Restrictions.eq("kategoriInaBpjs", mapCriteria.get("kategori_ina").toString()));
         }
         if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));

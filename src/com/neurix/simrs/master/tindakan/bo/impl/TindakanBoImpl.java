@@ -82,47 +82,49 @@ public class TindakanBoImpl implements TindakanBo {
     }
 
     @Override
-    public CrudResponse saveAdd(Tindakan bean) throws GeneralBOException {
+    public CrudResponse saveAdd(List<Tindakan> list) throws GeneralBOException {
         logger.info("[TindakanBoImpl.saveAdd] start process >>>");
         CrudResponse response = new CrudResponse();
-        if (bean != null) {
-            String status = cekStatus(bean.getTindakan());
-            String tindakanId;
-            if (!status.equalsIgnoreCase("exist")) {
+        if (list.size() > 0 ) {
+            for (Tindakan bean: list){
+                String id = null;
                 try {
-                    tindakanId = tindakanDao.getNextPelayananId();
+                    id = tindakanDao.getNextPelayananId();
                 } catch (HibernateException e) {
-                    logger.error("[TindakanBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when getting sequence tindakanId id, please info to your admin..." + e.getMessage());
-                }
-                ImSimrsTindakanEntity entity = new ImSimrsTindakanEntity();
-                entity.setIdTindakan(tindakanId);
-                entity.setTindakan(bean.getTindakan());
-                entity.setIdKategoriTindakan(bean.getIdKategoriTindakan());
-                entity.setTarif(bean.getTarif());
-                entity.setTarifBpjs(bean.getTarifBpjs());
-                entity.setKategoriInaBpjs(bean.getIdKategoriTindakanIna());
-                entity.setBranchId(bean.getBranchId());
-                entity.setDiskon(bean.getDiskon());
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setCreatedWho(bean.getCreatedWho());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setCreatedDate(bean.getCreatedDate());
-                entity.setLastUpdate(bean.getLastUpdate());
-                entity.setIdHeaderTindakan(bean.getIdHeaderTindakan());
-                try {
-                    tindakanDao.addAndSave(entity);
-                    response.setStatus("success");
-                    response.setMsg("Berhasil");
-                } catch (HibernateException e) {
-                    logger.error("[TindakanImpl.saveAdd] Error, " + e.getMessage());
                     response.setStatus("error");
-                    response.setMsg("Gagal menyimpan data tindakan dikarenakan, " + e.getMessage());
+                    response.setMsg("Mohon maaf ada kesalhan saat generate ID tindakan...!");
+                    logger.error("[TindakanBoImpl.saveAdd] Error, " + e.getMessage());
                 }
-            } else {
-                response.setStatus("error");
-                response.setMsg("Maaf Data dengan Nama Tindakan Tersebut Sudah Ada");
+                if(id != null){
+                    ImSimrsTindakanEntity entity = new ImSimrsTindakanEntity();
+                    entity.setIdTindakan(id);
+                    entity.setTindakan(bean.getTindakan());
+                    entity.setIdKategoriTindakan(bean.getIdKategoriTindakan());
+                    entity.setTarif(bean.getTarif());
+                    entity.setTarifBpjs(bean.getTarifBpjs());
+                    entity.setKategoriInaBpjs(bean.getIdKategoriTindakanIna());
+                    entity.setBranchId(bean.getBranchId());
+                    entity.setDiskon(bean.getDiskon());
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    entity.setCreatedWho(bean.getCreatedWho());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setCreatedDate(bean.getCreatedDate());
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setIdHeaderTindakan(bean.getIdHeaderTindakan());
+                    try {
+                        tindakanDao.addAndSave(entity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        logger.error("[TindakanImpl.saveAdd] Error, " + e.getMessage());
+                        response.setStatus("error");
+                        response.setMsg("Gagal menyimpan data tindakan dikarenakan, " + e.getMessage());
+                    }
+                }else{
+                    response.setStatus("error");
+                    response.setMsg("Gagal menyimpan data tindakan");
+                }
             }
         }
         logger.info("[TindakanImpl.saveAdd] end process <<<");

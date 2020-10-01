@@ -28,6 +28,15 @@ public class ImSimrsTindakanEntity implements Serializable{
     private BigDecimal diskon;
     private String isIna;
     private String idHeaderTindakan;
+    private String idPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public String getIdHeaderTindakan() {
         return idHeaderTindakan;
