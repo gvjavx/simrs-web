@@ -114,6 +114,16 @@ public class HistoryPegawaiMobile {
     private String tidakAbsenPulang;
     private String cekPegawaiStatus;
 
+    private String telat;
+
+    public String getTelat() {
+        return telat;
+    }
+
+    public void setTelat(String telat) {
+        this.telat = telat;
+    }
+
     public String getNip() {
         return nip;
     }

@@ -285,7 +285,7 @@ public class HistoryPegawaiController implements ModelDriven<Object> {
                     historyPegawaiMobile.setIsLembur(item.getLembur());
                     historyPegawaiMobile.setIsDispen(item.getIjin());
                     historyPegawaiMobile.setNamaStatus(CommonUtil.statusName(item.getStatusAbsensi()));
-
+                    historyPegawaiMobile.setTelat(item.getTelat().toString());
                     listOfHistoryPegawaiMoblile.add(historyPegawaiMobile);
                 }
             }
