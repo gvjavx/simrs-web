@@ -523,7 +523,6 @@ public class TransaksiObatAction extends BaseMasterAction {
             }
         }
 
-
         String jk = "";
 
         try {
@@ -677,7 +676,6 @@ public class TransaksiObatAction extends BaseMasterAction {
         logger.info("[TransaksiObatAction.searchResepReture] END <<<<<<<");
         return "init_reture";
     }
-
 
 
     public List<TransaksiObatDetail> getListResepPasien(String noResep) {

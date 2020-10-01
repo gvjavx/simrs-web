@@ -273,9 +273,9 @@
                                             </s:a>
                                         </s:else>
                                         <%--<s:url var="reture" namespace="/reseppoli" action="retureObatResep_reseppoli" escapeAmp="false">--%>
-                                        <s:url var="reture" namespace="/reseppoli" action="searchResep_reseppoli" escapeAmp="false">
+                                        <s:url var="reture" namespace="/reseppoli" action="searchResepReture_reseppoli" escapeAmp="false">
                                             <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                            <s:param name="idResep"><s:property value="idPermintaanResep"/></s:param>
+                                            <s:param name="idPermintaan"><s:property value="idPermintaanResep"/></s:param>
                                             <s:param name="idApprove"><s:property value="idApprovalObat"/></s:param>
                                         </s:url>
                                         <s:a href="%{reture}" target="_blank">
