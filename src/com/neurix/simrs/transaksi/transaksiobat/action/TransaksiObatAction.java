@@ -499,6 +499,187 @@ public class TransaksiObatAction extends BaseMasterAction {
 
     }
 
+    public String searchResepReture() {
+        logger.info("[TransaksiObatAction.searchResep] START >>>>>>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+
+        String id = getId();
+        String idPermintaan = getIdPermintaan();
+        HeaderCheckup checkup = new HeaderCheckup();
+
+        // mencari data telemedic
+        ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = null;
+        ImSimrsPermintaanResepEntity permintaanResepEntity = permintaanResepBo.getEntityPermintaanResepById(idPermintaan);
+        if (permintaanResepEntity != null){
+            ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(permintaanResepEntity.getIdTransaksiOnline());
+            if (pembayaranOnlineEntity != null){
+                antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
+            }
+        }
+
+
+        String jk = "";
+
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found error when detail pasien " + e.getMessage());
+        }
+
+        if (checkup != null && checkup.getNoCheckup() != null && !"".equalsIgnoreCase(checkup.getNoCheckup())) {
+
+            PermintaanResep resep = new PermintaanResep();
+            resep.setNoCheckup(checkup.getNoCheckup());
+            resep.setIdDetailCheckup(checkup.getIdDetailCheckup());
+            resep.setIdPasien(checkup.getIdPasien());
+            resep.setNamaPasien(checkup.getNama());
+            resep.setAlamat(checkup.getJalan());
+            resep.setDesa(checkup.getNamaDesa());
+            resep.setKecamatan(checkup.getNamaKecamatan());
+            resep.setKota(checkup.getNamaKota());
+            resep.setProvinsi(checkup.getNamaProvinsi());
+            resep.setIdPelayanan(checkup.getIdPelayanan());
+            resep.setNamaPelayanan(checkup.getNamaPelayanan());
+            if (checkup.getJenisKelamin() != null) {
+                if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                    jk = "Perempuan";
+                } else {
+                    jk = "laki-Laki";
+                }
+            }
+            resep.setJenisKelamin(jk);
+            resep.setTempatLahir(checkup.getTempatLahir());
+            resep.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
+            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+            resep.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+            resep.setNik(checkup.getNoKtp());
+            resep.setJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
+            resep.setUrlKtp(checkup.getUrlKtp());
+            resep.setIdPermintaanResep(idPermintaan);
+            setPermintaanResep(resep);
+
+        } else {
+
+            if (antrianTelemedicEntity != null && antrianTelemedicEntity.getIdPasien() != null){
+
+                Pasien pasien = new Pasien();
+                pasien.setIdPasien(antrianTelemedicEntity.getIdPasien());
+
+                List<Pasien> pasienList = pasienBo.getByCriteria(pasien);
+                if (pasienList.size() > 0){
+                    Pasien pasenData = pasienList.get(0);
+                    PermintaanResep resep = new PermintaanResep();
+                    resep.setIdPasien(pasenData.getIdPasien());
+                    resep.setNamaPasien(pasenData.getNama());
+                    resep.setAlamat(pasenData.getJalan());
+                    resep.setDesa(pasenData.getDesa());
+                    resep.setKecamatan(pasenData.getKecamatan());
+                    resep.setKota(pasenData.getKota());
+                    resep.setProvinsi(pasenData.getProvinsi());
+                    resep.setIdPelayanan(antrianTelemedicEntity.getIdPelayanan());
+//                    resep.setNamaPelayanan(pasenData.getNamaPelayanan());
+                    if (pasenData.getJenisKelamin() != null) {
+                        if ("P".equalsIgnoreCase(pasenData.getJenisKelamin())) {
+                            jk = "Perempuan";
+                        } else {
+                            jk = "laki-Laki";
+                        }
+                    }
+                    resep.setJenisKelamin(jk);
+                    resep.setTempatLahir(pasenData.getTempatLahir());
+                    resep.setTglLahir(pasenData.getTglLahir() == null ? null : pasenData.getTglLahir());
+                    if (!"".equalsIgnoreCase(resep.getTglLahir())){
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(Date.valueOf(resep.getTglLahir()));
+                        resep.setTempatTglLahir(pasenData.getTempatLahir() + ", " + formatDate);
+                    }
+                    resep.setNik(pasenData.getNoKtp());
+                    resep.setJenisPeriksaPasien(antrianTelemedicEntity.getIdJenisPeriksaPasien());
+                    resep.setUrlKtp(pasenData.getUrlKtp());
+                    resep.setIdPermintaanResep(idPermintaan);
+                    resep.setFlagEresep(antrianTelemedicEntity.getFlagEresep());
+                    setPermintaanResep(resep);
+                }
+            } else {
+                setPermintaanResep(new PermintaanResep());
+            }
+        }
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        PermintaanResep permintaanResep = new PermintaanResep();
+        permintaanResep.setIdPermintaanResep(idPermintaan);
+        permintaanResep.setLastUpdate(time);
+        permintaanResep.setLastUpdateWho(userLogin);
+
+        try {
+            transaksiObatBoProxy.updateAntrianResep(permintaanResep);
+        } catch (GeneralBOException e) {
+            logger.error("[TransaksiObatAction.searchResepReture] ERROR error update status antrian resep. ", e);
+            addActionError("[TransaksiObatAction.searchResepReture] ERROR error update status antrian resep. " + e.getMessage());
+        }
+
+
+        TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
+        transaksiObatDetail.setIdPermintaanResep(idPermintaan);
+        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+
+        if (transaksiObatDetail != null) {
+
+            if (transaksiObatDetail.getIdPermintaanResep() != null && !"".equalsIgnoreCase(transaksiObatDetail.getIdPermintaanResep())) {
+                try {
+                    obatDetailList = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(transaksiObatDetail);
+                } catch (GeneralBOException e) {
+                    logger.error("[TransaksiObatAction.searchResepReture] ERROR error when get searh resep. ", e);
+                    addActionError("[TransaksiObatAction.searchResepReture] ERROR error when get searh resep. " + e.getMessage());
+                }
+            }
+        }
+
+        BigInteger hitungTotalResep = hitungTotalBayar(obatDetailList);
+        setTransaksiObatDetail(transaksiObatDetail);
+        BigInteger jml = hitungTotalResep;
+
+        if (jml != null && !jml.equals(0)) {
+            transaksiObatDetail.setTotalBayar(jml);
+        } else {
+            transaksiObatDetail.setTotalBayar(new BigInteger(String.valueOf(0)));
+        }
+
+        PermintaanResep permintaan = new PermintaanResep();
+        permintaan.setIdPermintaanResep(idPermintaan);
+
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+
+        try {
+            permintaanResepList = permintaanResepBoProxy.getByCriteria(permintaan);
+        } catch (GeneralBOException e) {
+            logger.error("[TransaksiObatAction.searchResepReture] ERROR error when get searh resep. ", e);
+            addActionError("[TransaksiObatAction.searchResepReture] ERROR error when get searh resep. " + e.getMessage());
+        }
+
+        PermintaanResep resep = new PermintaanResep();
+        if (!permintaanResepList.isEmpty()) {
+            resep = permintaanResepList.get(0);
+            if (resep != null) {
+                transaksiObatDetail.setIdApprovalObat(resep.getIdApprovalObat());
+            }
+        }
+
+        setTransaksiObatDetail(transaksiObatDetail);
+        session.removeAttribute("listOfResultRetureResep");
+        session.setAttribute("listOfResultRetureResep", obatDetailList);
+        logger.info("[TransaksiObatAction.searchResepReture] END <<<<<<<");
+        return "init_reture";
+    }
+
+
+
     public List<TransaksiObatDetail> getListResepPasien(String noResep) {
 
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
