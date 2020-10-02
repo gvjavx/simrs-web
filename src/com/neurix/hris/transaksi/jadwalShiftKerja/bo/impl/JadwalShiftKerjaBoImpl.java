@@ -775,7 +775,7 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             //KIRIM NOTIFIKASI
             notif.setNip(jadwalShiftKerjaDetailEntity.getNip());
             notif.setNoRequest(jadwalShiftKerjaDetailEntity.getJadwalShiftKerjaDetailId());
-            notif.setNote("Anda dipanggil untuk bertugas pada " + shiftEntity.getJamAwal() + " s/d " + shiftEntity.getJamAkhir());
+            notif.setNote("Anda dipanggil bertugas pada "+shiftEntity.getJamAwal() + " s/d " + shiftEntity.getJamAkhir() + "\nKet : " + bean.getKeteranganPanggil());
             notif.setCreatedWho("admin");
             notif.setTo("self");
             notif.setTipeNotifId("umum");
