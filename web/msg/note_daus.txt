@@ -614,6 +614,7 @@ ALTER TABLE it_hris_absensi_pegawai ADD COLUMN telat bigint;
 update it_hris_absensi_pegawai set telat=0;
 
 CREATE SEQUENCE IF NOT EXISTS seq_history_on_call INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+CREATE SEQUENCE IF NOT EXISTS seq_absensi_on_call INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
 
 
 CREATE TABLE public.it_hris_history_on_call
@@ -630,4 +631,21 @@ CREATE TABLE public.it_hris_history_on_call
     last_update_who character varying COLLATE pg_catalog."default" NOT NULL,
     keterangan_panggil character varying(200) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT it_hris_history_on_call_pkey PRIMARY KEY (history_on_call_id)
+);
+
+CREATE TABLE public.it_hris_absensi_on_call
+(
+    absensi_on_call_id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    nip character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    tanggal date NOT NULL,
+    jam_masuk character varying(5) COLLATE pg_catalog."default",
+    jam_pulang character varying(5) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    lama_lembur numeric(10,2),
+    CONSTRAINT it_hris_absensi_on_call_pkey PRIMARY KEY (absensi_on_call_id)
 );

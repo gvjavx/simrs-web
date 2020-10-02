@@ -952,6 +952,9 @@ public class  CommonUtil {
             case "15":
                 status="Masuk saat Libur";
                 break;
+            case "16":
+                status="On Call";
+                break;
         }
         return status;
     }

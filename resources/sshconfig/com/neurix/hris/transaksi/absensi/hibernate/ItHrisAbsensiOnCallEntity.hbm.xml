@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.hris.transaksi.absensi.model.ItHrisAbsensiOnCallEntity">
+        <table name="it_hris_absensi_on_call" schema="public"/>
+        <attributes>
+            <id name="absensiOnCallId">
+                <column name="absensi_on_call_id"/>
+            </id>
+            <basic name="nip">
+                <column name="nip"/>
+            </basic>
+            <basic name="tanggal">
+                <column name="tanggal"/>
+            </basic>
+            <basic name="jamMasuk">
+                <column name="jam_masuk"/>
+            </basic>
+            <basic name="jamPulang">
+                <column name="jam_pulang"/>
+            </basic>
+            <basic name="lamaLembur">
+                <column name="lama_lembur"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

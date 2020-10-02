@@ -128,6 +128,15 @@ public class AbsensiBoImpl implements AbsensiBo {
     private ShiftDao shiftDao;
     private CompanyDao companyDao;
     private MesinAbsensiDetailOnCallDao mesinAbsensiDetailOnCallDao;
+    private AbsensiOnCallDao absensiOnCallDao;
+
+    public AbsensiOnCallDao getAbsensiOnCallDao() {
+        return absensiOnCallDao;
+    }
+
+    public void setAbsensiOnCallDao(AbsensiOnCallDao absensiOnCallDao) {
+        this.absensiOnCallDao = absensiOnCallDao;
+    }
 
     public MesinAbsensiDetailOnCallDao getMesinAbsensiDetailOnCallDao() {
         return mesinAbsensiDetailOnCallDao;
@@ -1536,10 +1545,6 @@ public class AbsensiBoImpl implements AbsensiBo {
 
 
             List<AbsensiPegawaiEntity> itAbsensiPegawaiEntity = null;
-            List<ImBiodataEntity> imBiodataEntityList = new ArrayList<>();
-            List<ItPersonilPositionEntity> itPersonilPositionEntityList = new ArrayList<>();
-            List<ImPosition> imPositionList = new ArrayList<>();
-            List<ImBranches> imBranchesList = new ArrayList<>();
             try {
 
                 itAbsensiPegawaiEntity = absensiPegawaiDao.getByCriteria(hsCriteria);
@@ -1557,80 +1562,17 @@ public class AbsensiBoImpl implements AbsensiBo {
                     returnAbsensi.setAbsensiPegawaiId(absensiPegawaiEntity.getAbsensiPegawaiId());
                     returnAbsensi.setNip(absensiPegawaiEntity.getNip());
                     returnAbsensi.setTanggal(absensiPegawaiEntity.getTanggal());
-                    DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                    returnAbsensi.setStTanggal(df.format(absensiPegawaiEntity.getTanggal()));
-//                    returnAbsensi.setStatusAbsensi(absensiPegawaiEntity.getStatusAbsensi());
+                    returnAbsensi.setStTanggal(CommonUtil.convertDateToString(absensiPegawaiEntity.getTanggal()));
                     returnAbsensi.setLembur(absensiPegawaiEntity.getLembur());
                     returnAbsensi.setJamMasuk(absensiPegawaiEntity.getJamMasuk());
-                    returnAbsensi.setJamKeluar(absensiPegawaiEntity.getJamKeluar());
+                    returnAbsensi.setJamPulang(absensiPegawaiEntity.getJamKeluar());
+                    returnAbsensi.setJamMasuk2(absensiPegawaiEntity.getJamMasuk2());
+                    returnAbsensi.setJamPulang2(absensiPegawaiEntity.getJamPulang2());
                     returnAbsensi.setStatusAbsensi(absensiPegawaiEntity.getStatusAbsensi());
+                    returnAbsensi.setStatusAbsensi2(absensiPegawaiEntity.getStatusAbsensi2());
                     returnAbsensi.setFlagCutiGantiHari(absensiPegawaiEntity.getFlagCutiGantiHari());
-                    if (absensiPegawaiEntity.getLembur().equalsIgnoreCase("Y")) {
-                        //Get Jam Kerja
-                        List<ImHrisJamKerja> jamKerjaList = new ArrayList<>();
-                        AbsensiPegawai searchJamAbsensi = new AbsensiPegawai();
-                        if (searchJamAbsensi.getJamMasuk() != null && searchJamAbsensi.getJamPulang() != null) {
-                            returnAbsensi.setJamMasukDb(searchJamAbsensi.getJamMasuk());
-                            returnAbsensi.setJamPulangDb(searchJamAbsensi.getJamKeluar());
-                        } else {
-                            Calendar cal = Calendar.getInstance();
-                            cal.setTime(returnAbsensi.getTanggal());
-                            int day = cal.get(Calendar.DAY_OF_WEEK);
-                            System.out.println(day);
-                            ItPersonilPositionEntity positionEntity = personilPositionDao.getById("nip", returnAbsensi.getNip(), "Y");
-                            Map hsCriteria2 = new HashMap();
-                            hsCriteria2.put("branch_id", positionEntity.getBranchId());
-                            hsCriteria2.put("hari", day);
-                            hsCriteria2.put("flag", "Y");
-                            jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
-                            if (jamKerjaList.size() > 1) {
-                                hsCriteria2 = new HashMap();
-                                hsCriteria2.put("tipe_pegawai", returnAbsensi.getTipePegawai());
-                                hsCriteria2.put("branch_id", positionEntity.getBranchId());
-                                hsCriteria2.put("hari", day);
-                                hsCriteria2.put("flag", "Y");
-                                jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
-                                if (jamKerjaList.size() > 1) {
-                                    hsCriteria2 = new HashMap();
-                                    hsCriteria2.put("status_giling", returnAbsensi.getStatusGiling());
-                                    hsCriteria2.put("tipe_pegawai", returnAbsensi.getTipePegawai());
-                                    hsCriteria2.put("branch_id", positionEntity.getBranchId());
-                                    hsCriteria2.put("hari", day);
-                                    hsCriteria2.put("flag", "Y");
-                                    jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
-                                }
-                            }
-                            for (ImHrisJamKerja jamKerja : jamKerjaList) {
-                                returnAbsensi.setJamMasukDb(jamKerja.getJamAwalKerja());
-                                returnAbsensi.setJamPulangDb(jamKerja.getJamAkhirKerja());
-                            }
-                        }
-                        returnAbsensi.setJamPulang(returnAbsensi.getJamPulangDb());
-                        returnAbsensi.setAwalLembur(returnAbsensi.getJamPulangDb());
-                        returnAbsensi.setSelesaiLembur(returnAbsensi.getJamKeluar());
-
-                    } else {
-                        returnAbsensi.setJamPulang(returnAbsensi.getJamKeluar());
-                        returnAbsensi.setAwalLembur("-");
-                        returnAbsensi.setSelesaiLembur("-");
-                    }
                     returnAbsensi.setIjin(absensiPegawaiEntity.getIjin());
-                    if (absensiPegawaiEntity.getIjin().equalsIgnoreCase("Y")) {
-                        hsCriteria = new HashMap();
-                        hsCriteria.put("tanggal", absensiPegawaiEntity.getTanggal());
-                        hsCriteria.put("to", "ijin_keluar_kantor");
-                        hsCriteria.put("flag", "Y");
-                        hsCriteria.put("approval_flag", "Y");
-                        List<IjinKeluarEntity> ijinKeluarEntityList = new ArrayList<>();
-                        ijinKeluarEntityList = ijinKeluarDao.getByCriteria(hsCriteria);
-                        for (IjinKeluarEntity ijinKeluarEntity : ijinKeluarEntityList) {
-                            returnAbsensi.setMulaiIzin(ijinKeluarEntity.getJamKeluar());
-                            returnAbsensi.setPulangIzin(ijinKeluarEntity.getJamKembali());
-                        }
-                    } else {
-                        returnAbsensi.setMulaiIzin("-");
-                        returnAbsensi.setPulangIzin("-");
-                    }
+                    returnAbsensi.setTipeHari(absensiPegawaiEntity.getTipeHari());
                     returnAbsensi.setRealisasiJamLembur(absensiPegawaiEntity.getRealisasiJamLembur());
                     returnAbsensi.setJamLembur(absensiPegawaiEntity.getJamLembur());
                     returnAbsensi.setLamaLembur(absensiPegawaiEntity.getLamaLembur());
@@ -1638,51 +1580,21 @@ public class AbsensiBoImpl implements AbsensiBo {
                     returnAbsensi.setBiayaLembur(absensiPegawaiEntity.getBiayaLembur());
                     returnAbsensi.setKeterangan(absensiPegawaiEntity.getKeterangan());
                     returnAbsensi.setFlagUangMakan(absensiPegawaiEntity.getFlagUangMakan());
-                    if (absensiPegawaiEntity.getKeterangan()!=null){
-                        returnAbsensi.setNoted(true);
-                    }
-                    if ("Y".equalsIgnoreCase(absensiPegawaiEntity.getApprovalFlag())){
-                        returnAbsensi.setAbsensiApprove(true);
-                    }
-                    if ("N".equalsIgnoreCase(absensiPegawaiEntity.getApprovalFlag())){
-                        returnAbsensi.setNotApprove(true);
-                    }
                     returnAbsensi.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(absensiPegawaiEntity.getBiayaLembur()), "###,###"));
-                    Map hsCriteria2 = new HashMap();
-                    hsCriteria2.put("nip", absensiPegawaiEntity.getNip());
-                    hsCriteria2.put("flag", "Y");
-                    imBiodataEntityList = biodataDao.getByCriteria(hsCriteria2);
 
-                    for (ImBiodataEntity imBiodataEntity : imBiodataEntityList) {
-                        returnAbsensi.setNama(imBiodataEntity.getNamaPegawai());
+                    List<Biodata> biodataList = biodataDao.getBiodataByNip(absensiPegawaiEntity.getNip());
+                    for (Biodata biodata : biodataList){
+                        returnAbsensi.setJabatan(biodata.getPositionName());
+                        returnAbsensi.setNama(biodata.getNamaPegawai());
                     }
-                    itPersonilPositionEntityList = personilPositionDao.getByCriteria(hsCriteria2);
-                    for (ItPersonilPositionEntity itPersonilPositionEntity : itPersonilPositionEntityList) {
-                        returnAbsensi.setPosisiId(itPersonilPositionEntity.getPositionId());
-                        if (itPersonilPositionEntity.getPositionId() != null) {
-                            Map hsCriteria3 = new HashMap();
-                            hsCriteria3.put("position_id", itPersonilPositionEntity.getPositionId());
-                            hsCriteria3.put("flag", "Y");
-                            imPositionList = positionDao.getByCriteria(hsCriteria3);
-                            for (ImPosition imPosition : imPositionList) {
-                                returnAbsensi.setJabatan(imPosition.getPositionName());
-                                returnAbsensi.setDivisiId(imPosition.getDepartmentId());
-                                returnAbsensi.setBagian(imPosition.getBagianId());
-                            }
-                        }
-                    }
-                    Map hsCriteria4 = new HashMap();
-                    hsCriteria4.put("branch_id", absensiPegawaiEntity.getBranchId());
-                    hsCriteria4.put("flag", "Y");
-                    imBranchesList = branchDao.getByCriteria(hsCriteria4);
-                    for (ImBranches imBranches : imBranchesList) {
-                        returnAbsensi.setUnit(imBranches.getBranchName());
-                    }
+
                     if (absensiPegawaiEntity.getStatusAbsensi()==null){
                         absensiPegawaiEntity.setStatusAbsensi("");
                     }
                     returnAbsensi.setStatusName(CommonUtil.statusName(absensiPegawaiEntity.getStatusAbsensi()));
-
+                    if (absensiPegawaiEntity.getStatusAbsensi2()!=null){
+                        returnAbsensi.setStatusName2(CommonUtil.statusName(absensiPegawaiEntity.getStatusAbsensi2()));
+                    }
                     switch (absensiPegawaiEntity.getStatusAbsensi()) {
                         case "00":
                             returnAbsensi.setClear(false);
@@ -1697,8 +1609,6 @@ public class AbsensiBoImpl implements AbsensiBo {
                             break;
                     }
 
-                    boolean search = false;
-
                     returnAbsensi.setAction(absensiPegawaiEntity.getAction());
                     returnAbsensi.setFlag(absensiPegawaiEntity.getFlag());
                     returnAbsensi.setCreatedWho(absensiPegawaiEntity.getCreatedWho());
@@ -1711,17 +1621,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         }
                     }
 
-                    if (searchBean.getBagian() != null && !searchBean.getBagian().equalsIgnoreCase("")){
-                        if (searchBean.getBagian().equalsIgnoreCase(returnAbsensi.getBagian())){
-                            search=true;
-                        }
-                    }else {
-                        search=true;
-                    }
-
-                    if (search){
-                        listOfResult.add(returnAbsensi);
-                    }
+                    listOfResult.add(returnAbsensi);
                 }
             }
         }
@@ -6278,6 +6178,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         }
                         //LEMBUR ON CALL DISINI
                         }else if (jamKerjaShiftOnCall.size()>0){
+                            absensiPegawai.setTipeHari("on_call");
                             for (AbsensiPegawai jamKerja : jamKerjaShiftOnCall) {
                                 if (jamKerja.getJamMasuk() != null && jamKerja.getJamPulang() != null) {
                                     Timestamp tsTanggalAwalShift;
@@ -6401,44 +6302,95 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                     if ("Y".equalsIgnoreCase(jamKerja.getFlagPanggil())){
                                         List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                                        tsJamAwalFinger=null;
-                                        tsJamAkhirFinger=null;
                                         mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(biodata.getPin(),tsTanggalAwal,tsTanggalBesok);
                                         if (mesinAbsensiDetailEntityList.size() == 0) {
                                         } else {
+                                            // UNTUK ONCALL LEBIH DARI 1
+                                            int i =1;
+                                            int jmlFinger =0;
+                                            List<AbsensiOnCall> absensiOnCallList = new ArrayList<>();
+                                            AbsensiOnCall dataOnCall = new AbsensiOnCall();
+
+                                            //mengisi on call
                                             for (MesinAbsensiDetailEntity mesinAbsensiDetailEntity : mesinAbsensiDetailEntityList) {
-                                                if (tsJamAwalFinger == null || mesinAbsensiDetailEntity.getScanDate().compareTo(tsJamAwalFinger) < 0) {
-                                                    tsJamAwalFinger = mesinAbsensiDetailEntity.getScanDate();
-                                                } else if (tsJamAkhirFinger == null || mesinAbsensiDetailEntity.getScanDate().compareTo(tsJamAkhirFinger) > 0) {
-                                                        tsJamAkhirFinger = mesinAbsensiDetailEntity.getScanDate();
+                                                if (i==1){
+                                                    dataOnCall.setFingerAwal(mesinAbsensiDetailEntity.getScanDate());
+                                                    i++;
+                                                    jmlFinger++;
+                                                    if (jmlFinger==mesinAbsensiDetailEntityList.size()){
+                                                        absensiOnCallList.add(dataOnCall);
+                                                        dataOnCall = new AbsensiOnCall();
+                                                        i=1;
+                                                    }
+                                                }else{
+                                                    dataOnCall.setFingerAkhir(mesinAbsensiDetailEntity.getScanDate());
+                                                    absensiOnCallList.add(dataOnCall);
+                                                    dataOnCall = new AbsensiOnCall();
+                                                    i=1;
+                                                    jmlFinger++;
                                                 }
                                             }
 
-                                            //set jam masuk dan jam pulang
-                                            DateFormat format = new SimpleDateFormat("HH:mm");
-                                            String jamMasuk = null;
-                                            String jamPulang = null;
-                                            if (tsJamAwalFinger != null) {
-                                                jamMasuk = format.format(tsJamAwalFinger);
-                                            }
-                                            if (tsJamAkhirFinger != null) {
-                                                jamPulang = format.format(tsJamAkhirFinger);
-                                            }
-
-                                            absensiPegawai.setJamMasuk(jamMasuk);
-                                            absensiPegawai.setJamPulang(jamPulang);
-
-                                            if (tsJamAwalFinger!=null&&tsJamAkhirFinger!=null){
-                                                //hitung lama lembur berdasarkan final lembur aslinya
-                                                double realisasiLembur;
-                                                try {
-                                                    realisasiLembur = CommonUtil.SubtractJamAwalDanJamAkhir(format.format(tsJamAwalFinger),format.format(tsJamAkhirFinger),"positif");
-                                                } catch (ParseException e) {
-                                                    String status = "[AbsensiBoImpl.cronInquiry] ERROR :" + e;
-                                                    logger.error(status);
-                                                    throw new GeneralBOException(status);
+                                            // looping on call untuk ambil absensi on call
+                                            int jmlOnCall=1;
+                                            double realisasiLembur=0;
+                                            List<AbsensiOnCall> onCallFinal =  new ArrayList<>();
+                                            for (AbsensiOnCall call : absensiOnCallList){
+                                                AbsensiOnCall newOnCall = new AbsensiOnCall();
+                                                //set jam masuk dan jam pulang
+                                                DateFormat format = new SimpleDateFormat("HH:mm");
+                                                String jamMasuk = null;
+                                                String jamPulang = null;
+                                                if (call.getFingerAwal() != null) {
+                                                    jamMasuk = format.format(call.getFingerAwal());
+                                                }
+                                                if (call.getFingerAkhir() != null) {
+                                                    jamPulang = format.format(call.getFingerAkhir());
                                                 }
 
+                                                if (jamMasuk!=null&&jamPulang!=null){
+                                                    //hitung lama lembur berdasarkan final lembur aslinya
+                                                    try {
+                                                        realisasiLembur += CommonUtil.SubtractJamAwalDanJamAkhir(format.format(call.getFingerAwal()),format.format(call.getFingerAkhir()),"positif");
+                                                        newOnCall.setLamaLembur(BigDecimal.valueOf(CommonUtil.SubtractJamAwalDanJamAkhir(format.format(call.getFingerAwal()),format.format(call.getFingerAkhir()),"positif")));
+                                                    } catch (ParseException e) {
+                                                        String status = "[AbsensiBoImpl.cronInquiry] ERROR :" + e;
+                                                        logger.error(status);
+                                                        throw new GeneralBOException(status);
+                                                    }
+                                                }else{
+                                                    newOnCall.setLamaLembur(BigDecimal.ZERO);
+                                                }
+
+                                                newOnCall.setNip(biodata.getNip());
+                                                newOnCall.setTanggal(absensiPegawai.getTanggal());
+                                                newOnCall.setJamMasuk(jamMasuk);
+                                                newOnCall.setJamPulang(jamPulang);
+
+                                                if (jmlOnCall==1){
+                                                    absensiPegawai.setJamMasuk(jamMasuk);
+                                                    absensiPegawai.setJamPulang(jamPulang);
+                                                    absensiPegawai.setStatusAbsensi("16");
+                                                }else{
+                                                    absensiPegawai.setJamMasuk2(jamMasuk);
+                                                    absensiPegawai.setJamPulang2(jamPulang);
+                                                    absensiPegawai.setStatusAbsensi2("16");
+                                                }
+                                                onCallFinal.add(newOnCall);
+                                                jmlOnCall++;
+                                            }
+
+                                            //set on call to session
+                                            HttpSession session = ServletActionContext.getRequest().getSession();
+                                            session.setAttribute("listOfResultOnCall",onCallFinal);
+
+                                            boolean boolOnCall = false;
+
+                                            if (realisasiLembur!=0){
+                                                boolOnCall=true;
+                                            }
+
+                                            if (boolOnCall){
                                                 // menghitung upah lembur
                                                 List<PengaliFaktorLemburEntity> pengaliFaktorLemburEntityList = new ArrayList<>();
                                                 Map hsCriteria4 = new HashMap();
@@ -6734,6 +6686,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                             absensiPegawai.setTipeHariName("Kerja");
                         }else if ("hari_libur".equalsIgnoreCase(absensiPegawai.getTipeHari())){
                             absensiPegawai.setTipeHariName("Libur");
+                        } else if ("on_call".equalsIgnoreCase(absensiPegawai.getTipeHari())){
+                            absensiPegawai.setTipeHariName("On Call");
                         }
                         absensiPegawaiList.add(absensiPegawai);
                     }else if (absensiPegawai.getStatusAbsensiOnCall()!=null){
@@ -6749,17 +6703,19 @@ public class AbsensiBoImpl implements AbsensiBo {
     }
 
     @Override
-    public void saveAddAbsensi(List<AbsensiPegawai> absensiPegawaiList, AbsensiPegawai bean) throws GeneralBOException {
+    public void saveAddAbsensi(List<AbsensiPegawai> absensiPegawaiList,List<AbsensiOnCall> absensiOnCallList, AbsensiPegawai bean) throws GeneralBOException {
         logger.info("[AbsensiPegawaiBoImpl.saveAddAbsensi] start process >>>");
 
         if (bean != null&&absensiPegawaiList!=null) {
             for (AbsensiPegawai dataAbsen : absensiPegawaiList){
+                //validasi jika data sudah ada
                 List<AbsensiPegawaiEntity> absensiPegawaiEntityList = new ArrayList<>();
                 Map hsCriteria = new HashMap();
                 hsCriteria.put("tanggal", dataAbsen.getTanggal());
                 hsCriteria.put("nip", dataAbsen.getNip());
                 hsCriteria.put("flag", "Y");
                 absensiPegawaiEntityList = absensiPegawaiDao.getByCriteria(hsCriteria);
+
                 if (absensiPegawaiEntityList.size() == 0) {
                     String absensiPegawaiId;
                     try {
@@ -6860,6 +6816,26 @@ public class AbsensiBoImpl implements AbsensiBo {
                     }
                 }
             }
+            //save daftar on call
+            for (AbsensiOnCall onCall : absensiOnCallList){
+                ItHrisAbsensiOnCallEntity entity = new ItHrisAbsensiOnCallEntity();
+                entity.setAbsensiOnCallId(absensiOnCallDao.getNextId());
+                entity.setNip(onCall.getNip());
+                entity.setJamMasuk(onCall.getJamMasuk());
+                entity.setJamPulang(onCall.getJamPulang());
+                entity.setTanggal(onCall.getTanggal());
+                entity.setLamaLembur(onCall.getLamaLembur());
+
+                entity.setAction(bean.getAction());
+                entity.setFlag(bean.getFlag());
+                entity.setCreatedDate(bean.getCreatedDate());
+                entity.setCreatedWho(bean.getCreatedWho());
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                absensiOnCallDao.addAndSave(entity);
+            }
+
         }
         logger.info("[AbsensiPegawaiBoImpl.saveAddAbsensi] end process <<<");
     }
@@ -6920,5 +6896,30 @@ public class AbsensiBoImpl implements AbsensiBo {
 
         return result;
 
+    }
+
+    @Override
+    public List<AbsensiOnCall> getAbsensiOnCall(AbsensiOnCall search){
+        List<AbsensiOnCall> list = new ArrayList<>();
+
+        List<ItHrisAbsensiOnCallEntity> historyOnCallEntities = absensiOnCallDao.getByTanggalAndNip(search.getNip(),search.getTanggal());
+        for (ItHrisAbsensiOnCallEntity data : historyOnCallEntities){
+            AbsensiOnCall newData = new AbsensiOnCall();
+            newData.setAbsensiOnCallId(data.getAbsensiOnCallId());
+            newData.setNip(data.getNip());
+            newData.setJamMasuk(data.getJamMasuk());
+            newData.setJamPulang(data.getJamPulang());
+            newData.setLamaLembur(data.getLamaLembur());
+
+            newData.setFlag(data.getFlag());
+            newData.setAction(data.getAction());
+            newData.setCreatedWho(data.getCreatedWho());
+            newData.setCreatedDate(data.getCreatedDate());
+            newData.setLastUpdate(data.getLastUpdate());
+            newData.setLastUpdateWho(data.getLastUpdateWho());
+
+            list.add(newData);
+        }
+        return list;
     }
 }
