@@ -2552,14 +2552,12 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     }
 
     @Override
-    public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResep(String idResep) throws GeneralBOException {
+    public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResepAndIdBarang(String idResep, String idBarang) throws GeneralBOException {
 
-        List<TransaksiObatDetail> listObatBatch = transaksiObatDetailDao.getListTransaksiObatDetailBatchByIdResep(idResep);
+        List<TransaksiObatDetail> listObatBatch = transaksiObatDetailDao.getListTransaksiObatDetailBatchByIdResep(idResep, idBarang);
 
         if (listObatBatch.size() > 0){
             for (TransaksiObatDetail obatBatch : listObatBatch){
-
-
 
                 ImSimrsObatEntity obatEntity = getObatById(obatBatch.getIdObat());
                 if (obatEntity != null) {
@@ -2611,7 +2609,6 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
             }
         }
-
 
         return listObatBatch;
     }

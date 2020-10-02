@@ -432,11 +432,13 @@
                                         <input type="hidden" id='id-obat-<s:property value="idBarang"/>' value='<s:property value="idObat" />' />
                                         <input type="hidden" id='id-barang-<s:property value="idBarang"/>' value='<s:property value="idBarang" />' />
                                     </td>
-                                    <td><s:property value="jenisSatuan"/></td>
+                                    <td>
+                                        <s:property value="jenisSatuan"/>
+                                        <input type="hidden" id='jenis-satuan-<s:property value="idBarang"/>' value='<s:property value="jenisSatuan" />' />
+                                    </td>
                                     <script>
                                         var idbarang = '<s:property value="idBarang" />';
-                                        $("#qty-reture-"+idbarang).attr("class", 'form-control qty-reture-'+n);
-                                        $("#id-barang-"+idbarang).attr("class", 'form-control id-barang-'+n);
+                                        $("#id-barang-"+idbarang).attr("class", 'id-barang-'+n);
                                         n++;
                                     </script>
                                 </tr>
@@ -1094,17 +1096,22 @@
         $('#confirm_dialog').dialog('close');
         $('#waiting_dialog').dialog('open');
 
-        for (i = 1 ; i <= n; i++){
-
-            var idBarang    = $(".id-barang-"+i).val();
-            var qty         = $("#qty-reture-"+idBarang).val();
-            var idObat      = $("#id-obat-"+idBarang).val();
-
-
+        var arrReture = [];
+        for (i = 1 ; i < n; i++){
+            var idBarang        = $(".id-barang-"+i).val();
+            var qty             = $("#qty-reture-"+idBarang).val();
+            var idObat          = $("#id-obat-"+idBarang).val();
+            var jenissatuan     = $("#jenis-satuan-"+idBarang).val();
+            arrReture.push({"idobat" : idObat, "idbarang" : idBarang, "qtyreture" : qty, "jenissatuan":jenissatuan});
         }
 
+        console.log(arrReture);
+        console.log(n);
+        $('#waiting_dialog').dialog('close');
+
+        var strReture = JSON.stringify(arrReture);
         dwr.engine.setAsync(true);
-        TransaksiObatAction.saveApproveResepObatPoli(id_approve, {
+        TransaksiObatAction.retureResep( idResep, id_approve, strReture, {
             callback: function (response) {
                 if (response.status == "success") {
                     $('#ref').val(2);
@@ -1116,7 +1123,7 @@
                     $('#info_dialog').dialog('close');
                     $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');
-                    $('#errorMessage').text(response.message);
+                    $('#errorMessage').text(response.msg);
                 }
             }
         });

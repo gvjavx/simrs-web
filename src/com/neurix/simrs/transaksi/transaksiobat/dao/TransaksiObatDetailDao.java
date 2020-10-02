@@ -156,7 +156,10 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         return obatDetailEntities;
     }
 
-    public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResep(String idPermintaanResep){
+    public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResep(String idPermintaanResep, String idBarang){
+
+        idBarang = idBarang == null || "".equalsIgnoreCase(idBarang) ? "%" : idBarang;
+        idPermintaanResep = idPermintaanResep == null || "".equalsIgnoreCase(idPermintaanResep) ? "%" : idPermintaanResep;
 
         String SQL = "SELECT\n" +
                 "a.id_barang,\n" +
@@ -165,14 +168,17 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "b.id_obat, \n" +
                 "a.qty_approve,\n" +
                 "b.jenis_satuan,\n" +
-                "b.flag_verifikasi\n" +
+                "b.flag_verifikasi, \n" +
+                "a.harga_rata\n" +
                 "FROM (SELECT * FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y') a \n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail b ON b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n" +
                 "INNER JOIN mt_simrs_permintaan_resep c ON c.id_approval_obat = b.id_approval_obat\n" +
-                "WHERE c.id_permintaan_resep LIKE :idPermintaanResep ";
+                "WHERE c.id_permintaan_resep LIKE :idPermintaanResep \n" +
+                "AND a.id_barang LIKE :idbarang ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idPermintaanResep", idPermintaanResep)
+                .setParameter("idbarang", idBarang)
                 .list();
 
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
@@ -189,6 +195,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 obatDetail.setQty((BigInteger) obj[4]);
                 obatDetail.setJenisSatuan(obj[5].toString());
                 obatDetail.setFlagVerifikasi(obj[6] == null ? "" : obj[6].toString());
+                obatDetail.setHargaRata(obj[7] == null ? new BigDecimal(0) : (BigDecimal) obj[7]);
                 obatDetailList.add(obatDetail);
             }
         }

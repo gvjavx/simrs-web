@@ -90,6 +90,16 @@ public class TransaksiObatDetail extends BaseModel {
     private BigInteger qtyAfter;
     private BigInteger qtyReture;
 
+    private BigDecimal hargaRata;
+
+    public BigDecimal getHargaRata() {
+        return hargaRata;
+    }
+
+    public void setHargaRata(BigDecimal hargaRata) {
+        this.hargaRata = hargaRata;
+    }
+
     public BigInteger getQtyReture() {
         return qtyReture;
     }

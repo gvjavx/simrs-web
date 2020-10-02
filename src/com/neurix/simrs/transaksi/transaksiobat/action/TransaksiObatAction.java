@@ -616,7 +616,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         if (idPermintaan != null && !"".equalsIgnoreCase(idPermintaan)) {
 
             try {
-                obatDetailList = transaksiObatBoProxy.getListTransaksiObatDetailBatchByIdResep(idPermintaan);
+                obatDetailList = transaksiObatBoProxy.getListTransaksiObatDetailBatchByIdResepAndIdBarang(idPermintaan, "");
             } catch (GeneralBOException e) {
                 logger.error("[TransaksiObatAction.searchResepReture] ERROR error when get searh resep. ", e);
                 addActionError("[TransaksiObatAction.searchResepReture] ERROR error when get searh resep. " + e.getMessage());
@@ -3114,7 +3114,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         this.transaksiObatBoProxy = transaksiObatBoProxy;
     }
 
-    // jsonString {[idObat : value, idbarang : value, qtyreture : value, jenisatuan : value]}
+    // jsonString {[idobat : value, idbarang : value, qtyreture : value, jenissatuan : value]}
     public CrudResponse retureResep(String idResep, String idApprovalObat,  String jsonString) throws JSONException{
 
         String userLogin = CommonUtil.userLogin();
@@ -3136,18 +3136,19 @@ public class TransaksiObatAction extends BaseMasterAction {
 
                 JSONObject obj = json.getJSONObject(i);
                 TransaksiObatDetail retureObat = new TransaksiObatDetail();
-                if (!"".equalsIgnoreCase(obj.getString("qtyreture"))) {
+
+                boolean qtyIsNull = obj.getString("qtyreture") == null || "".equalsIgnoreCase(obj.getString("qtyreture")) || "null".equalsIgnoreCase(obj.getString("qtyreture"));
+                BigInteger qtyReture =  qtyIsNull ? new BigInteger(String.valueOf(0)) : new BigInteger(obj.getString("qtyreture"));
+
+                // jika ada yang di reture;
+                if (qtyReture.compareTo(new BigInteger(String.valueOf(0))) == 1) {
                   retureObat.setIdObat(obj.getString("idobat"));
                   retureObat.setIdBarang(obj.getString("idbarang"));
                   retureObat.setQtyApprove(new BigInteger(obj.getString("qtyreture")));
-                  retureObat.setJenisSatuan(obj.getString("jenisatuan"));
+                  retureObat.setJenisSatuan(obj.getString("jenissatuan"));
                 }
 
-                TransaksiObatDetail obatDetail = new TransaksiObatDetail();
-                obatDetail.setIdApprovalObat(idApprovalObat);
-                obatDetail.setIdObat(idApprovalObat);
-
-                List<TransaksiObatDetail> listTransaksiObatDetail = transaksiObatBo.getSearchObatTransaksiByCriteria(obatDetail);
+                List<TransaksiObatDetail> listTransaksiObatDetail = transaksiObatBo.getListTransaksiObatDetailBatchByIdResepAndIdBarang(idResep, retureObat.getIdBarang());
                 if (listTransaksiObatDetail.size() > 0){
                     TransaksiObatDetail searchTransaksi = listTransaksiObatDetail.get(0);
                     if ("umum".equalsIgnoreCase(searchTransaksi.getJenisResep())){
@@ -3156,7 +3157,9 @@ public class TransaksiObatAction extends BaseMasterAction {
                     retureObat.setIdTransaksiObatDetail(searchTransaksi.getIdTransaksiObatDetail());
                     retureObat.setIdPelayananTujuan(searchTransaksi.getIdPelayananTujuan());
                     retureObat.setIdPermintaanResep(searchTransaksi.getIdPermintaanResep());
+                    retureObat.setAverageHargaBiji(searchTransaksi.getHargaRata());
                 }
+
 
                 listBatchReture.add(retureObat);
             }

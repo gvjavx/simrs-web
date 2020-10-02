@@ -48,5 +48,5 @@ public interface TransaksiObatBo {
     public List<ImtSimrsTransaksiObatDetailEntity> getListEntityTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException;
     public void saveUpdateRetureObat(List<TransaksiObatDetail> listReture, TransaksiObatDetail bean) throws GeneralBOException;
     public void saveUpdateHargaRataBarangMasukKarnaReture(TransaksiObatDetail bean) throws GeneralBOException;
-    public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResep(String idResep) throws GeneralBOException;
+    public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResepAndIdBarang(String idResep, String idBarang) throws GeneralBOException;
 }
