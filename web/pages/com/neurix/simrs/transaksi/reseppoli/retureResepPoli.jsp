@@ -1094,6 +1094,13 @@
         $('#confirm_dialog').dialog('close');
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
+
+        for (i = 1 ; i <= n; i++){
+
+            
+
+        }
+
         TransaksiObatAction.saveApproveResepObatPoli(id_approve, {
             callback: function (response) {
                 if (response.status == "success") {
