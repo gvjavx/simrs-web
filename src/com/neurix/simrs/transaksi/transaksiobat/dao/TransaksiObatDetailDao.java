@@ -169,7 +169,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "a.qty_approve,\n" +
                 "b.jenis_satuan,\n" +
                 "b.flag_verifikasi, \n" +
-                "a.harga_rata\n" +
+                "a.harga_rata,\n" +
+                "a.qty_reture\n" +
                 "FROM (SELECT * FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y') a \n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail b ON b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n" +
                 "INNER JOIN mt_simrs_permintaan_resep c ON c.id_approval_obat = b.id_approval_obat\n" +
@@ -196,6 +197,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 obatDetail.setJenisSatuan(obj[5].toString());
                 obatDetail.setFlagVerifikasi(obj[6] == null ? "" : obj[6].toString());
                 obatDetail.setHargaRata(obj[7] == null ? new BigDecimal(0) : (BigDecimal) obj[7]);
+                obatDetail.setQtyReture(obj[8] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[8]);
                 obatDetailList.add(obatDetail);
             }
         }

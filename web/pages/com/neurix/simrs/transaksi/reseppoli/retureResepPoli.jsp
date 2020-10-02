@@ -395,6 +395,7 @@
                                 <td width="21%">Scan ID Obat</td>
                                 <td width="21%">Qty Reture</td>
                                 <td>Jenis Satuan</td>
+                                <td>Direture</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -436,9 +437,15 @@
                                         <s:property value="jenisSatuan"/>
                                         <input type="hidden" id='jenis-satuan-<s:property value="idBarang"/>' value='<s:property value="jenisSatuan" />' />
                                     </td>
+                                    <td id='status-<s:property value="idBarang"/>'></td>
                                     <script>
-                                        var idbarang = '<s:property value="idBarang" />';
+                                        var idbarang    = '<s:property value="idBarang" />';
+                                        var qtyreture   = '<s:property value="qtyReture" />';
                                         $("#id-barang-"+idbarang).attr("class", 'id-barang-'+n);
+                                        if (parseInt(qtyreture) > 0){
+                                            $("#qty-reture-"+idbarang).attr("disabled", 'true');
+                                            $("#status-"+idbarang).html("Direture");
+                                        }
                                         n++;
                                     </script>
                                 </tr>
@@ -1114,7 +1121,7 @@
         TransaksiObatAction.retureResep( idResep, id_approve, strReture, {
             callback: function (response) {
                 if (response.status == "success") {
-                    $('#ref').val(2);
+//                    $('#ref').val(2);
                     $('#info_dialog').dialog('open');
                     $('#waiting_dialog').dialog('close');
                     $('body').scrollTop(0);
