@@ -635,6 +635,16 @@ public class  CommonUtil {
         return tanggal;
     }
 
+    public static String convertTimestampToStringLengkap(Timestamp date){
+        String tanggal = "";
+        String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        java.util.Date tanggalApp = date;
+        tanggal = sdf.format(tanggalApp);
+
+        return tanggal;
+    }
+
     public static String convertDateToDay(Date tanggal){
         Calendar cal = Calendar.getInstance();
         cal.setTime(tanggal);

@@ -12,6 +12,7 @@ import com.neurix.hris.master.groupMember.model.GroupMember;
 import com.neurix.hris.master.groupShift.bo.GroupShiftBo;
 import com.neurix.hris.master.groupShift.model.GroupShift;
 import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
+import com.neurix.hris.transaksi.jadwalShiftKerja.model.HistoryOnCall;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalKerjaDTO;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail;
@@ -890,7 +891,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         return response;
     }
 
-    public void savePanggilBerdasarkanId(String id){
+    public void savePanggilBerdasarkanId(String id,String keterangan){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
         NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
@@ -901,6 +902,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         data.setFlagPanggil("Y");
         data.setPanggilDate(updateTime);
         data.setPanggilWho(userLogin);
+        data.setKeteranganPanggil(keterangan);
 
         List<Notifikasi> notifCuti = jadwalShiftKerjaBo.savePanggilBerdasarkanId(data);
 
@@ -971,6 +973,27 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         jadwalShiftKerja.setStatusSave(status);
         jadwalShiftKerja.setJumlahJadwal(jumlahJadwal);
         return jadwalShiftKerja;
+    }
+
+    public List<HistoryOnCall> searchHistoryOnCallSession() {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<HistoryOnCall> historyOnCalls = (List<HistoryOnCall>) session.getAttribute("listOfResultHistoryOnCall");
+
+        return historyOnCalls;
+    }
+
+
+    public void searchHistoryOnCall(String id,String nip) {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
+        HistoryOnCall historyOnCall = new HistoryOnCall();
+        historyOnCall.setFlag("Y");
+        historyOnCall.setJadwalShiftKerjaDetailId(id);
+        historyOnCall.setNip(nip);
+
+        List<HistoryOnCall> historyOnCalls = jadwalShiftKerjaBo.getHistoryOnCall(historyOnCall);
+        session.setAttribute("listOfResultHistoryOnCall",historyOnCalls);
     }
 
     @Override

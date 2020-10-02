@@ -329,22 +329,16 @@
                                                             <td align="center">
                                                                 <s:if test='#attr.row.hariIni'>
                                                                     <s:if test='#attr.row.onCall=="Y"'>
-                                                                        <s:if test='#attr.row.flagPanggil=="Y"'>
-                                                                            <img border="0"
-                                                                                 src="<s:url value="/pages/images/icon_success.ico"/>"
-                                                                                 name="icon_edit">
-                                                                        </s:if>
-                                                                        <s:else>
-                                                                        <a href="javascript:;"
-                                                                           id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>"
-                                                                           tanggal="<s:property value="%{#attr.row.stTanggal}"/>"
-                                                                           nama="<s:property value="%{#attr.row.namaPegawai}"/>"
-                                                                           posisi="<s:property value="%{#attr.row.positionName}"/>"
-                                                                           grup="<s:property value="%{#attr.row.profesiName}"/>"
-                                                                           href="javascript:;" class="item-panggil">
-                                                                            <img border="0"
-                                                                                 src="<s:url value="/pages/images/icons8-call-25.png"/>">
-                                                                        </s:else>
+                                                                    <a href="javascript:;"
+                                                                       id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>"
+                                                                       tanggal="<s:property value="%{#attr.row.stTanggal}"/>"
+                                                                       nama="<s:property value="%{#attr.row.namaPegawai}"/>"
+                                                                       posisi="<s:property value="%{#attr.row.positionName}"/>"
+                                                                       grup="<s:property value="%{#attr.row.profesiName}"/>"
+                                                                       nip="<s:property value="%{#attr.row.nip}"/>"
+                                                                       href="javascript:;" class="item-panggil">
+                                                                        <img border="0"
+                                                                             src="<s:url value="/pages/images/icons8-call-25.png"/>">
                                                                     </s:if>
                                                                 </s:if>
                                                                 <s:else>
@@ -496,6 +490,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">NIP</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_nip" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-md-4" style="margin-top: 7px">Nama</label>
                                 <div class="col-md-6">
                                     <s:textfield id="mod_nama" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
@@ -519,13 +521,30 @@
                                     <br>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Keterangan On Call</label>
+                                <div class="col-md-6">
+                                    <s:textarea id="mod_keterangan" rows="3"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
                             <br>
+                            <br>
+                            <br>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <table style="width: 100%;"
+                                           class="historyOncallTable table table-bordered">
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" id="btnPanggil" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Panggil</button>
+                <button type="button" class="btn btn-success" id="btnPanggil"><i class="fa fa-arrow-right"></i> Panggil</button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
             </div>
         </div>
@@ -717,11 +736,17 @@
         });
 
         $('.tableJadwalShiftKerja').on('click', '.item-panggil', function() {
-            $('#mod_id').val($(this).attr('id'));
+            var id= $(this).attr('id');
+            var nip =$(this).attr('nip');
+            $('#mod_id').val(id);
             $('#mod_tanggal').val($(this).attr('tanggal'));
             $('#mod_nama').val($(this).attr('nama'));
+            $('#mod_nip').val($(this).attr('nip'));
             $('#mod_posisi').val($(this).attr('posisi'));
             $('#mod_grup').val($(this).attr('grup'));
+            JadwalShiftKerjaAction.searchHistoryOnCall(id,nip,function () {});
+
+            loadHistoryOnCall();
 
             $("#modal-panggil").modal('show');
         });
@@ -738,14 +763,19 @@
 
         $('#btnPanggil').click(function () {
             var id = $('#mod_id').val();
-            if (confirm("Apakah anda ingin memanggil pegawai ini ?")){
-                showDialog("loading");
-                dwr.engine.setAsync(true);
-                JadwalShiftKerjaAction.savePanggilBerdasarkanId(id,function() {
-                    dwr.engine.setAsync(false);
-                    $('#modal-panggil').modal('hide');
-                    showDialog("success");
-                });
+            var keterangan = $('#mod_keterangan').val();
+            if (keterangan!=""){
+                if (confirm("Apakah anda ingin memanggil pegawai ini ?")){
+                    showDialog("loading");
+                    dwr.engine.setAsync(true);
+                    JadwalShiftKerjaAction.savePanggilBerdasarkanId(id,keterangan,function() {
+                        dwr.engine.setAsync(false);
+                        $('#modal-panggil').modal('hide');
+                        showDialog("success");
+                    });
+                }
+            }else{
+                alert("Keterangan panggil wajib diisi");
             }
         });
         $('#btnLibur').click(function () {
@@ -767,5 +797,34 @@
             "pageLength": 100,
             "order": []
         });
+
+        window.loadHistoryOnCall = function () {
+            $('.historyOncallTable').find('tbody').remove();
+            $('.historyOncallTable').find('thead').remove();
+            dwr.engine.setAsync(false);
+            var tmp_table = "";
+            JadwalShiftKerjaAction.searchHistoryOnCallSession(function (listdata) {
+                tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196'>No</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196''>History Call ID</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196''>NIP</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196''>Yang Memanggil</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196''>Waktu Dipanggil</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196''>Keterangan</th>" +
+                    "</tr></thead>";
+                var i = i;
+                $.each(listdata, function (i, item) {
+                    tmp_table += '<tr style="font-size: 12px;">' +
+                        '<td align="center">' + (i + 1) + '</td>' +
+                        '<td align="center">' + item.historyOnCallId + '</td>' +
+                        '<td align="center">' + item.nip + '</td>' +
+                        '<td align="center">' + item.createdWho + '</td>' +
+                        '<td align="center">' + item.stPanggilDate + '</td>' +
+                        '<td align="center">' + item.keteranganPanggil + '</td>' +
+                        "</tr>";
+                });
+                $('.historyOncallTable').append(tmp_table);
+            });
+        };
     });
 </script>
