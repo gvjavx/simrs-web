@@ -428,15 +428,15 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" id='qty-reture-<s:property value="idObat"/>' />
-                                        <input type="hidden" id='id-obat-<s:property value="idObat"/>' value='<s:property value="idObat" />' />
-                                        <input type="hidden" id='id-barang-<s:property value="idObat"/>' value='<s:property value="idBarang" />' />
+                                        <input type="number" class="form-control" id='qty-reture-<s:property value="idBarang"/>' />
+                                        <input type="hidden" id='id-obat-<s:property value="idBarang"/>' value='<s:property value="idObat" />' />
+                                        <input type="hidden" id='id-barang-<s:property value="idBarang"/>' value='<s:property value="idBarang" />' />
                                     </td>
                                     <td><s:property value="jenisSatuan"/></td>
                                     <script>
-                                        var idobat = '<s:property value="idObat" />';
-                                        $("#qty-reture-"+idobat).attr("class", 'form-control qty-reture-'+n);
-                                        $("#id-obat-"+idobat).attr("class", 'form-control id-obat-'+n);
+                                        var idbarang = '<s:property value="idBarang" />';
+                                        $("#qty-reture-"+idbarang).attr("class", 'form-control qty-reture-'+n);
+                                        $("#id-barang-"+idbarang).attr("class", 'form-control id-barang-'+n);
                                         n++;
                                     </script>
                                 </tr>
@@ -1093,14 +1093,17 @@
 
         $('#confirm_dialog').dialog('close');
         $('#waiting_dialog').dialog('open');
-        dwr.engine.setAsync(true);
 
         for (i = 1 ; i <= n; i++){
 
-            
+            var idBarang    = $(".id-barang-"+i).val();
+            var qty         = $("#qty-reture-"+idBarang).val();
+            var idObat      = $("#id-obat-"+idBarang).val();
+
 
         }
 
+        dwr.engine.setAsync(true);
         TransaksiObatAction.saveApproveResepObatPoli(id_approve, {
             callback: function (response) {
                 if (response.status == "success") {
