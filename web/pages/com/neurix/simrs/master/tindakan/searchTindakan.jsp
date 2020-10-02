@@ -15,9 +15,13 @@
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/HeaderTindakanAction.js"/>'></script>
+
     <script type='text/javascript'>
 
         $(document).ready(function () {
+            getBranch();
+            getPelayanan();
             $('#tindakan').addClass('active');
         });
 
@@ -54,6 +58,34 @@
                                     action="search_tindakan.action"
                                     theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">Unit</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control select2" id="branch" name="tindakan.branchId">
+                                            <option value="">[Select One]</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Pelayanan</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control select2" id="pelayanan" name="tindakan.idPelayanan">
+                                            <option value="">[Select One]</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Kategori Tindakan</label>
+                                    <div class="col-sm-4">
+                                        <s:action id="initComboKategori" namespace="/tindakan"
+                                                  name="initComboKategori_tindakan"/>
+                                        <s:select list="#initComboKategori.listOfComboKategoriTindakan"
+                                                  id="idKategoriTindakan" name="tindakan.idKategoriTindakan"
+                                                  listKey="idKategoriTindakan" listValue="kategoriTindakan" headerKey=""
+                                                  headerValue="[Select one]" cssClass="form-control select2"
+                                                  cssStyle="width: 100%"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">ID Tindakan</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_tindakan" name="tindakan.idTindakan"
@@ -67,18 +99,6 @@
                                         <s:textfield id="nama_tindakan" name="tindakan.tindakan"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Kategori Tindakan</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initComboKategori" namespace="/tindakan"
-                                                  name="initComboKategori_tindakan"/>
-                                        <s:select list="#initComboKategori.listOfComboKategoriTindakan"
-                                                  id="idKategoriTindakan" name="tindakan.idKategoriTindakan"
-                                                  listKey="idKategoriTindakan" listValue="kategoriTindakan" headerKey=""
-                                                  headerValue="[Select one]" cssClass="form-control select2"
-                                                  cssStyle="width: 100%"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -102,7 +122,7 @@
                                         <a type="button" class="btn btn-danger" href="initForm_tindakan.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-                                        <a onclick="addTindakan()" class="btn btn-primary"><i class="fa fa-plus"></i>
+                                        <a onclick="showModal('add')" class="btn btn-primary"><i class="fa fa-plus"></i>
                                             Tambah Tindakan</a>
                                     </div>
                                 </div>
@@ -161,30 +181,50 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Tindakan</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped tablePasien">
+                        <table id="sortTable" class="table table-bordered table-striped" style="font-size: 12px">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Tindakan</td>
+                                <td>Pelayanan</td>
+                                <td>Kategori Tindakan</td>
                                 <td>Nama Tindakan</td>
                                 <td>Tarif (Rp.)</td>
                                 <td>Tarif BPJS (Rp.)</td>
+                                <td>Diskon (%)</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResultTindakan" var="row">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="idTindakan"/></td>
+                                    <td><s:property value="namaPelayanan"/></td>
+                                    <td><s:property value="namaKategoriTindakan"/></td>
                                     <td><s:property value="tindakan"/></td>
-                                    <td><s:property value="tarif"/></td>
-                                    <td><s:property value="tarifBpjs"/></td>
-                                    <td align="center">
+                                    <td>
+                                        <script>
+                                            converterRupiah('<s:property value="tarif"/>');
+                                        </script>
+                                    </td>
+                                    <td>
+                                        <script>
+                                            converterRupiah('<s:property value="tarifBpjs"/>');
+                                        </script>
+                                    </td>
+                                    <td><s:property value="diskon"/></td>
+                                    <td align="center" width="10%">
                                         <img class="hvr-grow"
-                                             onclick="editVendor('<s:property value="idVendor"/>','<s:property
-                                                     value="namaVendor"/>','<s:property value="npwp"/>','<s:property
-                                                     value="email"/>','<s:property value="noTelp"/>','<s:property
-                                                     value="alamat"/>')" style="cursor: pointer"
+                                             onclick="showModal('detail', '<s:property value="idTindakan"/>')"
+                                             style="cursor: pointer"
+                                             src="<s:url value="/pages/images/icons8-view-25.png"/>">
+                                        <img class="hvr-grow"
+                                             onclick="showModal('edit', '<s:property value="idTindakan"/>')"
+                                             style="cursor: pointer"
                                              src="<s:url value="/pages/images/icons8-create-25.png"/>">
+                                        <img class="hvr-grow"
+                                             onclick="showModal('delete', '<s:property value="idTindakan"/>')"
+                                             style="cursor: pointer"
+                                             src="<s:url value="/pages/images/cancel-flat-new.png"/>">
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -204,7 +244,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> <span id="set_judul"></span>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Tambah Tindakan
                 </h4>
             </div>
             <div class="modal-body">
@@ -214,17 +254,33 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
+                        <label class="col-md-3" style="margin-top: 7px">Nama Unit</label>
                         <div class="col-md-7">
-                            <input class="form-control" id="set_nama_tindakan"
-                                   oninput="var warn =$('#war_set_nama_tindakan').is(':visible'); if (warn){$('#cor_set_nama_tindakan').show().fadeOut(3000);$('#war_set_nama_tindakan').hide()}">
+                            <select class="form-control select2" id="set_nama_unit" style="width: 100%"
+                                    onchange="var warn =$('#war_set_nama_unit').is(':visible'); if (warn){$('#cor_set_nama_unit').show().fadeOut(3000);$('#war_set_nama_unit').hide()}"></select>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_nama_tindakan">
+                               id="war_set_nama_unit">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_nama_tindakan"><i class="fa fa-check"></i> correct</p>
+                               id="cor_set_nama_unit"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Pelayanan</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" id="set_nama_pelayanan" style="width: 100%"
+                                    onchange="var warn =$('#war_set_nama_pelayanan').is(':visible'); if (warn){$('#cor_set_nama_pelayanan').show().fadeOut(3000);$('#war_set_nama_pelayanan').hide()}"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_nama_pelayanan">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_nama_pelayanan"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>
@@ -247,72 +303,43 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Tarif</label>
+                        <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
                         <div class="col-md-7">
-                            <div class="input-group" style="margin-top: 7px">
-                                <div class="input-group-addon">
-                                    Rp.
-                                </div>
-                                <input class="form-control" id="set_tarif"
-                                       oninput="var warn =$('#war_set_tarif').is(':visible'); if (warn){$('#cor_set_tarif').show().fadeOut(3000);$('#war_set_tarif').hide()}; convertRpAtas(this.id, this.value, 'h_tarif')">
-                                <input type="hidden" id="h_tarif">
-                            </div>
+                            <select class="form-control select2" id="set_nama_tindakan" style="width: 100%"
+                                    onchange="var warn =$('#war_set_nama_tindakan').is(':visible'); if (warn){$('#cor_set_nama_tindakan').show().fadeOut(3000);$('#war_set_nama_tindakan').hide()}"></select>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_tarif">
+                               id="war_set_nama_tindakan">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_tarif"><i class="fa fa-check"></i> correct</p>
+                               id="cor_set_nama_tindakan"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Tarif BPJS</label>
-                        <div class="col-md-7">
-                            <div class="input-group" style="margin-top: 7px">
-                                <div class="input-group-addon">
-                                    Rp.
-                                </div>
-                                <input class="form-control" id="set_tarif_bpjs"
-                                       oninput="var warn =$('#war_set_tarif_bpjs').is(':visible'); if (warn){$('#cor_set_tarif_bpjs').show().fadeOut(3000);$('#war_set_tarif_bpjs').hide()}; convertRpAtas(this.id, this.value, 'h_tarif_bpjs')">
-                                <input type="hidden" id="h_tarif_bpjs">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_tarif_bpjs">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_tarif_bpjs"><i class="fa fa-check"></i> correct</p>
-                        </div>
+                <div class="row jarak_atas">
+                    <div class="col-md-offset-3 col-md-6">
+                        <a class="btn btn-success" onclick="addToList()"><i class="fa fa-plus"></i> Tambah</a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Diskon</label>
-                        <div class="col-md-7">
-                            <div class="input-group" style="margin-top: 7px">
-                                <div class="input-group-addon">
-                                    Rp.
-                                </div>
-                                <input rows="3" class="form-control" id="set_diskon"
-                                       oninput="var warn =$('#war_set_diskon').is(':visible'); if (warn){$('#cor_set_diskon').show().fadeOut(3000);$('#war_set_diskon').hide()}; convertRpAtas(this.id, this.value, 'h_diskon')">
-                                <input type="hidden" id="h_diskon">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_diskon">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_diskon"><i class="fa fa-check"></i> correct</p>
-                        </div>
+                <div class="row jarak_atas">
+                    <div class="col-md-12">
+                        <table id="table_pelayanan" class="table table-bordered table-striped" style="font-size: 12px">
+                            <thead>
+                            <tr style="font-weight: bold">
+                                <td width="40%">Nama Tindakan</td>
+                                <td>Tarif (Rp.)</td>
+                                <td>Tarif Bpjs (Rp.)</td>
+                                <td>Diskon (%)</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_tindakan"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <p class="pull-left">Scrol ? </p>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_add"><i
@@ -337,45 +364,46 @@
             <div class="modal-body">
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-6">
-                            <img id="img_ktp" style="height: 200px; width: 100%">
-                            <table class="table table-striped" style="margin-top: 20px">
+                        <div class="col-md-12">
+                            <table class="table table-striped" style="margin-top: 20px; font-size: 12px">
+                                <tr>
+                                    <td><b>Unit</b></td>
+                                    <td><span id="v_unit"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Pelayanan</b></td>
+                                    <td><span id="v_nama_pelayanan"></span></td>
+                                </tr>
                                 <tr>
                                     <td><b>ID Tindakan</b></td>
-                                    <td><span id="an_id_pasien"></span></td>
+                                    <td><span id="v_id_tindakan"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Nama Tindakan</b></td>
-                                    <td><span id="an_nik"></span></td>
+                                    <td><span id="v_nama_tindakan"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Kategori Tindakan</b></td>
-                                    <td><span id="an_nama"></span></td>
+                                    <td><span id="v_kategori_tindakan"></span></td>
                                 </tr>
-                            </table>
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-6">
-                            <table class="table table-striped">
                                 <tr>
                                     <td><b>Tarif</b></td>
-                                    <td><span id="an_jenis_kelamin"></span></td>
+                                    <td><span id="v_tarif"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Tarif BPJS</b></td>
-                                    <td><span id="an_tgl"></span></td>
+                                    <td><span id="v_tarif_bpjs"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Diskon</b></td>
-                                    <td><span id="an_agama"></span></td>
+                                    <td><span id="v_diskon"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Kategori INA BPJS</b></td>
-                                    <td><span id="an_suku"></span></td>
+                                    <td><span id="v_kategori_ina_bpjs"></span></td>
                                 </tr>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -387,6 +415,145 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-edit">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Edit Tindakan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_edit">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_edit"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Unit</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" id="edit_nama_unit" style="width: 100%"
+                                    onchange="var warn =$('#war_edit_nama_unit').is(':visible'); if (warn){$('#cor_edit_nama_unit').show().fadeOut(3000);$('#war_edit_nama_unit').hide()}"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_nama_unit">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_nama_unit"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Pelayanan</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" id="edit_nama_pelayanan" style="width: 100%"
+                                    onchange="var warn =$('#war_edit_nama_pelayanan').is(':visible'); if (warn){$('#cor_edit_nama_pelayanan').show().fadeOut(3000);$('#war_edit_nama_pelayanan').hide()}"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_nama_pelayanan">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_nama_pelayanan"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Kategori Tindakan</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="width: 100%" id="edit_kategori_tindakan"
+                                    onchange="var warn =$('#war_edit_kategori_tindakan').is(':visible'); if (warn){$('#cor_edit_kategori_tindakan').show().fadeOut(3000);$('#war_edit_kategori_tindakan').hide()}">
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_kategori_tindakan">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_kategori_tindakan"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" id="edit_nama_tindakan" style="width: 100%"
+                                    onchange="var warn =$('#war_edit_nama_tindakan').is(':visible'); if (warn){$('#cor_edit_nama_tindakan').show().fadeOut(3000);$('#war_edit_nama_tindakan').hide()}"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_nama_tindakan">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_nama_tindakan"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Tarif</label>
+                        <div class="col-md-7">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input class="form-control" id="edit_tarif"
+                                       oninput="var warn =$('#war_edit_tarif').is(':visible'); if (warn){$('#cor_edit_tarif').show().fadeOut(3000);$('#war_edit_tarif').hide()}; convertRpAtas(this.id, this.value, 'h_tarif')">
+                                <input type="hidden" id="h_tarif">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_tarif">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_tarif"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Tarif BPJS</label>
+                        <div class="col-md-7">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    Rp.
+                                </div>
+                                <input class="form-control" id="edit_tarif_bpjs"
+                                       oninput="var warn =$('#war_edit_tarif_bpjs').is(':visible'); if (warn){$('#cor_edit_tarif_bpjs').show().fadeOut(3000);$('#war_edit_tarif_bpjs').hide()}; convertRpAtas(this.id, this.value, 'h_tarif_bpjs')">
+                                <input type="hidden" id="h_tarif_bpjs">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_tarif_bpjs">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_tarif_bpjs"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_edit"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_edit"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -397,7 +564,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <h4>Do you want save this record?</h4>
+                <h4 id="pesan"></h4>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
@@ -411,32 +578,125 @@
 
 <script type='text/javascript'>
 
-    function addTindakan() {
-        getKategoriTindakan();
-        $('#save_add').attr('onclick', 'saveTindakan("")');
-        $('#set_judul').text("Tambah Tindakan");
-        $('#modal-add').modal({show: true, backdrop: 'static'});
+    function showModal(tipe, id) {
+        if ('add' == tipe) {
+            $('#set_nama_unit').attr('disabled', false);
+            $('#set_nama_pelayanan').attr('disabled', false);
+            $('#set_kategori_tindakan').attr('disabled', false);
+            $('#save_add').attr('onclick', 'saveTindakan("")');
+            $('#set_judul').text("Tambah Tindakan");
+            $('#modal-add').modal({show: true, backdrop: 'static'});
+            getBranch();
+            getKategoriTindakan();
+            getTindakan();
+        }
+        if ('detail' == tipe) {
+            getDataTindakan(id);
+            $('#modal-view').modal({show: true, static:'backdrop'});
+        }
+        if ('edit' == tipe) {
+            getDataTindakan(id);
+            $('#modal-edit').modal({show: true, static: 'backdrop'});
+        }
+        if ('delete' == tipe) {
+            $('#pesan').text('Do you want delete this record?');
+            $('#modal-confirm-dialog').modal({show: true, static: 'static'});
+        }
+    }
+
+    function addToList() {
+        var data = $('#table_pelayanan').tableToJSON();
+        var branch = $('#set_nama_unit').val();
+        var pelayanan = $('#set_nama_pelayanan').val();
+        var kategori = $('#set_kategori_tindakan').val();
+        var tindakan = $('#set_nama_tindakan').val();
+        var namaTindakan = $('#set_nama_tindakan option:selected').text();
+        var id = data.length;
+
+        if (branch && pelayanan && kategori && tindakan) {
+            var cek = false;
+            $.each(data, function (i, item) {
+                var idTindakan = $('#id_tindakan_' + i).val();
+                if (idTindakan == tindakan) {
+                    cek = true;
+                }
+            });
+            if (cek) {
+                $('#warning_add').show().fadeOut(5000);
+                $('#msg_add').text("Data sudah ada dalam list...!");
+            } else {
+                HeaderTindakanAction.initHeaderTindakan(tindakan, function (res) {
+                    if (res.idHeaderTindakan != null) {
+                        var table = '<tr id="row_' + tindakan + '">' +
+                            '<td style="vertical-align: center">' +
+                            '<img class="hvr-grow" onclick"del(\'' + tindakan + '\')" src="<s:url value='/pages/images/cancel-flat-new.png'/>">' +
+                            " " + namaTindakan +
+                            '<input id="id_tindakan_' + id + '" type="hidden" value="' + tindakan + '"></td>' +
+                            '<td>' +
+                            '<input id="tarif_' + id + '" class="form-control" value="' + formatRupiahAtas(res.standardCost) + '" oninput="convertRpAtas(this.id, this.value, \'h_tarif_' + id + '\')">' +
+                            '<input type="hidden" id="h_tarif_' + id + '" class="form-control" value="' + res.standardCost + '">' +
+                            '</td>' +
+                            '<td>' +
+                            '<input id="tarif_bpjs_' + id + '" class="form-control" value="' + formatRupiahAtas(res.standardCost) + '" oninput="convertRpAtas(this.id, this.value, \'h_tarif_bpjs_' + id + '\')">' +
+                            '<input type="hidden" id="h_tarif_bpjs_' + id + '" class="form-control" value="' + res.standardCost + '">' +
+                            '</td>' +
+                            '<td>' +
+                            '<input min="0" id="diskon_' + id + '" type="number" class="form-control" value="' + res.diskon + '">' +
+                            '</td>' +
+                            '</tr>';
+                        $('#body_tindakan').append(table);
+                        $('#set_nama_unit').attr('disabled', true);
+                        $('#set_nama_pelayanan').attr('disabled', true);
+                        $('#set_kategori_tindakan').attr('disabled', true);
+                    }
+                });
+            }
+        } else {
+            $('#warning_add').show().fadeOut(5000);
+            $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+
+            if (branch == '') {
+                $('#war_set_nama_unit').show();
+            }
+            if (pelayanan == '') {
+                $('#war_set_nama_pelayanan').show();
+            }
+            if (kategori == '') {
+                $('#war_set_kategori_tindakan').show();
+            }
+            if (tindakan == '') {
+                $('#war_set_nama_tindakan').show();
+            }
+        }
+    }
+
+    function del(id) {
+        $('#row_' + id).remove();
     }
 
     function saveTindakan(id) {
         var data = "";
-        var nama = $('#set_nama_tindakan').val();
+        var dataPelayanan = $('#table_pelayanan').tableToJSON();
+        var namaUnit = $('#set_nama_unit').val();
+        var namaPelayanan = $('#set_nama_pelayanan').val();
         var idKategori = $('#set_kategori_tindakan').val();
         var tarif = $('#h_tarif').val();
         var tarifBpjs = $('#h_tarif_bpjs').val();
         var diskon = $('#h_diskon').val();
 
-        if (nama != '' && idKategori != '' && tarif != '' && tarifBpjs != '' && diskon != '') {
+        if (namaUnit != '' && namaPelayanan != '' && idKategori != '') {
 
             if (id != '') {
                 $('#save_add').hide();
                 $('#load_add').show();
                 data = {
                     'id_kategori_tindakan': idKategori,
+                    'id_header_tindakan': idKategori,
+                    'id_pelayanan': namaPelayanan,
+                    'branch_id': namaUnit,
                     'tarif': tarif,
                     'tarif_bpjs': tarifBpjs,
-                    'diskon': diskon,
-                    'id_header_tindakan': nama
+                    'diskon': diskon
                 };
                 var dataString = JSON.stringify(data);
                 dwr.engine.setAsync(true);
@@ -450,87 +710,144 @@
 
                         } else {
                             $('#warning_add').show().fadeOut(5000);
-                            $('#msg_add').text(response.message);
+                            $('#msg_add').text(response.msg);
                             $('#save_add').show();
                             $('#load_add').hide();
                         }
                     }
                 });
             } else {
-                $('#save_add').hide();
-                $('#load_add').show();
-                data = {
-                    'id_kategori_tindakan': idKategori,
-                    'tarif': tarif,
-                    'tarif_bpjs': tarifBpjs,
-                    'diskon': diskon,
-                    'id_header_tindakan': nama
-                };
-                var dataString = JSON.stringify(data);
-                dwr.engine.setAsync(true);
-                TindakanAction.saveAdd(dataString, {
-                    callback: function (response) {
-                        if (response.status == "success") {
-                            $('#modal-add').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#save_add').show();
-                            $('#load_add').hide();
+                if (dataPelayanan.length > 0) {
+                    var dataSave = [];
+                    $('#save_add').hide();
+                    $('#load_add').show();
+                    $.each(dataPelayanan, function (i, item) {
+                        var idHeaderTindakan = $('#id_tindakan_' + i).val();
+                        var tarif = $('#h_tarif_' + i).val();
+                        var tarifBpjs = $('#h_tarif_bpjs_' + i).val();
+                        var diskon = $('#diskon_' + i).val();
+                        dataSave.push({
+                            'id_kategori_tindakan': idKategori,
+                            'id_header_tindakan': idHeaderTindakan,
+                            'id_pelayanan': namaPelayanan,
+                            'branch_id': namaUnit,
+                            'tarif': tarif,
+                            'tarif_bpjs': tarifBpjs,
+                            'diskon': diskon
+                        });
+                    });
+                    var dataString = JSON.stringify(dataSave);
+                    dwr.engine.setAsync(true);
+                    TindakanAction.saveAdd(dataString, {
+                        callback: function (response) {
+                            if (response.status == "success") {
+                                $('#modal-add').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#save_add').show();
+                                $('#load_add').hide();
 
-                        } else {
-                            $('#warning_add').show().fadeOut(5000);
-                            $('#msg_add').text(response.message);
-                            $('#save_add').show();
-                            $('#load_add').hide();
+                            } else {
+                                $('#warning_add').show().fadeOut(5000);
+                                $('#msg_add').text(response.msg);
+                                $('#save_add').show();
+                                $('#load_add').hide();
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    $('#warning_add').show().fadeOut(5000);
+                    $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+                }
             }
         } else {
             $('#warning_add').show().fadeOut(5000);
             $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
 
-            if (nama == '') {
-                $('#war_set_nama_tindakan').show();
+            if (namaUnit == '') {
+                $('#war_set_nama_unit').show();
+            }
+            if (namaPelayanan == '') {
+                $('#war_set_nama_pelayanan').show();
             }
             if (idKategori == '') {
                 $('#war_set_kategori_tindakan').show();
             }
-            if (tarif == '') {
-                $('#war_set_tarif').show();
-            }
-            if (tarifBpjs == '') {
-                $('#war_set_tarif_bpjs').show();
-            }
-            if (diskon == '') {
-                $('#war_set_diskon').show();
-            }
         }
     }
 
-    function editVendor(idVendor, nama, npwp, email, noTelp, alamat) {
-        $('#set_nama_tindakan').val(nama);
-        $('#set_kategori_tindakan').val(npwp);
-        $('#set_tarif').val(email);
-        $('#set_tarif_bpjs').val(noTelp);
-        $('#set_diskon').val(alamat);
-        $('#modal-add').modal({show: true, backdrop: 'static'});
-        $('#save_add').attr('onclick', 'saveVendor(\'' + idVendor + '\')');
-        $('#set_judul').text("Edit Vendor");
-    }
-
-    function getKategoriTindakan(){
+    function getKategoriTindakan() {
         var option = '<option value="">[Select One]</option>';
         TindakanAction.getComboKategoriTindakan(function (res) {
-            console.log(res);
-            $.each(res, function (i, item) {
-                if(res.length > 0){
-                    option += '<option value="'+item.idKtegoriTindakan+'">'+item.kategoriTindakan+'</option>'
-                }
-            })
-            $('#set_kategori_tindakan').html(option);
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    option += '<option value="' + item.idKategoriTindakan + '">' + item.kategoriTindakan + '</option>';
+                });
+                $('#set_kategori_tindakan').html(option);
+            }
         });
     }
 
+    function getBranch() {
+        var option = '<option value="">[Select One]</option>';
+        TindakanAction.getComboBranch(function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    option += '<option value="' + item.branchId + '">' + item.branchName + '</option>'
+                });
+            }
+            $('#set_nama_unit').html(option);
+            $('#edit_nama_unit').html(option);
+            $('#branch').html(option);
+        });
+    }
+
+    function getPelayanan() {
+        var option = '<option value="">[Select One]</option>';
+        TindakanAction.getComboPelayanan(function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    option += '<option value="' + item.idPelayanan + '">' + item.namaPelayanan + '</option>'
+                })
+            }
+            $('#set_nama_pelayanan').html(option);
+            $('#edit_nama_pelayanan').html(option);
+            $('#pelayanan').html(option);
+        });
+    }
+
+    function getTindakan() {
+        var option = '<option value="">[Select One]</option>';
+        TindakanAction.getComboTindakan(function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    option += '<option value="' + item.idHeaderTindakan + '">' + item.namaTindakan + '</option>'
+                });
+            }
+            $('#set_nama_tindakan').html(option);
+        });
+    }
+
+    function cekScrol(id, idTujuan) {
+        if ($('#' + id).is(':checked')) {
+            $('#' + idTujuan).attr('style', 'height: 450px;overflow-y: scroll;');
+        } else {
+            $('#' + idTujuan).removeAttr('style');
+        }
+    }
+
+    function getDataTindakan(id){
+        TindakanAction.initTindakan(id, function (res) {
+            if(res.idTindakan != null){
+                $('#v_unit').text(res.branchId);
+                $('#v_id_tindakan').text(res.idTindakan);
+                $('#v_nama_tindakan').text(res.namaTindakan);
+                $('#v_kategori_ina_bpjs').text(res.namaKategoriTindakanIna);
+                $('#v_kategori_tindakan').text(res.namaKategoriTindakan);
+                $('#v_tarif').text(formatRupiahAtas(res.tarif));
+                $('#v_tarif_bpjs').text(formatRupiahAtas(res.tarifBpjs));
+            }
+        });
+    }
 
 </script>
 

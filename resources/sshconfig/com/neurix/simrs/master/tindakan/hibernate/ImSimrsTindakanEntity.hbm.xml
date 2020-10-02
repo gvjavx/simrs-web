@@ -11,9 +11,6 @@
         <id name="idTindakan">
             <column name="id_tindakan" sql-type="varchar" length="30" not-null="true" />
         </id>
-        <property name="tindakan">
-            <column name="tindakan" sql-type="varchar" length="100" not-null="false"/>
-        </property>
         <property name="idKategoriTindakan">
             <column name="id_kategori_tindakan" sql-type="varchar" length="10" not-null="false"/>
         </property>
@@ -53,6 +50,12 @@
         </property>
         <property name="isIna">
             <column name="is_ina" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="idHeaderTindakan">
+            <column name="id_header_tindakan"/>
+        </property>
+        <property name="idPelayanan">
+            <column name="id_pelayanan"/>
         </property>
     </class>
 </hibernate-mapping>

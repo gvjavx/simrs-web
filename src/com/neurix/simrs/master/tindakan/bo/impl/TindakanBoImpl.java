@@ -47,7 +47,6 @@ public class TindakanBoImpl implements TindakanBo {
             }
             if (simrsTindakanEntity != null) {
                 if (bean.getTindakan().equalsIgnoreCase(simrsTindakanEntity.getTindakan())) {
-                    simrsTindakanEntity.setIdKategoriTindakan(bean.getIdKategoriTindakan());
                     if(bean.getTarif() != null){
                         simrsTindakanEntity.setTarif(bean.getTarif());
                     }
@@ -57,11 +56,17 @@ public class TindakanBoImpl implements TindakanBo {
                     if(bean.getDiskon() != null){
                         simrsTindakanEntity.setDiskon(bean.getDiskon());
                     }
+                    if(bean.getIdKategoriTindakan() != null){
+                        simrsTindakanEntity.setIdKategoriTindakan(bean.getIdKategoriTindakan());
+                    }
+                    if(bean.getIdHeaderTindakan() != null){
+                        simrsTindakanEntity.setIdHeaderTindakan(bean.getIdHeaderTindakan());
+                    }
+
                     simrsTindakanEntity.setFlag(bean.getFlag());
                     simrsTindakanEntity.setAction(bean.getAction());
                     simrsTindakanEntity.setLastUpdate(bean.getLastUpdate());
                     simrsTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                    simrsTindakanEntity.setIdHeaderTindakan(bean.getIdHeaderTindakan());
                     try {
                         tindakanDao.updateAndSave(simrsTindakanEntity);
                         response.setStatus("success");
@@ -112,6 +117,7 @@ public class TindakanBoImpl implements TindakanBo {
                     entity.setCreatedDate(bean.getCreatedDate());
                     entity.setLastUpdate(bean.getLastUpdate());
                     entity.setIdHeaderTindakan(bean.getIdHeaderTindakan());
+                    entity.setIdPelayanan(bean.getIdPelayanan());
                     try {
                         tindakanDao.addAndSave(entity);
                         response.setStatus("success");

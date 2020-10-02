@@ -550,4 +550,9 @@ public class PelayananBoImpl implements PelayananBo{
     public List<ImSimrsPelayananEntity> getByCriteria(Map criteria) throws GeneralBOException {
         return pelayananDao.getByCriteria(criteria);
     }
+
+    @Override
+    public List<ImSimrsPelayananEntity> getPelayananByBranch(String branchId) throws GeneralBOException {
+        return pelayananDao.getPelayananByBranch(branchId);
+    }
 }

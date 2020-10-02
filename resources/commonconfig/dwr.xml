@@ -321,6 +321,7 @@
       <convert converter="bean" match="com.neurix.simrs.master.jenisobat.model.JenisObat"/>
       <convert converter="bean" match="com.neurix.simrs.master.rekananops.model.RekananOps"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.PelayananPaket"/>
+      <convert converter="bean" match="com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalPelayananDTO"/>
 
       <!--Team Dokter -->

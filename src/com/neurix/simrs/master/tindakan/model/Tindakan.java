@@ -35,6 +35,15 @@ public class Tindakan {
     private String idHeaderTindakan;
     private String idKategoriNota;
     private String tipe;
+    private String namaPelayanan;
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
 
     public String getTipe() {
         return tipe;

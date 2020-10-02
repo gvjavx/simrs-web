@@ -155,10 +155,10 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
             condition = condition + "AND b.id_tindakan = '"+bean.getIdTindakan()+"' \n";
         }
         if(bean.getTindakan() != null && !"".equalsIgnoreCase(bean.getIdTindakan())){
-            condition = condition + "AND a.nama_tindakan = '"+bean.getIdTindakan()+"' \n";
+            condition = condition + "AND a.nama_tindakan ILIKE '%"+bean.getIdTindakan()+"%' \n";
         }
-        if(bean.getTindakan() != null && !"".equalsIgnoreCase(bean.getTindakan())){
-            condition = condition + "AND a.id_header_tindakan ILIKE '%"+bean.getTindakan()+"%' \n";
+        if(bean.getIdHeaderTindakan() != null && !"".equalsIgnoreCase(bean.getIdHeaderTindakan())){
+            condition = condition + "AND a.id_header_tindakan = '"+bean.getIdHeaderTindakan()+"' \n";
         }
         if(bean.getIsIna() != null && !"".equalsIgnoreCase(bean.getIsIna())){
             condition = condition + "AND b.is_ina = '"+bean.getIsIna()+"' \n";
@@ -177,11 +177,19 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 "b.diskon,\n" +
                 "b.is_ina,\n" +
                 "b.id_kategori_tindakan,\n" +
-                "c.kategori_tindakan\n" +
+                "c.kategori_tindakan,\n" +
+                "b.id_pelayanan,\n" +
+                "d.nama_pelayanan,\n" +
+                "e.nama,\n" +
+                "f.branch_id,\n" +
+                "f.branch_name\n" +
                 "FROM im_simrs_header_tindakan a\n" +
                 "INNER JOIN im_simrs_tindakan b ON  a.id_header_tindakan = b.id_header_tindakan\n" +
                 "INNER JOIN im_simrs_kategori_tindakan c ON b.id_kategori_tindakan = c.id_kategori_tindakan\n" +
-                "WHERE b.flag = 'Y' \n" + condition;
+                "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                "INNER JOIN im_simrs_kategori_tindakan_ina e ON a.kategori_ina_bpjs = e.id\n" +
+                "INNER JOIN im_branches f ON b.branch_id = f.branch_id\n" +
+                "WHERE b.flag = :flag\n " + condition;
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -201,6 +209,11 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 tindakan.setIsIna(obj[8] != null ? obj[8].toString() : null);
                 tindakan.setIdKategoriTindakan(obj[9] != null ? obj[9].toString() : null);
                 tindakan.setNamaKategoriTindakan(obj[10] != null ? obj[10].toString() : null);
+                tindakan.setIdPelayanan(obj[11] != null ? obj[11].toString() : null);
+                tindakan.setNamaPelayanan(obj[12] != null ? obj[12].toString() : null);
+                tindakan.setNamaKategoriTindakanIna(obj[13] != null ? obj[13].toString() : null);
+                tindakan.setBranchId(obj[14] != null ? obj[14].toString() : null);
+                tindakan.setBranchName(obj[15] != null ? obj[15].toString() : null);
                 tindakanList.add(tindakan);
             }
         }

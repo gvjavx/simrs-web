@@ -10,6 +10,9 @@ import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
 import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import com.neurix.simrs.master.kategoritindakanina.bo.KategoriTindakanInaBo;
 import com.neurix.simrs.master.kategoritindakanina.model.KategoriTindakanIna;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.tindakan.bo.HeaderTindakanBo;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.HeaderTindakan;
@@ -116,9 +119,10 @@ public class TindakanAction extends BaseTransactionAction {
         return tindakanBoProxy;
     }
 
-    public List<Tindakan> initTindakan(String idTindakan){
+    public Tindakan initTindakan(String idTindakan){
         logger.info("[TindakanAction.initTindakan] start process >>>>>");
         List<Tindakan> tindakanList = new ArrayList<>();
+        Tindakan tindakanRes = new Tindakan();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
         Tindakan tindakan = new Tindakan();
@@ -129,14 +133,16 @@ public class TindakanAction extends BaseTransactionAction {
         }catch (GeneralBOException e){
             logger.error(e.getMessage());
         }
+        if(tindakanList.size() > 0){
+            tindakanRes = tindakanList.get(0);
+        }
         logger.info("[TindakanAction.initTindakan] end process >>>>>");
-        return tindakanList;
+        return tindakanRes;
     }
 
     @Override
     public String search() {
         logger.info("[TindakanAction.search] start process >>>");
-
         Tindakan searchTindakan = getTindakan();
         List<Tindakan> listOfsearchTindakan = new ArrayList();
 
@@ -153,14 +159,11 @@ public class TindakanAction extends BaseTransactionAction {
         }else {
             data.setBranchUser("");
         }
-        tindakan = data;
-
+        setTindakan(data);
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfsearchTindakan);
-
         logger.info("[TindakanAction.search] end process <<<");
-
         return "search";
     }
 
@@ -178,7 +181,6 @@ public class TindakanAction extends BaseTransactionAction {
             data.setBranchId("");
         }
         setTindakan(data);
-
         session.removeAttribute("listOfResult");
         logger.info("[TindakanAction.initForm] end process >>>");
 
@@ -256,6 +258,19 @@ public class TindakanAction extends BaseTransactionAction {
         return branchList;
     }
 
+    public List<ImSimrsPelayananEntity> getComboPelayanan() {
+        List<ImSimrsPelayananEntity> branchList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+        try {
+            branchList = pelayananBo.getPelayananByBranch(branchId);
+        } catch (GeneralBOException e) {
+            logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+        return branchList;
+    }
+
     public String initComboKategoriIna() {
 
         KategoriTindakanIna kategoriTindakanIna = new KategoriTindakanIna();
@@ -319,11 +334,12 @@ public class TindakanAction extends BaseTransactionAction {
             List<Tindakan> tindakanList = new ArrayList<>();
             if(json != null){
                 for (int i = 0; i < json.length(); i++){
-                    JSONObject object = new JSONObject(i);
+                    JSONObject object = json.getJSONObject(i);
                     Tindakan tindakan = new Tindakan();
                     tindakan.setIdKategoriTindakan(object.getString("id_kategori_tindakan"));
                     tindakan.setIdHeaderTindakan(object.getString("id_header_tindakan"));
                     tindakan.setIdPelayanan(object.getString("id_pelayanan"));
+                    tindakan.setBranchId(object.getString("branch_id"));
                     tindakan.setTarif(new BigInteger(object.getString("tarif")));
                     tindakan.setTarifBpjs(new BigInteger(object.getString("tarif_bpjs")));
                     tindakan.setDiskon(new BigDecimal(object.getString("diskon")));
@@ -366,11 +382,12 @@ public class TindakanAction extends BaseTransactionAction {
             JSONObject object = new JSONObject(data);
             if(object != null){
                 Tindakan tindakan = new Tindakan();
+                tindakan.setIdHeaderTindakan(object.getString("id_tindakan"));
+                tindakan.setIdHeaderTindakan(object.getString("id_header_tindakan"));
                 tindakan.setIdKategoriTindakan(object.getString("id_kategori_tindakan"));
                 tindakan.setTarifBpjs(new BigInteger(object.getString("tarif")));
                 tindakan.setTarifBpjs(new BigInteger(object.getString("tarif_bpjs")));
                 tindakan.setDiskon(new BigDecimal(object.getString("diskon")));
-                tindakan.setIdHeaderTindakan(object.getString("id_header_tindakan"));
                 tindakan.setLastUpdate(updateTime);
                 tindakan.setLastUpdateWho(userLogin);
                 tindakan.setAction("U");
@@ -397,6 +414,7 @@ public class TindakanAction extends BaseTransactionAction {
         CrudResponse response = new CrudResponse();
         try {
             Tindakan tindakan = new Tindakan();
+            tindakan.setIdTindakan(idTindakan);
             tindakan.setLastUpdate(updateTime);
             tindakan.setLastUpdateWho(userLogin);
             tindakan.setAction("D");
