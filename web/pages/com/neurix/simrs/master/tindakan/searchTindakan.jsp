@@ -365,9 +365,9 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="table table-striped" style="margin-top: 20px; font-size: 12px">
+                            <table class="table table-striped" style="font-size: 12px">
                                 <tr>
-                                    <td><b>Unit</b></td>
+                                    <td width="30%"><b>Unit</b></td>
                                     <td><span id="v_unit"></span></td>
                                 </tr>
                                 <tr>
@@ -538,6 +538,22 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Diskon (%)</label>
+                        <div class="col-md-7">
+                            <input class="form-control jarak_atas" id="edit_diskon" type="number"
+                                   oninput="var warn =$('#war_edit_diskon').is(':visible'); if (warn){$('#cor_edit_diskon').show().fadeOut(3000);$('#war_edit_diskon').hide()};">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_diskon">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_diskon"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -586,7 +602,6 @@
             $('#save_add').attr('onclick', 'saveTindakan("")');
             $('#set_judul').text("Tambah Tindakan");
             $('#modal-add').modal({show: true, backdrop: 'static'});
-            getBranch();
             getKategoriTindakan();
             getTindakan();
         }
@@ -595,6 +610,8 @@
             $('#modal-view').modal({show: true, static:'backdrop'});
         }
         if ('edit' == tipe) {
+            getKategoriTindakan();
+            getTindakan();
             getDataTindakan(id);
             $('#modal-edit').modal({show: true, static: 'backdrop'});
         }
@@ -783,6 +800,7 @@
                     option += '<option value="' + item.idKategoriTindakan + '">' + item.kategoriTindakan + '</option>';
                 });
                 $('#set_kategori_tindakan').html(option);
+                $('#edit_kategori_tindakan').html(option);
             }
         });
     }
@@ -824,6 +842,7 @@
                 });
             }
             $('#set_nama_tindakan').html(option);
+            $('#edit_nama_tindakan').html(option);
         });
     }
 
@@ -838,13 +857,23 @@
     function getDataTindakan(id){
         TindakanAction.initTindakan(id, function (res) {
             if(res.idTindakan != null){
-                $('#v_unit').text(res.branchId);
+                $('#v_unit').text(res.branchName);
                 $('#v_id_tindakan').text(res.idTindakan);
-                $('#v_nama_tindakan').text(res.namaTindakan);
+                $('#v_nama_tindakan').text(res.tindakan);
+                $('#v_diskon').text(res.diskon+" %");
+                $('#v_nama_pelayanan').text(res.namaPelayanan);
                 $('#v_kategori_ina_bpjs').text(res.namaKategoriTindakanIna);
                 $('#v_kategori_tindakan').text(res.namaKategoriTindakan);
-                $('#v_tarif').text(formatRupiahAtas(res.tarif));
-                $('#v_tarif_bpjs').text(formatRupiahAtas(res.tarifBpjs));
+                $('#v_tarif').text("Rp. "+formatRupiahAtas(res.tarif));
+                $('#v_tarif_bpjs').text("Rp. "+formatRupiahAtas(res.tarifBpjs));
+
+                $('#edit_nama_unit').val(res.branchId).trigger('change');
+                $('#edit_nama_pelayanan').val(res.idPelayanan).trigger('change');
+                $('#edit_kategori_tindakan').val(res.idKategoriTindakan).trigger('change');
+                $('#edit_nama_tindakan').val(res.idHeaderTindakan).trigger('change');
+                $('#edit_tarif').val(formatRupiahAtas(res.tarif));
+                $('#edit_tarif_bpjs').val(formatRupiahAtas(res.tarifBpjs));
+                $('#edit_diskon').val(res.diskon);
             }
         });
     }
