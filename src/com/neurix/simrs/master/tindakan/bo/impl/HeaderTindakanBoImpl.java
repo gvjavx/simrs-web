@@ -35,12 +35,6 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
         if (bean.getStandardCost() != null && !"".equalsIgnoreCase(bean.getStandardCost().toString())) {
             hsCiteria.put("standart_cost", bean.getStandardCost());
         }
-        if (bean.getDiskon() != null && !"".equalsIgnoreCase(bean.getDiskon().toString())) {
-            hsCiteria.put("diskon", bean.getDiskon());
-        }
-        if (bean.getHargaDiskon() != null && !"".equalsIgnoreCase(bean.getHargaDiskon().toString())) {
-            hsCiteria.put("harga_diskon", bean.getHargaDiskon());
-        }
         if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
             hsCiteria.put("flag", bean.getFlag());
         } else {
@@ -60,8 +54,6 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                 headerTindakan.setNamaTindakan(entity.getNamaTindakan());
                 headerTindakan.setKategoriInaBpjs(entity.getKategoriInaBpjs());
                 headerTindakan.setStandardCost(entity.getStandardCost());
-                headerTindakan.setDiskon(entity.getDiskon());
-                headerTindakan.setHargaDiskon(entity.getHargaDiskon());
                 headerTindakan.setAction(entity.getAction());
                 headerTindakan.setFlag(entity.getFlag());
                 headerTindakan.setCreatedDate(entity.getCreatedDate());
@@ -95,8 +87,6 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                 imSimrsHeaderTindakanEntity.setNamaTindakan(bean.getNamaTindakan());
                 imSimrsHeaderTindakanEntity.setKategoriInaBpjs(bean.getKategoriInaBpjs());
                 imSimrsHeaderTindakanEntity.setStandardCost(bean.getStandardCost());
-                imSimrsHeaderTindakanEntity.setDiskon(bean.getDiskon());
-                imSimrsHeaderTindakanEntity.setHargaDiskon(bean.getHargaDiskon());
                 imSimrsHeaderTindakanEntity.setAction(bean.getAction());
                 imSimrsHeaderTindakanEntity.setFlag(bean.getFlag());
                 imSimrsHeaderTindakanEntity.setCreatedDate(bean.getCreatedDate());
@@ -138,8 +128,6 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
             if(entity != null){
                 entity.setNamaTindakan(bean.getNamaTindakan());
                 entity.setStandardCost(bean.getStandardCost());
-                entity.setDiskon(bean.getDiskon());
-                entity.setHargaDiskon(bean.getHargaDiskon());
                 entity.setAction(bean.getAction());
                 entity.setFlag(bean.getFlag());
                 entity.setLastUpdate(bean.getLastUpdate());

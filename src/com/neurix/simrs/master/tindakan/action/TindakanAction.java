@@ -343,6 +343,8 @@ public class TindakanAction extends BaseTransactionAction {
                     tindakan.setTarif(new BigInteger(object.getString("tarif")));
                     tindakan.setTarifBpjs(new BigInteger(object.getString("tarif_bpjs")));
                     tindakan.setDiskon(new BigDecimal(object.getString("diskon")));
+                    tindakan.setIsIna(object.getString("is_ina"));
+                    tindakan.setIsElektif(object.getString("is_elektif"));
                     tindakan.setCreatedWho(userLogin);
                     tindakan.setLastUpdate(updateTime);
                     tindakan.setCreatedDate(updateTime);
@@ -388,6 +390,8 @@ public class TindakanAction extends BaseTransactionAction {
                 tindakan.setTarifBpjs(new BigInteger(object.getString("tarif")));
                 tindakan.setTarifBpjs(new BigInteger(object.getString("tarif_bpjs")));
                 tindakan.setDiskon(new BigDecimal(object.getString("diskon")));
+                tindakan.setIsIna(object.getString("is_ina"));
+                tindakan.setIsElektif(object.getString("is_elektif"));
                 tindakan.setLastUpdate(updateTime);
                 tindakan.setLastUpdateWho(userLogin);
                 tindakan.setAction("U");

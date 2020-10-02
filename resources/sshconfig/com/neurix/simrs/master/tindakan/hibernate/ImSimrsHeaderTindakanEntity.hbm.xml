@@ -14,12 +14,6 @@
             <basic name="standardCost">
                 <column name="standard_cost"/>
             </basic>
-            <basic name="diskon">
-                <column name="diskon"/>
-            </basic>
-            <basic name="hargaDiskon">
-                <column name="harga_diskon"/>
-            </basic>
             <basic name="flag">
                 <column name="flag"/>
             </basic>

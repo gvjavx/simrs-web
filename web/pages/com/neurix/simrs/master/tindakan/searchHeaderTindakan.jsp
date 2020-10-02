@@ -180,8 +180,6 @@
                                 <td>ID Tindakan</td>
                                 <td>Nama Tindakan</td>
                                 <td align="center">Tarif (Rp.)</td>
-                                <td align="center">Diskon (%)</td>
-                                <td align="center">Harga Diskon (Rp.)</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -193,12 +191,6 @@
                                     <td align="right">
                                         <script>
                                             converterRupiah('<s:property value="standardCost"/>');
-                                        </script>
-                                    </td>
-                                    <td align="center"><s:property value="diskon"/></td>
-                                    <td align="right">
-                                        <script>
-                                            converterRupiah('<s:property value="hargaDiskon"/>');
                                         </script>
                                     </td>
                                     <td align="center">
@@ -296,44 +288,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Diskon (%)</label>
-                        <div class="col-md-7">
-                            <input rows="3" type="number" class="form-control" id="set_diskon" style="margin-top: 7px"
-                                   oninput="var warn =$('#war_set_diskon').is(':visible'); if (warn){$('#cor_set_diskon').show().fadeOut(3000);$('#war_set_diskon').hide()}; setHargaDiskon(this.value)">
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_diskon">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_diskon"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Harga Diskon</label>
-                        <div class="col-md-7">
-                            <div class="input-group" style="margin-top: 7px">
-                                <div class="input-group-addon">
-                                    Rp.
-                                </div>
-                                <input class="form-control" id="set_tarif_diskon" readonly
-                                       oninput="var warn =$('#war_set_tarif_diskon').is(':visible'); if (warn){$('#cor_set_tarif_diskon').show().fadeOut(3000);$('#war_set_tarif_diskon').hide()}">
-                                <input type="hidden" id="h_tarif_diskon">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_tarif_diskon">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_tarif_diskon"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -377,14 +331,6 @@
                                 <tr>
                                     <td><b>Standart Cost</b></td>
                                     <td><span id="v_tarif"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Diskon</b></td>
-                                    <td><span id="v_diskon"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><b>Harga Diskon</b></td>
-                                    <td><span id="v_harga_diskon"></span></td>
                                 </tr>
                             </table>
                         </div>
@@ -455,16 +401,8 @@
         var nama = $('#set_nama_tindakan').val();
         var idKategori = $('#set_kategori_ina_bpjs').val();
         var tarif = $('#h_tarif').val();
-        var tarifDiskon = $('#h_tarif_diskon').val();
-        var diskon = $('#set_diskon').val();
 
         if (nama != '' && idKategori != '' && tarif != '') {
-            if (diskon == '') {
-                diskon = '0';
-            }
-            if (tarifDiskon == '') {
-                tarifDiskon = '0';
-            }
             $('#save_add').hide();
             $('#load_add').show();
             if (id != '') {
@@ -472,9 +410,7 @@
                     'id_tindakan': id,
                     'nama_tindakan': nama,
                     'kategori_ina_bpjs': idKategori,
-                    'tarif': tarif,
-                    'diskon': diskon,
-                    'harga_diskon': tarifDiskon
+                    'tarif': tarif
                 };
                 var dataString = JSON.stringify(data);
                 dwr.engine.setAsync(true);
@@ -498,9 +434,7 @@
                 data = {
                     'nama_tindakan': nama,
                     'kategori_ina_bpjs': idKategori,
-                    'tarif': tarif,
-                    'diskon': diskon,
-                    'harga_diskon': tarifDiskon
+                    'tarif': tarif
                 };
                 var dataString = JSON.stringify(data);
                 dwr.engine.setAsync(true);
@@ -556,16 +490,11 @@
                 $('#v_nama_tindakan').text(res.namaTindakan);
                 $('#v_kategori_tindakan').text(res.kategoriInaBpjs);
                 $('#v_tarif').text("Rp. " + formatRupiahAtas(res.standardCost));
-                $('#v_diskon').text(res.diskon+ " %");
-                $('#v_harga_diskon').text("Rp. " + formatRupiahAtas(res.hargaDiskon));
 
                 $('#set_nama_tindakan').val(res.namaTindakan);
                 $('#set_kategori_ina_bpjs').val(res.kategoriInaBpjs).trigger('change');
                 $('#set_tarif').val(formatRupiahAtas(res.standardCost));
                 $('#h_tarif').val(res.standardCost);
-                $('#set_tarif_diskon').val(formatRupiahAtas(res.hargaDiskon));
-                $('#h_tarif_diskon').val(res.hargaDiskon);
-                $('#set_diskon').val(res.diskon);
             }
         });
     }

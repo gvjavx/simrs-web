@@ -91,8 +91,6 @@ public class HeaderTindakanAction extends BaseTransactionAction {
                 headerTindakan.setNamaTindakan(object.getString("nama_tindakan"));
                 headerTindakan.setKategoriInaBpjs(object.getString("kategori_ina_bpjs"));
                 headerTindakan.setStandardCost(new BigInteger(object.getString("tarif")));
-                headerTindakan.setDiskon(new BigDecimal(object.getString("diskon")));
-                headerTindakan.setHargaDiskon(new BigInteger(object.getString("harga_diskon")));
                 headerTindakan.setCreatedWho(userLogin);
                 headerTindakan.setLastUpdate(updateTime);
                 headerTindakan.setCreatedDate(updateTime);
@@ -126,8 +124,6 @@ public class HeaderTindakanAction extends BaseTransactionAction {
                 headerTindakan.setNamaTindakan(object.getString("nama_tindakan"));
                 headerTindakan.setKategoriInaBpjs(object.getString("kategori_ina_bpjs"));
                 headerTindakan.setStandardCost(new BigInteger(object.getString("tarif")));
-                headerTindakan.setDiskon(new BigDecimal(object.getString("diskon")));
-                headerTindakan.setHargaDiskon(new BigInteger(object.getString("harga_diskon")));
                 headerTindakan.setLastUpdate(updateTime);
                 headerTindakan.setLastUpdateWho(userLogin);
                 headerTindakan.setAction("U");

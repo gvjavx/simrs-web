@@ -57,5 +57,8 @@
         <property name="idPelayanan">
             <column name="id_pelayanan"/>
         </property>
+        <property name="isElektif">
+            <column name="is_elektif"/>
+        </property>
     </class>
 </hibernate-mapping>

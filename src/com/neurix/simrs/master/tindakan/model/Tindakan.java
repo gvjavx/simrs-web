@@ -36,6 +36,15 @@ public class Tindakan {
     private String idKategoriNota;
     private String tipe;
     private String namaPelayanan;
+    private String isElektif;
+
+    public String getIsElektif() {
+        return isElektif;
+    }
+
+    public void setIsElektif(String isElektif) {
+        this.isElektif = isElektif;
+    }
 
     public String getNamaPelayanan() {
         return namaPelayanan;

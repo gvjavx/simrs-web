@@ -62,6 +62,12 @@ public class TindakanBoImpl implements TindakanBo {
                     if(bean.getIdHeaderTindakan() != null){
                         simrsTindakanEntity.setIdHeaderTindakan(bean.getIdHeaderTindakan());
                     }
+                    if(bean.getIsIna() != null){
+                        simrsTindakanEntity.setIsIna(bean.getIsIna());
+                    }
+                    if(bean.getIsElektif() != null){
+                        simrsTindakanEntity.setIsElektif(bean.getIsElektif());
+                    }
 
                     simrsTindakanEntity.setFlag(bean.getFlag());
                     simrsTindakanEntity.setAction(bean.getAction());
@@ -118,6 +124,9 @@ public class TindakanBoImpl implements TindakanBo {
                     entity.setLastUpdate(bean.getLastUpdate());
                     entity.setIdHeaderTindakan(bean.getIdHeaderTindakan());
                     entity.setIdPelayanan(bean.getIdPelayanan());
+                    entity.setIsIna(bean.getIsIna());
+                    entity.setIsElektif(bean.getIsElektif());
+
                     try {
                         tindakanDao.addAndSave(entity);
                         response.setStatus("success");

@@ -14,6 +14,7 @@
         }
     </style>
 
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/HeaderTindakanAction.js"/>'></script>
 
@@ -239,7 +240,7 @@
 </div>
 
 <div class="modal fade" id="modal-add">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog" style="width: 55%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -327,10 +328,13 @@
                         <table id="table_pelayanan" class="table table-bordered table-striped" style="font-size: 12px">
                             <thead>
                             <tr style="font-weight: bold">
-                                <td width="40%">Nama Tindakan</td>
+                                <td width="30%">Nama Tindakan</td>
                                 <td>Tarif (Rp.)</td>
                                 <td>Tarif Bpjs (Rp.)</td>
                                 <td>Diskon (%)</td>
+                                <td>Elektif</td>
+                                <td>Ina</td>
+                                <td>Action</td>
                             </tr>
                             </thead>
                             <tbody id="body_tindakan"></tbody>
@@ -339,7 +343,6 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <p class="pull-left">Scrol ? </p>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_add"><i
@@ -645,9 +648,7 @@
                 HeaderTindakanAction.initHeaderTindakan(tindakan, function (res) {
                     if (res.idHeaderTindakan != null) {
                         var table = '<tr id="row_' + tindakan + '">' +
-                            '<td style="vertical-align: center">' +
-                            '<img class="hvr-grow" onclick"del(\'' + tindakan + '\')" src="<s:url value='/pages/images/cancel-flat-new.png'/>">' +
-                            " " + namaTindakan +
+                            '<td style="vertical-align: middle">' + namaTindakan +
                             '<input id="id_tindakan_' + id + '" type="hidden" value="' + tindakan + '"></td>' +
                             '<td>' +
                             '<input id="tarif_' + id + '" class="form-control" value="' + formatRupiahAtas(res.standardCost) + '" oninput="convertRpAtas(this.id, this.value, \'h_tarif_' + id + '\')">' +
@@ -658,8 +659,23 @@
                             '<input type="hidden" id="h_tarif_bpjs_' + id + '" class="form-control" value="' + res.standardCost + '">' +
                             '</td>' +
                             '<td>' +
-                            '<input min="0" id="diskon_' + id + '" type="number" class="form-control" value="' + res.diskon + '">' +
+                            '<input min="0" id="diskon_' + id + '" type="number" class="form-control" value="0">' +
                             '</td>' +
+                            '<td style="vertical-align: middle">'+
+                            '<div class="form-check">\n' +
+                            '<input type="checkbox" name="elektif" id="is_elektif_'+id+'" value="Y">\n' +
+                            '<label for="is_elektif_'+id+'"></label>\n' +
+                            '</div>'+
+                            '</td>'+
+                            '<td style="vertical-align: middle">'+
+                            '<div class="form-check">\n' +
+                            '<input type="checkbox" name="ina" id="is_ina_'+id+'" value="Y">\n' +
+                            '<label for="is_ina_'+id+'"></label>\n' +
+                            '</div>'+
+                            '</td>'+
+                            '<td style="vertical-align: middle" align="center">'+
+                            '<img class="hvr-grow" onclick"delTindakan(\'' + tindakan + '\')" src="<s:url value='/pages/images/cancel-flat-new.png'/>">'+
+                            '</td>'
                             '</tr>';
                         $('#body_tindakan').append(table);
                         $('#set_nama_unit').attr('disabled', true);
@@ -687,7 +703,8 @@
         }
     }
 
-    function del(id) {
+    function delTindakan(id) {
+        console.log(id);
         $('#row_' + id).remove();
     }
 

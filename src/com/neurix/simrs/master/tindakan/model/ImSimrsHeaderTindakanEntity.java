@@ -11,8 +11,6 @@ public class ImSimrsHeaderTindakanEntity {
     private String idHeaderTindakan;
     private String namaTindakan;
     private BigInteger standardCost;
-    private BigDecimal diskon;
-    private BigInteger hargaDiskon;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -45,29 +43,12 @@ public class ImSimrsHeaderTindakanEntity {
         this.namaTindakan = namaTindakan;
     }
 
-
     public BigInteger getStandardCost() {
         return standardCost;
     }
 
     public void setStandardCost(BigInteger standardCost) {
         this.standardCost = standardCost;
-    }
-
-    public BigDecimal getDiskon() {
-        return diskon;
-    }
-
-    public void setDiskon(BigDecimal diskon) {
-        this.diskon = diskon;
-    }
-
-    public BigInteger getHargaDiskon() {
-        return hargaDiskon;
-    }
-
-    public void setHargaDiskon(BigInteger hargaDiskon) {
-        this.hargaDiskon = hargaDiskon;
     }
 
     public String getFlag() {

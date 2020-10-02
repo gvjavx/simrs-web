@@ -29,6 +29,15 @@ public class ImSimrsTindakanEntity implements Serializable{
     private String isIna;
     private String idHeaderTindakan;
     private String idPelayanan;
+    private String isElektif;
+
+    public String getIsElektif() {
+        return isElektif;
+    }
+
+    public void setIsElektif(String isElektif) {
+        this.isElektif = isElektif;
+    }
 
     public String getIdPelayanan() {
         return idPelayanan;

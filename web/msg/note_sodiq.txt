@@ -893,6 +893,17 @@ INSERT INTO im_func_roles VALUES
 ALTER TABLE im_simrs_tindakan
 ADD COLUMN id_pelayanan VARCHAR(50);
 
+--2020-10-02
+ALTER TABLE im_simrs_header_tindakan
+DROP diskkon,
+DROP hargaDiskon;
+
+ALTER TABLE im_simrs_header_tindakan
+DROP id_kategori_nota;
+
+ALTER TABLE im_simrs_tindakan
+ADD COLUMN is_elektif VARCHAR(1);
+
 
 
 
