@@ -792,6 +792,10 @@ public class ObatPoliAction extends BaseMasterAction {
         }
     }
 
+    private String initFormRequestUnit(){
+        return "search";
+    }
+
     @Override
     public String downloadPdf() {
         return null;

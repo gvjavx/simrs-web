@@ -1122,6 +1122,7 @@
             callback: function (response) {
                 if (response.status == "success") {
 //                    $('#ref').val(2);
+                    $('#ref').val(1);
                     $('#info_dialog').dialog('open');
                     $('#waiting_dialog').dialog('close');
                     $('body').scrollTop(0);
