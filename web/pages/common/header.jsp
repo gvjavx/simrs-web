@@ -612,7 +612,10 @@ apply the skin class to the body tag so the changes take effect.
         $('#'+id).val(formatRupiahAtas2(val));
         if(idHidden != '' && idHidden != null){
             val = val.replace(/[.]/g, '');
-            $('#'+idHidden).val(val);
+            var numbers = /^[0-9]+$/;
+            if(val.match(numbers)){
+                $('#'+idHidden).val(val);
+            }
         }
     }
 

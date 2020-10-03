@@ -27,8 +27,8 @@ public class ParameterPemeriksaanDao extends GenericDao<ImSimrsParameterPemeriks
             if (mapCriteria.get("id_parameter_pemeriksaan")!=null) {
                 criteria.add(Restrictions.eq("idParameterPemeriksaan", (String) mapCriteria.get("id_parameter_pemeriksaan")));
             }
-            if (mapCriteria.get("id_pelayanan")!=null) {
-                criteria.add(Restrictions.eq("idPelayanan", (String) mapCriteria.get("id_pelayanan")));
+            if (mapCriteria.get("id_kategori_lab")!=null) {
+                criteria.add(Restrictions.eq("idKategoriLab", (String) mapCriteria.get("id_kategori_lab")));
             }
             if (mapCriteria.get("nama_pemeriksaan")!=null) {
                 criteria.add(Restrictions.ilike("namaPemeriksaan", "%" + (String)mapCriteria.get("nama_pemeriksaan") + "%"));
@@ -46,6 +46,6 @@ public class ParameterPemeriksaanDao extends GenericDao<ImSimrsParameterPemeriks
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_perameter_pemeriksaan')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
-        return "LDB" + sId;
+        return "PRP" + sId;
     }
 }

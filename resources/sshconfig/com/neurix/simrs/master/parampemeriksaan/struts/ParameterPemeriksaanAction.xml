@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="labdetail" namespace="/labdetail" extends="struts-default, jasperreports-default, json-default">
+    <package name="pemeriksaan" namespace="/pemeriksaan" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,12 +69,13 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_labdetail"
-                class="com.neurix.simrs.master.labdetail.action.LabDetailAction" method="{1}">
+        <action name="*_pemeriksaan"
+                class="com.neurix.simrs.master.parampemeriksaan.action.ParameterPemeriksaanAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/master/detaillab/searchLabDetail.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/master/parampemeriksaan/searchParameterPemeriksaan.jsp</result>
 
         </action>
+
     </package>
 </struts>

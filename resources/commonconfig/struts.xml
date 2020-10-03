@@ -275,4 +275,6 @@
     <include file="sshconfig/com/neurix/hris/master/jenisPegawai/struts/JenisPegawaiAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/tindakan/struts/HeaderTindakanAction.xml"/>
 
+    <include file="sshconfig/com/neurix/simrs/master/parampemeriksaan/struts/ParameterPemeriksaanAction.xml"/>
+
 </struts>

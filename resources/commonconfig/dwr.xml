@@ -2,9 +2,7 @@
 <!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 3.0//EN" "http://getahead.org/dwr/dwr30.dtd">
 
 <dwr>
-
-  <allow>
-
+    <allow>
       <create creator="new">
         <param name="class" value="com.neurix.authorization.user.action.UserLoginAction"/>
       </create>
@@ -125,10 +123,8 @@
       </create>
       <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail"/>
-
       <convert converter="bean" match="com.neurix.hris.master.shift.model.Shift"/>
       <convert converter="bean" match="com.neurix.hris.master.group.model.Group"/>
-      <convert converter="bean" match="com.neurix.hris.master.groupMember.model.GroupMember"/>
 
       <create creator="new">
           <param name="class" value="com.neurix.hris.transaksi.rekruitmenPabrik.action.RekruitmenPabrikAction"/>
@@ -195,7 +191,6 @@
       </create>
       <convert converter="bean" match="com.neurix.hris.master.smkJabatan.model.SmkJabatan"/>
       <convert converter="bean" match="com.neurix.hris.master.smkJabatan.model.SmkJabatanDetail"/>
-      <convert converter="bean" match="com.neurix.authorization.position.model.Position"/>
       <convert converter="bean" match="com.neurix.hris.master.smkIndikatorPenilaianAspek.model.SmkIndikatorPenilaianAspek"/>
       <convert converter="bean" match="com.neurix.hris.master.smkKategoriAspek.model.SmkKategoriAspek"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.smk.model.SmkEvaluasiPegawaiAspekActivityPeristiwa"/>
@@ -216,7 +211,6 @@
       <convert converter="bean" match="com.neurix.hris.master.positionBagian.model.positionBagian"/>
       <convert converter="bean" match="com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity"/>
 
-      <convert converter="bean" match="com.neurix.hris.master.positionBagian.model.positionBagian"/>
       <create creator="new">
           <param name="class" value="com.neurix.hris.master.groupShift.action.GroupShiftAction"/>
       </create>
@@ -845,6 +839,10 @@
       <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.HeaderTindakan"/>
       <convert converter="bean" match="com.neurix.simrs.master.kategoritindakanina.model.KategoriTindakanIna"/>
 
-  </allow>
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.parampemeriksaan.action.ParameterPemeriksaanAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.master.parampemeriksaan.model.ParameterPemeriksaan"/>
 
+  </allow>
 </dwr>

@@ -8,8 +8,8 @@
             <id name="idParameterPemeriksaan">
                 <column name="id_parameter_pemeriksaan"/>
             </id>
-            <basic name="idPelayanan">
-                <column name="id_pelayanan"/>
+            <basic name="idKategoriLab">
+                <column name="id_kategori_lab"/>
             </basic>
             <basic name="namaPemeriksaan">
                 <column name="nama_pemeriksaan"/>
@@ -22,6 +22,9 @@
             </basic>
             <basic name="satuan">
                 <column name="satuan"/>
+            </basic>
+            <basic name="tarif">
+                <column name="tarif"/>
             </basic>
             <basic name="flag">
                 <column name="flag"/>

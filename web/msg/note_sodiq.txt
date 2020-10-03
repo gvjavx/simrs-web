@@ -908,11 +908,12 @@ ADD COLUMN is_elektif VARCHAR(1);
 CREATE TABLE public.im_simrs_parameter_pemeriksaan
 (
     id_parameter_pemeriksaan character varying(50) NOT NULL,
-	id_pelayanan character varying(50),
+	id_kategori_lab character varying(50),
     nama_pemeriksaan character varying(100),
     keterangan_acuan_l character varying(50),
 	keterangan_acuan_p character varying(50),
     satuan character varying(50),
+    tarif numeric,
     flag character varying(1),
     action character varying(1),
     created_date timestamp without time zone,
@@ -927,6 +928,24 @@ WITH (
 TABLESPACE pg_default;
 
 CREATE SEQUENCE seq_perameter_pemeriksaan;
+
+INSERT INTO im_functions VALUES
+(2344, 'All Parameter', '/pemeriksaan/initForm_pemeriksaan.action', 3, 2, now(), 'admin', now(), 'admin', 'Y','C', 2344),
+(2345, 'init', '/pemeriksaan/initForm_pemeriksaan.action', 2344, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2346, 'search', '/pemeriksaan/search_pemeriksaan.action', 2344, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2344, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2345, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2346, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_lab_detail
+DROP nama_detail_periksa,
+DROP satuan,
+DROP keterangan_acuan;
+
+ALTER TABLE im_simrs_lab_detail
+ADD COLUMN id_parameter_pemeriksaan VARCHAR(50);
 
 
 

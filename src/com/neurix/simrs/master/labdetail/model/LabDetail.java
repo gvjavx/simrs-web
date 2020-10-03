@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 public class LabDetail extends BaseModel {
 
     private String idLabDetail;
+    private String idParameterPemeriksaan;
     private String idLab;
     private String namaLab;
     private String namaDetailPeriksa;
@@ -23,6 +24,14 @@ public class LabDetail extends BaseModel {
     private String lastUpdateWho;
     private BigDecimal tarif;
     private String stTarif;
+
+    public String getIdParameterPemeriksaan() {
+        return idParameterPemeriksaan;
+    }
+
+    public void setIdParameterPemeriksaan(String idParameterPemeriksaan) {
+        this.idParameterPemeriksaan = idParameterPemeriksaan;
+    }
 
     public String getIdLabDetail() {
         return idLabDetail;

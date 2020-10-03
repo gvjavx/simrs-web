@@ -7,7 +7,6 @@
     <class name="com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity" dynamic-update="true"
            table="im_simrs_lab_detail" select-before-update="true" schema="public">
 
-
         <id name="idLabDetail">
             <column name="id_lab_detail" sql-type="varchar" length="10" not-null="true" />
         </id>
@@ -15,14 +14,8 @@
         <property name="idLab">
             <column name="id_lab" sql-type="varchar" length="10" not-null="true"/>
         </property>
-        <property name="namaDetailPeriksa">
-            <column name="nama_detail_periksa" sql-type="varchar" length="100" not-null="false"/>
-        </property>
-        <property name="satuan">
-            <column name="satuan" sql-type="varchar" length="10" not-null="false"/>
-        </property>
-        <property name="ketentuanAcuan">
-            <column name="keterangan_acuan" sql-type="varchar" length="1000" not-null="false"/>
+        <property name="idParameterPemeriksaan">
+            <column name="id_parameter_pemeriksaan"/>
         </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

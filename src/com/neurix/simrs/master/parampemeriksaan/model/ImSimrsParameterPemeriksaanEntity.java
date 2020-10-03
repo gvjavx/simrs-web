@@ -1,21 +1,31 @@
 package com.neurix.simrs.master.parampemeriksaan.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 public class ImSimrsParameterPemeriksaanEntity {
     private String idParameterPemeriksaan;
-    private String idPelayanan;
+    private String idKategoriLab;
     private String namaPemeriksaan;
     private String keteranganAcuanL;
     private String keteranganAcuanP;
     private String satuan;
+    private BigDecimal tarif;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
 
     public String getIdParameterPemeriksaan() {
         return idParameterPemeriksaan;
@@ -25,12 +35,12 @@ public class ImSimrsParameterPemeriksaanEntity {
         this.idParameterPemeriksaan = idParameterPemeriksaan;
     }
 
-    public String getIdPelayanan() {
-        return idPelayanan;
+    public String getIdKategoriLab() {
+        return idKategoriLab;
     }
 
-    public void setIdPelayanan(String idPelayanan) {
-        this.idPelayanan = idPelayanan;
+    public void setIdKategoriLab(String idKategoriLab) {
+        this.idKategoriLab = idKategoriLab;
     }
 
     public String getNamaPemeriksaan() {
