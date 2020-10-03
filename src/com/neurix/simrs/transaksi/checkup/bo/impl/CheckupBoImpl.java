@@ -1,7 +1,6 @@
 package com.neurix.simrs.transaksi.checkup.bo.impl;
 
 import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
-import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.constant.CommonConstant;
@@ -12,7 +11,6 @@ import com.neurix.simrs.bpjs.BpjsService;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
-import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.labdetail.dao.LabDetailDao;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
 import com.neurix.simrs.master.pasien.dao.RekamMedicLamaDao;
@@ -62,7 +60,6 @@ import com.neurix.simrs.transaksi.periksaradiologi.model.ItSimrsPeriksaRadiologi
 import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.ObatKronis;
-import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.psikososial.dao.PsikososialDao;
 import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity;
 import com.neurix.simrs.transaksi.rekonsiliasiobat.dao.RekonsiliasiObatDao;
@@ -70,7 +67,6 @@ import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObat
 import com.neurix.simrs.transaksi.rencanarawat.dao.KategoriRencanaRawatDao;
 import com.neurix.simrs.transaksi.rencanarawat.dao.ParameterRencanaRawatDao;
 import com.neurix.simrs.transaksi.rencanarawat.dao.RencanaRawatDao;
-import com.neurix.simrs.transaksi.rencanarawat.model.ImSimrsKategoriRencanaRawatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.model.ImSimrsParameterRencanaRawatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
 import com.neurix.simrs.transaksi.resikojatuh.dao.KategoriResikoJatuhDao;
@@ -81,7 +77,6 @@ import com.neurix.simrs.transaksi.resikojatuh.model.*;
 
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
-import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.teamdokter.dao.DokterTeamDao;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
@@ -98,7 +93,6 @@ import com.neurix.simrs.transaksi.transfusi.dao.TranfusiDao;
 import com.neurix.simrs.transaksi.transfusi.model.ItSimrsTranfusiEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.joda.time.Days;
 import org.json.JSONObject;
 
 import java.io.File;

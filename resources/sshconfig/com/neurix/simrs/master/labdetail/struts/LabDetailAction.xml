@@ -70,7 +70,7 @@
         </global-exception-mappings>
 
         <action name="*_labdetail"
-                class="com.neurix.simrs.master.labdetail.action.LabDetailAction" method="{1}">
+                class="com.neurix.simrs.master.labdetail.action.ParameterPemeriksaanAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
             <result name="search">/pages/com/neurix/simrs/master/detaillab/searchLabDetail.jsp</result>
@@ -94,7 +94,7 @@
         </action>
 
         <action name="paging_displaytag_labdetail"
-                class="com.neurix.simrs.master.labdetail.action.LabDetailAction" method="paging">
+                class="com.neurix.simrs.master.labdetail.action.ParameterPemeriksaanAction" method="paging">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/simrs/master/detaillab/searchLabDetail.jsp</result>
         </action>

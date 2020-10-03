@@ -46,42 +46,40 @@ public class TindakanBoImpl implements TindakanBo {
                 logger.error("[TindakanBoImpl.saveEdit] Error, " + e.getMessage());
             }
             if (simrsTindakanEntity != null) {
-                if (bean.getTindakan().equalsIgnoreCase(simrsTindakanEntity.getTindakan())) {
-                    if(bean.getTarif() != null){
-                        simrsTindakanEntity.setTarif(bean.getTarif());
-                    }
-                    if(bean.getTarifBpjs() != null){
-                        simrsTindakanEntity.setTarifBpjs(bean.getTarifBpjs());
-                    }
-                    if(bean.getDiskon() != null){
-                        simrsTindakanEntity.setDiskon(bean.getDiskon());
-                    }
-                    if(bean.getIdKategoriTindakan() != null){
-                        simrsTindakanEntity.setIdKategoriTindakan(bean.getIdKategoriTindakan());
-                    }
-                    if(bean.getIdHeaderTindakan() != null){
-                        simrsTindakanEntity.setIdHeaderTindakan(bean.getIdHeaderTindakan());
-                    }
-                    if(bean.getIsIna() != null){
-                        simrsTindakanEntity.setIsIna(bean.getIsIna());
-                    }
-                    if(bean.getIsElektif() != null){
-                        simrsTindakanEntity.setIsElektif(bean.getIsElektif());
-                    }
+                if(bean.getTarif() != null){
+                    simrsTindakanEntity.setTarif(bean.getTarif());
+                }
+                if(bean.getTarifBpjs() != null){
+                    simrsTindakanEntity.setTarifBpjs(bean.getTarifBpjs());
+                }
+                if(bean.getDiskon() != null){
+                    simrsTindakanEntity.setDiskon(bean.getDiskon());
+                }
+                if(bean.getIdKategoriTindakan() != null){
+                    simrsTindakanEntity.setIdKategoriTindakan(bean.getIdKategoriTindakan());
+                }
+                if(bean.getIdHeaderTindakan() != null){
+                    simrsTindakanEntity.setIdHeaderTindakan(bean.getIdHeaderTindakan());
+                }
+                if(bean.getIsIna() != null){
+                    simrsTindakanEntity.setIsIna(bean.getIsIna());
+                }
+                if(bean.getIsElektif() != null){
+                    simrsTindakanEntity.setIsElektif(bean.getIsElektif());
+                }
 
-                    simrsTindakanEntity.setFlag(bean.getFlag());
-                    simrsTindakanEntity.setAction(bean.getAction());
-                    simrsTindakanEntity.setLastUpdate(bean.getLastUpdate());
-                    simrsTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                    try {
-                        tindakanDao.updateAndSave(simrsTindakanEntity);
-                        response.setStatus("success");
-                        response.setMsg("Oke!");
-                    } catch (HibernateException e) {
-                        response.setStatus("error");
-                        response.setMsg("Mohon maaf... Terjadi kesalahan saat edit tindakan...!");
-                        logger.error("[TindakanBoImpl.saveAdd] Error when Updating data ruangan", e);
-                    }
+                simrsTindakanEntity.setFlag(bean.getFlag());
+                simrsTindakanEntity.setAction(bean.getAction());
+                simrsTindakanEntity.setLastUpdate(bean.getLastUpdate());
+                simrsTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    tindakanDao.updateAndSave(simrsTindakanEntity);
+                    response.setStatus("success");
+                    response.setMsg("Oke!");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg("Mohon maaf... Terjadi kesalahan saat edit tindakan...!");
+                    logger.error("[TindakanBoImpl.saveAdd] Error when Updating data ruangan", e);
                 }
             }else{
                 response.setStatus("error");

@@ -421,6 +421,7 @@
                             $('#info_dialog').dialog('open');
                             $('#save_add').show();
                             $('#load_add').hide();
+                            $('body').scrollTop(0);
 
                         } else {
                             $('#warning_add').show().fadeOut(5000);
@@ -445,6 +446,7 @@
                             $('#info_dialog').dialog('open');
                             $('#save_add').show();
                             $('#load_add').hide();
+                            $('body').scrollTop(0);
 
                         } else {
                             $('#warning_add').show().fadeOut(5000);
@@ -508,6 +510,7 @@
                 if(res.status == "success"){
                     $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
+                    $('body').scrollTop(0);
                 }else{
                     $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');

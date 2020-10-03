@@ -370,7 +370,7 @@
 
       <!--Lab Detail-->
       <create creator="new">
-          <param name="class" value="com.neurix.simrs.master.labdetail.action.LabDetailAction"/>
+          <param name="class" value="com.neurix.simrs.master.labdetail.action.ParameterPemeriksaanAction"/>
       </create>
 
       <!--Order Gizi-->

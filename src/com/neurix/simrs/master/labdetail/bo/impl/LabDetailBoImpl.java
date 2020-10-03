@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class LabDetailBoImpl implements LabDetailBo {
 
-    protected static transient Logger logger = Logger.getLogger(LabDetailBoImpl.class);
+    protected static transient Logger logger = Logger.getLogger(com.neurix.simrs.master.labdetail.bo.impl.LabDetailBoImpl.class);
     private LabDetailDao labDetailDao;
 
     public static Logger getLogger() {

@@ -904,6 +904,30 @@ DROP id_kategori_nota;
 ALTER TABLE im_simrs_tindakan
 ADD COLUMN is_elektif VARCHAR(1);
 
+--2020-10-03
+CREATE TABLE public.im_simrs_parameter_pemeriksaan
+(
+    id_parameter_pemeriksaan character varying(50) NOT NULL,
+	id_pelayanan character varying(50),
+    nama_pemeriksaan character varying(100),
+    keterangan_acuan_l character varying(50),
+	keterangan_acuan_p character varying(50),
+    satuan character varying(50),
+    flag character varying(1),
+    action character varying(1),
+    created_date timestamp without time zone,
+    created_who character varying(100),
+    last_update timestamp without time zone,
+    last_update_who character varying(100),
+    CONSTRAINT pk_id_parameter_pemeriksaan PRIMARY KEY (id_parameter_pemeriksaan)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+CREATE SEQUENCE seq_perameter_pemeriksaan;
+
 
 
 

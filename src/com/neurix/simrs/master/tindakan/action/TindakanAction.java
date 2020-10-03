@@ -258,15 +258,16 @@ public class TindakanAction extends BaseTransactionAction {
         return branchList;
     }
 
-    public List<ImSimrsPelayananEntity> getComboPelayanan() {
+    public List<ImSimrsPelayananEntity> getComboPelayanan(String branchId) {
         List<ImSimrsPelayananEntity> branchList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
-        String branchId = CommonUtil.userBranchLogin();
-        try {
-            branchList = pelayananBo.getPelayananByBranch(branchId);
-        } catch (GeneralBOException e) {
-            logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+        if(branchId != null && !"".equalsIgnoreCase(branchId)){
+            try {
+                branchList = pelayananBo.getPelayananByBranch(branchId);
+            } catch (GeneralBOException e) {
+                logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+            }
         }
         return branchList;
     }
@@ -384,7 +385,7 @@ public class TindakanAction extends BaseTransactionAction {
             JSONObject object = new JSONObject(data);
             if(object != null){
                 Tindakan tindakan = new Tindakan();
-                tindakan.setIdHeaderTindakan(object.getString("id_tindakan"));
+                tindakan.setIdTindakan(object.getString("id_tindakan"));
                 tindakan.setIdHeaderTindakan(object.getString("id_header_tindakan"));
                 tindakan.setIdKategoriTindakan(object.getString("id_kategori_tindakan"));
                 tindakan.setTarifBpjs(new BigInteger(object.getString("tarif")));
