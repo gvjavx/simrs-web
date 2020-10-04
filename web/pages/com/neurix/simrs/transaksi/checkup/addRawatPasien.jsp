@@ -187,12 +187,24 @@
             height: 168px;
             border-radius: 10px;
             opacity: 0.9;
-            /*padding-right: 20px;
-            padding-left: 20px;*/
             padding: 6px;
             float: left;
             margin: 5px;
-            /*border: 1px solid #555;*/
+            box-shadow: 5px 10px 18px #555;
+            font-size: 12px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .btn-trans-02 {
+            background-color: #9FAFD1;
+            width: 200px;
+            height: 168px;
+            border-radius: 10px;
+            opacity: 0.9;
+            padding: 6px;
+            float: left;
+            margin: 5px;
             box-shadow: 5px 10px 18px #555;
             font-size: 12px;
             text-align: center;
@@ -202,9 +214,15 @@
         .btn-trans:active {
             background-color: #4CAF50;
         }
-
         .btn-trans:hover {
             background-color: #4CAF50;
+        }
+
+        .btn-trans-02:active {
+            background-color: #d33724;
+        }
+        .btn-trans-02:hover {
+            background-color: #d33724;
         }
 
     </style>
@@ -1131,8 +1149,15 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">No Telp.</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="no_telp" name="headerCheckup.noTelp"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                <div class="input-group" style="margin-top: 7px">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-phone"></i>
+                                                    </div>
+                                                    <s:textfield id="no_telp" name="headerCheckup.noTelp"
+                                                                 data-inputmask="'mask': ['9999-9999-9999']"
+                                                                 data-mask=""
+                                                                 cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -2060,7 +2085,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Jadwal Dokter <span id="dokter_pelayanan"></span> Hari Ini</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="height: 70%; overflow-y: scroll">
                 <div class="box-body">
                     <div class="col-md-12" style="display:inline; padding-left: 6%">
                         <div class="btn-wrapper">
@@ -2806,7 +2831,14 @@
                         if(item.idDokter != ''){
                             sip = item.idDokter;
                         }
-                        table += '<div id="id_box_'+i+'" class="btn-trans" onclick="setDokter(\''+item.idDokter+'\', \''+item.namaDokter+'\')">\n' +
+
+                        var clasBox = 'btn-trans';
+                        var btnSet = 'onclick="setDokter(\''+item.idDokter+'\', \''+item.namaDokter+'\')"';
+                        if(item.flagLibur == "Y"){
+                            clasBox = 'btn-trans-02';
+                            btnSet = 'style="cursor: no-drop"';
+                        }
+                        table += '<div id="id_box_'+i+'" class="'+clasBox+'" '+btnSet+'>\n' +
                             '<div style="text-align:left; cursor:pointer; font-size:11px;">\n' +
                             '    <table align="center" style="width:100%; border-radius:5px; margin-top:2px;">\n' +
                             '        <tr>\n' +

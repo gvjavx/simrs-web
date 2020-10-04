@@ -37,8 +37,9 @@ public class TempatTidurAction extends BaseTransactionAction {
         if (id != null && !"".equalsIgnoreCase(id)) {
             TempatTidur tt = new TempatTidur();
             tt.setIdTempatTidur(id);
+            tt.setBranchId(CommonUtil.userBranchLogin());
             try {
-                tempatTidurList = tempatTidurBo.getByCriteria(tt);
+                tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
             } catch (GeneralBOException e) {
                 logger.error(e.getMessage());
             }
@@ -52,9 +53,10 @@ public class TempatTidurAction extends BaseTransactionAction {
     @Override
     public String search() {
         TempatTidur tempatTidur = getTempatTidur();
+        tempatTidur.setBranchId(CommonUtil.userBranchLogin());
         List<TempatTidur> tempatTidurList = new ArrayList();
         try {
-            tempatTidurList = tempatTidurBoProxy.getByCriteria(tempatTidur);
+            tempatTidurList = tempatTidurBoProxy.getDataTempatTidur(tempatTidur);
         } catch (GeneralBOException e) {
             logger.error(e.getMessage());
         }
@@ -68,7 +70,7 @@ public class TempatTidurAction extends BaseTransactionAction {
     @Override
     public String initForm() {
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResultLabDetail");
+        session.removeAttribute("listOfResult");
         setTempatTidur(new TempatTidur());
         return "search";
     }
@@ -181,16 +183,17 @@ public class TempatTidurAction extends BaseTransactionAction {
         return response;
     }
 
-    public List<Ruangan> getRuanganByBranch() {
+    public List<Ruangan> getRuanganByBranch(String idKelas) {
         List<Ruangan> ruanganList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
+        TempatTidurBo tempatTidurBo = (TempatTidurBo) ctx.getBean("tempatTidurBoProxy");
         String branchId = CommonUtil.userBranchLogin();
         Ruangan ruangan = new Ruangan();
         ruangan.setBranchId(branchId);
+        ruangan.setIdKelasRuangan(idKelas);
         ruangan.setFlag("Y");
         try {
-            ruanganList = ruanganBo.getByCriteria(ruangan);
+            ruanganList = tempatTidurBo.getComboRuangan(ruangan);
         } catch (GeneralBOException e) {
             logger.error(e.getMessage());
         }

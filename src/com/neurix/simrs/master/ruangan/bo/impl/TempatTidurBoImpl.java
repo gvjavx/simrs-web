@@ -1,12 +1,6 @@
 package com.neurix.simrs.master.ruangan.bo.impl;
 
-import com.neurix.authorization.company.bo.BranchBo;
-import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.common.util.CommonUtil;
-import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
-import com.neurix.simrs.master.kelasruangan.model.KelasRuangan;
-import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.bo.TempatTidurBo;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.dao.TempatTidurDao;
@@ -15,17 +9,12 @@ import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganTempatTidurEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.ruangan.model.TempatTidur;
 import com.neurix.simrs.transaksi.CrudResponse;
-import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.ContextLoader;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TempatTidurBoImpl implements TempatTidurBo {
     protected static transient Logger logger = Logger.getLogger(TempatTidurBoImpl.class);
@@ -53,10 +42,12 @@ public class TempatTidurBoImpl implements TempatTidurBo {
                     entity.setIdRuangan("RUA"+id);
                     entity.setIdKelasRuangan(tempatTidur.getIdKelasRuangan());
                     entity.setNoRuangan(tempatTidur.getNoRuangan());
-                    entity.setNamaRuangan(tempatTidur.getFlag());
+                    entity.setNamaRuangan(tempatTidur.getNamaRuangan());
+                    entity.setStatusRuangan("Y");
                     entity.setTarif(tempatTidur.getTarif());
                     entity.setBranchId(tempatTidur.getBranchId());
                     entity.setAction(tempatTidur.getAction());
+                    entity.setFlag("Y");
                     entity.setCreatedWho(tempatTidur.getCreatedWho());
                     entity.setLastUpdateWho(tempatTidur.getLastUpdateWho());
                     entity.setCreatedDate(tempatTidur.getCreatedDate());
@@ -163,6 +154,28 @@ public class TempatTidurBoImpl implements TempatTidurBo {
     }
 
     @Override
+    public List<TempatTidur> getDataTempatTidur(TempatTidur bean) throws GeneralBOException {
+        List<TempatTidur> tempatTidurList = new ArrayList<>();
+        try {
+            tempatTidurList = tempatTidurDao.getDataTempatTidur(bean);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return tempatTidurList;
+    }
+
+    @Override
+    public List<Ruangan> getComboRuangan(Ruangan bean) throws GeneralBOException {
+        List<Ruangan> tempatTidurList = new ArrayList<>();
+        try {
+            tempatTidurList = tempatTidurDao.getComboRuangan(bean);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return tempatTidurList;
+    }
+
+    @Override
     public List<TempatTidur> getByCriteria(TempatTidur bean) throws GeneralBOException {
         List<TempatTidur> pemeriksaanList = new ArrayList<>();
         List<MtSimrsRuanganTempatTidurEntity> entityList = new ArrayList<>();
@@ -205,6 +218,7 @@ public class TempatTidurBoImpl implements TempatTidurBo {
                 param.setLastUpdate(tempatTidurEntity.getLastUpdate());
                 MtSimrsRuanganEntity ruanganEntity = ruanganDao.getById("idRuangan", tempatTidurEntity.getIdRuangan());
                 if(ruanganEntity != null){
+                    param.setNoRuangan(ruanganEntity.getNoRuangan());
                     param.setNamaRuangan(ruanganEntity.getNamaRuangan());
                     param.setTarif(ruanganEntity.getTarif());
                 }

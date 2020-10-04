@@ -104,7 +104,7 @@
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                         <a onclick="showModal('add')" class="btn btn-primary"><i class="fa fa-plus"></i>
-                                            Tambah Tindakan</a>
+                                            Tambah Paramater</a>
                                     </div>
                                 </div>
                                 <div class="form-group">

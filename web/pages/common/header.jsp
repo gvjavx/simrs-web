@@ -627,6 +627,19 @@ apply the skin class to the body tag so the changes take effect.
         document.write(res);
     }
 
+    function cekScrol(id, idTujuan) {
+        var cek = $('#'+id).hasClass("fa fa-unlock");
+        if(cek){
+            $('#'+id).removeClass("fa fa-unlock");
+            $('#'+id).addClass("fa fa-lock");
+            $('#' + idTujuan).attr('style', 'height: 70%; overflow-y: scroll;');
+        }else {
+            $('#'+id).removeClass("fa fa-lock");
+            $('#'+id).addClass("fa fa-unlock");
+            $('#' + idTujuan).removeAttr('style');
+        }
+    }
+
 </script>
 
 

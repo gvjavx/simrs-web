@@ -19,6 +19,15 @@ public class TempatTidur {
     private String idKelasRuangan;
     private String noRuangan;
     private String branchId;
+    private String namaKelasRuangan;
+
+    public String getNamaKelasRuangan() {
+        return namaKelasRuangan;
+    }
+
+    public void setNamaKelasRuangan(String namaKelasRuangan) {
+        this.namaKelasRuangan = namaKelasRuangan;
+    }
 
     public String getBranchId() {
         return branchId;

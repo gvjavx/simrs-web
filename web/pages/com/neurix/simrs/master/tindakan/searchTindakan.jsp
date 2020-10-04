@@ -263,7 +263,7 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Tambah Tindakan
                 </h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="temp_scrol">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_add">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_add"></p>
@@ -360,6 +360,9 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <span onclick="cekScrol('fa_scrol', 'temp_scrol')" class="pull-left hvr-grow" style="color: black; margin-top: 11px">
+                    <i id="fa_scrol" class="fa fa-unlock"></i>
+                </span>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_add"><i
@@ -973,14 +976,6 @@
             $('#set_nama_tindakan').html(option);
             $('#edit_nama_tindakan').html(option);
         });
-    }
-
-    function cekScrol(id, idTujuan) {
-        if ($('#' + id).is(':checked')) {
-            $('#' + idTujuan).attr('style', 'height: 450px;overflow-y: scroll;');
-        } else {
-            $('#' + idTujuan).removeAttr('style');
-        }
     }
 
     function getDataTindakan(id) {

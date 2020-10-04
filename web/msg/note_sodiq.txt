@@ -970,6 +970,15 @@ INSERT INTO im_func_roles VALUES
 (2348, 32, 'Y', now(), now(), 'admin', 'admin'),
 (2349, 32, 'Y', now(), now(), 'admin', 'admin');
 
+ALTER TABLE im_simrs_kelas_ruangan
+ALTER COLUMN id_kelas_ruangan TYPE VARCHAR(50);
+
+ALTER TABLE mt_simrs_ruangan
+ALTER COLUMN id_kelas_ruangan TYPE VARCHAR(50);
+
+ALTER TABLE mt_simrs_ruangan
+ALTER COLUMN id_ruangan TYPE VARCHAR(50);
+
 
 
 
