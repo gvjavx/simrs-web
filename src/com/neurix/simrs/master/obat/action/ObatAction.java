@@ -445,6 +445,39 @@ public class ObatAction extends BaseMasterAction {
 
     }
 
+    public List<Obat> getListObat(String idPelayanan) {
+
+        logger.info("[ObatAction.getListObat] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(idPelayanan);
+
+        String branchId = "";
+        if (pelayananEntity != null){
+            branchId = pelayananEntity.getBranchId();
+        }
+
+        List<Obat> obatList = new ArrayList<>();
+        Obat obat = new Obat();
+        obat.setBranchId(branchId);
+        obat.setFlag("Y");
+
+        if (obat.getBranchId() != null){
+            try {
+                obatList = obatBo.getListObatGroup(obat);
+            } catch (GeneralBOException e) {
+                logger.error("[ObatAction.getListObat] Error when obat ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+        }
+
+        logger.info("[ObatAction.getListObat] end process <<<");
+        return obatList;
+
+    }
+
     public List<Obat> getListNamaObat(String namaObat) {
 
         logger.info("[ObatAction.getListNamaObat] start process >>>");

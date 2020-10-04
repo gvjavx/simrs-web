@@ -970,12 +970,16 @@ public class ObatBoImpl implements ObatBo {
             throw new GeneralBOException("[ObatBoImpl.getListObatGroup] ERROR, " + e.getMessage());
         }
 
-        Obat obat;
+
         for (String idObat : listIdObat) {
-            obat = new Obat();
+            Obat obat = new Obat();
 
             try {
-                obat = obatDao.getLastIdSeqObat(idObat);
+                Obat seqObat = obatDao.getLastIdSeqObat(idObat);
+                if (seqObat != null){
+                    obat.setIdSeqObat(seqObat.getIdSeqObat());
+                    obat.setCreatedDate(seqObat.getCreatedDate());
+                }
             } catch (HibernateException e) {
                 logger.error("[ObatBoImpl.getListObatGroup] ERROR, " + e.getMessage());
                 throw new GeneralBOException("[ObatBoImpl.getListObatGroup] ERROR, " + e.getMessage());
@@ -1001,7 +1005,7 @@ public class ObatBoImpl implements ObatBo {
 
                     Obat sumObat = new Obat();
                     try {
-                        sumObat = obatDao.getSumStockObatGudangById(idObat, "stok", CommonUtil.userBranchLogin());
+                        sumObat = obatDao.getSumStockObatGudangById(idObat, "stok", bean.getBranchId());
                     } catch (HibernateException e) {
                         logger.error("[ObatBoImpl.getListObatGroup] ERROR, " + e.getMessage());
                         throw new GeneralBOException("[ObatBoImpl.getListObatGroup] ERROR, " + e.getMessage());

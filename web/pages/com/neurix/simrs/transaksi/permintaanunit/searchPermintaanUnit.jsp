@@ -48,7 +48,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Permintaan Obat Gudang
+            Permintaan Obat Unit
         </h1>
     </section>
 
@@ -59,12 +59,12 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Permintaan Obat Gudang</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Permintaan Obat Ke Unit Lain</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="obatGudangForm" method="post" namespace="/obatgudang"
-                                    action="searchPermintaanObatGudang_obatgudang.action" theme="simple"
+                            <s:form id="obatGudangForm" method="post" namespace="/permintaanunit"
+                                    action="searchPermintaanObatGudangReqUnit_permintaanunit.action" theme="simple"
                                     cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Tipe Permintaan</label>
@@ -76,19 +76,20 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Poli</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initApotek" namespace="/checkup"
-                                                  name="getComboAllApotek_checkup"/>
-                                        <s:select cssStyle="border-radius: 4px; width: 100%"
-                                                  list="#initApotek.listOfApotek" id="poli"
-                                                  name="permintaanObatPoli.idPelayanan" listKey="idPelayanan"
-                                                  listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2" disabled="true"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Poli</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:action id="initApotek" namespace="/checkup"--%>
+                                                  <%--name="getComboAllApotek_checkup"/>--%>
+                                        <%--<s:select cssStyle="border-radius: 4px; width: 100%"--%>
+                                                  <%--list="#initApotek.listOfApotek" id="poli"--%>
+                                                  <%--name="permintaanObatPoli.idPelayanan" listKey="idPelayanan"--%>
+                                                  <%--listValue="namaPelayanan"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2" disabled="true"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <s:hidden name="permintaanObatPoli.idPelayanan"/>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Flag</label>
                                     <div class="col-sm-4">
@@ -268,28 +269,25 @@
                         <label class="col-md-3" style="margin-top: 7px">Gudang Obat</label>
                         <div class="col-md-7">
                             <select class="form-control select2" id="req_gudang_obat" style="width: 100%"
-                            onchange="$('#war_gudang_obat').is(':visible'); if (warn){$('#cor_gudang_obat').show().fadeOut(3000);$('#war_gudang_obat').hide()}">
+                            onchange="showListObat()">
                             </select>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_gudang_obat"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_gudang_obat"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
-                            <s:action id="initObat" namespace="/obat"
-                                      name="getListObat_obat"/>
-                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      list="#initObat.listOfObat" id="req_nama_obat"
-                                      listKey="idObat + '|' + namaObat + '|' + qtyBox + '|' + qtyLembar + '|' + qtyBiji + '|' + lembarPerBox + '|' + bijiPerLembar + '|' + idPabrik"
-                                      onchange="var warn =$('#war_req_obat').is(':visible'); if (warn){$('#cor_req_obat').show().fadeOut(3000);$('#war_req_obat').hide()}; setStokObatPoli(this)"
-                                      listValue="namaObat"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
+                            <select id="req_nama_obat" class="form-control select2" style="width: 100%" onchange="setStokObatPoli(this)">
+
+                            </select>
+                            <%--<s:action id="initObat" namespace="/obat"--%>
+                                      <%--name="getListObat_obat"/>--%>
+                            <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                      <%--list="#initObat.listOfObat" id="req_nama_obat"--%>
+                                      <%--listKey="idObat + '|' + namaObat + '|' + qtyBox + '|' + qtyLembar + '|' + qtyBiji + '|' + lembarPerBox + '|' + bijiPerLembar + '|' + idPabrik"--%>
+                                      <%--onchange="var warn =$('#war_req_obat').is(':visible'); if (warn){$('#cor_req_obat').show().fadeOut(3000);$('#war_req_obat').hide()}; setStokObatPoli(this)"--%>
+                                      <%--listValue="namaObat"--%>
+                                      <%--headerKey="" headerValue="[Select one]"--%>
+                                      <%--cssClass="form-control select2"/>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -570,26 +568,42 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
+
     function toContent() {
         var pos = $('#close_pos').val();
         if(pos == 1){
             $('#tipePermintaan').val('003').trigger('change');
             $('#flag').val('Y').trigger('change');
-            document.obatGudangForm.action = 'searchPermintaanObatGudang_obatgudang.action';
+//            document.obatGudangForm.action = 'searchPermintaanObatGudang_permintaanunit.action';
+            document.obatGudangForm.action = 'initFormRequestUnit_permintaanunit.action';
             document.obatGudangForm.submit();
         }else if(pos == 2){
             $('#tipePermintaan').val('002').trigger('change');
             $('#flag').val('Y').trigger('change');
-            document.obatGudangForm.action = 'searchPermintaanObatGudang_obatgudang.action';
+            document.obatGudangForm.action = 'initFormRequestUnit_permintaanunit.action';
             document.obatGudangForm.submit();
         }else{
             window.location.reload(true);
         }
     }
 
+    function showListObat() {
+
+        var pelayanan = $("#req_gudang_obat").val();
+        ObatAction.getListObat(pelayanan, function (res) {
+            console.log(res);
+            var str = '';
+            $.each(res, function (i, item) {
+                str += '<option value="'+item.idObat+'|'+item.namaObat+'|'+item.qtyBox+'|'+item.qtyLembar+'|'+item.qtyBiji+'|'+item.lembarPerBox+'|'+item.bijiPerLembar+'|'+item.idPabrik+'|">'+item.namaObat+'</option>';
+            });
+            $("#req_nama_obat").html(str);
+        });
+    }
+
     function showModal() {
         getListGudangObat();
-        $('#req_nama_obat').val('').trigger('change');
+//        showListObat();
+//        $('#req_nama_obat').val('').trigger('change');
         $('#req_qty').val('');
         $('#req_stok').val('');
         $('#req_stok_apotek').val('');
@@ -602,7 +616,7 @@
 
         var idx = select.selectedIndex;
         var idObat = select.options[idx].value;
-        console.log(idObat);
+        console.log("id obat -- >" + idObat);
         var id = "";
         var nama = "";
         var qtyBox = "";
@@ -947,7 +961,7 @@
         $('#load_req_detail').show();
 
         dwr.engine.setAsync(true);
-        ObatPoliAction.saveKonfirmasiDiterima(idApp, idPermin, stringData, {
+        ObatPoliAction.saveKonfirmasiDiterimaReqUnit(idApp, idPermin, stringData, {
             callback: function (response) {
                 if (response["status"] == "success") {
                     $('#modal-request-detail').modal('hide');
@@ -1251,8 +1265,8 @@
     }
 
     function getListGudangObat(){
-        var option = "";
-        CheckupAction.getListComboGudang(function (res) {
+        var option = "<option value=''>Select Ones</option>";
+        CheckupAction.getListComboGudangOtherBranch(function (res) {
             if(res.length > 0){
                 $.each(res, function (i, item) {
                     option += '<option value="'+item.idPelayanan+'">'+item.namaPelayanan+'</option>';

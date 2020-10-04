@@ -359,7 +359,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", id)
-                    .setParameter("branchId", CommonUtil.userBranchLogin())
+                    .setParameter("branchId", branchId)
                     .list();
 
             if (results.size() > 0) {

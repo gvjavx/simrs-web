@@ -1546,6 +1546,7 @@ public class CheckupAction extends BaseMasterAction {
         return "init_add";
     }
 
+
     public List<Pelayanan> getListComboApotek(String branch) {
 
         List<Pelayanan> pelayananList = new ArrayList<>();
@@ -1597,6 +1598,50 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         return pelayananList;
+    }
+
+
+    public List<Pelayanan> getListComboGudangOtherBranch() {
+
+        String branchLogin = CommonUtil.userBranchLogin();
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setTipePelayanan("gudang_obat");
+        pelayanan.setNotOwnBranch(branchLogin);
+
+        try {
+            pelayananList = pelayananBo.getByCriteria(pelayanan);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        return pelayananList;
+    }
+
+    public String listComboGudangOtherBranch() {
+
+        String branchLogin = CommonUtil.userBranchLogin();
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setTipePelayanan("gudang_obat");
+        pelayanan.setNotOwnBranch(branchLogin);
+
+        try {
+            pelayananList = pelayananBo.getByCriteria(pelayanan);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        listOfPelayanan.addAll(pelayananList);
+        return "init_add";
     }
 
     public HeaderCheckup listDataPasien(String idDetailCheckup) {
