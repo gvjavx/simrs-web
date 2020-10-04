@@ -267,7 +267,6 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             String id = getNextApprovalObatId();
             approvalEntity.setIdApprovalObat("INV" + id);
             approvalEntity.setIdPelayanan(bean.getIdPelayanan());
-            approvalEntity.setBranchId(bean.getBranchId());
             approvalEntity.setFlag("Y");
             approvalEntity.setAction("C");
             approvalEntity.setTipePermintaan("002");
@@ -275,6 +274,15 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             approvalEntity.setLastUpdateWho(bean.getCreatedWho());
             approvalEntity.setCreatedDate(bean.getCreatedDate());
             approvalEntity.setCreatedWho(bean.getCreatedWho());
+
+            if ("Y".equalsIgnoreCase(bean.getFlagOtherBranch())){
+                ImSimrsPelayananEntity pelayananTujuan = pelayananDao.getById("idPelayanan",bean.getTujuanPelayanan());
+                if (pelayananTujuan != null){
+                    approvalEntity.setBranchId(pelayananTujuan.getBranchId());
+                }
+            } else {
+                approvalEntity.setBranchId(bean.getBranchId());
+            }
 
             try {
                 approvalTransaksiObatDao.addAndSave(approvalEntity);
@@ -2243,12 +2251,15 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         if ("box".equalsIgnoreCase(bean.getJenisSatuan())) {
             qtyBox = bean.getQtyApprove();
+            obatEntity.setHargaTerakhir(obatEntity.getAverageHargaBox());
         }
         if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())) {
             qtyLembar = bean.getQtyApprove();
+            obatEntity.setHargaTerakhir(obatEntity.getAverageHargaLembar());
         }
         if ("biji".equalsIgnoreCase(bean.getJenisSatuan())) {
             qtyBiji = bean.getQtyApprove();
+            obatEntity.setHargaTerakhir(obatEntity.getAverageHargaBiji());
         }
 
         obatEntity.setQtyBox(qtyBox);
@@ -2270,8 +2281,8 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             try {
                 obatDao.addAndSave(obatEntity);
             } catch (HibernateException e) {
-                logger.error("[ObatPoliBoImpl.updateAddStockGudangOtherBranch] ERROR.", e);
-                throw new GeneralBOException("[ObatPoliBoImpl.updateAddStockGudangOtherBranch] ERROR." + e.getMessage());
+                logger.error("[ObatPoliBoImpl.updateAddStockGudangOtherBranch add] ERROR.", e);
+                throw new GeneralBOException("[ObatPoliBoImpl.updateAddStockGudangOtherBranch add] ERROR." + e.getMessage());
             }
 
         } else {
@@ -2344,8 +2355,8 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             try {
                 obatDao.updateAndSave(obatEntity);
             } catch (HibernateException e) {
-                logger.error("[ObatPoliBoImpl.updateAddStockGudangOtherBranch] ERROR.", e);
-                throw new GeneralBOException("[ObatPoliBoImpl.updateAddStockGudangOtherBranch] ERROR." + e.getMessage());
+                logger.error("[ObatPoliBoImpl.updateAddStockGudangOtherBranch update] ERROR.", e);
+                throw new GeneralBOException("[ObatPoliBoImpl.updateAddStockGudangOtherBranch update] ERROR." + e.getMessage());
             }
         }
 

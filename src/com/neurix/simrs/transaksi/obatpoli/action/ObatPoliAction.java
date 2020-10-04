@@ -171,7 +171,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
     }
 
-    public String saveAddRequest(String request, String idTujuan) {
+    public String saveAddRequest(String request, String idTujuan, String flagOtherBranch) {
         logger.info("[TindakanRawatAction.saveAdd] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -192,6 +192,7 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setAction("C");
             obatPoli.setFlag("Y");
+            obatPoli.setFlagOtherBranch(flagOtherBranch);
 
             List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
             TransaksiObatDetail obatDetail;

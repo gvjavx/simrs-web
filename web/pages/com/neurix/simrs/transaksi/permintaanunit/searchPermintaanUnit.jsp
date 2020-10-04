@@ -855,7 +855,7 @@
         $('#save_request').hide();
         $('#load_request').show();
         dwr.engine.setAsync(true);
-        ObatPoliAction.saveAddRequest(stringData, gudang, {
+        ObatPoliAction.saveAddRequest(stringData, gudang, "Y", {
             callback: function (response) {
                 if (response == "success") {
                     dwr.engine.setAsync(false);
