@@ -864,6 +864,8 @@ WITH (
 ALTER TABLE public.mt_simrs_ruangan_tempat_tidur
   OWNER TO postgres;
 
+CREATE SEQUENCE seq_tempat_tidur;
+
 ALTER TABLE im_simrs_header_tindakan
 RENAME id TO id_header_tindakan;
 
@@ -946,6 +948,27 @@ DROP keterangan_acuan;
 
 ALTER TABLE im_simrs_lab_detail
 ADD COLUMN id_parameter_pemeriksaan VARCHAR(50);
+
+ALTER TABLE im_simrs_lab
+DROP COLUMN tarif;
+
+UPDATE im_functions
+SET func_name = 'Parameter'
+WHERE func_id = 2157;
+
+ALTER TABLE im_simrs_lab_detail
+ADD COLUMN branch_id VARCHAR(50);
+
+-- 2020-10-04
+INSERT INTO im_functions VALUES
+(2347, 'Tempat Tidur', '/tempattidur/initForm_tempattidur.action', 3, 2, now(), 'admin', now(), 'admin', 'Y','C', 2347),
+(2348, 'init', '/tempattidur/initForm_tempattidur.action', 2347, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2349, 'search', '/tempattidur/search_tempattidur.action', 2347, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2347, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2348, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2349, 32, 'Y', now(), now(), 'admin', 'admin');
 
 
 

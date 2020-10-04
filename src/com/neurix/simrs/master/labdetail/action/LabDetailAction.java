@@ -9,12 +9,19 @@ import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.labdetail.bo.LabDetailBo;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
 import com.neurix.simrs.master.labdetail.model.LabDetail;
+import com.neurix.simrs.master.parampemeriksaan.bo.ParameterPemeriksaanBo;
+import com.neurix.simrs.master.parampemeriksaan.model.ParameterPemeriksaan;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,186 +34,173 @@ public class LabDetailAction extends BaseTransactionAction {
     private LabBo labBoProxy;
     private LabDetail labDetail;
     private List<Lab> listOfComboLab = new ArrayList<Lab>();
-    private ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-    private LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
 
-    public LabDetail initParameter(String id){
-        logger.info("[LabDetailAction.init] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        return getLabDetail();
+    public LabDetail initParameter(String id) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
+        LabDetail detail = new LabDetail();
+        List<LabDetail> labDetailList = new ArrayList<>();
+        if (id != null && !"".equalsIgnoreCase(id)) {
+            LabDetail lab = new LabDetail();
+            lab.setIdLabDetail(id);
+            try {
+                labDetailList = labDetailBo.getDataParameterPemeriksaan(lab);
+            } catch (GeneralBOException e) {
+                logger.error(e.getMessage());
+            }
+        }
+        if (labDetailList.size() > 0) {
+            detail = labDetailList.get(0);
+        }
+        return detail;
     }
 
     @Override
     public String search() {
-        logger.info("[LabAction.search] start process >>>");
-
-        LabDetail searchLabDetail = getLabDetail();
+        LabDetail detail = getLabDetail();
         List<LabDetail> listOfsearchLabDetail = new ArrayList();
-
         try {
-            listOfsearchLabDetail = labDetailBoProxy.getByCriteria(searchLabDetail);
+            listOfsearchLabDetail = labDetailBoProxy.getDataParameterPemeriksaan(detail);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = labDetailBoProxy.saveErrorMessage(e.getMessage(), "LabDetailBO.getByCriteria");
-            } catch (GeneralBOException e1) {
-                logger.error("[LabDetailAction.search] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[LabDetailAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
-            return ERROR;
+            logger.error(e.getMessage());
         }
         HttpSession session = ServletActionContext.getRequest().getSession();
-
-        session.removeAttribute("listOfResultLabDetail");
-        session.setAttribute("listOfResultLabDetail", listOfsearchLabDetail);
-
-        logger.info("[LabAction.search] end process <<<");
-
-        return SUCCESS;
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfsearchLabDetail);
+        setLabDetail(detail);
+        return "search";
     }
 
     @Override
     public String initForm() {
-        logger.info("LabDetailAction.initForm] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-
-        session.removeAttribute("listOfResultLabDetail");
-        logger.info("[LabDetailAction.initForm] end process >>>");
-        return INPUT;
-    }
-
-    public String saveAdd(){
-        logger.info("[LabDetailAction.saveAdd] start process >>>");
-
-        try {
-            LabDetail labDetail = getLabDetail();
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-            labDetail.setCreatedWho(userLogin);
-            labDetail.setLastUpdate(updateTime);
-            labDetail.setCreatedDate(updateTime);
-            labDetail.setLastUpdateWho(userLogin);
-            labDetail.setAction("C");
-            labDetail.setFlag("Y");
-
-            labDetailBoProxy.saveAdd(labDetail);
-        }catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = labDetailBoProxy.saveErrorMessage(e.getMessage(), "labDetailBO.saveAdd");
-            } catch (GeneralBOException e1) {
-                logger.error("[labDetailAction.saveAdd] Error when saving error,", e1);
-                throw new GeneralBOException(e1.getMessage());
-            }
-            logger.error("[labDetailAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e.getMessage());
-        }
-
-
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultLabDetail");
-
-        logger.info("[labDetailAction.saveAdd] end process >>>");
-        return "success_save_add";
+        setLabDetail(new LabDetail());
+        return "search";
     }
 
-    public String saveEdit(){
-        logger.info("[LabDetailAction.saveEdit] start process >>>");
+    public CrudResponse saveAdd(String data, String isNew) {
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
+        CrudResponse response = new CrudResponse();
         try {
-
-            LabDetail editLabDetail = getLabDetail();
-
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-            editLabDetail.setLastUpdateWho(userLogin);
-            editLabDetail.setLastUpdate(updateTime);
-            editLabDetail.setAction("U");
-            editLabDetail.setFlag("Y");
-
-            labDetailBoProxy.saveEdit(editLabDetail);
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = labDetailBoProxy.saveErrorMessage(e.getMessage(), "LabDetailBO.saveEdit");
-            } catch (GeneralBOException e1) {
-                logger.error("[LabDetailAction.saveEdit] Error when saving error,", e1);
-                throw new GeneralBOException(e1.getMessage());
+            JSONArray json = new JSONArray(data);
+            List<LabDetail> labDetailList = new ArrayList<>();
+            if (json != null) {
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject obj = json.getJSONObject(i);
+                    LabDetail detail = new LabDetail();
+                    if (obj.has("id_lab")) {
+                        detail.setIdLab(obj.getString("id_lab"));
+                    }
+                    if (obj.has("nama_lab")) {
+                        detail.setNamaLab(obj.getString("nama_lab"));
+                    }
+                    detail.setIdParameterPemeriksaan(obj.getString("id_parameter_pemeriksaan"));
+                    detail.setTarif(new BigDecimal(obj.getString("tarif")));
+                    detail.setBranchId(obj.getString("branch_id"));
+                    detail.setCreatedWho(userLogin);
+                    detail.setLastUpdate(updateTime);
+                    detail.setCreatedDate(updateTime);
+                    detail.setLastUpdateWho(userLogin);
+                    detail.setAction("C");
+                    detail.setFlag("Y");
+                    labDetailList.add(detail);
+                }
+                if (labDetailList.size() > 0) {
+                    response = labDetailBo.saveAdd(labDetailList, isNew);
+                } else {
+                    response.setStatus("error");
+                    response.setMsg("Mohon maaf tidak dapat menukan data...!");
+                }
+            } else {
+                response.setStatus("error");
+                response.setMsg("Mohon maaf tidak dapat menukan data...!");
             }
-            logger.error("[LabDetailAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e.getMessage());
+        } catch (JSONException e) {
+            response.setStatus("error");
+            response.setMsg("Mohon maaf data json yang dikirim bermasalah...!" + e.getMessage());
         }
-
-        logger.info("[LabDetailAction.saveEdit] end process <<<");
-
-        return "success_save_edit";
+        return response;
     }
 
-    public String saveDelete(){
-        logger.info("[LabDetailAction.saveDelete] start process >>>");
+    public CrudResponse saveEdit(String data) {
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
+        CrudResponse response = new CrudResponse();
         try {
-
-            LabDetail deleteLabDetail = getLabDetail();
-
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-            deleteLabDetail.setLastUpdate(updateTime);
-            deleteLabDetail.setLastUpdateWho(userLogin);
-            deleteLabDetail.setAction("U");
-            deleteLabDetail.setFlag("N");
-
-            labDetailBoProxy.saveDelete(deleteLabDetail);
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = labDetailBoProxy.saveErrorMessage(e.getMessage(), "LabDetailBO.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[LabDetailAction.saveDelete] Error when saving error,", e1);
-                throw new GeneralBOException(e1.getMessage());
+            JSONObject object = new JSONObject(data);
+            if (object != null) {
+                LabDetail detail = new LabDetail();
+                detail.setIdLabDetail(object.getString("id_lab_detail"));
+                detail.setIdLab(object.getString("id_lab"));
+                detail.setIdParameterPemeriksaan(object.getString("id_parameter_pemeriksaan"));
+                detail.setTarif(new BigDecimal(object.getString("tarif")));
+                detail.setLastUpdate(updateTime);
+                detail.setLastUpdateWho(userLogin);
+                detail.setAction("U");
+                detail.setFlag("Y");
+                response = labDetailBo.saveEdit(detail);
+            } else {
+                response.setStatus("error");
+                response.setMsg("Data json yang dikirim tidak dapat ditemukan...!");
             }
-            logger.error("[LabDetailAction.saveDelete] Error when editing item labDetail," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e.getMessage());
+        } catch (JSONException e) {
+            response.setStatus("error");
+            response.setMsg("Data json yang dikirim bermasalaah...!" + e.getMessage());
         }
-
-        logger.info("[LabDetailAction.saveDelete] end process <<<");
-
-        return "success_save_delete";
+        return response;
     }
 
-    public List<LabDetail> listLabDetail(String idLab){
+    public CrudResponse saveDelete(String id) {
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
+        CrudResponse response = new CrudResponse();
+        if (id != null && !"".equalsIgnoreCase(id)) {
+            try {
+                LabDetail detail = new LabDetail();
+                detail.setIdLabDetail(id);
+                detail.setLastUpdate(updateTime);
+                detail.setLastUpdateWho(userLogin);
+                detail.setAction("D");
+                detail.setFlag("N");
+                response = labDetailBo.saveEdit(detail);
+            } catch (GeneralBOException e) {
+                logger.error(e.getMessage());
+                response.setStatus("error");
+                response.setMsg("error saat delete data...!" + e.getMessage());
+            }
+        }
+        return response;
+    }
 
+    public List<LabDetail> listLabDetail(String idLab) {
         logger.info("[LabAction.listLabDetail] start process >>>");
         List<LabDetail> labDetailList = new ArrayList<>();
         LabDetail labDetail = new LabDetail();
         labDetail.setIdLab(idLab);
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
-
         try {
             labDetailList = labDetailBo.getByCriteria(labDetail);
-        }catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[LabDetailAction.listLabDetail] Error when get data lab detail ," + "Found problem when searching data, please inform to your admin.", e);
             addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
         }
-
         logger.info("[LabDetailAction.listLabDetail] end process >>>");
         return labDetailList;
 
     }
 
     public String initComboLab() {
-
         Lab lab = new Lab();
         lab.setFlag("Y");
-
         List<Lab> listOfLab = new ArrayList<Lab>();
         try {
             listOfLab = labBoProxy.getByCriteria(lab);
@@ -221,19 +215,58 @@ public class LabDetailAction extends BaseTransactionAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             return "failure";
         }
-
         listOfComboLab.addAll(listOfLab);
-
         return "init_combo";
     }
 
-    public ImSimrsLabDetailEntity labDetailEntityByIdLab(String idParameter){
+    public List<Lab> getLab() {
+        List<Lab> labList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LabBo labBo = (LabBo) ctx.getBean("labBoProxy");
+        Lab lab = new Lab();
+        lab.setFlag("Y");
+        try {
+            labList = labBo.getByCriteria(lab);
+        } catch (GeneralBOException e) {
+            logger.error(e.getMessage());
+        }
+        return labList;
+    }
+
+    public List<Lab> getLabByKategori(String id, String branch) {
+        List<Lab> labList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LabBo labBo = (LabBo) ctx.getBean("labBoProxy");
+        try {
+            labList = labBo.getDataLab(id, branch);
+        } catch (GeneralBOException e) {
+            logger.error(e.getMessage());
+        }
+        return labList;
+    }
+
+    public List<ParameterPemeriksaan> getComboParameter(String kategori) {
+        List<ParameterPemeriksaan> labList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ParameterPemeriksaanBo parameterPemeriksaanBo = (ParameterPemeriksaanBo) ctx.getBean("parameterPemeriksaanBoProxy");
+        ParameterPemeriksaan pemeriksaan = new ParameterPemeriksaan();
+        pemeriksaan.setIdKategoriLab(kategori);
+        pemeriksaan.setFlag("Y");
+        try {
+            labList = parameterPemeriksaanBo.getByCriteria(pemeriksaan);
+        } catch (GeneralBOException e) {
+            logger.error(e.getMessage());
+        }
+        return labList;
+    }
+
+    public ImSimrsLabDetailEntity labDetailEntityByIdLab(String idParameter) {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
         return labDetailBo.getLabDetailEntityById(idParameter);
     }
 
-    public List<LabDetail> getListComboParameter(String idLab){
+    public List<LabDetail> getListComboParameter(String idLab) {
         logger.info("[LabAction.getListComboParameter] start process >>>");
         List<LabDetail> labDetailList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -242,7 +275,7 @@ public class LabDetailAction extends BaseTransactionAction {
 
         try {
             labDetailList = labDetailBo.getDetaillab(idLab, branchId);
-        }catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[LabDetailAction.getListComboParameter] Error when get data lab detail ," + "Found problem when searching data, please inform to your admin.", e);
         }
 

@@ -38,6 +38,9 @@
         <property name="tarif">
             <column name="tarif" sql-type="numeric" not-null="false" />
         </property>
+        <property name="branchId">
+            <column name="branch_id"/>
+        </property>
 
     </class>
 </hibernate-mapping>

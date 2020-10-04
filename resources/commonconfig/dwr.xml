@@ -844,5 +844,14 @@
       </create>
       <convert converter="bean" match="com.neurix.simrs.master.parampemeriksaan.model.ParameterPemeriksaan"/>
 
+      <create creator="new">
+        <param name="class" value="com.neurix.simrs.master.labdetail.action.LabDetailAction"/>
+      </create>
+
+      <create creator="new">
+        <param name="class" value="com.neurix.simrs.master.ruangan.action.TempatTidurAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.master.ruangan.model.TempatTidur"/>
+
   </allow>
 </dwr>

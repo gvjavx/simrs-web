@@ -62,7 +62,7 @@ public class ParameterPemeriksaanAction extends BaseTransactionAction {
     @Override
     public String initForm() {
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResultLabDetail");
+        session.removeAttribute("listOfResult");
         setPemeriksaan(new ParameterPemeriksaan());
         return "search";
     }

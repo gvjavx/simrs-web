@@ -804,12 +804,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                                 throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
                             }
 
-                            if (labDetailEntity != null) {
-                                detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-                                detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
-                                detailEntity.setSatuan(labDetailEntity.getSatuan());
-                            }
-
                             detailEntity.setFlag("Y");
                             detailEntity.setAction("C");
                             detailEntity.setCreatedDate(now);
@@ -842,9 +836,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                                 throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
                             }
 
-                            if (labDetailEntity != null) {
-                                radiologiEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-                            }
+//                            if (labDetailEntity != null) {
+//                                radiologiEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+//                            }
 
                             radiologiEntity.setFlag("Y");
                             radiologiEntity.setAction("C");
@@ -984,9 +978,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                     }
                     if (labDetailEntity != null) {
-                        detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-                        detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
-                        detailEntity.setSatuan(labDetailEntity.getSatuan());
+//                        detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+//                        detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
+//                        detailEntity.setSatuan(labDetailEntity.getSatuan());
                     }
 
                     detailEntity.setFlag("Y");
@@ -1051,7 +1045,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                     }
                     if (labDetailEntity != null) {
-                        entity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+//                        entity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
                     }
 
                     entity.setFlag("Y");
@@ -2919,9 +2913,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                         }
                         if (labDetailEntity != null) {
-                            detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-                            detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
-                            detailEntity.setSatuan(labDetailEntity.getSatuan());
+//                            detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+//                            detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
+//                            detailEntity.setSatuan(labDetailEntity.getSatuan());
                         }
 
                         detailEntity.setFlag("Y");
@@ -2986,7 +2980,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                         }
                         if (labDetailEntity != null) {
-                            entity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+//                            entity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
                         }
 
                         entity.setFlag("Y");

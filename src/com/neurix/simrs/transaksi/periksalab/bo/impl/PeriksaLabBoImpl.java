@@ -207,9 +207,9 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
 
                                 }
 
-                                if (labDetailEntity != null) {
-                                    radiologiEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-                                }
+//                                if (labDetailEntity != null) {
+//                                    radiologiEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+//                                }
 
                                 radiologiEntity.setFlag("Y");
                                 radiologiEntity.setAction("C");
@@ -264,11 +264,11 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                                 ImSimrsLabDetailEntity labDetailEntity = new ImSimrsLabDetailEntity();
                                 if (labDetailId != null && !"".equalsIgnoreCase(labDetailId)) {
                                     labDetailEntity = getDataMasterLabDetailByIdLab(labDetailId);
-                                    if (labDetailEntity != null) {
-                                        detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-                                        detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
-                                        detailEntity.setSatuan(labDetailEntity.getSatuan());
-                                    }
+//                                    if (labDetailEntity != null) {
+//                                        detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+//                                        detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
+//                                        detailEntity.setSatuan(labDetailEntity.getSatuan());
+//                                    }
                                 }
 
                                 detailEntity.setFlag("Y");
@@ -355,9 +355,9 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
 
                             }
 
-                            if (labDetailEntity != null) {
-                                radiologiEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-                            }
+//                            if (labDetailEntity != null) {
+//                                radiologiEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+//                            }
 
                             radiologiEntity.setFlag("Y");
                             radiologiEntity.setAction("C");
@@ -394,11 +394,11 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                             ImSimrsLabDetailEntity labDetailEntity = new ImSimrsLabDetailEntity();
                             if (labDetailId != null && !"".equalsIgnoreCase(labDetailId)) {
                                 labDetailEntity = getDataMasterLabDetailByIdLab(labDetailId);
-                                if (labDetailEntity != null) {
-                                    detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-                                    detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
-                                    detailEntity.setSatuan(labDetailEntity.getSatuan());
-                                }
+//                                if (labDetailEntity != null) {
+//                                    detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+//                                    detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
+//                                    detailEntity.setSatuan(labDetailEntity.getSatuan());
+//                                }
                             }
 
                             detailEntity.setFlag("Y");
@@ -933,11 +933,11 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     ImSimrsLabDetailEntity labDetailEntity = new ImSimrsLabDetailEntity();
                     if (labDetailId != null && !"".equalsIgnoreCase(labDetailId)) {
                         labDetailEntity = getDataMasterLabDetailByIdLab(labDetailId);
-                        if (labDetailEntity != null) {
-                            detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-                            detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
-                            detailEntity.setSatuan(labDetailEntity.getSatuan());
-                        }
+//                        if (labDetailEntity != null) {
+//                            detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+//                            detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
+//                            detailEntity.setSatuan(labDetailEntity.getSatuan());
+//                        }
                     }
 
                     detailEntity.setFlag(bean.getFlag());
@@ -979,9 +979,9 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                         throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
                     }
 
-                    if (labDetailEntity != null) {
-                        radiologiEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-                    }
+//                    if (labDetailEntity != null) {
+//                        radiologiEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
+//                    }
 
                     radiologiEntity.setFlag("Y");
                     radiologiEntity.setAction("C");

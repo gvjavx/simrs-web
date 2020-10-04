@@ -276,5 +276,5 @@
     <include file="sshconfig/com/neurix/simrs/master/tindakan/struts/HeaderTindakanAction.xml"/>
 
     <include file="sshconfig/com/neurix/simrs/master/parampemeriksaan/struts/ParameterPemeriksaanAction.xml"/>
-
+    <include file="sshconfig/com/neurix/simrs/master/ruangan/struts/TempatTidurAction.xml"/>
 </struts>

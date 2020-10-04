@@ -16,6 +16,15 @@ public class ImSimrsLabDetailEntity implements Serializable{
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private BigDecimal tarif;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public String getIdParameterPemeriksaan() {
         return idParameterPemeriksaan;

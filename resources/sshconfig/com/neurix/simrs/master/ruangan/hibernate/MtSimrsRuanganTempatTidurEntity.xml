@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.master.ruangan.model.MtSimrsRuanganTempatTidurEntity">
+        <table name="mt_simrs_ruangan_tempat_tidur" schema="public"/>
+        <attributes>
+            <id name="idTempatTidur">
+                <column name="id_tempat_tidur"/>
+            </id>
+            <basic name="idRuangan">
+                <column name="id_ruangan"/>
+            </basic>
+            <basic name="namaTempatTidur">
+                <column name="nama_tempat_tidur"/>
+            </basic>
+            <basic name="status">
+                <column name="status"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

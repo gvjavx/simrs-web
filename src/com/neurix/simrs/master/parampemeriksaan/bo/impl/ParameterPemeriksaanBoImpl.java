@@ -53,6 +53,8 @@ public class ParameterPemeriksaanBoImpl implements ParameterPemeriksaanBo {
 
                 try {
                     parameterPemeriksaanDao.addAndSave(pemeriksaanEntity);
+                    response.setStatus("success");
+                    response.setMsg("success");
                 }catch (HibernateException e){
                     response.setStatus("error");
                     response.setMsg("Mohon maaf error saat insert database...!, "+e.getMessage());
@@ -103,6 +105,8 @@ public class ParameterPemeriksaanBoImpl implements ParameterPemeriksaanBo {
 
                 try {
                     parameterPemeriksaanDao.updateAndSave(pemeriksaanEntity);
+                    response.setStatus("success");
+                    response.setMsg("success");
                 }catch (HibernateException e){
                     response.setStatus("error");
                     response.setMsg("Mohon maaf error saat insert database...!, "+e.getMessage());
