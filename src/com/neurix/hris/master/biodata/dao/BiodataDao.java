@@ -1754,4 +1754,20 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         }
         return biodataList;
     }
+
+    public List<ImBiodataEntity> getBiodataByGolonganId(String id) throws HibernateException {
+        List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
+                .add(Restrictions.eq("golongan", id))
+                .addOrder(Order.asc("nip"))
+                .list();
+        return results;
+    }
+
+    public List<ImBiodataEntity> getBiodataByTipePegawai(String id) throws HibernateException {
+        List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
+                .add(Restrictions.eq("tipePegawai", id))
+                .addOrder(Order.asc("nip"))
+                .list();
+        return results;
+    }
 }

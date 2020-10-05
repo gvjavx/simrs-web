@@ -37,6 +37,8 @@
     <bean id="positionBo" class="com.neurix.authorization.position.bo.impl.PositionBoImpl"
           p:positionDao-ref="positionDao"
           p:positionHistoryDao-ref="positionHistoryDao"
+          p:departmentDao-ref="departmentDao"
+          p:positionBagianDao-ref="positionBagianDao"
     />
 
     <bean id="positionDao" class="com.neurix.authorization.position.dao.PositionDao"

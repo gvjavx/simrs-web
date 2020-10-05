@@ -557,4 +557,13 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
         }
         return results;
     }
+
+    public List<IjinKeluarEntity> getListIjinKeluarByIjinId(String id) throws HibernateException {
+
+        List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
+                .add(Restrictions.eq("ijinId", id))
+                .list();
+
+        return results;
+    }
 }

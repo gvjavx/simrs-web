@@ -479,7 +479,7 @@ public class  CommonUtil {
             prop.load(input);
 
             // get the property value and print it out
-            value = prop.getProperty("upload.folder");
+            value = prop.getProperty("upload.folder2");
             input.close();
             logger.info("success to load simrs.properties");
         } catch (IOException ex) {

@@ -649,3 +649,10 @@ CREATE TABLE public.it_hris_absensi_on_call
     lama_lembur numeric(10,2),
     CONSTRAINT it_hris_absensi_on_call_pkey PRIMARY KEY (absensi_on_call_id)
 );
+-- tambahkan function /tipelibur/paging_displaytag_tipelibur.action
+
+update im_functions set func_name='Status Pegawai' WHERE func_id='601';
+update im_functions set func_name='Golongan PKWT' WHERE func_id='1776';
+
+CREATE SEQUENCE IF NOT EXISTS seq_kodering_department INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 16;
+update im_functions set func_name ='Sub Bidang/Divisi' where func_id=1378;

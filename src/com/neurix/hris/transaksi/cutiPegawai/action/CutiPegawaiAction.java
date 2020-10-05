@@ -15,6 +15,8 @@ import com.neurix.hris.master.cuti.model.Cuti;
 import com.neurix.hris.master.cuti.bo.CutiBo;
 
 import com.neurix.hris.master.cutiPanjang.model.CutiPanjang;
+import com.neurix.hris.master.libur.bo.LiburBo;
+import com.neurix.hris.master.libur.model.Libur;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
 import com.neurix.hris.master.positionBagian.model.positionBagian;
 import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
@@ -749,7 +751,6 @@ public class CutiPegawaiAction extends BaseMasterAction {
     public String cekTahunCuti(String tglAwal, String tglAkhir, String nip){
         logger.info("[cutiPegawaiAction.cekTahunCuti] start process >>>");
 
-//        List<CutiPegawai> cutiPegawaiList = new ArrayList<>();
         String status = "";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
@@ -2331,13 +2332,10 @@ public class CutiPegawaiAction extends BaseMasterAction {
     }
 
     public String getCutiAktif(String branchId){
-        String status="N";
-//        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-//        CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
-//        status = cutiPegawaiBo.findCutiAktif(branchId);
-        return  status;
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
+        return cutiPegawaiBo.findCutiAktif(branchId);
     }
-
 
     public String cetakSisaCutiPegawai(){
         String nip = getNip();
@@ -2520,6 +2518,71 @@ public class CutiPegawaiAction extends BaseMasterAction {
         return status;
     }
 
+    public List<CutiPegawai> searchPegawaiResetTahunan(String unit) {
+        List<CutiPegawai> listOfResult = null;
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
+        try {
+            listOfResult = cutiPegawaiBo.getCriteriaForResetCutiTahunan(unit);
+        } catch (GeneralBOException e) {
+            throw new GeneralBOException(e.getMessage());
+        }
+        logger.info("[CutiPegawaiAction.searchCutiBersama] end process <<<");
+        return listOfResult;
+    }
+
+    public String cekLibur(String tglAwal, String tglAkhir, String nip){
+        String status = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
+        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+        LiburBo liburBo = (LiburBo) ctx.getBean("liburBoProxy");
+
+        try{
+            java.sql.Date startDate = CommonUtil.convertToDate(tglAwal);
+            java.sql.Date endDate = CommonUtil.convertToDate(tglAkhir);
+            Calendar start = Calendar.getInstance();
+            start.setTime(startDate);
+            Calendar end = Calendar.getInstance();
+            end.setTime(endDate);
+            end.add(Calendar.DATE,1);
+            java.util.Date date;
+
+            Biodata biodata = biodataBo.detailBiodataSys(nip);
+
+            if ("N".equalsIgnoreCase(biodata.getShift())){
+                for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                    int hari = cal.get(Calendar.DAY_OF_WEEK);
+                    if (hari==1 || hari==7){
+                        status="Y";
+                    }
+                }
+            }
+
+            //Cek di hari libur
+            for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+                Libur search = new Libur();
+                search.setFlag("Y");
+                search.setTanggal(new Timestamp(date.getTime()));
+                List<Libur> liburList = liburBo.getByCriteria(search);
+
+                if (liburList.size()>0){
+                    status="Y";
+                }
+            }
+        }catch (GeneralBOException e){
+        Long logId = null;
+        try {
+            logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "cutiPegawaiAction.cekTahunCuti");
+        } catch (GeneralBOException e1) {
+            logger.error("[cutiPegawaiAction.cekTahunCuti] Error when saving error,", e1);
+        }
+        logger.error("[cutiPegawaiAction.cekTahunCuti] Error when get data cuti," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+        }
+        return status;
+    }
 
     public String paging(){
         return SUCCESS;

@@ -266,16 +266,7 @@ public class KelompokPositionAction extends BaseMasterAction{
 
             kelompokPositionBoProxy.saveDelete(deleteKelompokPosition);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = kelompokPositionBoProxy.saveErrorMessage(e.getMessage(), "KelompokPositionBO.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[KelompokPositionAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[KelompokPositionAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[KelompokPositionAction.saveDelete] end process <<<");

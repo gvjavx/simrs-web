@@ -41,9 +41,8 @@
                 var msg = "";
 
                 if (bagianName == '') {
-                    msg += 'Field <strong>Bagian Name</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Sub Bidang/Divisi Name</strong> is required.' + '<br/>';
                 }
-
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
@@ -98,7 +97,7 @@
 
 
 
-                <legend align="left">Edit Kelompok</legend>
+                <legend align="left">Edit Sub Bidang/Divisi</legend>
 
 
                 <table>
@@ -112,7 +111,7 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Bagian Id :</small></label>
+                            <label class="control-label"><small>Sub Bidang/Divisi Id :</small></label>
                         </td>
                         <td>
                             <table>
@@ -120,18 +119,29 @@
                             </table>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
-                            <label class="control-label"><small>Bagian Name :</small></label>
+                            <label class="control-label"><small>Sub Bidang/Divisi Name :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="bagianName1" name="positionBagian.bagianName" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield  id="bagianName1" name="positionBagian.bagianName" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Bidang/Divisi Name :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="combo" namespace="/department" name="initDepartment_department"/>
+                                <s:select list="#combo.listOfResultDepartment" id="divisiId1" name="positionBagian.divisiId" disabled="true"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:hidden name ="positionBagian.divisiId" />
+                            </table>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <label class="control-label"><small>Kodering :</small></label>
@@ -142,11 +152,7 @@
                             </table>
                         </td>
                     </tr>
-
                 </table>
-
-
-
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

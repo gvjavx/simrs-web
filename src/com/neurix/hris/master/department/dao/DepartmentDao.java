@@ -96,4 +96,12 @@ public class DepartmentDao extends GenericDao<ImDepartmentEntity, String> {
         this.sessionFactory.getCurrentSession().save(entity);
     }
 
+    // Generate surrogate id from postgre
+    public String getNextKodering() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kodering_department')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%02d", iter.next());
+
+        return sId;
+    }
 }

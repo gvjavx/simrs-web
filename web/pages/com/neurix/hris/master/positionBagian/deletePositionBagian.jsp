@@ -41,7 +41,7 @@
                 var msg = "";
 
                 if (bagianName == '') {
-                    msg += 'Field <strong>Bagian Name</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Sub Bidang/Name Name</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -98,7 +98,7 @@
 
 
 
-                <legend align="left">Delete Bagian Id</legend>
+                <legend align="left">Delete Sub Bidang/Name Id</legend>
 
 
                 <table>
@@ -112,7 +112,7 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Kelompok Id :</small></label>
+                            <label class="control-label"><small>Sub Bidang/Name Id :</small></label>
                         </td>
                         <td>
                             <table>
@@ -123,7 +123,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Kelompok Name :</small></label>
+                            <label class="control-label"><small>Sub Bidang/Name Name :</small></label>
                         </td>
                         <td>
                             <table>
@@ -131,7 +131,19 @@
                             </table>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Bidang/Divisi Name :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="combo" namespace="/department" name="initDepartment_department"/>
+                                <s:select list="#combo.listOfResultDepartment" id="divisiId1" name="positionBagian.divisiId" disabled="true"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:hidden name ="positionBagian.divisiId" />
+                            </table>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <label class="control-label"><small>Kodering :</small></label>

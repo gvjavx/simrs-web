@@ -92,4 +92,6 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
     public String cekPengajuanCuti(String nip);
 
     List<CutiPegawai> searchApprovalByCriteria(CutiPegawai bean) throws GeneralBOException;
+
+    List<CutiPegawai> getCriteriaForResetCutiTahunan(String unit) throws GeneralBOException;
 }

@@ -889,7 +889,11 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
         String atasanNip = null,nip=bean.getNip(),cutiPegawaiId;
         if (bean!=null) {
-
+            if (bean.getLamaHariCuti().equals(BigInteger.ZERO)){
+                String status = "ERROR : Lama hari cuti = 0 , cek lagi inputan anda";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
             BigInteger jumlahCutiPegawai = BigInteger.valueOf(0);
             List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
 
@@ -3057,5 +3061,48 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
         logger.info("[CutiPegawaiBoImpl.getByCriteria] end process <<<");
 
         return listOfResult;
+    }
+
+    @Override
+    public List<CutiPegawai> getCriteriaForResetCutiTahunan(String unit) throws GeneralBOException {
+        logger.info("[UserBoImpl.getCriteriaForResetCutiTahunan] start process >>>");
+        String tahun = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+
+        List<Biodata> biodataList;
+        List<CutiPegawai> listCutiPegawai = new ArrayList();
+        try {
+            biodataList = cutiPegawaiDao.getPegawaiListForResetTahunan(unit,tahun);
+        } catch (HibernateException e) {
+            logger.error("[UserBoImpl.getCriteriaForResetCutiTahunan] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+        }
+        for (Biodata biodata :biodataList){
+            try{
+                CutiPegawai result = getSisaCuti(biodata.getNip());
+                result.setNamaPegawai(biodata.getNamaPegawai());
+                result.setNip(biodata.getNip());
+
+                if (result.getSisaCutiTahunan()!=null){
+                    if (Integer.parseInt(result.getSisaCutiTahunan())<0){
+                        result.setSetelahResetCutiTahunan(BigInteger.valueOf(12+Integer.parseInt(result.getSisaCutiTahunan())));
+                    }else{
+                        result.setSetelahResetCutiTahunan(BigInteger.valueOf(12));
+                    }
+                }else{
+                    result.setSetelahResetCutiTahunan(BigInteger.valueOf(12));
+                }
+
+                if (result.getSisaCutiTahunan()==null){
+                    result.setSisaCutiTahunan("0");
+                }
+                listCutiPegawai.add(result);
+            }catch (HibernateException e) {
+                logger.error("[UserBoImpl.getCriteriaForResetCutiTahunan] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+            }
+        }
+
+        logger.info("[UserBoImpl.getCriteriaForResetCutiTahunan] end process <<<");
+        return listCutiPegawai;
     }
 }

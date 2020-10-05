@@ -15,6 +15,24 @@ public class positionBagian extends BaseModel {
     private String flag;
     private String branchId;
     private String kodering;
+    private String divisiId;
+    private String divisiName;
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
+    }
+
+    public String getDivisiId() {
+        return divisiId;
+    }
+
+    public void setDivisiId(String divisiId) {
+        this.divisiId = divisiId;
+    }
 
     public String getKodering() {
         return kodering;
