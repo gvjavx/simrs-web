@@ -240,6 +240,7 @@ public class CommonConstant {
     public final static String METODE_MESIN_ABSENSI = CommonUtil.getPropertyParams("metode.mesin.absensi");
     public final static String IJIN_GANTI_HARI = CommonUtil.getPropertyParams("ijin.ganti.hari");
     public final static String CUTI_TAHUNAN = CommonUtil.getPropertyParams("cuti.id.tahunan");
+    public final static String TIPE_HARI_ON_CALL = CommonUtil.getPropertyParams("tipe.hari.on.call");
 //    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KOREKSI ="67";
 //    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KAS_KELUAR ="68";
 //    public final static String TRANSAKSI_ID_PENYEWAAN_LAHAN ="69";

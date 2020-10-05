@@ -276,7 +276,7 @@
                 for(i = 0 ; i < data2.length ; i++){
                     //data2.push([item.funcId, item.funcName, item.url, item.menu, item.parent, item.funcLevel, 'Y']);
                     if(data2[i].parent == "-"){
-                        tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                        tmp_table += '<tr style="font-size: 11px;" class=" treegrid-' + data2[i]._id+ '">' +
                                 '<td >' + data2[i]._id + '</td>' +
                                 '<td >' + data2[i].nama + '</td>' +
                                 '<td align="center">' + data2[i].level+ '</td>' +
@@ -294,7 +294,7 @@
                                 '</td>' +
                                 "</tr>";
                     } else {
-                        tmp_table += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
+                        tmp_table += '<tr style="font-size: 11px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
                                 + '<td style="border: 2px solid black;">' +
                                 '<td >' + data2[i]._id + '</td>' +
                                 '<td >' + data2[i].nama + '</td>' +

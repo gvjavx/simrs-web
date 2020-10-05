@@ -341,7 +341,7 @@
                                                                 </s:if>
                                                             </td>
                                                             <td align="center">
-                                                                <s:if test='#attr.row.hariIni'>
+                                                                <s:if test='#attr.row.onCall=="Y"'>
                                                                     <s:if test='#attr.row.onCall=="Y"'>
                                                                     <a href="javascript:;"
                                                                        id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>"

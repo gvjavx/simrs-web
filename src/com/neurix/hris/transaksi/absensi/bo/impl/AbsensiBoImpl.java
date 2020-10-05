@@ -6449,7 +6449,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                             finalLamaLembur= (double) 0;
                                                         }else{
                                                             Map hsCriteria5 = new HashMap();
-                                                            hsCriteria5.put("tipe_hari", absensiPegawai.getTipeHari());
+                                                            hsCriteria5.put("tipe_hari", "hari_kerja");
                                                             hsCriteria5.put("jam_lembur", j);
                                                             hsCriteria5.put("flag", "Y");
                                                             List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
