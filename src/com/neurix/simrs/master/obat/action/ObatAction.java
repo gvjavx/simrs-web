@@ -287,7 +287,7 @@ public class ObatAction extends BaseMasterAction {
 
     }
 
-    public CheckObatResponse saveObat(String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji, BigInteger minStok) {
+    public CheckObatResponse saveObat(String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji, BigInteger minStok, String flagKronis, String flagGeneric, String flagBpjs, String margin, String idKategoriPersediaan) {
         logger.info("[ObatAction.saveObatInap] start process >>>");
 
         CheckObatResponse checkObatResponse = new CheckObatResponse();
@@ -299,6 +299,8 @@ public class ObatAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
+
+        Integer intMargin = "".equalsIgnoreCase(margin) || margin == null ? 0 : Integer.valueOf(margin);
 
         Obat obat = new Obat();
         obat.setNamaObat(namaObat);
@@ -321,6 +323,11 @@ public class ObatAction extends BaseMasterAction {
         obat.setAction("C");
         obat.setMinStok(minStok);
         obat.setHargaTerakhir(new BigDecimal(String.valueOf(0)));
+        obat.setFlagKronis(flagKronis);
+        obat.setFlagGeneric(flagGeneric);
+        obat.setFlagBpjs(flagBpjs);
+        obat.setMargin(intMargin);
+        obat.setIdKategoriPersediaan(idKategoriPersediaan);
 
         if (kandunganObats != null && kandunganObats.size() > 0){
             obat.setKandunganObats(kandunganObats);
@@ -349,7 +356,7 @@ public class ObatAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox, BigInteger bijiLembar, BigInteger minStok) {
+    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox, BigInteger bijiLembar, BigInteger minStok, String flagKronis, String flagGeneric, String flagBpjs, String idKategoriPersediaan) {
         logger.info("[ObatAction.saveObatInap] start process >>>");
         CheckObatResponse response = new CheckObatResponse();
         try {
@@ -375,6 +382,10 @@ public class ObatAction extends BaseMasterAction {
             obat.setBranchId(userArea);
             obat.setAction("U");
             obat.setMinStok(minStok);
+            obat.setFlagKronis(flagKronis);
+            obat.setFlagGeneric(flagGeneric);
+            obat.setFlagBpjs(flagBpjs);
+            obat.setIdKategoriPersediaan(idKategoriPersediaan);
 
             if (kandunganObats != null && kandunganObats.size() > 0){
                 List<KandunganObat> kandunganObatsFiltered = kandunganObats.stream().filter(p -> p.getIdObat().equalsIgnoreCase(idObat)).collect(Collectors.toList());

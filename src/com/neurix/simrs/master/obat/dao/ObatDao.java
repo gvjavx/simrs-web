@@ -524,7 +524,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 flag = bean.getFlag();
             }
-            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId()) && !CommonConstant.BRANCH_KP.equalsIgnoreCase(bean.getBranchId())) {
                 branchId = bean.getBranchId();
             }
 
@@ -539,9 +539,16 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "SUM(a.qty_biji) as biji, \n" +
                     "a.merk, \n" +
                     "a.flag, \n" +
-                    "a.min_stok \n" +
+                    "a.min_stok, \n" +
+                    "c.flag_kronis, \n" +
+                    "c.flag_generic, \n" +
+                    "c.flag_bpjs, \n" +
+                    "d.standar_margin, \n" +
+                    "c.id_kategori_persediaan \n" +
                     "FROM im_simrs_obat a\n" +
                     "INNER JOIN (SELECT id_obat FROM im_simrs_obat_gejala WHERE id_jenis_obat LIKE :idJenis GROUP BY id_obat) b ON a.id_obat = b.id_obat\n" +
+                    "LEFT JOIN im_simrs_header_obat c ON a.id_obat = c.id_obat\n" +
+                    "LEFT JOIN im_simrs_margin_obat d ON a.id_obat = d.id_obat\n" +
                     "WHERE a.branch_id LIKE :branchId\n" +
                     "AND a.id_pabrik LIKE :idPabrik\n" +
                     "AND a.id_obat LIKE :idObat\n" +
@@ -553,7 +560,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "a.lembar_per_box,\n" +
                     "a.biji_per_lembar," +
                     "a.merk,\n" +
-                    "a.flag, a.min_stok\n";
+                    "a.flag, a.min_stok, c.flag_kronis, c.flag_generic, c.flag_bpjs, d.standar_margin \n";
 
             List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("branchId", branchId)
@@ -577,6 +584,11 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     obat.setMerk(obj[8] == null ? "" : obj[8].toString());
                     obat.setFlag(obj[9] == null ? "" : obj[9].toString());
                     obat.setMinStok(obj[10] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[10].toString())));
+                    obat.setFlagKronis(obj[11] == null ? "N" : obj[11].toString());
+                    obat.setFlagGeneric(obj[12] == null ? "N" : obj[12].toString());
+                    obat.setFlagBpjs(obj[13] == null ? "N" : obj[13].toString());
+                    obat.setMargin(obj[14] == null ? 0 : (Integer) obj[14]);
+                    obat.setIdKategoriPersediaan(obj[15] == null ? "" : (String) obj[15]);
                     obat.setJenisObat(getObatGejalaByIdObat(obj[1].toString()));
 
                     if (obat.getQtyBox() != null && obat.getMinStok() != null) {

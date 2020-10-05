@@ -9,6 +9,8 @@ import com.neurix.simrs.master.jenisobat.dao.JenisObatDao;
 import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
 import com.neurix.simrs.master.kategoripersediaan.dao.KategoriPersedianDao;
+import com.neurix.simrs.master.marginobat.dao.MarginObatDao;
+import com.neurix.simrs.master.marginobat.model.ImSimrsMarginObatEntity;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.dao.*;
 import com.neurix.simrs.master.obat.model.*;
@@ -69,6 +71,11 @@ public class ObatBoImpl implements ObatBo {
     private BentukBarangDao bentukBarangDao;
     private HeaderObatDao headerObatDao;
     private KategoriPersedianDao kategoriPersedianDao;
+    private MarginObatDao marginObatDao;
+
+    public void setMarginObatDao(MarginObatDao marginObatDao) {
+        this.marginObatDao = marginObatDao;
+    }
 
     public void setKategoriPersedianDao(KategoriPersedianDao kategoriPersedianDao) {
         this.kategoriPersedianDao = kategoriPersedianDao;
@@ -391,12 +398,34 @@ public class ObatBoImpl implements ObatBo {
         headerObatEntity.setBijiPerLembar(bean.getBijiPerLembar());
         headerObatEntity.setIdPabrik(bean.getIdPabrik());
         headerObatEntity.setMinStok(bean.getMinStok());
+        headerObatEntity.setFlagKronis(bean.getFlagKronis());
+        headerObatEntity.setFlagGeneric(bean.getFlagGeneric());
+        headerObatEntity.setFlagBpjs(bean.getFlagBpjs());
+        headerObatEntity.setIdKategoriPersediaan(bean.getIdKategoriPersediaan());
 
         try {
             headerObatDao.addAndSave(headerObatEntity);
         } catch (HibernateException e) {
             logger.error("[ObatBoImpl.saveAdd] error when add data obat " + e.getMessage());
             throw new GeneralBOException("[ObatBoImpl.saveAdd] error when add data obat " + e.getMessage());
+        }
+
+        ImSimrsMarginObatEntity marginObatEntity = new ImSimrsMarginObatEntity();
+        marginObatEntity.setIdMarginObat(headerObatEntity.getIdObat()+"MGN");
+        marginObatEntity.setIdObat(headerObatEntity.getIdObat());
+        marginObatEntity.setStandarMargin(bean.getMargin());
+        marginObatEntity.setFlag("Y");
+        marginObatEntity.setAction("C");
+        marginObatEntity.setCreatedDate(time);
+        marginObatEntity.setCreatedDateWho(userLogin);
+        marginObatEntity.setLastUpdate(time);
+        marginObatEntity.setLastUpdateWho(userLogin);
+
+        try {
+            marginObatDao.addAndSave(marginObatEntity);
+        } catch (HibernateException e) {
+            logger.error("[ObatBoImpl.saveAdd] error when add data margin obat " + e.getMessage());
+            throw new GeneralBOException("[ObatBoImpl.saveAdd] error add data margin obat" + e.getMessage());
         }
 
 
@@ -520,6 +549,10 @@ public class ObatBoImpl implements ObatBo {
                     headerObatEntity.setMerk(bean.getMerk());
                     headerObatEntity.setAction(bean.getAction());
                     headerObatEntity.setMinStok(bean.getMinStok());
+                    headerObatEntity.setFlagGeneric(bean.getFlagGeneric());
+                    headerObatEntity.setFlagKronis(bean.getFlagKronis());
+                    headerObatEntity.setFlagBpjs(bean.getFlagBpjs());
+                    headerObatEntity.setIdKategoriPersediaan(bean.getIdKategoriPersediaan());
 
                     try {
                         headerObatDao.updateAndSave(headerObatEntity);
@@ -529,6 +562,26 @@ public class ObatBoImpl implements ObatBo {
                         response.setStatus("error");
                         response.setMessage("Found Error when update header obat " + e.getMessage());
                         logger.error("[ObatBoImpl.saveEdit] error when update header obat " + e.getMessage());
+                        throw new GeneralBOException("[ObatBoImpl.saveEdit] error when update header obat " + e.getMessage());
+                    }
+                }
+
+                ImSimrsMarginObatEntity marginObatEntity = marginObatDao.getById("idObat", headerObatEntity.getIdObat());
+                if (marginObatEntity != null){
+
+                    marginObatEntity.setStandarMargin(bean.getMargin());
+                    marginObatEntity.setAction("U");
+                    marginObatEntity.setLastUpdate(bean.getLastUpdate());
+                    marginObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        marginObatDao.updateAndSave(marginObatEntity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMessage("Found Error when update margin obat " + e.getMessage());
+                        logger.error("[ObatBoImpl.saveEdit] error when update margin obat " + e.getMessage());
                         throw new GeneralBOException("[ObatBoImpl.saveEdit] error when update header obat " + e.getMessage());
                     }
                 }
