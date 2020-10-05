@@ -1,6 +1,5 @@
 package com.neurix.simrs.master.labdetail.action;
 
-import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -183,15 +182,18 @@ public class LabDetailAction extends BaseTransactionAction {
     public List<LabDetail> listLabDetail(String idLab) {
         logger.info("[LabAction.listLabDetail] start process >>>");
         List<LabDetail> labDetailList = new ArrayList<>();
-        LabDetail labDetail = new LabDetail();
-        labDetail.setIdLab(idLab);
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
-        try {
-            labDetailList = labDetailBo.getByCriteria(labDetail);
-        } catch (GeneralBOException e) {
-            logger.error("[LabDetailAction.listLabDetail] Error when get data lab detail ," + "Found problem when searching data, please inform to your admin.", e);
-            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+        if(idLab != null && !"".equalsIgnoreCase(idLab)){
+            LabDetail labDetail = new LabDetail();
+            labDetail.setIdLab(idLab);
+            labDetail.setBranchId(CommonUtil.userBranchLogin());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
+            try {
+                labDetailList = labDetailBo.getDataParameterPemeriksaan(labDetail);
+            } catch (GeneralBOException e) {
+                logger.error("[LabDetailAction.listLabDetail] Error when get data lab detail ," + "Found problem when searching data, please inform to your admin.", e);
+                addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            }
         }
         logger.info("[LabDetailAction.listLabDetail] end process >>>");
         return labDetailList;

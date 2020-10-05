@@ -138,6 +138,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">Flag Tppri</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="rawatInap.flagTppri"
+                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2"
+                                                  cssStyle="width: 100%"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-4" style="margin-top: 7px">
                                         <sj:submit type="button" cssClass="btn btn-success" formIds="rawatInapForm" id="search" name="search"

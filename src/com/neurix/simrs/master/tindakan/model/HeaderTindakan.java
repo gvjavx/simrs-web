@@ -15,6 +15,15 @@ public class HeaderTindakan {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String kategoriInaBpjs;
+    private String namaKategoriBpjs;
+
+    public String getNamaKategoriBpjs() {
+        return namaKategoriBpjs;
+    }
+
+    public void setNamaKategoriBpjs(String namaKategoriBpjs) {
+        this.namaKategoriBpjs = namaKategoriBpjs;
+    }
 
     public String getKategoriInaBpjs() {
         return kategoriInaBpjs;

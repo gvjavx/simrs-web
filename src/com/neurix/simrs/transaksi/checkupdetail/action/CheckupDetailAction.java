@@ -893,25 +893,16 @@ public class CheckupDetailAction extends BaseMasterAction {
 
     public List<Tindakan> getListComboTindakan(String idKategoriTindakan) {
         logger.info("[CheckupDetailAction.listOfDokter] start process >>>");
-
         List<Tindakan> tindakanList = new ArrayList<>();
         Tindakan tindakan = new Tindakan();
         tindakan.setIdKategoriTindakan(idKategoriTindakan);
-//        if ("ADMIN RS".equalsIgnoreCase(CommonUtil.roleAsLogin())) {
-//            //tampil semua tindakan
-//        } else {
-//            tindakan.setIdPelayanan(CommonUtil.userPelayananIdLogin());
-//        }
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
-
         try {
             tindakanList = tindakanBo.getComboBoxTindakan(tindakan);
         } catch (GeneralBOException e) {
             logger.error("[CheckupDetailAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
         }
-
         logger.info("[CheckupDetailAction.listOfDokter] end process >>>");
         return tindakanList;
     }
@@ -4205,10 +4196,10 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                     if (riwayatTindakanList.isEmpty()) {
 
-                        PeriksaLab lab = new PeriksaLab();
+                        BigDecimal totaltarif = null;
 
                         try {
-                            lab = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdLab(), entity.getIdPeriksaLab());
+                            totaltarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdPeriksaLab());
                         } catch (HibernateException e) {
                             logger.error("Found Error " + e.getMessage());
                         }
@@ -4216,13 +4207,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                         riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
                         riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
-                        String namaLab = "";
-                        if ("radiologi".equalsIgnoreCase(lab.getKategoriLabName())) {
-                            namaLab = "Radiologi";
-                        } else {
-                            namaLab = "Laboratorium";
-                        }
-                        riwayatTindakan.setNamaTindakan("Periksa " + namaLab + " " + entity.getLabName());
+                        riwayatTindakan.setNamaTindakan("Periksa " + entity.getKategoriLabName() + " " + entity.getLabName());
 
                         // paket lab
                         if (!"".equalsIgnoreCase(idPaket) && idPaket != null) {
@@ -4236,23 +4221,23 @@ public class CheckupDetailAction extends BaseMasterAction {
                             } else {
 
                                 // jika tidak ada tarif paket menggunakan tarif asli
-                                riwayatTindakan.setTotalTarif(lab.getTarif());
+                                riwayatTindakan.setTotalTarif(totaltarif);
                             }
                         } else {
 
                             // jika bukan paket maka pakai tarif asli
                             if ("rekanan".equalsIgnoreCase(jenisPasien)) {
                                 if (ops.getDiskon() != null) {
-                                    riwayatTindakan.setTotalTarif(lab.getTarif().multiply(ops.getDiskon()));
+                                    riwayatTindakan.setTotalTarif(totaltarif.multiply(ops.getDiskon()));
                                 } else {
-                                    riwayatTindakan.setTotalTarif(lab.getTarif());
+                                    riwayatTindakan.setTotalTarif(totaltarif);
                                 }
                             } else {
-                                riwayatTindakan.setTotalTarif(lab.getTarif());
+                                riwayatTindakan.setTotalTarif(totaltarif);
                             }
                         }
 
-                        riwayatTindakan.setKeterangan(lab.getKategoriLabName());
+                        riwayatTindakan.setKeterangan(entity.getKategori());
                         riwayatTindakan.setJenisPasien(jenPasien);
                         riwayatTindakan.setAction("C");
                         riwayatTindakan.setFlag("Y");
@@ -5015,7 +5000,11 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
 
             if (periksalb.getIdPeriksaLab() != null) {
-                reportParams.put("title", "Hasil Periksa Lab " + periksalb.getKategoriLabName());
+                if("lab".equalsIgnoreCase(tipe)){
+                    reportParams.put("title", "Hasil Periksa Lab " + periksalb.getKategoriLabName());
+                }else{
+                    reportParams.put("title", "Hasil Periksa Radiologi " + periksalb.getKategoriLabName());
+                }
             }
 
             reportParams.put("area", CommonUtil.userAreaName());
@@ -5040,10 +5029,14 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("kecamatan", checkup.getNamaKecamatan());
             reportParams.put("desa", checkup.getNamaDesa());
             reportParams.put("diagnosa", checkup.getNamaDiagnosa());
+            reportParams.put("sipDokter", periksalb.getSipDokter());
+            reportParams.put("sipPengirim", periksalb.getSipPengirim());
+            reportParams.put("dokterPengirim", periksalb.getDokterPengirim());
             reportParams.put("petugas", periksalb.getNamaPetugas());
             reportParams.put("dokter", periksalb.getNamaDokter());
             reportParams.put("ttdDokter", periksalb.getTtdDokter());
             reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
+            reportParams.put("ttdPengirim", periksalb.getTtdPengirim());
 
             try {
                 preDownload();

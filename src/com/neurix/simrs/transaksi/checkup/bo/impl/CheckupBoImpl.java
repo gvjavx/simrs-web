@@ -790,34 +790,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     }
 
                     for (ItSimrsOrderPeriksaLabEntity orderPeriksaLabEntity: periksaLabEntities){
-                        if("lab".equalsIgnoreCase(orderPeriksaLabEntity.getKeterangan())){
-                            ItSimrsPeriksaLabDetailEntity detailEntity = new ItSimrsPeriksaLabDetailEntity();
-                            detailEntity.setIdPeriksaLabDetail("DPL" + getNextDetailLapId());
-                            detailEntity.setIdPeriksaLab(entity.getIdPeriksaLab());
-                            detailEntity.setIdLabDetail(orderPeriksaLabEntity.getIdLabDetail());
 
-                            ImSimrsLabDetailEntity labDetailEntity = new ImSimrsLabDetailEntity();
-                            try {
-                                labDetailEntity = labDetailDao.getById("idLabDetail", orderPeriksaLabEntity.getIdLabDetail());
-                            } catch (HibernateException e) {
-                                logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
-                                throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
-                            }
-
-                            detailEntity.setFlag("Y");
-                            detailEntity.setAction("C");
-                            detailEntity.setCreatedDate(now);
-                            detailEntity.setCreatedWho(userLogin);
-                            detailEntity.setLastUpdate(now);
-                            detailEntity.setLastUpdateWho(userLogin);
-
-                            try {
-                                periksaLabDetailDao.addAndSave(detailEntity);
-                            } catch (HibernateException e) {
-                                logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
-                                throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
-                            }
-                        }
 
                         if("radiologi".equalsIgnoreCase(orderPeriksaLabEntity.getKeterangan())){
                             ItSimrsPeriksaRadiologiEntity radiologiEntity = new ItSimrsPeriksaRadiologiEntity();

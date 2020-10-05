@@ -24,8 +24,11 @@
         <property name="satuan">
             <column name="satuan" sql-type="varchar" length="10" not-null="false"/>
         </property>
-        <property name="keteranganAcuan">
-            <column name="keterangan_acuan" sql-type="varchar" length="1000" not-null="false"/>
+        <property name="keteranganAcuanL">
+            <column name="keterangan_acuan_l" sql-type="varchar" length="1000" not-null="false"/>
+        </property>
+        <property name="keteranganAcuanP">
+            <column name="keterangan_acuan_p" sql-type="varchar" length="1000" not-null="false"/>
         </property>
         <property name="hasil">
             <column name="hasil" sql-type="varchar" length="20" not-null="false"/>
@@ -51,8 +54,8 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
-        <!--<property name="harga">-->
-            <!--<column name="harga" sql-type="numeric" not-null="false" />-->
-        <!--</property>-->
+        <property name="tarif">
+            <column name="tarif"/>
+        </property>
     </class>
 </hibernate-mapping>

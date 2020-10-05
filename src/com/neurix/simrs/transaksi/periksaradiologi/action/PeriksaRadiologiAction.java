@@ -256,28 +256,20 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
     @Override
     public String search() {
         logger.info("[PeriksaRadiologiAction.search] start process >>>");
-
         PeriksaLab periksaLab = getPeriksaLab();
         List<PeriksaLab> listPeriksaLabList = new ArrayList();
-
         // hanya kategori lab radiologi saja
-        periksaLab.setIdKategoriLab("KAL00000001");
+        periksaLab.setIdKategoriLab("radiologi");
         periksaLab.setBranchId(CommonUtil.userBranchLogin());
 
         try {
             listPeriksaLabList = periksaLabBoProxy.getSearchLab(periksaLab);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PeriksaRadiologiAction.search] Error when searching periksa radilogi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[PeriksaRadiologiAction.search] Error when searching periksa radilogi by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
         }
-
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listPeriksaLabList);
-
         logger.info("[PeriksaRadiologiAction.search] end process <<<");
         return "search";
     }

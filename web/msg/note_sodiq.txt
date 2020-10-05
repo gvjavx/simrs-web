@@ -979,6 +979,18 @@ ALTER COLUMN id_kelas_ruangan TYPE VARCHAR(50);
 ALTER TABLE mt_simrs_ruangan
 ALTER COLUMN id_ruangan TYPE VARCHAR(50);
 
+ALTER TABLE it_simrs_periksa_lab_detail
+RENAME keterangan_acuan TO keterangan_acuan_l;
+
+ALTER TABLE it_simrs_periksa_lab_detail
+RENAME harga TO tarif;
+
+ALTER TABLE it_simrs_periksa_lab_detail
+ADD COLUMN keterangan_acuan_p VARCHAR(100);
+
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN id_kategori_lab VARCHAR(50);
+
 
 
 

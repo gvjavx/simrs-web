@@ -99,7 +99,9 @@ public class TempatTidurAction extends BaseTransactionAction {
                         tempatTidur.setNoRuangan(obj.getString("no_ruangan"));
                     }
                     if (obj.has("tarif")) {
-                        tempatTidur.setTarif(new BigInteger(obj.getString("tarif")));
+                        if(obj.getString("tarif") != null && !"".equalsIgnoreCase(obj.getString("tarif"))){
+                            tempatTidur.setTarif(new BigInteger(obj.getString("tarif")));
+                        }
                     }
                     if (obj.has("id_ruangan")) {
                         tempatTidur.setIdRuangan(obj.getString("id_ruangan"));

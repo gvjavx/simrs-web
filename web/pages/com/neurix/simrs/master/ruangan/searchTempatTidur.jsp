@@ -742,7 +742,7 @@
                 ruangan = idRuangan;
             }
 
-            if (idKelas && idRuangan && namaTT && parameter != '' && data.length > 0) {
+            if (idKelas && idRuangan && namaTT != '' && data.length > 0) {
                 var dataSave = [];
                 $('#save_add').hide();
                 $('#load_add').show();

@@ -179,6 +179,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID Tindakan</td>
                                 <td>Nama Tindakan</td>
+                                <td>Kategori BPJS</td>
                                 <td align="center">Tarif (Rp.)</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -188,6 +189,7 @@
                                 <tr>
                                     <td><s:property value="idHeaderTindakan"/></td>
                                     <td><s:property value="namaTindakan"/></td>
+                                    <td><s:property value="namaKategoriBpjs"/></td>
                                     <td align="right">
                                         <script>
                                             converterRupiah('<s:property value="standardCost"/>');
@@ -490,7 +492,7 @@
             if (res.idHeaderTindakan != null) {
                 $('#v_id_tindakan').text(res.idHeaderTindakan);
                 $('#v_nama_tindakan').text(res.namaTindakan);
-                $('#v_kategori_tindakan').text(res.kategoriInaBpjs);
+                $('#v_kategori_tindakan').text(res.namaKategoriBpjs);
                 $('#v_tarif').text("Rp. " + formatRupiahAtas(res.standardCost));
 
                 $('#set_nama_tindakan').val(res.namaTindakan);

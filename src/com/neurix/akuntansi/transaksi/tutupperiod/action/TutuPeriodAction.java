@@ -757,10 +757,10 @@ public class TutuPeriodAction extends BaseTransactionAction {
                     }
 
                     if (riwayatTindakanList.isEmpty()) {
-                        PeriksaLab lab = new PeriksaLab();
+                        BigDecimal totalTarif = null;
 
                         try {
-                            lab = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdLab(), entity.getIdPeriksaLab());
+                            totalTarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdPeriksaLab());
                         }catch (HibernateException e){
                             logger.error("Found Error "+e.getMessage());
                             response.setStatus("error");
@@ -771,10 +771,10 @@ public class TutuPeriodAction extends BaseTransactionAction {
                         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                         riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
                         riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
-                        riwayatTindakan.setNamaTindakan("Periksa Lab " + entity.getLabName());
-                        riwayatTindakan.setTotalTarif(lab.getTarif());
-                        riwayatTindakan.setKeterangan(lab.getKategoriLabName());
-                        if ("ptpn".equalsIgnoreCase(jenisPasien)){
+                        riwayatTindakan.setNamaTindakan("Periksa "+entity.getKategoriLabName()+" " + entity.getLabName());
+                        riwayatTindakan.setTotalTarif(totalTarif);
+                        riwayatTindakan.setKeterangan(entity.getKategori());
+                        if ("rekanan".equalsIgnoreCase(jenisPasien)){
                             jenisPasien = "bpjs";
                         }
                         riwayatTindakan.setJenisPasien(jenisPasien);

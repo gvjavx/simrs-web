@@ -58,40 +58,36 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
     public List<Tindakan> getListComboBoxTindakan(Tindakan bean){
         List<Tindakan> tindakanList = new ArrayList<>();
         if(bean != null){
-            String idKategori  = "%";
-
             if(bean.getIdKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakan())){
-                idKategori = bean.getIdKategoriTindakan();
-            }
+                String SQL = "SELECT\n" +
+                        "a.id_tindakan,\n" +
+                        "b.nama_tindakan,\n" +
+                        "a.tarif,\n" +
+                        "a.tarif_bpjs,\n" +
+                        "a.diskon,\n" +
+                        "a.is_elektif\n" +
+                        "FROM im_simrs_tindakan a\n" +
+                        "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
+                        "WHERE a.id_kategori_tindakan = :idKat \n" +
+                        "AND a.flag = 'Y'\n";
 
-            String SQL = "SELECT\n"+
-                    "a.id_tindakan,\n"+
-                    "a.id_kategori_tindakan,\n"+
-                    "a.tindakan,\n"+
-                    "a.tarif,\n"+
-                    "a.tarif_bpjs\n"+
-                    "FROM im_simrs_tindakan a\n" +
-                    "WHERE a.id_kategori_tindakan LIKE :idKat\n" +
-                    "AND a.flag = 'Y'\n";
+                List<Object[]> results =  new ArrayList<>();
+                results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                        .setParameter("idKat", bean.getIdKategoriTindakan())
+                        .list();
 
-            List<Object[]> results =  new ArrayList<>();
-            results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                    .setParameter("idKat", idKategori)
-                    .list();
-
-            if(results != null){
-
-                Tindakan tindakan;
-
-                for (Object[] obj: results){
-
-                    tindakan = new Tindakan();
-                    tindakan.setIdTindakan(obj[0] == null ? "" : obj[0].toString());
-                    tindakan.setIdKategoriTindakan(obj[1] == null ? "" : obj[1].toString());
-                    tindakan.setTindakan(obj[2] == null ? "" : obj[2].toString());
-                    tindakan.setTarif(obj[3] == null ? null : (BigInteger) obj[3]);
-                    tindakan.setTarifBpjs(obj[4] == null ? null : (BigInteger) obj[4]);
-                    tindakanList.add(tindakan);
+                if(results.size() > 0){
+                    Tindakan tindakan;
+                    for (Object[] obj: results){
+                        tindakan = new Tindakan();
+                        tindakan.setIdTindakan(obj[0] == null ? "" : obj[0].toString());
+                        tindakan.setTindakan(obj[1] == null ? "" : obj[1].toString());
+                        tindakan.setTarif(obj[2] == null ? null : (BigInteger) obj[2]);
+                        tindakan.setTarifBpjs(obj[3] == null ? null : (BigInteger) obj[3]);
+                        tindakan.setDiskon(obj[4] == null ? null : (BigDecimal) obj[4]);
+                        tindakan.setIsElektif(obj[5] == null ? "" : obj[5].toString());
+                        tindakanList.add(tindakan);
+                    }
                 }
             }
         }

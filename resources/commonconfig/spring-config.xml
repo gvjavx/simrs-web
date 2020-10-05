@@ -296,4 +296,5 @@
     <import resource="sshconfig/com/neurix/simrs/master/tindakan/spring/HeaderTindakanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/parampemeriksaan/spring/ParameterPemeriksaanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/ruangan/spring/TempatTidurBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/tindakanBpjs/spring/TindakanBpjsBean.xml"/>
 </beans>
