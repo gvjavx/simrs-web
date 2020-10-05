@@ -200,6 +200,20 @@
                                                         <s:textfield id="loginTimestampTo" name="jadwalShiftKerja.stTanggalAkhir" size="12" cssClass="form-control pull-right" readonly="true"
                                                                      required="false" cssStyle="background-color: white"/>
                                                     </div>
+                                                    <script>
+                                                        $("#loginTimestampFrom").datepicker({
+                                                            autoclose: true,
+                                                            changeMonth: true,
+                                                            changeYear:true,
+                                                            dateFormat:'dd-MM-yy'
+                                                        });
+                                                        $("#loginTimestampTo").datepicker({
+                                                            autoclose: true,
+                                                            changeMonth: true,
+                                                            changeYear:true,
+                                                            dateFormat:'dd-MM-yy'
+                                                        });
+                                                    </script>
                                                 </td>
                                             </tr>
                                         </table>
