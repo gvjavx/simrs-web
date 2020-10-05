@@ -162,6 +162,7 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
             bean.setPin(pin);
             bean.setTanggalDari(CommonUtil.convertToDate(tanggal));
 
+
             try {
                 result = mesinAbsensiDetailBoProxy.getByCriteriaMobile(bean);
             } catch (GeneralBOException e) {
