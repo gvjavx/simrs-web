@@ -200,7 +200,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Obat</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortMinStok" class="table table-bordered">
+                        <table id="sortMinStok" class="table table-bordered" style="font-size: 13px;">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Nama Obat</td>
@@ -211,6 +211,7 @@
                                 <td>Stok Lembar</td>
                                 <td>Stok Biji</td>
                                 <td>Min Stok</td>
+                                <td>Standar Margin</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -231,6 +232,7 @@
                                         <td><s:property value="qtyLembar"/></td>
                                         <td><s:property value="qtyBiji"/></td>
                                         <td><s:property value="minStok"/></td>
+                                        <td><s:property value="margin"/>%</td>
                                         <td align="center" width="13%">
                                             <img onclick="detailObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="merk"/>','<s:property value="jenisObat"/>','<s:property value="minStok"/>', '<s:property value="flagKronis" />', '<s:property value="flagGeneric" />', '<s:property value="flagBpjs" />', '<s:property value="margin" />', '<s:property value="idKategoriPersediaan" />')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
                                         <s:if test='obat.isKp == "Y"'>

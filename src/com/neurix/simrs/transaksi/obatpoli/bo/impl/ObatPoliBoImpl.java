@@ -2245,41 +2245,54 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         if (notFound)
             obatEntity = getObatById(bean.getIdObat(), bean.getBranchAsal(), bean.getIdBarang());
 
+        ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();
+        newObatEntity.setIdBarang(obatEntity.getIdBarang());
+        newObatEntity.setMerk(obatEntity.getMerk());
+        newObatEntity.setLembarPerBox(obatEntity.getLembarPerBox());
+        newObatEntity.setBijiPerLembar(obatEntity.getBijiPerLembar());
+        newObatEntity.setIdObat(obatEntity.getIdObat());
+        newObatEntity.setHargaTerakhir(obatEntity.getHargaTerakhir());
+        newObatEntity.setExpiredDate(obatEntity.getExpiredDate());
+        newObatEntity.setHarga(obatEntity.getHarga());
+        newObatEntity.setAverageHargaBox(obatEntity.getAverageHargaBox());
+        newObatEntity.setAverageHargaBiji(obatEntity.getAverageHargaBiji());
+        newObatEntity.setAverageHargaLembar(obatEntity.getAverageHargaLembar());
+
         BigInteger qtyBox = new BigInteger(String.valueOf(0));
         BigInteger qtyLembar = new BigInteger(String.valueOf(0));
         BigInteger qtyBiji = new BigInteger(String.valueOf(0));
 
         if ("box".equalsIgnoreCase(bean.getJenisSatuan())) {
             qtyBox = bean.getQtyApprove();
-            obatEntity.setHargaTerakhir(obatEntity.getAverageHargaBox());
+            newObatEntity.setHargaTerakhir(obatEntity.getAverageHargaBox());
         }
         if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())) {
             qtyLembar = bean.getQtyApprove();
-            obatEntity.setHargaTerakhir(obatEntity.getAverageHargaLembar());
+            newObatEntity.setHargaTerakhir(obatEntity.getAverageHargaLembar());
         }
         if ("biji".equalsIgnoreCase(bean.getJenisSatuan())) {
             qtyBiji = bean.getQtyApprove();
-            obatEntity.setHargaTerakhir(obatEntity.getAverageHargaBiji());
+            newObatEntity.setHargaTerakhir(obatEntity.getAverageHargaBiji());
         }
 
-        obatEntity.setQtyBox(qtyBox);
-        obatEntity.setQtyLembar(qtyLembar);
-        obatEntity.setQtyBiji(qtyBiji);
+        newObatEntity.setQtyBox(qtyBox);
+        newObatEntity.setQtyLembar(qtyLembar);
+        newObatEntity.setQtyBiji(qtyBiji);
 
         if (notFound){
-            obatEntity.setIdSeqObat(getIdNextSeqObat());
-            obatEntity.setFlag("Y");
-            obatEntity.setAction("C");
-            obatEntity.setCreatedDate(time);
-            obatEntity.setCreatedWho(bean.getLastUpdateWho());
-            obatEntity.setLastUpdate(time);
-            obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            obatEntity.setBranchId(bean.getBranchId());
-            obatEntity.setFlagBpjs(bean.getTipeObat());
-            obatEntity.setFlagKronis(obatEntity.getFlagKronis());
+            newObatEntity.setIdSeqObat(getIdNextSeqObat());
+            newObatEntity.setFlag("Y");
+            newObatEntity.setAction("C");
+            newObatEntity.setCreatedDate(time);
+            newObatEntity.setCreatedWho(bean.getLastUpdateWho());
+            newObatEntity.setLastUpdate(time);
+            newObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            newObatEntity.setBranchId(bean.getBranchId());
+            newObatEntity.setFlagBpjs(bean.getTipeObat());
+            newObatEntity.setFlagKronis(obatEntity.getFlagKronis());
 
             try {
-                obatDao.addAndSave(obatEntity);
+                obatDao.addAndSave(newObatEntity);
             } catch (HibernateException e) {
                 logger.error("[ObatPoliBoImpl.updateAddStockGudangOtherBranch add] ERROR.", e);
                 throw new GeneralBOException("[ObatPoliBoImpl.updateAddStockGudangOtherBranch add] ERROR." + e.getMessage());
