@@ -546,7 +546,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "d.standar_margin, \n" +
                     "c.id_kategori_persediaan \n" +
                     "FROM im_simrs_obat a\n" +
-                    "INNER JOIN (SELECT id_obat FROM im_simrs_obat_gejala WHERE id_jenis_obat LIKE :idJenis GROUP BY id_obat) b ON a.id_obat = b.id_obat\n" +
+                    "LEFT JOIN (SELECT id_obat FROM im_simrs_obat_gejala WHERE id_jenis_obat LIKE :idJenis GROUP BY id_obat) b ON a.id_obat = b.id_obat\n" +
                     "LEFT JOIN im_simrs_header_obat c ON a.id_obat = c.id_obat\n" +
                     "LEFT JOIN im_simrs_margin_obat d ON a.id_obat = d.id_obat\n" +
                     "WHERE a.branch_id LIKE :branchId\n" +

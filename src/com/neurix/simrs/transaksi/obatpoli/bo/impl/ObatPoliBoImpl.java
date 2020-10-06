@@ -2247,6 +2247,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();
         newObatEntity.setIdBarang(obatEntity.getIdBarang());
+        newObatEntity.setNamaObat(obatEntity.getNamaObat());
         newObatEntity.setMerk(obatEntity.getMerk());
         newObatEntity.setLembarPerBox(obatEntity.getLembarPerBox());
         newObatEntity.setBijiPerLembar(obatEntity.getBijiPerLembar());
@@ -2257,6 +2258,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         newObatEntity.setAverageHargaBox(obatEntity.getAverageHargaBox());
         newObatEntity.setAverageHargaBiji(obatEntity.getAverageHargaBiji());
         newObatEntity.setAverageHargaLembar(obatEntity.getAverageHargaLembar());
+        newObatEntity.setIdPabrik(obatEntity.getIdPabrik());
 
         BigInteger qtyBox = new BigInteger(String.valueOf(0));
         BigInteger qtyLembar = new BigInteger(String.valueOf(0));

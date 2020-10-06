@@ -208,7 +208,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <a href="initForm_permintaangudang.action" class="btn btn-warning"><i class="fa fa-times"></i> Back</a>
+                                    <a href="initFormApproveUnit_approvepermintaanunit.action" class="btn btn-warning"><i class="fa fa-times"></i> Back</a>
                                     <button class="btn btn-success" onclick="confirm()"><i
                                             class="fa fa-check"></i> Save
                                     </button>
@@ -650,6 +650,8 @@
     }
 
     function saveRequestApprove() {
+        console.log("Klik approve");
+
         $('#confirm_dialog').dialog('close');
         var data = $('#tabel_request').tableToJSON();
         var result = [];
