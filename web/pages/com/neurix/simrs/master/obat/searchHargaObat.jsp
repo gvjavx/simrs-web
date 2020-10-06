@@ -283,18 +283,29 @@
                 </div>
                 <div class="row" style="margin-top: 7px">
                     <div class="form-group">
-                        <label class="col-md-5" style="margin-top: 7px">Standar Margin (%)</label>
+                        <label class="col-md-5" style="margin-top: 7px">Standar Margin</label>
                         <div class="col-md-7">
-                            <input type="number" id="mod-standar-margin" class="form-control" readonly>
+                            <div class="input-group">
+                                <input type="number" id="mod-standar-margin" class="form-control" readonly>
+                                <div class="input-group-addon">
+                                    %
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
 
                 <div class="row" style="margin-top: 7px">
                     <div class="form-group">
-                        <label class="col-md-5" style="margin-top: 7px">Margin (%)</label>
+                        <label class="col-md-5" style="margin-top: 7px">Margin</label>
                         <div class="col-md-7">
+                            <div class="input-group">
                             <input type="number" id="mod-margin" onchange="hitungHargaJual()" class="form-control">
+                                <div class="input-group-addon">
+                                    %
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
