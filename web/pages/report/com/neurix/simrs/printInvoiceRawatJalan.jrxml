@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceRawatJalan" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.771561000000008"/>
 	<property name="ireport.x" value="15"/>
-	<property name="ireport.y" value="328"/>
+	<property name="ireport.y" value="477"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -625,7 +625,7 @@
 				</jr:table>
 			</componentElement>
 		</band>
-		<band height="112">
+		<band height="160">
 			<textField>
 				<reportElement x="0" y="15" width="134" height="15" uuid="bac81dd2-86ce-4e85-9832-ca52a91c3a5f"/>
 				<box leftPadding="0">
@@ -671,14 +671,14 @@
 				<textFieldExpression><![CDATA[$P{reportParams.terbilang} == null ? "" : $P{reportParams.terbilang}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="248" y="56" width="118" height="11" uuid="f797e7e9-4b48-42cf-a5a0-d3321865a92e"/>
+				<reportElement x="248" y="93" width="118" height="11" uuid="f797e7e9-4b48-42cf-a5a0-d3321865a92e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Kasir]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="248" y="97" width="118" height="15" uuid="e62478fb-92d7-4c3c-9944-95cfc84f18c3"/>
+				<reportElement x="248" y="135" width="118" height="15" uuid="e62478fb-92d7-4c3c-9944-95cfc84f18c3"/>
 				<box leftPadding="1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isUnderline="true"/>
@@ -709,10 +709,4 @@
 			</textField>
 		</band>
 	</detail>
-	<lastPageFooter>
-		<band height="97"/>
-	</lastPageFooter>
-	<summary>
-		<band height="17" splitType="Stretch"/>
-	</summary>
 </jasperReport>
