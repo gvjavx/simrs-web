@@ -158,7 +158,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group">
-                                <label class="col-md-3" style="margin-top: 5px">Convert Tarif Tindakan ke Persen (%)
+                                <label class="col-md-3" style="margin-top: 5px">Diskon Tarif Tindakan (%)
                                     ?</label>
                                 <div class="col-md-1">
                                     <div class="form-check" style="margin-top: 5px;">
@@ -268,7 +268,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-offset-3 col-md-7" style="margin-top: 7px">
-                                            <button class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
+                                            <button onclick="window.location.reload(true)" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
                                             <button class="btn btn-success" onclick="saveTindakan()"><i
                                                     class="fa fa-plus"></i> Tambah
                                             </button>
@@ -395,7 +395,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-offset-3 col-md-7" style="margin-top: 7px">
-                                            <button class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
+                                            <%--<button class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>--%>
                                             <button class="btn btn-success" onclick="saveLab()"><i
                                                     class="fa fa-plus"></i> Tambah
                                             </button>
@@ -578,8 +578,8 @@
                                 $('#persen').attr('style', 'cursor:no-drop');
                                 $('#jml_persen').attr('disabled', true);
                             }
-                            $("#tin_tarif").val(formatRupiahAtas(tarif));
-                            $("#h_tin_tarif").val(tarif);
+                            $("#tin_tarif").val(formatRupiahAtas(tindakan.tarif));
+                            $("#h_tin_tarif").val(tindakan.tarif);
                             $("#tin_tarif_paket").val(formatRupiahAtas(tarif));
                             $("#h_tin_tarif_paket").val(tarif);
                         }
@@ -620,9 +620,9 @@
                             $('#persen').attr('style', 'cursor:no-drop');
                             $('#jml_persen').attr('disabled', true);
                         }
-                        $("#lab_tarif").val(formatRupiahAtas(tarif));
+                        $("#lab_tarif").val(formatRupiahAtas(response.tarif));
                         $("#lab_tarif_paket").val(formatRupiahAtas(tarif));
-                        $("#h_lab_tarif").val(tarif);
+                        $("#h_lab_tarif").val(response.tarif);
                         $("#h_lab_tarif_paket").val(tarif);
                     }
                 });
@@ -766,8 +766,8 @@
                             }
 
                             if (setAppend) {
-                                $('#warning_lab').show().fadeOut(5000);
-                                $('#msg_lab').text("Diskon Tarif tidak boleh kosong dan 0...!");
+                                $('#warning_tindakan').show().fadeOut(5000);
+                                $('#msg_tin').text("Diskon Tarif tidak boleh kosong dan 0...!");
                             } else {
                                 $.each(response, function (i, item) {
                                     row = row + i;
@@ -834,7 +834,7 @@
 
         hitungTotal();
         // tempSelectPoli();
-        tempSelectPoli(idPoli, namaPoli);
+        tempSelectPoli();
     }
 
     function tempSelectPoli() {
@@ -1206,7 +1206,10 @@
     function convertRp(id, val) {
         $('#' + id).val(formatRupiahAtas2(val));
         val = val.replace(/[.]/g, '');
-        $('#h_' + id).val(val);
+        var numbers = /^[0-9]+$/;
+        if(val.match(numbers)){
+            $('#h_' + id).val(val);
+        }
     }
 
     function cekPersen(id, idTujuan) {

@@ -1,6 +1,8 @@
 package com.neurix.simrs.master.ruangan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.kelasruangan.dao.KelasRuanganDao;
+import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
 import com.neurix.simrs.master.ruangan.bo.TempatTidurBo;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
 import com.neurix.simrs.master.ruangan.dao.TempatTidurDao;
@@ -20,6 +22,7 @@ public class TempatTidurBoImpl implements TempatTidurBo {
     protected static transient Logger logger = Logger.getLogger(TempatTidurBoImpl.class);
     private TempatTidurDao tempatTidurDao;
     private RuanganDao ruanganDao;
+    private KelasRuanganDao kelasRuanganDao;
 
     @Override
     public CrudResponse saveAdd(List<TempatTidur> list, String isNew) throws GeneralBOException {
@@ -221,6 +224,11 @@ public class TempatTidurBoImpl implements TempatTidurBo {
                     param.setNoRuangan(ruanganEntity.getNoRuangan());
                     param.setNamaRuangan(ruanganEntity.getNamaRuangan());
                     param.setTarif(ruanganEntity.getTarif());
+                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganDao.getById("idKelasRuangan", ruanganEntity.getIdKelasRuangan());
+                    if(kelasRuanganEntity != null){
+                        param.setIdKelasRuangan(kelasRuanganEntity.getIdKelasRuangan());
+                        param.setNamaKelasRuangan(kelasRuanganEntity.getNamaKelasRuangan());
+                    }
                 }
                 pemeriksaanList.add(param);
             }
@@ -238,5 +246,9 @@ public class TempatTidurBoImpl implements TempatTidurBo {
 
     public void setRuanganDao(RuanganDao ruanganDao) {
         this.ruanganDao = ruanganDao;
+    }
+
+    public void setKelasRuanganDao(KelasRuanganDao kelasRuanganDao) {
+        this.kelasRuanganDao = kelasRuanganDao;
     }
 }

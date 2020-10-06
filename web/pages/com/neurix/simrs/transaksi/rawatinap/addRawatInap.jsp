@@ -755,9 +755,9 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Order</td>
+                                <td>Jenis Penunjang</td>
                                 <td>Pemeriksaan</td>
                                 <td>Status</td>
-                                <td>Jenis Lab</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -1502,20 +1502,23 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-3">
-                            <span>Tanda Tangan</span>
-                        </div>
-                        <div class="col-md-7">
-                            <canvas style="margin-left: 0px" class="paint-canvas-ttd" id="ttd_pengirim" width="310"
-                                    onmouseover="paintTtd('ttd_pengirim')"></canvas>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-danger" style="margin-left: -20px"
-                                    onclick="removePaint('ttd_pengirim')"><i
-                                    class="fa fa-trash"></i> Clear
-                            </button>
+                <div style="display: none" id="form_ttd">
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <span>Tanda Tangan</span>
+                            </div>
+                            <div class="col-md-7">
+                                <canvas style="margin-left: 0px" class="paint-canvas-ttd" id="ttd_pengirim" width="310"
+                                        onmouseover="paintTtd('ttd_pengirim')"></canvas>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-danger" style="margin-left: -20px"
+                                        onclick="removePaint('ttd_pengirim')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

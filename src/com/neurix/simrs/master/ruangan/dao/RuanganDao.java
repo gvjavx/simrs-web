@@ -199,8 +199,7 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
             idKelas = "AND b.id_kelas_ruangan = '"+bean.getIdKelasRuangan()+"' \n";
         }
         if("Y".equalsIgnoreCase(bean.getStatusRuangan())){
-            status = "AND b.status_ruangan = 'Y'\n" +
-                     "AND b.sisa_kuota > 0 \n";
+            status = "AND c.status = 'Y'\n";
         }
         if(bean.getKategori() != null && !"".equalsIgnoreCase(bean.getKategori())){
             kategori = bean.getKategori();
@@ -209,11 +208,12 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                 "b.id_ruangan,\n" +
                 "b.nama_ruangan,\n" +
                 "b.no_ruangan,\n" +
-                "b.sisa_kuota\n" +
+                "c.id_tempat_tidur,\n" +
+                "c.nama_tempat_tidur\n" +
                 "FROM im_simrs_kelas_ruangan a\n" +
                 "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
-                "WHERE a.kategori LIKE :kategori\n"
-                + idKelas + status +
+                "INNER JOIN mt_simrs_ruangan_tempat_tidur c ON b.id_ruangan = c.id_ruangan\n" +
+                "WHERE a.kategori LIKE :kategori\n" + idKelas + status +
                 "AND b.branch_id = :branchId\n" +
                 "ORDER BY b.nama_ruangan ASC";
 
@@ -230,11 +230,11 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                 ruangan.setIdRuangan(obj[0] == null ? null : obj[0].toString());
                 ruangan.setNamaRuangan(obj[1] == null ? null : obj[1].toString());
                 ruangan.setNoRuangan(obj[2] == null ? null : obj[2].toString());
-                ruangan.setSisaKuota(obj[3] == null ? null : new Integer(obj[3].toString()));
+                ruangan.setIdTempatTidur(obj[3] == null ? null : obj[3].toString());
+                ruangan.setNamaTempatTidur(obj[4] == null ? null : obj[4].toString());
                 results.add(ruangan);
             }
         }
-
         return results;
     }
 }

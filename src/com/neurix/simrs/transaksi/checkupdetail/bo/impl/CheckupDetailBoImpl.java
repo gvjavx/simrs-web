@@ -8,8 +8,11 @@ import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
+import com.neurix.simrs.master.ruangan.dao.TempatTidurDao;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
+import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganTempatTidurEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
+import com.neurix.simrs.master.ruangan.model.TempatTidur;
 import com.neurix.simrs.master.statuspasien.model.StatusPasien;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
@@ -86,6 +89,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private DokterDao dokterDao;
     private DiagnosaRawatDao diagnosaRawatDao;
     private PaketPasienDao paketPasienDao;
+    private TempatTidurDao tempatTidurDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -990,84 +994,70 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private CrudResponse saveRawatInap(RawatInap bean) {
         logger.info("[CheckupDetailBoImpl.saveRawatInap] Start >>>>>>>>");
         CrudResponse response = new CrudResponse();
-
         if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup()) &&
                 bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
             ItSimrsRawatInapEntity entity = new ItSimrsRawatInapEntity();
-            MtSimrsRuanganEntity ruanganEntity = new MtSimrsRuanganEntity();
-
-            // get data ruangan;
+            TempatTidur tempatTidur = new TempatTidur();
             if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())) {
-                Ruangan ruangan = new Ruangan();
-                ruangan.setIdRuangan(bean.getIdRuangan());
+                TempatTidur tt = new TempatTidur();
+                tt.setIdTempatTidur(bean.getIdRuangan());
+                List<TempatTidur> tempatTidurList = tempatTidurDao.getDataTempatTidur(tt);
+                if (tempatTidurList.size() > 0) {
+                    tempatTidur = tempatTidurList.get(0);
+                    if (tempatTidur != null) {
+                        entity.setIdRuangan(tempatTidur.getIdTempatTidur());
+                        entity.setTarif(tempatTidur.getTarif());
+                        entity.setNamaRangan(tempatTidur.getNamaRuangan());
+                        entity.setNoRuangan(tempatTidur.getNoRuangan());
+                    }
+                }
+                String id = getNextRawatInapId();
+                entity.setIdRawatInap("RNP" + id);
+                entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                entity.setNoCheckup(bean.getNoCheckup());
+                entity.setFlag("Y");
+                entity.setAction("C");
+                entity.setCreatedDate(bean.getCreatedDate());
+                entity.setLastUpdate(bean.getCreatedDate());
+                entity.setCreatedWho(bean.getCreatedWho());
+                entity.setLastUpdateWho(bean.getCreatedWho());
+                entity.setTglMasuk(bean.getTglMasuk());
+                entity.setStatus(bean.getStatus());
+                entity.setKeterangan(bean.getKeterangan());
 
-                List<MtSimrsRuanganEntity> listRuangan = getListEntityRuangan(ruangan);
+                try {
+                    rawatInapDao.addAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("berhasil");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg(" Error when save add Rawat Inap " + e.getMessage());
+                    logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when save add Rawat Inap ", e);
+                    throw new GeneralBOException("[CheckupDetailBoImpl.saveRawatInap] Error when save add  Rawat Inap " + e.getMessage());
+                }
 
-                if (!listRuangan.isEmpty()) {
-                    ruanganEntity = listRuangan.get(0);
-
-                    if (ruanganEntity != null) {
-
-                        // set to entity table rawat inap for ruangan data
-                        entity.setIdRuangan(ruanganEntity.getIdRuangan());
-                        entity.setTarif(ruanganEntity.getTarif());
-                        entity.setNamaRangan(ruanganEntity.getNamaRuangan());
-                        entity.setNoRuangan(ruanganEntity.getNoRuangan());
+                // set ketersedian ruangan to tidak tersedia
+                if (tempatTidur != null) {
+                    MtSimrsRuanganTempatTidurEntity tempatTidurEntity = tempatTidurDao.getById("idTempatTidur", tempatTidur.getIdTempatTidur());
+                    if(tempatTidurEntity != null){
+                        tempatTidurEntity.setStatus("N");
+                        tempatTidurEntity.setAction("U");
+                        tempatTidurEntity.setLastUpdate(bean.getCreatedDate());
+                        tempatTidurEntity.setLastUpdateWho(bean.getCreatedWho());
+                        try {
+                            tempatTidurDao.updateAndSave(tempatTidurEntity);
+                            response.setStatus("success");
+                            response.setMsg(entity.getIdRawatInap());
+                        } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMsg("Error When Saving data detail checkup " + e.getMessage());
+                            logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan ", e);
+                            throw new GeneralBOException("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan " + e.getMessage());
+                        }
                     }
                 }
             }
-
-            // set to entity table rawat inap
-            String id = getNextRawatInapId();
-            entity.setIdRawatInap("RNP" + id);
-            entity.setIdDetailCheckup(bean.getIdDetailCheckup());
-            entity.setNoCheckup(bean.getNoCheckup());
-            entity.setFlag("Y");
-            entity.setAction("C");
-            entity.setCreatedDate(bean.getCreatedDate());
-            entity.setLastUpdate(bean.getCreatedDate());
-            entity.setCreatedWho(bean.getCreatedWho());
-            entity.setLastUpdateWho(bean.getCreatedWho());
-            entity.setTglMasuk(bean.getTglMasuk());
-            entity.setStatus(bean.getStatus());
-            entity.setKeterangan(bean.getKeterangan());
-
-            try {
-                rawatInapDao.addAndSave(entity);
-                response.setStatus("success");
-                response.setMsg("berhasil");
-            } catch (HibernateException e) {
-                response.setStatus("error");
-                response.setMsg(" Error when save add Rawat Inap " + e.getMessage());
-                logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when save add Rawat Inap ", e);
-                throw new GeneralBOException("[CheckupDetailBoImpl.saveRawatInap] Error when save add  Rawat Inap " + e.getMessage());
-            }
-
-            // set ketersedian ruangan to tidak tersedia
-            if (ruanganEntity != null) {
-
-                ruanganEntity.setSisaKuota(ruanganEntity.getSisaKuota() - 1);
-                ruanganEntity.setAction("U");
-                ruanganEntity.setLastUpdate(bean.getCreatedDate());
-                ruanganEntity.setLastUpdateWho(bean.getCreatedWho());
-
-                if (ruanganEntity.getSisaKuota() == 0) {
-                    ruanganEntity.setStatusRuangan("N");
-                }
-
-                try {
-                    ruanganDao.updateAndSave(ruanganEntity);
-                    response.setStatus("success");
-                    response.setMsg(entity.getIdRawatInap());
-                } catch (HibernateException e) {
-                    response.setStatus("error");
-                    response.setMsg("Error When Saving data detail checkup " + e.getMessage());
-                    logger.error("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan ", e);
-                    throw new GeneralBOException("[CheckupDetailBoImpl.saveRawatInap] Error when Update data ruangan " + e.getMessage());
-                }
-            }
         }
-
         logger.info("[CheckupDetailBoImpl.saveRawatInap] End <<<<<<<<");
         return response;
     }
@@ -1684,5 +1674,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setPaketPasienDao(PaketPasienDao paketPasienDao) {
         this.paketPasienDao = paketPasienDao;
+    }
+
+    public void setTempatTidurDao(TempatTidurDao tempatTidurDao) {
+        this.tempatTidurDao = tempatTidurDao;
     }
 }

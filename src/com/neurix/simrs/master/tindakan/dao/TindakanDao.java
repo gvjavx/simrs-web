@@ -154,6 +154,9 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         if(bean.getIdKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakan())){
             condition = condition + "AND b.id_kategori_tindakan = '"+bean.getIdKategoriTindakan()+"' \n";
         }
+        if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            condition = condition + "AND b.branch_id = '"+bean.getBranchId()+"' \n";
+        }
         String SQL = "SELECT \n" +
                 "a.id_header_tindakan,\n" +
                 "a.nama_tindakan,\n" +

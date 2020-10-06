@@ -1032,7 +1032,7 @@ function saveTindakan(id) {
     var idDok = "";
     var idPelayanan = "";
 
-    if (idDetailCheckup != '' && idTindakan != '' && idDokter != '' && qty > 0 && idKategori != '') {
+    if (idDetailCheckup != '' && idTindakan != '' && idTindakan != null && idDokter != '' && qty > 0 && idKategori != '' && idKategori != null) {
 
         $('#save_tindakan').hide();
         $('#load_tindakan').show();
@@ -1092,7 +1092,7 @@ function saveTindakan(id) {
         if (idDokter == '') {
             $('#war_dpjp').show();
         }
-        if (idKategori == '') {
+        if (idKategori == '' || idKategori == null) {
             $('#war_kategori').show();
         }
         if (idTindakan == '' || idTindakan == null) {

@@ -2195,7 +2195,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                 tindakan.setIsIna("Y");
 
                                                 try {
-                                                    tindakanList = tindakanBo.getByCriteria(tindakan);
+                                                    tindakanList = tindakanBo.getDataTindakan(tindakan);
                                                 } catch (GeneralBOException e) {
                                                     logger.error("[CheckupAction.saveAdd] Error when tindakan ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
                                                     throw new GeneralBOException("Error when new tindakan", e);
@@ -2761,7 +2761,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                 tindakan.setIsIna("Y");
 
                                                 try {
-                                                    tindakanList = tindakanBo.getByCriteria(tindakan);
+                                                    tindakanList = tindakanBo.getDataTindakan(tindakan);
                                                 } catch (GeneralBOException e) {
                                                     logger.error("[CheckupAction.saveAdd] Error when tindakan ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
                                                     throw new GeneralBOException("Error when new tindakan", e);

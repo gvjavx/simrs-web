@@ -722,10 +722,6 @@
             var kategori = $('#edit_kategori_lab').val();
             var parameter = $('#edit_nama_parameter').val();
             var tarif = $('#edit_h_tarif').val();
-            console.log(paket);
-            console.log(kategori);
-            console.log(parameter);
-            console.log(tarif);
             if (paket && kategori && parameter && tarif != '') {
                 $('#save_edit').hide();
                 $('#load_edit').show();
@@ -779,7 +775,7 @@
             var parameter = $('#set_nama_parameter').val();
             var paketLab = "";
             var isNew = "N";
-            var newPaket = null;
+            var newPaket = "";
 
             if(paket == "new"){
                 var ket = $('#set_paket_baru').val();

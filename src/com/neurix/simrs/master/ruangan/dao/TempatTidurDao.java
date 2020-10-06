@@ -29,8 +29,8 @@ public class TempatTidurDao extends GenericDao<MtSimrsRuanganTempatTidurEntity, 
             if (mapCriteria.get("id_tempat_tidur") != null) {
                 criteria.add(Restrictions.eq("idTempatTidur", (String) mapCriteria.get("id_tempat_tidur")));
             }
-            if (mapCriteria.get("nama_ruangan") != null) {
-                criteria.add(Restrictions.ilike("nama_tempat_tidur", "%" + (String) mapCriteria.get("nama_tempat_tidur") + "%"));
+            if (mapCriteria.get("nama_tempat_tidur") != null) {
+                criteria.add(Restrictions.ilike("namaTempatTidur", "%" + (String) mapCriteria.get("nama_tempat_tidur") + "%"));
             }
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
@@ -55,12 +55,8 @@ public class TempatTidurDao extends GenericDao<MtSimrsRuanganTempatTidurEntity, 
         List<TempatTidur> tidurList = new ArrayList<>();
         String flag = "Y";
         String condition = "";
-        String branchId = "%";
         if(bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
             flag = bean.getFlag();
-        }
-        if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
-            branchId = bean.getBranchId();
         }
         if(bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())){
             condition = "AND a.id_kelas_ruangan = '"+bean.getIdKelasRuangan()+"' \n";
@@ -73,6 +69,9 @@ public class TempatTidurDao extends GenericDao<MtSimrsRuanganTempatTidurEntity, 
         }
         if(bean.getNamaTempatTidur() != null && !"".equalsIgnoreCase(bean.getNamaTempatTidur())){
             condition = condition + "AND c.nama_tempat_tidur ILIKE '%"+bean.getNamaTempatTidur()+"%' \n";
+        }
+        if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            condition = condition + "AND b.branch_id = '"+bean.getBranchId()+"' \n";
         }
         String SQL = "SELECT \n" +
                 "a.id_kelas_ruangan,\n" +
@@ -87,12 +86,10 @@ public class TempatTidurDao extends GenericDao<MtSimrsRuanganTempatTidurEntity, 
                 "FROM im_simrs_kelas_ruangan a\n" +
                 "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
                 "INNER JOIN mt_simrs_ruangan_tempat_tidur c ON b.id_ruangan = c.id_ruangan\n" +
-                "WHERE c.flag = :flag \n" +
-                "AND b.branch_id = :branch \n" + condition;
+                "WHERE c.flag = :flag \n" + condition;
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("flag", flag)
-                .setParameter("branch", branchId)
                 .list();
         if(result.size() > 0){
             for (Object[] obj: result){

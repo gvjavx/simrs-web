@@ -940,7 +940,7 @@ public class CheckupAction extends BaseMasterAction {
                             tindakan.setIsIna("Y");
 
                             try {
-                                tindakanList = tindakanBoProxy.getByCriteria(tindakan);
+                                tindakanList = tindakanBoProxy.getDataTindakan(tindakan);
                             } catch (GeneralBOException e) {
                                 logger.error("[CheckupAction.saveAdd] Error when tindakan ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
                                 throw new GeneralBOException("Error when new tindakan", e);

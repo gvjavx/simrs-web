@@ -324,14 +324,16 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "e.nama_kategori,\n" +
                 "f.id_pelayanan,\n" +
                 "f.nama_pelayanan,\n" +
-                "a.created_date\n" +
+                "a.created_date,\n" +
+                "e.kategori\n" +
                 "FROM it_simrs_periksa_lab a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_lab d ON a.id_lab = d.id_lab\n" +
-                "INNER JOIN im_simrs_kategori_lab e ON d.id_kategori_lab = e.id_kategori_lab\n" +
+                "INNER JOIN im_simrs_kategori_lab e ON a.id_kategori_lab = e.id_kategori_lab\n" +
                 "LEFT JOIN im_simrs_pelayanan f ON b.id_pelayanan = f.id_pelayanan\n" +
                 "WHERE c.no_checkup = :id \n" +
+                "AND a.flag = 'Y'\n" +
                 "ORDER BY a.id_detail_checkup ASC";
 
         List<Objects[]> result = new ArrayList<>();
@@ -351,6 +353,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 lab.setIdPelayanan(obj[7] == null ? "" : obj[7].toString());
                 lab.setNamaPelayanan(obj[8] == null ? "" : obj[8].toString());
                 lab.setCreatedDate(obj[9] == null ? null : (Timestamp) obj[9]);
+                lab.setKategori(obj[10] == null ? null : (String) obj[10]);
                 labList.add(lab);
             }
         }

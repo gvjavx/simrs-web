@@ -273,10 +273,12 @@ public class LabDetailAction extends BaseTransactionAction {
         List<LabDetail> labDetailList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LabDetailBo labDetailBo = (LabDetailBo) ctx.getBean("labDetailBoProxy");
-        String branchId = CommonUtil.userBranchLogin();
+        LabDetail labDetail = new LabDetail();
+        labDetail.setIdLab(idLab);
+        labDetail.setBranchId(CommonUtil.userBranchLogin());
 
         try {
-            labDetailList = labDetailBo.getDetaillab(idLab, branchId);
+            labDetailList = labDetailBo.getDataParameterPemeriksaan(labDetail);
         } catch (GeneralBOException e) {
             logger.error("[LabDetailAction.getListComboParameter] Error when get data lab detail ," + "Found problem when searching data, please inform to your admin.", e);
         }

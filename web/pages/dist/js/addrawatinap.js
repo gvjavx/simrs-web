@@ -1212,9 +1212,9 @@ function listLab() {
 
                 table += "<tr>" +
                     "<td>" + dateFormat + "</td>" +
+                    "<td>" + item.kategoriLabName + "</td>" +
                     "<td>" + lab + "</td>" +
                     "<td>" + status + "</td>" +
-                    "<td>" + item.kategoriLabName + "</td>" +
                     "<td align='center'>" + btn + crn + "</td>" +
                     "</tr>"
             });

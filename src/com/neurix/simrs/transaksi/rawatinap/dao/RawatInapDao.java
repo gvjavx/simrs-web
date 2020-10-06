@@ -168,7 +168,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "INNER JOIN im_simrs_jenis_periksa_pasien jenis ON b.id_jenis_periksa_pasien = jenis.id_jenis_periksa_pasien\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
                     "INNER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') d ON b.id_detail_checkup = d.id_detail_checkup\n" +
-                    "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
+                    "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON d.id_ruangan = tt.id_tempat_tidur \n"+
+                    "INNER JOIN mt_simrs_ruangan e ON tt.id_ruangan = e.id_ruangan\n" +
                     "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
                     "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = b.id_detail_checkup\n" +
                     "WHERE a.id_pasien LIKE :idPasien\n" +
@@ -683,7 +684,13 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             String idDetailCheckup = "";
             String branchId = "";
             String tgl = "";
+            String flag = "";
 
+            if (bean.getFlagTppri() != null && !"".equalsIgnoreCase(bean.getFlagTppri())) {
+                flag = "AND b.flag_tppri = '" + bean.getFlagTppri() + "' \n";
+            }else{
+                flag = "AND b.flag_tppri IS NULL \n";
+            }
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 idPasien = "AND a.id_pasien LIKE '%" + bean.getIdPasien() + "%' \n";
             }
@@ -728,8 +735,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "WHERE b.status_periksa = '3'\n" +
                     "AND b.tindak_lanjut IN ('rawat_inap','rawat_intensif','rawat_isolasi','kamar_operasi','ruang_bersalin')\n" +
                     "AND d.id_detail_checkup IS NULL \n" +
-                    "AND b.flag_tppri IS NULL \n" +
-                    branchId + idPasien + nama + idDetailCheckup + tgl;
+                    flag + branchId + idPasien + nama + idDetailCheckup + tgl;
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

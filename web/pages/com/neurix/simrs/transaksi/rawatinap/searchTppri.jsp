@@ -140,8 +140,8 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Flag Tppri</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="rawatInap.flagTppri"
-                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2"
+                                        <s:select list="#{'Y':'Non-Active'}" id="flag" name="rawatInap.flagTppri"
+                                                  headerKey="" headerValue="Active" cssClass="form-control select2"
                                                   cssStyle="width: 100%"/>
                                     </div>
                                 </div>
@@ -723,7 +723,7 @@
         CheckupDetailAction.listRuangan(idKelas, true,  kategori, {callback:  function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
+                        option += "<option value='" + item.idTempatTidur + "'>" + '['+item.noRuangan + "]-" + item.namaRuangan+"-["+item.namaTempatTidur+"]</option>";
                     });
                     $('#kamar').html(option);
                 } else {

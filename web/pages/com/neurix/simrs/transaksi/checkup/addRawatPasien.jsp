@@ -2881,6 +2881,7 @@
         $('#nama_dokter').val(namaDokter);
         $('#dokter').val(idDokter);
         $('#modal-jadwal-dokter').modal('hide');
+        $('#war_dokter').hide();
     }
 
     var functions, mapped;

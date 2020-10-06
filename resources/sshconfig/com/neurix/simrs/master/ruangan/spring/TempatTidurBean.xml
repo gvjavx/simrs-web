@@ -11,6 +11,7 @@
     <bean id="tempatTidurBo" class="com.neurix.simrs.master.ruangan.bo.impl.TempatTidurBoImpl"
           p:ruanganDao-ref="ruanganDao"
           p:tempatTidurDao-ref="tempatTidurDao"
+          p:kelasRuanganDao-ref="kelasRuanganDao"
 
     />
     <bean id="tempatTidurBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
