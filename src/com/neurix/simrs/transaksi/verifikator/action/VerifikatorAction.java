@@ -31,7 +31,9 @@ import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
 import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
+import com.neurix.simrs.master.ruangan.bo.TempatTidurBo;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
+import com.neurix.simrs.master.ruangan.model.TempatTidur;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
@@ -1549,6 +1551,7 @@ public class VerifikatorAction extends BaseMasterAction {
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+        TempatTidurBo tempatTidurBo = (TempatTidurBo) ctx.getBean("tempatTidurBoProxy");
 
         String divisiId = "";
 
@@ -1607,10 +1610,41 @@ public class VerifikatorAction extends BaseMasterAction {
 
                     } else {
 
+//                        if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)){
+//                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(idRuangan);
+//                            if (ruanganEntity != null) {
+//                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+//                                if (kelasRuanganEntity != null) {
+//                                    ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
+//                                    if (position != null) {
+//                                        divisiId = position.getKodering();
+//                                    }
+//                                }
+//                            }
+//                        } else {
+//                            RawatInap lastRuangan = rawatInapBo.getLastUsedRoom(idDetailCheckup);
+//                            if (lastRuangan != null) {
+//                                MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(lastRuangan.getIdRuang());
+//                                if (ruanganEntity != null) {
+//                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+//                                    if (kelasRuanganEntity != null) {
+//                                        ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
+//                                        if (position != null) {
+//                                            divisiId = position.getKodering();
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
                         if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)){
-                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(idRuangan);
-                            if (ruanganEntity != null) {
-                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+                            List<TempatTidur> tempatTidurList = new ArrayList<>();
+                            TempatTidur tt = new TempatTidur();
+                            TempatTidur tempatTidur = new TempatTidur();
+                            tt.setIdTempatTidur(idRuangan);
+                            tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
+                            if (tempatTidurList.size() > 0) {
+                                tempatTidur = tempatTidurList.get(0);
+                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(tempatTidur.getIdKelasRuangan());
                                 if (kelasRuanganEntity != null) {
                                     ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
                                     if (position != null) {
@@ -1621,9 +1655,14 @@ public class VerifikatorAction extends BaseMasterAction {
                         } else {
                             RawatInap lastRuangan = rawatInapBo.getLastUsedRoom(idDetailCheckup);
                             if (lastRuangan != null) {
-                                MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(lastRuangan.getIdRuang());
-                                if (ruanganEntity != null) {
-                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+                                List<TempatTidur> tempatTidurList = new ArrayList<>();
+                                TempatTidur tt = new TempatTidur();
+                                TempatTidur tempatTidur = new TempatTidur();
+                                tt.setIdTempatTidur(idRuangan);
+                                tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
+                                if (tempatTidurList.size() > 0) {
+                                    tempatTidur = tempatTidurList.get(0);
+                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(tempatTidur.getIdKelasRuangan());
                                     if (kelasRuanganEntity != null) {
                                         ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
                                         if (position != null) {
