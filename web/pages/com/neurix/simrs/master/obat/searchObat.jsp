@@ -508,10 +508,12 @@
                         <div class="col-md-3">
                             <label style="margin-top: 10px">Standar Margin</label>
                         </div>
-                        <div class="col-md-3" style="margin-top: 7px;">
-                            <input type="number" class="form-control" id="margin" />
-                            <div class="input-group-addon">
-                                %
+                        <div class="col-md-3">
+                            <div class="input-group" style="margin-top: 7px;">
+                                <input type="number" class="form-control" id="margin"/>
+                                <div class="input-group-addon">
+                                    %
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6"></div>
@@ -524,11 +526,11 @@
                             <label style="margin-top: 10px">Kategori Persediaan</label>
                         </div>
                         <div class="col-md-3" style="margin-top: 7px;">
-                            <<select class="form-control" id="id_kategori">
-                            <option value="obat">Obat</option>
-                            <option value="alkses">Alkes</option>
-                            <option value="bhp">Barang Habis Pakai</option>
-                        </select>
+                            <select class="form-control" id="id_kategori">
+                                <option value="obat">Obat</option>
+                                <option value="alkses">Alkes</option>
+                                <option value="bhp">Barang Habis Pakai</option>
+                            </select>
                         </div>
                         <div class="col-md-6"></div>
                     </div>
