@@ -454,6 +454,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 reportParams.put("kabupaten", checkup.getNamaKota());
                 reportParams.put("kecamatan", checkup.getNamaKecamatan());
                 reportParams.put("desa", checkup.getNamaDesa());
+                reportParams.put("cekTipe", "RJ");
 
 
                 try {

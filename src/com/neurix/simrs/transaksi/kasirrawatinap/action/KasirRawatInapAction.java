@@ -427,7 +427,7 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 ppnObat = new BigDecimal(tarifObat).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
 
                 BigDecimal totalJasa = new BigDecimal(String.valueOf(0));
-                totalJasa = (tarifJasa.subtract(new BigDecimal(tarifUangMuka))).add(ppnObat);
+                totalJasa = (tarifJasa.subtract(new BigDecimal(tarifUangMuka)));
                 String terbilang = angkaToTerbilang(totalJasa.longValue());
 
                 reportParams.put("invoice", checkup.getInvoice());
@@ -446,6 +446,7 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 reportParams.put("logo", logo);
                 reportParams.put("nik", checkup.getNoKtp());
                 reportParams.put("nama", checkup.getNama());
+                reportParams.put("cekTipe", "RI");
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
                 reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
 

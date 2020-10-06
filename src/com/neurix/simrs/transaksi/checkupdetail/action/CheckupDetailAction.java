@@ -5001,9 +5001,9 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             if (periksalb.getIdPeriksaLab() != null) {
                 if("lab".equalsIgnoreCase(tipe)){
-                    reportParams.put("title", "Hasil Periksa Lab " + periksalb.getKategoriLabName());
+                    reportParams.put("title", "Hasil Periksa Lab " + periksalb.getLabName());
                 }else{
-                    reportParams.put("title", "Hasil Periksa Radiologi " + periksalb.getKategoriLabName());
+                    reportParams.put("title", "Hasil Periksa Radiologi " + periksalb.getLabName());
                 }
             }
 

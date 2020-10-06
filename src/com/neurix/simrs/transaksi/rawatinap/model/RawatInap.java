@@ -117,6 +117,24 @@ public class RawatInap {
     private BigInteger lamakamar;
     private String isKasir;
     private String isBayar;
+    private String namaTempatTidur;
+    private String idTempatTidur;
+
+    public String getIdTempatTidur() {
+        return idTempatTidur;
+    }
+
+    public void setIdTempatTidur(String idTempatTidur) {
+        this.idTempatTidur = idTempatTidur;
+    }
+
+    public String getNamaTempatTidur() {
+        return namaTempatTidur;
+    }
+
+    public void setNamaTempatTidur(String namaTempatTidur) {
+        this.namaTempatTidur = namaTempatTidur;
+    }
 
     public String getIsBayar() {
         return isBayar;

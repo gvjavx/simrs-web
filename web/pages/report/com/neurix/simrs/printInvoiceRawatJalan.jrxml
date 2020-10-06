@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceRawatJalan" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.771561000000008"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="336"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -53,6 +53,7 @@
 		</variable>
 	</subDataset>
 	<subDataset name="datasetobat" uuid="f9f0a678-8542-40c4-ab42-4153bd2cc23b">
+		<parameter name="cekTipe" class="java.lang.String"/>
 		<field name="namaObat" class="java.lang.String"/>
 		<field name="qty" class="java.lang.String"/>
 		<field name="jenisSatuan" class="java.lang.String"/>
@@ -62,7 +63,7 @@
 			<variableExpression><![CDATA[$F{totalHarga}]]></variableExpression>
 		</variable>
 		<variable name="totalPpn" class="java.lang.Integer">
-			<variableExpression><![CDATA[$V{totalHargaObat} == null ? '' : ($V{totalHargaObat}*0.1)]]></variableExpression>
+			<variableExpression><![CDATA[$V{totalHargaObat} == null ? "" : ($P{cekTipe} == "RI" ? $V{totalHargaObat} : ($V{totalHargaObat}*0.1))]]></variableExpression>
 		</variable>
 		<variable name="totalBiaya" class="java.lang.Integer">
 			<variableExpression><![CDATA[$V{totalPpn} == null ? $V{totalHargaObat} : $V{totalHargaObat} + $V{totalPpn}]]></variableExpression>
@@ -99,6 +100,7 @@
 	<parameter name="reportParams.title" class="java.lang.String"/>
 	<parameter name="reportParams.idPasien" class="java.lang.String"/>
 	<parameter name="reportParams.petugas" class="java.lang.String"/>
+	<parameter name="cekTipe" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
@@ -627,7 +629,10 @@
 			<componentElement>
 				<reportElement key="" x="0" y="0" width="381" height="50" uuid="8c823c57-9e40-4542-a86c-12175ad3213d"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="datasetobat" uuid="83eb9fc6-79bb-4dff-8bad-7d4f810665f3">
+					<datasetRun subDataset="datasetobat" uuid="06355780-bb62-413b-8e9f-19fd60a267cb">
+						<datasetParameter name="cekTipe">
+							<datasetParameterExpression><![CDATA[$P{cekTipe}]]></datasetParameterExpression>
+						</datasetParameter>
 						<dataSourceExpression><![CDATA[$P{reportParams.listObatDetail}]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="96" uuid="6e728046-d6e4-4887-b843-4906c8237d17">

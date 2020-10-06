@@ -45,7 +45,7 @@
 	<parameter name="reportParams.ttdDokter" class="java.lang.String"/>
 	<parameter name="reportParams.ttdPetugas" class="java.lang.String"/>
 	<parameter name="dokterPengirim" class="java.lang.String"/>
-	<parameter name="ttdDokterPengirim" class="java.lang.String"/>
+	<parameter name="ttdPengirim" class="java.lang.String"/>
 	<parameter name="sipDokter" class="java.lang.String"/>
 	<parameter name="sipPengirim" class="java.lang.String"/>
 	<queryString>
@@ -413,7 +413,7 @@ AND b.flag = 'Y']]>
 			</textField>
 			<image onErrorType="Blank">
 				<reportElement x="18" y="16" width="94" height="50" uuid="3115a19a-33bc-4811-bd02-bdae97136175"/>
-				<imageExpression><![CDATA[$P{ttdDokterPengirim}]]></imageExpression>
+				<imageExpression><![CDATA[$P{ttdPengirim}]]></imageExpression>
 			</image>
 			<image onErrorType="Blank">
 				<reportElement x="265" y="14" width="94" height="50" uuid="77c6b5bb-7418-4890-8aba-4cbca7879298"/>
