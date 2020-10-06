@@ -560,7 +560,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "a.lembar_per_box,\n" +
                     "a.biji_per_lembar," +
                     "a.merk,\n" +
-                    "a.flag, a.min_stok, c.flag_kronis, c.flag_generic, c.flag_bpjs, d.standar_margin \n";
+                    "a.flag, a.min_stok, c.flag_kronis, c.flag_generic, c.flag_bpjs, d.standar_margin, c.id_kategori_persediaan \n";
 
             List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("branchId", branchId)
