@@ -384,13 +384,10 @@ apply the skin class to the body tag so the changes take effect.
     var contextPathHeader = '<%= request.getContextPath() %>';
 
     $(window).load(function() {
-        // Animate loader off screen
         $(".se-pre-con").fadeOut("slow");
     });
 
     $( document ).ready(function() {
-//        $('#popoverData').popover();
-        //$('#popoverData').tooltip({container: 'body'});
 
         $('#myTableAllRows').DataTable({
             paging: false,
@@ -431,8 +428,6 @@ apply the skin class to the body tag so the changes take effect.
             dateFormat:'dd-mm-yy'
         });
 
-//        cekSession();
-
         $('.dropdown').on('show.bs.dropdown', function(e){
             $(this).find('.dropdown-menu').first().stop(true, true).slideDown(350);
         });
@@ -441,25 +436,17 @@ apply the skin class to the body tag so the changes take effect.
             $(this).find('.dropdown-menu').first().stop(true, true).slideUp(350);
         });
 
-    });
+        $(':input').on('focus', function () {
+            $(this).attr('autocomplete', 'off');
+        })
 
-    <%--function cekSession(){--%>
-        <%--var persons = '<%= session.getAttribute("user_name") %>';--%>
-        <%--setInterval(function (){--%>
-<%--//            if(null == persons){--%>
-<%--//                logout();--%>
-<%--//            }--%>
-        <%--},1000);--%>
-    <%--}--%>
+    });
 
     $(function () {
         $('.select2').select2({});
-        //Datemask dd/mm/yyyy
         $('.datemask').inputmask('yyyy-mm-dd', { 'placeholder': 'yyyy-mm-dd' })
         $('.datemask2').inputmask('dd-mm-yyyy', { 'placeholder': 'dd-mm-yyyy' })
-        //Money Euro
         $('[data-mask]').inputmask()
-
     });
 
     window.checkDec = function(el){
@@ -618,6 +605,38 @@ apply the skin class to the body tag so the changes take effect.
         var res = 0;
         if(val != ''){
             res = val.replace(/[.]/g, '');
+        }
+    }
+
+    function convertRpAtas(id, val, idHidden) {
+        $('#'+id).val(formatRupiahAtas2(val));
+        if(idHidden != '' && idHidden != null){
+            val = val.replace(/[.]/g, '');
+            var numbers = /^[0-9]+$/;
+            if(val.match(numbers)){
+                $('#'+idHidden).val(val);
+            }
+        }
+    }
+
+    function converterRupiah(value){
+        var res = "";
+        if(value != null && value != ''){
+            res = formatRupiahAtas(value);
+        }
+        document.write(res);
+    }
+
+    function cekScrol(id, idTujuan) {
+        var cek = $('#'+id).hasClass("fa fa-unlock");
+        if(cek){
+            $('#'+id).removeClass("fa fa-unlock");
+            $('#'+id).addClass("fa fa-lock");
+            $('#' + idTujuan).attr('style', 'height: 70%; overflow-y: scroll;');
+        }else {
+            $('#'+id).removeClass("fa fa-lock");
+            $('#'+id).addClass("fa fa-unlock");
+            $('#' + idTujuan).removeAttr('style');
         }
     }
 

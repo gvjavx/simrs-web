@@ -7,10 +7,8 @@ import java.sql.Timestamp;
 public class ImSimrsLabDetailEntity implements Serializable{
 
     private String idLabDetail;
+    private String idParameterPemeriksaan;
     private String idLab;
-    private String namaDetailPeriksa;
-    private String satuan;
-    private String ketentuanAcuan;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -18,6 +16,23 @@ public class ImSimrsLabDetailEntity implements Serializable{
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private BigDecimal tarif;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getIdParameterPemeriksaan() {
+        return idParameterPemeriksaan;
+    }
+
+    public void setIdParameterPemeriksaan(String idParameterPemeriksaan) {
+        this.idParameterPemeriksaan = idParameterPemeriksaan;
+    }
 
     public String getIdLabDetail() {
         return idLabDetail;
@@ -33,30 +48,6 @@ public class ImSimrsLabDetailEntity implements Serializable{
 
     public void setIdLab(String idLab) {
         this.idLab = idLab;
-    }
-
-    public String getNamaDetailPeriksa() {
-        return namaDetailPeriksa;
-    }
-
-    public void setNamaDetailPeriksa(String namaDetailPeriksa) {
-        this.namaDetailPeriksa = namaDetailPeriksa;
-    }
-
-    public String getSatuan() {
-        return satuan;
-    }
-
-    public void setSatuan(String satuan) {
-        this.satuan = satuan;
-    }
-
-    public String getKetentuanAcuan() {
-        return ketentuanAcuan;
-    }
-
-    public void setKetentuanAcuan(String ketentuanAcuan) {
-        this.ketentuanAcuan = ketentuanAcuan;
     }
 
     public String getFlag() {

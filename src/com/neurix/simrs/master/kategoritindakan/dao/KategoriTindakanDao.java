@@ -29,6 +29,9 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
             if (mapCriteria.get("kategori_tindakan") != null) {
                 criteria.add(Restrictions.ilike("kategoriTindakan", "%" + (String)mapCriteria.get("kategori_tindakan") + "%"));
             }
+            if (mapCriteria.get("branch_id") != null) {
+                criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
+            }
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
             }
@@ -59,12 +62,13 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
                     "WHERE c.tipe_pelayanan LIKE '"+kategori+"' \n";
         }
 
-        String SQL = "SELECT " +
-                "a.id_kategori_tindakan, " +
-                "a.kategori_tindakan \n" +
+        String SQL = "SELECT \n" +
+                "a.id_kategori_tindakan,\n" +
+                "a.kategori_tindakan\n" +
                 "FROM im_simrs_kategori_tindakan a\n" +
-                "INNER JOIN im_simrs_kategori_tindakan_pelayanan b ON a.id_kategori_tindakan = b.id_kategori\n" +
-                "WHERE b.id_pelayanan LIKE :idPel \n"+ union;
+                "INNER JOIN im_simrs_tindakan b ON a.id_kategori_tindakan = b.id_kategori_tindakan\n" +
+                "WHERE b.id_pelayanan = :idPel \n" +
+                "GROUP BY a.id_kategori_tindakan, a.kategori_tindakan"+ union;
 
         List<Object[]> results = new ArrayList<>();
         results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

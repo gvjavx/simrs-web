@@ -245,68 +245,6 @@ public class RawatInapAction extends BaseMasterAction {
             }
 
             if (checkup != null) {
-//                List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
-//
-//                try {
-//                    riwayatTindakanList = riwayatTindakanBoProxy.cekTodayTarifKamar(checkup.getIdDetailCheckup());
-//                } catch (GeneralBOException e) {
-//                    logger.error("[RawatInapAction.add] Found Error when search tindakan riwayat >>>" + e);
-//                }
-//
-//                if (riwayatTindakanList.isEmpty()) {
-//
-//                    List<Ruangan> ruanganList = new ArrayList<>();
-//                    Ruangan ruangan = new Ruangan();
-//                    ruangan.setIdRuangan(checkup.getIdRuangan());
-//
-//                    try {
-//                        ruanganList = ruanganBoProxy.getByCriteria(ruangan);
-//                    } catch (GeneralBOException e) {
-//                        logger.error("[RawatInapAction.add] Found Error when search ruangan >>>" + e);
-//                    }
-//
-//                    if (!ruanganList.isEmpty()) {
-//                        ruangan = ruanganList.get(0);
-//
-//                        if (ruanganList != null) {
-//
-//                            String user = CommonUtil.userLogin();
-//                            Timestamp now = new Timestamp(System.currentTimeMillis());
-//                            String jenisPasien = "";
-//
-//                            if("ptpn".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())){
-//                                jenisPasien = "bpjs";
-//                            }else{
-//                                jenisPasien = checkup.getIdJenisPeriksaPasien();
-//                            }
-//
-//                            RiwayatTindakan tindakan = new RiwayatTindakan();
-//                            tindakan.setIdTindakan(ruangan.getIdRuangan());
-//                            tindakan.setNamaTindakan("Tarif Kamar " + ruangan.getNamaRuangan() + " No. " + ruangan.getNoRuangan());
-//
-//                            // dirubah oleh sigit, 2020-05-16
-////                            tindakan.setKeterangan("kamar");
-//                            tindakan.setKeterangan("tindakan");
-//                            tindakan.setTotalTarif(new BigDecimal(ruangan.getTarif()));
-//                            tindakan.setIdDetailCheckup(checkup.getIdDetailCheckup());
-//                            tindakan.setJenisPasien(jenisPasien);
-//                            tindakan.setAction("C");
-//                            tindakan.setFlag("Y");
-//                            tindakan.setCreatedDate(now);
-//                            tindakan.setCreatedWho(user);
-//                            tindakan.setLastUpdate(now);
-//                            tindakan.setLastUpdateWho(user);
-//                            tindakan.setTanggalTindakan(now);
-//                            tindakan.setIsKamar("Y");
-//
-//                            try {
-//                                riwayatTindakanBoProxy.saveAdd(tindakan);
-//                            } catch (GeneralBOException e) {
-//                                logger.error("[RawatInapAction] Found Error when save add riwayat tindakan " + e);
-//                            }
-//                        }
-//                    }
-//                }
                 RawatInap rawatInap = new RawatInap();
                 rawatInap.setNoCheckup(checkup.getNoCheckup());
                 rawatInap.setIdDetailCheckup(checkup.getIdDetailCheckup());
@@ -1782,7 +1720,7 @@ public class RawatInapAction extends BaseMasterAction {
                                         }
                                     }
 
-                                    if ("ptpn".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
+                                    if ("rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
                                         headerDetailCheckup.setIdAsuransi(detailCheckup.getIdAsuransi());
                                         headerDetailCheckup.setNoKartuAsuransi(detailCheckup.getNoKartuAsuransi());
                                         headerDetailCheckup.setMetodePembayaran(detailCheckup.getMetodePembayaran());
@@ -2143,10 +2081,10 @@ public class RawatInapAction extends BaseMasterAction {
 
                     if (riwayatTindakanList.isEmpty()) {
 
-                        PeriksaLab lab = new PeriksaLab();
+                        BigDecimal totalTarif = null;
 
                         try {
-                            lab = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdLab(), entity.getIdPeriksaLab());
+                            totalTarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdPeriksaLab());
                         } catch (HibernateException e) {
                             logger.error("Found Error " + e.getMessage());
                         }
@@ -2154,13 +2092,7 @@ public class RawatInapAction extends BaseMasterAction {
                         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                         riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
                         riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
-                        String namaLab = "";
-                        if("radiologi".equalsIgnoreCase(lab.getKategoriLabName())){
-                            namaLab = "Radiologi";
-                        }else{
-                            namaLab = "Laboratorium";
-                        }
-                        riwayatTindakan.setNamaTindakan("Periksa "+namaLab+" "+ entity.getLabName());
+                        riwayatTindakan.setNamaTindakan("Periksa "+entity.getKategoriLabName()+" "+ entity.getLabName());
 
                         // paket lab
                         if (!"".equalsIgnoreCase(idPaket)) {
@@ -2174,15 +2106,15 @@ public class RawatInapAction extends BaseMasterAction {
                             } else {
 
                                 // jika tidak ada tarif paket menggunakan tarif asli
-                                riwayatTindakan.setTotalTarif(lab.getTarif());
+                                riwayatTindakan.setTotalTarif(totalTarif);
                             }
                         } else {
 
                             // jika bukan paket maka pakai tarif asli
-                            riwayatTindakan.setTotalTarif(lab.getTarif());
+                            riwayatTindakan.setTotalTarif(totalTarif);
                         }
 
-                        riwayatTindakan.setKeterangan(lab.getKategoriLabName());
+                        riwayatTindakan.setKeterangan(entity.getKategori());
                         riwayatTindakan.setJenisPasien(jenPasien);
                         riwayatTindakan.setAction("C");
                         riwayatTindakan.setFlag("Y");

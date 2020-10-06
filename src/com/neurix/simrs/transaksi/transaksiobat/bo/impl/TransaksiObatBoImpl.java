@@ -2547,7 +2547,11 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpdateHargaRataBarangMasukKarnaReture] ERROR." + e.getMessage());
         }
 
+//<<<<<<< HEAD
         permintaanVendorBo.updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji(), bean.getBranchId());
+//=======
+//        permintaanVendorBo.updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji(), obatEntity.getBranchId());
+//>>>>>>> sodiq/editor
         saveTransaksiStokObatMasukKarnaReture(bean);
     }
 

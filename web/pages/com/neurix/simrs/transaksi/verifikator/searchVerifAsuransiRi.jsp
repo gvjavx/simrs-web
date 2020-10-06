@@ -234,7 +234,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Verifikasi Transaksi Pasien</h4>
             </div>
-            <div class="modal-body" style="height: 450px;overflow-y: scroll;" id="top_up">
+            <div class="modal-body" style="height: 70%;overflow-y: scroll;" id="top_up">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_war"></p>
@@ -425,6 +425,7 @@
 <script type='text/javascript'>
 
     var contextPath = '<%= request.getContextPath() %>';
+    var jenisKelamin = "";
 
     function formatRupiah(angka) {
         if(angka != "" && angka > 0){
@@ -445,6 +446,7 @@
                 if (res.idPasien != null) {
                     stopSpinner('spin_', idDetailCheckup);
                     dwr.engine.setAsync(false);
+                    jenisKelamin = res.jenisKelamin;
                     listTindakan(noCheckup);
                     listResepPasien(noCheckup);
                     listLab(noCheckup);
@@ -606,7 +608,7 @@
                     var btn = '';
                     var tipe = "";
 
-                    if (item.kategoriLabName == "Radiologi") {
+                    if (item.kategori == "radiologi") {
                         tipe = "radiologi";
                     } else {
                         tipe = "laboratorium";
@@ -654,18 +656,26 @@
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
                         if(keterangan == "radiologi"){
+                            var acuan = cekDataNull(item.ketAcuanL);
+                            if(jenisKelamin == "P"){
+                                acuan = cekDataNull(item.ketAcuanP);
+                            }
                             body += '<tr>' +
                                 '<td>'+cekDataNull(item.namaDetailLab)+'</td>' +
                                 '<td>'+cekDataNull(item.satuan)+'</td>' +
-                                '<td>'+cekDataNull(item.acuan)+'</td>' +
+                                '<td>'+cekDataNull(acuan)+'</td>' +
                                 '<td>'+cekDataNull(item.kesimpulan)+'</td>' +
                                 '</tr>';
                         }
                         if(keterangan == "laboratorium"){
+                            var acuan = cekDataNull(item.ketAcuanL);
+                            if(jenisKelamin == "P"){
+                                acuan = cekDataNull(item.ketAcuanP);
+                            }
                             body += '<tr>' +
                                 '<td>'+cekDataNull(item.namaDetailLab)+'</td>' +
                                 '<td>'+cekDataNull(item.satuan)+'</td>' +
-                                '<td>'+cekDataNull(item.acuan)+'</td>' +
+                                '<td>'+cekDataNull(acuan)+'</td>' +
                                 '<td>'+cekDataNull(item.kesimpulan)+'</td>' +
                                 '<td>'+cekDataNull(item.keterangan)+'</td>' +
                                 '</tr>';

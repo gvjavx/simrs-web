@@ -223,29 +223,28 @@
                                 <s:else>
                                     <tr>
                                 </s:else>
-
-                                <td><s:property value="namaObat"/></td>
-                                <td><s:property escape="false" value="jenisObat"/></td>
-                                <td><s:property value="lembarPerBox"/></td>
-                                <td><s:property value="bijiPerLembar"/></td>
-                                <td><s:property value="qtyBox"/></td>
-                                <td><s:property value="qtyLembar"/></td>
-                                <td><s:property value="qtyBiji"/></td>
-                                <td><s:property value="minStok"/></td>
-                                <td><s:property value="margin"/>%</td>
-                                <td align="center" width="13%">
-                                    <img onclick="detailObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="merk"/>','<s:property value="jenisObat"/>','<s:property value="minStok"/>', '<s:property value="flagKronis" />', '<s:property value="flagGeneric" />', '<s:property value="flagBpjs" />', '<s:property value="margin" />', '<s:property value="idKategoriPersediaan" />')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
-                                    <s:if test='obat.isKp == "Y"'>
-                                        <img onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>','<s:property value="minStok"/>', '<s:property value="flagKronis" />', '<s:property value="flagGeneric" />', '<s:property value="flagBpjs" />', '<s:property value="margin" />', '<s:property value="idKategoriPersediaan" />')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                    </s:if>
-                                    <s:url var="print_id_pabrik" namespace="/obat" action="printIDPabrik_obat" escapeAmp="false">
-                                        <s:param name="idPabrik"><s:property value="idPabrik"/></s:param>
-                                    </s:url>
-                                    <s:a href="%{print_id_pabrik}" target="_blank">
-                                        <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
-                                    </s:a>
-                                </td>
-                                </tr>
+                                        <td><s:property value="namaObat"/></td>
+                                        <td><s:property escape="false" value="jenisObat"/></td>
+                                        <td><s:property value="lembarPerBox"/></td>
+                                        <td><s:property value="bijiPerLembar"/></td>
+                                        <td><s:property value="qtyBox"/></td>
+                                        <td><s:property value="qtyLembar"/></td>
+                                        <td><s:property value="qtyBiji"/></td>
+                                        <td><s:property value="minStok"/></td>
+                                        <td><s:property value="margin"/>%</td>
+                                        <td align="center" width="13%">
+                                            <img onclick="detailObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="flag"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="merk"/>','<s:property value="jenisObat"/>','<s:property value="minStok"/>', '<s:property value="flagKronis" />', '<s:property value="flagGeneric" />', '<s:property value="flagBpjs" />', '<s:property value="margin" />', '<s:property value="idKategoriPersediaan" />')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
+                                        <s:if test='obat.isKp == "Y"'>
+                                            <img onclick="editObat('<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qtyBox"/>','<s:property value="qtyLembar"/>','<s:property value="qtyBiji"/>','<s:property value="lembarPerBox"/>','<s:property value="bijiPerLembar"/>','<s:property value="idPabrik"/>','<s:property value="merk"/>','<s:property value="minStok"/>', '<s:property value="flagKronis" />', '<s:property value="flagGeneric" />', '<s:property value="flagBpjs" />', '<s:property value="margin" />', '<s:property value="idKategoriPersediaan" />')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                        </s:if>
+                                            <s:url var="print_id_pabrik" namespace="/obat" action="printIDPabrik_obat" escapeAmp="false">
+                                                <s:param name="idPabrik"><s:property value="idPabrik"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{print_id_pabrik}" target="_blank">
+                                                <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            </s:a>
+                                        </td>
+                                    </tr>
                                 <%--<s:else>--%>
                                 <%--<tr>--%>
                                 <%--<td><s:property value="namaObat"/></td>--%>

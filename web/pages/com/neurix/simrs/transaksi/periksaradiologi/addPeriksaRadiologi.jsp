@@ -9,6 +9,15 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
+        .paint-canvas-ttd {
+            border: 1px black solid;
+            margin: 1rem;
+            cursor: pointer;
+        }
+
+        .garis {
+            color: #ddd;
+        }
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -16,6 +25,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -76,7 +86,8 @@
                                         <td>
                                             <s:hidden id="id_periksa_lab" name="periksaLab.idPeriksaLab"></s:hidden>
                                             <s:hidden id="no_checkup" name="periksaLab.noCheckup"></s:hidden>
-                                            <s:hidden id="no_detail_checkup" name="periksaLab.idDetailCheckup"></s:hidden>
+                                            <s:hidden id="no_detail_checkup"
+                                                      name="periksaLab.idDetailCheckup"></s:hidden>
                                             <s:hidden id="id_palayanan" name="periksaLab.idPelayanan"></s:hidden>
                                             <table><s:label name="periksaLab.noCheckup"></s:label></table>
                                         </td>
@@ -139,12 +150,14 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-md-6">
-                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center" class="card card-4 pull-right">
-                                    <img border="2" id="img_ktp" src="<s:property value="periksaLab.urlKtp"/>" style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
+                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
+                                     class="card card-4 pull-right">
+                                    <img border="2" id="img_ktp" src="<s:property value="periksaLab.urlKtp"/>"
+                                         style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
                                 </div>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td ><b>Pelayanan</b></td>
+                                        <td><b>Pelayanan</b></td>
                                         <td>
                                             <table><s:label name="periksaLab.namaPelayanan"></s:label></table>
                                         </td>
@@ -182,7 +195,8 @@
                                     <tr>
                                         <td><b>Permeriksaan</b></td>
                                         <td>
-                                            <table><s:label name="periksaLab.kategoriLabName" class="label label-success"></s:label></table>
+                                            <table><s:label name="periksaLab.kategoriLabName"
+                                                            class="label label-success"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -232,7 +246,8 @@
                                 >
                                     <div class="alert alert-danger alert-dismissible">
                                         <label class="control-label" align="left">
-                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                 name="icon_error"> System Found : <p id="errorMessage"></p>
                                         </label>
                                     </div>
                                 </sj:dialog>
@@ -266,42 +281,72 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Catatan Pemeriksaan</h3>
                     </div>
                     <div class="box-body" id="btn-add-parameter" style="display: none">
-                        <button class="btn btn-success btn-outline" onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Parameter
+                        <button class="btn btn-success btn-outline" onclick="showModal(1)"><i class="fa fa-plus"></i>
+                            Tambah Parameter
                         </button>
                     </div>
                     <div class="box-body">
-                            <table class="table table-bordered table-striped" id="tabel_radiologi">
-                                <thead>
-                                <tr bgcolor="#90ee90">
-                                    <td>Pemeriksaan</td>
-                                    <td>Hasil</td>
-                                    <td align="center" width="10%">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody id="body_parameter">
+                        <table class="table table-bordered table-striped" id="tabel_radiologi">
+                            <thead>
+                            <tr bgcolor="#90ee90">
+                                <td>Pemeriksaan</td>
+                                <td>Hasil</td>
+                                <td align="center" width="10%">Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_parameter">
 
-                                </tbody>
-                            </table>
+                            </tbody>
+                        </table>
                     </div>
+                    <hr class="garis">
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label style="margin-bottom: -2px">Dokter Radiologi</label>
-                                    <select class="form-control select2" id="id_dokter" style="width: 100%"
-                                            onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()};">
-                                        <option value=''>[Select One]</option>
-                                    </select>
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-3">
+                                   <span>TTD Petugas</span>
+                                    <button class="btn btn-danger" onclick="removePaint('ttd_petugas')">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
                                 </div>
-                                <input type="hidden" id="id_radiologi">
-                            </div>
-                            <div class="col-md-4">
-                                <a href="initForm_radiologi.action" style="margin-top: 25px" class="btn btn-warning"><i class="fa fa-times"></i> Cancel</a>
-                                <button onclick="conSavePeriksaLab()" style="margin-top: 25px" class="btn btn-success"><i class="fa fa-check"></i> Save</button>
+                                <div class="col-md-3">
+                                    <span>TTD Dokter</span>
+                                    <button class="btn btn-danger" onclick="removePaint('ttd_dokter')">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-3">
+                                    <canvas class="paint-canvas-ttd" id="ttd_petugas" width="250"
+                                            onmouseover="paintTtd('ttd_petugas')"></canvas>
+                                </div>
+                                <div class="col-md-3">
+                                    <canvas class="paint-canvas-ttd" id="ttd_dokter" width="250"
+                                            onmouseover="paintTtd('ttd_dokter')"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-6 col-md-3">
+                                <select class="form-control select2" id="id_dokter" style="width: 100%;"
+                                        onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()};">
+                                    <option value=''>[Select One]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr class="garis">
+                        <div class="row" style="margin-top: -40px">
+                            <div class="col-md-offset-4 col-md-4 text-center">
+                                <a href="initForm_radiologi.action" style="margin-top: 25px" class="btn btn-warning"><i
+                                        class="fa fa-times"></i> Cancel</a>
+                                <button onclick="conSavePeriksaLab()" style="margin-top: 25px" class="btn btn-success">
+                                    <i class="fa fa-check"></i> Save
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -318,7 +363,8 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Edit Parameter Pemeriksaan</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Edit Parameter Pemeriksaan
+                </h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_par">
@@ -329,7 +375,8 @@
                     <div class="form-group">
                         <label class="col-md-2">Hasil</label>
                         <div class="col-md-8">
-                            <textarea rows="8" type="text" class="form-control" id="par_hasil" oninput="var warn =$('#war_hasil').is(':visible'); if (warn){$('#cor_hasil').show().fadeOut(3000);$('#war_hasil').hide()}"></textarea>
+                            <textarea rows="8" type="text" class="form-control" id="par_hasil"
+                                      oninput="var warn =$('#war_hasil').is(':visible'); if (warn){$('#cor_hasil').show().fadeOut(3000);$('#war_hasil').hide()}"></textarea>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -371,7 +418,9 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Parameter</label>
                         <div class="col-md-7">
-                            <select class="form-control select2" multiple style="margin-top: 7px; width: 100%" id="lab_parameter" onchange="var warn =$('#war_param').is(':visible'); if (warn){$('#cor_param').show().fadeOut(3000);$('#war_param').hide()}">
+                            <select class="form-control select2" multiple style="margin-top: 7px; width: 100%"
+                                    id="lab_parameter"
+                                    onchange="var warn =$('#war_param').is(':visible'); if (warn){$('#cor_param').show().fadeOut(3000);$('#war_param').hide()}">
                                 <option value=''>[Select One]</option>
                             </select>
                         </div>
@@ -387,7 +436,9 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_lab" onclick="saveLab()"><i class="fa fa-arrow-right"></i> Save</button>
+                <button type="button" class="btn btn-success" id="save_lab" onclick="saveLab()"><i
+                        class="fa fa-arrow-right"></i> Save
+                </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_lab">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
@@ -411,7 +462,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
+                </button>
             </div>
         </div>
     </div>
@@ -436,10 +488,12 @@
                         <div class="col-md-7">
                             <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
                                 <div class="col-md-1">
-                                    <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker  color-picker pull-left">
+                                    <input type="color" style="margin-left: -6px; margin-top: -8px"
+                                           class="js-color-picker  color-picker pull-left">
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72" value="1">
+                                    <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
+                                           value="1">
                                 </div>
                                 <div class="col-md-2">
                                     <div style="margin-top: -8px;" class="js-range-value">1 px</div>
@@ -452,14 +506,18 @@
                     <div class="col-md-12">
                         <div class="col-md-6">
                             <b style="margin-left: 8px">Tanda Tangan Penanggun Jawab</b>
-                            <canvas class="ttd-paint-canvas" id="ttd_penanggung_jawab" width="380" height="300" onmouseover="paintTtd(this.id)"></canvas>
-                            <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('ttd_penanggung_jawab')"><i class="fa fa-trash"></i> Clear
+                            <canvas class="ttd-paint-canvas" id="ttd_penanggung_jawab" width="380" height="300"
+                                    onmouseover="paintTtd(this.id)"></canvas>
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                    onclick="removePaint('ttd_penanggung_jawab')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
                         <div class="col-md-6">
                             <b style="margin-left: 8px">Tanda Tangan Dokter</b>
-                            <canvas class="ttd-paint-canvas" id="ttd_dokter" width="380" height="300" onmouseover="paintTtd(this.id)"></canvas>
-                            <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('ttd_dokter')"><i class="fa fa-trash"></i> Clear
+                            <canvas class="ttd-paint-canvas" id="ttd_dokter-1" width="380" height="300"
+                                    onmouseover="paintTtd(this.id)"></canvas>
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                    onclick="removePaint('ttd_dokter')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
                     </div>
@@ -468,7 +526,8 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button class="btn btn-success pull-right" onclick="uploadCanvas()"><i class="fa fa-check"></i> Save</button>
+                <button class="btn btn-success pull-right" onclick="uploadCanvas()"><i class="fa fa-check"></i> Save
+                </button>
             </div>
         </div>
     </div>
@@ -476,16 +535,16 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    var idPeriksaRadiologi  = "";
+    var idPeriksaRadiologi = "";
     var noCheckup = $('#no_checkup').val();
     var idDetailCheckup = $('#no_detail_checkup').val();
-    var idPoli          = $('#id_palayanan').val();
-    var idPasien        = '<s:property value="periksaLab.idPasien"/>';
-    var idPeriksaLab    = $('#id_periksa_lab').val();
+    var idPoli = $('#id_palayanan').val();
+    var idPasien = '<s:property value="periksaLab.idPasien"/>';
+    var idPeriksaLab = $('#id_periksa_lab').val();
     var idLabPemeriksaan = '<s:property value="periksaLab.idLab"/>';
-    var jenisPasien     = '<s:property value="periksaLab.idJenisPeriksa"/>';
+    var jenisPasien = '<s:property value="periksaLab.idJenisPeriksa"/>';
     var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
-    var keterangan       = '<s:property value="periksaLab.keterangan"/>';
+    var keterangan = '<s:property value="periksaLab.keterangan"/>';
 
     $(document).ready(function () {
         $('#penunjang_active, #periksa_radiologi').addClass('active');
@@ -493,18 +552,18 @@
         listSelectDokter();
         getIdRadiologi();
 
-        $('#img_ktp').on('click', function(e){
+        $('#img_ktp').on('click', function (e) {
             e.preventDefault();
             var src = $('#img_ktp').attr('src');
-            if(src != null && src != ""){
-                $('.mask').html('<div class="img-box"><img src="'+ src +'"><a class="close">&times;</a>');
+            if (src != null && src != "") {
+                $('.mask').html('<div class="img-box"><img src="' + src + '"><a class="close">&times;</a>');
 
-                $('.mask').addClass('is-visible fadein').on('animationend', function(){
+                $('.mask').addClass('is-visible fadein').on('animationend', function () {
                     $(this).removeClass('fadein is-visible').addClass('is-visible');
                 });
 
-                $('.close').on('click', function(){
-                    $(this).parents('.mask').addClass('fadeout').on('animationend', function(){
+                $('.close').on('click', function () {
+                    $(this).parents('.mask').addClass('fadeout').on('animationend', function () {
                         $(this).removeClass('fadeout is-visible')
                     });
                 });
@@ -529,13 +588,13 @@
             if (input.length) {
                 input.val(log);
                 var reader = new FileReader();
-                reader.onload = function(event){
+                reader.onload = function (event) {
                     var img = new Image();
-                    img.onload = function(){
+                    img.onload = function () {
                         canvas.width = img.width;
                         canvas.height = img.height;
-                        ctx.clearRect(0,0,canvas.width,canvas.height);
-                        ctx.drawImage(img,0,0);
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0);
                     }
                     img.src = event.target.result;
                 }
@@ -546,9 +605,9 @@
 
         });
 
-        if(keterangan == "just_lab"){
+        if (keterangan == "just_lab") {
             $('#btn-add-parameter').show();
-        }else{
+        } else {
             $('#btn-add-parameter').hide();
         }
     });
@@ -560,16 +619,16 @@
             $('#load_lab, #warning_lab').hide();
             $('#lab_kategori, #lab_lab').css('border', '');
             listSelectParameter(idLabPemeriksaan);
-            $('#modal-lab').modal({show:true, backdrop:'static'});
+            $('#modal-lab').modal({show: true, backdrop: 'static'});
         }
     }
 
-    function toContent(){
+    function toContent() {
         var ref = $('#close_pos').val();
-        if(ref == 1){
+        if (ref == 1) {
             window.location.href = 'initForm_radiologi.action';
         }
-        if(ref == 2){
+        if (ref == 2) {
             $('html, body').animate({
                 scrollTop: $('#pos_lab').offset().top
             }, 2000);
@@ -611,34 +670,31 @@
 
     function saveRadiologi(id) {
 
-        var idDokter    = $('#id_dokter').val();
-        var kesimpulan  = $('#par_hasil').val();
+        var idDokter = $('#id_dokter').val();
+        var kesimpulan = $('#par_hasil').val();
+        var ket = "";
 
         if (id != '' && kesimpulan != '') {
             $('#save_par').hide();
             $('#load_par').show();
             dwr.engine.setAsync(true);
-            PeriksaRadiologiAction.saveRadiologi(id, kesimpulan, {
+            PeriksaLabAction.saveEditParameterLab(id, kesimpulan, ket, {
                 callback: function (response) {
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);
+                        getIdRadiologi();
                         $('#modal-edit-parameter').modal('hide');
-                        $('#info_radiologi').show().fadeOut(5000);
-                        $('#save_par').show();
-                        $('#load_par').hide();
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(2);
                         $('body').scrollTop(0);
-                        getIdRadiologi();
                     } else {
-                        $('#warning_par').show().fadeOut(5000);
-                        $('#msg_par').text(response.getMessage);
                         $('#save_par').show();
                         $('#load_par').hide();
-
+                        $('#warning_par').show().fadeOut(5000);
+                        $('#msg_par').text(response.msg);
                     }
                 }
-            })
+            });
         } else {
             $('#warning_par').show().fadeOut(5000);
             $('#msg_par').text("Silahkan cek kembali data inputan!");
@@ -653,7 +709,7 @@
             $('#save_lab').hide();
             $('#load_lab').show();
             dwr.engine.setAsync(true);
-            PeriksaLabAction.saveUpdatePemeriksaan(idPeriksaLab, idParameter, "radiologi",{
+            PeriksaLabAction.saveUpdatePemeriksaan(idPeriksaLab, idParameter, "radiologi", {
                 callback: function (response) {
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);
@@ -680,20 +736,18 @@
     }
 
     function getIdRadiologi() {
-
-        PeriksaRadiologiAction.getIdPemeriksaRadiologi(idPeriksaLab, function (response) {
-            data = response;
-            if (data.length > 0) {
+        PeriksaLabAction.listParameterPemeriksaan(idPeriksaLab, function (response) {
+            if (response.length > 0) {
                 var table = "";
-                $.each(data, function (i, item) {
+                $.each(response, function (i, item) {
                     var hasil = "";
-                    if(item.kesimpulan != null && item.kesimpulan != ''){
-                        hasil = item.kesimpulan;
+                    if (item.hasil != null && item.hasil != '') {
+                        hasil = item.hasil;
                     }
                     table += '<tr>' +
-                        '<td>'+item.namaDetailPeriksa+'</td>' +
-                        '<td>'+hasil+'</td>' +
-                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editParameter(\''+item.idPeriksaRadiologi+'\',\''+hasil+'\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
+                        '<td>' + item.namaDetailPeriksa + '</td>' +
+                        '<td>' + hasil + '</td>' +
+                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editParameter(\'' + item.idPeriksaLabDetail + '\',\'' + hasil + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                         '</tr>';
                 });
                 $('#body_parameter').html(table);
@@ -701,43 +755,48 @@
         });
     }
 
-    function editParameter(id, hasil){
+    function editParameter(id, hasil) {
         $('#save_par').show();
         $('#load_par').hide();
         $('#par_hasil').val(hasil);
-        $('#save_par').attr('onclick','saveRadiologi(\''+id+'\')');
+        $('#save_par').attr('onclick', 'saveRadiologi(\'' + id + '\')');
         $('#modal-edit-parameter').modal('show');
     }
 
-    function conSavePeriksaLab(){
+    function conSavePeriksaLab() {
         var idDokter = $('#id_dokter').val();
         var data = $('#tabel_radiologi').tableToJSON();
         var img = $('#url_img').val();
+        var petugas = document.getElementById("ttd_petugas");
+        var dokter = document.getElementById("ttd_dokter");
+        var cekPetugas = isCanvasBlank(petugas);
+        var cekDokter = isCanvasBlank(dokter);
 
-        var cek  = false;
+        var cek = false;
         $.each(data, function (i, item) {
             var hasil = data[i]["Hasil"];
-            if(hasil == ""){
+            if (hasil == "") {
                 cek = true;
             }
         });
-        if(!cek && idDokter != '' || img != '' && idDokter != ''){
+        if (!cek && idDokter != '' && !cekPetugas && !cekDokter || img != '' && idDokter != '' && !cekPetugas && !cekDokter) {
             $('#modal-confirm-dialog').modal('show');
-            $('#save_con').attr('onclick', 'savePeriksaLab(\''+idDokter+'\')');
-        }else{
+            $('#save_con').attr('onclick', 'savePeriksaLab(\'' + idDokter + '\')');
+        } else {
             $('#warning_rad').show().fadeOut(5000);
             $('#msg_rad').text("Silahkan cek kembali data hasil radiologi dan nama dokter...!");
         }
     }
 
-    function savePeriksaLab(idDokter){
+    function savePeriksaLab(idDokter) {
         $('#modal-confirm-dialog').modal('hide');
 
         var idPeriksaLab = '<s:property value="periksaLab.idPeriksaLab"/>';
         var url = document.getElementById("temp_canvas");
+        var petugas = document.getElementById("ttd_petugas");
+        var dokter = document.getElementById("ttd_dokter");
         var hasil = url.toDataURL("image/png"),
             hasil = hasil.replace(/^data:image\/(png|jpg);base64,/, "");
-
         var idPasien = '<s:property value="periksaLab.idPasien"/>';
         var idPelayanan = '<s:property value="periksaLab.idPelayanan"/>';
         var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
@@ -745,7 +804,7 @@
         var idDetailCheckup = '<s:property value="periksaLab.idDetailCheckup"/>';
 
         var data = {
-            'id_pasien':idPasien,
+            'id_pasien': idPasien,
             'id_detail_checkup': idDetailCheckup,
             'jenis_pasien': jenisPasien,
             'id_pelayanan': idPelayanan,
@@ -754,28 +813,31 @@
         }
         var img = $("#url_img").val();
         var finalImg = "";
+        var finalPetugas = convertToDataURL(petugas);
+        var finalDokter = convertToDataURL(dokter);
 
-        if(img != ''){
+        if (img != '') {
             finalImg = hasil;
         }
         var result = JSON.stringify(data);
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
-        PeriksaRadiologiAction.saveDokterRadiologi(idPeriksaLab, idDokter,  finalImg, keterangan, result, {
-            callback:function (res) {
-                if(res.status == "success"){
+        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, result, finalDokter, finalPetugas, {
+            callback: function (response) {
+                if (response.status == "success") {
                     $('#waiting_dialog').dialog('close');
                     $('#save_ket').show();
                     $('#load_ket').hide();
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(1);
                     $('body').scrollTop(0);
-                }else{
+                } else {
                     $('#warning_rad').show().fadeOut(5000);
                     $('#msg_rad').text(res.message);
                     $('#waiting_dialog').dialog('close');
                 }
-        }});
+            }
+        });
     }
 
 </script>

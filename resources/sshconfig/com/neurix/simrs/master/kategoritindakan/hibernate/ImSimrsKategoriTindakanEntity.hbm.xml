@@ -32,7 +32,8 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
-
-
+        <property name="branchId">
+            <column name="branch_id"/>
+        </property>
     </class>
 </hibernate-mapping>

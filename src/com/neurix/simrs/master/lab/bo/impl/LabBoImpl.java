@@ -107,7 +107,6 @@ public class LabBoImpl implements LabBo {
                     imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
                     imSimrsLabEntity.setIdDokter(bean.getIdDokter());
                     imSimrsLabEntity.setIdKategoriLab(bean.getIdKategoriLab());
-                    imSimrsLabEntity.setTarif(bean.getTarif());
                     imSimrsLabEntity.setFlag(bean.getFlag());
                     imSimrsLabEntity.setAction(bean.getAction());
                     imSimrsLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -130,7 +129,6 @@ public class LabBoImpl implements LabBo {
                         imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
                         imSimrsLabEntity.setIdDokter(bean.getIdDokter());
                         imSimrsLabEntity.setIdKategoriLab(bean.getIdKategoriLab());
-                        imSimrsLabEntity.setTarif(bean.getTarif());
                         imSimrsLabEntity.setFlag(bean.getFlag());
                         imSimrsLabEntity.setAction(bean.getAction());
                         imSimrsLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -178,7 +176,6 @@ public class LabBoImpl implements LabBo {
                 imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
                 imSimrsLabEntity.setIdDokter(bean.getIdDokter());
                 imSimrsLabEntity.setIdKategoriLab(bean.getIdKategoriLab());
-                imSimrsLabEntity.setTarif(bean.getTarif());
                 imSimrsLabEntity.setFlag(bean.getFlag());
                 imSimrsLabEntity.setAction(bean.getAction());
                 imSimrsLabEntity.setCreatedWho(bean.getCreatedWho());
@@ -223,6 +220,9 @@ public class LabBoImpl implements LabBo {
             if (bean.getIdKategoriLab() != null && !"".equalsIgnoreCase(bean.getIdKategoriLab())) {
                 hsCriteria.put("id_kategori_lab", bean.getIdKategoriLab());
             }
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+                hsCriteria.put("branch_id", bean.getBranchId());
+            }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 if ("N".equalsIgnoreCase(bean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -258,14 +258,6 @@ public class LabBoImpl implements LabBo {
                     lab.setStLastUpdate(labEntity.getLastUpdate().toString());
                     lab.setLastUpdate(labEntity.getLastUpdate());
                     lab.setLastUpdateWho(labEntity.getLastUpdateWho());
-
-                    if (labEntity.getTarif() != null){
-                        lab.setTarif(labEntity.getTarif());
-                        lab.setStTarif(CommonUtil.numbericFormat(labEntity.getTarif(), "###,###"));
-                    }else {
-                        lab.setTarif(labEntity.getTarif());
-                        lab.setStTarif("-");
-                    }
 
                     if (labEntity.getIdOperatorLab() != null){
                         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
@@ -315,6 +307,17 @@ public class LabBoImpl implements LabBo {
         }
         logger.info("[LabBoImpl.getByCriteria] End <<<<<<<");
         return null;
+    }
+
+    @Override
+    public List<Lab> getDataLab(String id, String branch) throws GeneralBOException {
+        List<Lab> labList = new ArrayList<>();
+        try {
+            labList = labDao.getListDataLab(id, branch);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return labList;
     }
 
     @Override

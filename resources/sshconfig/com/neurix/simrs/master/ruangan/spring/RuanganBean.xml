@@ -15,6 +15,8 @@
 
     <bean id="ruanganBo" class="com.neurix.simrs.master.ruangan.bo.impl.RuanganBoImpl"
           p:ruanganDao-ref="ruanganDao"
+          p:kelasRuanganDao-ref="kelasRuanganDao"
+          p:branchDao-ref="branchDao"
     />
     <bean id="ruanganBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="ruanganBo">
