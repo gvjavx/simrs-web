@@ -159,6 +159,24 @@ public class HeaderCheckup {
     private String flagCloseTransaksi;
     private String flagCover;
     private String urlLab;
+    private String ketAcuanP;
+    private String ketAcuanL;
+
+    public String getKetAcuanP() {
+        return ketAcuanP;
+    }
+
+    public void setKetAcuanP(String ketAcuanP) {
+        this.ketAcuanP = ketAcuanP;
+    }
+
+    public String getKetAcuanL() {
+        return ketAcuanL;
+    }
+
+    public void setKetAcuanL(String ketAcuanL) {
+        this.ketAcuanL = ketAcuanL;
+    }
 
     private String isRekananWithBpjs;
 

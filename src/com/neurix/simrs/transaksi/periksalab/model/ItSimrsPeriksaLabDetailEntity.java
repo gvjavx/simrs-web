@@ -11,7 +11,8 @@ public class ItSimrsPeriksaLabDetailEntity implements Serializable{
     private String idLabDetail;
     private String namaDetailPeriksa;
     private String satuan;
-    private String keteranganAcuan;
+    private String keteranganAcuanL;
+    private String keteranganAcuanP;
     private String hasil;
     private String keteranganPeriksa;
     private String flag;
@@ -20,7 +21,31 @@ public class ItSimrsPeriksaLabDetailEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private BigDecimal harga;
+    private BigDecimal tarif;
+
+    public String getKeteranganAcuanL() {
+        return keteranganAcuanL;
+    }
+
+    public void setKeteranganAcuanL(String keteranganAcuanL) {
+        this.keteranganAcuanL = keteranganAcuanL;
+    }
+
+    public String getKeteranganAcuanP() {
+        return keteranganAcuanP;
+    }
+
+    public void setKeteranganAcuanP(String keteranganAcuanP) {
+        this.keteranganAcuanP = keteranganAcuanP;
+    }
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
 
     public String getIdPeriksaLabDetail() {
         return idPeriksaLabDetail;
@@ -60,14 +85,6 @@ public class ItSimrsPeriksaLabDetailEntity implements Serializable{
 
     public void setSatuan(String satuan) {
         this.satuan = satuan;
-    }
-
-    public String getKeteranganAcuan() {
-        return keteranganAcuan;
-    }
-
-    public void setKeteranganAcuan(String keteranganAcuan) {
-        this.keteranganAcuan = keteranganAcuan;
     }
 
     public String getHasil() {
@@ -134,11 +151,4 @@ public class ItSimrsPeriksaLabDetailEntity implements Serializable{
         this.lastUpdateWho = lastUpdateWho;
     }
 
-    public BigDecimal getHarga() {
-        return harga;
-    }
-
-    public void setHarga(BigDecimal harga) {
-        this.harga = harga;
-    }
 }

@@ -840,6 +840,160 @@ CREATE SEQUENCE seq_pelayanan_paket;
 ALTER TABLE it_simrs_periksa_lab
 ADD COLUMN ttd_pengirim VARCHAR(100);
 
+--2020-09-30
+ALTER TABLE im_simrs_dokter
+ADD COLUMN kuota_on_site bigint;
+
+CREATE TABLE public.mt_simrs_ruangan_tempat_tidur
+(
+  id_tempat_tidur character varying(30) NOT NULL,
+  id_ruangan character varying(30) NOT NULL,
+  nama_tempat_tidur character varying(100),
+  status character varying(1),
+  flag character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  action character varying(1),
+  CONSTRAINT pk_id_tempat_tidur PRIMARY KEY (id_tempat_tidur)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.mt_simrs_ruangan_tempat_tidur
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_tempat_tidur;
+
+ALTER TABLE im_simrs_header_tindakan
+RENAME id TO id_header_tindakan;
+
+ALTER TABLE im_simrs_header_tindakan
+DROP id_kategori_tindakan;
+
+ALTER TABLE im_simrs_header_tindakan
+ADD COLUMN kategori_ina_bpjs character varying(100);
+
+ALTER TABLE im_simrs_kategori_tindakan
+ADD COLUMN branch_id VARCHAR(50);
+
+--2020-10-01
+ALTER TABLE im_simrs_header_tindakan
+ADD COLUMN id_kategori_nota VARCHAR(100);
+
+INSERT INTO im_functions VALUES
+(2341, 'All Tindakan', '/headertindakan/initForm_headertindakan.action', 3, 2, now(), 'admin', now(), 'admin', 'Y','C', 2341),
+(2342, 'init', '/headertindakan/initForm_headertindakan.action', 2341, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2343, 'search', '/headertindakan/search_headertindakan.action', 2341, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2341, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2342, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2343, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_tindakan
+ADD COLUMN id_pelayanan VARCHAR(50);
+
+--2020-10-02
+ALTER TABLE im_simrs_header_tindakan
+DROP diskkon,
+DROP hargaDiskon;
+
+ALTER TABLE im_simrs_header_tindakan
+DROP id_kategori_nota;
+
+ALTER TABLE im_simrs_tindakan
+ADD COLUMN is_elektif VARCHAR(1);
+
+--2020-10-03
+CREATE TABLE public.im_simrs_parameter_pemeriksaan
+(
+    id_parameter_pemeriksaan character varying(50) NOT NULL,
+	id_kategori_lab character varying(50),
+    nama_pemeriksaan character varying(100),
+    keterangan_acuan_l character varying(50),
+	keterangan_acuan_p character varying(50),
+    satuan character varying(50),
+    tarif numeric,
+    flag character varying(1),
+    action character varying(1),
+    created_date timestamp without time zone,
+    created_who character varying(100),
+    last_update timestamp without time zone,
+    last_update_who character varying(100),
+    CONSTRAINT pk_id_parameter_pemeriksaan PRIMARY KEY (id_parameter_pemeriksaan)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+CREATE SEQUENCE seq_perameter_pemeriksaan;
+
+INSERT INTO im_functions VALUES
+(2344, 'All Parameter', '/pemeriksaan/initForm_pemeriksaan.action', 3, 2, now(), 'admin', now(), 'admin', 'Y','C', 2344),
+(2345, 'init', '/pemeriksaan/initForm_pemeriksaan.action', 2344, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2346, 'search', '/pemeriksaan/search_pemeriksaan.action', 2344, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2344, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2345, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2346, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_lab_detail
+DROP nama_detail_periksa,
+DROP satuan,
+DROP keterangan_acuan;
+
+ALTER TABLE im_simrs_lab_detail
+ADD COLUMN id_parameter_pemeriksaan VARCHAR(50);
+
+ALTER TABLE im_simrs_lab
+DROP COLUMN tarif;
+
+UPDATE im_functions
+SET func_name = 'Parameter'
+WHERE func_id = 2157;
+
+ALTER TABLE im_simrs_lab_detail
+ADD COLUMN branch_id VARCHAR(50);
+
+-- 2020-10-04
+INSERT INTO im_functions VALUES
+(2347, 'Tempat Tidur', '/tempattidur/initForm_tempattidur.action', 3, 2, now(), 'admin', now(), 'admin', 'Y','C', 2347),
+(2348, 'init', '/tempattidur/initForm_tempattidur.action', 2347, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2349, 'search', '/tempattidur/search_tempattidur.action', 2347, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2347, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2348, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2349, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_kelas_ruangan
+ALTER COLUMN id_kelas_ruangan TYPE VARCHAR(50);
+
+ALTER TABLE mt_simrs_ruangan
+ALTER COLUMN id_kelas_ruangan TYPE VARCHAR(50);
+
+ALTER TABLE mt_simrs_ruangan
+ALTER COLUMN id_ruangan TYPE VARCHAR(50);
+
+ALTER TABLE it_simrs_periksa_lab_detail
+RENAME keterangan_acuan TO keterangan_acuan_l;
+
+ALTER TABLE it_simrs_periksa_lab_detail
+RENAME harga TO tarif;
+
+ALTER TABLE it_simrs_periksa_lab_detail
+ADD COLUMN keterangan_acuan_p VARCHAR(100);
+
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN id_kategori_lab VARCHAR(50);
+
+ALTER TABLE it_simrs_rawat_inap
+ALTER COLUMN id_ruangan TYPE VARCHAR(50);
+
 
 
 

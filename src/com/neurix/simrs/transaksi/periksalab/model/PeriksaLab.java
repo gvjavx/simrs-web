@@ -78,6 +78,51 @@ public class PeriksaLab extends BaseModel implements Serializable{
 
     private String urlImg;
     private String ttdPengirim;
+    private String kategori;
+    private String sipDokter;
+    private String sipPengirim;
+    private String idPengirim;
+    private String dokterPengirim;
+
+    public String getDokterPengirim() {
+        return dokterPengirim;
+    }
+
+    public void setDokterPengirim(String dokterPengirim) {
+        this.dokterPengirim = dokterPengirim;
+    }
+
+    public String getIdPengirim() {
+        return idPengirim;
+    }
+
+    public void setIdPengirim(String idPengirim) {
+        this.idPengirim = idPengirim;
+    }
+
+    public String getSipDokter() {
+        return sipDokter;
+    }
+
+    public void setSipDokter(String sipDokter) {
+        this.sipDokter = sipDokter;
+    }
+
+    public String getSipPengirim() {
+        return sipPengirim;
+    }
+
+    public void setSipPengirim(String sipPengirim) {
+        this.sipPengirim = sipPengirim;
+    }
+
+    public String getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
+    }
 
     public String getTtdPengirim() {
         return ttdPengirim;

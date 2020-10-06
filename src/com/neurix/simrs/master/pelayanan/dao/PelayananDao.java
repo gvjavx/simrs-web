@@ -226,4 +226,12 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         }
         return pelayananList;
     }
+
+    public List<ImSimrsPelayananEntity> getPelayananByBranch(String branchId) throws HibernateException {
+        List<ImSimrsPelayananEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPelayananEntity.class)
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
 }

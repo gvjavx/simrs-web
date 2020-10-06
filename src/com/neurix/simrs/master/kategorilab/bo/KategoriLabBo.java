@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface KategoriLabBo extends BaseMasterBo<KategoriLab>{
     public List<KategoriLab> getByCriteria(KategoriLab bean) throws GeneralBOException;
+    public List<KategoriLab> getKategoriLab(String idLab, String branchId) throws GeneralBOException;
 }

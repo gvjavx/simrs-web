@@ -17,7 +17,6 @@ public class ImSimrsLabEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private BigDecimal tarif;
     private String branchId;
 
     public String getBranchId() {
@@ -26,14 +25,6 @@ public class ImSimrsLabEntity implements Serializable {
 
     public void setBranchId(String branchId) {
         this.branchId = branchId;
-    }
-
-    public BigDecimal getTarif() {
-        return tarif;
-    }
-
-    public void setTarif(BigDecimal tarif) {
-        this.tarif = tarif;
     }
 
     public String getIdLab() {

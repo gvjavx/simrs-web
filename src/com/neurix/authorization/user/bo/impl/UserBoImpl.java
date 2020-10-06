@@ -594,6 +594,8 @@ public class UserBoImpl implements UserBo {
                         menuNameString = "<li id=\"periksa_lab\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else if (menuName.equalsIgnoreCase("Periksa Radiologi")) {
                         menuNameString = "<li id=\"periksa_radiologi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Tindakan")) {
+                        menuNameString = "<li id=\"tindakan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }
@@ -702,6 +704,8 @@ public class UserBoImpl implements UserBo {
                             icon="<i class=\"fa fa-folder-open\"></i>";
                         } else if (("Master").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-database\"></i>";
+                            idLi = "master_active";
+                            openLu = "master_open";
                         }else if (("Approval").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-check-square-o\"></i>";
                         }else if (("Setting").equalsIgnoreCase(menuName)){

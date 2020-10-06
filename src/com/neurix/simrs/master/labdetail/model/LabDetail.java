@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 public class LabDetail extends BaseModel {
 
     private String idLabDetail;
+    private String idParameterPemeriksaan;
     private String idLab;
     private String namaLab;
     private String namaDetailPeriksa;
@@ -23,6 +24,59 @@ public class LabDetail extends BaseModel {
     private String lastUpdateWho;
     private BigDecimal tarif;
     private String stTarif;
+    private String keteranganAcuanL;
+    private String keteranganAcuanP;
+    private String idKategoriLab;
+    private String namaKategoriLab;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getNamaKategoriLab() {
+        return namaKategoriLab;
+    }
+
+    public void setNamaKategoriLab(String namaKategoriLab) {
+        this.namaKategoriLab = namaKategoriLab;
+    }
+
+    public String getIdKategoriLab() {
+        return idKategoriLab;
+    }
+
+    public void setIdKategoriLab(String idKategoriLab) {
+        this.idKategoriLab = idKategoriLab;
+    }
+
+    public String getKeteranganAcuanL() {
+        return keteranganAcuanL;
+    }
+
+    public void setKeteranganAcuanL(String keteranganAcuanL) {
+        this.keteranganAcuanL = keteranganAcuanL;
+    }
+
+    public String getKeteranganAcuanP() {
+        return keteranganAcuanP;
+    }
+
+    public void setKeteranganAcuanP(String keteranganAcuanP) {
+        this.keteranganAcuanP = keteranganAcuanP;
+    }
+
+    public String getIdParameterPemeriksaan() {
+        return idParameterPemeriksaan;
+    }
+
+    public void setIdParameterPemeriksaan(String idParameterPemeriksaan) {
+        this.idParameterPemeriksaan = idParameterPemeriksaan;
+    }
 
     public String getIdLabDetail() {
         return idLabDetail;

@@ -1104,49 +1104,58 @@ function listSelectParameter(select) {
 }
 
 function saveLab(id) {
-
     var idKategori = $('#lab_kategori').val();
     var idLab = $('#lab_lab').val();
     var idParameter = $('#lab_parameter').val();
+    var pengirim = document.getElementById('ttd_pengirim');
+    var cekTtd = isCanvasBlank(pengirim);
 
     if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter != null) {
-
-        $('#save_lab').hide();
-        $('#load_lab').show();
-
         if (id != '') {
+            $('#save_lab').hide();
+            $('#load_lab').show();
             dwr.engine.setAsync(true);
             PeriksaLabAction.editOrderLab(id, idLab, idParameter, {
                 callback: function (response) {
-                    if (response == "success") {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         listLab();
                         $('#modal-lab').modal('hide');
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(4);
                     } else {
-
+                        $('#warning_lab').show().fadeOut(5000);
+                        $('#msg_lab').text(response.msg);
                     }
                 }
-            })
+            });
         } else {
-            dwr.engine.setAsync(true);
-            PeriksaLabAction.saveOrderLab(idDetailCheckup, idLab, idParameter, {
-                callback: function (response) {
-                    if (response == "success") {
-                        dwr.engine.setAsync(false);
-                        listLab();
-                        $('#modal-lab').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('#close_pos').val(4);
-                    } else {
-
+            if(!cekTtd){
+                $('#save_lab').hide();
+                $('#load_lab').show();
+                dwr.engine.setAsync(true);
+                PeriksaLabAction.saveOrderLab(idDetailCheckup, idLab, idParameter,  {
+                    callback: function (response) {
+                        if (response.status == "success") {
+                            dwr.engine.setAsync(false);
+                            listLab();
+                            $('#modal-lab').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#close_pos').val(4);
+                        } else {
+                            $('#warning_lab').show().fadeOut(5000);
+                            $('#msg_lab').text(response.msg);
+                        }
                     }
-                }
-            })
+                });
+            }else{
+                $('#warning_lab').show().fadeOut(5000);
+                $('#msg_lab').text("Silhakan lakukan TTD dulu...!");
+            }
         }
     } else {
         $('#warning_lab').show().fadeOut(5000);
+        $('#msg_lab').text("Silahkan cek kembali data inputan!");
         if (idKategori == '') {
             $('#war_kategori_lab').show();
         }
@@ -1203,9 +1212,9 @@ function listLab() {
 
                 table += "<tr>" +
                     "<td>" + dateFormat + "</td>" +
+                    "<td>" + item.kategoriLabName + "</td>" +
                     "<td>" + lab + "</td>" +
                     "<td>" + status + "</td>" +
-                    "<td>" + item.kategoriLabName + "</td>" +
                     "<td align='center'>" + btn + crn + "</td>" +
                     "</tr>"
             });

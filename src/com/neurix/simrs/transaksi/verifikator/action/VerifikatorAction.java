@@ -842,9 +842,9 @@ public class VerifikatorAction extends BaseMasterAction {
             if (detail != null) {
 
                 RekananOps ops = new RekananOps();
-                if("rekanan".equalsIgnoreCase(headerDetailCheckup.getIdJenisPeriksaPasien())){
+                if("rekanan".equalsIgnoreCase(detail.getIdJenisPeriksaPasien())){
                     try {
-                        ops = rekananOpsBo.getDetailRekananOpsByDetail(headerDetailCheckup.getIdDetailCheckup(), unitId);
+                        ops = rekananOpsBo.getDetailRekananOpsByDetail(detail.getIdDetailCheckup(), unitId);
                     } catch (GeneralBOException e) {
                         logger.error("Error, " + e.getMessage());
                     }
@@ -1170,16 +1170,6 @@ public class VerifikatorAction extends BaseMasterAction {
         ItSimrsHeaderChekupEntity headerChekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
         BigDecimal biayaCover = detailCheckupEntity.getTarifBpjs();
         noKartu = " No. Kartu Rekanan " + detailCheckupEntity.getNoKartuAsuransi();
-
-//        ImMasterEntity masterEntity = masterBo.getEntityMasterById(detailCheckupEntity.getIdAsuransi());
-//        if (masterEntity != null) {
-//            company = " " + masterEntity.getNama() + " ";
-//        } else {
-//            logger.error("[VerivikatorAction.closingJurnalRekanan] Error Master Rekanan tidak ditemukan");
-//            response.setStatus("error");
-//            response.setMsg("[VerivikatorAction.closingJurnalRekanan] Error Master Master tidak ditemukan");
-//            return response;
-//        }
 
         // MENDAPATKAN SEMUA NILAI TINDAKAN DAN RESEP
         String isResep = "N";
@@ -2282,10 +2272,10 @@ public class VerifikatorAction extends BaseMasterAction {
 
                     if (riwayatTindakanList.isEmpty()) {
 
-                        PeriksaLab lab = new PeriksaLab();
+                        BigDecimal totalTarif = null;
 
                         try {
-                            lab = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdLab(), entity.getIdPeriksaLab());
+                            totalTarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdPeriksaLab());
                         } catch (HibernateException e) {
                             logger.error("Found Error " + e.getMessage());
                         }
@@ -2293,13 +2283,7 @@ public class VerifikatorAction extends BaseMasterAction {
                         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                         riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
                         riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
-                        String namaLab = "";
-                        if ("radiologi".equalsIgnoreCase(lab.getKategoriLabName())) {
-                            namaLab = "Radiologi";
-                        } else {
-                            namaLab = "Laboratorium";
-                        }
-                        riwayatTindakan.setNamaTindakan("Periksa " + namaLab + " " + entity.getLabName());
+                        riwayatTindakan.setNamaTindakan("Periksa " + entity.getKategoriLabName() + " " + entity.getLabName());
 
                         // paket lab
                         if (!"".equalsIgnoreCase(idPaket) && idPaket != null) {
@@ -2313,23 +2297,23 @@ public class VerifikatorAction extends BaseMasterAction {
                             } else {
 
                                 // jika tidak ada tarif paket menggunakan tarif asli
-                                riwayatTindakan.setTotalTarif(lab.getTarif());
+                                riwayatTindakan.setTotalTarif(totalTarif);
                             }
                         } else {
 
                             // jika bukan paket maka pakai tarif asli
                             if("rekanan".equalsIgnoreCase(jenisPasien)){
                                 if(ops.getDiskon() != null){
-                                    riwayatTindakan.setTotalTarif(lab.getTarif().multiply(ops.getDiskon()));
+                                    riwayatTindakan.setTotalTarif(totalTarif.multiply(ops.getDiskon()));
                                 }else{
-                                    riwayatTindakan.setTotalTarif(lab.getTarif());
+                                    riwayatTindakan.setTotalTarif(totalTarif);
                                 }
                             }else{
-                                riwayatTindakan.setTotalTarif(lab.getTarif());
+                                riwayatTindakan.setTotalTarif(totalTarif);
                             }
                         }
 
-                        riwayatTindakan.setKeterangan(lab.getKategoriLabName());
+                        riwayatTindakan.setKeterangan(entity.getKategori());
                         riwayatTindakan.setJenisPasien(jenPasien);
                         riwayatTindakan.setAction("C");
                         riwayatTindakan.setFlag("Y");
@@ -2561,6 +2545,8 @@ public class VerifikatorAction extends BaseMasterAction {
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
                 detailCheckup.setLastUpdateWho(user);
                 detailCheckup.setLastUpdate(updateTime);
+                detailCheckup.setNoCheckup(noChekcup);
+
                 if (object.getString("cover_biaya") != null && !"".equalsIgnoreCase(object.getString("cover_biaya"))) {
                     detailCheckup.setCoverBiaya(new BigDecimal(object.getString("cover_biaya")));
                 } else {
@@ -2889,11 +2875,11 @@ public class VerifikatorAction extends BaseMasterAction {
 
                                     } else {
 
-                                        // jika resep
-                                        if (isRawatJalan){
-                                            BigDecimal jumlahPPN = hitungPPN(getJumlahNilaiBiayaByKeterangan(idDetail, detailCheckupEntity.getIdJenisPeriksaPasien(), keterangan, "", ""));
-                                            ppnObat = ppnObat.add(jumlahPPN);
-                                        }
+                                        // jika resep rawat jalan lanjut ke rawat inap
+//                                        if (isRawatJalan){
+//                                            BigDecimal jumlahPPN = hitungPPN(getJumlahNilaiBiayaByKeterangan(idDetail, detailCheckupEntity.getIdJenisPeriksaPasien(), keterangan, "", ""));
+//                                            ppnObat = ppnObat.add(jumlahPPN);
+//                                        }
 
                                         Map mapTindakan = new HashMap();
                                         mapTindakan.put("master_id", masterId);

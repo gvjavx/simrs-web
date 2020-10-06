@@ -46,6 +46,24 @@ public class Ruangan extends BaseModel {
 
     private String kodeCbg;
     private String kategori;
+    private String idTempatTidur;
+    private String namaTempatTidur;
+
+    public String getIdTempatTidur() {
+        return idTempatTidur;
+    }
+
+    public void setIdTempatTidur(String idTempatTidur) {
+        this.idTempatTidur = idTempatTidur;
+    }
+
+    public String getNamaTempatTidur() {
+        return namaTempatTidur;
+    }
+
+    public void setNamaTempatTidur(String namaTempatTidur) {
+        this.namaTempatTidur = namaTempatTidur;
+    }
 
     public String getKategori() {
         return kategori;

@@ -71,19 +71,19 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Labotarium</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initLab" namespace="/lab"
-                                                  name="getListLab_lab"/>
-                                        <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initLab.listOfLab" id="lab"
-                                                  name="periksaLab.idLab" listKey="idLab"
-                                                  listValue="namaLab"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2" theme="simple"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Labotarium</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:action id="initLab" namespace="/lab"--%>
+                                                  <%--name="getListLab_lab"/>--%>
+                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                  <%--list="#initLab.listOfLab" id="lab"--%>
+                                                  <%--name="periksaLab.idLab" listKey="idLab"--%>
+                                                  <%--listValue="namaLab"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2" theme="simple"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">

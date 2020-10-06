@@ -38,6 +38,7 @@
           p:dokterDao-ref="dokterDao"
           p:diagnosaRawatDao-ref="diagnosaRawatDao"
           p:paketPasienDao-ref="paketPasienDao"
+          p:tempatTidurDao-ref="tempatTidurDao"
     />
 
     <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"

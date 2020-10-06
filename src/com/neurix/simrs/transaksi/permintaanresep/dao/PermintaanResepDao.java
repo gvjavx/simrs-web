@@ -116,7 +116,8 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
                 "a.status,\n" +
                 "a.id_detail_checkup,\n" +
                 "d.id_pelayanan,\n" +
-                "d.nama_pelayanan\n" +
+                "d.nama_pelayanan,\n" +
+                "a.created_date\n" +
                 "FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
@@ -136,6 +137,7 @@ public class PermintaanResepDao extends GenericDao<ImSimrsPermintaanResepEntity,
                 permintaanResep.setIdDetailCheckup(obj[3] != null ? obj[3].toString() : "");
                 permintaanResep.setIdPelayanan(obj[4] != null ? obj[4].toString() : "");
                 permintaanResep.setNamaPelayanan(obj[5] != null ? obj[5].toString() : "");
+                permintaanResep.setCreatedDate(obj[6] != null ? (Timestamp) obj[6] : null);
                 rawatList.add(permintaanResep);
             }
         }
