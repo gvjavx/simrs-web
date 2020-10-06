@@ -28,12 +28,18 @@ public class AkunSettingReportKeuanganKonsol extends BaseModel {
     private BigDecimal saldoUnit2;
     private BigDecimal saldoUnit3;
     private BigDecimal saldoUnit4;
+    private BigDecimal saldoUnit5;
+    private BigDecimal saldoUnit6;
+    private BigDecimal saldoUnit7;
     private BigDecimal saldoUnitAll;
 
     private BigDecimal lastSaldoUnit1;
     private BigDecimal lastSaldoUnit2;
     private BigDecimal lastSaldoUnit3;
     private BigDecimal lastSaldoUnit4;
+    private BigDecimal lastSaldoUnit5;
+    private BigDecimal lastSaldoUnit6;
+    private BigDecimal lastSaldoUnit7;
     private BigDecimal lastSaldoUnitAll;
 
     private BigDecimal curSaldoUnit1;
@@ -41,119 +47,245 @@ public class AkunSettingReportKeuanganKonsol extends BaseModel {
     private BigDecimal curSaldoUnit3;
     private BigDecimal curSaldoUnit4;
     private BigDecimal curSaldoUnit5;
+    private BigDecimal curSaldoUnit6;
+    private BigDecimal curSaldoUnit7;
     private BigDecimal curSaldoUnitAll;
 
     private BigDecimal saldoUnit11TahunLalu;
-    private BigDecimal saldoUnit21TahunLalu;
-    private BigDecimal saldoUnit31TahunLalu;
-    private BigDecimal saldoUnit41TahunLalu;
-    private BigDecimal saldoUnit51TahunLalu;
-    private BigDecimal saldoUnitAll1TahunLalu;
 
     private BigDecimal saldoUnit12TahunLalu;
-    private BigDecimal saldoUnit22TahunLalu;
-    private BigDecimal saldoUnit32TahunLalu;
-    private BigDecimal saldoUnit42TahunLalu;
-    private BigDecimal saldoUnit52TahunLalu;
-    private BigDecimal saldoUnitAll2TahunLalu;
 
     private String level1;
     private String level2;
 
-    public BigDecimal getSaldoUnit11TahunLalu() {
-        return saldoUnit11TahunLalu;
+    public BigDecimal getSaldoUnit5() {
+        return saldoUnit5;
     }
 
-    public void setSaldoUnit11TahunLalu(BigDecimal saldoUnit11TahunLalu) {
-        this.saldoUnit11TahunLalu = saldoUnit11TahunLalu;
+    public void setSaldoUnit5(BigDecimal saldoUnit5) {
+        this.saldoUnit5 = saldoUnit5;
     }
 
-    public BigDecimal getSaldoUnit21TahunLalu() {
-        return saldoUnit21TahunLalu;
+    public BigDecimal getSaldoUnit6() {
+        return saldoUnit6;
     }
 
-    public void setSaldoUnit21TahunLalu(BigDecimal saldoUnit21TahunLalu) {
-        this.saldoUnit21TahunLalu = saldoUnit21TahunLalu;
+    public void setSaldoUnit6(BigDecimal saldoUnit6) {
+        this.saldoUnit6 = saldoUnit6;
     }
 
-    public BigDecimal getSaldoUnit31TahunLalu() {
-        return saldoUnit31TahunLalu;
+    public BigDecimal getSaldoUnit7() {
+        return saldoUnit7;
     }
 
-    public void setSaldoUnit31TahunLalu(BigDecimal saldoUnit31TahunLalu) {
-        this.saldoUnit31TahunLalu = saldoUnit31TahunLalu;
+    public void setSaldoUnit7(BigDecimal saldoUnit7) {
+        this.saldoUnit7 = saldoUnit7;
     }
 
-    public BigDecimal getSaldoUnit41TahunLalu() {
-        return saldoUnit41TahunLalu;
+    public BigDecimal getLastSaldoUnit5() {
+        return lastSaldoUnit5;
     }
 
-    public void setSaldoUnit41TahunLalu(BigDecimal saldoUnit41TahunLalu) {
-        this.saldoUnit41TahunLalu = saldoUnit41TahunLalu;
+    public void setLastSaldoUnit5(BigDecimal lastSaldoUnit5) {
+        this.lastSaldoUnit5 = lastSaldoUnit5;
     }
 
-    public BigDecimal getSaldoUnit51TahunLalu() {
-        return saldoUnit51TahunLalu;
+    public BigDecimal getLastSaldoUnit6() {
+        return lastSaldoUnit6;
     }
 
-    public void setSaldoUnit51TahunLalu(BigDecimal saldoUnit51TahunLalu) {
-        this.saldoUnit51TahunLalu = saldoUnit51TahunLalu;
+    public void setLastSaldoUnit6(BigDecimal lastSaldoUnit6) {
+        this.lastSaldoUnit6 = lastSaldoUnit6;
     }
 
-    public BigDecimal getSaldoUnitAll1TahunLalu() {
-        return saldoUnitAll1TahunLalu;
+    public BigDecimal getLastSaldoUnit7() {
+        return lastSaldoUnit7;
     }
 
-    public void setSaldoUnitAll1TahunLalu(BigDecimal saldoUnitAll1TahunLalu) {
-        this.saldoUnitAll1TahunLalu = saldoUnitAll1TahunLalu;
+    public void setLastSaldoUnit7(BigDecimal lastSaldoUnit7) {
+        this.lastSaldoUnit7 = lastSaldoUnit7;
     }
 
-    public BigDecimal getSaldoUnit12TahunLalu() {
-        return saldoUnit12TahunLalu;
+    public BigDecimal getCurSaldoUnit6() {
+        return curSaldoUnit6;
     }
 
-    public void setSaldoUnit12TahunLalu(BigDecimal saldoUnit12TahunLalu) {
-        this.saldoUnit12TahunLalu = saldoUnit12TahunLalu;
+    public void setCurSaldoUnit6(BigDecimal curSaldoUnit6) {
+        this.curSaldoUnit6 = curSaldoUnit6;
     }
 
-    public BigDecimal getSaldoUnit22TahunLalu() {
-        return saldoUnit22TahunLalu;
+    public BigDecimal getCurSaldoUnit7() {
+        return curSaldoUnit7;
     }
 
-    public void setSaldoUnit22TahunLalu(BigDecimal saldoUnit22TahunLalu) {
-        this.saldoUnit22TahunLalu = saldoUnit22TahunLalu;
+    public void setCurSaldoUnit7(BigDecimal curSaldoUnit7) {
+        this.curSaldoUnit7 = curSaldoUnit7;
     }
 
-    public BigDecimal getSaldoUnit32TahunLalu() {
-        return saldoUnit32TahunLalu;
+    public String getSettingReportKonsolId() {
+        return settingReportKonsolId;
     }
 
-    public void setSaldoUnit32TahunLalu(BigDecimal saldoUnit32TahunLalu) {
-        this.saldoUnit32TahunLalu = saldoUnit32TahunLalu;
+    public void setSettingReportKonsolId(String settingReportKonsolId) {
+        this.settingReportKonsolId = settingReportKonsolId;
     }
 
-    public BigDecimal getSaldoUnit42TahunLalu() {
-        return saldoUnit42TahunLalu;
+    public String getKodeRekeningAlias() {
+        return kodeRekeningAlias;
     }
 
-    public void setSaldoUnit42TahunLalu(BigDecimal saldoUnit42TahunLalu) {
-        this.saldoUnit42TahunLalu = saldoUnit42TahunLalu;
+    public void setKodeRekeningAlias(String kodeRekeningAlias) {
+        this.kodeRekeningAlias = kodeRekeningAlias;
     }
 
-    public BigDecimal getSaldoUnit52TahunLalu() {
-        return saldoUnit52TahunLalu;
+    public String getNamaKodeRekeningAlias() {
+        return namaKodeRekeningAlias;
     }
 
-    public void setSaldoUnit52TahunLalu(BigDecimal saldoUnit52TahunLalu) {
-        this.saldoUnit52TahunLalu = saldoUnit52TahunLalu;
+    public void setNamaKodeRekeningAlias(String namaKodeRekeningAlias) {
+        this.namaKodeRekeningAlias = namaKodeRekeningAlias;
     }
 
-    public BigDecimal getSaldoUnitAll2TahunLalu() {
-        return saldoUnitAll2TahunLalu;
+    public String getFlagLabel() {
+        return flagLabel;
     }
 
-    public void setSaldoUnitAll2TahunLalu(BigDecimal saldoUnitAll2TahunLalu) {
-        this.saldoUnitAll2TahunLalu = saldoUnitAll2TahunLalu;
+    public void setFlagLabel(String flagLabel) {
+        this.flagLabel = flagLabel;
+    }
+
+    @Override
+    public String getFlag() {
+        return flag;
+    }
+
+    @Override
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    @Override
+    public String getAction() {
+        return action;
+    }
+
+    @Override
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    @Override
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    @Override
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getCreatedWho() {
+        return createdWho;
+    }
+
+    @Override
+    public void setCreatedWho(String createdWho) {
+        this.createdWho = createdWho;
+    }
+
+    @Override
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
+
+    @Override
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    @Override
+    public String getLastUpdateWho() {
+        return lastUpdateWho;
+    }
+
+    @Override
+    public void setLastUpdateWho(String lastUpdateWho) {
+        this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getRekeningId() {
+        return rekeningId;
+    }
+
+    public void setRekeningId(String rekeningId) {
+        this.rekeningId = rekeningId;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public BigDecimal getSaldoUnit1() {
+        return saldoUnit1;
+    }
+
+    public void setSaldoUnit1(BigDecimal saldoUnit1) {
+        this.saldoUnit1 = saldoUnit1;
+    }
+
+    public BigDecimal getSaldoUnit2() {
+        return saldoUnit2;
+    }
+
+    public void setSaldoUnit2(BigDecimal saldoUnit2) {
+        this.saldoUnit2 = saldoUnit2;
+    }
+
+    public BigDecimal getSaldoUnit3() {
+        return saldoUnit3;
+    }
+
+    public void setSaldoUnit3(BigDecimal saldoUnit3) {
+        this.saldoUnit3 = saldoUnit3;
+    }
+
+    public BigDecimal getSaldoUnit4() {
+        return saldoUnit4;
+    }
+
+    public void setSaldoUnit4(BigDecimal saldoUnit4) {
+        this.saldoUnit4 = saldoUnit4;
+    }
+
+    public BigDecimal getSaldoUnitAll() {
+        return saldoUnitAll;
+    }
+
+    public void setSaldoUnitAll(BigDecimal saldoUnitAll) {
+        this.saldoUnitAll = saldoUnitAll;
     }
 
     public BigDecimal getLastSaldoUnit1() {
@@ -244,6 +376,22 @@ public class AkunSettingReportKeuanganKonsol extends BaseModel {
         this.curSaldoUnitAll = curSaldoUnitAll;
     }
 
+    public BigDecimal getSaldoUnit11TahunLalu() {
+        return saldoUnit11TahunLalu;
+    }
+
+    public void setSaldoUnit11TahunLalu(BigDecimal saldoUnit11TahunLalu) {
+        this.saldoUnit11TahunLalu = saldoUnit11TahunLalu;
+    }
+
+    public BigDecimal getSaldoUnit12TahunLalu() {
+        return saldoUnit12TahunLalu;
+    }
+
+    public void setSaldoUnit12TahunLalu(BigDecimal saldoUnit12TahunLalu) {
+        this.saldoUnit12TahunLalu = saldoUnit12TahunLalu;
+    }
+
     public String getLevel1() {
         return level1;
     }
@@ -258,171 +406,5 @@ public class AkunSettingReportKeuanganKonsol extends BaseModel {
 
     public void setLevel2(String level2) {
         this.level2 = level2;
-    }
-
-    public BigDecimal getSaldoUnit1() {
-        return saldoUnit1;
-    }
-
-    public void setSaldoUnit1(BigDecimal saldoUnit1) {
-        this.saldoUnit1 = saldoUnit1;
-    }
-
-    public BigDecimal getSaldoUnit2() {
-        return saldoUnit2;
-    }
-
-    public void setSaldoUnit2(BigDecimal saldoUnit2) {
-        this.saldoUnit2 = saldoUnit2;
-    }
-
-    public BigDecimal getSaldoUnit3() {
-        return saldoUnit3;
-    }
-
-    public void setSaldoUnit3(BigDecimal saldoUnit3) {
-        this.saldoUnit3 = saldoUnit3;
-    }
-
-    public BigDecimal getSaldoUnit4() {
-        return saldoUnit4;
-    }
-
-    public void setSaldoUnit4(BigDecimal saldoUnit4) {
-        this.saldoUnit4 = saldoUnit4;
-    }
-
-    public BigDecimal getSaldoUnitAll() {
-        return saldoUnitAll;
-    }
-
-    public void setSaldoUnitAll(BigDecimal saldoUnitAll) {
-        this.saldoUnitAll = saldoUnitAll;
-    }
-
-    public String getSettingReportKonsolId() {
-        return settingReportKonsolId;
-    }
-
-    public void setSettingReportKonsolId(String settingReportKonsolId) {
-        this.settingReportKonsolId = settingReportKonsolId;
-    }
-
-    public String getKodeRekeningAlias() {
-        return kodeRekeningAlias;
-    }
-
-    public void setKodeRekeningAlias(String kodeRekeningAlias) {
-        this.kodeRekeningAlias = kodeRekeningAlias;
-    }
-
-    public String getNamaKodeRekeningAlias() {
-        return namaKodeRekeningAlias;
-    }
-
-    public void setNamaKodeRekeningAlias(String namaKodeRekeningAlias) {
-        this.namaKodeRekeningAlias = namaKodeRekeningAlias;
-    }
-
-    public String getFlagLabel() {
-        return flagLabel;
-    }
-
-    public void setFlagLabel(String flagLabel) {
-        this.flagLabel = flagLabel;
-    }
-
-    @Override
-    public String getAction() {
-        return action;
-    }
-
-    @Override
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    @Override
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    @Override
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    @Override
-    public String getCreatedWho() {
-        return createdWho;
-    }
-
-    @Override
-    public void setCreatedWho(String createdWho) {
-        this.createdWho = createdWho;
-    }
-
-    @Override
-    public String getFlag() {
-        return flag;
-    }
-
-    @Override
-    public void setFlag(String flag) {
-        this.flag = flag;
-    }
-
-    @Override
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
-
-    @Override
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    @Override
-    public String getLastUpdateWho() {
-        return lastUpdateWho;
-    }
-
-    @Override
-    public void setLastUpdateWho(String lastUpdateWho) {
-        this.lastUpdateWho = lastUpdateWho;
-    }
-
-    @Override
-    public String getStCreatedDate() {
-        return stCreatedDate;
-    }
-
-    public void setStCreatedDate(String stCreatedDate) {
-        this.stCreatedDate = stCreatedDate;
-    }
-
-    @Override
-    public String getStLastUpdate() {
-        return stLastUpdate;
-    }
-
-    public void setStLastUpdate(String stLastUpdate) {
-        this.stLastUpdate = stLastUpdate;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
-    public String getRekeningId() {
-        return rekeningId;
-    }
-
-    public void setRekeningId(String rekeningId) {
-        this.rekeningId = rekeningId;
     }
 }

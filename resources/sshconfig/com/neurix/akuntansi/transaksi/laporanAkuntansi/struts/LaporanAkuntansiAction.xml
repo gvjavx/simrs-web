@@ -226,7 +226,7 @@
 
             <!-- KOMPILASI -->
             <result name="print_report_kompilasi_all" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/LaporanKompilasiAll.jasper</param>
+                <param name="location">/pages/report/com/neurix/akuntansi/LaporanKompilasiAllNew.jasper</param>
                 <param name="format">PDF</param>
                 <param name="dataSource">listKonsol</param>
                 <param name="reportParameters">reportParams</param>

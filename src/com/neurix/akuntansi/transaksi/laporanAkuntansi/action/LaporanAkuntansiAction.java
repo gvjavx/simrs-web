@@ -2136,8 +2136,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
                 i++;
             }
-            branchId.add(unit);
-            listKonsol = laporanAkuntansiBo.getLaporanAkuntansiKonsol(periode,branchId.get(0),branchId.get(1),branchId.get(2),branchId.get(3),branchId.get(4));
+            listKonsol = laporanAkuntansiBo.getLaporanAkuntansiKonsol(periode,branchId.get(0),branchId.get(1),branchId.get(2),branchId.get(3),branchId.get(4),branchId.get(5),branchId.get(6),unit);
         }else{
             titleReport="LAPORAN POSISI KEUANGAN";
             result="print_report_kompilasi";

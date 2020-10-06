@@ -20,7 +20,7 @@ public interface LaporanAkuntansiBo extends BaseMasterBo<LaporanAkuntansi>{
 
     List<ArusKasDTO> getArusKas(String reportId, String unit, String periode, String tipeLaporan) throws GeneralBOException;
 
-    List<AkunSettingReportKeuanganKonsol> getLaporanAkuntansiKonsol(String periode, String branchId1, String branchId2, String branchId3, String branchId4, String branchIdAll);
+    List<AkunSettingReportKeuanganKonsol> getLaporanAkuntansiKonsol(String periode, String branchId1, String branchId2, String branchId3, String branchId4, String branchId5, String branchId6, String branchId7, String branchIdAll);
 
     List<AkunSettingReportKeuanganKonsol> getLaporanAkuntansiKonsolUnit(String periode, String branchId1);
 

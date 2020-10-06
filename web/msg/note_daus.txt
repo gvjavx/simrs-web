@@ -656,3 +656,16 @@ update im_functions set func_name='Golongan PKWT' WHERE func_id='1776';
 
 CREATE SEQUENCE IF NOT EXISTS seq_kodering_department INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 16;
 update im_functions set func_name ='Sub Bidang/Divisi' where func_id=1378;
+
+
+
+
+-----------------------------------------
+insert into im_branches (branch_id,branch_name,branch_address,created_date,created_who,last_update,last_update_who,flag,action,max_jam_ijin_keluar,faktor_jubileum,area_id,min_bpjs_ks,max_bpjs_ks,percent_ks_kary,percent_ks_pers,percent_tk_kary,percent_tk_pers,min_bpjs_tk,max_bpjs_tk,alamat_surat,logo_name,kodering,max_pengajuan_biaya,coa_rk,lat,lon,umr) VALUES
+						( 'RS04','RS Medika Utama','Jl. Kusuma Bangsa No.1','2020-09-09 00:00:00','admin','2020-09-09 00:00:00','admin','Y','C',0,5,'0002',100000,100000,1,4,4,4,100000,100000,'Blitar','RS01.png','05',1000000,'2.1.11.01.04','-8.1681698','-8.1681698',3871052.00);
+
+insert into im_branches (branch_id,branch_name,branch_address,created_date,created_who,last_update,last_update_who,flag,action,max_jam_ijin_keluar,faktor_jubileum,area_id,min_bpjs_ks,max_bpjs_ks,percent_ks_kary,percent_ks_pers,percent_tk_kary,percent_tk_pers,min_bpjs_tk,max_bpjs_tk,alamat_surat,logo_name,kodering,max_pengajuan_biaya,coa_rk,lat,lon,umr) VALUES
+						( 'RS05','Estetika Meditama','Jl. Bratang Binangun No.33, Baratajaya','2020-09-09 00:00:00','admin','2020-09-09 00:00:00','admin','Y','C',0,5,'0002',100000,100000,1,4,4,4,100000,100000,'Surabaya','RS01.png','06',1000000,'2.1.11.01.98','-8.1681698','-8.1681698',3871052.00);
+
+insert into im_branches (branch_id,branch_name,branch_address,created_date,created_who,last_update,last_update_who,flag,action,max_jam_ijin_keluar,faktor_jubileum,area_id,min_bpjs_ks,max_bpjs_ks,percent_ks_kary,percent_ks_pers,percent_tk_kary,percent_tk_pers,min_bpjs_tk,max_bpjs_tk,alamat_surat,logo_name,kodering,max_pengajuan_biaya,coa_rk,lat,lon,umr) VALUES
+                        ( 'RS06','Unit Rawat Jalan','Jl. Hayam Wuruk No.88, Mergelo, Magersari','2020-09-09 00:00:00','admin','2020-09-09 00:00:00','admin','Y','C',0,5,'0002',100000,100000,1,4,4,4,100000,100000,'Mojokerto','RS01.png','07',1000000,'2.1.11.01.99','-8.1681698','-8.1681698',3871052.00);
