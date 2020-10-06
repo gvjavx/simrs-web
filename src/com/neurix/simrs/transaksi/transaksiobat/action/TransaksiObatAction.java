@@ -3151,13 +3151,18 @@ public class TransaksiObatAction extends BaseMasterAction {
                 List<TransaksiObatDetail> listTransaksiObatDetail = transaksiObatBo.getListTransaksiObatDetailBatchByIdResepAndIdBarang(idResep, retureObat.getIdBarang());
                 if (listTransaksiObatDetail.size() > 0){
                     TransaksiObatDetail searchTransaksi = listTransaksiObatDetail.get(0);
-                    if ("umum".equalsIgnoreCase(searchTransaksi.getJenisResep())){
-                        listObatTidakDitanggung.add(retureObat);
-                    }
+
                     retureObat.setIdTransaksiObatDetail(searchTransaksi.getIdTransaksiObatDetail());
                     retureObat.setIdPelayananTujuan(searchTransaksi.getIdPelayananTujuan());
                     retureObat.setIdPermintaanResep(searchTransaksi.getIdPermintaanResep());
                     retureObat.setAverageHargaBiji(searchTransaksi.getHargaRata());
+                    retureObat.setHarga(searchTransaksi.getHarga());
+                    retureObat.setHargaRata(searchTransaksi.getHargaRata());
+                    retureObat.setHargaJual(searchTransaksi.getHargaJual());
+
+                    if ("umum".equalsIgnoreCase(searchTransaksi.getJenisResep())){
+                        listObatTidakDitanggung.add(retureObat);
+                    }
                 }
 
 
@@ -3169,6 +3174,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         // hitung harga rata-rata barang masuk;
         if (listBatchReture.size() > 0){
 
+            createJurnalPemasukanApotik(idApprovalObat);
             for (TransaksiObatDetail retureObat : listBatchReture){
                 retureObat.setBranchId(branchId);
                 retureObat.setLastUpdate(time);
@@ -3180,7 +3186,7 @@ public class TransaksiObatAction extends BaseMasterAction {
 
         // create jurnal kas kluar untuk obat yang direture;
         if (listObatTidakDitanggung.size() > 0){
-
+            createJurnalKasKeluar(idApprovalObat, branchId, idResep, listObatTidakDitanggung);
         }
 
         TransaksiObatDetail beanUpdate = new TransaksiObatDetail();
@@ -3199,6 +3205,203 @@ public class TransaksiObatAction extends BaseMasterAction {
         }
 
         return response;
+    }
+
+    private JurnalResponse createJurnalPemasukanApotik(String idApprove) {
+
+        JurnalResponse response = new JurnalResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TransaksiObatBo transaksiObatBo = (TransaksiObatBo) ctx.getBean("transaksiObatBoProxy");
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+        KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
+        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+
+        String namaApotek = "";
+        String divisiId = "";
+        String idPasien = "";
+        String idDetailCheckup = "";
+        String idResep = "";
+        PermintaanResep permintaanResep = new PermintaanResep();
+        permintaanResep.setIdApprovalObat(idApprove);
+        List<PermintaanResep> permintaanReseps = permintaanResepBo.getByCriteria(permintaanResep);
+        if (permintaanReseps.size() > 0) {
+            for (PermintaanResep dataPermintaan : permintaanReseps) {
+
+                idResep = dataPermintaan.getIdPermintaanResep();
+                if (dataPermintaan.getIdDetailCheckup() != null) {
+
+                    ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getDetailCheckupById(dataPermintaan.getIdDetailCheckup());
+                    if (detailCheckupEntity != null) {
+                        idDetailCheckup = detailCheckupEntity.getIdDetailCheckup();
+                        ItSimrsHeaderChekupEntity chekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
+                        if (chekupEntity != null) {
+                            idPasien = chekupEntity.getIdPasien();
+                        }
+                    } else {
+                        response.setStatus("error");
+                        response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idDetailCheckup");
+                        return response;
+                    }
+                }
+//                else {
+//                    response.setStatus("error");
+//                    response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] tidak ditemukan idDetailCheckup");
+//                    return response;
+//                }
+
+                if (dataPermintaan.getTujuanPelayanan() != null) {
+
+                    ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(dataPermintaan.getTujuanPelayanan());
+                    if (pelayananEntity != null) {
+                        ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+                        if (position != null) {
+                            divisiId = position.getKodering();
+                        }
+                    }
+                }
+
+
+                Pelayanan pelayanan = new Pelayanan();
+                pelayanan.setIdPelayanan(dataPermintaan.getTujuanPelayanan());
+                List<Pelayanan> pelayanans = pelayananBo.getByCriteria(pelayanan);
+                if (pelayanans.size() > 0) {
+                    for (Pelayanan dataPelayanan : pelayanans) {
+                        namaApotek = dataPelayanan.getNamaPelayanan();
+                    }
+                }
+            }
+        }
+
+
+        BigDecimal biayaPersediaan = new BigDecimal(0);
+        List<Map> listMapPersediaan = new ArrayList<>();
+        List<TransaksiObatDetail> transaksiObatDetails = transaksiObatBo.getListPermintaanBatch(idApprove, "");
+        if (transaksiObatDetails.size() > 0) {
+            for (TransaksiObatDetail trans : transaksiObatDetails) {
+
+                if (trans.getQtyReture().compareTo(new BigInteger(String.valueOf(0))) == 1){
+                    BigDecimal hargaRata = new BigDecimal(0);
+                    ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(trans.getIdBarang());
+                    if (obatEntity != null) {
+                        hargaRata = trans.getHargaRata();
+//                        if ("box".equalsIgnoreCase(trans.getJenisSatuan()))
+//                            hargaRata = obatEntity.getAverageHargaBox();
+//                        if ("lembar".equalsIgnoreCase(trans.getJenisSatuan()))
+//                            hargaRata = obatEntity.getAverageHargaLembar();
+//                        if ("biji".equalsIgnoreCase(trans.getJenisSatuan()))
+//                            hargaRata = obatEntity.getAverageHargaBiji();
+                    }
+
+                    BigDecimal hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyReture()));
+                    biayaPersediaan = biayaPersediaan.add(hargaTotal);
+
+                    Map mapPersediaanObat = new HashMap();
+                    mapPersediaanObat.put("kd_barang", trans.getIdBarang());
+                    mapPersediaanObat.put("nilai", hargaTotal);
+                    listMapPersediaan.add(mapPersediaanObat);
+                }
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("[TransaksiObatAction.createJurnalPengeluaranObatApotik] ERROR data obat kosong");
+            return response;
+        }
+
+
+        Map mapBiaya = new HashMap();
+        mapBiaya.put("divisi_id", divisiId);
+        mapBiaya.put("nilai", biayaPersediaan);
+
+        Map mapJurnal = new HashMap();
+        mapJurnal.put("biaya_persediaan_obat", mapBiaya);
+        mapJurnal.put("persediaan_apotik", listMapPersediaan);
+
+        String branchId = CommonUtil.userBranchLogin();
+        String branchName = CommonUtil.userBranchNameLogin();
+
+        String catatan = "Pengeluaran Obat " + namaApotek + " " + branchName + " No. Detail Checkup : " + idDetailCheckup + " No. RM " + idPasien;
+
+        String noJurnal = "";
+
+        try {
+            Jurnal jurnal = billingSystemBo.createJurnal("80", mapJurnal, branchId, catatan, "Y");
+            noJurnal = jurnal.getNoJurnal();
+            response.setNoJurnal(noJurnal);
+            response.setStatus("success");
+        } catch (GeneralBOException e) {
+            response.setStatus("error");
+            response.setMsg("[TransaksiObatAction.createJurnalPemasukanApotik] ERROR when search list obat, " + e.getMessage());
+            logger.error("[TransaksiObatAction.createJurnalPemasukanApotik] ERROR when search list obat, ", e);
+            return response;
+        }
+        return response;
+    }
+
+    private String createJurnalKasKeluar(String idApprove, String branchId, String idPermintaan,  List<TransaksiObatDetail> obatDetails){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+
+        String divisiId = "";
+        ImSimrsPermintaanResepEntity permintaanResepEntity = permintaanResepBo.getEntityPermintaanResepById(idPermintaan);
+        if (permintaanResepEntity != null){
+
+            ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(permintaanResepEntity.getTujuanPelayanan());
+            if (pelayananEntity != null){
+                ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
+
+                if (position != null){
+                    divisiId = position.getKodering();
+                }
+
+            }
+        }
+
+        List<Map> listMapPendapatan = new ArrayList<>();
+        BigDecimal nilai = new BigDecimal(0);
+        for (TransaksiObatDetail obatDetail : obatDetails){
+            BigDecimal hargaJual = obatDetail.getHargaJual() != null ? obatDetail.getHargaJual() : new BigDecimal(0);
+            BigInteger qtyReture = obatDetail.getQtyApprove() != null ? obatDetail.getQtyApprove() : new BigInteger(String.valueOf(0));
+            BigDecimal total = hargaJual.multiply(new BigDecimal(qtyReture));
+            nilai = nilai.add(total);
+        }
+
+        Map mapPendapatan = new HashMap();
+        mapPendapatan.put("nilai", nilai);
+        mapPendapatan.put("divisi_id", divisiId);
+        listMapPendapatan.add(mapPendapatan);
+
+        Map mapKas = new HashMap();
+        mapKas.put("nilai", nilai);
+        mapKas.put("metode_bayar", "tunai");
+
+        Map mapJurnal = new HashMap();
+        mapJurnal.put("pendapatan_rawat_jalan_umum", listMapPendapatan);
+        mapJurnal.put("kas", mapKas);
+
+
+        String catatan = "Reture Obat Untuk Resep "+idPermintaan;
+
+        String noJurnal = "";
+        try {
+            Jurnal jurnal = billingSystemBo.createJurnal("92", mapJurnal, branchId, catatan, "Y");
+            noJurnal = jurnal.getNoJurnal();
+        } catch (GeneralBOException e) {
+            logger.error("[TransaksiObatAction.createJurnalKasKeluar] ERROR when search list obat, ", e);
+            return "";
+        }
+
+        return noJurnal;
     }
 
 }
