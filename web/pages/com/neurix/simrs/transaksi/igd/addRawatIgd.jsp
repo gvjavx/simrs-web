@@ -255,21 +255,21 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    <s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>
-                                        <tr>
-                                            <td><b>Metode Pembayaran</b></td>
-                                            <td>
-                                                <table>
-                                                    <script>
-                                                        var metode = '<s:property value="headerDetailCheckup.metodePembayaran"/>';
-                                                        var met = metode.replace("_", " ");
-                                                        var meto = convertSentenceCase(met);
-                                                        document.write(meto);
-                                                    </script>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </s:if>
+                                    <%--<s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>--%>
+                                        <%--<tr>--%>
+                                            <%--<td><b>Metode Pembayaran</b></td>--%>
+                                            <%--<td>--%>
+                                                <%--<table>--%>
+                                                    <%--<script>--%>
+                                                        <%--var metode = '<s:property value="headerDetailCheckup.metodePembayaran"/>';--%>
+                                                        <%--var met = metode.replace("_", " ");--%>
+                                                        <%--var meto = convertSentenceCase(met);--%>
+                                                        <%--document.write(meto);--%>
+                                                    <%--</script>--%>
+                                                <%--</table>--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
+                                    <%--</s:if>--%>
                                 </table>
                             </div>
                             <!-- /.col -->

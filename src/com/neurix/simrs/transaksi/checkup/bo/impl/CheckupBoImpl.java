@@ -401,7 +401,10 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setJalan(bean.getJalan());
             headerEntity.setSuku(bean.getSuku());
             headerEntity.setProfesi(bean.getProfesi() != null && !"".equalsIgnoreCase(bean.getProfesi()) ? bean.getProfesi() : null);
-            headerEntity.setNoTelp(bean.getNoTelp() != null && !"".equalsIgnoreCase(bean.getNoTelp()) ? bean.getNoTelp() : null);
+            if(bean.getNoTelp() != null && !"".equalsIgnoreCase(bean.getNoTelp())){
+                String noHp = bean.getNoTelp().replace("-","").replace("_","");
+                headerEntity.setNoTelp(noHp);
+            }
             headerEntity.setAgama(bean.getAgama());
             headerEntity.setUrlKtp(bean.getUrlKtp());
             headerEntity.setBranchId(bean.getBranchId());

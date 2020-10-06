@@ -367,7 +367,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
 
                 RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
-                riwayatTindakan.setIdDetailCheckup(checkup.getIdDetailCheckup());
+                riwayatTindakan.setIdDetailCheckup(checkup.getNoCheckup());
                 riwayatTindakan.setBranchId(CommonUtil.userBranchLogin());
 
                 try {
@@ -398,23 +398,29 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     }
                 }
 
-                UangMuka uangMuka = new UangMuka();
-                uangMuka.setIdDetailCheckup(checkup.getIdDetailCheckup());
-                uangMuka.setStatusBayar("Y");
-
-                try {
-                    uangMukaList = kasirRawatJalanBoProxy.getListUangMuka(uangMuka);
-                } catch (GeneralBOException e) {
-                    logger.error("Foun error when search riwayat tindakan " + e.getMessage());
+                List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
+                detailCheckupList = checkupDetailBoProxy.getIDDetailCheckup(checkup.getNoCheckup());
+                List<UangMuka> mukaList = new ArrayList<>();
+                for (HeaderDetailCheckup detailCheckup: detailCheckupList){
+                    UangMuka uangMuka = new UangMuka();
+                    uangMuka.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+                    uangMuka.setStatusBayar("Y");
+                    try {
+                        uangMukaList = kasirRawatJalanBoProxy.getListUangMuka(uangMuka);
+                    } catch (GeneralBOException e) {
+                        logger.error("Foun error when search riwayat tindakan " + e.getMessage());
+                    }
+                    if(uangMukaList.size() > 0){
+                        mukaList.addAll(uangMukaList);
+                    }
                 }
-
 
                 JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(riwayatTindakanList);
                 JRBeanCollectionDataSource itemDataObat = new JRBeanCollectionDataSource(resultListObat);
-                JRBeanCollectionDataSource itemDataUangMuka = new JRBeanCollectionDataSource(uangMukaList);
+                JRBeanCollectionDataSource itemDataUangMuka = new JRBeanCollectionDataSource(mukaList);
 
                 BigDecimal tarifJasa = hitungTotalJasa(riwayatTindakanList);
-                BigInteger tarifUangMuka = hitungTotalUangMuka(uangMukaList);
+                BigInteger tarifUangMuka = hitungTotalUangMuka(mukaList);
                 BigInteger tarifObat = hitungTotalObat(obatDetailList);
                 BigDecimal ppnObat = new BigDecimal(String.valueOf(0));
                 ppnObat = new BigDecimal(tarifObat).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
@@ -454,7 +460,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 reportParams.put("kabupaten", checkup.getNamaKota());
                 reportParams.put("kecamatan", checkup.getNamaKecamatan());
                 reportParams.put("desa", checkup.getNamaDesa());
-                reportParams.put("cekTipe", "RJ");
+
+                if(ppnObat != null && ppnObat.intValue() > 0){
+                    reportParams.put("ppnObat", ppnObat);
+                }else{
+                    reportParams.put("ppnObat", "");
+                }
 
 
                 try {

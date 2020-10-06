@@ -835,10 +835,11 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "CAST(DATE_PART('day', a.tgl_keluar - a.tgl_masuk) + 1 AS BIGINT) as hari, \n" +
                     "b.tarif\n" +
                     "FROM it_simrs_rawat_inap a\n" +
-                    "INNER JOIN mt_simrs_ruangan b ON a.id_ruangan = b.id_ruangan\n" +
-                    "WHERE status = '3'\n" +
-                    "AND tgl_keluar IS NOT NULL\n" +
-                    "AND id_detail_checkup = :id";
+                    "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON a.id_ruangan = tt.id_tempat_tidur\n" +
+                    "INNER JOIN mt_simrs_ruangan b ON tt.id_ruangan = b.id_ruangan\n" +
+                    "WHERE a.status = '3'\n" +
+                    "AND a.tgl_keluar IS NOT NULL\n" +
+                    "AND a.id_detail_checkup = :id ";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
