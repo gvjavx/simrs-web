@@ -752,7 +752,7 @@
 
 
     function showModal(){
-        $('#add_nama_obat, #add_harga_box, #add_harga_lembar, #add_harga_biji, #add_merek, #add_pabrik, #add_box, #add_lembar_box, #add_lembar, #add_biji_lembar, #add_biji, #add_min_stok').val('');
+        $('#add_nama_obat, #add_merek, #add_pabrik, #add_lembar_box, #add_biji_lembar, #add_min_stok').val('');
         $('#add_jenis_obat').val('').trigger('change');
         $('#form-edit').show();
         $('#add_box, #add_lembar, #add_biji').removeAttr('disabled');
@@ -771,6 +771,7 @@
     }
 
     function saveObat(id){
+        console.log("save Add 1 -> KLIK");
 
         var nama        = $('#add_nama_obat').val();
         var jenis       = $('#add_jenis_obat').val();
@@ -792,8 +793,7 @@
         var idKategori  = $('#id_kategori').val();
 
 
-        if (nama != '' && jenis != null && biji != '' && box != ''
-            && lembarBox != '' && lembar != '' && bijiLembar != '' && biji != '' && pabrik != ''
+        if (nama != '' && jenis != null && lembarBox != '' && bijiLembar != '' && pabrik != ''
             && merek != '' && pabrik != '' && minStok != '') {
 
             $('#save_obat').hide();
@@ -816,6 +816,8 @@
                     }
                 })
             } else {
+
+                console.log("save Add 2 -> KLIK");
                 dwr.engine.setAsync(true);
                 ObatAction.saveObat(nama, jenis, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, hargaBox, hargaLembar, hargaBiji, minStok, flagKronis, flagGeneric, flagBpjs, margin, idKategori, function (response) {
                     console.log(response);
