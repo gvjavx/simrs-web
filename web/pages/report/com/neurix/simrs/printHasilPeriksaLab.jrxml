@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printHasilPeriksaLab" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.610510000000007"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="400"/>
+	<property name="ireport.y" value="112"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -44,7 +44,7 @@
 	<parameter name="reportParams.diagnosa" class="java.lang.String"/>
 	<parameter name="reportParams.ttdDokter" class="java.lang.String"/>
 	<parameter name="reportParams.ttdPetugas" class="java.lang.String"/>
-	<parameter name="ttdDokterPengirim" class="java.lang.String"/>
+	<parameter name="ttdPengirim" class="java.lang.String"/>
 	<parameter name="sipPengirim" class="java.lang.String"/>
 	<parameter name="sipDokter" class="java.lang.String"/>
 	<parameter name="dokterPengirim" class="java.lang.String"/>
@@ -339,7 +339,7 @@ AND b.flag = 'Y']]>
 					<topPen lineStyle="Dashed"/>
 					<bottomPen lineStyle="Dashed"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Satuan]]></text>
@@ -458,7 +458,7 @@ AND b.flag = 'Y']]>
 			</line>
 			<image onErrorType="Blank">
 				<reportElement x="23" y="16" width="94" height="50" uuid="e38165b0-d84a-4575-aacb-0199663e4a43"/>
-				<imageExpression><![CDATA[$P{ttdDokterPengirim}]]></imageExpression>
+				<imageExpression><![CDATA[$P{ttdPengirim}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="12" y="67" width="115" height="15" uuid="145552ea-574a-438c-ae28-ca6f34e7edd4"/>

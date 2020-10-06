@@ -181,7 +181,7 @@ function listSelectRuangan(id) {
             option = "<option value=''>[Select One]</option>";
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
+                    option += "<option value='" + item.idTempatTidur + "'>[" + item.noRuangan + "]-" + item.namaRuangan +"-["+item.namaTempatTidur +"]</option>";
                 });
             } else {
                 option = option;
@@ -638,6 +638,8 @@ function showModal(select) {
         $('#modal-diagnosa').modal({show:true,backdrop:'static'});
 
     } else if (select == 4) {
+        $('#form_ttd').show();
+        $('#lab_kategori, #lab_lab').attr('disabled', false);
         $('#lab_kategori, #lab_lab').val('').trigger('change');
         $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
         $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
@@ -1060,13 +1062,10 @@ function listDiagnosa() {
     $('#body_diagnosa').html(table);
 }
 
-function listSelectLab(select) {
-    var idx = select.selectedIndex;
-
+function listSelectLab(idx) {
     var option = "<option value=''>[Select One]</option>";
-    if (idx > 0) {
-        var idKategori = select.options[idx].value;
-        LabAction.listLab(idKategori, function (response) {
+    if (idx != '') {
+        LabAction.listLab(idx, function (response) {
             if (response != null) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idLab + "'>" + item.namaLab + "</option>";
@@ -1079,19 +1078,19 @@ function listSelectLab(select) {
     }else{
         $('#lab_lab').html('');
     }
+    $('#lab_parameter').html('');
 }
 
-function listSelectParameter(select) {
-    var idx = select.selectedIndex;
-    var option = "";
-    if (idx > 0) {
-        var idLab = select.options[idx].value;
+function listSelectParameter(idLab) {
+    if (idLab != null && idLab != '') {
+        var option = "";
         LabDetailAction.listLabDetail(idLab, function (response) {
             if (response != null) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
                 });
                 $('#lab_parameter').html(option);
+                $('#lab_parameter option').prop('selected', true);
             } else {
                 $('#lab_parameter').html('');
             }
@@ -1099,11 +1098,16 @@ function listSelectParameter(select) {
     } else {
         $('#lab_parameter').html('');
     }
-
-
 }
 
 function saveLab(id) {
+    var data = $('#tbl_dokter').tableToJSON();
+    var idDokter = "";
+    $.each(data, function (i, item) {
+        if (i == 0) {
+            idDokter = data[i]["ID Dokter"];
+        }
+    });
     var idKategori = $('#lab_kategori').val();
     var idLab = $('#lab_lab').val();
     var idParameter = $('#lab_parameter').val();
@@ -1134,7 +1138,8 @@ function saveLab(id) {
                 $('#save_lab').hide();
                 $('#load_lab').show();
                 dwr.engine.setAsync(true);
-                PeriksaLabAction.saveOrderLab(idDetailCheckup, idLab, idParameter,  {
+                var ttd = convertToDataURL(pengirim);
+                PeriksaLabAction.saveOrderLab(idDetailCheckup, idLab, idParameter, ttd, idDokter, idKategori, {
                     callback: function (response) {
                         if (response.status == "success") {
                             dwr.engine.setAsync(false);
@@ -1257,7 +1262,7 @@ function listSelectObat(select) {
 function detailLab(id, kategoriName) {
     var idParameter = [];
     var body = [];
-    PeriksaLabAction.listParameterPemeriksaan(id, kategoriName, function (response) {
+    PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
                 body += '<tr>' +
@@ -1647,18 +1652,19 @@ function editDiagnosa(id, idDiagnosa, jenis, ket) {
 }
 
 function editLab(id, idLab, idKategoriLab, kategoriName) {
+    $('#form_ttd').hide();
     $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
     $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
-    $('#lab_kategori').val(idKategoriLab).trigger('change');
+    $('#lab_kategori').val(idKategoriLab).trigger('change').attr('disabled', true);;
     var idParameter = [];
-    PeriksaLabAction.listParameterPemeriksaan(id, kategoriName, function (response) {
+    PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
                 idParameter.push(item.idLabDetail);
             });
         }
     });
-    $('#lab_lab').val(idLab).trigger('change');
+    $('#lab_lab').val(idLab).trigger('change').attr('disabled', true);
     $('#lab_parameter').val(idParameter).trigger('change');
     $('#modal-lab').modal({show:true,backdrop:'static'});
 }
@@ -1751,7 +1757,7 @@ function listRuanganInap() {
             $.each(response, function (i, item) {
                 if(idRawatInap == item.idRawatInap){
                     $('#no_ruang').html(item.noRuangan);
-                    $('#name_ruang').html(item.namaRangan);
+                    $('#name_ruang').html(item.namaRangan+" ["+item.namaTempatTidur+"]");
                 }
                 var no = "";
                 var name = "";
@@ -1760,6 +1766,7 @@ function listRuanganInap() {
                 var btn = "";
                 var masuk = "";
                 var keluar = "";
+                var tt = "";
 
                 if (item.tglMasuk != null) {
                     masuk = converterDateTime(new Date(item.tglMasuk));
@@ -1767,30 +1774,25 @@ function listRuanganInap() {
                 if (item.tglKeluar != null) {
                     keluar = converterDateTime(new Date(item.tglKeluar));
                 }
-                if (item.namaRangan != null) {
-                    name = item.namaRangan;
-                }
                 if (item.noRuangan != null) {
                     no = item.noRuangan;
                 }
-                if (item.kelasRuanganName != null) {
-                    kelas = item.kelasRuanganName;
+                if (item.namaTempatTidur != null) {
+                    tt = item.namaTempatTidur;
+                }
+                if (item.namaRangan != null) {
+                    name = "["+no+"]-"+item.namaRangan+"-["+tt+"]";
                 }
                 if (item.kelasRuanganName != null) {
                     kelas = item.kelasRuanganName;
                 }
 
-                else if(item.keterangan == "new"){
-
-                }else if(item.keterangan == "sudah_pindah"){
-
-                }
                 if(item.status == "1"){
                     status = "Diruangan";
                     if(item.keterangan == "pindah"){
                         btn = '';
                     }else{
-                        btn = '<img border="0" class="hvr-grow" onclick="editRuangan(\'' + item.idKelasRuangan + '\',\'' + item.idRuangan + '\', \''+item.idRawatInap+'\')" src="'+pathImages+'/pages/images/icons8-create-25.png" style="cursor: pointer;">';
+                        btn = '<img border="0" class="hvr-grow" onclick="editRuangan(\'' + item.idKelasRuangan + '\',\'' + item.idTempatTidur + '\', \''+item.idRawatInap+'\')" src="'+pathImages+'/pages/images/icons8-create-25.png" style="cursor: pointer;">';
                     }
                 }else if(item.status == "3"){
                     status = "Selesai";
@@ -1812,7 +1814,6 @@ function listRuanganInap() {
                 table += "<tr>" +
                     "<td>" + masuk + "</td>" +
                     "<td>" + keluar + "</td>" +
-                    "<td>" + no + "</td>" +
                     "<td>" + name + "</td>" +
                     "<td>" + kelas + "</td>" +
                     "<td>" + status + "</td>" +
@@ -2781,7 +2782,7 @@ function getKamar(idKelas, kategori){
     CheckupDetailAction.listRuangan(idKelas, true,  kategori, {callback:  function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
+                    option += "<option value='" + item.idTempatTidur + "'>[" + item.noRuangan + "]-" + item.namaRuangan +"-["+item.namaTempatTidur+"]</option>";
                 });
                 $('#kamar').html(option);
             } else {

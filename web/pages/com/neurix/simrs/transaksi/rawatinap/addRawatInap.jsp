@@ -834,8 +834,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Masuk</td>
                                 <td>Tanggal Keluar</td>
-                                <td>No Ruangan</td>
-                                <td>Nama Ruangan</td>
+                                <td>Ruangan</td>
                                 <td>Kelas</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
@@ -1456,7 +1455,7 @@
                             <s:action id="comboLab" namespace="/kategorilab"
                                       name="getListKategoriLab_kategorilab"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="var warn =$('#war_kategori_lab').is(':visible'); if (warn){$('#cor_kategori_lab').show().fadeOut(3000);$('#war_kategori_lab').hide()}; listSelectLab(this)"
+                                      onchange="var warn =$('#war_kategori_lab').is(':visible'); if (warn){$('#cor_kategori_lab').show().fadeOut(3000);$('#war_kategori_lab').hide()}; listSelectLab(this.value)"
                                       list="#comboLab.listOfKategoriLab" id="lab_kategori"
                                       listKey="idKategoriLab"
                                       listValue="namaKategori"
@@ -1471,10 +1470,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Unit</label>
+                        <label class="col-md-3" style="margin-top: 7px">Paket</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"
-                                    onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this);">
+                                    onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">
                                 <option value=''>[Select One]</option>
                             </select>
                         </div>

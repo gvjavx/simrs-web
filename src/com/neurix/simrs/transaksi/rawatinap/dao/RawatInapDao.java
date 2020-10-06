@@ -455,7 +455,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     " FROM it_simrs_rawat_inap\n" +
                     ")a WHERE a.rank = 1" +
                     ") d ON b.id_detail_checkup = d.id_detail_checkup\n" +
-                    "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
+                    "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON d.id_ruangan = tt.id_tempat_tidur \n"+
+                    "INNER JOIN mt_simrs_ruangan e ON tt.id_ruangan = e.id_ruangan\n" +
                     "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
                     "WHERE a.id_pasien LIKE :idPasien\n" +
                     "AND a.nama LIKE :nama\n" +
@@ -784,11 +785,14 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 "a.status,\n" +
                 "a.tgl_masuk,\n" +
                 "a.tgl_keluar,\n" +
-                "a.keterangan\n" +
+                "a.keterangan,\n" +
+                "tt.id_tempat_tidur, \n" +
+                "tt.nama_tempat_tidur\n" +
                 "FROM it_simrs_rawat_inap a\n" +
-                "INNER JOIN mt_simrs_ruangan b ON a.id_ruangan = b.id_ruangan\n" +
+                "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON a.id_ruangan = tt.id_tempat_tidur\n" +
+                "INNER JOIN mt_simrs_ruangan b ON tt.id_ruangan = b.id_ruangan\n" +
                 "INNER JOIN im_simrs_kelas_ruangan c ON b.id_kelas_ruangan = c.id_kelas_ruangan\n" +
-                "WHERE a.flag = 'Y' \n" + idRawatInap + idDetilCheckup +
+                "WHERE a.flag = 'Y' \n" + idRawatInap + "\n" +idDetilCheckup +
                 "ORDER BY a.created_date ASC";
 
         List<Object[]> result = new ArrayList<>();
@@ -809,6 +813,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 rawatInap.setTglMasuk(objects[9] == null ? null : (Timestamp) objects[9]);
                 rawatInap.setTglKeluar(objects[10] == null ? null : (Timestamp) objects[10]);
                 rawatInap.setKeterangan(objects[11] == null ? null : objects[11].toString());
+                rawatInap.setIdTempatTidur(objects[12] == null ? null : objects[12].toString());
+                rawatInap.setNamaTempatTidur(objects[13] == null ? null : objects[13].toString());
                 rawatInapList.add(rawatInap);
             }
         }
@@ -829,10 +835,11 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "CAST(DATE_PART('day', a.tgl_keluar - a.tgl_masuk) + 1 AS BIGINT) as hari, \n" +
                     "b.tarif\n" +
                     "FROM it_simrs_rawat_inap a\n" +
-                    "INNER JOIN mt_simrs_ruangan b ON a.id_ruangan = b.id_ruangan\n" +
-                    "WHERE status = '3'\n" +
-                    "AND tgl_keluar IS NOT NULL\n" +
-                    "AND id_detail_checkup = :id";
+                    "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON a.id_ruangan = tt.id_tempat_tidur\n" +
+                    "INNER JOIN mt_simrs_ruangan b ON tt.id_ruangan = b.id_ruangan\n" +
+                    "WHERE a.status = '3'\n" +
+                    "AND a.tgl_keluar IS NOT NULL\n" +
+                    "AND a.id_detail_checkup = :id ";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

@@ -1049,7 +1049,11 @@ public class RawatInapAction extends BaseMasterAction {
             }
 
             if(periksalb.getIdPeriksaLab() != null){
-                reportParams.put("title", "Hasil Periksa Lab "+periksalb.getKategoriLabName());
+                if("lab".equalsIgnoreCase(tipe)){
+                    reportParams.put("title", "Hasil Periksa Lab " + periksalb.getLabName());
+                }else{
+                    reportParams.put("title", "Hasil Periksa Radiologi " + periksalb.getLabName());
+                }
             }
 
             reportParams.put("area", CommonUtil.userAreaName());
@@ -1074,10 +1078,14 @@ public class RawatInapAction extends BaseMasterAction {
             reportParams.put("kecamatan", checkup.getNamaKecamatan());
             reportParams.put("desa", checkup.getNamaDesa());
             reportParams.put("diagnosa", checkup.getNamaDiagnosa());
-            reportParams.put("petugas", CommonUtil.userLogin());
+            reportParams.put("sipDokter", periksalb.getSipDokter());
+            reportParams.put("sipPengirim", periksalb.getSipPengirim());
+            reportParams.put("dokterPengirim", periksalb.getDokterPengirim());
+            reportParams.put("petugas", periksalb.getNamaPetugas());
             reportParams.put("dokter", periksalb.getNamaDokter());
             reportParams.put("ttdDokter", periksalb.getTtdDokter());
             reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
+            reportParams.put("ttdPengirim", periksalb.getTtdPengirim());
 
             try {
                 preDownload();
