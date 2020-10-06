@@ -69,7 +69,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Tipe Permintaan</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'003':'Reture'}"
+                                        <s:select list="#{}"
                                                   cssStyle="margin-top: 7px"
                                                   id="tipePermintaan" name="permintaanObatPoli.tipePermintaan"
                                                   headerKey="002" headerValue="Request"
@@ -121,8 +121,8 @@
                                             <ul class="dropdown-menu" role="menu">
                                                 <li onclick="showModal()"><a href="#"><i class="fa fa-plus"></i>
                                                     Request Obat</a></li>
-                                                <li onclick="reture()"><a href="#"><i class="fa fa-refresh"></i> Reture
-                                                    Obat</a></li>
+                                                <%--<li onclick="reture()"><a href="#"><i class="fa fa-refresh"></i> Reture--%>
+                                                    <%--Obat</a></li>--%>
                                             </ul>
                                         </div>
                                         <a type="button" class="btn btn-danger" href="initForm_obatgudang.action">
