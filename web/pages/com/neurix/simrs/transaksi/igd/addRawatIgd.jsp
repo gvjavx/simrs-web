@@ -2216,6 +2216,9 @@
     var tempidRm = "";
     var jenisTrans = 'igd';
     var jenisPelayanan = 'igd';
+    var NOSEP = '<s:property value="headerDetailCheckup.noSep"/>';
+    var IdAsuransi = '<s:property value="headerDetailCheckup.idAsuransi"/>';
+    var isBpjsRekanan = "";
 
     $(document).ready(function () {
         $('#igd').addClass('active');
@@ -2360,7 +2363,6 @@
 
     function showObatSerupa() {
         var biji = $("#resep_stok_biji").val();
-        console.log("showObatSerupa = "+biji);
         if (parseInt(biji) == 0){
             $("#obat-serupa").show();
             $("#flag-obat-serupa").val("Y")

@@ -53,6 +53,10 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
 
                 criteria.add(Restrictions.in("tipePelayanan", arrayList));
             }
+
+            if (mapCriteria.get("not_own_branch") != null)
+                criteria.add(Restrictions.ne("branchId", mapCriteria.get("not_own_branch")));
+
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         }
 

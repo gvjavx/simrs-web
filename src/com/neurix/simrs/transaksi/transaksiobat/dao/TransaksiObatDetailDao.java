@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.transaksiobat.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
@@ -155,6 +156,56 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         return obatDetailEntities;
     }
 
+    public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResep(String idPermintaanResep, String idBarang){
+
+        idBarang = idBarang == null || "".equalsIgnoreCase(idBarang) ? "%" : idBarang;
+        idPermintaanResep = idPermintaanResep == null || "".equalsIgnoreCase(idPermintaanResep) ? "%" : idPermintaanResep;
+
+        String SQL = "SELECT\n" +
+                "a.id_barang,\n" +
+                "a.id_transaksi_obat_detail,\n" +
+                "b.id_approval_obat,\n" +
+                "b.id_obat, \n" +
+                "a.qty_approve,\n" +
+                "b.jenis_satuan,\n" +
+                "b.flag_verifikasi, \n" +
+                "a.harga_rata,\n" +
+                "a.qty_reture\n" +
+                "FROM (SELECT * FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y') a \n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail b ON b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n" +
+                "INNER JOIN mt_simrs_permintaan_resep c ON c.id_approval_obat = b.id_approval_obat\n" +
+                "WHERE c.id_permintaan_resep LIKE :idPermintaanResep \n" +
+                "AND a.id_barang LIKE :idbarang ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idPermintaanResep", idPermintaanResep)
+                .setParameter("idbarang", idBarang)
+                .list();
+
+        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+
+        if (results.size() > 0)
+        {
+            for (Object[] obj : results)
+            {
+                TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+                obatDetail.setIdBarang(obj[0].toString());
+                obatDetail.setIdTransaksiObatDetail(obj[1].toString());
+                obatDetail.setIdApprovalObat(obj[2].toString());
+                obatDetail.setIdObat(obj[3].toString());
+                obatDetail.setQty((BigInteger) obj[4]);
+                obatDetail.setJenisSatuan(obj[5].toString());
+                obatDetail.setFlagVerifikasi(obj[6] == null ? "" : obj[6].toString());
+                obatDetail.setHargaRata(obj[7] == null ? new BigDecimal(0) : (BigDecimal) obj[7]);
+                obatDetail.setQtyReture(obj[8] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[8]);
+                obatDetailList.add(obatDetail);
+            }
+        }
+
+        return obatDetailList;
+    }
+
+
     public List<PermintaanResep> getListResepPasien(PermintaanResep bean){
 
         String isUmum        = "%";
@@ -194,7 +245,18 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
             telemdic = " AND b.id_transaksi_online is NULL \n";
         }
 
-        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, b.id_jenis_periksa_pasien, a.flag, a.id_transaksi_online  FROM mt_simrs_permintaan_resep a\n" +
+        String SQL = "SELECT \n" +
+                "a.id_permintaan_resep, \n" +
+                "a.id_detail_checkup, \n" +
+                "c.nama, \n" +
+                "d.keterangan, \n" +
+                "a.id_approval_obat, \n" +
+                "b.id_jenis_periksa_pasien, \n" +
+                "a.flag, \n" +
+                "a.id_transaksi_online, \n" +
+                "a.ttd_pasien, \n" +
+                "a.ttd_apoteker \n" +
+                "FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
@@ -244,6 +306,12 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 permintaanResep.setIdJenisPeriksa(obj[5].toString());
                 permintaanResep.setFlag(obj[6].toString());
                 permintaanResep.setKetJenisAntrian(obj[7] == null ? "Resep RS" : "Telemedic");
+                if(obj[8] != null){
+                    permintaanResep.setTtdPasien(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_PASIEN+obj[8].toString());
+                }
+                if(obj[9] != null){
+                    permintaanResep.setTtdApoteker(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_APOTEKER+obj[9].toString());
+                }
                 permintaanResepList.add(permintaanResep);
             }
         }

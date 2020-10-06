@@ -88,6 +88,34 @@ public class TransaksiObatDetail extends BaseModel {
 
     private String ttdDokter;
     private BigInteger qtyAfter;
+    private BigInteger qtyReture;
+
+    private BigDecimal hargaRata;
+    private String branchAsal;
+
+    public String getBranchAsal() {
+        return branchAsal;
+    }
+
+    public void setBranchAsal(String branchAsal) {
+        this.branchAsal = branchAsal;
+    }
+
+    public BigDecimal getHargaRata() {
+        return hargaRata;
+    }
+
+    public void setHargaRata(BigDecimal hargaRata) {
+        this.hargaRata = hargaRata;
+    }
+
+    public BigInteger getQtyReture() {
+        return qtyReture;
+    }
+
+    public void setQtyReture(BigInteger qtyReture) {
+        this.qtyReture = qtyReture;
+    }
 
     public BigInteger getQtyAfter() {
         return qtyAfter;

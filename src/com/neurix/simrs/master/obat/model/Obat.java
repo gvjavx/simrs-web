@@ -78,6 +78,51 @@ public class Obat extends BaseModel {
     private String namaPelayanan;
     private String type;
     private String bentuk;
+    private Integer standarMargin;
+    private Integer margin;
+    private String flagKurangMargin;
+    private String flagGeneric;
+    private String isKp;
+
+    public String getIsKp() {
+        return isKp;
+    }
+
+    public void setIsKp(String isKp) {
+        this.isKp = isKp;
+    }
+
+    public String getFlagGeneric() {
+        return flagGeneric;
+    }
+
+    public void setFlagGeneric(String flagGeneric) {
+        this.flagGeneric = flagGeneric;
+    }
+
+    public String getFlagKurangMargin() {
+        return flagKurangMargin;
+    }
+
+    public void setFlagKurangMargin(String flagKurangMargin) {
+        this.flagKurangMargin = flagKurangMargin;
+    }
+
+    public Integer getMargin() {
+        return margin;
+    }
+
+    public void setMargin(Integer margin) {
+        this.margin = margin;
+    }
+
+    public Integer getStandarMargin() {
+        return standarMargin;
+    }
+
+    public void setStandarMargin(Integer standarMargin) {
+        this.standarMargin = standarMargin;
+    }
 
     public String getBentuk() {
         return bentuk;

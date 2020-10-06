@@ -170,8 +170,8 @@
                                                     <i class="fa fa-user-plus"></i>Pasien Paket Individu</a></li>
                                                 <li><a href="add_checkup.action?tipe=asuransi">
                                                     <i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>
-                                                <li><a href="add_checkup.action?tipe=ptpn">
-                                                    <i class="fa fa-user-plus"></i>Pasien PTPN</a></li>
+                                                <li><a href="add_checkup.action?tipe=rekanan">
+                                                    <i class="fa fa-user-plus"></i>Pasien Rekanan</a></li>
                                             </ul>
                                         </div>
                                         <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>

@@ -5413,7 +5413,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     absensiPegawai.setStatusAbsensi("02");
                                 }else if (tsJamAkhirFinger.compareTo(tsJamPulangKantor)<0){
                                     absensiPegawai.setStatusAbsensi("14");
-                                }else if (tsJamAwalFinger.compareTo(tsJamMasukKantor)<0&&tsJamAkhirFinger.compareTo(tsJamPulangKantor)>0){
+                                }else if (tsJamAwalFinger.compareTo(tsJamMasukKantor)<=0&&tsJamAkhirFinger.compareTo(tsJamPulangKantor)>=0){
                                     if (CommonUtil.compareTwoTimeStamps(tsJamAkhirFinger,tsJamPulangKantor,"jam")>1||CommonUtil.compareTwoTimeStamps(tsJamMasukKantor,tsJamAwalFinger,"jam")>1){
                                         absensiPegawai.setStatusAbsensi("04");
                                     }else{

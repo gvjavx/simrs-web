@@ -42,6 +42,25 @@ public class LaporanAkuntansi extends BaseModel {
     private String koderingDivisi;
     private String levelKodeRekening;
 
+    private String namaKodeRekening;
+    private String namaMaster;
+
+    public String getNamaKodeRekening() {
+        return namaKodeRekening;
+    }
+
+    public void setNamaKodeRekening(String namaKodeRekening) {
+        this.namaKodeRekening = namaKodeRekening;
+    }
+
+    public String getNamaMaster() {
+        return namaMaster;
+    }
+
+    public void setNamaMaster(String namaMaster) {
+        this.namaMaster = namaMaster;
+    }
+
     public String getJudulGeneralManager() {
         return judulGeneralManager;
     }

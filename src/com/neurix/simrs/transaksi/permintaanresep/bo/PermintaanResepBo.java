@@ -17,4 +17,6 @@ public interface PermintaanResepBo {
     public void saveAdd(PermintaanResep bean, List<TransaksiObatDetail> detailList) throws GeneralBOException;
     public void saveObatResep(TransaksiObatDetail bean) throws GeneralBOException;
     public ImSimrsPermintaanResepEntity getEntityPermintaanResepById(String id) throws GeneralBOException;
+
+    public List<PermintaanResep> getListResepPasien(String noCheckup) throws GeneralBOException;
 }

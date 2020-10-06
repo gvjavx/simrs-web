@@ -281,68 +281,72 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-    public CrudResponse updateDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException {
+    public CrudResponse updateDetailCheckup(List<HeaderDetailCheckup> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        try {
-            ItSimrsHeaderChekupEntity chekupEntity = new ItSimrsHeaderChekupEntity();
-            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
-            entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
-            if (entity != null) {
-                if (bean.getInvoice() != null) {
-                    entity.setInvoice(bean.getInvoice());
-                }
-                if (bean.getFlagCloseTraksaksi() != null) {
-                    entity.setFlagCloseTraksaksi(bean.getFlagCloseTraksaksi());
-                }
-                if (bean.getFlagTppri() != null) {
-                    entity.setFlagTppri(bean.getFlagTppri());
-                }
-                if (!"asuransi".equalsIgnoreCase(entity.getIdJenisPeriksaPasien())) {
-                    entity.setFlagCover("Y");
-                }
-                if ("Y".equalsIgnoreCase(bean.getJustLab())) {
-                    entity.setStatusPeriksa("3");
-                    entity.setKeteranganSelesai("Selesai");
-                    entity.setTindakLanjut("selesai");
-                }
-
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setLastUpdate(bean.getLastUpdate());
-                entity.setAction("U");
-
+        if(list.size() > 0){
+            for (HeaderDetailCheckup bean: list){
                 try {
-                    checkupDetailDao.updateAndSave(entity);
-                    response.setStatus("success");
-                    response.setMsg("Berhasil");
-                } catch (HibernateException e) {
-                    response.setStatus("error");
-                    response.setMsg("IError when update invoice, " + e.getMessage());
-                }
+                    ItSimrsHeaderChekupEntity chekupEntity = new ItSimrsHeaderChekupEntity();
+                    ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+                    entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+                    if (entity != null) {
+                        if (bean.getInvoice() != null) {
+                            entity.setInvoice(bean.getInvoice());
+                        }
+                        if (bean.getFlagCloseTraksaksi() != null) {
+                            entity.setFlagCloseTraksaksi(bean.getFlagCloseTraksaksi());
+                        }
+                        if (bean.getFlagTppri() != null) {
+                            entity.setFlagTppri(bean.getFlagTppri());
+                        }
+                        if (!"asuransi".equalsIgnoreCase(entity.getIdJenisPeriksaPasien())) {
+                            entity.setFlagCover("Y");
+                        }
+                        if ("Y".equalsIgnoreCase(bean.getJustLab())) {
+                            entity.setStatusPeriksa("3");
+                            entity.setKeteranganSelesai("Selesai");
+                            entity.setTindakLanjut("selesai");
+                        }
 
-                if ("Y".equalsIgnoreCase(bean.getJustLab())) {
-                    chekupEntity = headerCheckupDao.getById("noCheckup", entity.getNoCheckup());
-                    if (chekupEntity != null) {
-                        chekupEntity.setLastUpdate(bean.getLastUpdate());
-                        chekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                        chekupEntity.setTglKeluar(bean.getLastUpdate());
+                        entity.setLastUpdateWho(bean.getLastUpdateWho());
+                        entity.setLastUpdate(bean.getLastUpdate());
+                        entity.setAction("U");
+
                         try {
-                            headerCheckupDao.updateAndSave(chekupEntity);
+                            checkupDetailDao.updateAndSave(entity);
                             response.setStatus("success");
                             response.setMsg("Berhasil");
                         } catch (HibernateException e) {
                             response.setStatus("error");
                             response.setMsg("IError when update invoice, " + e.getMessage());
                         }
-                    }
-                }
 
-            } else {
-                response.setStatus("error");
-                response.setMsg("ID Detail Checkup Tidak ditemukan");
+                        if ("Y".equalsIgnoreCase(bean.getJustLab())) {
+                            chekupEntity = headerCheckupDao.getById("noCheckup", entity.getNoCheckup());
+                            if (chekupEntity != null) {
+                                chekupEntity.setLastUpdate(bean.getLastUpdate());
+                                chekupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                chekupEntity.setTglKeluar(bean.getLastUpdate());
+                                try {
+                                    headerCheckupDao.updateAndSave(chekupEntity);
+                                    response.setStatus("success");
+                                    response.setMsg("Berhasil");
+                                } catch (HibernateException e) {
+                                    response.setStatus("error");
+                                    response.setMsg("IError when update invoice, " + e.getMessage());
+                                }
+                            }
+                        }
+
+                    } else {
+                        response.setStatus("error");
+                        response.setMsg("ID Detail Checkup Tidak ditemukan");
+                    }
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg("Error when update invoice, " + e.getMessage());
+                }
             }
-        } catch (HibernateException e) {
-            response.setStatus("error");
-            response.setMsg("Error when update invoice, " + e.getMessage());
         }
         return response;
     }
@@ -418,6 +422,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             response.setMsg("ID rawat inap tidak ditemukan...!");
         }
         return response;
+    }
+
+    @Override
+    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup) throws GeneralBOException {
+        return checkupDetailDao.getIDDetailCheckup(noCheckup);
     }
 
     @Override
@@ -1329,23 +1338,24 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
 
-    public void updateStatusBayarDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException {
+    public void updateStatusBayarDetailCheckup(List<HeaderDetailCheckup> list) throws GeneralBOException {
 
-        List<ItSimrsHeaderDetailCheckupEntity> detailCheckupEntities = getListEntityByCriteria(bean);
-        if (detailCheckupEntities.size() > 0) {
-            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = detailCheckupEntities.get(0);
-            if (bean.getIdDetailCheckup().equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {
-                detailCheckupEntity.setStatusBayar("Y");
-                detailCheckupEntity.setAction("U");
-                detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
-                detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                detailCheckupEntity.setInvoice(bean.getInvoice());
-                detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
-                try {
-                    checkupDetailDao.updateAndSave(detailCheckupEntity);
-                } catch (HibernateException e) {
-                    logger.error("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR when save status bayar. ", e);
-                    throw new GeneralBOException("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR when status bayar. ", e);
+        if(list.size() > 0){
+            for (HeaderDetailCheckup bean: list){
+                ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+                if (detailCheckupEntity != null) {
+                    detailCheckupEntity.setStatusBayar("Y");
+                    detailCheckupEntity.setAction("U");
+                    detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                    detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    detailCheckupEntity.setInvoice(bean.getInvoice());
+                    detailCheckupEntity.setNoJurnal(bean.getNoJurnal());
+                    try {
+                        checkupDetailDao.updateAndSave(detailCheckupEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR when save status bayar. ", e);
+                        throw new GeneralBOException("[PermintaanResepBoImpl.updateStatusBayarDetailCheckup] ERROR when status bayar. ", e);
+                    }
                 }
             }
         }

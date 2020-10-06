@@ -36,7 +36,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Verifikasi Transaksi Pasien BPJS / PTPN Rawat Inap
+            Verifikasi Transaksi Pasien BPJS / Rekanan Rawat Inap
         </h1>
     </section>
 
@@ -245,7 +245,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <table class="table table-striped">
-                                <tr>
+                                <tr style="display: none" id="form_no_sep">
                                     <td><b>No SEP</b></td>
                                     <td style="vertical-align: middle"><span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px" id="det_no_sep"></span></td>
                                 </tr>
@@ -299,7 +299,7 @@
                     </div>
                 </div>
                 <input type="hidden" id="tin_id_detail_checkup">
-                <div class="box-body">
+                <div class="box-body" style="display: none" id="form_status">
                     <div class="row">
                         <div class="col-md-8">
                             <h5>
@@ -360,7 +360,7 @@
                             <td width="20%">Tanggal</td>
                             <td>Nama Tindakan</td>
                             <td align="center">Total Tarif (Rp.)</td>
-                            <td align="center">Kategori</td>
+                            <td align="center" style="display:none;" id="form_kategori">Kategori</td>
                             <td align="center" id="jp" style="display: none">Jenis Cover</td>
                             <%--<td align="center">Action</td>--%>
                         </tr>
@@ -504,6 +504,17 @@
                         jenisKelamin = "Perempuan";
                     }
 
+                    if(response.noSep != '' && response.noSep != null){
+                        $('#form_no_sep').show();
+                        $('#form_kategori').show();
+                        $('#form_status').show();
+                        hitungStatusBiaya(idDetailCheckup);
+                    }else{
+                        $('#form_no_sep').hide();
+                        $('#form_kategori').hide();
+                        $('#form_status').hide();
+                    }
+
                     $('#det_no_sep').html(response.noSep);
                     $('#det_id_detail_checkup').html(idDetailCheckup);
                     $('#det_nik').html(response.noKtp);
@@ -525,15 +536,14 @@
                     $('#h_no_checkup').val(response.noCheckup);
                     $('#h_jenis_pasien').val(response.idDetailCheckup);
                     $('#h_id_pasien').val(response.idPasien);
-                    listTindakan(idCheckup, idDetailCheckup, response.idJenisPeriksaPasien, response.idPasien);
-                    hitungStatusBiaya(idDetailCheckup);
+                    listTindakan(idCheckup, idDetailCheckup, response.idJenisPeriksaPasien, response.idPasien, response.noSep);
                     $('#modal-detail-pasien').modal({show: true, backdrop: 'static'});
                 }
             }
         });
     }
 
-    function listTindakan(idCheckup, idDetailCheckup, jenisPasien, idPasien){
+    function listTindakan(idCheckup, idDetailCheckup, jenisPasien, idPasien, sep){
         var table = "";
         var total = 0;
         var cekPending = false;
@@ -610,25 +620,31 @@
                                 total = (parseInt(total) + parseInt(tarif));
                             }
 
-                            if (jenisPasien == "ptpn") {
+                            if (jenisPasien == "rekanan") {
                                 $('#jp').show();
                                 var choice1 = "";
                                 var choice2 = "";
-                                if (item.jenisPasien == "ptpn") {
+                                if (item.jenisPasien == "rekanan") {
                                     choice1 = "selected";
                                 }
                                 if (item.jenisPasien == "bpjs") {
                                     choice2 = "selected";
                                 }
+                                var kater = "";
+                                if(sep != null && sep != ''){
+                                    kater = '<td>' + kategori + '</td>';
+                                }else{
+                                    disabledJenis = 'disabled';
+                                }
                                 table += "<tr>" +
                                     "<td>" + tgl + '<input type="hidden" id="id_riwayat_'+i+'" value="'+item.idRiwayatTindakan+'">' +"</td>" +
                                     "<td>" + tindakan + "</td>" +
                                     "<td align='right'>" + formatRupiah(tarif) + "</td>" +
-                                    "<td>" + kategori + "</td>" +
+                                     kater +
                                     "<td>" +
                                     '<select style="width: 100%;" class="form-control select-2" id="jenis_pasien_' + i + '" onchange="updateApproveFlag(\''+item.idRiwayatTindakan+'\', \''+i+'\', \''+idDetailCheckup+'\', this.value)" '+disabledJenis+'>' +
                                     '<option value="bpjs" ' + choice2 + '>BPJS</option>' +
-                                    '<option value="ptpn" ' + choice1 + '>PTPN</option>' +
+                                    '<option value="rekanan" ' + choice1 + '>REKANAN</option>' +
                                     '</select>' +
                                     "</td>" +
                                     // "<td align='center'>" + '<input value="' + statusVal + '" type="hidden" id="status' + i + '">' + '<img id="btn' + i + '" class="hvr-grow" style="cursor: pointer" ' + onclick + ' src="' + btn + '">' + "</td>" +

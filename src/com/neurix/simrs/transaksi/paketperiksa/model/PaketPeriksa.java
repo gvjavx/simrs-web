@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.paketperiksa.model;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
@@ -42,6 +43,15 @@ public class PaketPeriksa {
     private String namaLab;
     private String idLab;
     private String namaPelayanan;
+    private BigInteger urutan;
+
+    public BigInteger getUrutan() {
+        return urutan;
+    }
+
+    public void setUrutan(BigInteger urutan) {
+        this.urutan = urutan;
+    }
 
     public String getNamaPelayanan() {
         return namaPelayanan;

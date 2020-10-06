@@ -7,10 +7,7 @@ import com.neurix.simrs.transaksi.hargaobat.model.MtSimrsHargaObatEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
-import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsRiwayatPembelianObat;
-import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
-import com.neurix.simrs.transaksi.transaksiobat.model.RiwayatTransaksiObat;
-import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.transaksiobat.model.*;
 
 import java.util.List;
 
@@ -48,4 +45,8 @@ public interface TransaksiObatBo {
     public List<TransaksiObatDetail> listObatResepApprove(String idApprove) throws GeneralBOException;
 
     public List<PermintaanResep> getListNotifResep(String idPelayanan, String branchId) throws GeneralBOException;
+    public List<ImtSimrsTransaksiObatDetailEntity> getListEntityTransObatDetail(TransaksiObatDetail bean) throws GeneralBOException;
+    public void saveUpdateRetureObat(List<TransaksiObatDetail> listReture, TransaksiObatDetail bean) throws GeneralBOException;
+    public void saveUpdateHargaRataBarangMasukKarnaReture(TransaksiObatDetail bean) throws GeneralBOException;
+    public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResepAndIdBarang(String idResep, String idBarang) throws GeneralBOException;
 }

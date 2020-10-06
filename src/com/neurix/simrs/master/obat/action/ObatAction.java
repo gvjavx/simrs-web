@@ -187,11 +187,18 @@ public class ObatAction extends BaseMasterAction {
     @Override
     public String initForm() {
         logger.info("[ObatAction.initForm] START >>>>>>>");
+        String userBranch = CommonUtil.userBranchLogin();
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
-        setObat(new Obat());
+        Obat obat = new Obat();
+        if (CommonConstant.BRANCH_KP.equalsIgnoreCase(userBranch)){
+            obat.setIsKp("Y");
+        }
+
+        setObat(obat);
+
         logger.info("[ObatAction.initForm] END <<<<<<<");
         return "search";
     }
@@ -438,6 +445,39 @@ public class ObatAction extends BaseMasterAction {
 
     }
 
+    public List<Obat> getListObat(String idPelayanan) {
+
+        logger.info("[ObatAction.getListObat] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(idPelayanan);
+
+        String branchId = "";
+        if (pelayananEntity != null){
+            branchId = pelayananEntity.getBranchId();
+        }
+
+        List<Obat> obatList = new ArrayList<>();
+        Obat obat = new Obat();
+        obat.setBranchId(branchId);
+        obat.setFlag("Y");
+
+        if (obat.getBranchId() != null){
+            try {
+                obatList = obatBo.getListObatGroup(obat);
+            } catch (GeneralBOException e) {
+                logger.error("[ObatAction.getListObat] Error when obat ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+        }
+
+        logger.info("[ObatAction.getListObat] end process <<<");
+        return obatList;
+
+    }
+
     public List<Obat> getListNamaObat(String namaObat) {
 
         logger.info("[ObatAction.getListNamaObat] start process >>>");
@@ -535,6 +575,7 @@ public class ObatAction extends BaseMasterAction {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
+        String branchId = CommonUtil.userBranchLogin();
 
         // maping untuk parameter lainnua
         JSONArray json = new JSONArray(jsonString);
@@ -545,15 +586,18 @@ public class ObatAction extends BaseMasterAction {
         HargaObat hargaObat = new HargaObat();
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
+            hargaObat.setIdHargaObat(branchId+idObat);
             hargaObat.setIdObat(idObat);
             hargaObat.setIdBarang(idBarang);
             hargaObat.setHargaNet(new BigDecimal(obj.getString("harga_net")));
             hargaObat.setDiskon(new BigDecimal(obj.getString("diskon")));
             hargaObat.setHargaJual(new BigDecimal(obj.getString("harga_jual")));
+            hargaObat.setMargin(obj.getString("margin") == null || "".equalsIgnoreCase(obj.getString("margin")) ? null : Integer.valueOf(obj.getString("margin")));
             hargaObat.setCreatedDate(time);
             hargaObat.setCreatedWho(userLogin);
             hargaObat.setLastUpdate(time);
             hargaObat.setLastUpdateWho(userLogin);
+            hargaObat.setBranchId(branchId);
         }
 
         try {

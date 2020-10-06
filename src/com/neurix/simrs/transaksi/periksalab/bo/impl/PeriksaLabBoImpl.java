@@ -101,6 +101,9 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     if(periksaLabEntity.getUrlImg() != null && !"".equalsIgnoreCase(periksaLabEntity.getUrlImg())){
                         periksaLab.setUrlImg(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_IMG_RM+periksaLabEntity.getUrlImg());
                     }
+                    if(periksaLabEntity.getTtdPengirim() != null && !"".equalsIgnoreCase(periksaLabEntity.getTtdPengirim())){
+                        periksaLab.setTtdPengirim(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_DOKTER+periksaLabEntity.getTtdPengirim());
+                    }
 
                     periksaLabList.add(periksaLab);
                 }
@@ -294,8 +297,9 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     }
 
     @Override
-    public void saveAddWithParameter(PeriksaLab periksaLab, List<String> labDetailIds) throws GeneralBOException {
+    public CrudResponse saveAddWithParameter(PeriksaLab periksaLab, List<String> labDetailIds) throws GeneralBOException {
         logger.info("[PeriksaLabBoImpl.saveAddWithParameter] START >>>>>>>>> ");
+        CrudResponse response = new CrudResponse();
 
         if (periksaLab != null) {
             ItSimrsPeriksaLabEntity entity = new ItSimrsPeriksaLabEntity();
@@ -312,10 +316,14 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             entity.setCreatedWho(periksaLab.getCreatedWho());
             entity.setLastUpdate(periksaLab.getLastUpdate());
             entity.setLastUpdateWho(periksaLab.getLastUpdateWho());
+            entity.setTtdPengirim(periksaLab.getTtdPengirim());
 
             try {
                 periksaLabDao.addAndSave(entity);
+                response.setStatus("success");
+                response.setMsg("Oke");
             } catch (HibernateException e) {
+                response.setMsg(e.getMessage());
                 logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa lab " + e.getMessage());
                 throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa lab " + e.getMessage());
             }
@@ -360,7 +368,10 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
 
                             try {
                                 periksaRadiologiDao.addAndSave(radiologiEntity);
+                                response.setStatus("success");
+                                response.setMsg("Oke");
                             } catch (HibernateException e) {
+                                response.setMsg(e.getMessage());
                                 logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa radiology " + e.getMessage());
                                 throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa radiology " + e.getMessage());
                             }
@@ -401,7 +412,10 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
 
                             try {
                                 periksaLabDetailDao.addAndSave(detailEntity);
+                                response.setStatus("success");
+                                response.setMsg("Oke");
                             } catch (HibernateException e) {
+                                response.setMsg(e.getMessage());
                                 logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
                                 throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
                             }
@@ -412,6 +426,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
         }
 
         logger.info("[PeriksaLabBoImpl.saveAddWithParameter] END <<<<<<<<< ");
+         return response;
     }
 
     @Override
@@ -997,5 +1012,10 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     @Override
     public ItSimrsPeriksaLabEntity getPeriksaLabEntityById(String id) throws GeneralBOException {
         return periksaLabDao.getById("idPeriksaLab", id);
+    }
+
+    @Override
+    public List<PeriksaLab> getListLab(String noChekcup) throws GeneralBOException {
+        return periksaLabDao.getListLab(noChekcup);
     }
 }

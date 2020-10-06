@@ -1,6 +1,8 @@
 package com.neurix.simrs.transaksi.riwayattindakan.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import org.hibernate.Criteria;
@@ -137,7 +139,7 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                     "WHERE a.branch_id LIKE :branchId \n" +
                     "AND a.no_checkup LIKE :noCheckup \n" +
                     "AND b.id_detail_checkup LIKE :idDetail \n" + jenis +
-                    "ORDER BY c.tanggal_tindakan ASC\n";
+                    "ORDER BY b.id_detail_checkup ASC, c.tanggal_tindakan ASC\n";
 
             List<Object[]> result = new ArrayList<>();
 
@@ -313,5 +315,75 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
 
         List<ItSimrsRiwayatTindakanEntity> results = criteria.list();
         return results;
+    }
+
+    public List<String> getListDetailCheckupByNoCheckup(String noCheckup) {
+
+        String SQL = "SELECT \n" +
+                "id_detail_checkup, \n" +
+                "no_checkup \n" +
+                "FROM it_simrs_header_detail_checkup\n" +
+                "WHERE no_checkup = :noCheckup ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("noCheckup", noCheckup)
+                .list();
+
+        List<String> listResults = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                listResults.add(obj[0].toString());
+            }
+        }
+
+        return listResults;
+    }
+
+    public List<UangMuka> getListUangMukaByNoCheckup(String noCheckup) {
+
+        String SQL = "SELECT \n" +
+                "a.id,\n" +
+                "a.jumlah_dibayar,\n" +
+                "a.flag_refund,\n" +
+                "a.id_detail_checkup\n" +
+                "FROM it_simrs_uang_muka_pendaftaran a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON b.id_detail_checkup = a.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_header_checkup c ON c.no_checkup = b.no_checkup\n" +
+                "WHERE c.no_checkup = :noCheckup";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("noCheckup", noCheckup)
+                .list();
+
+        List<UangMuka> listResults = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                UangMuka uangMuka = new UangMuka();
+                uangMuka.setId(obj[0].toString());
+                uangMuka.setDibayar(obj[1] == null ? new BigInteger(String.valueOf(0))  : (BigInteger) obj[1]);
+                uangMuka.setFlagRefund(obj[2] == null ? "" : obj[2].toString());
+                uangMuka.setIdDetailCheckup(obj[3] == null ? "" : obj[3].toString());
+                listResults.add(uangMuka);
+            }
+        }
+
+        return listResults;
+    }
+
+    public Boolean checkIsPelayananRawatJalan(String idDetailCheckup){
+
+        String SQL = "SELECT c.id_pelayanan, c.divisi_id, c.tipe_pelayanan FROM it_simrs_header_detail_checkup a\n" +
+                "INNER JOIN im_simrs_pelayanan c ON c.id_pelayanan = a.id_pelayanan\n" +
+                "WHERE a.id_detail_checkup = :idDetail \n" +
+                "AND tipe_pelayanan = 'rawat_jalan' OR tipe_pelayanan = 'igd' ";
+
+        List<Object[]> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetailCheckup)
+                .list();
+
+        if (objects.size() > 0){
+            return true;
+        }
+        return false;
     }
 }

@@ -498,6 +498,148 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         }
     }
 
+    // ================================== Approve Permintaan Unit =============================================//
+
+    public String searchApproveUnit() {
+        logger.info("[ApprovePermintaanUnit.searchApproveUnit] START >>>>>>>");
+
+        PermintaanObatPoli permintaanObatPoli = getPermintaanObatPoli();
+        permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
+        permintaanObatPoli.setTujuanPelayanan(CommonUtil.userPelayananIdLogin());
+        boolean isPoli = false;
+
+        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
+
+        try {
+            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli, isPoli);
+        } catch (HibernateException e) {
+            logger.error("[ApprovePermintaanUnit.searchApproveUnit] ERROR when get data list obat, ", e);
+            addActionError("[ApprovePermintaanUnit.searchApproveUnit] ERROR when get data list obat, " + e.getMessage());
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", permintaanObatPoliList);
+
+        logger.info("[ApprovePermintaanUnit.searchApproveUnit] END <<<<<<<");
+        return "search";
+    }
+
+    public String initFormApproveUnit() {
+        logger.info("[ApprovePermintaanUnit.initFormApproveUnit] start process >>>");
+        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+
+        setPermintaanObatPoli(permintaanObatPoli);
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+
+        logger.info("[ApprovePermintaanUnit.initFormApproveUnit] end process <<<");
+        return "search";
+    }
+
+    public String initApprovePermintaanUnit(){
+        logger.info("[ApprovePermintaanUnit.initApprovePermintaanUnit] START process >>>");
+
+        String id = getIdApproval();
+        String idPermintaan = getIdPermintaan();
+
+        TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+        obatDetail.setIdApprovalObat(id);
+
+        List<TransaksiObatDetail> obatDetails = new ArrayList<>();
+
+        try {
+            obatDetails = obatPoliBoProxy.getListTransObatDetail(obatDetail);
+        } catch (HibernateException e){
+            logger.error("[ApprovePermintaanUnit.search] ERROR when get data list obat, ", e);
+            addActionError("[ApprovePermintaanUnit.search] ERROR when get data list obat, " + e.getMessage());
+        }
+
+        boolean isPoli = false;
+
+        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+        permintaanObatPoli.setIdPermintaanObatPoli(idPermintaan);
+        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
+
+        try {
+            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli, isPoli);
+        } catch (HibernateException e) {
+            logger.error("[ApprovePermintaanUnit.printReturePermintaanObat] ERROR when get data list obat, ", e);
+            addActionError("[ApprovePermintaanUnit.printReturePermintaanObat] ERROR when get data list obat, " + e.getMessage());
+        }
+
+        if(!permintaanObatPoliList.isEmpty()){
+            PermintaanObatPoli entity = permintaanObatPoliList.get(0);
+            if(entity != null){
+                setPermintaanObatPoli(entity);
+            }
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfObatDetail");
+        session.setAttribute("listOfObatDetail", obatDetails);
+
+        logger.info("[ApprovePermintaanUnit.initApprovePermintaanUnit] END process <<<");
+        return "init_approve";
+    }
+
+    public String printPermintaanObatApproveUnit() {
+
+        String idPermintaan = getIdPermintaan();
+
+        boolean isPoli = false;
+
+        PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+        permintaanObatPoli.setIdPermintaanObatPoli(idPermintaan);
+        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
+
+        try {
+            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli, isPoli);
+        } catch (HibernateException e) {
+            logger.error("[ApprovePermintaanUnit.printPermintaanObatApproveUnit] ERROR when get data list obat, ", e);
+            addActionError("[ApprovePermintaanUnit.printPermintaanObatApproveUnit] ERROR when get data list obat, " + e.getMessage());
+        }
+
+        if(!permintaanObatPoliList.isEmpty()){
+            PermintaanObatPoli entity = permintaanObatPoliList.get(0);
+            if(entity != null){
+
+                String branch = CommonUtil.userBranchLogin();
+                String logo = "";
+
+                switch (branch){
+                    case CommonConstant.BRANCH_RS01 :
+                        logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
+                        break;
+                    case CommonConstant.BRANCH_RS02 :
+                        logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
+                        break;
+                    case CommonConstant.BRANCH_RS03 :
+                        logo = CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
+                        break;
+                }
+
+                reportParams.put("unit", CommonUtil.userBranchNameLogin());
+                reportParams.put("area", CommonUtil.userAreaName());
+                reportParams.put("permintaanId", idPermintaan);
+                reportParams.put("logo", logo);
+                reportParams.put("namaPelayanan", "Gudang "+CommonUtil.userBranchNameLogin());
+                reportParams.put("dariPelayanan", entity.getNamaPelayanan());
+            }
+        }
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+            return "search";
+        }
+
+        return "print_permintaan_obat";
+    }
+
     public void setObatPoliBoProxy(ObatPoliBo obatPoliBoProxy) {
         this.obatPoliBoProxy = obatPoliBoProxy;
     }

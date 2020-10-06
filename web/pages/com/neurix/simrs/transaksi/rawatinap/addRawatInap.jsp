@@ -3727,6 +3727,9 @@
     var idRuangan = '<s:property value="rawatInap.idRuangan"/>';
     var namaRuangan = '<s:property value="rawatInap.namaRangan"/>';
     var stayRuangan = '<s:property value="rawatInap.isStay"/>';
+    var NOSEP = '<s:property value="rawatInap.noSep"/>';
+    var IdAsuransi = '<s:property value="rawatInap.idAsuransi"/>';
+    var isBpjsRekanan = "";
 
     if (month.length < 2) {
         month = "0"+month;

@@ -235,6 +235,8 @@
 
             var noKartuPtpn = $('#no_kartu_ptpn').val();
             var unitPtpn = $('#unit_ptpn').val();
+            var unitPg = $('#unit_pg').val();
+            var cekBpjs = $('#cek_is_bpjs').val();
             var poliUmum = $('#poli_umum').val();
 
             if (idPasien != '' && noKtp != '' && namaPasien != '' && jenisKelamin != '' && tempatLahir != ''
@@ -347,58 +349,62 @@
                     }
                 }
 
-                if (tipe == "ptpn") {
+                if (tipe == "rekanan") {
                     if(noKartuPtpn != '' && unitPtpn != ''){
-                        if (diagnosaBpjs != '' && perujuk != '' && ketPerujuk != ''
-                            && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '' ) {
+                        if(cekBpjs == 'Y'){
+                            if (diagnosaBpjs != '' && perujuk != '' && ketPerujuk != ''
+                                && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '' ) {
 
-                            if(statusBpjs != '' && statusRujukan != ''){
-                                //&& statusRujukan == "aktif"
-                                if(statusBpjs == "aktif" ){
-                                    $('#confirm_dialog').dialog('open');
+                                if(statusBpjs != '' && statusRujukan != ''){
+                                    //&& statusRujukan == "aktif"
+                                    if(statusBpjs == "aktif" ){
+                                        $('#confirm_dialog').dialog('open');
+                                    }else{
+                                        var msg1 = "";
+                                        var msg2 = "";
+                                        $("html, body").animate({scrollTop: 0}, 600);
+                                        $('#warning_pasien').show().fadeOut(10000);
+                                        if(statusBpjs != "aktif"){
+                                            msg1 = "No BPJS Tidak Aktif";
+                                        }
+                                        if(statusRujukan != "aktif"){
+                                            msg2 = "No Rujukan Tidak Aktif";
+                                        }
+                                        $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan "+msg1+". "+msg2+"...!");
+                                    }
                                 }else{
-                                    var msg1 = "";
-                                    var msg2 = "";
                                     $("html, body").animate({scrollTop: 0}, 600);
                                     $('#warning_pasien').show().fadeOut(10000);
-                                    if(statusBpjs != "aktif"){
-                                        msg1 = "No BPJS Tidak Aktif";
-                                    }
-                                    if(statusRujukan != "aktif"){
-                                        msg2 = "No Rujukan Tidak Aktif";
-                                    }
-                                    $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan "+msg1+". "+msg2+"...!");
+                                    $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS dan No Rujukan...!");
                                 }
-                            }else{
+                            } else {
                                 $("html, body").animate({scrollTop: 0}, 600);
                                 $('#warning_pasien').show().fadeOut(10000);
-                                $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS dan No Rujukan...!");
+                                $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
+                                if(diagnosaBpjs == ''){
+                                    $('#diagnosa_awal').css('border','solid 1px red');
+                                }
+                                if(perujuk == ''){
+                                    $('#war_perujuk').show();
+                                }
+                                if(ketPerujuk == ''){
+                                    $('#war_ket_perujuk').show();
+                                }
+                                if(noRujukan == ''){
+                                    $('#war_no_rujukan').show();
+                                }
+                                if(ppkRujukan == ''){
+                                    $('#war_ppk_rujukan').show();
+                                }
+                                if(tglRujukan == ''){
+                                    $('#war_tgl_rujukan').show();
+                                }
+                                if(fotoRujukan == ''){
+                                    $('#war_foto_rujukan').show();
+                                }
                             }
-                        } else {
-                            $("html, body").animate({scrollTop: 0}, 600);
-                            $('#warning_pasien').show().fadeOut(10000);
-                            $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
-                            if(diagnosaBpjs == ''){
-                                $('#diagnosa_awal').css('border','solid 1px red');
-                            }
-                            if(perujuk == ''){
-                                $('#war_perujuk').show();
-                            }
-                            if(ketPerujuk == ''){
-                                $('#war_ket_perujuk').show();
-                            }
-                            if(noRujukan == ''){
-                                $('#war_no_rujukan').show();
-                            }
-                            if(ppkRujukan == ''){
-                                $('#war_ppk_rujukan').show();
-                            }
-                            if(tglRujukan == ''){
-                                $('#war_tgl_rujukan').show();
-                            }
-                            if(fotoRujukan == ''){
-                                $('#war_foto_rujukan').show();
-                            }
+                        }else{
+                            $('#confirm_dialog').dialog('open');
                         }
                     }else{
                         $("html, body").animate({scrollTop: 0}, 600);
@@ -615,8 +621,8 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <s:if test='tipe == "bpjs" || tipe == "ptpn"'>
-                                            <div class="form-group">
+                                        <s:if test='tipe == "bpjs" || tipe == "rekanan"'>
+                                            <div class="form-group" id="form_no_bpjs">
                                                 <label class="col-md-4">No BPJS</label>
                                                 <div class="col-md-8">
                                                     <div class="input-group">
@@ -1033,7 +1039,6 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Diagnosa Awal</label>
                                             <div class="col-md-8">
-                                                <%--<s:if test='tipe == "bpjs" || tipe == "ptpn"'>--%>
                                                         <s:textfield id="diagnosa_awal" style="margin-top: 7px"
                                                                      name="headerCheckup.diagnosa" autocomplete="off"
                                                                      onkeypress="$(this).css('border','')"
@@ -1077,22 +1082,6 @@
                                                                     cssStyle="margin-top: 7px" readonly="true"
                                                                     name="headerCheckup.namaDiagnosa"
                                                                     cssClass="form-control"></s:textarea>
-
-                                                    <%--</s:if>--%>
-                                                <%--<s:else>--%>
-
-                                                    <%--<s:action id="initComboDiagnosa" namespace="/checkupdetail"--%>
-                                                              <%--name="getListComboDiagnosa_checkupdetail"/>--%>
-                                                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                              <%--onchange="var warn =$('#war_diagnosa').is(':visible'); if (warn){$('#cor_diagnosa').show().fadeOut(3000);$('#war_diagnosa').hide()}"--%>
-                                                              <%--list="#initComboDiagnosa.listOfComboDiagnosa"--%>
-                                                              <%--id="nosa_id_diagnosa_1"--%>
-                                                              <%--name="headerCheckup.diagnosa" listKey="idDiagnosa"--%>
-                                                              <%--listValue="descOfDiagnosa"--%>
-                                                              <%--headerKey="" headerValue="[Select one]"--%>
-                                                              <%--cssClass="form-control select2"/>--%>
-
-                                                <%--</s:else>--%>
                                             </div>
                                         </div>
                                     </div>
@@ -1333,22 +1322,6 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <%--<div class="form-group">--%>
-                                            <%--<label class="col-md-4" style="margin-top: 10px">Jumlah Cover</label>--%>
-                                            <%--<div class="col-md-8">--%>
-                                                <%--<div class="input-group" style="margin-top: 7px">--%>
-                                                    <%--<div class="input-group-addon">--%>
-                                                        <%--Rp.--%>
-                                                    <%--</div>--%>
-                                                    <%--<s:textfield type="text" id="nominal_cover_biaya" cssClass="form-control"--%>
-                                                                 <%--onkeypress="var warn =$('#war_jml_cover').is(':visible'); if (warn){$('#con_jml_cover').show().fadeOut(3000);$('#war_jml_cover').hide()}"/>--%>
-                                                <%--</div>--%>
-                                                <%--<span style="color: red; display: none" id="war_jml_cover"><i--%>
-                                                        <%--class="fa fa-times"></i> required</span>--%>
-                                                <%--<span style="color: green; display: none" id="con_jml_cover"><i--%>
-                                                        <%--class="fa fa-check"></i> correct</span>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
                                         <s:hidden name="headerCheckup.coverBiaya" id="cover_biaya"></s:hidden>
                                         <div id="form_jasaraharja_2" style="display: none">
                                         <div class="form-group">
@@ -1376,16 +1349,46 @@
                             </div>
                             </s:if>
 
-                            <s:if test='tipe == "ptpn"'>
+                            <s:if test='tipe == "rekanan"'>
+                            <s:hidden name="headerCheckup.idAsuransi" id="id_rekanan"></s:hidden>
+                                <s:hidden name="headerCheckup.isRekananWithBpjs" id="cek_is_bpjs"></s:hidden>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-user"></i> Data PTPN</h3>
+                                <h3 class="box-title"><i class="fa fa-user"></i> Data Rekanan</h3>
                             </div>
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 10px">No Kartu PTPN</label>
+                                            <label class="col-md-4" style="margin-top: 10px">Nama Rekanan</label>
+
+                                            <div class="col-md-8">
+                                                <select id="unit_ptpn" class="form-control select2"
+                                                        onchange="var warn =$('#war_ptpn').is(':visible'); if (warn){$('#con_ptpn').show().fadeOut(3000);$('#war_ptpn').hide()}; cekPtpn(this.value)">
+                                                </select>
+                                                <span style="color: red; display: none" id="war_ptpn"><i
+                                                        class="fa fa-times"></i> required</span>
+                                                <span style="color: green; display: none" id="con_ptpn"><i
+                                                        class="fa fa-check"></i> correct</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="form_pg" style="display: none">
+                                            <label class="col-md-4" style="margin-top: 10px">PG Unit</label>
+                                            <div class="col-md-8">
+                                                <input class="form-control" id="unit_pg" style="margin-top: 7px">
+                                                <%--<select id="unit_pg" class="form-control select2"--%>
+                                                        <%--onchange="var warn =$('#war_pg').is(':visible'); if (warn){$('#con_pg').show().fadeOut(3000);$('#war_pg').hide()}">--%>
+                                                <%--</select>--%>
+                                                <span style="color: red; display: none" id="war_pg"><i
+                                                        class="fa fa-times"></i> required</span>
+                                                <span style="color: green; display: none" id="con_pg"><i
+                                                        class="fa fa-check"></i> correct</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 10px">No Kartu Rekanan</label>
                                             <div class="col-md-8">
                                                 <s:textfield id="no_kartu_ptpn" name="headerCheckup.noKartuAsuransi"
                                                              cssStyle="margin-top: 7px" cssClass="form-control"
@@ -1397,26 +1400,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 10px">Unit PTPN</label>
-
-                                            <div class="col-md-8">
-                                                <select id="unit_ptpn" class="form-control select2" name="headerCheckup.idAsuransi"
-                                                onchange="var warn =$('#war_ptpn').is(':visible'); if (warn){$('#con_ptpn').show().fadeOut(3000);$('#war_ptpn').hide()}">
-                                                </select>
-                                                <span style="color: red; display: none" id="war_ptpn"><i
-                                                        class="fa fa-times"></i> required</span>
-                                                <span style="color: green; display: none" id="con_ptpn"><i
-                                                        class="fa fa-check"></i> correct</span>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             </s:if>
 
-                            <s:if test='tipe == "bpjs" || tipe == "ptpn"'>
+                            <s:if test='tipe == "bpjs" || tipe == "rekanan"'>
+                                <div id="form_rujukan">
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Rujukan</h3>
@@ -1429,12 +1418,12 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
                                             <div class="col-md-8">
-                                                <s:select list="#{'1':'PPK 1 - Puskesmas','2':'PPK 2 - RS Lain'}"
+                                                <s:select list="#{'2':'PPK 2 - RS Lain'}"
                                                         cssStyle="margin-top: 7px"
                                                         name="headerCheckup.rujuk"
                                                         onchange="changePlaceHolder(this); var warn =$('#war_perujuk').is(':visible'); if (warn){$('#con_perujuk').show().fadeOut(3000);$('#war_perujuk').hide()}"
                                                         id="perujuk"
-                                                        headerKey="" headerValue="[Select one]"
+                                                        headerKey="1" headerValue="PPK 1 - Puskesmas"
                                                         cssClass="form-control"/>
                                                 <span style="color: red; display: none" id="war_perujuk"><i
                                                         class="fa fa-times"></i> required</span>
@@ -1494,7 +1483,7 @@
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
                                                     <s:textfield name="headerCheckup.tglRujukan" id="tgl_rujukan"
-                                                                 cssClass="form-control datepicker"
+                                                                 cssClass="form-control datepicker datemask"
                                                                  onchange="var warn =$('#war_tgl_rujukan').is(':visible'); if (warn){$('#con_tgl_rujukan').show().fadeOut(3000);$('#war_tgl_rujukan').hide()}"
                                                                  />
                                                 </div>
@@ -1524,26 +1513,8 @@
                                     </div>
                                 </div>
                             </div>
+                                </div>
                             </s:if>
-
-                            <%--<div class="box-header with-border"></div>--%>
-                            <%--<div class="box-header with-border">--%>
-                                <%--<h3 class="box-title"><i class="fa fa-user"></i> Form Inputan</h3>--%>
-                            <%--</div>--%>
-                            <%--<div class="box-body">--%>
-                                <%--<s:textfield type="hidden" id="data_admisi" name="headerCheckup.admisi"></s:textfield>--%>
-                                <%--<div class="row">--%>
-                                    <%--<div class="col-md-12">--%>
-                                    <%--<div class="form-group">--%>
-                                        <%--<a class="btn btn-primary" id="btn-admisi" onclick="setFormAdmisi()"><i class="fa fa-edit"></i> Form Pre-Admisi</a>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="form-group" style="margin-top: 20px">--%>
-                                        <%--<i class="fa fa-square" style="color: #286090"></i> Belum diisi--%>
-                                        <%--<i class="fa fa-square" style="color: #ec971f"></i> Sudah diisi--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
 
                             <%--from bpjs--%>
                             <s:hidden name="headerCheckup.kelasPasien" id="kelas_pasien"></s:hidden>
@@ -2260,8 +2231,8 @@
         if(tipe == 'paket_perusahaan' || tipe == 'paket_individu'){
             listSelectPaket(tipe);
         }
-        if(tipe == 'ptpn'){
-            listSelectPtpn();
+        if(tipe == 'rekanan'){
+            listSelectRekanan();
         }
 
         $('#id_jenis_periksa').val(tipe);
@@ -2295,11 +2266,9 @@
     }
 
     function listSelectPaket(tipe) {
-
         var option = "<option value=''>[Select One]</option>";
-        PaketPeriksaAction.getListPaketPeriksaByTipe("RJ", function (response) {
+        PaketPeriksaAction.getListPaketPeriksaByTipe("rawat_jalan", function (response) {
             if (response.length > 0) {
-                console.log(response);
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idPaket +"|"+ item.idPelayanan +"|"+ item.tarif + "'>" + item.namaPaket + "</option>";
                 });
@@ -2310,18 +2279,42 @@
         });
     }
 
-    function listSelectPtpn(){
+    function listSelectRekanan(){
         var option = "<option value=''>[Select One]</option>";
-        CheckupAction.getComboPtpn(function (response) {
+        CheckupAction.getListRekananOps(function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    option += "<option value='" + item.nomorMaster + "'>" + item.nama + "</option>";
+                    option += "<option value='" + item.idRekananOps +'|'+item.isBpjs+'|'+item.tipe+"'>" + item.namaRekanan + "</option>";
                 });
                 $('#unit_ptpn').html(option);
             } else {
                 $('#unit_ptpn').html(option);
             }
         });
+    }
+
+    function cekPtpn(value){
+        if(value != ''){
+            var rekanan = value.split("|");
+            var idRekananOps = rekanan[0];
+            var isBpjs = rekanan[1];
+            var tipeRekanan = rekanan[2];
+
+            if(isBpjs == 'Y'){
+                $('#form_no_bpjs, #form_rujukan').show();
+            }else{
+                $('#form_no_bpjs, #form_rujukan').hide();
+            }
+
+            if(tipeRekanan == 'ptpn'){
+                $('#form_pg').show();
+            }else{
+                $('#form_pg').hide();
+            }
+
+            $('#id_rekanan').val(idRekananOps);
+            $('#cek_is_bpjs').val(isBpjs);
+        }
     }
 
     function selectPelayanan(value){

@@ -255,8 +255,10 @@ public class LabDetailBoImpl implements LabDetailBo {
                         lab.setIdLab(labDetailEntity.getIdLab());
                         lab.setFlag("Y");
                         List<Lab> labs = labBo.getByCriteria(lab);
-                        String labName = labs.get(0).getNamaLab();
-                        labDetail.setNamaLab(labName);
+                        if(labs.size() > 0){
+                            String labName = labs.get(0).getNamaLab();
+                            labDetail.setNamaLab(labName);
+                        }
                     }
 
                     result.add(labDetail);
@@ -270,6 +272,20 @@ public class LabDetailBoImpl implements LabDetailBo {
     @Override
     public ImSimrsLabDetailEntity getLabDetailEntityById(String idParameter) throws GeneralBOException {
         return labDetailDao.getById("idLabDetail", idParameter);
+    }
+
+    @Override
+    public List<LabDetail> getDetaillab(String idLab, String branchId) throws GeneralBOException {
+        List<LabDetail> labDetails = new ArrayList<>();
+        logger.info("[LabDetailBoImpl.getDetaillab] Start <<<<<<<");
+        try {
+            labDetails = labDetailDao.getDetailLab(idLab, branchId);
+        } catch (HibernateException e) {
+            logger.error("[LabDetailBoImpl.getDetaillab] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[LabDetailBoImpl.getDetaillab] End <<<<<<<");
+        return labDetails;
     }
 
     @Override

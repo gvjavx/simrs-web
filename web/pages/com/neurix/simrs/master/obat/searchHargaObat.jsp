@@ -169,12 +169,14 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Harga Obat</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Obat</td>
                                 <td>Nama Obat</td>
                                 <td>Merk</td>
+                                <td>Margin</td>
+                                <td>Standar Margin</td>
                                 <td>Harga Rata-rata (Bijian)</td>
                                 <td>Harga</td>
                                 <td>Diskon</td>
@@ -183,11 +185,21 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfPeriksaLab" var="row">
-                                <tr>
+                            <s:iterator value="#session.listOfResult" var="row">
+                                <s:if test='#row.flagKurangMargin == "Y"'>
+                                    <tr style="background-color: #d9534f; color: #ffffff">
+                                </s:if>
+                                <s:elseif test='#row.flagKurangMargin == "R"'>
+                                    <tr style="background-color: #EBEADF; color: #ffffff">
+                                </s:elseif>
+                                <s:else>
+                                    <tr>
+                                </s:else>
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td><s:property value="merk"/></td>
+                                    <td><s:property value="margin"/></td>
+                                    <td><s:property value="standarMargin"/></td>
                                     <td align="right"><script>document.write(formatRupiah('<s:property value="averageHargaBiji"/>'))</script></td>
                                     <td align="right"><script>document.write(formatRupiah('<s:property value="hargaNet"/>'))</script></td>
                                     <td><s:property value="diskon"/>%</td>
@@ -214,12 +226,14 @@
 <div class="modal fade" id="modal-obat">
     <div class="modal-dialog modal-flat">
         <div class="modal-content">
+
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Edit Harga Obat</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger" id="alert-margin" style="display: none;">Harga Item Kurang dari Standart Margin.</div>
                 <div class="alert alert-success alert-dismissible" style="display: none" id="success_obat">
                     <h4><i class="icon fa fa-ban"></i> Success !</h4>
                     <p id="">Berhasil menyimpan </p>
@@ -269,12 +283,31 @@
                 </div>
                 <div class="row" style="margin-top: 7px">
                     <div class="form-group">
-                        <label class="col-md-5" style="margin-top: 7px">Harga</label>
+                        <label class="col-md-5" style="margin-top: 7px">Standar Margin (%)</label>
                         <div class="col-md-7">
-                            <input type="number" id="mod-harga-net" onchange="hitungDiskon()" class="form-control">
+                            <input type="number" id="mod-standar-margin" class="form-control" readonly>
                         </div>
                     </div>
                 </div>
+
+                <div class="row" style="margin-top: 7px">
+                    <div class="form-group">
+                        <label class="col-md-5" style="margin-top: 7px">Margin (%)</label>
+                        <div class="col-md-7">
+                            <input type="number" id="mod-margin" onchange="hitungHargaJual()" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 7px">
+                    <div class="form-group">
+                        <label class="col-md-5" style="margin-top: 7px">Harga</label>
+                        <div class="col-md-7">
+                            <input type="number" id="mod-harga-net" onchange="hitungMargin()" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row" style="margin-top: 7px">
                     <div class="form-group">
                         <label class="col-md-5" style="margin-top: 7px">Diskon</label>
@@ -283,11 +316,12 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row" style="margin-top: 7px">
                     <div class="form-group">
                         <label class="col-md-5" style="margin-top: 7px">Harga Jual</label>
                         <div class="col-md-7">
-                            <input type="number" id="mod-harga-jual" class="form-control" readonly="true">
+                            <input type="number" id="mod-harga-jual" class="form-control" readonly>
                         </div>
                     </div>
                 </div>
@@ -325,12 +359,16 @@
 
     function saveObat(id, idBarang){
 
+        if (checkMargin())
+            return false;
+
         var net = $("#mod-harga-net").val();
         var diskon = $("#mod-diskon").val();
         var jual = $("#mod-harga-jual").val();
+        var margin = $("#mod-margin").val();
 
         var arJson = [];
-        arJson.push({"harga_net":net, "diskon":diskon, "harga_jual":jual});
+        arJson.push({"harga_net":net, "diskon":diskon, "harga_jual":jual, "margin" : margin});
         var stJson = JSON.stringify(arJson);
         ObatAction.saveHargaObat(id, idBarang, stJson, function (response) {
            if (response.status == "success"){
@@ -363,11 +401,46 @@
                    $("#mod-harga-net").val(item.hargaNet);
                    $("#mod-diskon").val(item.diskon);
                    $("#mod-harga-jual").val(item.hargaJual);
+                   $("#mod-margin").val(item.margin);
+                   $("#mod-standar-margin").val(item.standarMargin);
                });
                $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\',\''+idBarang+'\')');
            }
         });
+    }
 
+    function hitungMargin() {
+
+        var harga       = $("#mod-harga-net").val();
+        var hargarata   = $("#mod-harga-rata").val();
+
+        var selisih     = parseFloat(harga) - parseFloat(hargarata);
+        var margin      = parseFloat(selisih) / parseFloat(hargarata) * 100;
+
+        $("#mod-margin").val(parseInt(margin));
+        $("#mod-harga-jual").val(harga);
+        checkMargin();
+    }
+
+    function hitungHargaJual() {
+        var margin      = $("#mod-margin").val();
+        var hargarata   = $("#mod-harga-rata").val();
+
+        var selisih = parseFloat(hargarata) * parseFloat(margin) / 100;
+        var harga   = parseFloat(hargarata) + selisih;
+
+        $("#mod-harga-net").val(parseInt(harga));
+        $("#mod-harga-jual").val(parseInt(harga));
+        checkMargin();
+    }
+
+    function checkMargin() {
+        var margin = $("#mod-margin").val();
+        var standar = $("#mod-standar-margin").val() == null ? 0 : $("#mod-standar-margin").val();
+        if (parseInt(margin) < parseInt(standar)){
+            $("#alert-margin").show().fadeOut(7000);
+            return true;
+        }
     }
 
     function listSelectObatEdit(idObat){

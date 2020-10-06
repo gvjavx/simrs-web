@@ -850,6 +850,7 @@
 
     function btnListDetail(periode){
         var str = "";
+        var idJenis = $("#view-id").val();
         if (idJenis == "INV"){
             str = '<button class="btn btn-sm btn-success" onclick="viewPengadaan(\''+periode+'\')"><i class="fa fa-bars"></i></button>';
         }

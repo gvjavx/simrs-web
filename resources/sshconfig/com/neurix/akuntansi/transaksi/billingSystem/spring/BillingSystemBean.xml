@@ -38,8 +38,10 @@
           p:transDao-ref="transDao"
           p:obatDao-ref="obatDao"
           p:branchDao-ref="branchDao"
-          p:saldoAkhirTahunDao-ref="saldoAkhirTahunDao"
-          p:saldoAkhirDetailTahunDao-ref="saldoAkhirDetailTahunDao"
+          p:saldoAkhirHistoryDao-ref="saldoAkhirHistoryDao"
+          p:saldoAkhirDetailHistoryDao-ref="saldoAkhirDetailHistoryDao"
+          p:jurnalAkhirTahunDao-ref="jurnalAkhirTahunDao"
+          p:jurnalDetailAkhirTahunDao-ref="jurnalDetailAkhirTahunDao"
     />
 
     <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -61,6 +63,7 @@
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
                 <prop key="createJurnal">PROPAGATION_REQUIRED</prop>
                 <prop key="saveTutupPeriod">PROPAGATION_REQUIRED</prop>
+                <prop key="updateSaldoAkhirBulanBerjalan">PROPAGATION_REQUIRED</prop>
                 <!--<prop key="generateAndSaveCurrentSaldoPersediaanToNextMonth">readOnly</prop>-->
             </props>
         </property>

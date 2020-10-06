@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.*;
 
 
@@ -972,5 +973,34 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
             }
         }
         return budgeting;
+    }
+
+    @Override
+    public List<NeracaSaldoDTO> getListNeracaSaldo(String reportId, String periode, String branchId){
+        return laporanAkuntansiDao.getListNeracaSaldo(reportId,periode,branchId);
+    }
+
+    @Override
+    public List<NeracaSaldoDTO> getListNeracaMutasi(String reportId, String periode, String branchId){
+        return laporanAkuntansiDao.getListNeracaMutasi(reportId,periode,branchId);
+    }
+    @Override
+    public List<IkhtisarBukuBesarDTO> getListIkhitisarBukuBesar(String reportId, String periode, String branchId){
+        return laporanAkuntansiDao.getListIkhtisarBukuBesarPerBukuBantu(reportId,periode,branchId);
+    }
+
+    @Override
+    public List<KartuBukuBesarPerBukuBantuDTO> getListKartuBukuBesar(String reportId, String periode, String branchId, String kodeRekening, String nomorMaster, String tipe, Date tanggalDari, Date tanggalSampai){
+        return laporanAkuntansiDao.getListKartuBukuBesarPerBukuBantu(reportId,periode,branchId,kodeRekening,nomorMaster,tipe,tanggalDari,tanggalSampai);
+    }
+
+    @Override
+    public BigDecimal saldoAwalKodeRekening(String branchId, String kodeRekening, String masterId, String periode){
+        return laporanAkuntansiDao.getSaldoAwal(branchId,kodeRekening,masterId,periode);
+    }
+
+    @Override
+    public BigDecimal saldoAwalKodeRekeningByTanggal (String branchId,String kodeRekening,String masterId , String periode,String tanggalAwal){
+        return laporanAkuntansiDao.getSaldoAwalByTanggal(branchId,kodeRekening,masterId,periode,tanggalAwal);
     }
 }

@@ -41,6 +41,33 @@ public class MtSimrsTransaksiObatDetailBatchEntity implements Serializable {
     private String jenis;
     private Date tglDo;
     private Date tglInvoice;
+    private BigDecimal hargaJual;
+    private BigDecimal hargaRata;
+    private BigInteger qtyReture;
+
+    public BigInteger getQtyReture() {
+        return qtyReture;
+    }
+
+    public void setQtyReture(BigInteger qtyReture) {
+        this.qtyReture = qtyReture;
+    }
+
+    public BigDecimal getHargaJual() {
+        return hargaJual;
+    }
+
+    public void setHargaJual(BigDecimal hargaJual) {
+        this.hargaJual = hargaJual;
+    }
+
+    public BigDecimal getHargaRata() {
+        return hargaRata;
+    }
+
+    public void setHargaRata(BigDecimal hargaRata) {
+        this.hargaRata = hargaRata;
+    }
 
     public Date getTglDo() {
         return tglDo;

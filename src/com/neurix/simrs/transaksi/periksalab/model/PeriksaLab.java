@@ -77,6 +77,15 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String metodePembayaran;
 
     private String urlImg;
+    private String ttdPengirim;
+
+    public String getTtdPengirim() {
+        return ttdPengirim;
+    }
+
+    public void setTtdPengirim(String ttdPengirim) {
+        this.ttdPengirim = ttdPengirim;
+    }
 
     public String getUrlImg() {
         return urlImg;

@@ -359,7 +359,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", id)
-                    .setParameter("branchId", CommonUtil.userBranchLogin())
+                    .setParameter("branchId", branchId)
                     .list();
 
             if (results.size() > 0) {
@@ -686,19 +686,33 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         List<Obat> obatList = new ArrayList<>();
         if (query != null && branch != null) {
             String param = "%" + query + "%";
-            String SQL = "SELECT id_obat, nama_obat, id_pabrik\n" +
-                    "FROM im_simrs_obat\n" +
-                    "WHERE nama_obat ILIKE :id AND branch_id = :branchId\n" +
-                    "GROUP BY id_obat, nama_obat, id_pabrik\n" +
-                    "UNION\n" +
-                    "SELECT id_obat, nama_obat, id_pabrik\n" +
-                    "FROM im_simrs_obat\n" +
-                    "WHERE id_pabrik ILIKE :id AND branch_id = :branchId\n" +
-                    "GROUP BY id_obat, nama_obat, id_pabrik\n";
+//            String SQL = "SELECT id_obat, nama_obat, id_pabrik\n" +
+//                    "FROM im_simrs_obat\n" +
+//                    "WHERE nama_obat ILIKE :id AND branch_id = :branchId\n" +
+//                    "GROUP BY id_obat, nama_obat, id_pabrik\n" +
+//                    "UNION\n" +
+//                    "SELECT id_obat, nama_obat, id_pabrik\n" +
+//                    "FROM im_simrs_obat\n" +
+//                    "WHERE id_pabrik ILIKE :id AND branch_id = :branchId\n" +
+//                    "GROUP BY id_obat, nama_obat, id_pabrik\n";
+
+            String SQL = "SELECT \n" +
+                    "id_obat,\n" +
+                    "nama_obat,\n" +
+                    "id_pabrik,\n" +
+                    "lembar_per_box,\n" +
+                    "biji_per_lembar,\n" +
+                    "flag_generic,\n" +
+                    "min_stok,\n" +
+                    "merk,\n" +
+                    "flag_bpjs\n" +
+                    "FROM im_simrs_header_obat WHERE flag = 'Y'\n" +
+                    "AND nama_obat ILIKE :id \n" +
+                    "OR id_pabrik ILIKE :id ";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", param)
-                    .setParameter("branchId", branch)
+//                    .setParameter("branchId", branch)
                     .list();
 
             if (results.size() > 0) {
@@ -707,11 +721,18 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     obat.setIdObat(obj[0] == null ? "" : obj[0].toString());
                     obat.setNamaObat(obj[1] == null ? "" : obj[1].toString());
                     obat.setIdPabrik(obj[2] == null ? "" : obj[2].toString());
-                    Obat obt = getEntityObatById(obj[0].toString());
-                    obat.setLembarPerBox(obt.getLembarPerBox());
-                    obat.setBijiPerLembar(obt.getBijiPerLembar());
-                    obat.setFlagKronis(obt.getFlagKronis());
-                    obat.setFlagBpjs(obt.getFlagBpjs());
+                    obat.setLembarPerBox(obj[3] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[3]);
+                    obat.setBijiPerLembar(obj[4] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[4]);
+                    obat.setFlagGeneric(obj[5] == null ? "" : obj[5].toString());
+                    obat.setMinStok(obj[6] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[6]);
+                    obat.setMerk(obj[7] == null ? "" : obj[7].toString());
+                    obat.setFlagBpjs(obj[8] == null ? "" : obj[8].toString());
+
+//                    Obat obt = getEntityObatById(obj[0].toString());
+//                    obat.setLembarPerBox(obt.getLembarPerBox());
+//                    obat.setBijiPerLembar(obt.getBijiPerLembar());
+//                    obat.setFlagKronis(obt.getFlagKronis());
+//                    obat.setFlagBpjs(obt.getFlagBpjs());
                     obatList.add(obat);
                 }
             }
@@ -950,5 +971,32 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         }
 
         return transaksiStok;
+    }
+
+    public Obat getLastEveragePricePerBiji(String idObat, String branchId){
+
+        String SQL = "SELECT a.id_obat, a.average_harga_biji, b.harga_jual \n" +
+                "FROM im_simrs_obat a \n" +
+                "INNER JOIN mt_simrs_harga_obat b ON b.id_obat = a.id_obat\n" +
+                "WHERE a.id_obat = :id \n" +
+                "AND a.branch_id = :unit \n" +
+                "ORDER BY a.created_date DESC LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("id", idObat)
+                .list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                Obat obat = new Obat();
+                obat.setIdObat(obj[0].toString());
+                obat.setAverageHargaBiji(obj[1] == null ? new BigDecimal(0) : (BigDecimal) obj[1]);
+                obat.setHargaJual(obj[2] == null ? new BigDecimal(0) : (BigDecimal) obj[2]);
+                return obat;
+            }
+        }
+
+        return null;
     }
 }

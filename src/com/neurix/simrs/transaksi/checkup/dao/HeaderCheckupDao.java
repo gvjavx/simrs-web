@@ -726,7 +726,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "j.no_bpjs, \n" +
                     "b.no_rujukan, \n" +
                     "b.tgl_rujukan, \n" +
-                    "k.id_asuransi, \n" +
+                    "b.id_asuransi, \n" +
                     "k.nama_asuransi, \n" +
                     "b.no_kartu_asuransi, \n" +
                     "b.tgl_cekup, \n" +
