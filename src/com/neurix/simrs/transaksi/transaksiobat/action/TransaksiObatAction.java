@@ -3170,6 +3170,22 @@ public class TransaksiObatAction extends BaseMasterAction {
             }
         }
 
+        TransaksiObatDetail beanUpdate = new TransaksiObatDetail();
+        beanUpdate.setLastUpdate(time);
+        beanUpdate.setLastUpdateWho(userLogin);
+
+        // save update jumlah direture
+        try {
+            transaksiObatBo.saveUpdateRetureObat(listBatchReture, beanUpdate);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.info("[TransaksiObatAction.retureResep] ERROR. ", e);
+            response.setMsg("[TransaksiObatAction.retureResep] ERROR. "+ e);
+            response.setStatus("error");
+            return response;
+        }
+
+
         // create jurnal persediaan barang masuk;
         // hitung harga rata-rata barang masuk;
         if (listBatchReture.size() > 0){
@@ -3189,20 +3205,20 @@ public class TransaksiObatAction extends BaseMasterAction {
             createJurnalKasKeluar(idApprovalObat, branchId, idResep, listObatTidakDitanggung);
         }
 
-        TransaksiObatDetail beanUpdate = new TransaksiObatDetail();
-        beanUpdate.setLastUpdate(time);
-        beanUpdate.setLastUpdateWho(userLogin);
-
-        // save update jumlah direture
-        try {
-            transaksiObatBo.saveUpdateRetureObat(listBatchReture, beanUpdate);
-            response.setStatus("success");
-        } catch (GeneralBOException e){
-            logger.info("[TransaksiObatAction.retureResep] ERROR. ", e);
-            response.setMsg("[TransaksiObatAction.retureResep] ERROR. "+ e);
-            response.setStatus("error");
-            return response;
-        }
+//        TransaksiObatDetail beanUpdate = new TransaksiObatDetail();
+//        beanUpdate.setLastUpdate(time);
+//        beanUpdate.setLastUpdateWho(userLogin);
+//
+//        // save update jumlah direture
+//        try {
+//            transaksiObatBo.saveUpdateRetureObat(listBatchReture, beanUpdate);
+//            response.setStatus("success");
+//        } catch (GeneralBOException e){
+//            logger.info("[TransaksiObatAction.retureResep] ERROR. ", e);
+//            response.setMsg("[TransaksiObatAction.retureResep] ERROR. "+ e);
+//            response.setStatus("error");
+//            return response;
+//        }
 
         return response;
     }
