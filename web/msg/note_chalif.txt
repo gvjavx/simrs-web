@@ -232,7 +232,7 @@ ALTER TABLE public.it_hris_mesin_absensi_detail_oncall
   UPDATE public.im_branches SET lat='-8.1255408' WHERE branch_id = 'RS04';
   UPDATE public.im_branches SET lon='112.2053721' WHERE branch_id = 'RS04';
 
-
+  UPDATE public.im_company SET jarak_absen_mobile = 300
 
 
 
