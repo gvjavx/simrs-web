@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.dokter.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
@@ -25,6 +26,15 @@ public class ImSimrsDokterEntity implements Serializable {
     private String flagTele;
     private String kuotaTele;
     private String sip;
+    private BigInteger kuotaOnSite;
+
+    public BigInteger getKuotaOnSite() {
+        return kuotaOnSite;
+    }
+
+    public void setKuotaOnSite(BigInteger kuotaOnSite) {
+        this.kuotaOnSite = kuotaOnSite;
+    }
 
     public String getSip() {
         return sip;

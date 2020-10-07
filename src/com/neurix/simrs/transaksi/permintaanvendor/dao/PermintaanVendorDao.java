@@ -398,7 +398,7 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
 
             List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idApproval", idTransaksi)
-                    .setParameter("noBatch", batch)
+                    .setParameter("noBatch", Integer.valueOf(batch))
                     .list();
 
             List<TransaksiObatBatch> obatBatches = new ArrayList<>();

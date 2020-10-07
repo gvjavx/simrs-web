@@ -170,7 +170,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "b.jenis_satuan,\n" +
                 "b.flag_verifikasi, \n" +
                 "a.harga_rata,\n" +
-                "a.qty_reture\n" +
+                "a.qty_reture,\n" +
+                "a.harga_jual\n" +
                 "FROM (SELECT * FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y') a \n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail b ON b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n" +
                 "INNER JOIN mt_simrs_permintaan_resep c ON c.id_approval_obat = b.id_approval_obat\n" +
@@ -198,6 +199,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 obatDetail.setFlagVerifikasi(obj[6] == null ? "" : obj[6].toString());
                 obatDetail.setHargaRata(obj[7] == null ? new BigDecimal(0) : (BigDecimal) obj[7]);
                 obatDetail.setQtyReture(obj[8] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[8]);
+                obatDetail.setHargaJual(obj[9] == null ? new BigDecimal(0) : (BigDecimal) obj[9]);
                 obatDetailList.add(obatDetail);
             }
         }
@@ -502,7 +504,9 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "odb.id_barang,\n" +
                 "odb.qty_approve,\n" +
                 "odb.jenis_satuan,\n" +
-                "CASE WHEN odb.jenis_satuan = 'box' THEN od.average_harga_box WHEN odb.jenis_satuan = 'lembar' THEN od.average_harga_lembar WHEN odb.jenis_satuan = 'biji' THEN od.average_harga_biji ELSE 0 END as harga\n" +
+                "CASE WHEN odb.jenis_satuan = 'box' THEN od.average_harga_box WHEN odb.jenis_satuan = 'lembar' THEN od.average_harga_lembar WHEN odb.jenis_satuan = 'biji' THEN od.average_harga_biji ELSE 0 END as harga ,\n" +
+                "odb.qty_reture,\n" +
+                "odb.harga_rata\n" +
                 "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
                 "WHERE od.id_approval_obat = :idApprove\n" +
@@ -517,13 +521,15 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
             TransaksiObatDetail obatDetail;
             for (Object[] obj : results){
-                BigDecimal harga = obj[5] == null ? new BigDecimal(0) : (BigDecimal) obj[5];
                 obatDetail = new TransaksiObatDetail();
                 obatDetail.setIdApprovalObat(obj[0].toString());
                 obatDetail.setIdTransaksiObatDetail(obj[1].toString());
                 obatDetail.setIdBarang(obj[2].toString());
                 obatDetail.setQtyApprove(obj[3] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[3]);
                 obatDetail.setJenisSatuan(obj[4].toString());
+                BigDecimal harga = obj[5] == null ? new BigDecimal(0) : (BigDecimal) obj[5];
+                obatDetail.setQtyReture(obj[6] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[6]);
+                obatDetail.setHargaRata(obj[7] == null ? new BigDecimal(0) : (BigDecimal) obj[7]);
                 obatDetail.setHarga(new BigInteger(harga.toString()));
                 trans.add(obatDetail);
             }

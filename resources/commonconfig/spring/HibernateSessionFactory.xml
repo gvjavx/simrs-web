@@ -588,6 +588,9 @@
                 <value>sshconfig/com/neurix/simrs/master/rekananops/hibernate/ImSimrsDetailRekananOpsEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/paketperiksa/hiberanate/MtSimrsDetailPaketEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/checkup/hibernate/ItSimrsPelayananPaketEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/simrs/master/parampemeriksaan/hibernate/ImSimrsParameterPemeriksaanEntity.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/ruangan/hibernate/MtSimrsRuanganTempatTidurEntity.xml</value>
             </list>
         </property>
     </bean>

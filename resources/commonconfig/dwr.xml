@@ -2,7 +2,6 @@
 <!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 3.0//EN" "http://getahead.org/dwr/dwr30.dtd">
 
 <dwr>
-
   <allow>
       <create creator="new">
         <param name="class" value="com.neurix.authorization.user.action.UserLoginAction"/>
@@ -125,10 +124,8 @@
       <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.HistoryOnCall"/>
-
       <convert converter="bean" match="com.neurix.hris.master.shift.model.Shift"/>
       <convert converter="bean" match="com.neurix.hris.master.group.model.Group"/>
-      <convert converter="bean" match="com.neurix.hris.master.groupMember.model.GroupMember"/>
 
       <create creator="new">
           <param name="class" value="com.neurix.hris.transaksi.rekruitmenPabrik.action.RekruitmenPabrikAction"/>
@@ -196,7 +193,6 @@
       </create>
       <convert converter="bean" match="com.neurix.hris.master.smkJabatan.model.SmkJabatan"/>
       <convert converter="bean" match="com.neurix.hris.master.smkJabatan.model.SmkJabatanDetail"/>
-      <convert converter="bean" match="com.neurix.authorization.position.model.Position"/>
       <convert converter="bean" match="com.neurix.hris.master.smkIndikatorPenilaianAspek.model.SmkIndikatorPenilaianAspek"/>
       <convert converter="bean" match="com.neurix.hris.master.smkKategoriAspek.model.SmkKategoriAspek"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.smk.model.SmkEvaluasiPegawaiAspekActivityPeristiwa"/>
@@ -217,7 +213,6 @@
       <convert converter="bean" match="com.neurix.hris.master.positionBagian.model.positionBagian"/>
       <convert converter="bean" match="com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity"/>
 
-      <convert converter="bean" match="com.neurix.hris.master.positionBagian.model.positionBagian"/>
       <create creator="new">
           <param name="class" value="com.neurix.hris.master.groupShift.action.GroupShiftAction"/>
       </create>
@@ -322,6 +317,8 @@
       <convert converter="bean" match="com.neurix.simrs.master.jenisobat.model.JenisObat"/>
       <convert converter="bean" match="com.neurix.simrs.master.rekananops.model.RekananOps"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.PelayananPaket"/>
+      <convert converter="bean" match="com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity"/>
+      <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalPelayananDTO"/>
 
       <!--Team Dokter -->
       <create creator="new">
@@ -369,7 +366,7 @@
 
       <!--Lab Detail-->
       <create creator="new">
-          <param name="class" value="com.neurix.simrs.master.labdetail.action.LabDetailAction"/>
+          <param name="class" value="com.neurix.simrs.master.labdetail.action.ParameterPemeriksaanAction"/>
       </create>
 
       <!--Order Gizi-->
@@ -837,6 +834,26 @@
       </create>
       <convert converter="bean" match="com.neurix.simrs.transaksi.notifikasiadmin.model.ItNotifikasiAdminTelemedicEntity"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.notifikasiadmin.model.NotifikasiAdmin"/>
-  </allow>
 
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.tindakan.action.HeaderTindakanAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.master.tindakan.model.HeaderTindakan"/>
+      <convert converter="bean" match="com.neurix.simrs.master.kategoritindakanina.model.KategoriTindakanIna"/>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.parampemeriksaan.action.ParameterPemeriksaanAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.master.parampemeriksaan.model.ParameterPemeriksaan"/>
+
+      <create creator="new">
+        <param name="class" value="com.neurix.simrs.master.labdetail.action.LabDetailAction"/>
+      </create>
+
+      <create creator="new">
+        <param name="class" value="com.neurix.simrs.master.ruangan.action.TempatTidurAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.master.ruangan.model.TempatTidur"/>
+
+  </allow>
 </dwr>

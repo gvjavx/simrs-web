@@ -118,28 +118,36 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                 jenis = "AND c.jenis_pasien = 'umum'";
             }
 
-            String SQL = "SELECT " +
-                    "a.no_checkup," +
-                    "b.id_detail_checkup, " +
+            String SQL = "SELECT\n" +
+                    "a.no_checkup,\n" +
+                    "b.id_detail_checkup, \n" +
                     "c.id_riwayat_tindakan, \n" +
-                    "c.id_tindakan, " +
-                    "c.nama_tindakan, " +
-                    "c.keterangan, " +
-                    "c.jenis_pasien, " +
-                    "c.total_tarif, " +
+                    "c.id_tindakan, \n" +
+                    "c.nama_tindakan, \n" +
+                    "c.keterangan, \n" +
+                    "c.jenis_pasien, \n" +
+                    "c.total_tarif, \n" +
                     "c.kategori_tindakan_bpjs, \n" +
-                    "c.approve_bpjs_flag," +
-                    "c.tanggal_tindakan," +
-                    "d.kategori_ina_bpjs," +
-                    "c.flag_update_klaim "+
+                    "c.approve_bpjs_flag,\n" +
+                    "c.tanggal_tindakan,\n" +
+                    "d.kategori_ina_bpjs,\n" +
+                    "c.flag_update_klaim \n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                    "LEFT JOIN im_simrs_tindakan d ON d.id_tindakan = c.id_tindakan\n" +
+                    "LEFT JOIN (\n" +
+                    "SELECT\n" +
+                    "a.id_tindakan_rawat,\n" +
+                    "a.id_tindakan,\n" +
+                    "c.kategori_ina_bpjs\n" +
+                    "FROM it_simrs_tindakan_rawat a\n" +
+                    "INNER JOIN im_simrs_tindakan b ON a.id_tindakan = b.id_tindakan\n" +
+                    "INNER JOIN im_simrs_header_tindakan c ON b.id_header_tindakan = c.id_header_tindakan\n" +
+                    ") d ON c.id_tindakan = d.id_tindakan_rawat\n" +
                     "WHERE a.branch_id LIKE :branchId \n" +
                     "AND a.no_checkup LIKE :noCheckup \n" +
                     "AND b.id_detail_checkup LIKE :idDetail \n" + jenis +
-                    "ORDER BY b.id_detail_checkup ASC, c.tanggal_tindakan ASC\n";
+                    "ORDER BY b.id_detail_checkup ASC, c.tanggal_tindakan ASC";
 
             List<Object[]> result = new ArrayList<>();
 

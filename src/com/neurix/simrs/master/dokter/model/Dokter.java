@@ -35,6 +35,15 @@ public class Dokter {
     private String kuotaTele;
     private String idTeamDokter;
     private String sip;
+    private BigInteger kuotaOnSite;
+
+    public BigInteger getKuotaOnSite() {
+        return kuotaOnSite;
+    }
+
+    public void setKuotaOnSite(BigInteger kuotaOnSite) {
+        this.kuotaOnSite = kuotaOnSite;
+    }
 
     public String getSip() {
         return sip;

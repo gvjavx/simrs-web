@@ -23,8 +23,14 @@ public class HeaderTindakanDao extends GenericDao<ImSimrsHeaderTindakanEntity, S
     @Override
     public List<ImSimrsHeaderTindakanEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.getSessionFactory().getCurrentSession().createCriteria(ImSimrsHeaderTindakanEntity.class);
-        if (mapCriteria.get("id") != null){
-            criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
+        if (mapCriteria.get("id_header_tindakan") != null){
+            criteria.add(Restrictions.ilike("idHeaderTindakan", "%"+mapCriteria.get("id_header_tindakan").toString()+"%"));
+        }
+        if (mapCriteria.get("nama_tindakan") != null){
+            criteria.add(Restrictions.ilike("namaTindakan", "%"+mapCriteria.get("nama_tindakan").toString()+"%"));
+        }
+        if (mapCriteria.get("kategori_ina") != null){
+            criteria.add(Restrictions.eq("kategoriInaBpjs", mapCriteria.get("kategori_ina").toString()));
         }
         if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
@@ -36,6 +42,6 @@ public class HeaderTindakanDao extends GenericDao<ImSimrsHeaderTindakanEntity, S
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_header_tindakan')");
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
-        return sId;
+        return "HTD"+sId;
     }
 }

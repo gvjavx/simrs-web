@@ -261,9 +261,9 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                     "b.id_item,\n" +
                     "b.jenis_item,\n" +
                     "CASE\n" +
-                    "WHEN b.jenis_item = 'tindakan' THEN c.tindakan\n" +
-                    "WHEN b.jenis_item = 'radiologi' THEN d.nama_detail_periksa\n" +
-                    "WHEN b.jenis_item = 'laboratorium' THEN d.nama_detail_periksa\n" +
+                    "WHEN b.jenis_item = 'tindakan' THEN c.nama_tindakan\n" +
+                    "WHEN b.jenis_item = 'radiologi' THEN d.nama_pemeriksaan\n" +
+                    "WHEN b.jenis_item = 'laboratorium' THEN d.nama_pemeriksaan\n" +
                     "ELSE null\n" +
                     "END as keterangan,\n" +
                     "d.nama_lab,\n" +
@@ -271,12 +271,26 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                     "a.id_paket\n" +
                     "FROM mt_simrs_paket a\n" +
                     "INNER JOIN mt_simrs_item_paket_periksa b ON a.id_paket = b.id_paket\n" +
-                    "LEFT JOIN im_simrs_tindakan c ON b.id_item = c.id_tindakan\n" +
-                    "LEFT JOIN (SELECT a.id_lab_detail, a.nama_detail_periksa, b.id_lab, b.nama_lab\n" +
+                    "LEFT JOIN (\n" +
+                    "SELECT \n" +
+                    "a.id_tindakan,\n" +
+                    "b.nama_tindakan\n" +
+                    "FROM im_simrs_tindakan a\n" +
+                    "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
+                    ") c ON b.id_item = c.id_tindakan\n" +
+                    "LEFT JOIN (\n" +
+                    "SELECT \n" +
+                    "a.id_lab_detail, \n" +
+                    "c.nama_pemeriksaan, \n" +
+                    "b.id_lab,\n" +
+                    "b.nama_lab\n" +
                     "FROM im_simrs_lab_detail a\n" +
                     "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
+                    "INNER JOIN im_simrs_parameter_pemeriksaan c ON a.id_parameter_pemeriksaan = c.id_parameter_pemeriksaan\n" +
                     ") d ON b.id_item = d.id_lab_detail\n" +
-                    "WHERE a.id_paket = :id AND b.flag = 'Y' ORDER BY d.id_lab ASC";
+                    "WHERE a.id_paket = :id \n" +
+                    "AND b.flag = 'Y'\n" +
+                    "ORDER BY d.id_lab ASC\n";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

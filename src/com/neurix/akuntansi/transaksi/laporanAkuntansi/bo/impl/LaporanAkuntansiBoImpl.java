@@ -724,41 +724,77 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
             }
         } else if ("BPB".equalsIgnoreCase(tipeLaporan)){
             List<BudgettingDTO> resultListTmp = new ArrayList<>();
+            List<ImKodeRekeningEntity> kodeRekeningEntityList = kodeRekeningDao.getKodeRekeningListAsc("");
             resultListTmp = laporanAkuntansiDao.getBudgettingPerBulan(unit,tahun,budgetingStatus.getStatus());
-            for (BudgettingDTO budgettingDTO : resultListTmp){
-                if (budgettingDTO.getTipe()==null){
-                    resultList.add(budgettingDTO);
-                }else {
-                    if ("januari".equalsIgnoreCase(budgettingDTO.getTipe())){
-                        for (BudgettingDTO budgettingDTOQuartal : resultListTmp){
-                            if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"januari".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalJanuari(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"februari".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalFebruari(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"maret".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalMaret(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"april".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalApril(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"mei".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalMei(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"juni".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalJuni(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"juli".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalJuli(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"agustus".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalAgustus(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"september".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalSeptember(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"oktober".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalOktober(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"november".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalNovember(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"desember".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalDesember(budgettingDTOQuartal.getSubTotal());
-                            }
-                        }
-                        resultList.add(budgettingDTO);
+            for (ImKodeRekeningEntity kodeRekening : kodeRekeningEntityList){
+                BudgettingDTO data = new BudgettingDTO();
+                String kodeGrup = kodeRekening.getKodeRekening().split("\\.")[0];
+                data.setGrup(kodeRekeningDao.getNamaRekeningByCoa(kodeGrup));
+                data.setKodeRekening(kodeRekening.getKodeRekening());
+                data.setKodeRekeningName(kodeRekening.getNamaKodeRekening());
+                data.setSubTotalJanuari(BigDecimal.ZERO);
+                data.setSubTotalFebruari(BigDecimal.ZERO);
+                data.setSubTotalMaret(BigDecimal.ZERO);
+                data.setSubTotalApril(BigDecimal.ZERO);
+                data.setSubTotalMei(BigDecimal.ZERO);
+                data.setSubTotalJuni(BigDecimal.ZERO);
+                data.setSubTotalJuli(BigDecimal.ZERO);
+                data.setSubTotalAgustus(BigDecimal.ZERO);
+                data.setSubTotalSeptember(BigDecimal.ZERO);
+                data.setSubTotalOktober(BigDecimal.ZERO);
+                data.setSubTotalNovember(BigDecimal.ZERO);
+                data.setSubTotalDesember(BigDecimal.ZERO);
+
+                //generate zero value
+                for (BudgettingDTO budgettingDTO : resultListTmp){
+                    //set kode rekening
+                    if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())){
+                        data.setCetak(true);
                     }
+
+                    if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"januari".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalJanuari(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"februari".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalFebruari(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"maret".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalMaret(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"april".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalApril(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"mei".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalMei(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"juni".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalJuni(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"juli".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalJuli(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"agustus".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalAgustus(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"september".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalSeptember(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"oktober".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalOktober(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"november".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalNovember(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"desember".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalDesember(budgettingDTO.getSubTotal());
+                        break;
+                    }
+                }
+                data.setNilaiTotal(data.getSubTotalJanuari().add(data.getSubTotalFebruari().add(data.getSubTotalMaret().add(data.getSubTotalApril().add(data.getSubTotalMei()
+                .add(data.getSubTotalJuni().add(data.getSubTotalJuli().add(data.getSubTotalAgustus().add(data.getSubTotalSeptember().add(data.getSubTotalOktober().add(data.getSubTotalNovember().add(data.getSubTotalDesember()))))))))))));
+
+                if (data.isCetak()){
+                    resultList.add(data);
                 }
             }
         }else if ("BCPT".equalsIgnoreCase(tipeLaporan)){

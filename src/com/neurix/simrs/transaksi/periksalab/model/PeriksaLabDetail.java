@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.periksalab.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class PeriksaLabDetail extends BaseModel {
@@ -11,7 +12,8 @@ public class PeriksaLabDetail extends BaseModel {
     private String idLabDetail;
     private String namaDetailPeriksa;
     private String satuan;
-    private String keteranganAcuan;
+    private String keteranganAcuanP;
+    private String keteranganAcuanL;
     private String hasil;
     private String keteranganPeriksa;
     private String flag;
@@ -21,6 +23,31 @@ public class PeriksaLabDetail extends BaseModel {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String kategoriName;
+    private BigDecimal tarif;
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
+
+    public String getKeteranganAcuanP() {
+        return keteranganAcuanP;
+    }
+
+    public void setKeteranganAcuanP(String keteranganAcuanP) {
+        this.keteranganAcuanP = keteranganAcuanP;
+    }
+
+    public String getKeteranganAcuanL() {
+        return keteranganAcuanL;
+    }
+
+    public void setKeteranganAcuanL(String keteranganAcuanL) {
+        this.keteranganAcuanL = keteranganAcuanL;
+    }
 
     public String getKategoriName() {
         return kategoriName;
@@ -68,14 +95,6 @@ public class PeriksaLabDetail extends BaseModel {
 
     public void setSatuan(String satuan) {
         this.satuan = satuan;
-    }
-
-    public String getKeteranganAcuan() {
-        return keteranganAcuan;
-    }
-
-    public void setKeteranganAcuan(String keteranganAcuan) {
-        this.keteranganAcuan = keteranganAcuan;
     }
 
     public String getHasil() {

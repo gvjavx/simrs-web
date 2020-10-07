@@ -83,6 +83,15 @@ public class Obat extends BaseModel {
     private String flagKurangMargin;
     private String flagGeneric;
     private String isKp;
+    private String idKategoriPersediaan;
+
+    public String getIdKategoriPersediaan() {
+        return idKategoriPersediaan;
+    }
+
+    public void setIdKategoriPersediaan(String idKategoriPersediaan) {
+        this.idKategoriPersediaan = idKategoriPersediaan;
+    }
 
     public String getIsKp() {
         return isKp;

@@ -43,4 +43,5 @@ public interface JadwalShiftKerjaBo extends BaseMasterBo<JadwalShiftKerja> {
     void saveLiburBerdasarkanId(JadwalShiftKerjaDetail bean);
 
     List<HistoryOnCall> getHistoryOnCall(HistoryOnCall search);
+    public List<JadwalPelayananDTO> getListJadwalDokter(String branchId, String idPelayanan, String notLike) throws GeneralBOException;
 }

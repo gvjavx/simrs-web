@@ -269,8 +269,7 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Total Tarif Rawat Inap
                     Pasien</h4>
             </div>
-            <div class="modal-body">
-
+            <div class="modal-body" style="height: 70%; overflow-y: scroll">
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
                 </div>

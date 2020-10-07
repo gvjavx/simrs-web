@@ -54,7 +54,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Tipe Permintaan</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'003':'Reture'}"
+                                        <s:select list="#{}"
                                                   cssStyle="margin-top: 7px"
                                                   id="tipePermintaan" name="permintaanObatPoli.tipePermintaan"
                                                   headerKey="002" headerValue="Request"

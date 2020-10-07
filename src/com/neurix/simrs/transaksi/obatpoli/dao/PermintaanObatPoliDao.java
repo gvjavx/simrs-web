@@ -100,10 +100,9 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
 
         String andBranch = "";
         if (bean.getFlagOtherBranch() != null && !"".equalsIgnoreCase(bean.getFlagOtherBranch())){
-            andBranch = "AND pop.branch_id = '"+bean.getBranchId()+"' \n";
+            andBranch = "AND pop.branch_id LIKE '"+branchId+"' \n";
         } else {
-            andBranch = "AND ato.branch_id = '"+bean.getBranchId()+"' \n";
-
+            andBranch = "AND ato.branch_id LIKE '"+branchId+"' \n";
         }
 
         String SQL = "";

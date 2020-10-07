@@ -28,7 +28,9 @@ import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
 import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
+import com.neurix.simrs.master.ruangan.bo.TempatTidurBo;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
+import com.neurix.simrs.master.ruangan.model.TempatTidur;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
@@ -367,7 +369,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
 
                 RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
-                riwayatTindakan.setIdDetailCheckup(checkup.getIdDetailCheckup());
+                riwayatTindakan.setIdDetailCheckup(checkup.getNoCheckup());
                 riwayatTindakan.setBranchId(CommonUtil.userBranchLogin());
 
                 try {
@@ -398,23 +400,29 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     }
                 }
 
-                UangMuka uangMuka = new UangMuka();
-                uangMuka.setIdDetailCheckup(checkup.getIdDetailCheckup());
-                uangMuka.setStatusBayar("Y");
-
-                try {
-                    uangMukaList = kasirRawatJalanBoProxy.getListUangMuka(uangMuka);
-                } catch (GeneralBOException e) {
-                    logger.error("Foun error when search riwayat tindakan " + e.getMessage());
+                List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
+                detailCheckupList = checkupDetailBoProxy.getIDDetailCheckup(checkup.getNoCheckup());
+                List<UangMuka> mukaList = new ArrayList<>();
+                for (HeaderDetailCheckup detailCheckup: detailCheckupList){
+                    UangMuka uangMuka = new UangMuka();
+                    uangMuka.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
+                    uangMuka.setStatusBayar("Y");
+                    try {
+                        uangMukaList = kasirRawatJalanBoProxy.getListUangMuka(uangMuka);
+                    } catch (GeneralBOException e) {
+                        logger.error("Foun error when search riwayat tindakan " + e.getMessage());
+                    }
+                    if(uangMukaList.size() > 0){
+                        mukaList.addAll(uangMukaList);
+                    }
                 }
-
 
                 JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(riwayatTindakanList);
                 JRBeanCollectionDataSource itemDataObat = new JRBeanCollectionDataSource(resultListObat);
-                JRBeanCollectionDataSource itemDataUangMuka = new JRBeanCollectionDataSource(uangMukaList);
+                JRBeanCollectionDataSource itemDataUangMuka = new JRBeanCollectionDataSource(mukaList);
 
                 BigDecimal tarifJasa = hitungTotalJasa(riwayatTindakanList);
-                BigInteger tarifUangMuka = hitungTotalUangMuka(uangMukaList);
+                BigInteger tarifUangMuka = hitungTotalUangMuka(mukaList);
                 BigInteger tarifObat = hitungTotalObat(obatDetailList);
                 BigDecimal ppnObat = new BigDecimal(String.valueOf(0));
                 ppnObat = new BigDecimal(tarifObat).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
@@ -454,6 +462,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 reportParams.put("kabupaten", checkup.getNamaKota());
                 reportParams.put("kecamatan", checkup.getNamaKecamatan());
                 reportParams.put("desa", checkup.getNamaDesa());
+
+                if(ppnObat != null && ppnObat.intValue() > 0){
+                    reportParams.put("ppnObat", ppnObat);
+                }else{
+                    reportParams.put("ppnObat", "");
+                }
 
 
                 try {
@@ -860,6 +874,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
         PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+        TempatTidurBo tempatTidurBo = (TempatTidurBo) ctx.getBean("tempatTidurBoProxy");
 
         String divisiId = "";
 
@@ -919,9 +934,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     } else {
 
                         if (idRuangan != null && !"".equalsIgnoreCase(idRuangan)){
-                            MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(idRuangan);
-                            if (ruanganEntity != null) {
-                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+                            List<TempatTidur> tempatTidurList = new ArrayList<>();
+                            TempatTidur tt = new TempatTidur();
+                            TempatTidur tempatTidur = new TempatTidur();
+                            tt.setIdTempatTidur(idRuangan);
+                            tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
+                            if (tempatTidurList.size() > 0) {
+                                tempatTidur = tempatTidurList.get(0);
+                                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(tempatTidur.getIdKelasRuangan());
                                 if (kelasRuanganEntity != null) {
                                     ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
                                     if (position != null) {
@@ -932,9 +952,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                         } else {
                             RawatInap lastRuangan = rawatInapBo.getLastUsedRoom(idDetailCheckup);
                             if (lastRuangan != null) {
-                                MtSimrsRuanganEntity ruanganEntity = ruanganBo.getEntityRuanganById(lastRuangan.getIdRuang());
-                                if (ruanganEntity != null) {
-                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(ruanganEntity.getIdKelasRuangan());
+                                List<TempatTidur> tempatTidurList = new ArrayList<>();
+                                TempatTidur tt = new TempatTidur();
+                                TempatTidur tempatTidur = new TempatTidur();
+                                tt.setIdTempatTidur(idRuangan);
+                                tempatTidurList = tempatTidurBo.getDataTempatTidur(tt);
+                                if (tempatTidurList.size() > 0) {
+                                    tempatTidur = tempatTidurList.get(0);
+                                    ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganBo.getKelasRuanganById(tempatTidur.getIdKelasRuangan());
                                     if (kelasRuanganEntity != null) {
                                         ImPosition position = positionBo.getPositionEntityById(kelasRuanganEntity.getDivisiId());
                                         if (position != null) {

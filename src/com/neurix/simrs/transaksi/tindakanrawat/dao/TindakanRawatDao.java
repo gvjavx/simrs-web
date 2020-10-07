@@ -11,6 +11,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -128,7 +129,8 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
                 "a.tarif_total,\n" +
                 "a.id_detail_checkup,\n" +
                 "d.id_pelayanan,\n" +
-                "d.nama_pelayanan\n" +
+                "d.nama_pelayanan,\n" +
+                "a.created_date\n" +
                 "FROM it_simrs_tindakan_rawat a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
@@ -151,6 +153,7 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
                 tindakanRawat.setIdDetailCheckup(obj[6] != null ? obj[6].toString() : "");
                 tindakanRawat.setIdPelayanan(obj[7] != null ? obj[7].toString() : "");
                 tindakanRawat.setNamaPelayanan(obj[8] != null ? obj[8].toString() : "");
+                tindakanRawat.setCreatedDate(obj[9] != null ? (Timestamp) obj[9] : null);
                 rawatList.add(tindakanRawat);
             }
         }

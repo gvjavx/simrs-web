@@ -115,6 +115,16 @@ public class KodeRekeningDao extends GenericDao<ImKodeRekeningEntity, String> {
         return results;
     }
 
+    public List<ImKodeRekeningEntity> getKodeRekeningListAsc(String coa) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImKodeRekeningEntity.class);
+        criteria.add(Restrictions.ilike("kodeRekening", coa + "%"));
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.addOrder(Order.asc("kodeRekening"));
+
+        List<ImKodeRekeningEntity> results = criteria.list();
+        return results;
+    }
+
     //
     public String getKodeRekeningKas(){
         String result="";

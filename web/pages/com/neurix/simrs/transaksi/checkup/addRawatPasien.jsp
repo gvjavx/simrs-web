@@ -181,6 +181,50 @@
             transform: scale(1);
         }
 
+        .btn-trans {
+            background-color: white;
+            width: 200px;
+            height: 168px;
+            border-radius: 10px;
+            opacity: 0.9;
+            padding: 6px;
+            float: left;
+            margin: 5px;
+            box-shadow: 5px 10px 18px #555;
+            font-size: 12px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .btn-trans-02 {
+            background-color: #9FAFD1;
+            width: 200px;
+            height: 168px;
+            border-radius: 10px;
+            opacity: 0.9;
+            padding: 6px;
+            float: left;
+            margin: 5px;
+            box-shadow: 5px 10px 18px #555;
+            font-size: 12px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .btn-trans:active {
+            background-color: #4CAF50;
+        }
+        .btn-trans:hover {
+            background-color: #4CAF50;
+        }
+
+        .btn-trans-02:active {
+            background-color: #d33724;
+        }
+        .btn-trans-02:hover {
+            background-color: #d33724;
+        }
+
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -1105,8 +1149,15 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">No Telp.</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="no_telp" name="headerCheckup.noTelp"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                <div class="input-group" style="margin-top: 7px">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-phone"></i>
+                                                    </div>
+                                                    <s:textfield id="no_telp" name="headerCheckup.noTelp"
+                                                                 data-inputmask="'mask': ['9999-9999-9999']"
+                                                                 data-mask=""
+                                                                 cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1197,12 +1248,21 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 10px">Dokter</label>
                                             <div class="col-md-8">
-                                                <select id="dokter" class="form-control select2"
-                                                        name="headerCheckup.idDokter"
-                                                        style="margin-top: 7px; width: 100%"
-                                                        onchange="var warn =$('#war_dokter').is(':visible'); if (warn){$('#con_dokter').show().fadeOut(3000);$('#war_dokter').hide()}">
-                                                    <option value=''>[Select One]</option>
-                                                </select>
+                                                <%--<select id="dokter" class="form-control select2"--%>
+                                                        <%--name="headerCheckup.idDokter"--%>
+                                                        <%--style="margin-top: 7px; width: 100%"--%>
+                                                        <%--onchange="var warn =$('#war_dokter').is(':visible'); if (warn){$('#con_dokter').show().fadeOut(3000);$('#war_dokter').hide()}">--%>
+                                                    <%--<option value=''>[Select One]</option>--%>
+                                                <%--</select>--%>
+                                                    <div class="input-group" style="margin-top: 7px;">
+                                                        <input readonly class="form-control" id="nama_dokter" style="cursor: pointer" placeholder="*klik untuk mencari jadwal dokter">
+                                                        <div class="input-group-btn">
+                                                            <a class="btn btn-success">
+                                                                <span id="btn-dokter"><i
+                                                                        class="fa fa-search"></i> Dokter</span></a>
+                                                        </div>
+                                                    </div>
+                                                    <s:hidden name="headerCheckup.idDokter" id="dokter"></s:hidden>
                                                 <span style="color: red; display: none" id="war_dokter"><i
                                                         class="fa fa-times"></i> required</span>
                                                 <span style="color: green; display: none" id="con_dokter"><i
@@ -2017,6 +2077,32 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-jadwal-dokter">
+    <div class="modal-dialog" style="width: 57%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Jadwal Dokter <span id="dokter_pelayanan"></span> Hari Ini</h4>
+            </div>
+            <div class="modal-body" style="height: 70%; overflow-y: scroll">
+                <div class="box-body">
+                    <div class="col-md-12" style="display:inline; padding-left: 6%">
+                        <div class="btn-wrapper">
+                            <div id="jadwal_dokter"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- /.content-wrapper -->
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rekammedic.js"/>'></script>
 <script type='text/javascript'>
@@ -2406,19 +2492,9 @@
     function listDokter(idPelayanan) {
         var option = "<option value=''>[Select One]</option>";
         if(idPelayanan != null && idPelayanan != ''){
-            CheckupAction.listOfDokter(idPelayanan, null, function (response) {
-                if (response.length > 0) {
-                    $.each(response, function (i, item) {
-                        option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
-                    });
-                    $('#id_pelayanan_poli').val(idPelayanan);
-                    $('#dokter').html(option);
-                } else {
-                    $('#dokter').html(option);
-                    $('#form-lab').hide();
-                }
-            });
-
+            $('#nama_dokter').attr('onclick','showJadwalDokter(\''+idPelayanan+'\')');
+            $('#btn-dokter').attr('onclick','showJadwalDokter(\''+idPelayanan+'\')');
+            $('#id_pelayanan_poli').val(idPelayanan);
             PelayananAction.getDataPelayanan(idPelayanan, function (res) {
                 var option2 = "<option value=''>[Select One]</option>";
                 if(res.idPelayanan != null){
@@ -2453,27 +2529,27 @@
     }
 
     function initListDokter() {
+        var idDokter = '<s:property value="headerCheckup.idDokter"></s:property>';
         if(idPelayanan != ''){
             var option = "";
             CheckupAction.listOfDokter(idPelayanan, function (response) {
                 option = "<option value=''>[Select One]</option>";
-                if (response != null) {
+                if (response.length > 0) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
+                        // option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
+                        if(idDokter == item.idDokter){
+                            $('#dokter').val(idDokter);
+                            $('#nama_dokter').val(item.namaDokter);
+                        }
                     });
-
-                    $('#dokter').html(option);
-                } else {
-                    option = option;
                 }
             });
             $('#poli').val(idPelayanan).trigger('change');
         }
 
-        var idDokter = '<s:property value="headerCheckup.idDokter"></s:property>';
-        if(idDokter != ''){
-            $('#dokter').val(idDokter).trigger('change');
-        }
+        // if(idDokter != ''){
+        //     $('#dokter').val(idDokter).trigger('change');
+        // }
 
         var isLama = '<s:property value="headerCheckup.jenisKunjungan"></s:property>';
         if(isLama != ''){
@@ -2699,8 +2775,6 @@
     }
 
     function validasiInput(stok, i){
-        console.log(stok);
-        console.log(i);
         if(stok != ''){
             var qty = $('#qty'+i).val();
 
@@ -2722,6 +2796,92 @@
     function closeAlert() {
         $("#alert-pasien").attr("style", "display:none");
         $("#btn-rm").attr("style", "display:none");
+    }
+
+    function showJadwalDokter(id){
+        var pel = $('#poli option:selected').text();
+        // var idPelayanan = $('#id_pelayanan_poli').val();
+        var table = "";
+        // console.log(pel);
+        console.log(id);
+        if(id != null && id != ''){
+            CheckupAction.listOfDokter(id, function(res){
+                if(res.length > 0){
+                    $.each(res, function (i, item) {
+                        var kuota = 0;
+                        var sisa = 0;
+                        var namaDokter = "";
+                        var sip = "231321312";
+                        var label = "";
+                        var jamkerja = "";
+                        if(item.jamAwal != null && item.jamAkhir != null){
+                            jamkerja = item.jamAwal +" s/d "+ item.jamAkhir;
+                        }
+                        if(item.kuotaOnSite != null && item.kuotaOnSite != ''){
+                            kuota = item.kuotaOnSite;
+                        }
+                        if(item.kuotaTerpakai != null && item.kuotaTerpakai != ''){
+                            sisa = item.kuotaTerpakai;
+                        }
+
+                        label = sisa+"/"+kuota;
+                        if(item.namaDokter != ''){
+                            namaDokter = item.namaDokter;
+                        }
+                        if(item.idDokter != ''){
+                            sip = item.idDokter;
+                        }
+
+                        var clasBox = 'btn-trans';
+                        var btnSet = 'onclick="setDokter(\''+item.idDokter+'\', \''+item.namaDokter+'\')"';
+                        if(item.flagLibur == "Y"){
+                            clasBox = 'btn-trans-02';
+                            btnSet = 'style="cursor: no-drop"';
+                        }
+                        table += '<div id="id_box_'+i+'" class="'+clasBox+'" '+btnSet+'>\n' +
+                            '<div style="text-align:left; cursor:pointer; font-size:11px;">\n' +
+                            '    <table align="center" style="width:100%; border-radius:5px; margin-top:2px;">\n' +
+                            '        <tr>\n' +
+                            '            <td align="left" colspan="2">\n' +
+                            '                <span style="color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">'+jamkerja+'</span>\n' +
+                            '                <span class="pull-right" style="margin-top: -6px; color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">'+label+'</span>\n' +
+                            '                <%--<img style="margin-top: -6px" class="pull-right" src="<s:url value="/pages/images/icon_failure.ico"/>">--%>\n' +
+                            '            </td>\n' +
+                            '        </tr>\n' +
+                            '        <tr>\n' +
+                            '            <td align="center" colspan="2">\n' +
+                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px" src="<s:url value="/pages/images/guy-5.jpg"/>">\n' +
+                            '            </td>\n' +
+                            '        </tr>\n' +
+                            '        <tr>\n' +
+                            '            <td align="left" colspan="2" style="color: black; font-size: 11px; padding-top: 3px; border-bottom: black solid 1px; padding-bottom: 3px">\n' +
+                            '                <i class="fa fa-user"></i> '+namaDokter+'\n' +
+                            '            </td>\n' +
+                            '        </tr>\n' +
+                            '        <tr>\n' +
+                            '            <td align="left" colspan="2" style="color: black; font-size: 11px; padding-top: 5px">\n' +
+                            '                <i class="fa fa-square" style="font-size: 10px"></i> '+sip+'\n' +
+                            '            </td>\n' +
+                            '        </tr>\n' +
+                            '    </table>\n' +
+                            '</div>\n' +
+                            '</div>';
+                    });
+                }else{
+                    table = '<span class="text-center">Jadwal Dokter Tidak Ditemukan...!</span>'
+                }
+                $('#dokter_pelayanan').text(pel);
+                $('#jadwal_dokter').html(table);
+                $('#modal-jadwal-dokter').modal({show:true, backdrop:'static'});
+            });
+        }
+    }
+
+    function setDokter(idDokter, namaDokter) {
+        $('#nama_dokter').val(namaDokter);
+        $('#dokter').val(idDokter);
+        $('#modal-jadwal-dokter').modal('hide');
+        $('#war_dokter').hide();
     }
 
     var functions, mapped;
@@ -2780,7 +2940,6 @@
         }
 
     }
-
 
 </script>
 <script type='text/javascript'>
