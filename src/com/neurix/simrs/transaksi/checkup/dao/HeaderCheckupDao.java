@@ -726,7 +726,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "j.no_bpjs, \n" +
                     "b.no_rujukan, \n" +
                     "b.tgl_rujukan, \n" +
-                    "k.id_asuransi, \n" +
+                    "b.id_asuransi, \n" +
                     "k.nama_asuransi, \n" +
                     "b.no_kartu_asuransi, \n" +
                     "b.tgl_cekup, \n" +
@@ -1410,44 +1410,19 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             String SQL = "";
             List<Object[]> results = new ArrayList<>();
 
-            if ("radiologi".equalsIgnoreCase(keterangan)) {
-                SQL = "SELECT \n" +
-                        "a.id_periksa_lab,\n" +
-                        "b.nama_detail_periksa,\n" +
-                        "c.satuan,\n" +
-                        "c.keterangan_acuan,\n" +
-                        "b.kesimpulan\n" +
-                        "FROM it_simrs_periksa_lab a\n" +
-                        "INNER JOIN it_simrs_periksa_radiologi b ON a.id_periksa_lab = b.id_periksa_lab\n" +
-                        "INNER JOIN im_simrs_lab_detail c ON b.id_lab_detail = c.id_lab_detail\n" +
-                        "WHERE a.id_periksa_lab = :id\n";
-
-                results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                        .setParameter("id", id)
-                        .list();
-                if (results.size() > 0) {
-                    for (Object[] obj : results) {
-                        HeaderCheckup checkup = new HeaderCheckup();
-                        checkup.setIdDetailTindakan(obj[0] == null ? "" : obj[0].toString());
-                        checkup.setNamaDetailLab(obj[1] == null ? "" : obj[1].toString());
-                        checkup.setSatuan(obj[2] == null ? "" : obj[2].toString());
-                        checkup.setAcuan(obj[3] == null ? "" : obj[3].toString());
-                        checkup.setKesimpulan(obj[4] == null ? "" : obj[4].toString());
-                        checkupList.add(checkup);
-                    }
-                }
-            }
-            if ("laboratorium".equalsIgnoreCase(keterangan)) {
+            if ("laboratorium".equalsIgnoreCase(keterangan) || "radiologi".equalsIgnoreCase(keterangan)) {
                 SQL = "SELECT \n" +
                         "a.id_periksa_lab,\n" +
                         "b.satuan,\n" +
-                        "b.keterangan_acuan,\n" +
+                        "b.keterangan_acuan_p,\n" +
+                        "b.keterangan_acuan_l,\n" +
                         "b.nama_detail_periksa,\n" +
                         "b.hasil,\n" +
                         "b.keterangan_periksa\n" +
                         "FROM it_simrs_periksa_lab a\n" +
                         "INNER JOIN it_simrs_periksa_lab_detail b ON a.id_periksa_lab = b.id_periksa_lab\n" +
-                        "WHERE a.id_periksa_lab = :id\n";
+                        "WHERE a.id_periksa_lab = :id \n" +
+                        "AND b.flag = 'Y' \n";
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("id", id)
                         .list();
@@ -1456,10 +1431,11 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                         HeaderCheckup checkup = new HeaderCheckup();
                         checkup.setIdDetailTindakan(obj[0] == null ? "" : obj[0].toString());
                         checkup.setSatuan(obj[1] == null ? "" : obj[1].toString());
-                        checkup.setAcuan(obj[2] == null ? "" : obj[2].toString());
-                        checkup.setNamaDetailLab(obj[3] == null ? "" : obj[3].toString());
-                        checkup.setKesimpulan(obj[4] == null ? "" : obj[4].toString());
-                        checkup.setKeterangan(obj[5] == null ? "" : obj[5].toString());
+                        checkup.setKetAcuanP(obj[2] == null ? "" : obj[2].toString());
+                        checkup.setKetAcuanL(obj[3] == null ? "" : obj[3].toString());
+                        checkup.setNamaDetailLab(obj[4] == null ? "" : obj[4].toString());
+                        checkup.setKesimpulan(obj[5] == null ? "" : obj[5].toString());
+                        checkup.setKeterangan(obj[6] == null ? "" : obj[6].toString());
                         checkupList.add(checkup);
                     }
                 }

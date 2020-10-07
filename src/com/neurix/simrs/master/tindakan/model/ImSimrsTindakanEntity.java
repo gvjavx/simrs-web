@@ -27,6 +27,33 @@ public class ImSimrsTindakanEntity implements Serializable{
     private String branchId;
     private BigDecimal diskon;
     private String isIna;
+    private String idHeaderTindakan;
+    private String idPelayanan;
+    private String isElektif;
+
+    public String getIsElektif() {
+        return isElektif;
+    }
+
+    public void setIsElektif(String isElektif) {
+        this.isElektif = isElektif;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getIdHeaderTindakan() {
+        return idHeaderTindakan;
+    }
+
+    public void setIdHeaderTindakan(String idHeaderTindakan) {
+        this.idHeaderTindakan = idHeaderTindakan;
+    }
 
     public String getIsIna() {
         return isIna;

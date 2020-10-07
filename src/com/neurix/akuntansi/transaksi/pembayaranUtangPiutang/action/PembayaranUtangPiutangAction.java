@@ -1159,14 +1159,15 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         return status;
     }
 
-    public String deleteDetailPembayaran(String noNota) {
+    public String deleteDetailPembayaran(String rekeningId,String noNota,String vendor,String biaya) {
         logger.info("[PembayaranUtangPiutangAction.deleteDetailPembayaran] start process >>>");
         String status="";
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<PembayaranUtangPiutangDetail> piutangDetailList = (List<PembayaranUtangPiutangDetail>) session.getAttribute("listOfResultPembayaranDetail");
         List<PembayaranUtangPiutangDetail> piutangDetailArrayList = new ArrayList<>();
         for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail:piutangDetailList){
-            if (pembayaranUtangPiutangDetail.getNoNota().equalsIgnoreCase(noNota)){
+            if (pembayaranUtangPiutangDetail.getNoNota().equalsIgnoreCase(noNota)&&pembayaranUtangPiutangDetail.getRekeningId().equalsIgnoreCase(rekeningId)&&
+            pembayaranUtangPiutangDetail.getMasterId().equalsIgnoreCase(vendor)&&pembayaranUtangPiutangDetail.getStJumlahPembayaran().equalsIgnoreCase(biaya)){
             }else{
                 piutangDetailArrayList.add(pembayaranUtangPiutangDetail);
             }

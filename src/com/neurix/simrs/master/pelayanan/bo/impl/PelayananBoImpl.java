@@ -388,6 +388,12 @@ public class PelayananBoImpl implements PelayananBo{
                 hsCriteria.put("flag", "Y");
             }
 
+            if (bean.getNotOwnBranch() != null){
+                hsCriteria.put("not_own_branch", bean.getNotOwnBranch());
+            }
+
+
+
             List<ImSimrsPelayananEntity> entityList = new ArrayList<>();
 
             try {
@@ -549,5 +555,10 @@ public class PelayananBoImpl implements PelayananBo{
     @Override
     public List<ImSimrsPelayananEntity> getByCriteria(Map criteria) throws GeneralBOException {
         return pelayananDao.getByCriteria(criteria);
+    }
+
+    @Override
+    public List<ImSimrsPelayananEntity> getPelayananByBranch(String branchId) throws GeneralBOException {
+        return pelayananDao.getPelayananByBranch(branchId);
     }
 }

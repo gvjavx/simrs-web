@@ -604,3 +604,68 @@ ALTER TABLE it_hris_payroll ADD COLUMN proporsi_gaji numeric(10,6);
 
 ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN flag_libur character varying(1);
 update it_hris_jadwal_shift_kerja_detail set flag_libur='N';
+
+ALTER TABLE im_hris_ijin ADD COLUMN agama character varying(100);
+update im_hris_ijin set agama='all';
+
+update im_functions set flag='Y' where func_id=1237;
+
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN telat bigint;
+update it_hris_absensi_pegawai set telat=0;
+
+CREATE SEQUENCE IF NOT EXISTS seq_history_on_call INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+CREATE SEQUENCE IF NOT EXISTS seq_absensi_on_call INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+
+
+CREATE TABLE public.it_hris_history_on_call
+(
+    history_on_call_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    jadwal_shift_kerja_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    panggil_date timestamp without time zone NOT NULL,
+    nip character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    created_who character varying COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying COLLATE pg_catalog."default" NOT NULL,
+    keterangan_panggil character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT it_hris_history_on_call_pkey PRIMARY KEY (history_on_call_id)
+);
+
+CREATE TABLE public.it_hris_absensi_on_call
+(
+    absensi_on_call_id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    nip character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    tanggal date NOT NULL,
+    jam_masuk character varying(5) COLLATE pg_catalog."default",
+    jam_pulang character varying(5) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    lama_lembur numeric(10,2),
+    CONSTRAINT it_hris_absensi_on_call_pkey PRIMARY KEY (absensi_on_call_id)
+);
+-- tambahkan function /tipelibur/paging_displaytag_tipelibur.action
+
+update im_functions set func_name='Status Pegawai' WHERE func_id='601';
+update im_functions set func_name='Golongan PKWT' WHERE func_id='1776';
+
+CREATE SEQUENCE IF NOT EXISTS seq_kodering_department INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 16;
+update im_functions set func_name ='Sub Bidang/Divisi' where func_id=1378;
+
+
+
+
+-----------------------------------------
+insert into im_branches (branch_id,branch_name,branch_address,created_date,created_who,last_update,last_update_who,flag,action,max_jam_ijin_keluar,faktor_jubileum,area_id,min_bpjs_ks,max_bpjs_ks,percent_ks_kary,percent_ks_pers,percent_tk_kary,percent_tk_pers,min_bpjs_tk,max_bpjs_tk,alamat_surat,logo_name,kodering,max_pengajuan_biaya,coa_rk,lat,lon,umr) VALUES
+						( 'RS04','RS Medika Utama','Jl. Kusuma Bangsa No.1','2020-09-09 00:00:00','admin','2020-09-09 00:00:00','admin','Y','C',0,5,'0002',100000,100000,1,4,4,4,100000,100000,'Blitar','RS01.png','05',1000000,'2.1.11.01.04','-8.1681698','-8.1681698',3871052.00);
+
+insert into im_branches (branch_id,branch_name,branch_address,created_date,created_who,last_update,last_update_who,flag,action,max_jam_ijin_keluar,faktor_jubileum,area_id,min_bpjs_ks,max_bpjs_ks,percent_ks_kary,percent_ks_pers,percent_tk_kary,percent_tk_pers,min_bpjs_tk,max_bpjs_tk,alamat_surat,logo_name,kodering,max_pengajuan_biaya,coa_rk,lat,lon,umr) VALUES
+						( 'RS05','Estetika Meditama','Jl. Bratang Binangun No.33, Baratajaya','2020-09-09 00:00:00','admin','2020-09-09 00:00:00','admin','Y','C',0,5,'0002',100000,100000,1,4,4,4,100000,100000,'Surabaya','RS01.png','06',1000000,'2.1.11.01.98','-8.1681698','-8.1681698',3871052.00);
+
+insert into im_branches (branch_id,branch_name,branch_address,created_date,created_who,last_update,last_update_who,flag,action,max_jam_ijin_keluar,faktor_jubileum,area_id,min_bpjs_ks,max_bpjs_ks,percent_ks_kary,percent_ks_pers,percent_tk_kary,percent_tk_pers,min_bpjs_tk,max_bpjs_tk,alamat_surat,logo_name,kodering,max_pengajuan_biaya,coa_rk,lat,lon,umr) VALUES
+                        ( 'RS06','Unit Rawat Jalan','Jl. Hayam Wuruk No.88, Mergelo, Magersari','2020-09-09 00:00:00','admin','2020-09-09 00:00:00','admin','Y','C',0,5,'0002',100000,100000,1,4,4,4,100000,100000,'Mojokerto','RS01.png','07',1000000,'2.1.11.01.99','-8.1681698','-8.1681698',3871052.00);

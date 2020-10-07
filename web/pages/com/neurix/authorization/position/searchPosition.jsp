@@ -198,7 +198,7 @@
                         <br>
                         <br>
                         <center>
-                            <table id="showdata" width="8 0%">
+                            <table id="showdata" width="80%">
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"

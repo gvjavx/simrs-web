@@ -18,7 +18,15 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.*;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Properties;
+
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -479,7 +487,7 @@ public class  CommonUtil {
             prop.load(input);
 
             // get the property value and print it out
-            value = prop.getProperty("upload.folder");
+            value = prop.getProperty("upload.folder2");
             input.close();
             logger.info("success to load simrs.properties");
         } catch (IOException ex) {
@@ -628,6 +636,16 @@ public class  CommonUtil {
     public static String convertTimestampToString(Timestamp date){
         String tanggal = "";
         String DATE_FORMAT = "dd-MM-yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        java.util.Date tanggalApp = date;
+        tanggal = sdf.format(tanggalApp);
+
+        return tanggal;
+    }
+
+    public static String convertTimestampToStringLengkap(Timestamp date){
+        String tanggal = "";
+        String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         java.util.Date tanggalApp = date;
         tanggal = sdf.format(tanggalApp);
@@ -941,6 +959,9 @@ public class  CommonUtil {
                 break;
             case "15":
                 status="Masuk saat Libur";
+                break;
+            case "16":
+                status="On Call";
                 break;
         }
         return status;
@@ -1278,6 +1299,13 @@ public class  CommonUtil {
             default:
                 return "";
         }
+    }
+
+    public static Integer getLastDateOfMonth(String dateString){
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("MM-yyyy");
+        YearMonth yearMonth = YearMonth.parse(dateString, pattern);
+        LocalDate date = yearMonth.atEndOfMonth();
+        return date.lengthOfMonth();
     }
 
     public static Double SubtractJamAwalDanJamAkhir(String jamAwal, String jamAkhir, String status) throws ParseException {

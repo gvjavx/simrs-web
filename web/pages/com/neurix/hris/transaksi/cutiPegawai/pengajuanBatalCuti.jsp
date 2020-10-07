@@ -37,7 +37,7 @@
                 if ( keterangan === '') {
                     msg += 'Field <strong>Keterangan</strong> is required.' + '<br/>';
                 }
-                document.getElementById('errorMessage').innerHTML = msg;
+                document.getElementById('errorMessage22').innerHTML = msg;
                 $.publish('showErrorDialogCancelCutiPegawai');
             }
         });
@@ -395,15 +395,15 @@
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialogCancelCutiPegawai" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog12" openTopics="showErrorDialogCancelCutiPegawai" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog12').dialog('close'); }
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage22"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>

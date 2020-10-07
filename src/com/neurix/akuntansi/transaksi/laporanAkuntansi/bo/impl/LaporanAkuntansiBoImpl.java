@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.*;
 
 
@@ -413,14 +414,14 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     }
 
     @Override
-    public List<AkunSettingReportKeuanganKonsol> getLaporanAkuntansiKonsol(String periode, String branchId1, String branchId2, String branchId3, String branchId4, String branchIdAll){
+    public List<AkunSettingReportKeuanganKonsol> getLaporanAkuntansiKonsol(String periode, String branchId1, String branchId2, String branchId3, String branchId4, String branchId5, String branchId6, String branchId7, String branchIdAll){
         List<AkunSettingReportKeuanganKonsol> result = new ArrayList<>();
         List<ImAkunSettingReportKeuanganKonsol> konsolList = new ArrayList<>();
         List<AkunSettingReportKeuanganKonsolDetail> keuanganKonsolDetailList = new ArrayList<>();
 
         try {
             konsolList = settingReportKeuanganKonsolDao.listReportKeuanganKonsol();
-            keuanganKonsolDetailList = laporanAkuntansiDao.getAllDataLaporanAkuntansiKonsol(periode,branchId1,branchId2,branchId3,branchId4,branchIdAll);
+            keuanganKonsolDetailList = laporanAkuntansiDao.getAllDataLaporanAkuntansiKonsol(periode,branchId1,branchId2,branchId3,branchId4,branchId5,branchId6,branchId7,branchIdAll);
         } catch (HibernateException e) {
             logger.error("[LaporanAkuntansiBoImpl.getLaporanAkuntansiKonsol] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem , please info to your admin..." + e.getMessage());
@@ -438,31 +439,29 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 BigDecimal totalUnit2= BigDecimal.ZERO;
                 BigDecimal totalUnit3= BigDecimal.ZERO;
                 BigDecimal totalUnit4= BigDecimal.ZERO;
+                BigDecimal totalUnit5= BigDecimal.ZERO;
+                BigDecimal totalUnit6= BigDecimal.ZERO;
+                BigDecimal totalUnit7= BigDecimal.ZERO;
                 BigDecimal totalUnitAll= BigDecimal.ZERO;
 
                 BigDecimal totalLastSaldoUnit1= BigDecimal.ZERO;
                 BigDecimal totalLastSaldoUnit2= BigDecimal.ZERO;
                 BigDecimal totalLastSaldoUnit3= BigDecimal.ZERO;
                 BigDecimal totalLastSaldoUnit4= BigDecimal.ZERO;
+                BigDecimal totalLastSaldoUnit5= BigDecimal.ZERO;
+                BigDecimal totalLastSaldoUnit6= BigDecimal.ZERO;
+                BigDecimal totalLastSaldoUnit7= BigDecimal.ZERO;
                 BigDecimal totalLastSaldoUnitAll= BigDecimal.ZERO;
 
                 BigDecimal totalCurSaldoUnit1= BigDecimal.ZERO;
                 BigDecimal totalCurSaldoUnit2= BigDecimal.ZERO;
                 BigDecimal totalCurSaldoUnit3= BigDecimal.ZERO;
                 BigDecimal totalCurSaldoUnit4= BigDecimal.ZERO;
+                BigDecimal totalCurSaldoUnit5= BigDecimal.ZERO;
+                BigDecimal totalCurSaldoUnit6= BigDecimal.ZERO;
+                BigDecimal totalCurSaldoUnit7= BigDecimal.ZERO;
                 BigDecimal totalCurSaldoUnitAll= BigDecimal.ZERO;
 
-                BigDecimal totalSaldoUnit11TahunLalu= BigDecimal.ZERO;
-                BigDecimal totalSaldoUnit21TahunLalu= BigDecimal.ZERO;
-                BigDecimal totalSaldoUnit31TahunLalu= BigDecimal.ZERO;
-                BigDecimal totalSaldoUnit41TahunLalu= BigDecimal.ZERO;
-                BigDecimal totalSaldoUnitAll1TahunLalu= BigDecimal.ZERO;
-
-                BigDecimal totalSaldoUnit12TahunLalu= BigDecimal.ZERO;
-                BigDecimal totalSaldoUnit22TahunLalu= BigDecimal.ZERO;
-                BigDecimal totalSaldoUnit32TahunLalu= BigDecimal.ZERO;
-                BigDecimal totalSaldoUnit42TahunLalu= BigDecimal.ZERO;
-                BigDecimal totalSaldoUnitAll2TahunLalu= BigDecimal.ZERO;
 
                 for (AkunSettingReportKeuanganKonsolDetail konsolDetail : keuanganKonsolDetailList){
                     if (konsolDetail.getSettingReportKonsolId().equalsIgnoreCase(konsol.getSettingReportKonsolId())){
@@ -471,62 +470,58 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                             totalUnit2 = totalUnit2.add(konsolDetail.getSaldoUnit2());
                             totalUnit3 = totalUnit3.add(konsolDetail.getSaldoUnit3());
                             totalUnit4 = totalUnit4.add(konsolDetail.getSaldoUnit4());
+                            totalUnit5 = totalUnit5.add(konsolDetail.getSaldoUnit5());
+                            totalUnit6 = totalUnit6.add(konsolDetail.getSaldoUnit6());
+                            totalUnit7 = totalUnit7.add(konsolDetail.getSaldoUnit7());
                             totalUnitAll = totalUnitAll.add(konsolDetail.getSaldoUnitAll());
 
                             totalLastSaldoUnit1 = totalLastSaldoUnit1.add(konsolDetail.getLastSaldoUnit1());
                             totalLastSaldoUnit2 = totalLastSaldoUnit2.add(konsolDetail.getLastSaldoUnit2());
                             totalLastSaldoUnit3 = totalLastSaldoUnit3.add(konsolDetail.getLastSaldoUnit3());
                             totalLastSaldoUnit4 = totalLastSaldoUnit4.add(konsolDetail.getLastSaldoUnit4());
+                            totalLastSaldoUnit5 = totalLastSaldoUnit5.add(konsolDetail.getLastSaldoUnit5());
+                            totalLastSaldoUnit6 = totalLastSaldoUnit6.add(konsolDetail.getLastSaldoUnit6());
+                            totalLastSaldoUnit7 = totalLastSaldoUnit7.add(konsolDetail.getLastSaldoUnit7());
                             totalLastSaldoUnitAll = totalLastSaldoUnitAll.add(konsolDetail.getLastSaldoUnitAll());
 
                             totalCurSaldoUnit1 = totalCurSaldoUnit1.add(konsolDetail.getCurSaldoUnit1());
                             totalCurSaldoUnit2 = totalCurSaldoUnit2.add(konsolDetail.getCurSaldoUnit2());
                             totalCurSaldoUnit3 = totalCurSaldoUnit3.add(konsolDetail.getCurSaldoUnit3());
                             totalCurSaldoUnit4 = totalCurSaldoUnit4.add(konsolDetail.getCurSaldoUnit4());
+                            totalCurSaldoUnit5 = totalCurSaldoUnit5.add(konsolDetail.getCurSaldoUnit5());
+                            totalCurSaldoUnit6 = totalCurSaldoUnit6.add(konsolDetail.getCurSaldoUnit6());
+                            totalCurSaldoUnit7 = totalCurSaldoUnit7.add(konsolDetail.getCurSaldoUnit7());
                             totalCurSaldoUnitAll = totalCurSaldoUnitAll.add(konsolDetail.getCurSaldoUnitAll());
 
-                            totalSaldoUnit11TahunLalu = totalSaldoUnit11TahunLalu.add(konsolDetail.getSaldoUnit11TahunLalu());
-                            totalSaldoUnit21TahunLalu = totalSaldoUnit21TahunLalu.add(konsolDetail.getSaldoUnit21TahunLalu());
-                            totalSaldoUnit31TahunLalu = totalSaldoUnit31TahunLalu.add(konsolDetail.getSaldoUnit31TahunLalu());
-                            totalSaldoUnit41TahunLalu = totalSaldoUnit41TahunLalu.add(konsolDetail.getSaldoUnit41TahunLalu());
-                            totalSaldoUnitAll1TahunLalu = totalSaldoUnitAll1TahunLalu.add(konsolDetail.getSaldoUnitAll1TahunLalu());
-
-                            totalSaldoUnit12TahunLalu = totalSaldoUnit12TahunLalu.add(konsolDetail.getSaldoUnit12TahunLalu());
-                            totalSaldoUnit22TahunLalu = totalSaldoUnit22TahunLalu.add(konsolDetail.getSaldoUnit22TahunLalu());
-                            totalSaldoUnit32TahunLalu = totalSaldoUnit32TahunLalu.add(konsolDetail.getSaldoUnit32TahunLalu());
-                            totalSaldoUnit42TahunLalu = totalSaldoUnit42TahunLalu.add(konsolDetail.getSaldoUnit42TahunLalu());
-                            totalSaldoUnitAll2TahunLalu = totalSaldoUnitAll2TahunLalu.add(konsolDetail.getSaldoUnitAll2TahunLalu());
 
                         }else if ("K".equalsIgnoreCase(konsolDetail.getOperator())){
                             totalUnit1 = totalUnit1.subtract(konsolDetail.getSaldoUnit1());
                             totalUnit2 = totalUnit2.subtract(konsolDetail.getSaldoUnit2());
                             totalUnit3 = totalUnit3.subtract(konsolDetail.getSaldoUnit3());
                             totalUnit4 = totalUnit4.subtract(konsolDetail.getSaldoUnit4());
+                            totalUnit5 = totalUnit5.subtract(konsolDetail.getSaldoUnit5());
+                            totalUnit6 = totalUnit6.subtract(konsolDetail.getSaldoUnit6());
+                            totalUnit7 = totalUnit7.subtract(konsolDetail.getSaldoUnit7());
                             totalUnitAll = totalUnitAll.subtract(konsolDetail.getSaldoUnitAll());
 
                             totalLastSaldoUnit1 = totalLastSaldoUnit1.subtract(konsolDetail.getLastSaldoUnit1());
                             totalLastSaldoUnit2 = totalLastSaldoUnit2.subtract(konsolDetail.getLastSaldoUnit2());
                             totalLastSaldoUnit3 = totalLastSaldoUnit3.subtract(konsolDetail.getLastSaldoUnit3());
                             totalLastSaldoUnit4 = totalLastSaldoUnit4.subtract(konsolDetail.getLastSaldoUnit4());
+                            totalLastSaldoUnit5 = totalLastSaldoUnit5.subtract(konsolDetail.getLastSaldoUnit5());
+                            totalLastSaldoUnit6 = totalLastSaldoUnit6.subtract(konsolDetail.getLastSaldoUnit6());
+                            totalLastSaldoUnit7 = totalLastSaldoUnit7.subtract(konsolDetail.getLastSaldoUnit7());
                             totalLastSaldoUnitAll = totalLastSaldoUnitAll.subtract(konsolDetail.getLastSaldoUnitAll());
 
                             totalCurSaldoUnit1 = totalCurSaldoUnit1.subtract(konsolDetail.getCurSaldoUnit1());
                             totalCurSaldoUnit2 = totalCurSaldoUnit2.subtract(konsolDetail.getCurSaldoUnit2());
                             totalCurSaldoUnit3 = totalCurSaldoUnit3.subtract(konsolDetail.getCurSaldoUnit3());
                             totalCurSaldoUnit4 = totalCurSaldoUnit4.subtract(konsolDetail.getCurSaldoUnit4());
+                            totalCurSaldoUnit5 = totalCurSaldoUnit5.subtract(konsolDetail.getCurSaldoUnit5());
+                            totalCurSaldoUnit6 = totalCurSaldoUnit6.subtract(konsolDetail.getCurSaldoUnit6());
+                            totalCurSaldoUnit7 = totalCurSaldoUnit7.subtract(konsolDetail.getCurSaldoUnit7());
                             totalCurSaldoUnitAll = totalCurSaldoUnitAll.subtract(konsolDetail.getCurSaldoUnitAll());
 
-                            totalSaldoUnit11TahunLalu = totalSaldoUnit11TahunLalu.subtract(konsolDetail.getSaldoUnit11TahunLalu());
-                            totalSaldoUnit21TahunLalu = totalSaldoUnit21TahunLalu.subtract(konsolDetail.getSaldoUnit21TahunLalu());
-                            totalSaldoUnit31TahunLalu = totalSaldoUnit31TahunLalu.subtract(konsolDetail.getSaldoUnit31TahunLalu());
-                            totalSaldoUnit41TahunLalu = totalSaldoUnit41TahunLalu.subtract(konsolDetail.getSaldoUnit41TahunLalu());
-                            totalSaldoUnitAll1TahunLalu = totalSaldoUnitAll1TahunLalu.subtract(konsolDetail.getSaldoUnitAll1TahunLalu());
-
-                            totalSaldoUnit12TahunLalu = totalSaldoUnit12TahunLalu.subtract(konsolDetail.getSaldoUnit12TahunLalu());
-                            totalSaldoUnit22TahunLalu = totalSaldoUnit22TahunLalu.subtract(konsolDetail.getSaldoUnit22TahunLalu());
-                            totalSaldoUnit32TahunLalu = totalSaldoUnit32TahunLalu.subtract(konsolDetail.getSaldoUnit32TahunLalu());
-                            totalSaldoUnit42TahunLalu = totalSaldoUnit42TahunLalu.subtract(konsolDetail.getSaldoUnit42TahunLalu());
-                            totalSaldoUnitAll2TahunLalu = totalSaldoUnitAll2TahunLalu.subtract(konsolDetail.getSaldoUnitAll2TahunLalu());
                         }
                     }
                 }
@@ -539,31 +534,28 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                 data.setSaldoUnit2(totalUnit2);
                 data.setSaldoUnit3(totalUnit3);
                 data.setSaldoUnit4(totalUnit4);
+                data.setSaldoUnit5(totalUnit5);
+                data.setSaldoUnit6(totalUnit6);
+                data.setSaldoUnit7(totalUnit7);
                 data.setSaldoUnitAll(totalUnitAll);
 
                 data.setLastSaldoUnit1(totalLastSaldoUnit1);
                 data.setLastSaldoUnit2(totalLastSaldoUnit2);
                 data.setLastSaldoUnit3(totalLastSaldoUnit3);
                 data.setLastSaldoUnit4(totalLastSaldoUnit4);
+                data.setLastSaldoUnit5(totalLastSaldoUnit5);
+                data.setLastSaldoUnit6(totalLastSaldoUnit6);
+                data.setLastSaldoUnit7(totalLastSaldoUnit7);
                 data.setLastSaldoUnitAll(totalLastSaldoUnitAll);
 
                 data.setCurSaldoUnit1(totalCurSaldoUnit1);
                 data.setCurSaldoUnit2(totalCurSaldoUnit2);
                 data.setCurSaldoUnit3(totalCurSaldoUnit3);
                 data.setCurSaldoUnit4(totalCurSaldoUnit4);
+                data.setCurSaldoUnit5(totalCurSaldoUnit5);
+                data.setCurSaldoUnit6(totalCurSaldoUnit6);
+                data.setCurSaldoUnit7(totalCurSaldoUnit7);
                 data.setCurSaldoUnitAll(totalCurSaldoUnitAll);
-
-                data.setSaldoUnit11TahunLalu(totalSaldoUnit11TahunLalu);
-                data.setSaldoUnit21TahunLalu(totalSaldoUnit21TahunLalu);
-                data.setSaldoUnit31TahunLalu(totalSaldoUnit31TahunLalu);
-                data.setSaldoUnit41TahunLalu(totalSaldoUnit41TahunLalu);
-                data.setSaldoUnitAll1TahunLalu(totalSaldoUnitAll1TahunLalu);
-
-                data.setSaldoUnit12TahunLalu(totalSaldoUnit12TahunLalu);
-                data.setSaldoUnit22TahunLalu(totalSaldoUnit22TahunLalu);
-                data.setSaldoUnit32TahunLalu(totalSaldoUnit32TahunLalu);
-                data.setSaldoUnit42TahunLalu(totalSaldoUnit42TahunLalu);
-                data.setSaldoUnitAll2TahunLalu(totalSaldoUnitAll2TahunLalu);
 
                 result.add(data);
             }
@@ -732,41 +724,77 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
             }
         } else if ("BPB".equalsIgnoreCase(tipeLaporan)){
             List<BudgettingDTO> resultListTmp = new ArrayList<>();
+            List<ImKodeRekeningEntity> kodeRekeningEntityList = kodeRekeningDao.getKodeRekeningListAsc("");
             resultListTmp = laporanAkuntansiDao.getBudgettingPerBulan(unit,tahun,budgetingStatus.getStatus());
-            for (BudgettingDTO budgettingDTO : resultListTmp){
-                if (budgettingDTO.getTipe()==null){
-                    resultList.add(budgettingDTO);
-                }else {
-                    if ("januari".equalsIgnoreCase(budgettingDTO.getTipe())){
-                        for (BudgettingDTO budgettingDTOQuartal : resultListTmp){
-                            if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"januari".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalJanuari(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"februari".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalFebruari(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"maret".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalMaret(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"april".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalApril(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"mei".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalMei(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"juni".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalJuni(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"juli".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalJuli(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"agustus".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalAgustus(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"september".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalSeptember(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"oktober".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalOktober(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"november".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalNovember(budgettingDTOQuartal.getSubTotal());
-                            }else if (budgettingDTO.getNoBudgetting().equalsIgnoreCase(budgettingDTOQuartal.getNoBudgetting())&&"desember".equalsIgnoreCase(budgettingDTOQuartal.getTipe())){
-                                budgettingDTO.setSubTotalDesember(budgettingDTOQuartal.getSubTotal());
-                            }
-                        }
-                        resultList.add(budgettingDTO);
+            for (ImKodeRekeningEntity kodeRekening : kodeRekeningEntityList){
+                BudgettingDTO data = new BudgettingDTO();
+                String kodeGrup = kodeRekening.getKodeRekening().split("\\.")[0];
+                data.setGrup(kodeRekeningDao.getNamaRekeningByCoa(kodeGrup));
+                data.setKodeRekening(kodeRekening.getKodeRekening());
+                data.setKodeRekeningName(kodeRekening.getNamaKodeRekening());
+                data.setSubTotalJanuari(BigDecimal.ZERO);
+                data.setSubTotalFebruari(BigDecimal.ZERO);
+                data.setSubTotalMaret(BigDecimal.ZERO);
+                data.setSubTotalApril(BigDecimal.ZERO);
+                data.setSubTotalMei(BigDecimal.ZERO);
+                data.setSubTotalJuni(BigDecimal.ZERO);
+                data.setSubTotalJuli(BigDecimal.ZERO);
+                data.setSubTotalAgustus(BigDecimal.ZERO);
+                data.setSubTotalSeptember(BigDecimal.ZERO);
+                data.setSubTotalOktober(BigDecimal.ZERO);
+                data.setSubTotalNovember(BigDecimal.ZERO);
+                data.setSubTotalDesember(BigDecimal.ZERO);
+
+                //generate zero value
+                for (BudgettingDTO budgettingDTO : resultListTmp){
+                    //set kode rekening
+                    if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())){
+                        data.setCetak(true);
                     }
+
+                    if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"januari".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalJanuari(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"februari".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalFebruari(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"maret".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalMaret(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"april".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalApril(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"mei".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalMei(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"juni".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalJuni(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"juli".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalJuli(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"agustus".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalAgustus(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"september".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalSeptember(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"oktober".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalOktober(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"november".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalNovember(budgettingDTO.getSubTotal());
+                        break;
+                    }else if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"desember".equalsIgnoreCase(budgettingDTO.getTipe())){
+                        data.setSubTotalDesember(budgettingDTO.getSubTotal());
+                        break;
+                    }
+                }
+                data.setNilaiTotal(data.getSubTotalJanuari().add(data.getSubTotalFebruari().add(data.getSubTotalMaret().add(data.getSubTotalApril().add(data.getSubTotalMei()
+                .add(data.getSubTotalJuni().add(data.getSubTotalJuli().add(data.getSubTotalAgustus().add(data.getSubTotalSeptember().add(data.getSubTotalOktober().add(data.getSubTotalNovember().add(data.getSubTotalDesember()))))))))))));
+
+                if (data.isCetak()){
+                    resultList.add(data);
                 }
             }
         }else if ("BCPT".equalsIgnoreCase(tipeLaporan)){
@@ -972,5 +1000,34 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
             }
         }
         return budgeting;
+    }
+
+    @Override
+    public List<NeracaSaldoDTO> getListNeracaSaldo(String reportId, String periode, String branchId){
+        return laporanAkuntansiDao.getListNeracaSaldo(reportId,periode,branchId);
+    }
+
+    @Override
+    public List<NeracaSaldoDTO> getListNeracaMutasi(String reportId, String periode, String branchId){
+        return laporanAkuntansiDao.getListNeracaMutasi(reportId,periode,branchId);
+    }
+    @Override
+    public List<IkhtisarBukuBesarDTO> getListIkhitisarBukuBesar(String reportId, String periode, String branchId){
+        return laporanAkuntansiDao.getListIkhtisarBukuBesarPerBukuBantu(reportId,periode,branchId);
+    }
+
+    @Override
+    public List<KartuBukuBesarPerBukuBantuDTO> getListKartuBukuBesar(String reportId, String periode, String branchId, String kodeRekening, String nomorMaster, String tipe, Date tanggalDari, Date tanggalSampai){
+        return laporanAkuntansiDao.getListKartuBukuBesarPerBukuBantu(reportId,periode,branchId,kodeRekening,nomorMaster,tipe,tanggalDari,tanggalSampai);
+    }
+
+    @Override
+    public BigDecimal saldoAwalKodeRekening(String branchId, String kodeRekening, String masterId, String periode){
+        return laporanAkuntansiDao.getSaldoAwal(branchId,kodeRekening,masterId,periode);
+    }
+
+    @Override
+    public BigDecimal saldoAwalKodeRekeningByTanggal (String branchId,String kodeRekening,String masterId , String periode,String tanggalAwal){
+        return laporanAkuntansiDao.getSaldoAwalByTanggal(branchId,kodeRekening,masterId,periode,tanggalAwal);
     }
 }

@@ -15,6 +15,15 @@ public class ImSimrsKategoriTindakanEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public String getIdKategoriTindakan() {
         return idKategoriTindakan;

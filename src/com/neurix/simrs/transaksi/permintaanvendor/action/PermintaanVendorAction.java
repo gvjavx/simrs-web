@@ -25,6 +25,7 @@ import com.neurix.simrs.master.vendor.model.Vendor;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
+import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.*;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
@@ -703,24 +704,24 @@ public class PermintaanVendorAction extends BaseMasterAction {
             tglInvoice = obj.getString("tgl_invoice");
             tglDo = obj.getString("tgl_do");
 
-            if(obj.getString("img_url") != null && !"".equalsIgnoreCase(obj.getString("img_url"))){
-                BASE64Decoder decoder = new BASE64Decoder();
-                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img_url"));
-                logger.info("Decoded upload data : " + decodedBytes.length);
-                String fileName = noFaktur+"-"+dateFormater("MM")+dateFormater("yy")+".png";
-                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_DOC_PO+fileName;
-                logger.info("File save path : " + uploadFile);
-                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-
-                if (image == null) {
-                    logger.error("Buffered Image is null");
-                }else{
-                    File f = new File(uploadFile);
-                    // write the image
-                    ImageIO.write(image, "png", f);
-                    permintaanVendor.setUrlDoc(fileName);
-                }
-            }
+//            if(obj.getString("img_url") != null && !"".equalsIgnoreCase(obj.getString("img_url"))){
+//                BASE64Decoder decoder = new BASE64Decoder();
+//                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img_url"));
+//                logger.info("Decoded upload data : " + decodedBytes.length);
+//                String fileName = noFaktur+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+//                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_DOC_PO+fileName;
+//                logger.info("File save path : " + uploadFile);
+//                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+//
+//                if (image == null) {
+//                    logger.error("Buffered Image is null");
+//                }else{
+//                    File f = new File(uploadFile);
+//                    // write the image
+//                    ImageIO.write(image, "png", f);
+//                    permintaanVendor.setUrlDoc(fileName);
+//                }
+//            }
         }
 
         List<ItSimrsDocPoEntity> docPoEntities = new ArrayList<>();
@@ -1840,6 +1841,20 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return permintaanVendorBo.getListImgByItem(idItem);
     }
 
+    public List<TransaksiObatBatch> getListBatchByJenisItem(String idItem, String jenis) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+        return permintaanVendorBo.getListBatchByJenisItem(idItem, jenis);
+    }
+
+    public List<TransaksiObatBatch> getListBatchByJenisItem(String idItem, String jenis, String idPermintaan, String batch) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        MtSimrsPermintaanVendorEntity permintaanVendorEntity = permintaanVendorBo.getPermintaanVendorEntityById(idPermintaan);
+
+        return permintaanVendorBo.getListBatchByJenisItem(idItem, jenis, permintaanVendorEntity.getIdApprovalObat(), batch);
+    }
 
     @Override
     public String downloadPdf() {

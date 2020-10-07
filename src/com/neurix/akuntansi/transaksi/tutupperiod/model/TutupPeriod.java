@@ -41,6 +41,24 @@ public class TutupPeriod {
     private String noJurnal;
     private String flagDesemberA;
     private String flagDesemberB;
+    private String tipePeriode;
+    private BigDecimal saldo;
+
+    public BigDecimal getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(BigDecimal saldo) {
+        this.saldo = saldo;
+    }
+
+    public String getTipePeriode() {
+        return tipePeriode;
+    }
+
+    public void setTipePeriode(String tipePeriode) {
+        this.tipePeriode = tipePeriode;
+    }
 
     public String getFlagDesemberA() {
         return flagDesemberA;

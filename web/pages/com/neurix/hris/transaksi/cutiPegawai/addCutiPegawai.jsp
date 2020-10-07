@@ -60,6 +60,7 @@
             var ket="";
             var cek="";
             var cekth="";
+            var cekLibur="";
             var intSisaCuti = parseInt(sisaCuti);
             var intLamaCuti = parseInt(lamaCuti);
             var todayDate = new Date().toISOString().slice(0,10);
@@ -70,9 +71,6 @@
                     year = '' + (d.getFullYear());
             var d = new Date(enddate),
                     year1 = '' + (d.getFullYear());
-
-            console.log("Tahun Awal "+year);
-            console.log("Tahun Akhir "+year1);
 
             LemburAction.testTanggal(tanggalAwal,tanggalAkhir,nipid, function (data) {
                 if (data != "") {
@@ -99,9 +97,21 @@
             else{
                 if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="" && alamatCuti != "") {
                     if (year == year1){
-
                         if (cekth == ''){
-                            if (confirm('Do you want to save this record?')) {
+                            CutiPegawaiAction.cekLibur(tanggalAwal,tanggalAkhir,nipid,function(data){
+                                if (data!=""){
+                                    cekLibur = data;
+                                }
+                            });
+                            if (cekLibur!=""){
+                                if (confirm("ada hari libur di pengajuan ini apakah anda ingin melanjutkan ?")) {
+                                    event.originalEvent.options.submit = true;
+                                    $.publish('showDialog');
+                                }else{
+                                    event.originalEvent.options.submit = false;
+                                }
+                            }
+                            else if (confirm('Apakah anda ingin menyimpan transaksi ini ?')) {
                                 event.originalEvent.options.submit = true;
                                 $.publish('showDialog');
 

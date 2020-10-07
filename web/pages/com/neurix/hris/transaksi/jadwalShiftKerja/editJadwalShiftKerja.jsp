@@ -312,7 +312,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm-offset-3 col-sm-1">
-                                <label class="control-label">Grup</label>
+                                <label class="control-label">Sub Divisi</label>
                             </div>
                             <div class="col-sm-4">
                                 <s:action id="comboSubDiv" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
@@ -469,7 +469,7 @@
                 "<th style='text-align: center; background-color:  #90ee90'>NIP</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Nama Pegawai</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Posisi</th>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Grup</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Sub Divisi</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Shift</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>On Call</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Hapus</th>"+

@@ -25,6 +25,42 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private String approveFlag;
     private String keterangan;
     private String urlImg;
+    private String ttdPengirim;
+    private String idKategoriLab;
+    private String ttdDokter;
+    private String ttdPetugas;
+
+    public String getTtdDokter() {
+        return ttdDokter;
+    }
+
+    public void setTtdDokter(String ttdDokter) {
+        this.ttdDokter = ttdDokter;
+    }
+
+    public String getTtdPetugas() {
+        return ttdPetugas;
+    }
+
+    public void setTtdPetugas(String ttdPetugas) {
+        this.ttdPetugas = ttdPetugas;
+    }
+
+    public String getIdKategoriLab() {
+        return idKategoriLab;
+    }
+
+    public void setIdKategoriLab(String idKategoriLab) {
+        this.idKategoriLab = idKategoriLab;
+    }
+
+    public String getTtdPengirim() {
+        return ttdPengirim;
+    }
+
+    public void setTtdPengirim(String ttdPengirim) {
+        this.ttdPengirim = ttdPengirim;
+    }
 
     public String getUrlImg() {
         return urlImg;

@@ -85,8 +85,13 @@
                         }
                     }});
             }else{
-                $('#warning_ttd').show().fadeOut(5000);
-                $('#msg_ttd').text("Silahkan lakukan ttd pada canvas berikut...!");
+                $('#waiting_dialog').dialog('close');
+                $('#info_dialog').dialog('open');
+                $('#ref').val(1);
+                $('#modal-ttd').modal('hide');
+                $('body').scrollTop(0);
+                // $('#warning_ttd').show().fadeOut(5000);
+                // $('#msg_ttd').text("Silahkan lakukan ttd pada canvas berikut...!");
             }
         }
 

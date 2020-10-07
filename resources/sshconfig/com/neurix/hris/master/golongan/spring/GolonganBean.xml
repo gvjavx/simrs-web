@@ -9,7 +9,10 @@
           p:golonganBoProxy-ref="golonganBoProxy" />
 
     <bean id="golonganBo" class="com.neurix.hris.master.golongan.bo.impl.GolonganBoImpl"
-          p:golonganDao-ref="golonganDao" />
+          p:golonganDao-ref="golonganDao"
+          p:biodataDao-ref="biodataDao"
+
+    />
 
     <bean id="golonganBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="golonganBo">

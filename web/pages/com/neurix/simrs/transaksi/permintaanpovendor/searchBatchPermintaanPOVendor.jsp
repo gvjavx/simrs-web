@@ -355,11 +355,16 @@
                             <table class="table table-striped">
                                 <tr>
                                     <td width="40%">No. Faktur Pajak</td>
-                                    <td><input type="text" class="form-control" id="no-faktur"/></td>
+                                    <td><input type="text" class="form-control" id="no-faktur" onchange="checkAvail(this.value, 'faktur')"/></td>
+                                    <input type="hidden" id="avail-no-faktur" value=""/>
                                 </tr>
                                 <tr>
                                     <td>Tanggal Faktur</td>
                                     <td><input type="date" class="form-control" id="tgl-faktur"/></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><div class="alert alert-danger" id="alert-faktur" style="display: none">No Faktur Telah Dipakai</div></td>
                                 </tr>
                             </table>
                         </div>
@@ -377,11 +382,16 @@
                             <table class="table table-striped">
                                 <tr>
                                     <td width="40%">No. Invoice</td>
-                                    <td><input type="text" class="form-control" id="no-invoice"/></td>
+                                    <td><input type="text" class="form-control" id="no-invoice" onchange="checkAvail(this.value, 'invoice')" /></td>
+                                    <input type="hidden" id="avail-no-invoice" value=""/>
                                 </tr>
                                 <tr>
                                     <td width="40%">Tgl Jatuh Tempo</td>
                                     <td><input type="date" class="form-control" id="tgl-invoice"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><div class="alert alert-danger" id="alert-invoice" style="display: none">No Invoice Telah Dipakai</div></td>
                                 </tr>
                             </table>
                         </div>
@@ -399,11 +409,16 @@
                             <table class="table table-striped">
                                 <tr>
                                     <td width="40%">No. DO</td>
-                                    <td><input type="text" class="form-control" id="no-do"/></td>
+                                    <td><input type="text" class="form-control" id="no-do" onchange="checkAvail(this.value, 'do')" /></td>
+                                    <input type="hidden" id="avail-no-do" value=""/>
                                 </tr>
                                 <tr>
                                     <td width="40%">Tgl. DO</td>
                                     <td><input type="date" style="margin-top: 7px" class="form-control" id="tgl-do"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><div class="alert alert-danger" id="alert-do" style="display: none">No DO Telah Dipakai</div></td>
                                 </tr>
                             </table>
                         </div>
@@ -436,6 +451,7 @@
                     </table>
                     <p id="loading_detail" style="color: #00a65a; display: none"><img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang mengambil data...</p>
                 </div>
+                <div class="alert alert-danger" id="alert-panel" style="display: none;"></div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-success" onclick="saveDo()" ><i class="fa fa-check"></i> Save
@@ -642,12 +658,16 @@
     }
 
     function addBatch(){
-        nFaktur     = 0;
-        nInvoice    = 0;
-        nDo         = 0;
-        n           = 0;
+        nFaktur             = 0;
+        nInvoice            = 0;
+        nDo                 = 0;
+        n                   = 0;
+        var idPermintaan    = $("#id_permintaan_vendor").val();
+
         $("#modal-detail").modal('show');
-        var idPermintaan = $("#id_permintaan_vendor").val();
+        $("#avail-no-faktur").val("");
+        $("#avail-no-invoice").val("");
+        $("#avail-no-do").val("");
 
         PermintaanVendorAction.getListTransaksiAdd(idPermintaan, function (list) {
 
@@ -671,6 +691,56 @@
             });
 
             $("#body_detail").html(str);
+        });
+
+        console.log("No. DO -> " + $("#avail-no-do").val());
+        console.log("No. Invoice -> "+$("#avail-no-invoice").val());
+        console.log("No. Faktur -> "+$("#avail-no-faktur").val());
+    }
+
+    function checkAvail(idItem, jenis) {
+        console.log("idItem -> "+ idItem);
+        console.log("jenis -> "+ jenis);
+        PermintaanVendorAction.getListBatchByJenisItem(idItem, jenis, function (res) {
+            if (res != null && res.length > 0){
+                $.each(res, function (i,item) {
+
+                    if (jenis == "faktur"){
+                        $("#avail-no-faktur").val(item.noFaktur);
+                        $("#alert-faktur").show();
+                    } else {
+                        $("#avail-no-faktur").val("");
+                        $("#alert-faktur").hide();
+                    }
+                    if (jenis == "invoice"){
+                        $("#avail-no-invoice").val(item.noInvoice);
+                        $("#alert-invoice").show();
+                    } else {
+                        $("#avail-no-invoice").val("");
+                        $("#alert-invoice").hide();
+                    }
+                    if (jenis == "do"){
+                        $("#avail-no-do").val(item.noDo);
+                        $("#alert-do").show();
+                    } else {
+                        $("#avail-no-do").val("");
+                        $("#alert-do").hide();
+                    }
+                });
+            } else {
+                if (jenis == "faktur"){
+                    $("#avail-no-faktur").val("");
+                    $("#alert-faktur").hide();
+                }
+                if (jenis == "invoice"){
+                    $("#avail-no-invoice").val("");
+                    $("#alert-invoice").hide();
+                }
+                if (jenis == "do"){
+                    $("#avail-no-do").val("");
+                    $("#alert-do").hide();
+                }
+            }
         });
     }
 
@@ -717,9 +787,15 @@
         var idPermintaan    = $("#id_permintaan_vendor").val();
         var tglInvoice      = $('#tgl-invoice').val();
         var tglDo           = $('#tgl-do').val();
+
+        var availFaktur     = $("#avail-no-faktur").val();
+        var availInvoice    = $("#avail-no-invoice").val();
+        var availDo         = $("#avail-no-do").val();
+
         var listOfTrans     = [];
         var listOfimg       = [];
 
+        var nn = 0;
         for (i=0; i < n; i++){
             var idTrans     = $("#id-trans-"+i).val();
             var qty         = $("#qty-approve-"+i).val();
@@ -728,6 +804,11 @@
             var bruto       = $("#bruto-"+i).val();
             var nett        = $("#nett-"+i).val();
             listOfTrans.push({"idtrans":idTrans, "qty":qty, "expdate":expdate, "diskon":diskon, "bruto":bruto, "nett":nett});
+
+            // mengitung yang sudah memiliki harga
+            if ((parseInt(bruto) != 0 && bruto != null) && (parseInt(nett) != 0 && nett != null)){
+                nn ++;
+            }
         }
 
         for (i=0 ; i <= nFaktur ; i++){
@@ -737,7 +818,6 @@
                 var dataURL = canvas.toDataURL("image/png"), dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
                 listOfimg.push({"jenisnomor":"faktur", "batch":"", "iditem":faktur, "img":dataURL});
             }
-
         }
 
         for (i=0 ; i <= nInvoice ; i++){
@@ -747,7 +827,6 @@
                 var dataURL = canvas.toDataURL("image/png"), dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
                 listOfimg.push({"jenisnomor":"invoice", "batch":"", "iditem":invoice, "img":dataURL});
             }
-
         }
 
         for (i=0 ; i <= nDo ; i++){
@@ -757,18 +836,54 @@
                 var dataURL = canvas.toDataURL("image/png"), dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
                 listOfimg.push({"jenisnomor":"do", "batch":"", "iditem":numberDo, "img":dataURL});
             }
-
         }
 
-        var strJson = JSON.stringify(listOfTrans);
-        var listimg = JSON.stringify(listOfimg);
-        PermintaanVendorAction.saveDo(idPermintaan, numberDo, invoice, faktur, tglfaktur, strJson, listimg, tglInvoice, tglDo, function (res) {
-           if (res.status == "success"){
-               initAdd();
-           } else {
-               alert(res.msg);
-           }
-        });
+        if (availDo == "" && availFaktur == "" && availInvoice == ""){
+
+            if (nn == 0){
+                $("#alert-panel").show().fadeOut(5000);
+                $("#alert-panel").html("List Obat Tidak Boleh Kosong.");
+                return false;
+            }
+
+            var strError = "";
+            if (faktur == "" || tglfaktur == ""){
+                strError += "Belum Melengkapi Data Untuk Faktur \n";
+            } else if (invoice == "" || tglInvoice == ""){
+                strError += "Belum Melengkapi Data Untuk Invoice \n";
+            } else if (numberDo == "" || tglDo == ""){
+                strError += "Belum Melengkapi Data Untuk DO \n";
+            }
+
+            if (strError != ""){
+                $("#alert-panel").show().fadeOut(5000);
+                $("#alert-panel").html(strError);
+                return false;
+            } else {
+
+                // mengecek list obat
+                if (n > 0){
+                    var strJson = JSON.stringify(listOfTrans);
+                    var listimg = JSON.stringify(listOfimg);
+                    PermintaanVendorAction.saveDo(idPermintaan, numberDo, invoice, faktur, tglfaktur, strJson, listimg, tglInvoice, tglDo, function (res) {
+                        if (res.status == "success"){
+                            initAdd();
+                        } else {
+                            alert(res.msg);
+                        }
+                    });
+                } else {
+
+                    $("#alert-panel").show().fadeOut(5000);
+                    $("#alert-panel").html("List Obat Tidak Boleh Kosong.");
+                }
+            }
+        } else {
+
+            $("#alert-panel").show().fadeOut(5000);
+//            $("#alert-panel").html("Document Harus Dilengkapi.");
+            $("#alert-panel").html("Nomor Telah Ada.");
+        }
     }
 
 
@@ -880,8 +995,8 @@
             $('#warning_app').show().fadeOut(5000);
             $('#msg_app').text("Silahkan cek kembali data inputan anda...!");
         }
-
     }
+
     function approveBatch(data){
         $('#modal-confirm-dialog').modal('hide');
         $('#save_approve').hide();
@@ -902,7 +1017,7 @@
                     $('#save_approve').show();
                     $('#load_approve').hide();
                 }
-            }});
+        }});
     }
 
     function showDetailListObat(noBatch, img, noFaktur, tglFaktur, noInvoice, noDo){
@@ -951,22 +1066,22 @@
         $('#modal-doc').modal('show');
     }
 
-function uploadDoc(tipe, ind){
-    var canvas = document.getElementById("canvas-"+tipe+"-"+ind);
-    var ctx = canvas.getContext('2d');
-    var reader = new FileReader();
-    reader.onload = function(event){
-        var img = new Image();
-        img.onload = function(){
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.drawImage(img,0,0);
+    function uploadDoc(tipe, ind){
+        var canvas = document.getElementById("canvas-"+tipe+"-"+ind);
+        var ctx = canvas.getContext('2d');
+        var reader = new FileReader();
+        reader.onload = function(event){
+            var img = new Image();
+            img.onload = function(){
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                ctx.drawImage(img,0,0);
+            }
+            img.src = event.target.result;
         }
-        img.src = event.target.result;
+        reader.readAsDataURL(event.target.files[0]);
     }
-    reader.readAsDataURL(event.target.files[0]);
-}
 
 </script>
 

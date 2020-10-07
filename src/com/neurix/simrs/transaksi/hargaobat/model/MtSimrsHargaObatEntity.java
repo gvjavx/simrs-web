@@ -20,6 +20,33 @@ public class MtSimrsHargaObatEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String satuan;
+    private String idHargaObat;
+    private Integer margin;
+    private String branchId;
+
+    public String getIdHargaObat() {
+        return idHargaObat;
+    }
+
+    public void setIdHargaObat(String idHargaObat) {
+        this.idHargaObat = idHargaObat;
+    }
+
+    public Integer getMargin() {
+        return margin;
+    }
+
+    public void setMargin(Integer margin) {
+        this.margin = margin;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public String getIdObat() {
         return idObat;

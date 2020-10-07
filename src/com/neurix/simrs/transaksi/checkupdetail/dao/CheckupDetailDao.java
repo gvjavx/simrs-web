@@ -241,7 +241,12 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "jp.keterangan as jenis_pasien\n" +
                     "FROM \n" +
                     "it_simrs_header_checkup hd\n" +
-                    "INNER JOIN it_simrs_header_detail_checkup dt ON dt.no_checkup = hd.no_checkup\n" +
+                    "INNER JOIN (" +
+                    "SELECT a.* FROM(\n" +
+                    "SELECT *, rank() OVER (PARTITION BY no_checkup ORDER BY created_date DESC) as rank \n" +
+                    "FROM it_simrs_header_detail_checkup\n" +
+                    ") a WHERE a.rank = 1 "+
+                    ")dt ON dt.no_checkup = hd.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien st ON st.id_status_pasien = dt.status_periksa\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien jp ON dt.id_jenis_periksa_pasien = jp.id_jenis_periksa_pasien \n" +
                     "INNER JOIN im_simrs_pelayanan ply ON dt.id_pelayanan = ply.id_pelayanan \n" +
@@ -421,7 +426,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND dt.is_kronis IS NULL \n" +
-                    "AND dt.id_jenis_periksa_pasien IN ('bpjs', 'ptpn') \n" +
+                    "AND dt.id_jenis_periksa_pasien IN ('bpjs', 'rekanan') \n" +
                     "AND dt.status_periksa LIKE :status";
 
             List<Object[]> results = new ArrayList<>();
@@ -2277,7 +2282,12 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "b.id_jenis_periksa_pasien,\n" +
                     "b.flag_cover\n" +
                     "FROM it_simrs_header_checkup a\n" +
-                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN (" +
+                    "SELECT a.* FROM(\n" +
+                    "SELECT *, rank() OVER (PARTITION BY no_checkup ORDER BY created_date DESC) as rank \n" +
+                    "FROM it_simrs_header_detail_checkup\n" +
+                    ") a WHERE a.rank = 1"+
+                    ") b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien c ON b.id_jenis_periksa_pasien = c.id_jenis_periksa_pasien\n"
                     + tipePelayanan +
                     "WHERE b.status_periksa = '3' \n" + idJenisPeriksaPasien
@@ -2307,5 +2317,31 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             }
         }
         return response;
+    }
+
+    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup) {
+        List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
+        String SQL = "SELECT \n" +
+                "a.no_checkup,\n" +
+                "b.id_detail_checkup,\n" +
+                "b.id_pelayanan\n" +
+                "FROM it_simrs_header_checkup a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "WHERE b.status_periksa = '3'\n" +
+                "AND a.no_checkup = :id";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", noCheckup)
+                .list();
+        if(result.size() > 0){
+            for (Object[] obj: result){
+                HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                detailCheckup.setNoCheckup(obj[0] != null ? obj[0].toString() : "");
+                detailCheckup.setIdDetailCheckup(obj[1] != null ? obj[1].toString() : "");
+                detailCheckup.setIdPelayanan(obj[2] != null ? obj[2].toString() : "");
+                detailCheckupList.add(detailCheckup);
+            }
+        }
+        return detailCheckupList;
     }
 }

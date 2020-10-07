@@ -32,6 +32,51 @@ public class Tindakan {
     private BigDecimal diskon;
     private String isIna;
     private String kategoriInaBpjs;
+    private String idHeaderTindakan;
+    private String idKategoriNota;
+    private String tipe;
+    private String namaPelayanan;
+    private String isElektif;
+
+    public String getIsElektif() {
+        return isElektif;
+    }
+
+    public void setIsElektif(String isElektif) {
+        this.isElektif = isElektif;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getIdKategoriNota() {
+        return idKategoriNota;
+    }
+
+    public void setIdKategoriNota(String idKategoriNota) {
+        this.idKategoriNota = idKategoriNota;
+    }
+
+    public String getIdHeaderTindakan() {
+        return idHeaderTindakan;
+    }
+
+    public void setIdHeaderTindakan(String idHeaderTindakan) {
+        this.idHeaderTindakan = idHeaderTindakan;
+    }
 
     public String getKategoriInaBpjs() {
         return kategoriInaBpjs;

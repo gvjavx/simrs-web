@@ -750,10 +750,12 @@
 
         });
         $('.detailPembayaranTable').on('click', '.item-delete-data', function () {
-            var id = $(this).attr('data');
+            var rekeningId = $(this).attr('rekening');
+            var nonota = $(this).attr('data');
+            var vendor = $(this).attr('vendor');
             var biaya = $(this).attr('biaya');
             if (id!=''){
-                PembayaranUtangPiutangAction.deleteDetailPembayaran(id,function (result) {
+                PembayaranUtangPiutangAction.deleteDetailPembayaran(rekening,nonota,vendor,biaya,function (result) {
                     alert("data berhasil dihapus");
                     loadDetailPembayaran();
                     var totalBayar = $('#bayar').val();
@@ -769,10 +771,7 @@
                     $('#bayar').val(formatRupiahAngka(strTotalBayar));
                 });
             } else{
-                var msg="";
-                if (id==""){
-                    msg+="Kode vendor tidak ditemukan \n";
-                }
+                var msg="Data tidak ditemukan";
                 alert(msg);
             }
         });
@@ -805,7 +804,7 @@
                         '<td align="center">' + item.noNota + '</td>' +
                         '<td align="center">' + item.stJumlahPembayaran+ '</td>' +
                         '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' biaya ='" + item.stJumlahPembayaran + "'>" +
+                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' rekening ='" + item.rekeningId + "' vendor ='" + item.masterId + "' biaya ='" + item.stJumlahPembayaran + "'>" +
                         "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>' name='icon_delete'>" +
                         '</a>' +
                         '</td>' +

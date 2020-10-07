@@ -31,7 +31,7 @@ public interface CheckupDetailBo {
     public CheckResponse saveApproveAllTindakanRawatJalan(HeaderDetailCheckup bean) throws GeneralBOException;
     public List<HeaderDetailCheckup> getListUangPendaftaran(HeaderDetailCheckup bean) throws GeneralBOException;
     public void updateFlagPeriksaAntrianOnline(String idDetailCheckup) throws GeneralBOException;
-    public void updateStatusBayarDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException;
+    public void updateStatusBayarDetailCheckup(List<HeaderDetailCheckup> list) throws GeneralBOException;
 
     public BigDecimal getSumJumlahTindakan(String idDetailCheckup, String ket);
     public BigDecimal getSumJumlahTindakanNonBpjs(String idDetailCheckup, String ket);
@@ -65,6 +65,8 @@ public interface CheckupDetailBo {
     public ItSimrsHeaderDetailCheckupEntity getEntityDetailCheckupByIdTransaksi(String id) throws GeneralBOException;
 
     public List<HeaderDetailCheckup> getListVerifTransaksi(HeaderDetailCheckup detailCheckup) throws GeneralBOException;
-    public CrudResponse updateDetailCheckup(HeaderDetailCheckup bean) throws GeneralBOException;
+    public CrudResponse updateDetailCheckup(List<HeaderDetailCheckup> list) throws GeneralBOException;
     public CrudResponse updatePindahRuangan(String idRawatInapNew, String idRawatInapPindah) throws GeneralBOException;
+
+    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup) throws GeneralBOException;
 }

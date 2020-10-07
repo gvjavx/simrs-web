@@ -234,6 +234,8 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifUmumRj.xml"/>
 
     <include file="sshconfig/com/neurix/simrs/transaksi/permintaanvendor/struts/PermintaanPoVendorAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PermintaanUnitAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/ApprovePermintaanUnitAction.xml"/>
 
     <!--AKUNTANSI-->
     <!--MASTER -->
@@ -272,7 +274,9 @@
     <include file="sshconfig/com/neurix/hris/master/tipePayroll/struts/TipePayrollAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/statusAbsensi/struts/StatusAbsensiAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/statusMutasi/struts/StatusMutasiAction.xml"/>
-
     <include file="sshconfig/com/neurix/hris/master/jenisPegawai/struts/JenisPegawaiAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/tindakan/struts/HeaderTindakanAction.xml"/>
 
+    <include file="sshconfig/com/neurix/simrs/master/parampemeriksaan/struts/ParameterPemeriksaanAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/ruangan/struts/TempatTidurAction.xml"/>
 </struts>

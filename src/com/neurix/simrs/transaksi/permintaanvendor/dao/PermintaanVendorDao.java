@@ -5,6 +5,7 @@ import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.DocPo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
 import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -12,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -336,6 +338,84 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         }
         return docPoList;
 
+    }
+
+    public List<TransaksiObatBatch> getListBatchByJenis(String idItem, String jenis){
+
+        if (idItem != null && !"".equalsIgnoreCase(idItem)){
+
+            String where = "";
+            if ("faktur".equalsIgnoreCase(jenis))
+                where = "WHERE no_faktur = '"+idItem+"' \n";
+
+            if ("invoice".equalsIgnoreCase(jenis))
+                where = "WHERE no_invoice = '"+idItem+"' \n";
+
+            if ("do".equalsIgnoreCase(jenis))
+                where = "WHERE no_do = '"+idItem+"' \n";
+
+            String SQL = "SELECT no_faktur, tanggal_faktur, no_invoice, no_do, jenis \n" +
+                    "FROM mt_simrs_transaksi_obat_detail_batch \n" + where;
+
+            List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+            List<TransaksiObatBatch> obatBatches = new ArrayList<>();
+            if (result.size() > 0){
+                for (Object[] obj : result){
+                    TransaksiObatBatch obatBatch = new TransaksiObatBatch();
+                    obatBatch.setNoFaktur(obj[0] == null ? "" : obj[0].toString());
+                    obatBatch.setTanggalFaktur(obj[1] == null ? null : (Date) obj[1]);
+                    obatBatch.setNoInvoice(obj[2] == null ? "" : obj[2].toString());
+                    obatBatch.setNoDo(obj[3] == null ? "" : obj[3].toString());
+                    obatBatch.setJenis(obj[4] == null ? "" : obj[4].toString());
+                    obatBatches.add(obatBatch);
+                }
+            }
+            return obatBatches;
+        }
+        return null;
+    }
+
+    public List<TransaksiObatBatch> getListBatchByJenis(String idItem, String jenis, String idTransaksi, String batch){
+
+        if (idItem != null && !"".equalsIgnoreCase(idItem)){
+
+            String where = "";
+            if ("faktur".equalsIgnoreCase(jenis))
+                where = "WHERE a.no_faktur = '"+idItem+"' \n";
+
+            if ("invoice".equalsIgnoreCase(jenis))
+                where = "WHERE a.no_invoice = '"+idItem+"' \n";
+
+            if ("do".equalsIgnoreCase(jenis))
+                where = "WHERE a.no_do = '"+idItem+"' \n";
+
+            String SQL = "SELECT a.no_faktur, a.tanggal_faktur, a.no_invoice, a.no_do, a.jenis \n" +
+                    "FROM mt_simrs_transaksi_obat_detail_batch a\n" +
+                    "INNER JOIN mt_simrs_transaksi_obat_detail b on b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n"
+                    + where +
+                    "AND (b.id_approval_obat, a.no_batch) != ( :idApproval, :noBatch )";
+
+            List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idApproval", idTransaksi)
+                    .setParameter("noBatch", Integer.valueOf(batch))
+                    .list();
+
+            List<TransaksiObatBatch> obatBatches = new ArrayList<>();
+            if (result.size() > 0){
+                for (Object[] obj : result){
+                    TransaksiObatBatch obatBatch = new TransaksiObatBatch();
+                    obatBatch.setNoFaktur(obj[0] == null ? "" : obj[0].toString());
+                    obatBatch.setTanggalFaktur(obj[1] == null ? null : (Date) obj[1]);
+                    obatBatch.setNoInvoice(obj[2] == null ? "" : obj[2].toString());
+                    obatBatch.setNoDo(obj[3] == null ? "" : obj[3].toString());
+                    obatBatch.setJenis(obj[4] == null ? "" : obj[4].toString());
+                    obatBatches.add(obatBatch);
+                }
+            }
+            return obatBatches;
+        }
+        return null;
     }
 
     public String getNextSeq() {

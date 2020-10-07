@@ -9,6 +9,15 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <style>
+        .paint-canvas-ttd {
+            border: 1px black solid;
+            margin: 1rem;
+            cursor: pointer;
+        }
+
+        .garis {
+            color: #ddd;
+        }
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -16,6 +25,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -259,9 +269,9 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Pemeriksaan</td>
-                                <td>Hasil</td>
-                                <td>Satuan</td>
                                 <td>Keterangan Acuan</td>
+                                <td>Satuan</td>
+                                <td>Hasil</td>
                                 <td>Keterangan</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -271,18 +281,62 @@
                             </tbody>
                         </table>
                     </div>
+                    <hr class="garis">
                     <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label style="margin-bottom: -2px; width: 100%">Dokter</label>
-                                    <select id="list_dokter" class="form-control select2"
-                                            onchange="$(this).css('border','')">
-                                        <option value=''>[Select One]</option>
-                                    </select>
+                        <div style="display: none">
+                            <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
+                                <div class="col-md-1">
+                                    <input type="color" style="margin-left: -6px; margin-top: -8px"
+                                           class="js-color-picker  color-picker pull-left">
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
+                                           value="1">
+                                </div>
+                                <div class="col-md-2">
+                                    <div style="margin-top: -8px;" class="js-range-value">1 px</div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-3">
+                                    <span>TTD Petugas</span>
+                                    <button class="btn btn-danger" onclick="removePaint('ttd_petugas')">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>TTD Dokter</span>
+                                    <button class="btn btn-danger" onclick="removePaint('ttd_dokter')">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-3">
+                                    <canvas class="paint-canvas-ttd" id="ttd_petugas" width="250"
+                                            onmouseover="paintTtd('ttd_petugas')"></canvas>
+                                </div>
+                                <div class="col-md-3">
+                                    <canvas class="paint-canvas-ttd" id="ttd_dokter" width="250"
+                                            onmouseover="paintTtd('ttd_dokter')"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-6 col-md-3">
+                                <select id="list_dokter" class="form-control select2"
+                                        onchange="$(this).css('border','')">
+                                    <option value=''>[Select One]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr class="garis">
+                        <div class="row" style="margin-top: -40px">
+                            <div class="col-md-offset-4 col-md-4 text-center">
                                 <div class="form-group">
                                     <div class="form-group">
                                         <a href="initForm_periksalab.action" class="btn btn-warning" onclick=""
@@ -300,8 +354,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="box-header with-border">
                     </div>
                 </div>
             </div>
@@ -321,7 +373,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_edit_parameter">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    <p id="msg_par"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -447,7 +499,6 @@
         $('#penunjang_open').addClass('menu-open');
 
         listParameter();
-        listLab();
         listSelectDokter();
 
         $('#img_ktp').on('click', function(e){
@@ -527,6 +578,10 @@
     function conSaveDokter(){
         var data = $('#tabel_lab').tableToJSON();
         var img = $("#url_img").val();
+        var petugas = document.getElementById("ttd_petugas");
+        var dokter = document.getElementById("ttd_dokter");
+        var cekPetugas = isCanvasBlank(petugas);
+        var cekDokter = isCanvasBlank(dokter);
         var cek = false;
         $.each(data, function (i, item) {
             if(data[i]["Hasil"] == ""){
@@ -534,7 +589,7 @@
             }
         });
         var idDokter = $('#list_dokter').val();
-        if (idPeriksaLab != '' && idDokter != '' && !cek || img != '' && idDokter != '') {
+        if (idPeriksaLab != '' && !cekPetugas && !cekDokter && idDokter != '' && !cek || img != '' && idDokter != '' && !cekPetugas && !cekDokter) {
             $('#modal-confirm-dialog').modal('show');
             $('#save_con').attr('onclick', 'saveDokterLab(\''+idDokter+'\')');
         } else {
@@ -546,9 +601,10 @@
     function saveDokterLab(idDokter){
         $('#modal-confirm-dialog').modal('hide');
         var url = document.getElementById("temp_canvas");
+        var petugas = document.getElementById("ttd_petugas");
+        var dokter = document.getElementById("ttd_dokter");
         var hasil = url.toDataURL("image/png"),
             hasil = hasil.replace(/^data:image\/(png|jpg);base64,/, "");
-
         var idPasien = '<s:property value="periksaLab.idPasien"/>';
         var idPelayanan = '<s:property value="periksaLab.idPelayanan"/>';
         var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
@@ -566,6 +622,8 @@
 
         var img = $("#url_img").val();
         var finalImg = "";
+        var finalPetugas = convertToDataURL(petugas);
+        var finalDokter = convertToDataURL(dokter);
 
         if(img != ''){
             finalImg = hasil;
@@ -573,7 +631,7 @@
         var result = JSON.stringify(data);
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
-        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, result, {
+        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, result, finalDokter, finalPetugas, {
             callback: function (response) {
                 if (response.status == "success") {
                     $('#success_dok').show().fadeOut(5000);
@@ -642,29 +700,6 @@
         $('#lab_lab').html(option);
     }
 
-    function listLab() {
-
-        var table   = "";
-        var data    = [];
-        var lab     = "";
-
-        PeriksaLabAction.listOrderLab(idDetailCheckup, idPeriksaLab, function (response) {
-            data = response;
-            if (data != null) {
-                var idPeriksaLab = "";
-                $.each(data, function (i, item) {
-                    if(item.idKategoriLab == "KAL00000002"){
-                        if (item.labName != null) {
-                            lab = item.labName;
-                        }
-                    }
-                });
-            }
-        });
-
-        $('#lab_name').html(lab);
-    }
-
     function saveLab() {
         var idParameter = $('#lab_parameter').val();
         if (idDetailCheckup != '' && idPeriksaLab != '' && idParameter != null) {
@@ -701,6 +736,7 @@
 
         var table       = "";
         var data        = [];
+        var jenisKelamin = '<s:property value="periksaLab.jenisKelamin"/>';
 
         PeriksaLabAction.listParameterPemeriksaan(idPeriksaLab, function (response) {
             data = response;
@@ -722,17 +758,23 @@
                     if(item.satuan != null){
                         satuan = item.satuan;
                     }
-                    if(item.keteranganAcuan != null){
-                        acuan = item.keteranganAcuan;
+                    if(jenisKelamin == "Perempuan"){
+                        if(item.keteranganAcuanP != null){
+                            acuan = item.keteranganAcuanP;
+                        }
+                    }else{
+                        if(item.keteranganAcuanL != null){
+                            acuan = item.keteranganAcuanL;
+                        }
                     }
                     if(item.keteranganPeriksa != null){
                         keterangan = item.keteranganPeriksa;
                     }
                     table += "<tr>" +
                             "<td>" + pemeriksaan + "</td>" +
-                            "<td>" + hasil + "</td>" +
-                            "<td>" + satuan + "</td>" +
                             "<td>" + acuan + "</td>" +
+                            "<td>" + satuan + "</td>" +
+                            "<td>" + hasil + "</td>" +
                             "<td>" + keterangan + "</td>" +
                             "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editParameter(\''+item.idPeriksaLabDetail+'\',\''+hasil+'\',\''+keterangan+'\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
                             "</tr>"
@@ -762,7 +804,7 @@
             dwr.engine.setAsync(true);
             PeriksaLabAction.saveEditParameterLab(id, hasil, ket, {
                 callback: function (response) {
-                    if (response == "success") {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         listParameter();
                         $('#modal-edit-parameter').modal('hide');
@@ -770,12 +812,16 @@
                         $('#close_pos').val(1);
                         $('body').scrollTop(0);
                     } else {
-
+                        $('#save_par').show();
+                        $('#load_par').hide();
+                        $('#warning_edit_parameter').show().fadeOut(5000);
+                        $('#msg_par').text(response.msg);
                     }
                 }
-            })
+            });
         } else {
             $('#warning_edit_parameter').show().fadeOut(5000);
+            $('#msg_par').text("Silahkan cek kembali data inputan...!");
             if (hasil == '') {
                 $('#war_hasil').show();
             }

@@ -37,6 +37,8 @@
           p:headerCheckupDao-ref="headerCheckupDao"
           p:ruanganDao-ref="ruanganDao"
           p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:rekananOpsDao-ref="rekananOpsDao"
+          p:tempatTidurDao-ref="tempatTidurDao"
     />
 
     <bean id="rawatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

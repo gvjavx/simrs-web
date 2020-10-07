@@ -355,8 +355,10 @@
                                         });
 
                                         if (namaijin == "IJ013") {
+                                            $("#tgl2").prop("readonly", 'true');
                                             $('#uploadSurat').show();
                                         } else {
+                                            $("#tgl2").prop("readonly", 'false');
                                             $('#uploadSurat').hide();
                                         }
                                     })
@@ -670,8 +672,6 @@
 
             var dateFinal = [day,month,year].join('/');
             $('#tgl2').val(dateFinal);
-
-            console.log(dateFinal);
 
             var startdate = $('#tgl3').datepicker('getDate');
             var enddate = date;

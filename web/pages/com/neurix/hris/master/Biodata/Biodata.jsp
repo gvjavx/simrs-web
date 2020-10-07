@@ -1033,15 +1033,15 @@
                                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                             <s:if test="isDelete()">
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan" disabled="true"
-                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
                                             <s:elseif test="isAdd()">
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
-                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:elseif>
                                             <s:else>
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
-                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:else>
 
                                         </table>
@@ -1060,6 +1060,82 @@
                                                           listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:else>
 
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield cssStyle="text-align: left;" readonly="true"
+                                                             cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label label-tanggal-aktif"><small>Tanggal Aktif :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isAdd()">
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" />
+                                            </s:if>
+                                            <s:elseif test="isDelete()">
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true" readonly="true"/>
+                                            </s:elseif>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
+                                                <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
+                                                <s:hidden id="tanggalAktifTmp"/>
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label label-prapensiun"><small>Tanggal MBT :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield cssStyle="text-align: left;" readonly="true"
+                                                             cssClass="form-control" id="tanggalPraPensiun" name="biodata.stTanggalPraPensiun" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalPraPensiun" name="biodata.stTanggalPraPensiun" />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label label-pensiun"><small>Tanggal Pensiun :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield cssStyle="text-align: left;" readonly="true"
+                                                             cssClass="form-control" id="tanggalPensiun" name="biodata.stTanggalPensiun" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalPensiun" name="biodata.stTanggalPensiun" />
+                                            </s:else>
                                         </table>
                                     </td>
                                 </tr>
@@ -1086,7 +1162,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Golongan Dapen :</small></label>
+                                        <label class="control-label"><small>Golongan Pensiun :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -1108,7 +1184,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Masa Kerja Golongan*:</small></label>
+                                        <label class="control-label"><small>Ms. Kerja Gol. Pensiun*:</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -1128,10 +1204,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noAnggotaDapen" type="number" name="biodata.noAnggotaDapen" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noAnggotaDapen" type="text" name="biodata.noAnggotaDapen" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noAnggotaDapen"  type="number" name="biodata.noAnggotaDapen" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noAnggotaDapen"  type="text" name="biodata.noAnggotaDapen" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1144,10 +1220,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noBpjsKetenagakerjaan" type="number" name="biodata.noBpjsKetenagakerjaan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noBpjsKetenagakerjaan" type="text" name="biodata.noBpjsKetenagakerjaan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noBpjsKetenagakerjaan"  type="number" name="biodata.noBpjsKetenagakerjaan" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noBpjsKetenagakerjaan"  type="text" name="biodata.noBpjsKetenagakerjaan" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1160,10 +1236,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="number" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="text" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="number" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="text" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1176,10 +1252,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noBpjsKesehatan" type="number" name="biodata.noBpjsKesehatan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noBpjsKesehatan" type="text" name="biodata.noBpjsKesehatan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noBpjsKesehatan" type="number" name="biodata.noBpjsKesehatan" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noBpjsKesehatan" type="text" name="biodata.noBpjsKesehatan" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1236,83 +1312,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="control-label label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield cssStyle="text-align: left;" readonly="true"
-                                                             cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield cssStyle="text-align: left;"
-                                                             cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
-                                            </s:else>
-
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label label-tanggal-aktif"><small>Tanggal Aktif :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isAdd()">
-                                                <s:textfield cssStyle="text-align: left;"
-                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" />
-                                            </s:if>
-                                            <s:elseif test="isDelete()">
-                                                <s:textfield cssStyle="text-align: left;"
-                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true" readonly="true"/>
-                                            </s:elseif>
-                                            <s:else>
-                                                <s:textfield cssStyle="text-align: left;"
-                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
-                                                <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
-                                                <s:hidden id="tanggalAktifTmp"/>
-                                            </s:else>
-
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label label-prapensiun"><small>Tanggal Pra Pensiun :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield cssStyle="text-align: left;" readonly="true"
-                                                             cssClass="form-control" id="tanggalPraPensiun" name="biodata.stTanggalPraPensiun" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield cssStyle="text-align: left;"
-                                                             cssClass="form-control" id="tanggalPraPensiun" name="biodata.stTanggalPraPensiun" />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label label-pensiun"><small>Tanggal Pensiun :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield cssStyle="text-align: left;" readonly="true"
-                                                             cssClass="form-control" id="tanggalPensiun" name="biodata.stTanggalPensiun" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield cssStyle="text-align: left;"
-                                                             cssClass="form-control" id="tanggalPensiun" name="biodata.stTanggalPensiun" />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Jenis Pegawai :</small></label>
+                                        <label class="control-label"><small>Kelompok Pegawai :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -1368,7 +1368,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Dokter KSO * :</small></label>
+                                        <label class="control-label"><small>Dokter Tamu * :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -1475,10 +1475,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noRekBank" type="number" name="biodata.noRekBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noRekBank" type="text" name="biodata.noRekBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noRekBank" type="number" name="biodata.noRekBank" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noRekBank" type="text" name="biodata.noRekBank" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -3125,7 +3125,7 @@
             $('.label-tanggal-masuk').html("<small>Tanggal Kontrak</small>");
             $('.label-tanggal-aktif').html("<small>Tanggal Aktif</small>");
         } else{
-            $('.label-prapensiun').html("<small>Tanggal Pra Pensiun</small>");
+            $('.label-prapensiun').html("<small>Tanggal MBT</small>");
             $('.label-pensiun').html("<small>Tanggal Pensiun</small>");
             $('.label-tanggal-masuk').html("<small>Tanggal Masuk</small>");
             $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan</small>");

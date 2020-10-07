@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IkhtisarPendapatan" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="1ad74e3d-21c5-43ac-b65a-1f771461ad66">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="0.9090909090909174"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.3310000000000126"/>
+	<property name="ireport.x" value="59"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -61,9 +61,6 @@
 				</textField>
 			</band>
 		</groupHeader>
-		<groupFooter>
-			<band height="4" splitType="Stretch"/>
-		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
@@ -239,7 +236,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="39" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<staticText>
 				<reportElement key="staticText-11" mode="Transparent" x="0" y="2" width="68" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2b034e0d-b675-47fa-8b70-38a9125e5fc3"/>
 				<box leftPadding="2" rightPadding="2">
@@ -273,7 +270,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement key="line-3" x="0" y="38" width="814" height="1" uuid="50849c6a-caa6-4669-9735-1feaf363a243"/>
+				<reportElement key="line-3" x="0" y="21" width="814" height="1" uuid="50849c6a-caa6-4669-9735-1feaf363a243"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Dashed"/>
 				</graphicElement>
@@ -648,8 +645,8 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="17" splitType="Stretch">
+	<summary>
+		<band height="22" splitType="Stretch">
 			<staticText>
 				<reportElement key="staticText-24" positionType="Float" x="722" y="0" width="92" height="17" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="4d260316-528b-4988-83e4-bfab1fafe2a2"/>
 				<box leftPadding="2" rightPadding="4">
@@ -664,11 +661,5 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[** Selesai **]]></text>
 			</staticText>
 		</band>
-	</columnFooter>
-	<pageFooter>
-		<band splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>

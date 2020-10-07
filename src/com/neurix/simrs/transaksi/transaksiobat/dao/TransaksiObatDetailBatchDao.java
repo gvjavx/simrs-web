@@ -63,6 +63,9 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
             if (mapCriteria.get("jenis") != null){
                 criteria.add(Restrictions.eq("jenis", (String) mapCriteria.get("jenis")));
             }
+            if (mapCriteria.get("approve_flag") != null){
+                criteria.add(Restrictions.eq("approveFlag", (String) mapCriteria.get("approve_flag")));
+            }
         }
 
         // Order by

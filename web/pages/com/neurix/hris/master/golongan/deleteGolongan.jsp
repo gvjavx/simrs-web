@@ -30,14 +30,10 @@
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
                 }
-
-
             } else {
 
                 event.originalEvent.options.submit = false;
-
                 var msg = "";
-
                 if (nameGolongan == '') {
                     msg += 'Field <strong>Golongan Name</strong> is required.' + '<br/>';
                 }
@@ -53,7 +49,6 @@
             if (confirm('Do you want to delete this record ?')) {
                 event.originalEvent.options.submit = true;
                 $.publish('showDialog');
-
             } else {
                 // Cancel Submit comes with 1.8.0
                 event.originalEvent.options.submit = false;
@@ -190,7 +185,6 @@
                                                    height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                               'OK':function() {
-                                                                    //$(this).dialog('close');
                                                                       callSearch();
                                                                    }
                                                             }"

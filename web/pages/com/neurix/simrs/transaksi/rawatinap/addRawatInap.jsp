@@ -755,9 +755,9 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Order</td>
+                                <td>Jenis Penunjang</td>
                                 <td>Pemeriksaan</td>
                                 <td>Status</td>
-                                <td>Jenis Lab</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -834,8 +834,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Masuk</td>
                                 <td>Tanggal Keluar</td>
-                                <td>No Ruangan</td>
-                                <td>Nama Ruangan</td>
+                                <td>Ruangan</td>
                                 <td>Kelas</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
@@ -1447,7 +1446,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    <p id="msg_lab"></pid>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -1456,7 +1455,7 @@
                             <s:action id="comboLab" namespace="/kategorilab"
                                       name="getListKategoriLab_kategorilab"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="var warn =$('#war_kategori_lab').is(':visible'); if (warn){$('#cor_kategori_lab').show().fadeOut(3000);$('#war_kategori_lab').hide()}; listSelectLab(this)"
+                                      onchange="var warn =$('#war_kategori_lab').is(':visible'); if (warn){$('#cor_kategori_lab').show().fadeOut(3000);$('#war_kategori_lab').hide()}; listSelectLab(this.value)"
                                       list="#comboLab.listOfKategoriLab" id="lab_kategori"
                                       listKey="idKategoriLab"
                                       listValue="namaKategori"
@@ -1471,10 +1470,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Unit</label>
+                        <label class="col-md-3" style="margin-top: 7px">Paket</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"
-                                    onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this);">
+                                    onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">
                                 <option value=''>[Select One]</option>
                             </select>
                         </div>
@@ -1499,6 +1498,26 @@
                                id="war_parameter"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_parameter"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: none" id="form_ttd">
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <span>Tanda Tangan</span>
+                            </div>
+                            <div class="col-md-7">
+                                <canvas style="margin-left: 0px" class="paint-canvas-ttd" id="ttd_pengirim" width="310"
+                                        onmouseover="paintTtd('ttd_pengirim')"></canvas>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-danger" style="margin-left: -20px"
+                                        onclick="removePaint('ttd_pengirim')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3727,6 +3746,9 @@
     var idRuangan = '<s:property value="rawatInap.idRuangan"/>';
     var namaRuangan = '<s:property value="rawatInap.namaRangan"/>';
     var stayRuangan = '<s:property value="rawatInap.isStay"/>';
+    var NOSEP = '<s:property value="rawatInap.noSep"/>';
+    var IdAsuransi = '<s:property value="rawatInap.idAsuransi"/>';
+    var isBpjsRekanan = "";
 
     if (month.length < 2) {
         month = "0"+month;

@@ -918,7 +918,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN tgl_invoice DATE,
     ADD COLUMN tgl_do DATE;
 --
-
+=====================================
+    --- DARI SINI SIH AKU COBAK ---
+=====================================
 -- 2020-09-11
 
      ALTER TABLE it_akun_perhitungan_budgeting
@@ -1097,7 +1099,180 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     CREATE SEQUENCE seq_jurnal_akhir_tahun;
     CREATE SEQUENCE seq_jurnal_detail_akhir_tahun;
 
+    ALTER TABLE it_akun_jurnal_akhir_tahun
+    ADD COLUMN tipe_periode VARCHAR(5);
+
     ALTER TABLE it_akun_jurnal_detail_akhir_tahun
     ADD COLUMN jurnal_detail_id VARCHAR(30);
+
+--
+
+-- 2020-09-23
+
+    ALTER TABLE it_akun_saldo_akhir_tahun
+      RENAME TO it_akun_saldo_history;
+
+    ALTER TABLE it_akun_saldo_akhir_detail_tahun
+      RENAME TO it_akun_saldo_akhir_detail_history;
+--
+
+-- 2020-09-25
+
+    UPDATE im_akun_mapping_jurnal SET kirim_list = 'Y'
+    WHERE keterangan = 'uang_muka'
+    AND trans_id NOT IN ('04','34');
+
+--
+
+-- 2020-09-27
+
+    ALTER TABLE mt_simrs_transaksi_obat_detail_batch
+    ADD COLUMN harga_jual numeric,
+    ADD COLUMN harga_rata numeric
+
+    ALTER TABLE mt_simrs_transaksi_obat_detail_batch
+    ADD COLUMN qty_reture bigint
+
+
+--
+
+-- 2020-09-28
+
+    ALTER TABLE mt_simrs_harga_obat
+    ADD COLUMN id_harga_obat VARCHAR(50),
+    ADD COLUMN margin int,
+    ADD COLUMN branch_id VARCHAR(5);
+
+    UPDATE mt_simrs_harga_obat a SET id_harga_obat = 'RS01' || a.id_obat, margin = '10', branch_id = 'RS01';
+
+    ALTER TABLE mt_simrs_harga_obat
+    DROP CONSTRAINT pk_harga_obat;
+
+    ALTER TABLE mt_simrs_harga_obat
+    ADD CONSTRAINT pk_harga_obat
+    PRIMARY KEY (id_harga_obat);
+
+    CREATE TABLE public.im_simrs_margin_obat
+    (
+        id_margin_obat character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        id_obat character varying(30) COLLATE pg_catalog."default",
+        standar_margin integer,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_date_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_simrs_margin_obat_pkey PRIMARY KEY (id_margin_obat)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_margin_obat
+        OWNER to postgres;
+
+    CREATE SEQUENCE seq_margin_obat;
+
+--
+
+-- 2020-09-30
+
+    CREATE TABLE public.im_simrs_header_obat
+    (
+        id_obat character varying(50) COLLATE pg_catalog."default" NOT NULL,
+        nama_obat text COLLATE pg_catalog."default",
+        id_pabrik character varying(100) COLLATE pg_catalog."default",
+        lembar_per_box bigint,
+        biji_per_lembar bigint,
+        flag_kronis character varying(1) COLLATE pg_catalog."default",
+        flag_bpjs character varying(1) COLLATE pg_catalog."default",
+        flag_generic character varying(1) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_simrs_header_obat_pkey PRIMARY KEY (id_obat)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_header_obat
+        OWNER to postgres;
+
+    ALTER TABLE im_simrs_header_obat
+    ADD COLUMN id_kategori_persediaan VARCHAR(30);
+
+    CREATE TABLE public.im_simrs_kategori_persediaan
+    (
+        id_kategori_persediaan character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        nama text COLLATE pg_catalog."default",
+        rekening_id character varying(30) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_simrs_kategori_persediaan_pkey PRIMARY KEY (id_kategori_persediaan)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_kategori_persediaan
+        OWNER to postgres;
+
+    CREATE SEQUENCE seq_kategori_persediaan;
+
+    ALTER TABLE im_simrs_header_obat
+    ADD COLUMN min_stok bigint;
+
+    ALTER TABLE im_simrs_header_obat
+    ADD COLUMN merk varchar(100);
+
+    -- insert data header obat
+    INSERT INTO im_simrs_header_obat
+    (id_obat,
+    nama_obat,
+    id_pabrik,
+    lembar_per_box,
+    biji_per_lembar,
+    min_stok,
+    merk
+    )
+    SELECT
+    id_obat,
+    nama_obat,
+    id_pabrik,
+    lembar_per_box,
+    biji_per_lembar,
+    min_stok,
+    merk
+    FROM im_simrs_obat
+    GROUP BY
+    id_obat,
+    nama_obat,
+    id_pabrik,
+    lembar_per_box,
+    biji_per_lembar,
+    min_stok,
+    merk;
+
+    -- end
+
+    UPDATE im_simrs_header_obat SET
+    flag = 'Y',
+    action = 'C',
+    created_date = now(),
+    created_who = 'migrasi_admin',
+    last_update = now(),
+    last_update_who = 'migrasi_admin';
 
 --

@@ -187,11 +187,18 @@ public class ObatAction extends BaseMasterAction {
     @Override
     public String initForm() {
         logger.info("[ObatAction.initForm] START >>>>>>>");
+        String userBranch = CommonUtil.userBranchLogin();
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
-        setObat(new Obat());
+        Obat obat = new Obat();
+        if (CommonConstant.BRANCH_KP.equalsIgnoreCase(userBranch)){
+            obat.setIsKp("Y");
+        }
+
+        setObat(obat);
+
         logger.info("[ObatAction.initForm] END <<<<<<<");
         return "search";
     }
@@ -280,7 +287,7 @@ public class ObatAction extends BaseMasterAction {
 
     }
 
-    public CheckObatResponse saveObat(String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji, BigInteger minStok) {
+    public CheckObatResponse saveObat(String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji, BigInteger minStok, String flagKronis, String flagGeneric, String flagBpjs, String margin, String idKategoriPersediaan) {
         logger.info("[ObatAction.saveObatInap] start process >>>");
 
         CheckObatResponse checkObatResponse = new CheckObatResponse();
@@ -292,6 +299,8 @@ public class ObatAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
+
+        Integer intMargin = "".equalsIgnoreCase(margin) || margin == null ? 0 : Integer.valueOf(margin);
 
         Obat obat = new Obat();
         obat.setNamaObat(namaObat);
@@ -314,6 +323,11 @@ public class ObatAction extends BaseMasterAction {
         obat.setAction("C");
         obat.setMinStok(minStok);
         obat.setHargaTerakhir(new BigDecimal(String.valueOf(0)));
+        obat.setFlagKronis(flagKronis);
+        obat.setFlagGeneric(flagGeneric);
+        obat.setFlagBpjs(flagBpjs);
+        obat.setMargin(intMargin);
+        obat.setIdKategoriPersediaan(idKategoriPersediaan);
 
         if (kandunganObats != null && kandunganObats.size() > 0){
             obat.setKandunganObats(kandunganObats);
@@ -342,7 +356,7 @@ public class ObatAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox, BigInteger bijiLembar, BigInteger minStok) {
+    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox, BigInteger bijiLembar, BigInteger minStok, String flagKronis, String flagGeneric, String flagBpjs, String idKategoriPersediaan) {
         logger.info("[ObatAction.saveObatInap] start process >>>");
         CheckObatResponse response = new CheckObatResponse();
         try {
@@ -368,6 +382,10 @@ public class ObatAction extends BaseMasterAction {
             obat.setBranchId(userArea);
             obat.setAction("U");
             obat.setMinStok(minStok);
+            obat.setFlagKronis(flagKronis);
+            obat.setFlagGeneric(flagGeneric);
+            obat.setFlagBpjs(flagBpjs);
+            obat.setIdKategoriPersediaan(idKategoriPersediaan);
 
             if (kandunganObats != null && kandunganObats.size() > 0){
                 List<KandunganObat> kandunganObatsFiltered = kandunganObats.stream().filter(p -> p.getIdObat().equalsIgnoreCase(idObat)).collect(Collectors.toList());
@@ -435,6 +453,39 @@ public class ObatAction extends BaseMasterAction {
         listOfObat.addAll(obatList);
         logger.info("[ObatAction.getListObat] end process <<<");
         return SUCCESS;
+
+    }
+
+    public List<Obat> getListObat(String idPelayanan) {
+
+        logger.info("[ObatAction.getListObat] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(idPelayanan);
+
+        String branchId = "";
+        if (pelayananEntity != null){
+            branchId = pelayananEntity.getBranchId();
+        }
+
+        List<Obat> obatList = new ArrayList<>();
+        Obat obat = new Obat();
+        obat.setBranchId(branchId);
+        obat.setFlag("Y");
+
+        if (obat.getBranchId() != null){
+            try {
+                obatList = obatBo.getListObatGroup(obat);
+            } catch (GeneralBOException e) {
+                logger.error("[ObatAction.getListObat] Error when obat ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+        }
+
+        logger.info("[ObatAction.getListObat] end process <<<");
+        return obatList;
 
     }
 
@@ -535,6 +586,7 @@ public class ObatAction extends BaseMasterAction {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
+        String branchId = CommonUtil.userBranchLogin();
 
         // maping untuk parameter lainnua
         JSONArray json = new JSONArray(jsonString);
@@ -545,15 +597,18 @@ public class ObatAction extends BaseMasterAction {
         HargaObat hargaObat = new HargaObat();
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
+            hargaObat.setIdHargaObat(branchId+idObat);
             hargaObat.setIdObat(idObat);
             hargaObat.setIdBarang(idBarang);
             hargaObat.setHargaNet(new BigDecimal(obj.getString("harga_net")));
             hargaObat.setDiskon(new BigDecimal(obj.getString("diskon")));
             hargaObat.setHargaJual(new BigDecimal(obj.getString("harga_jual")));
+            hargaObat.setMargin(obj.getString("margin") == null || "".equalsIgnoreCase(obj.getString("margin")) ? null : Integer.valueOf(obj.getString("margin")));
             hargaObat.setCreatedDate(time);
             hargaObat.setCreatedWho(userLogin);
             hargaObat.setLastUpdate(time);
             hargaObat.setLastUpdateWho(userLogin);
+            hargaObat.setBranchId(branchId);
         }
 
         try {

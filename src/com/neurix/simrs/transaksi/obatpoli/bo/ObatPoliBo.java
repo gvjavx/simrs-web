@@ -47,5 +47,6 @@ public interface ObatPoliBo {
     public List<ObatPoli> getListObatGroupPoliSerupa(String idPelayanan, String branchId, String flagBpjs, String idObat) throws GeneralBOException;
     public List<PermintaanObatPoli> getCekRequestExist(PermintaanObatPoli bean) throws GeneralBOException;
     public MtSimrsPermintaanObatPoliEntity getEntityPermintaanObatPoliById(String id) throws GeneralBOException;
+    public void updateAddStockPoli(TransaksiObatDetail bean, String idPoli) throws GeneralBOException;
 
 }

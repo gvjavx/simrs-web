@@ -146,19 +146,25 @@
             $('.tree').on('click', '.item-delete', function(){
                 var id = $(this).attr('data');
                 var branch = $(this).attr('branch');
+                var nip =$(this).attr('nip');
+                console.log(nip);
+                if (nip=="-"){
+                    StrukturJabatanAction.initStrukturJabatanSearch(id, function(item) {
+                        selectParent(branch, 'Delete');
+                        $('#strukturJabatanIdDelete').val(item.strukturJabatanId);
+                        $('#branchIdDelete').val(item.branchId);
+                        $('#positionIdDelete').val(item.positionId);
+                        var level = parseInt(item.level) - 1;
+                        $('#levelDelete').val(level);
+                        $('#parentIdDelete').val(item.parentId + '-' + level).change();
+                    });
 
-                StrukturJabatanAction.initStrukturJabatanSearch(id, function(item) {
-                    selectParent(branch, 'Delete');
-                    $('#strukturJabatanIdDelete').val(item.strukturJabatanId);
-                    $('#branchIdDelete').val(item.branchId);
-                    $('#positionIdDelete').val(item.positionId);
-                    var level = parseInt(item.level) - 1;
-                    $('#levelDelete').val(level);
-                    $('#parentIdDelete').val(item.parentId + '-' + level).change();
-                });
+                    $('#modal-delete').find('.modal-title').text('Delete Data');
+                    $('#modal-delete').modal('show');
+                } else{
+                    alert("Struktur Jabatan Masih Digunakan tidak bisa dihapus");
+                }
 
-                $('#modal-delete').find('.modal-title').text('Delete Data');
-                $('#modal-delete').modal('show');
                 //alert(id);
 
             });
@@ -276,7 +282,7 @@
                 for(i = 0 ; i < data2.length ; i++){
                     //data2.push([item.funcId, item.funcName, item.url, item.menu, item.parent, item.funcLevel, 'Y']);
                     if(data2[i].parent == "-"){
-                        tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                        tmp_table += '<tr style="font-size: 11px;" class=" treegrid-' + data2[i]._id+ '">' +
                                 '<td >' + data2[i]._id + '</td>' +
                                 '<td >' + data2[i].nama + '</td>' +
                                 '<td align="center">' + data2[i].level+ '</td>' +
@@ -288,13 +294,13 @@
                                     '</a>' +
                                 '</td>' +
                                 '<td align="center">' +
-                                    "<a href='javascript:;' class ='item-delete' branch='"+data2[i].branchId+"' data ='"+data2[i]._id+"' >" +
+                                    "<a href='javascript:;' class ='item-delete' branch='"+data2[i].branchId+"' data ='"+data2[i]._id+"' nip ='"+data2[i].nip+"' >" +
                                         "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
                                     '</a>' +
                                 '</td>' +
                                 "</tr>";
                     } else {
-                        tmp_table += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
+                        tmp_table += '<tr style="font-size: 11px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
                                 + '<td style="border: 2px solid black;">' +
                                 '<td >' + data2[i]._id + '</td>' +
                                 '<td >' + data2[i].nama + '</td>' +
@@ -307,7 +313,7 @@
                                     '</a>' +
                                 '</td>' +
                                 '<td align="center">' +
-                                    "<a href='javascript:;' class ='item-delete' branch='"+data2[i].branchId+"' data ='"+data2[i]._id+"' >" +
+                                    "<a href='javascript:;' class ='item-delete' branch='"+data2[i].branchId+"' data ='"+data2[i]._id+"'  nip ='"+data2[i].nip+"' >" +
                                         "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
                                     '</a>' +
                                 '</td>' +

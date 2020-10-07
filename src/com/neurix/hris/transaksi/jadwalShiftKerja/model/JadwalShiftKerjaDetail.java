@@ -30,6 +30,15 @@ public class JadwalShiftKerjaDetail extends BaseModel {
     private String flagPanggil;
     private String panggilWho;
     private Timestamp panggilDate;
+    private String keteranganPanggil;
+
+    public String getKeteranganPanggil() {
+        return keteranganPanggil;
+    }
+
+    public void setKeteranganPanggil(String keteranganPanggil) {
+        this.keteranganPanggil = keteranganPanggil;
+    }
 
     public String getFlagLibur() {
         return flagLibur;

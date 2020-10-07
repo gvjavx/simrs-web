@@ -463,10 +463,19 @@ public class AbsensiAction extends BaseMasterAction {
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         List<AbsensiPegawai> listOfResult = new ArrayList<>();
+        List<AbsensiOnCall> listOfResultOnCall = new ArrayList<>();
         HttpSession session = ServletActionContext.getRequest().getSession();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         listOfResult = (List<AbsensiPegawai>) session.getAttribute("listOfResultAbsensiPegawai");
+        listOfResultOnCall = (List<AbsensiOnCall>) session.getAttribute("listOfResultOnCall");
+
+        if (listOfResult==null){
+            listOfResult = new ArrayList<>();
+        }
+        if (listOfResultOnCall==null){
+            listOfResultOnCall = new ArrayList<>();
+        }
 
         AbsensiPegawai data = new AbsensiPegawai();
         data.setCreatedWho(userLogin);
@@ -476,7 +485,7 @@ public class AbsensiAction extends BaseMasterAction {
         data.setAction("C");
         data.setFlag("Y");
 
-        absensiBo.saveAddAbsensi(listOfResult,data);
+        absensiBo.saveAddAbsensi(listOfResult,listOfResultOnCall,data);
 
         session.removeAttribute("listOfResultAbsensiPegawai");
     }
@@ -3871,5 +3880,26 @@ public class AbsensiAction extends BaseMasterAction {
         session.setAttribute("listOfResultAbsensiPegawai",absensiPegawaiList);
 
         logger.info("[AbsensiAction.cronInquiry] end process <<<");
+    }
+
+
+    public List<AbsensiOnCall> searchAbsensiOnCallSession() {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<AbsensiOnCall> absensiOnCallList = (List<AbsensiOnCall>) session.getAttribute("listOfResultAbsensiOnCall");
+
+        return absensiOnCallList;
+    }
+
+    public void searchAbsensiOnCall(String nip,String tanggal) {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
+        AbsensiOnCall absensiOnCall= new AbsensiOnCall();
+        absensiOnCall.setFlag("Y");
+        absensiOnCall.setTanggal(CommonUtil.convertStringToDate(tanggal));
+        absensiOnCall.setNip(nip);
+
+        List<AbsensiOnCall> absensiOnCallList = absensiBo.getAbsensiOnCall(absensiOnCall);
+        session.setAttribute("listOfResultAbsensiOnCall",absensiOnCallList);
     }
 }

@@ -146,6 +146,7 @@ public class JadwalShiftController implements ModelDriven<Object> {
     public HttpHeaders create() {
         logger.info("[JadwalShiftController.create] start process POST /jadwalShift <<<");
 
+        if(action.equalsIgnoreCase("getJadwalKerja")) {
             com.neurix.hris.master.biodata.model.Biodata bio = new Biodata();
             try {
                 bio = biodataBoProxy.detailBiodataSys(nip);
@@ -266,6 +267,38 @@ public class JadwalShiftController implements ModelDriven<Object> {
                     }
                 }
             }
+        }
+
+        if(action.equalsIgnoreCase("getJamKerja")) {
+            JamKerja bean = new JamKerja();
+            bean.setBranchId(branchId);
+
+            List<JamKerja> result = new ArrayList<>();
+            listOfJadwalShift = new ArrayList<>();
+
+            try {
+                result = jamKerjaBoProxy.getByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("[JadwalShiftController.create] Error when saving error,", e);
+            }
+
+            if (result.size() > 0) {
+                for (JamKerja item : result) {
+                    JadwalShiftMobile jadwalShiftMobile = new JadwalShiftMobile();
+                    jadwalShiftMobile.setJamKerjaId(item.getJamKerjaId());
+                    jadwalShiftMobile.setHariName(item.getHariName());
+                    jadwalShiftMobile.setJamAwalKerja(item.getJamAwalKerja());
+                    jadwalShiftMobile.setJamAkhirKerja(item.getJamAkhirKerja());
+                    jadwalShiftMobile.setIstirahatAwal(item.getIstirahatAwal());
+                    jadwalShiftMobile.setIstirahatAkhir(item.getIstirahatAkhir());
+                    jadwalShiftMobile.setBranchName(item.getBranchName());
+
+                    listOfJadwalShift.add(jadwalShiftMobile);
+                }
+            }
+        }
+
+
 
 
         logger.info("[JadwalShiftController.create] end process POST /jadwalShift <<<");

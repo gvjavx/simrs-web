@@ -192,7 +192,7 @@
                         <table id="sortTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID Detail Checkup</td>
+                                <td>No Checkup</td>
                                 <td>ID Pasien</td>
                                 <td>Nama</td>
                                 <td>Status Periksa</td>
@@ -204,7 +204,7 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" status="listOfRawatJalan" var="row">
                                 <tr>
-                                    <td><s:property value="idDetailCheckup"/></td>
+                                    <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
@@ -269,8 +269,7 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> Detail Total Tarif Rawat Inap
                     Pasien</h4>
             </div>
-            <div class="modal-body">
-
+            <div class="modal-body" style="height: 70%; overflow-y: scroll">
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
                 </div>
@@ -307,6 +306,7 @@
                         <input type="hidden" id="fin_is_resep"/>
                         <input type="hidden" id="fin_metode_bayar"/>
                         <input type="hidden" id="fin_bukti"/>
+                        <input type="hidden" id="h_no_checkup"/>
 
                         <div class="col-md-6">
                             <table class="table table-striped">
@@ -561,7 +561,7 @@
                 }
             });
 
-            KasirRawatJalanAction.getListUangMuka(idDetailCheckup, "Y", function (response) {
+            KasirRawatJalanAction.getListUangMuka(idCheckup, "Y", function (response) {
                 console.log(response);
                 var str = "";
                 $.each(response, function (i, item) {
@@ -574,10 +574,9 @@
                 $("#body_uang_muka").html(str);
             });
 
-            KasirRawatInapAction.getListTindakanRawat(idDetailCheckup, idJenisPasien, function (response) {
+            KasirRawatJalanAction.getListTindakanRawat(idCheckup, idJenisPasien, function (response) {
                 dataTindakan = response;
-                console.log(response);
-                if (dataTindakan != null) {
+                if (dataTindakan.length > 0) {
                     var total = 0;
                     var totalObat = 0;
                     var ppn = "";
@@ -751,6 +750,7 @@
             $('#fin_desa').html(desa);
             $('#fin_bukti').val(bukti);
             $('#fin_metode_bayar').val(metode);
+            $('#h_no_checkup').val(idCheckup);
             $('#body_tindakan_fin').html(table);
             $('#fin_id_detail_checkup').val(idDetailCheckup);
             // $('#save_fin').attr('onclick','confirmSaveFinalClaim(\''+idCheckup+'\')');
@@ -836,15 +836,15 @@
         var metodeBayarDiAwal = $('#fin_metode_bayar').val();
         var bukti = $('#fin_bukti').val();
         var noRekening = $('#no_rekening').val();
+        var noCheckup = $('#h_no_checkup').val();
 
         $('#save_fin').hide();
         $('#load_fin').show();
         dwr.engine.setAsync(true);
         var jsonString = JSON.stringify(mapBiaya);
 
-        KasirRawatJalanAction.savePembayaranTagihan(jsonString, idPasien, bukti, isResep, idDetailCheckup, metodeBayarDiAkhir, kodeBank, "JRI", metodeBayarDiAwal, noRekening, {
+        KasirRawatJalanAction.savePembayaranTagihan("", idPasien, "", isResep, metodeBayarDiAkhir, kodeBank, "JRI", metodeBayarDiAwal, noRekening, noCheckup, {
             callback: function (response) {
-                console.log(response.msg);
                 if (response.status == "success") {
                     // alert("success");
                     $('#save_fin').show();

@@ -119,6 +119,16 @@ public class AbsensiPegawai extends BaseModel {
     private String branchIdUser;
     private String flagCutiGantiHari;
 
+    private BigInteger telat;
+
+    public BigInteger getTelat() {
+        return telat;
+    }
+
+    public void setTelat(BigInteger telat) {
+        this.telat = telat;
+    }
+
     public String getFlagCutiGantiHari() {
         return flagCutiGantiHari;
     }

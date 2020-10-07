@@ -27,6 +27,9 @@
         <property name="flagDiajukanAdmin">
             <column name="flag_diajukan_admin"/>
         </property>
+        <property name="agama">
+            <column name="agama"/>
+        </property>
 
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />

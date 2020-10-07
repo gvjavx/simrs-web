@@ -328,7 +328,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Tipe Pegawai: </label>
+                        <label class="control-label col-sm-3" >Status Pegawai: </label>
                         <div class="col-sm-9">
                             <input readonly type="text" class="form-control nip" id="detailTipePegawai" >
                         </div>
@@ -639,7 +639,7 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Tipe Pegawai :</small></label>
+                                    <label class="control-label"><small>Status Pegawai :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -691,7 +691,7 @@
                                                 <li><a href="add_biodata.action?tipe=karyawan">
                                                     <i class="fa fa-user-plus"></i>Karyawan Kantor</a></li>
                                                 <li><a href="add_biodata.action?tipe=dokter">
-                                                    <i class="fa fa-user-plus"></i>Dokter KSO</a></li>
+                                                    <i class="fa fa-user-plus"></i>Dokter Tamu</a></li>
                                             </ul>
                                         </div>
                                     </td>

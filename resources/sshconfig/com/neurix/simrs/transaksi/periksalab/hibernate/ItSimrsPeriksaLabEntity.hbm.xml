@@ -63,6 +63,17 @@
         <property name="urlImg">
             <column name="url_img"/>
         </property>
-
+        <property name="ttdPengirim">
+            <column name="ttd_pengirim"/>
+        </property>
+        <property name="idKategoriLab">
+            <column name="id_kategori_lab"/>
+        </property>
+        <property name="ttdDokter">
+            <column name="ttd_dokter"/>
+        </property>
+        <property name="ttdPetugas">
+            <column name="ttd_petugas"/>
+        </property>
     </class>
 </hibernate-mapping>

@@ -20,7 +20,7 @@ function setLabelJenisPasien(id, jenis){
         $('#'+id).attr('style', 'background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px');
     }else if(jenis == 'bpjs'){
         $('#'+id).attr('style', 'background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px');
-    }else if(jenis == 'ptpn'){
+    }else if(jenis == 'rekanan'){
         $('#'+id).attr('style', 'background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px');
     }else{
         $('#'+id).attr('style', 'background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px');

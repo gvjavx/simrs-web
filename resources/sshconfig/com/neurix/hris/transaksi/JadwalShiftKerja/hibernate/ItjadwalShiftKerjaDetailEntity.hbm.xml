@@ -48,7 +48,6 @@
         <property name="panggilDate">
             <column name="panggil_date"/>
         </property>
-
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>

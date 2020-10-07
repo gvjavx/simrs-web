@@ -694,7 +694,8 @@
 
             KasirRawatJalanAction.getListUangMuka(idDetailCheckup, null, function (response) {
                 dataTindakan = response;
-                if (dataTindakan != null) {
+                if (dataTindakan.length > 0) {
+                    var totalUangMuka = 0;
                     $.each(dataTindakan, function (i, item) {
                         var tanggal = "";
                         var uangmuka    = 0;
@@ -716,6 +717,8 @@
                         id = item.id;
                         $("#jumlah_um").val(total);
                     });
+                    $('#nominal_uang_muka').val(formatRupiah(total));
+                    $('#val_uang_muka').val(total);
                 }
             });
 

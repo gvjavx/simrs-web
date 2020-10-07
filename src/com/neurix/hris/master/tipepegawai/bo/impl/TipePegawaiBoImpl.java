@@ -1,6 +1,8 @@
 package com.neurix.hris.master.tipepegawai.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.tipepegawai.bo.TipePegawaiBo;
 import com.neurix.hris.master.tipepegawai.dao.TipePegawaiDao;
 import com.neurix.hris.master.tipepegawai.model.ImHrisTipePegawai;
@@ -22,6 +24,15 @@ public class TipePegawaiBoImpl implements TipePegawaiBo{
     protected static transient Logger logger = Logger.getLogger(TipePegawaiBoImpl.class);
 
     private TipePegawaiDao tipePegawaiDao;
+    private BiodataDao biodataDao;
+
+    public BiodataDao getBiodataDao() {
+        return biodataDao;
+    }
+
+    public void setBiodataDao(BiodataDao biodataDao) {
+        this.biodataDao = biodataDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -44,6 +55,15 @@ public class TipePegawaiBoImpl implements TipePegawaiBo{
         logger.info("[Tipe.saveDelete] start process >>>");
 
         boolean saved = false;
+        //validasi
+        List<ImBiodataEntity> biodataEntityList = biodataDao.getBiodataByTipePegawai(bean.getTipePegawaiId());
+
+        if (biodataEntityList.size()>0){
+            String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+            logger.error(status);
+            throw new GeneralBOException(status);
+        }
+
         if (bean!=null) {
             ImHrisTipePegawai entityData = new ImHrisTipePegawai();
             entityData.setTipePegawaiId(bean.getTipePegawaiId());
