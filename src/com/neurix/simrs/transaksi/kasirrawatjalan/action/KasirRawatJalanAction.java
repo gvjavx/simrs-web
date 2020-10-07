@@ -466,7 +466,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 if(ppnObat != null && ppnObat.intValue() > 0){
                     reportParams.put("ppnObat", ppnObat);
                 }else{
-                    reportParams.put("ppnObat", "");
+                    reportParams.put("ppnObat", 0);
                 }
 
 

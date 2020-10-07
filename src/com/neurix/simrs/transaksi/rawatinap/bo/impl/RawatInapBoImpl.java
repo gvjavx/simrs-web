@@ -1214,7 +1214,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                         entity.setIdRiwayatTindakan("RWT"+riwayatTindakanDao.getNextSeq());
                         entity.setIdDetailCheckup(bean.getIdDetailCheckup());
                         entity.setIdTindakan(rawatInap.getIdRawatInap());
-                        entity.setNamaTindakan("Kamar "+rawatInap.getNamaRangan());
+                        entity.setNamaTindakan("Kamar "+rawatInap.getNamaRangan()+" ("+rawatInap.getLamakamar()+" hari @Rp."+rawatInap.getTarif()+")");
                         entity.setKeterangan("kamar");
 
                         try {

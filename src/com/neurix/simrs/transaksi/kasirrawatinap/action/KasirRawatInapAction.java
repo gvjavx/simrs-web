@@ -370,7 +370,7 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 if(resultListObatWithPPN.size() > 0){
                     reportParams.put("ppnObat", ppnObat);
                 }else{
-                    reportParams.put("ppnObat", "");
+                    reportParams.put("ppnObat", 0);
                 }
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
                 reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);

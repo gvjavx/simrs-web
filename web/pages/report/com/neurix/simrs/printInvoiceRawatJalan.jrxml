@@ -694,7 +694,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{ppnObat} == "" ? "-" : $P{ppnObat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{ppnObat}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="134" height="15" uuid="9d246690-28c1-4f81-a743-7fa63b28dd9c"/>
