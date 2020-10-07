@@ -1061,6 +1061,8 @@ public class CheckupAction extends BaseMasterAction {
                                     }
 
                                     Tindakan tin = new Tindakan();
+                                    tin.setTarifBpjs(entity.getTarifBpjs());
+                                    tin.setTindakan(entity.getTindakan());
                                     tin.setIdTindakan(entity.getIdTindakan());
                                     tin.setKategoriInaBpjs(entity.getKategoriInaBpjs());
                                     tindakans.add(tin);

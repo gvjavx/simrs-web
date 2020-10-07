@@ -994,6 +994,9 @@ ADD COLUMN id_kategori_lab VARCHAR(50);
 ALTER TABLE it_simrs_rawat_inap
 ALTER COLUMN id_ruangan TYPE VARCHAR(50);
 
+ALTER TABLE it_simrs_tindakan_rawat
+ALTER COLUMN id_tindakan TYPE VARCHAR(50);
+
 
 
 

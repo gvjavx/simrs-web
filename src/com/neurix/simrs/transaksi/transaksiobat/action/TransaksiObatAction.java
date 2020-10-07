@@ -3342,7 +3342,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         String branchId = CommonUtil.userBranchLogin();
         String branchName = CommonUtil.userBranchNameLogin();
 
-        String catatan = "Pengeluaran Obat " + namaApotek + " " + branchName + " No. Detail Checkup : " + idDetailCheckup + " No. RM " + idPasien;
+        String catatan = "Pemasukan Obat Karna Reture " + namaApotek + " " + branchName + " No. Detail Checkup : " + idDetailCheckup + " No. RM " + idPasien;
 
         String noJurnal = "";
 
