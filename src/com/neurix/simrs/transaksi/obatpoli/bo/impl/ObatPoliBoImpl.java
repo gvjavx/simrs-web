@@ -2246,8 +2246,14 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         if (notFound)
             obatEntity = getObatById(bean.getIdObat(), bean.getBranchAsal(), bean.getIdBarang());
 
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+
+        String seq = getIdNextSeqObat();
+        String idBarang = f.format(now) + seq;
+
         ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();
-        newObatEntity.setIdBarang(obatEntity.getIdBarang());
+        newObatEntity.setIdBarang(idBarang);
         newObatEntity.setNamaObat(obatEntity.getNamaObat());
         newObatEntity.setMerk(obatEntity.getMerk());
         newObatEntity.setLembarPerBox(obatEntity.getLembarPerBox());
@@ -2364,12 +2370,12 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 obatEntity.setAverageHargaBiji(newAvgHargaBijian);
             }
 
-
+            obatEntity.setIdBarang(idBarang);
             obatEntity.setAction("U");
             obatEntity.setLastUpdate(time);
             obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
             try {
-                obatDao.updateAndSave(obatEntity);
+                obatDao.addAndSave(obatEntity);
             } catch (HibernateException e) {
                 logger.error("[ObatPoliBoImpl.updateAddStockGudangOtherBranch update] ERROR.", e);
                 throw new GeneralBOException("[ObatPoliBoImpl.updateAddStockGudangOtherBranch update] ERROR." + e.getMessage());
