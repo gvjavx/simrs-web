@@ -100,7 +100,7 @@
 
 
 
-                <legend align="left">Edit Skala Gaji Pensiun</legend>
+                <legend align="left">Edit Payroll Iuran Pegawai DPLK</legend>
 
 
                 <table>
@@ -114,7 +114,7 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Id :</small></label>
+                            <label class="control-label"><small>ID :</small></label>
                         </td>
                         <td>
                             <table>
@@ -138,7 +138,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Poin :</small></label>
+                            <label class="control-label"><small>Ms. Kerja Gol. :</small></label>
                         </td>
                         <td>
                             <table>

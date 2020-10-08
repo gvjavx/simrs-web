@@ -49,8 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Skala Gaji Pensiun
-            <small>e-HEALTH</small>
+            Payroll Iuran Pegawai DPLK
         </h1>
     </section>
 
@@ -77,7 +76,7 @@
                         <table >
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Skala Gaji Id :</small></label>
+                                    <label class="control-label"><small>ID :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -134,7 +133,7 @@
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
-                                            Add Skala Gaji Pensiun
+                                            Add Iuran Pensiun DPLK
                                         </sj:a>
                                     </td>
                                     <td>
@@ -183,9 +182,9 @@
                                                 </sj:a>
 
                                             </display:column>
-                                            <display:column property="skalaGajiPensiunId" sortable="true" title="Skala Gaji ID" />
+                                            <display:column property="skalaGajiPensiunId" sortable="true" title="ID" />
                                             <display:column property="golonganName" sortable="true" title="Golongan"  />
-                                            <display:column property="poin" sortable="true" title="Poin"  />
+                                            <display:column property="poin" sortable="true" title="Ms. Kerja Gol."  />
                                             <display:column property="nilai" sortable="true" title="Nilai"  />
                                         </display:table>
                                     </td>

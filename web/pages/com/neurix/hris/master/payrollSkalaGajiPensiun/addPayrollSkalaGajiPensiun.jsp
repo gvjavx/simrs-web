@@ -100,7 +100,7 @@
 
 
 
-                <legend align="left">Add Payroll Skala Gaji Pensiun</legend>
+                <legend align="left">Add Payroll Iuran Pegawai DPLK</legend>
 
 
                 <table>
@@ -127,7 +127,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Point :</small></label>
+                            <label class="control-label"><small>Ms. Kerja Gol. :</small></label>
                         </td>
                         <td>
                             <table>

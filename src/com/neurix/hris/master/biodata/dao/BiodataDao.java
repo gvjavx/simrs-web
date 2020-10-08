@@ -1063,6 +1063,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tpegawai.nama_pegawai, \n" +
                 "\tposition.position_name, \n" +
                 "\tpegawai.tipe_pegawai, \n" +
+                "\tpegawai.tanggal_masuk, \n" +
                 "\tposisi.profesi_id\n" +
                 "\n" +
                 "\tFROM im_hris_pegawai pegawai\n" +
@@ -1089,7 +1090,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setNamaPegawai((String) row[1]);
             result.setPositionName((String) row[2]);
             result.setTipePegawai((String) row[3]);
-            result.setProfesiId((String)row[4]);
+            result.setTanggalMasuk((Date) row[4]);
+            result.setProfesiId((String)row[5]);
 
             listOfResult.add(result);
         }

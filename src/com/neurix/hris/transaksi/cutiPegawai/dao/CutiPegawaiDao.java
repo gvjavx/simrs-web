@@ -574,6 +574,27 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
 
     }
 
+    public String findCutiAktifNip(String nip){
+        String listOfResult="";
+        String query ="SELECT * FROM \n" +
+                "it_hris_cuti_pegawai cuti\n" +
+                "\tINNER JOIN it_hris_pegawai_position posisi ON cuti.nip=posisi.nip \n" +
+                "WHERE\n" +
+                "\tcuti.approval_flag is null AND \n"+
+                "\tcuti.nip='"+nip+"'";
+
+        List<Object[]> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).list();
+        if (results.size()>0){
+            listOfResult="Masih ada "+results.size()+" Cuti yang Aktif";
+        } else {
+            listOfResult="N";
+        }
+        return listOfResult;
+
+    }
+
     public String findCutiToBatal(String nip){
         String listOfResult="";
         String query = "select max(cuti_pegawai_id) from it_hris_cuti_pegawai where cancel_flag = 'N' and nip ='"+nip+"'";

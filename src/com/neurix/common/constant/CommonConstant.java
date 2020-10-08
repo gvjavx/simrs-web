@@ -255,5 +255,8 @@ public class CommonConstant {
 //    public final static String TRANSAKSI_ID_PENYEWAAN_LAHAN ="69";
     public final static String TRANSAKSI_ID_KOREKSI_AKHIR_TAHUN ="99";
     public final static String DEFAULT_RESET_CUTI_PANJANG =CommonUtil.getPropertyParams("default.cuti.panjang");
+    public final static String ROLE_ID_ADMIN_SUPER = CommonUtil.getPropertyParams("role.id.admin.super");
+    public final static String ID_IJIN_MELAHIRKAN = CommonUtil.getPropertyParams("id.ijin.melahirkan");
+
 
 }

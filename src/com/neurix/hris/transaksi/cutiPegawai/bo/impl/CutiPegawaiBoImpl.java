@@ -549,54 +549,54 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     int tahunMulai = calendar1.get(Calendar.YEAR);
 
                     if (tahunMulai > tahun){
-                        String cutiPegawaiID;
-                        try {
-                            // Generating ID, get from postgre sequence
-                            cutiPegawaiID = cutiPegawaiDao.getNextCutiPegawaiId();
-                        } catch (HibernateException e) {
-                            logger.error("[CutiPegawaiBoImpl.saveCutiBersama] Error, " + e.getMessage());
-                                throw new GeneralBOException("Found problem when getting sequence cutiPegawai Id , please info to your admin..." + e.getMessage());
-                        }
-                        // creating object entity serializable
-                        ItCutiPegawaiEntity itCutiPegawaiEntity = new ItCutiPegawaiEntity();
-                        itCutiPegawaiEntity.setCutiPegawaiId(cutiPegawaiID);
-                        itCutiPegawaiEntity.setNip(bean.getNip());
-                        itCutiPegawaiEntity.setPegawaiPenggantiSementara("");
-                        itCutiPegawaiEntity.setCutiId("CT002");
-                        itCutiPegawaiEntity.setLamaHariCuti(BigInteger.valueOf(0));
-                        itCutiPegawaiEntity.setSisaCutiHari(BigInteger.valueOf(12));
-                        itCutiPegawaiEntity.setApprovalId("");
-                        itCutiPegawaiEntity.setKeterangan("RESET TAHUNAN");
-                        itCutiPegawaiEntity.setAlamatCuti("");
-                        itCutiPegawaiEntity.setApprovalDate(bean.getCreatedDate());
-                        itCutiPegawaiEntity.setNote("");
-                        itCutiPegawaiEntity.setClosed("");
-                        itCutiPegawaiEntity.setCancelFlag("N");
-                        itCutiPegawaiEntity.setNoteApproval("");
-                        itCutiPegawaiEntity.setAlamatCuti("");
-                        itCutiPegawaiEntity.setApprovalId("system");
-                        itCutiPegawaiEntity.setTanggalDari((Date) bean.getTanggalDari());
-                        itCutiPegawaiEntity.setTanggalSelesai((Date) bean.getTanggalSelesai());
-                        itCutiPegawaiEntity.setApprovalFlag("Y");
-                        itCutiPegawaiEntity.setApprovalDate(bean.getCreatedDate());
-//                        itCutiPegawaiEntity.setApprovalId(bean.getCreatedWho());
-                        itCutiPegawaiEntity.setCancelPerson("");
-                        itCutiPegawaiEntity.setCancelNote("");
-                        itCutiPegawaiEntity.setFlag("Y");
-                        itCutiPegawaiEntity.setAction("C");
-                        itCutiPegawaiEntity.setCreatedWho(bean.getCreatedWho());
-                        itCutiPegawaiEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                        itCutiPegawaiEntity.setCreatedDate(bean.getCreatedDate());
-                        itCutiPegawaiEntity.setLastUpdate(bean.getLastUpdate());
-                        itCutiPegawaiEntity.setFlagPerbaikan("Y");
-
-                        try {
-                            // insert into database
-                            cutiPegawaiDao.addAndSave(itCutiPegawaiEntity);
-                        } catch (HibernateException e) {
-                            logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
-                        }
+//                        String cutiPegawaiID;
+//                        try {
+//                            // Generating ID, get from postgre sequence
+//                            cutiPegawaiID = cutiPegawaiDao.getNextCutiPegawaiId();
+//                        } catch (HibernateException e) {
+//                            logger.error("[CutiPegawaiBoImpl.saveCutiBersama] Error, " + e.getMessage());
+//                                throw new GeneralBOException("Found problem when getting sequence cutiPegawai Id , please info to your admin..." + e.getMessage());
+//                        }
+//                        // creating object entity serializable
+//                        ItCutiPegawaiEntity itCutiPegawaiEntity = new ItCutiPegawaiEntity();
+//                        itCutiPegawaiEntity.setCutiPegawaiId(cutiPegawaiID);
+//                        itCutiPegawaiEntity.setNip(bean.getNip());
+//                        itCutiPegawaiEntity.setPegawaiPenggantiSementara("");
+//                        itCutiPegawaiEntity.setCutiId("CT002");
+//                        itCutiPegawaiEntity.setLamaHariCuti(BigInteger.valueOf(0));
+//                        itCutiPegawaiEntity.setSisaCutiHari(BigInteger.valueOf(12));
+//                        itCutiPegawaiEntity.setApprovalId("");
+//                        itCutiPegawaiEntity.setKeterangan("RESET TAHUNAN");
+//                        itCutiPegawaiEntity.setAlamatCuti("");
+//                        itCutiPegawaiEntity.setApprovalDate(bean.getCreatedDate());
+//                        itCutiPegawaiEntity.setNote("");
+//                        itCutiPegawaiEntity.setClosed("");
+//                        itCutiPegawaiEntity.setCancelFlag("N");
+//                        itCutiPegawaiEntity.setNoteApproval("");
+//                        itCutiPegawaiEntity.setAlamatCuti("");
+//                        itCutiPegawaiEntity.setApprovalId("system");
+//                        itCutiPegawaiEntity.setTanggalDari((Date) bean.getTanggalDari());
+//                        itCutiPegawaiEntity.setTanggalSelesai((Date) bean.getTanggalSelesai());
+//                        itCutiPegawaiEntity.setApprovalFlag("Y");
+//                        itCutiPegawaiEntity.setApprovalDate(bean.getCreatedDate());
+////                        itCutiPegawaiEntity.setApprovalId(bean.getCreatedWho());
+//                        itCutiPegawaiEntity.setCancelPerson("");
+//                        itCutiPegawaiEntity.setCancelNote("");
+//                        itCutiPegawaiEntity.setFlag("Y");
+//                        itCutiPegawaiEntity.setAction("C");
+//                        itCutiPegawaiEntity.setCreatedWho(bean.getCreatedWho());
+//                        itCutiPegawaiEntity.setLastUpdateWho(bean.getLastUpdateWho());
+//                        itCutiPegawaiEntity.setCreatedDate(bean.getCreatedDate());
+//                        itCutiPegawaiEntity.setLastUpdate(bean.getLastUpdate());
+//                        itCutiPegawaiEntity.setFlagPerbaikan("Y");
+//
+//                        try {
+//                            // insert into database
+//                            cutiPegawaiDao.addAndSave(itCutiPegawaiEntity);
+//                        } catch (HibernateException e) {
+//                            logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+//                            throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+//                        }
 
 //                        BigInteger jumlahCutiPegawai = BigInteger.valueOf(0);
 //                        List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
@@ -1967,7 +1967,21 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             result.setStSetelahResetCutiTahunan("");
             result.setStSetelahResetCutiPanjang("");
 
-            listCutiPegawai.add(result);
+            if ("TP03".equalsIgnoreCase(biodata.getTipePegawai())){
+                Date tanggalSekarang = new Date(new java.util.Date().getTime());
+                Date tanggalMasuk = new Date(new java.util.Date().getTime());
+                if (result.getTanggalMasuk()!=null){
+                    tanggalMasuk = CommonUtil.dateUtiltoDateSql(result.getTanggalMasuk());
+                }
+
+                int selisihTahun = CommonUtil.getDiffYears(tanggalMasuk ,tanggalSekarang);
+
+                if (selisihTahun>0){
+                    listCutiPegawai.add(result);
+                }
+            }else{
+                listCutiPegawai.add(result);
+            }
         }
         logger.info("[UserBoImpl.getCriteriaForInisialisasiCuti] end process <<<");
         return listCutiPegawai;
@@ -2148,6 +2162,62 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     }
                 }
 
+                // MERESET CUTI APABILA CUTI TAHUN DEPAN DIAPPROVE
+                if ("Y".equalsIgnoreCase(bean.getApprovalFlag())){
+                    List<ItCutiPegawaiEntity>itCutiPegawaiEntities = cutiPegawaiDao.getLastCutiPegawai(itCutiPegawaiEntity.getNip());
+                    Calendar calendar = Calendar.getInstance();
+                    Timestamp lastTglPengajuan =new  Timestamp (itCutiPegawaiEntities.get(0).getTanggalDari().getTime());
+                    calendar.setTime(lastTglPengajuan);
+                    int tahun = calendar.get(Calendar.YEAR);
+
+                    Calendar calendar1 = Calendar.getInstance();
+                    calendar1.setTime(itCutiPegawaiEntity.getTanggalDari());
+                    int tahunMulai = calendar1.get(Calendar.YEAR);
+
+                    if (tahunMulai > tahun) {
+                        // creating object entity serializable
+                        ItCutiPegawaiEntity resetCuti = new ItCutiPegawaiEntity();
+                        resetCuti.setCutiPegawaiId(cutiPegawaiDao.getNextCutiPegawaiId());
+                        resetCuti.setNip(bean.getNip());
+                        resetCuti.setPegawaiPenggantiSementara("");
+                        resetCuti.setCutiId("CT002");
+                        resetCuti.setLamaHariCuti(BigInteger.valueOf(0));
+                        resetCuti.setSisaCutiHari(BigInteger.valueOf(12));
+                        resetCuti.setApprovalId("");
+                        resetCuti.setKeterangan("RESET TAHUNAN");
+                        resetCuti.setAlamatCuti("");
+                        resetCuti.setApprovalDate(itCutiPegawaiEntity.getCreatedDate());
+                        resetCuti.setNote("");
+                        resetCuti.setClosed("");
+                        resetCuti.setCancelFlag("N");
+                        resetCuti.setNoteApproval("");
+                        resetCuti.setAlamatCuti("");
+                        resetCuti.setApprovalId("system");
+                        resetCuti.setTanggalDari(itCutiPegawaiEntity.getTanggalDari());
+                        resetCuti.setTanggalSelesai(itCutiPegawaiEntity.getTanggalSelesai());
+                        resetCuti.setApprovalFlag("Y");
+                        resetCuti.setApprovalDate(itCutiPegawaiEntity.getCreatedDate());
+                        resetCuti.setCancelPerson("");
+                        resetCuti.setCancelNote("");
+                        resetCuti.setFlag("Y");
+                        resetCuti.setAction("C");
+                        resetCuti.setCreatedWho(itCutiPegawaiEntity.getCreatedWho());
+                        resetCuti.setLastUpdateWho(itCutiPegawaiEntity.getLastUpdateWho());
+                        resetCuti.setCreatedDate(itCutiPegawaiEntity.getCreatedDate());
+                        resetCuti.setLastUpdate(itCutiPegawaiEntity.getLastUpdate());
+                        resetCuti.setFlagPerbaikan("Y");
+
+                        try {
+                            // insert into database
+                            cutiPegawaiDao.addAndSave(itCutiPegawaiEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                        }
+                    }
+                }
+
+
                 if (minus){
                     BigInteger selisih= itCutiPegawaiEntity.getSisaCutiHari().abs();
                     itCutiPegawaiEntity.setSisaCutiHari(BigInteger.valueOf(0));
@@ -2187,7 +2257,6 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                 // SEND NOTIF
                 ImBiodataEntity imBiodataEntity =  biodataDao.getById("nip", itCutiPegawaiEntity.getNip(), "Y");
-                Integer kelompok = personilPositionDao.getKelompokPosition(itCutiPegawaiEntity.getNip());
 
                 if (bean.getApprovalFlag().equals("Y")) {
                     //Send notif ke orang yang mengajukan
@@ -2195,7 +2264,6 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     notifSelf.setNip(itCutiPegawaiEntity.getNip());
                     notifSelf.setNoRequest(bean.getCutiPegawaiId());
                     notifSelf.setTipeNotifId("umum");
-//                    notifSelf.setTipeNotifName(("Cuti Pegawai"));
                     notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote("Cuti anda pada tanggal "+CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari())+" sampai dengan tanggal "+CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai())+" di approve oleh atasan anda");
                     notifSelf.setCreatedWho(itCutiPegawaiEntity.getNip());
@@ -2205,13 +2273,11 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                     Notifikasi notifAtasan = new Notifikasi();
                     if (bean.isForMobile())
-//                        notifAtasan.setNip(bean.getNip());
                         notifAtasan.setNip(bean.getNipUserLogin());
                     else
                         notifAtasan.setNip(CommonUtil.userIdLogin());
                     notifAtasan.setNoRequest(bean.getCutiPegawaiId());
                     notifAtasan.setTipeNotifId("umum");
-//                    notifAtasan.setTipeNotifName(("Cuti Pegawai"));
                     notifAtasan.setTipeNotifName(("Pemberitahuan"));
                     notifAtasan.setNote(imBiodataEntity.getNamaPegawai() + " mengajukan cuti pada tanggal " +CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari()) + " sampai dengan tanggal " + CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai()));
                     if (bean.isForMobile())
@@ -2229,7 +2295,6 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         notifElse.setNip(bean.getPegawaiPenggantiSementara());
                         notifElse.setNoRequest(bean.getCutiPegawaiId());
                         notifElse.setTipeNotifId("umum");
-//                        notifElse.setTipeNotifName(("Cuti Pegawai"));
                         notifElse.setTipeNotifName(("Pemberitahuan"));
                         notifElse.setNote("Tolong untuk bisa Menggantikan sementara " + imBiodataEntity.getNamaPegawai()+" pada Tanggal "+itCutiPegawaiEntity.getTanggalDari()+" sampai "+itCutiPegawaiEntity.getTanggalSelesai());
                         notifElse.setCreatedWho(itCutiPegawaiEntity.getNip());
@@ -2243,22 +2308,11 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     if (!("").equalsIgnoreCase(itCutiPegawaiEntity.getNoteApproval())){
                         msg="dikarenakan "+itCutiPegawaiEntity.getNoteApproval();
                     }
-                    //Send notif ke orang yang mengajukan
-//                    Notifikasi notifSelf= new Notifikasi();
-//                    notifSelf.setNip(itCutiPegawaiEntity.getCutiPegawaiId());
-//                    notifSelf.setNoRequest(bean.getCutiPegawaiId());
-//                    notifSelf.setTipeNotifId("umum");
-//                    notifSelf.setTipeNotifName(("Cuti Pegawai"));
-//                    notifSelf.setNote("Cuti anda pada tanggal "+itCutiPegawaiEntity.getTanggalDari()+" sampai dengan tanggal "+itCutiPegawaiEntity.getTanggalSelesai()+" tidak di approve oleh atasan "+msg);
-//                    notifSelf.setCreatedWho(itCutiPegawaiEntity.getNip());
-//                    notifSelf.setTo("self");
-//                    notifikasiList.add(notifSelf);
 
                     Notifikasi notifSelf= new Notifikasi();
                     notifSelf.setNip(itCutiPegawaiEntity.getNip());
                     notifSelf.setNoRequest(bean.getCutiPegawaiId());
                     notifSelf.setTipeNotifId("umum");
-//                    notifSelf.setTipeNotifName(("Cuti Pegawai"));
                     notifSelf.setTipeNotifName(("Pemberitahuan"));
                     notifSelf.setNote("Cuti anda pada tanggal "+itCutiPegawaiEntity.getTanggalDari()+" sampai dengan tanggal "+itCutiPegawaiEntity.getTanggalSelesai()+" tidak di approve oleh atasan "+msg);
                     notifSelf.setCreatedWho(itCutiPegawaiEntity.getNip());
@@ -3134,7 +3188,12 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 if (result.getSisaCutiTahunan()==null){
                     result.setSisaCutiTahunan("0");
                 }
-                listCutiPegawai.add(result);
+
+                //CEK APAKAH ADA CUTI MENGGANTUNG
+                String status = cutiPegawaiDao.findCutiAktifNip(result.getNip());
+                if ("N".equalsIgnoreCase(status)){
+                    listCutiPegawai.add(result);
+                }
             }catch (HibernateException e) {
                 logger.error("[UserBoImpl.getCriteriaForResetCutiTahunan] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
