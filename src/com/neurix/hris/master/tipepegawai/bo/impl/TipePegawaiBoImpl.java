@@ -118,22 +118,28 @@ public class TipePegawaiBoImpl implements TipePegawaiBo{
         logger.info("[TipePegawaiBoImpl.saveEdit] start process >>>");
         boolean saved = false;
         if (bean!=null) {
-            ImHrisTipePegawai entityData = new ImHrisTipePegawai();
-            entityData.setTipePegawaiId(bean.getTipePegawaiId());
-            entityData.setTipePegawaiName(bean.getTipePegawaiName());
-            entityData.setFlag(bean.getFlag());
-            entityData.setAction(bean.getAction());
-            entityData.setCreateDateWho(bean.getCreatedWho());
-            entityData.setLastUpdateWho(bean.getLastUpdateWho());
-            entityData.setCreatedDate(bean.getCreatedDate());
-            entityData.setLastUpdate(bean.getLastUpdate());
-            try {
-                tipePegawaiDao.updateAndSave(entityData);
-                saved = true;
-            } catch (HibernateException e) {
-                logger.error("[TipePegawaiBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+            String status = cekStatus(bean.getTipePegawaiName());
+            if (!status.equalsIgnoreCase("Exist")){
+                ImHrisTipePegawai entityData = new ImHrisTipePegawai();
+                entityData.setTipePegawaiId(bean.getTipePegawaiId());
+                entityData.setTipePegawaiName(bean.getTipePegawaiName());
+                entityData.setFlag(bean.getFlag());
+                entityData.setAction(bean.getAction());
+                entityData.setCreateDateWho(bean.getCreatedWho());
+                entityData.setLastUpdateWho(bean.getLastUpdateWho());
+                entityData.setCreatedDate(bean.getCreatedDate());
+                entityData.setLastUpdate(bean.getLastUpdate());
+                try {
+                    tipePegawaiDao.updateAndSave(entityData);
+                    saved = true;
+                } catch (HibernateException e) {
+                    logger.error("[TipePegawaiBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
+            }else{
+                throw new GeneralBOException("Maaf data tersebut sudah ada ");
             }
+
         }
         if (saved){
             String id;

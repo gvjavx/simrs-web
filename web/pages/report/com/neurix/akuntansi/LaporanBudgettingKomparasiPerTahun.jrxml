@@ -56,12 +56,6 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{grup}]]></textFieldExpression>
 				</textField>
-				<line>
-					<reportElement key="line-3" x="0" y="0" width="567" height="1" uuid="50849c6a-caa6-4669-9735-1feaf363a243"/>
-					<graphicElement>
-						<pen lineWidth="1.0" lineStyle="Dashed"/>
-					</graphicElement>
-				</line>
 			</band>
 		</groupHeader>
 	</group>
@@ -311,6 +305,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tahunLalu}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement key="line-3" x="0" y="21" width="567" height="1" uuid="50849c6a-caa6-4669-9735-1feaf363a243"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
 			<textField pattern="#,##0" isBlankWhenNull="true">
 				<reportElement key="textField-22" x="488" y="2" width="79" height="20" uuid="0cebad90-2df1-4527-a29d-d1d59f29c7a8"/>
 				<box>

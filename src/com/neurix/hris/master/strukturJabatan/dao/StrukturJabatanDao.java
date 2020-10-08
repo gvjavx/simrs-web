@@ -567,6 +567,48 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
         return listOfResult;
     }
 
+    public List<ImStrukturJabatanEntity> getIdStrukturJabatanBawah(String idParent){
+        List<ImStrukturJabatanEntity> listOfResult = new ArrayList<ImStrukturJabatanEntity>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select \n" +
+                "\tjabatan.struktur_jabatan_id,\n" +
+                "\tjabatan.level,\n" +
+                "\tjabatan.parent_id,\n" +
+                "\tjabatan.branch_id,\n" +
+                "\tjabatan.position_id,\n" +
+                "\tposisi.position_name,\n" +
+                "\tposisiPegawai.nip,\n" +
+                "\tposisi.kelompok_id\n" +
+                "from\n" +
+                "\tim_hris_struktur_jabatan jabatan\n" +
+                "\tleft join im_position posisi on posisi.position_id = jabatan.position_id\n" +
+                "\tleft join it_hris_pegawai_position posisiPegawai on posisiPegawai.branch_id = jabatan.branch_id and posisiPegawai.position_id = jabatan.position_id\n" +
+                "where\n" +
+                "\tjabatan.parent_id = '"+idParent+"'\n" +
+                "\tand jabatan.flag = 'Y'\n" +
+                "\tand posisi.flag = 'Y'\n" +
+                "\tand posisiPegawai.flag = 'Y'";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+
+        for (Object[] row : results) {
+            ImStrukturJabatanEntity result  = new ImStrukturJabatanEntity();
+            result.setStrukturJabatanId((String) row[0]);
+            result.setLevel(Long.valueOf(row[1].toString()));
+            result.setParentId((String) row[2]);
+            result.setBranchId((String) row[3]);
+            result.setPositionId((String) row[4]);
+            result.setPositionName((String) row[5]);
+            result.setNip((String) row[6]);
+            result.setKelompokId((String) row[7]);
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
+
     public String getNamaDirektur(){
         String nama = "";
         List<Object[]> results = new ArrayList<Object[]>();

@@ -12,6 +12,8 @@ import com.neurix.hris.master.department.dao.DepartmentDao;
 import com.neurix.hris.master.department.model.ImDepartmentEntity;
 import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
+import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
+import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -29,6 +31,15 @@ public class PositionBoImpl implements PositionBo {
     private PositionHistoryDao positionHistoryDao;
     private DepartmentDao departmentDao;
     private PositionBagianDao positionBagianDao;
+    private PersonilPositionDao personilPositionDao;
+
+    public PersonilPositionDao getPersonilPositionDao() {
+        return personilPositionDao;
+    }
+
+    public void setPersonilPositionDao(PersonilPositionDao personilPositionDao) {
+        this.personilPositionDao = personilPositionDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -450,6 +461,15 @@ public class PositionBoImpl implements PositionBo {
         if (position != null) {
 
             String positionId = position.getPositionId();
+
+            //validasi
+            List<ItPersonilPositionEntity> personilPositionEntityList= personilPositionDao.getListPersonilPositionByPositionId(positionId);
+
+            if (personilPositionEntityList.size()>0){
+                String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
 
             ImPosition imPosition = null;
             ImPositionHistory historyEntity = new ImPositionHistory();

@@ -182,7 +182,7 @@ public class GolonganBoImpl implements GolonganBo {
                 }
             }
         }else{
-            throw new GeneralBOException("Maaf Data Dengan Level/Nama Level Tersebut Sudah Ada");
+            throw new GeneralBOException("Maaf Data Dengan Grade/Nama Tersebut Sudah Ada");
         }
 
         logger.info("[GolonganBoImpl.saveEdit] end process <<<");
@@ -225,7 +225,7 @@ public class GolonganBoImpl implements GolonganBo {
                     throw new GeneralBOException("Found problem when saving new data Golongan, please info to your admin..." + e.getMessage());
                 }
             }else{
-                throw new GeneralBOException("Maaf Data Dengan Level Tersebut Sudah Ada");
+                throw new GeneralBOException("Tidak boleh add dengan grade / nama yang sama ");
             }
         }
 

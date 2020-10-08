@@ -55,66 +55,81 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
     }
 
     @Override
-    public void saveDelete(StrukturJabatan bean) throws GeneralBOException {
+    public String saveDeleteStruktur(StrukturJabatan bean) throws GeneralBOException {
         logger.info("[saveDelete.saveDelete] start process >>>");
+        String status = "";
 
         if (bean!=null) {
 
             String strukturJabatanId = bean.getStrukturJabatanId();
 
-            ImStrukturJabatanEntity imStrukturJabatanEntity = null;
-            ImStrukturJabatanHistoryEntity imStrukturJabatanHistoryEntity = new ImStrukturJabatanHistoryEntity();
-            String idHistory = "";
-            try {
-                // Get data from database by ID
-                imStrukturJabatanEntity = strukturJabatanDao.getById("strukturJabatanId", strukturJabatanId);
-                idHistory = strukturJabatanDao.getNextStrukturJabatanHistoryId();
-            } catch (HibernateException e) {
-                logger.error("[StrukturJabatanBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+            // validasi jika masih digunakan oleh bawahan
+            List<ImStrukturJabatanEntity> strukturJabatanEntityList = strukturJabatanDao.getIdStrukturJabatanBawah(strukturJabatanId);
+            if (strukturJabatanEntityList.size()>0){
+                status = "Struktur jabatan ini masih memiliki jabatan di bawahnya , silahkan hapus / pindahkan terlebih dahulu jabatan di bawahnya";
             }
 
-            if (imStrukturJabatanEntity != null) {
-                imStrukturJabatanHistoryEntity.setId(idHistory);
-                imStrukturJabatanHistoryEntity.setStrukturJabatanId(imStrukturJabatanEntity.getStrukturJabatanId());
-                imStrukturJabatanHistoryEntity.setPositionId(imStrukturJabatanEntity.getPositionId());
-                imStrukturJabatanHistoryEntity.setBranchId(imStrukturJabatanEntity.getBranchId());
-                imStrukturJabatanHistoryEntity.setParentId(imStrukturJabatanEntity.getParentId());
-                imStrukturJabatanHistoryEntity.setLevel(imStrukturJabatanEntity.getLevel());
-                imStrukturJabatanHistoryEntity.setFlag(imStrukturJabatanEntity.getFlag());
-                imStrukturJabatanHistoryEntity.setAction(imStrukturJabatanEntity.getAction());
-                imStrukturJabatanHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imStrukturJabatanHistoryEntity.setLastUpdate(bean.getLastUpdate());
-                imStrukturJabatanHistoryEntity.setCreatedWho(imStrukturJabatanEntity.getCreatedWho());
-                imStrukturJabatanHistoryEntity.setCreatedDate(imStrukturJabatanEntity.getCreatedDate());
-
-                // Modify from bean to entity serializable
-                imStrukturJabatanEntity.setStrukturJabatanId(bean.getStrukturJabatanId());
-                imStrukturJabatanEntity.setPositionId(bean.getPositionId());
-                imStrukturJabatanEntity.setLevel(bean.getLevel());
-                imStrukturJabatanEntity.setParentId(bean.getParentId());
-                imStrukturJabatanEntity.setFlag(bean.getFlag());
-                imStrukturJabatanEntity.setAction(bean.getAction());
-                imStrukturJabatanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imStrukturJabatanEntity.setLastUpdate(bean.getLastUpdate());
-
+            if (!"".equalsIgnoreCase(status)){
+                ImStrukturJabatanEntity imStrukturJabatanEntity = null;
+                ImStrukturJabatanHistoryEntity imStrukturJabatanHistoryEntity = new ImStrukturJabatanHistoryEntity();
+                String idHistory = "";
                 try {
-                    // Delete (Edit) into database
-                    strukturJabatanDao.updateAndSave(imStrukturJabatanEntity);
-                    strukturJabatanDao.addAndSaveHistory(imStrukturJabatanHistoryEntity);
+                    // Get data from database by ID
+                    imStrukturJabatanEntity = strukturJabatanDao.getById("strukturJabatanId", strukturJabatanId);
+                    idHistory = strukturJabatanDao.getNextStrukturJabatanHistoryId();
                 } catch (HibernateException e) {
                     logger.error("[StrukturJabatanBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data StrukturJabatan, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
                 }
 
+                if (imStrukturJabatanEntity != null) {
+                    imStrukturJabatanHistoryEntity.setId(idHistory);
+                    imStrukturJabatanHistoryEntity.setStrukturJabatanId(imStrukturJabatanEntity.getStrukturJabatanId());
+                    imStrukturJabatanHistoryEntity.setPositionId(imStrukturJabatanEntity.getPositionId());
+                    imStrukturJabatanHistoryEntity.setBranchId(imStrukturJabatanEntity.getBranchId());
+                    imStrukturJabatanHistoryEntity.setParentId(imStrukturJabatanEntity.getParentId());
+                    imStrukturJabatanHistoryEntity.setLevel(imStrukturJabatanEntity.getLevel());
+                    imStrukturJabatanHistoryEntity.setFlag(imStrukturJabatanEntity.getFlag());
+                    imStrukturJabatanHistoryEntity.setAction(imStrukturJabatanEntity.getAction());
+                    imStrukturJabatanHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imStrukturJabatanHistoryEntity.setLastUpdate(bean.getLastUpdate());
+                    imStrukturJabatanHistoryEntity.setCreatedWho(imStrukturJabatanEntity.getCreatedWho());
+                    imStrukturJabatanHistoryEntity.setCreatedDate(imStrukturJabatanEntity.getCreatedDate());
 
-            } else {
-                logger.error("[StrukturJabatanBoImpl.saveDelete] Error, not found data StrukturJabatan with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data StrukturJabatan with request id, please check again your data ...");
+                    // Modify from bean to entity serializable
+                    imStrukturJabatanEntity.setStrukturJabatanId(bean.getStrukturJabatanId());
+                    imStrukturJabatanEntity.setPositionId(bean.getPositionId());
+                    imStrukturJabatanEntity.setLevel(bean.getLevel());
+                    imStrukturJabatanEntity.setParentId(bean.getParentId());
+                    imStrukturJabatanEntity.setFlag(bean.getFlag());
+                    imStrukturJabatanEntity.setAction(bean.getAction());
+                    imStrukturJabatanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imStrukturJabatanEntity.setLastUpdate(bean.getLastUpdate());
 
+                    try {
+                        // Delete (Edit) into database
+                        strukturJabatanDao.updateAndSave(imStrukturJabatanEntity);
+                        strukturJabatanDao.addAndSaveHistory(imStrukturJabatanHistoryEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[StrukturJabatanBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data StrukturJabatan, please info to your admin..." + e.getMessage());
+                    }
+
+
+                } else {
+                    logger.error("[StrukturJabatanBoImpl.saveDelete] Error, not found data StrukturJabatan with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data StrukturJabatan with request id, please check again your data ...");
+
+                }
             }
         }
         logger.info("[StrukturJabatanBoImpl.saveDelete] end process <<<");
+        return status;
+    }
+
+    @Override
+    public void saveDelete(StrukturJabatan bean) throws GeneralBOException {
+
     }
 
     @Override
