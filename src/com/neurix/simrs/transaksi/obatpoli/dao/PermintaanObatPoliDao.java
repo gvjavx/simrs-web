@@ -98,11 +98,13 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
             flag = bean.getFlag();
         }
 
+        String joinPelayanan = "";
         String andBranch = "";
         if (bean.getFlagOtherBranch() != null && !"".equalsIgnoreCase(bean.getFlagOtherBranch())){
-            andBranch = "AND pop.branch_id LIKE '"+branchId+"' \n";
+            andBranch       = "AND pop.branch_id LIKE '"+branchId+"' \n";
         } else {
             andBranch = "AND ato.branch_id LIKE '"+branchId+"' \n";
+            joinPelayanan   = "INNER JOIN ( SELECT * FROM im_simrs_pelayanan WHERE branch_id = '"+branchId+"' AND flag = 'Y' ) pel ON pel.id_pelayanan = pop.tujuan_pelayanan \n";
         }
 
         String SQL = "";
@@ -164,7 +166,7 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                     "FROM mt_simrs_permintaan_obat_poli pop\n" +
                     "INNER JOIN mt_simrs_approval_transaksi_obat ato ON ato.id_approval_obat = pop.id_approval_obat\n" +
                     "INNER JOIN mt_simrs_transaksi_obat_detail tod ON tod.id_approval_obat = ato.id_approval_obat\n" +
-                    "INNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" +
+                    "INNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" + joinPelayanan +
                     "WHERE pop.flag LIKE :flag\n" +
 //                    "AND ato.branch_id LIKE :branchId\n" +
                     "AND tod.id_obat LIKE :idObat\n" +

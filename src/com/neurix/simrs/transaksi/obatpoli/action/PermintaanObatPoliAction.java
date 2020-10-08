@@ -426,6 +426,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                 }
             }
 
+            // jika other branch maka membuat jurnal
             List<Map> listOfObat = new ArrayList<>();
             List<Map> listOfObatRk = new ArrayList<>();
             if (otherBranch){
@@ -464,17 +465,29 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                         }
                     }
                 }
+
+
+                // create jurnal
+                Map jurnalMap = new HashMap();
+                jurnalMap.put("persediaan_gudang", listOfObat);
+                jurnalMap.put("rk_tujuan", listOfObatRk);
+
+                String catatan = "Pengiriman Barang dari "+pelayananTujuan+" ke "+pelayananAsal+" Unit " +branchAsalName+ " No. Permintaan " + permintaanObatPoliEntity.getIdPermintaanObatPoli();
+
+                try {
+                    billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_RK_PERSEDIAAN_PENGIRIM, jurnalMap, branchId, catatan, "Y");
+                    obatPoliBo.saveApproveRequest(obatPoli, transaksiObatDetails, isPoli);
+                    response.setStatus("success");
+                    response.setMessage("Oke");
+                } catch (GeneralBOException e){
+                    logger.error("[PermintaanObatPoliAction.saveKonfirmasiRequest] Error when create jurnal obat", e);
+                    response.setStatus("error");
+                    response.setMessage("Found Error "+e.getMessage());
+                }
             }
 
-            // create jurnal
-            Map jurnalMap = new HashMap();
-            jurnalMap.put("persediaan_gudang", listOfObat);
-            jurnalMap.put("rk_tujuan", listOfObatRk);
-
-            String catatan = "Pengiriman Barang dari "+pelayananTujuan+" ke "+pelayananAsal+" Unit " +branchAsalName+ " No. Permintaan " + permintaanObatPoliEntity.getIdPermintaanObatPoli();
 
             try {
-                billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_RK_PERSEDIAAN_PENGIRIM, jurnalMap, branchId, catatan, "Y");
                 obatPoliBo.saveApproveRequest(obatPoli, transaksiObatDetails, isPoli);
                 response.setStatus("success");
                 response.setMessage("Oke");
