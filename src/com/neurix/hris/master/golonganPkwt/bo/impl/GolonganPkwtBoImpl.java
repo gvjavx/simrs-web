@@ -1,6 +1,8 @@
 package com.neurix.hris.master.golonganPkwt.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.golonganPkwt.bo.GolonganPkwtBo;
 import com.neurix.hris.master.golonganPkwt.dao.GolonganPkwtDao;
 import com.neurix.hris.master.golonganPkwt.model.GolonganPkwt;
@@ -25,6 +27,15 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
 
     protected static transient Logger logger = Logger.getLogger(GolonganPkwtBoImpl.class);
     private GolonganPkwtDao golonganPkwtDao;
+    private BiodataDao biodataDao;
+
+    public BiodataDao getBiodataDao() {
+        return biodataDao;
+    }
+
+    public void setBiodataDao(BiodataDao biodataDao) {
+        this.biodataDao = biodataDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -52,6 +63,15 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
             String golonganIdHistory = "";
             ImGolonganPkwtEntity imGolonganPkwtEntity = null;
             ImGolonganPkwtHistoryEntity historyEntity = new ImGolonganPkwtHistoryEntity();
+
+            List<ImBiodataEntity> biodataEntityList = biodataDao.getBiodataByGolonganId(golonganPkwtId);
+
+            if (biodataEntityList.size()>0){
+                String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
+
             try {
                 // Get data from database by ID
                 imGolonganPkwtEntity = golonganPkwtDao.getById("golonganPkwtId", golonganPkwtId);

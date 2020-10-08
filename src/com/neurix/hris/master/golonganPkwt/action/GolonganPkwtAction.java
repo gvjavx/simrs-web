@@ -239,16 +239,7 @@ public class GolonganPkwtAction extends BaseMasterAction{
 
             golonganPkwtBoProxy.saveEdit(editGolongan);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = golonganPkwtBoProxy.saveErrorMessage(e.getMessage(), "GolonganBO.saveEdit");
-            } catch (GeneralBOException e1) {
-                logger.error("[GolonganAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[GolonganAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[GolonganAction.saveEdit] end process <<<");
@@ -272,16 +263,7 @@ public class GolonganPkwtAction extends BaseMasterAction{
 
             golonganPkwtBoProxy.saveDelete(deleteGolongan);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = golonganPkwtBoProxy.saveErrorMessage(e.getMessage(), "LiburBO.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[AlatAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[AlatAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[AlatAction.saveDelete] end process <<<");

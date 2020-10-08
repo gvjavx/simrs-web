@@ -196,7 +196,9 @@
                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
-
+                                            <display:setProperty name="export.excel.filename">StudyJurusan.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">StudyJurusan.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">StudyJurusan.pdf</display:setProperty>
                                         </display:table>
                                     </td>
                                 </tr>

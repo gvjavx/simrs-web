@@ -355,10 +355,10 @@
                                         });
 
                                         if (namaijin == "IJ013") {
-                                            $("#tgl2").prop("readonly", 'true');
+                                            // $("#tgl2").prop("readonly", 'true');
                                             $('#uploadSurat').show();
                                         } else {
-                                            $("#tgl2").prop("readonly", 'false');
+                                            // $("#tgl2").prop("readonly", 'false');
                                             $('#uploadSurat').hide();
                                         }
                                     })

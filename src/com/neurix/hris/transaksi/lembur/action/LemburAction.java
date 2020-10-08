@@ -459,18 +459,8 @@ public class LemburAction extends BaseMasterAction {
                 notifikasiBo.sendNotif(notifikasi);
             }
         }catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = lemburBoProxy.saveErrorMessage(e.getMessage(), "lemburBo.saveAdd");
-            } catch (GeneralBOException e1) {
-                logger.error("[lemburAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[lemburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
-
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultLembur");
@@ -478,6 +468,7 @@ public class LemburAction extends BaseMasterAction {
         logger.info("[lemburAction.saveAdd] end process >>>");
         return "success_save_add";
     }
+
     public List initComboPersonil(String query, String branchId) {
         logger.info("[LemburAction.initComboPersonil] start process >>>");
 

@@ -9,7 +9,9 @@
           p:studyJurusanBoProxy-ref="studyJurusanBoProxy" />
 
     <bean id="studyJurusanBo" class="com.neurix.hris.master.studyJurusan.bo.impl.StudyJurusanBoImpl"
-          p:studyJurusanDao-ref="studyJurusanDao" />
+          p:studyJurusanDao-ref="studyJurusanDao"
+          p:studyDao-ref="studyDao"
+    />
 
     <bean id="studyJurusanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="studyJurusanBo">

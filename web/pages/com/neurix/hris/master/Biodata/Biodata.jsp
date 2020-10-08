@@ -424,6 +424,18 @@
                                         </td>
                                     </tr>
                                 </s:if>
+                                <s:if test="isEdit()">
+                                    <tr>
+                                        <td>
+                                            <label class="control-label"><small>Jumlah Anak :</small></label>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </s:if>
 
                                 <%--<tr>--%>
                                     <%--<td>--%>

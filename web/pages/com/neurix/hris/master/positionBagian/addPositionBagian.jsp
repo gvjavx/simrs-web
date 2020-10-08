@@ -121,7 +121,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Sub Bidang/Divisi Name :</small></label>
+                            <label class="control-label"><small>Nama :</small></label>
                         </td>
                         <td>
                             <table>

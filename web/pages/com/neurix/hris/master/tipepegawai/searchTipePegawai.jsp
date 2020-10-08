@@ -224,7 +224,9 @@
                                                 <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                                 <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                                 <%--<display:column property="action" sortable="true" title="CreatedWho"/>--%>
-
+                                                <display:setProperty name="export.excel.filename">StatusPegawai.xls</display:setProperty>
+                                                <display:setProperty name="export.csv.filename">StatusPegawai.csv</display:setProperty>
+                                                <display:setProperty name="export.pdf.filename">StatusPegawai.pdf</display:setProperty>
                                             </display:table>
                                         </td>
                                     </tr>

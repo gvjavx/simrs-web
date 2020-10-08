@@ -237,23 +237,21 @@ public class BiodataAction extends BaseMasterAction{
 
     public Biodata init(String kode, String flag){
         logger.info("[BiodataAction.init] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<Biodata> listOfResult = (List<Biodata>) session.getAttribute("listOfResultBiodata");
 
-        if(kode != null && !"".equalsIgnoreCase(kode)){
-            if(listOfResult != null){
-                for (Biodata biodata : listOfResult) {
-                    if(kode.equalsIgnoreCase(biodata.getNip()) && flag.equalsIgnoreCase(biodata.getFlag())){
-                        setBiodata(biodata);
-                        break;
-                    }
-                }
-            } else {
-                setBiodata(new Biodata());
+        Biodata searchBiodata = new Biodata();
+        searchBiodata.setFlag(flag);
+        searchBiodata.setNip(kode);
+        List<Biodata> listOfsearchBiodata = new ArrayList();
+
+        try {
+            listOfsearchBiodata = biodataBoProxy.getByCriteria(searchBiodata);
+            for (Biodata biodata : listOfsearchBiodata){
+                setBiodata(biodata);
             }
-
-            logger.info("[BiodataAction.init] end process >>>");
+        }catch (GeneralBOException e){
+            throw new GeneralBOException(e.getMessage());
         }
+
         return getBiodata();
     }
 

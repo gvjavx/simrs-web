@@ -3322,7 +3322,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 data.setNilaiTotal(BigDecimal.ZERO);
             }
 
-            data.setNilaiTotalRealisasi(totalRealisasi(unit,tahun,data.getKodeRekening()));
+            data.setNilaiTotalRealisasi(totalRealisasi(unit,tahun,data.getKodeRekening(),data.getNoBudgetting()));
 
             listOfResult.add(data);
         }
@@ -3331,7 +3331,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
 
 
 
-    public BigDecimal totalRealisasi(String branchId,String tahun,String kodeRekening){
+    public BigDecimal totalRealisasi(String branchId,String tahun,String kodeRekening,String noBudgetting){
         BigDecimal total = new BigDecimal(0);
         String query="SELECT\n" +
                 "\tsum(jumlah_debit) as jumlah_debit\n" +
@@ -3341,6 +3341,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "\tim_akun_kode_rekening kr ON jd.rekening_id=kr.rekening_id\n" +
                 "WHERE\n" +
                 "\tkr.kode_rekening ilike '"+kodeRekening+"%'\n" +
+                "\tAND j.sumber_dana_id ilike '"+noBudgetting+"%' \n" +
                 "\tAND registered_flag='Y'\n" +
                 "\tAND jd.flag='Y'\n" +
                 "\tAND j.flag='Y'\n" +
@@ -3443,7 +3444,9 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             BudgettingDTO data= new BudgettingDTO();
             data.setDivisiId((String) row[0]);
             data.setDivisi((String) row[1]);
-            listOfResult.add(data);
+            if (!data.getDivisiId().equalsIgnoreCase("INVS")){
+                listOfResult.add(data);
+            }
         }
         return listOfResult;
     }
@@ -3468,7 +3471,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "    FROM \n" +
                 "      it_akun_budgeting_detail \n" +
                 "    WHERE \n" +
-                "      flag = 'Y' AND \n" +
+                "      flag = 'Y' \n" +
                 "    group by \n" +
                 "      no_budgeting, \n" +
                 "      divisi_id\n" +

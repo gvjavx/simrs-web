@@ -4,6 +4,7 @@ import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.common.util.ExpoPushNotif;
@@ -18,6 +19,8 @@ import com.neurix.hris.master.cutiPanjang.model.CutiPanjang;
 import com.neurix.hris.master.cutiPanjang.model.ImCutiPanjangEntity;
 import com.neurix.hris.master.department.dao.DepartmentDao;
 import com.neurix.hris.master.department.model.ImDepartmentEntity;
+import com.neurix.hris.master.golongan.dao.GolonganDao;
+import com.neurix.hris.master.golongan.model.ImGolonganEntity;
 import com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao;
 import com.neurix.hris.master.strukturJabatan.model.ImStrukturJabatanEntity;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
@@ -67,6 +70,27 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     private BranchDao branchDao;
     private String CLICK_ACTION = "TASK_CUTI";
     private IjinKeluarDao ijinKeluarDao;
+    private GolonganDao golonganDao;
+
+    public String getCLICK_ACTION() {
+        return CLICK_ACTION;
+    }
+
+    public void setCLICK_ACTION(String CLICK_ACTION) {
+        this.CLICK_ACTION = CLICK_ACTION;
+    }
+
+    public GolonganDao getGolonganDao() {
+        return golonganDao;
+    }
+
+    public void setGolonganDao(GolonganDao golonganDao) {
+        this.golonganDao = golonganDao;
+    }
+
+    public NotifikasiFcmDao getNotifikasiFcmDao() {
+        return notifikasiFcmDao;
+    }
 
     public IjinKeluarDao getIjinKeluarDao() {
         return ijinKeluarDao;
@@ -1845,7 +1869,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     if (imBiodataEntity.getGolongan()!=null){
                         if (!("").equalsIgnoreCase(imBiodataEntity.getGolongan())){
                             List<ImCutiPanjangEntity> cutiPanjangEntityList;
-                            cutiPanjangEntityList = cutiPanjangDao.getListCutiPanjangBygolonganAndBranch(imBiodataEntity.getGolongan(),"KD01");
+                            cutiPanjangEntityList = cutiPanjangDao.getListCutiPanjangBygolonganAndBranch(imBiodataEntity.getGolongan(), unit);
                             for (ImCutiPanjangEntity cutiPanjangEntity : cutiPanjangEntityList){
                                 if (Integer.parseInt(result.getSisaCutiTahunan())<0){
                                     result.setSetelahResetCutiPanjang(BigInteger.valueOf(cutiPanjangEntity.getJumlahCuti()+Integer.parseInt(result.getSisaCutiTahunan())));
@@ -1864,7 +1888,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 else{
                     result.setSisaCutiPanjang("0");
                     List<ImCutiPanjangEntity> cutiPanjangEntityList;
-                    cutiPanjangEntityList = cutiPanjangDao.getListCutiPanjangBygolonganAndBranch(imBiodataEntity.getGolongan(),"KD01");
+                    cutiPanjangEntityList = cutiPanjangDao.getListCutiPanjangBygolonganAndBranch(imBiodataEntity.getGolongan(),unit);
                     for (ImCutiPanjangEntity cutiPanjangEntity : cutiPanjangEntityList){
                         if (Integer.parseInt(result.getSisaCutiTahunan())<0){
                             result.setSetelahResetCutiPanjang(BigInteger.valueOf(cutiPanjangEntity.getJumlahCuti()+Integer.parseInt(result.getSisaCutiTahunan())));
@@ -1873,6 +1897,21 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         }
                     }
                 }
+
+
+                // set nama golongan
+                if (imBiodataEntity.getGolongan()!=null){
+                    ImGolonganEntity golonganEntity = golonganDao.getById("golonganId",imBiodataEntity.getGolongan());
+                    if (golonganEntity!=null){
+                        result.setGolonganName(golonganEntity.getGolonganName());
+                    }
+                }
+
+                //jika master belum di set
+                if (result.getSetelahResetCutiPanjang()==null){
+                    result.setSetelahResetCutiPanjang(BigInteger.valueOf(Long.parseLong(CommonConstant.DEFAULT_RESET_CUTI_PANJANG)));
+                }
+
                 //
                 try {
                     tahun = cutiPanjangDao.cekResetCutiPanjang(result.getNip());

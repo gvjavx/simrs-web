@@ -419,10 +419,10 @@
                                                                         <s:a href="#"><i class="fa fa-calendar-plus-o"></i> Cuti Bersama</s:a>
                                                                     </li>
                                                                     <li id="btnResetTahunan">
-                                                                        <s:a href="#"><i class="fa fa-calendar-check-o"></i> Reset Tahunan</s:a>
+                                                                        <s:a href="#"><i class="fa fa-calendar-check-o"></i> Reset Cuti Tahunan</s:a>
                                                                     </li>
                                                                     <li id="btnResetPanjang">
-                                                                        <s:a href="#"><i class="fa fa-calendar-check-o"></i> Reset Panjang</s:a>
+                                                                        <s:a href="#"><i class="fa fa-calendar-check-o"></i> Reset Cuti Panjang</s:a>
                                                                     </li>
                                                                     <li id="btnInisialisasiCuti">
                                                                         <s:a href="#"><i class="fa fa-user-plus"></i> Inisialisasi Data Cuti</s:a>
@@ -645,13 +645,13 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Sisa Cuti Tahunan </label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="stSisaCutiTahunan" name="cutiPegawai.stSisaCutiTahunan">
+                            <input type="number" min="1" class="form-control" id="stSisaCutiTahunan" name="cutiPegawai.stSisaCutiTahunan">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Sisa Cuti Panjang</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="stSisaCutiPanjang" name="cutiPegawai.stSisaCutiPanjang">
+                            <input type="number" min="1" class="form-control" id="stSisaCutiPanjang" name="cutiPegawai.stSisaCutiPanjang">
                         </div>
                     </div>
                     <br>
@@ -1258,6 +1258,7 @@
                                 "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
                                 "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
                                 "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tanggal Aktif</th>"+
+                                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Level</th>"+
                                 "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
                                 "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Panjang</th>"+
                                 "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Setelah Reset</th>"+
@@ -1271,6 +1272,7 @@
                                     '<td align="center">' + item.nip + '</td>' +
                                     '<td align="center">' + item.namaPegawai + '</td>' +
                                     '<td align="center">' + item.stTanggalAktif + '</td>' +
+                                    '<td align="center">' + item.golonganName + '</td>' +
                                     '<td align="center">' + item.sisaCutiTahunan + '</td>' +
                                     '<td align="center">' + item.sisaCutiPanjang + '</td>' +
                                     '<td align="center">' + item.setelahResetCutiPanjang + '</td>' +
@@ -1391,21 +1393,36 @@
     });
     $('#btnSaveTmpInisialisasi').on('click', function () {
         var nip=$("#nipEdit").val();
+        var iStSisaCutiTahunan = 0;
+        var iStSisaCutiPanjang = 0;
         var stSisaCutiTahunan=$("#stSisaCutiTahunan").val();
         var stSisaCutiPanjang=$("#stSisaCutiPanjang").val();
-        if(stSisaCutiTahunan!=""||stSisaCutiPanjang!="") {
-            CutiPegawaiAction.editTmpInisialisasiCuti(nip ,stSisaCutiTahunan,stSisaCutiPanjang,function(data) {
-                if (data!=""){
-                    alert(data);
-                }
-                $('#modal-edit-inisialisasi').modal('hide');
-                $("#stSisaCutiTahunan").val("");
-                $("#stSisaCutiPanjang").val("");
-                loadPersonCuti();
-            });
-        }else{
-            alert("Belum mengisi sisa cuti yang dirubah ");
+
+        if (stSisaCutiTahunan!=""){
+            iStSisaCutiTahunan = parseInt(stSisaCutiTahunan);
         }
+        if (stSisaCutiPanjang!=""){
+            iStSisaCutiPanjang = parseInt(stSisaCutiPanjang);
+        }
+
+        if (iStSisaCutiTahunan<0||iStSisaCutiPanjang<0){
+            alert("Sisa cuti tidak boleh minus ");
+        }else{
+            if(stSisaCutiTahunan!=""||stSisaCutiPanjang!="") {
+                CutiPegawaiAction.editTmpInisialisasiCuti(nip ,stSisaCutiTahunan,stSisaCutiPanjang,function(data) {
+                    if (data!=""){
+                        alert(data);
+                    }
+                    $('#modal-edit-inisialisasi').modal('hide');
+                    $("#stSisaCutiTahunan").val("");
+                    $("#stSisaCutiPanjang").val("");
+                    loadPersonCuti();
+                });
+            }else{
+                alert("Belum mengisi sisa cuti yang dirubah ");
+            }
+        }
+
     });
     $('#btnSavePerbaikanSisaCuti').on('click', function () {
         CutiPegawaiAction.saveInisialisasi(function(data) {

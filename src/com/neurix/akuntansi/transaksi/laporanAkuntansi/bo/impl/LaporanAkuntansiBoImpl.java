@@ -750,6 +750,7 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                     //set kode rekening
                     if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())){
                         data.setCetak(true);
+                        data.setNilaiTotal(data.getNilaiTotal());
                     }
 
                     if (budgettingDTO.getKodeRekening().equalsIgnoreCase(kodeRekening.getKodeRekening())&&"januari".equalsIgnoreCase(budgettingDTO.getTipe())){
@@ -790,9 +791,6 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
                         break;
                     }
                 }
-                data.setNilaiTotal(data.getSubTotalJanuari().add(data.getSubTotalFebruari().add(data.getSubTotalMaret().add(data.getSubTotalApril().add(data.getSubTotalMei()
-                .add(data.getSubTotalJuni().add(data.getSubTotalJuli().add(data.getSubTotalAgustus().add(data.getSubTotalSeptember().add(data.getSubTotalOktober().add(data.getSubTotalNovember().add(data.getSubTotalDesember()))))))))))));
-
                 if (data.isCetak()){
                     resultList.add(data);
                 }

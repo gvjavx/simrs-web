@@ -9,7 +9,9 @@
           p:golonganPkwtBoProxy-ref="golonganPkwtBoProxy" />
 
     <bean id="golonganPkwtBo" class="com.neurix.hris.master.golonganPkwt.bo.impl.GolonganPkwtBoImpl"
-          p:golonganPkwtDao-ref="golonganPkwtDao" />
+          p:golonganPkwtDao-ref="golonganPkwtDao"
+        p:biodataDao-ref="biodataDao"
+    />
 
     <bean id="golonganPkwtBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="golonganPkwtBo">

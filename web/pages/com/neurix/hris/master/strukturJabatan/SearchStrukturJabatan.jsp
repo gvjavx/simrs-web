@@ -106,9 +106,13 @@
                     alert('Unit harus dipilih');
                 }else{
                     if (confirm('Are you sure you want to Delete this Record?')) {
-                        StrukturJabatanAction.saveDelete(id, branch, position, parent,function(listdata) {
-                            alert('Record has been Deleted successfully.');
-                            location.reload();
+                        StrukturJabatanAction.saveDelete(id, branch, position, parent,function(data) {
+                            if (data==""){
+                                alert('Record has been Deleted successfully.');
+                                location.reload();
+                            } else {
+                                alert(data);
+                            }
                         });
                     }
                 }
