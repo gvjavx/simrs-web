@@ -1,6 +1,11 @@
 package com.neurix.simrs.transaksi.obatpoli.action;
 
+import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -835,6 +840,8 @@ public class ObatPoliAction extends BaseMasterAction {
             ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
             BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
             PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+            BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+            KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
 
             PermintaanObatPoli obatPoli = new PermintaanObatPoli();
             obatPoli.setIdApprovalObat(idApproval);
@@ -847,10 +854,14 @@ public class ObatPoliAction extends BaseMasterAction {
 
             String pelayananAsal = "";
             String pelayananTujuan = "";
+            String branchTujuan = "";
+            String noPermintaan = "";
+            String rekeningIdTujuan = "";
             MtSimrsPermintaanObatPoliEntity permintaanObatPoliEntity = obatPoliBo.getEntityPermintaanObatPoliById(idPermintaan);
             if (permintaanObatPoliEntity != null){
                 obatPoli.setIdPelayanan(permintaanObatPoliEntity.getIdPelayanan());
                 obatPoli.setTujuanPelayanan(permintaanObatPoliEntity.getTujuanPelayanan());
+                noPermintaan = permintaanObatPoliEntity.getIdPermintaanObatPoli();
 
                 ImSimrsPelayananEntity pelayananPengirim = pelayananBo.getPelayananById(permintaanObatPoliEntity.getTujuanPelayanan());
                 if (pelayananPengirim != null){
@@ -859,10 +870,16 @@ public class ObatPoliAction extends BaseMasterAction {
                 ImSimrsPelayananEntity pelayanan = pelayananBo.getPelayananById(permintaanObatPoliEntity.getIdPelayanan());
                 if (pelayanan != null){
                     pelayananTujuan = pelayanan.getNamaPelayanan();
+                    Branch branch = branchBo.getBranchById(pelayanan.getBranchId(), "Y");
+                    if (branch != null){
+                        branchTujuan = branch.getBranchName();
+                        rekeningIdTujuan = kodeRekeningBo.getRekeningIdByKodeRekening(branch.getCoaRk());
+                    }
                 }
             }
 
             List<Map> listOfObat = new ArrayList<>();
+            List<Map> listOfObatRk = new ArrayList<>();
             try {
                 List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
                 if (request != null && !"".equalsIgnoreCase(request)) {
@@ -894,19 +911,36 @@ public class ObatPoliAction extends BaseMasterAction {
                             mapPersedianGudang.put("kd_barang", detail.getIdBarang());
                             mapPersedianGudang.put("nilai", hargaRata.multiply(new BigDecimal(detail.getQtyApprove())));
                             listOfObat.add(mapPersedianGudang);
+
+                            Map mapPersedianRK = new HashMap();
+                            mapPersedianRK.put("kd_barang", detail.getIdBarang());
+                            mapPersedianRK.put("nilai", hargaRata.multiply(new BigDecimal(detail.getQtyApprove())));
+                            mapPersedianRK.put("rekening_id", rekeningIdTujuan);
+                            listOfObatRk.add(mapPersedianRK);
+
                         }
 
                         transaksiObatDetails.add(detail);
                     }
 
-//                    // create jurnal
-//                    Map jurnalMap = new HashMap();
-//                    jurnalMap.put("persediaan_apotik", listOfObat);
-//                    jurnalMap.put("persediaan_gudang", listOfObat);
+                    // create jurnal
+                    Map jurnalMap = new HashMap();
+                    jurnalMap.put("persediaan_gudang", listOfObat);
+                    jurnalMap.put("rk_tujuan", listOfObatRk);
+
+                    String catatan = "Penerimaan Barang dari "+pelayananTujuan+" ke "+pelayananAsal+" Unit " +branchTujuan+ " No. Permintaan " + noPermintaan;
+                    try {
+                        billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_RK_PERSEDIAAN_PENERIMA, jurnalMap, branchId, catatan, "Y");
+                        obatPoliBo.saveApproveDiterima(obatPoli, transaksiObatDetails);
+                        response.setStatus("success");
+                        response.setMessage("Oke");
+                    } catch (GeneralBOException e){
+                        logger.error("[ObatPoliAction.saveKonfirmasiDiterimaReqUnit] Error when sabe resep obat", e);
+                        response.setStatus("error");
+                        response.setMessage("Found Error "+e.getMessage());
+                    }
 //
-//                    String catatan = "Pengiriman Barang dari "+pelayananAsal+" ke "+pelayananTujuan+" No. Permintaan ";
 //                    try {
-//                        billingSystemBo.createJurnal("28", jurnalMap, branchId, catatan, "Y");
 //                        obatPoliBo.saveApproveDiterima(obatPoli, transaksiObatDetails);
 //                        response.setStatus("success");
 //                        response.setMessage("Oke");
@@ -915,16 +949,6 @@ public class ObatPoliAction extends BaseMasterAction {
 //                        response.setStatus("error");
 //                        response.setMessage("Found Error "+e.getMessage());
 //                    }
-
-                    try {
-                        obatPoliBo.saveApproveDiterima(obatPoli, transaksiObatDetails);
-                        response.setStatus("success");
-                        response.setMessage("Oke");
-                    } catch (GeneralBOException e){
-                        logger.error("[PermintaanResepAction.saveKonfirmasiDiterimaReqUnit] Error when sabe resep obat", e);
-                        response.setStatus("error");
-                        response.setMessage("Found Error "+e.getMessage());
-                    }
 
                 }
             } catch (JSONException e) {

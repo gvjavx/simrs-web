@@ -1048,8 +1048,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         List<ImSimrsObatEntity> obatEntities = getListEntityObat(obat);
 
-        ImSimrsObatEntity obatEntity = new ImSimrsObatEntity();
+        ImSimrsObatEntity obatEntity = null;
         if (obatEntities.size() > 0) {
+            obatEntity = new ImSimrsObatEntity();
             obatEntity = obatEntities.get(0);
         }
 
@@ -3206,8 +3207,18 @@ public class ObatPoliBoImpl implements ObatPoliBo {
     }
 
     @Override
+    public MtSimrsPermintaanObatPoliEntity getPermintaanObatPolyByIdApproval(String idApproval) throws GeneralBOException {
+        return permintaanObatPoliDao.getById("idApprovalObat", idApproval);
+    }
+
+    @Override
     public MtSimrsPermintaanObatPoliEntity getEntityPermintaanObatPoliById(String id) throws GeneralBOException {
         return permintaanObatPoliDao.getById("idPermintaanObatPoli", id);
+    }
+
+    @Override
+    public ImtSimrsApprovalTransaksiObatEntity getApprovalEntityById(String id) throws GeneralBOException {
+        return approvalTransaksiObatDao.getById("idApprovalObat", id);
     }
 
     // list method seq

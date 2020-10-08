@@ -555,6 +555,7 @@ public class BranchBoImpl implements BranchBo {
             resultBranch.setPayorCd(imBranches.getTarifPayorId());
             resultBranch.setCoderNik(imBranches.getCoderNik());
             resultBranch.setAreaId(imBranches.getAreaId());
+            resultBranch.setCoaRk(imBranches.getCoaRk());
         }
 
         logger.info("[BranchBoImpl.getBranchById] end process <<<");
