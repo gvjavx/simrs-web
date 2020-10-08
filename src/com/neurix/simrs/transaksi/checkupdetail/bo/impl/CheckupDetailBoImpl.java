@@ -869,44 +869,37 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         }
 
         if ("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
-            // save uang muka
-            ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
-            if (bean.getBranchId() != null && !bean.getBranchId().equalsIgnoreCase("")) {
-                uangMukaPendaftaranEntity.setId("UM" + bean.getBranchId() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
-            } else
-                uangMukaPendaftaranEntity.setId("UM" + CommonUtil.userBranchLogin() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
-            uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-            uangMukaPendaftaranEntity.setFlag("Y");
-            uangMukaPendaftaranEntity.setAction("C");
-            uangMukaPendaftaranEntity.setCreatedDate(bean.getCreatedDate());
-            uangMukaPendaftaranEntity.setCreatedWho(bean.getCreatedWho());
-            uangMukaPendaftaranEntity.setLastUpdate(bean.getCreatedDate());
-            uangMukaPendaftaranEntity.setLastUpdateWho(bean.getCreatedWho());
-
-            if (bean.getInvoice() != null) {
-                uangMukaPendaftaranEntity.setNoNota(bean.getInvoice());
-                uangMukaPendaftaranEntity.setStatusBayar("Y");
-            }
-
-            if ("".equalsIgnoreCase(bean.getJumlahUangMuka().toString()) || bean.getJumlahUangMuka() == null || bean.getJumlahUangMuka().compareTo(new BigInteger(String.valueOf(0))) == 0) {
-                uangMukaPendaftaranEntity.setJumlah(new BigInteger(String.valueOf(0)));
-            } else {
+            if(bean.getJumlahUangMuka() != null && !"".equalsIgnoreCase(bean.getJumlahUangMuka().toString())){
+                ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
+                if (bean.getBranchId() != null && !bean.getBranchId().equalsIgnoreCase("")) {
+                    uangMukaPendaftaranEntity.setId("UM" + bean.getBranchId() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
+                } else
+                    uangMukaPendaftaranEntity.setId("UM" + CommonUtil.userBranchLogin() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
+                uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                uangMukaPendaftaranEntity.setFlag("Y");
+                uangMukaPendaftaranEntity.setAction("C");
+                uangMukaPendaftaranEntity.setCreatedDate(bean.getCreatedDate());
+                uangMukaPendaftaranEntity.setCreatedWho(bean.getCreatedWho());
+                uangMukaPendaftaranEntity.setLastUpdate(bean.getCreatedDate());
+                uangMukaPendaftaranEntity.setLastUpdateWho(bean.getCreatedWho());
+                if (bean.getInvoice() != null) {
+                    uangMukaPendaftaranEntity.setNoNota(bean.getInvoice());
+                    uangMukaPendaftaranEntity.setStatusBayar("Y");
+                }
                 uangMukaPendaftaranEntity.setJumlah(bean.getJumlahUangMuka());
-            }
-
-            try {
-                uangMukaDao.addAndSave(uangMukaPendaftaranEntity);
-                response.setStatus("success");
-                response.setMsg("Berhasil");
-            } catch (HibernateException e) {
-                response.setStatus("error");
-                response.setMsg("Error When Saving uang muka " + e.getMessage());
-                logger.error("[CheckupBoImpl.saveAdd] Error When Saving" + e.getMessage());
-                throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving" + e.getMessage());
+                try {
+                    uangMukaDao.addAndSave(uangMukaPendaftaranEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                } catch (HibernateException e) {
+                    response.setStatus("error");
+                    response.setMsg("Error When Saving uang muka " + e.getMessage());
+                    logger.error("[CheckupBoImpl.saveAdd] Error When Saving" + e.getMessage());
+                    throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving" + e.getMessage());
+                }
             }
         }
 
-        //saving diagnosa
         if (bean.getDiagnosa() != null && !"".equalsIgnoreCase(bean.getDiagnosa()) && detailCheckupEntity.getIdDetailCheckup() != null && !"".equalsIgnoreCase(detailCheckupEntity.getIdDetailCheckup())) {
             DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
             diagnosaRawat.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());

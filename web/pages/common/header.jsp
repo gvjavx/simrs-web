@@ -438,7 +438,9 @@ apply the skin class to the body tag so the changes take effect.
 
         $(':input').on('focus', function () {
             $(this).attr('autocomplete', 'off');
-        })
+        });
+
+        $('#myTable').css('width', '100%');
 
     });
 

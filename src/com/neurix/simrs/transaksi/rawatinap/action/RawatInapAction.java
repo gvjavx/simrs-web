@@ -33,8 +33,10 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
+import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
 import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
 import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
 import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObatEntity;
@@ -1332,7 +1334,7 @@ public class RawatInapAction extends BaseMasterAction {
                                     pelayanan = pelayananList.get(0);
                                 }
 
-                                if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
+                                if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
 
                                     Branch branch = new Branch();
                                     branch.setBranchId(branchId);
@@ -1470,7 +1472,7 @@ public class RawatInapAction extends BaseMasterAction {
                                                         tindakan.setIsIna("Y");
 
                                                         try {
-                                                            tindakanList = tindakanBo.getByCriteria(tindakan);
+                                                            tindakanList = tindakanBo.getDataTindakan(tindakan);
                                                         } catch (GeneralBOException e) {
                                                             logger.error("[CheckupAction.saveAdd] Error when tindakan ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
                                                             throw new GeneralBOException("Error when new tindakan", e);
@@ -1575,6 +1577,8 @@ public class RawatInapAction extends BaseMasterAction {
 
                                                                 Tindakan tin = new Tindakan();
                                                                 tin.setIdTindakan(entity.getIdTindakan());
+                                                                tin.setTindakan(entity.getTindakan());
+                                                                tin.setTarifBpjs(entity.getTarifBpjs());
                                                                 tin.setKategoriInaBpjs(entity.getKategoriInaBpjs());
                                                                 tindakans.add(tin);
                                                             }
@@ -1981,7 +1985,7 @@ public class RawatInapAction extends BaseMasterAction {
             CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
             String jenPasien = "";
-            if ("ptpn".equalsIgnoreCase(jenisPasien)) {
+            if ("rekanan".equalsIgnoreCase(jenisPasien)) {
                 jenPasien = "bpjs";
             } else {
                 jenPasien = jenisPasien;
@@ -2408,5 +2412,50 @@ public class RawatInapAction extends BaseMasterAction {
         logger.info("[CheckupDetailAction.saveApproveAllTindakanRawatJalan] END process >>>");
 
         return finalResponse;
+    }
+
+    public CrudResponse saveUangMuka(String idDetailCheckup, String uangMuka) {
+        CrudResponse finalResponse = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        String user = CommonUtil.userLogin();
+
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && uangMuka != null && !"".equalsIgnoreCase(uangMuka)){
+            UangMuka muka = new UangMuka();
+            muka.setIdDetailCheckup(idDetailCheckup);
+            muka.setJumlah(new BigInteger(uangMuka));
+            muka.setCreatedWho(user);
+            muka.setCreatedDate(now);
+            muka.setLastUpdateWho(user);
+            muka.setLastUpdate(now);
+            muka.setBranchId(branchId);
+
+            try {
+                finalResponse = rawatInapBo.saveUangMuka(muka);
+            }catch (GeneralBOException e){
+                finalResponse.setStatus("error");
+                finalResponse.setMsg("Error when error");
+                logger.error(e.getMessage());
+            }
+        }
+        return finalResponse;
+    }
+
+    public List<UangMuka> getListUangMuka(String noCheckup) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        List<UangMuka> uangMukas = new ArrayList<>();
+        if (noCheckup != null && !"".equalsIgnoreCase(noCheckup)) {
+            UangMuka uangMuka = new UangMuka();
+            uangMuka.setNoCheckup(noCheckup);
+            try {
+                uangMukas = rawatInapBo.getAllListUangMuka(uangMuka);
+            } catch (GeneralBOException e) {
+                logger.error("[TransaksiObatAction.searchResep] ERROR error when get searh resep. ", e);
+            }
+        }
+        return uangMukas;
     }
 }
