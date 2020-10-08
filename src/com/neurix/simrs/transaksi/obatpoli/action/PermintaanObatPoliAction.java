@@ -391,6 +391,8 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
             }
 
             String branchTujuan = "";
+            String branchAsal = "";
+            String branchAsalName = "";
             String branchTujuanName = "";
             String rekeningId = "";
             String pelayananAsal = "";
@@ -400,17 +402,23 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
             MtSimrsPermintaanObatPoliEntity permintaanObatPoliEntity = obatPoliBo.getPermintaanObatPolyByIdApproval(idApprovalObat);
             ImtSimrsApprovalTransaksiObatEntity approvalTransaksiObatEntity = obatPoliBo.getApprovalEntityById(idApprovalObat);
             if (permintaanObatPoliEntity != null && approvalTransaksiObatEntity != null){
-                otherBranch = permintaanObatPoliEntity.getBranchId().equalsIgnoreCase(approvalTransaksiObatEntity.getBranchId());
-                branchTujuan = approvalTransaksiObatEntity.getBranchId();
+                otherBranch     = permintaanObatPoliEntity.getBranchId().equalsIgnoreCase(approvalTransaksiObatEntity.getBranchId());
+                branchTujuan    = approvalTransaksiObatEntity.getBranchId();
+                branchAsal      = permintaanObatPoliEntity.getBranchId();
 
-                Branch branch = branchBo.getBranchById(branchTujuan, "Y");
+                ImSimrsPelayananEntity pelayananAsalEntity = pelayananBo.getPelayananById(permintaanObatPoliEntity.getIdPelayanan());
+                ImSimrsPelayananEntity pelayananTujuanEntity = pelayananBo.getPelayananById(permintaanObatPoliEntity.getTujuanPelayanan());
+
+                Branch branch = branchBo.getBranchById(pelayananTujuanEntity.getBranchId(), "Y");
                 if (branch != null){
                     branchTujuanName = branch.getBranchName();
                     rekeningId = branch.getCoaRk();
                 }
 
-                ImSimrsPelayananEntity pelayananAsalEntity = pelayananBo.getPelayananById(permintaanObatPoliEntity.getIdPelayanan());
-                ImSimrsPelayananEntity pelayananTujuanEntity = pelayananBo.getPelayananById(permintaanObatPoliEntity.getTujuanPelayanan());
+                Branch branchAsalData = branchBo.getBranchById(pelayananAsalEntity.getBranchId(), "Y");
+                if (branchAsalData != null){
+                    branchAsalName = branch.getBranchName();
+                }
 
                 if (pelayananAsal != null && pelayananTujuan != null){
                     pelayananAsal = pelayananAsalEntity.getNamaPelayanan();
@@ -463,7 +471,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
             jurnalMap.put("persediaan_gudang", listOfObat);
             jurnalMap.put("rk_tujuan", listOfObatRk);
 
-            String catatan = "Pengiriman Barang dari "+pelayananAsal+" ke "+pelayananTujuan+" Unit " +branchTujuanName+ " No. Permintaan " + permintaanObatPoliEntity.getIdPermintaanObatPoli();
+            String catatan = "Pengiriman Barang dari "+pelayananTujuan+" ke "+pelayananAsal+" Unit " +branchAsalName+ " No. Permintaan " + permintaanObatPoliEntity.getIdPermintaanObatPoli();
 
             try {
                 billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_RK_PERSEDIAAN_PENGIRIM, jurnalMap, branchId, catatan, "Y");
