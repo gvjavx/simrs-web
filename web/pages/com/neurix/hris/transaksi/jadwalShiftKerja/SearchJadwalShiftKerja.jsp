@@ -325,13 +325,15 @@
                                                             <td align="center">
                                                                 <s:if test="#attr.row.tamp">
                                                                     <s:if test="#attr.row.flagYes">
-                                                                        <s:url var="urlEdit" namespace="/jadwalShiftKerja" action="edit_jadwalShiftKerja" escapeAmp="false">
-                                                                            <s:param name="id"><s:property value="#attr.row.jadwalShiftKerjaId"/></s:param>
-                                                                            <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                        </s:url>
-                                                                        <s:a href="%{urlEdit}">
-                                                                            <img border="0" src="<s:url value="/pages/images/icons8-create-25.png"/>" name="icon_edit">
-                                                                        </s:a>
+                                                                        <s:if test='#attr.row.adaAbsen==false'>
+                                                                            <s:url var="urlEdit" namespace="/jadwalShiftKerja" action="edit_jadwalShiftKerja" escapeAmp="false">
+                                                                                <s:param name="id"><s:property value="#attr.row.jadwalShiftKerjaId"/></s:param>
+                                                                                <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                            </s:url>
+                                                                            <s:a href="%{urlEdit}">
+                                                                                <img border="0" src="<s:url value="/pages/images/icons8-create-25.png"/>" name="icon_edit">
+                                                                            </s:a>
+                                                                        </s:if>
                                                                     </s:if>
                                                                 </s:if>
                                                             </td>

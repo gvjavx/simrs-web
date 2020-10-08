@@ -702,7 +702,8 @@ public class CutiPegawaiAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultCutiPegawai");
         session.setAttribute("listOfResultCutiPegawai", listOfSearchCutiPegawai);
-        if (("ADMIN").equalsIgnoreCase(CommonUtil.roleAsLogin())){
+
+        if ((CommonConstant.ROLE_ID_ADMIN).equalsIgnoreCase(CommonUtil.roleIdAsLogin())||(CommonConstant.ROLE_ID_ADMIN_SUPER).equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
             setAdmin(true);
         }
         logger.info("[CutiPegawaiAction.search] end process <<<");
@@ -715,7 +716,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         logger.info("[AlatAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultCutiPegawai");
-        if (("ADMIN").equalsIgnoreCase(CommonUtil.roleAsLogin())){
+        if ((CommonConstant.ROLE_ID_ADMIN).equalsIgnoreCase(CommonUtil.roleIdAsLogin())||(CommonConstant.ROLE_ID_ADMIN_SUPER).equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
             setAdmin(true);
         }
         logger.info("[AlatAction.initForm] end process >>>");
@@ -2253,9 +2254,11 @@ public class CutiPegawaiAction extends BaseMasterAction {
         for (CutiPegawai data : listOfResultCutiPegawai){
             if (!("").equalsIgnoreCase(data.getStSetelahResetCutiPanjang())||!("").equalsIgnoreCase(data.getStSetelahResetCutiTahunan())){
 
-                List<CutiPegawai> listOfCuti = null;
+                List<CutiPegawai> listOfCuti = new ArrayList<>();
                 try {
-                    listOfCuti = cutiPegawaiBo.getListNipCuti(data.getNip());
+                    if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+                        listOfCuti = cutiPegawaiBo.getListNipCuti(data.getNip());
+                    }
                 } catch (GeneralBOException e) {
                     Long logId = null;
                     try {

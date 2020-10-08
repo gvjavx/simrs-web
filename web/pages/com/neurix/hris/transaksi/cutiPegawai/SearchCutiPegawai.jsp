@@ -501,6 +501,15 @@
                                                                 <s:if test="#attr.row.cancel">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                 </s:if>
+                                                                <s:elseif test='#attr.row.approvalFlag==null'>
+                                                                    <s:url var="urlCancel" namespace="/cutiPegawai" action="cancel_cutiPegawai" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.cutiPegawaiId" /></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenuView" href="%{urlCancel}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                                    </sj:a>
+                                                                </s:elseif>
                                                                 <s:elseif test="#attr.row.notApprove">
                                                                 </s:elseif>
                                                                 <s:elseif test="#attr.row.canCancel">
@@ -1053,34 +1062,43 @@
         var tmp_table = "";
         var unit=$('#branchid').val();
         if(unit!=""){
-            CutiPegawaiAction.searchCutiBersama(unit,function(listdata) {
-                tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAll'></th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #bc6a3c'>Sisa Cuti Panjang</th>"+
-                    "</tr></thead>";
-                var i = i;
-                $.each(listdata, function (i, item) {
-                    var combo = '<input type="checkbox" id="check" name="cutiPegawai.checkedValue" value="'+item.nip+':'+item.sisaCutiTahunan+':'+item.sisaCutiPanjang+'" class="check" >';
-                    tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="center">' + combo + '</td>' +
-                        '<td align="center">' + item.nip + '</td>' +
-                        '<td align="center">' + item.namaPegawai + '</td>' +
-                        '<td align="center">' + item.sisaCutiTahunan + '</td>' +
-                        '<td align="center">' + item.sisaCutiPanjang + '</td>' +
-                        "</tr>";
-                });
-                $('.listCutiTable').append(tmp_table);
-                $("#checkAll").change(function(){
-                    $('input:checkbox').not(this).prop('checked', this.checked);
-                });
+            var cutiAktif="N";
+            CutiPegawaiAction.getCutiAktif(unit,function(data){
+                cutiAktif = data;
             });
-            $('#modal-list').find('.modal-title').text('Cuti Bersama Karyawan');
-            $('#modal-list').modal('show');
+            if( cutiAktif =='N'){
+                CutiPegawaiAction.searchCutiBersama(unit,function(listdata) {
+                    tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAll'></th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #bc6a3c'>Sisa Cuti Panjang</th>"+
+                        "</tr></thead>";
+                    var i = i;
+                    $.each(listdata, function (i, item) {
+                        var combo = '<input type="checkbox" id="check" name="cutiPegawai.checkedValue" value="'+item.nip+':'+item.sisaCutiTahunan+':'+item.sisaCutiPanjang+'" class="check" >';
+                        tmp_table += '<tr style="font-size: 12px;" ">' +
+                            '<td align="center">' + (i + 1) + '</td>' +
+                            '<td align="center">' + combo + '</td>' +
+                            '<td align="center">' + item.nip + '</td>' +
+                            '<td align="center">' + item.namaPegawai + '</td>' +
+                            '<td align="center">' + item.sisaCutiTahunan + '</td>' +
+                            '<td align="center">' + item.sisaCutiPanjang + '</td>' +
+                            "</tr>";
+                    });
+                    $('.listCutiTable').append(tmp_table);
+                    $("#checkAll").change(function(){
+                        $('input:checkbox').not(this).prop('checked', this.checked);
+                    });
+                });
+                $('#modal-list').find('.modal-title').text('Cuti Bersama Karyawan');
+                $('#modal-list').modal('show');
+            }else{
+                alert("Cuti bersama Tidak bisa dilakukan dikarenakan ada cuti menggantung ( perlu approve/not approve atasan )");
+            }
+
         }else{
             alert("Unit belum diisi")
         }
@@ -1098,9 +1116,9 @@
 //            alert(cutiAktif);
             if(unit!=""){
                 var cutiAktif="";
-                CutiPegawaiAction.getCutiAktif(unit,function(data){
-                    cutiAktif = data;
-                });
+                // CutiPegawaiAction.getCutiAktif(unit,function(data){
+                //     cutiAktif = data;
+                // });
                 if( cutiAktif =='N'){
                     CutiPegawaiAction.searchPegawaiResetTahunan(unit,function(listdata) {
                         if (listdata!=""){

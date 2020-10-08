@@ -297,7 +297,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="80%">
+                                            <table id="showdata" width="90%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="waiting_dialog2" openTopics="showDialogLoading"
@@ -330,7 +330,7 @@
                                                             <%--</center>--%>
                                                         <%--</sj:dialog>--%>
                                                         <sj:dialog id="dialog_menu_ijin_keluar" openTopics="showDialogMenuIjinKeluar" modal="true"
-                                                                   height="700" width="700" autoOpen="false"
+                                                                   height="700" width="750" autoOpen="false"
                                                                    title="Dispensasi ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
@@ -375,6 +375,15 @@
                                                                 <s:if test="#attr.row.cancel">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                 </s:if>
+                                                                <s:elseif test='#attr.row.approvalFlag==null'>
+                                                                    <s:url var="urlCancel" namespace="/ijinKeluar" action="cancel_ijinKeluar" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenuView" href="%{urlCancel}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                                    </sj:a>
+                                                                </s:elseif>
                                                                 <s:elseif test="#attr.row.notApprove">
                                                                 </s:elseif>
                                                                 <s:elseif test="#attr.row.notApproveSdm">
@@ -390,35 +399,29 @@
                                                                 </s:elseif>
                                                             </display:column>
                                                             <display:column media="html" title="Cetak Surat" style="text-align:center;font-size:9">
-                                                                <s:if test="#attr.row.cancel">
-                                                                </s:if>
-                                                                <s:elseif test="#attr.row.finish">
-                                                                    <s:if test="#attr.row.cetakSurat">
-                                                                        <s:url var="urlCetakSuratIjinTidakMasuk" namespace="/ijinKeluar" action="cetakSuratIjinTidakMasuk_ijinKeluar" escapeAmp="false">
-                                                                            <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
-                                                                            <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                        </s:url>
-                                                                        <s:a href="%{urlCetakSuratIjinTidakMasuk}">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
-                                                                        </s:a>
-                                                                    </s:if>
-                                                                </s:elseif>
-                                                            </display:column>
-
-                                                            <display:column media="html" title="Edit" style="text-align:center;font-size:9">
-                                                            <s:if test="#attr.row.cancel">
-                                                            </s:if>
-                                                            <s:elseif test="#attr.row.finish">
-                                                                <s:if test='#attr.row.ijinId == "IJ013"'>
-                                                                    <s:url var="urlViewDelete" namespace="/ijinKeluar" action="edit_ijinKeluar" escapeAmp="false">
+                                                                <s:if test='#attr.row.approvalFlag=="Y"'>
+                                                                    <s:url var="urlCetakSuratIjinTidakMasuk" namespace="/ijinKeluar" action="cetakSuratIjinTidakMasuk_ijinKeluar" escapeAmp="false">
                                                                         <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                                     </s:url>
-                                                                    <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">
-                                                                    </sj:a>
+                                                                    <s:a href="%{urlCetakSuratIjinTidakMasuk}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_edit">
+                                                                    </s:a>
                                                                 </s:if>
-                                                            </s:elseif>
+                                                            </display:column>
+
+                                                            <display:column media="html" title="Edit" style="text-align:center;font-size:9">
+                                                                <s:if test='#attr.row.melahirkan==true'>
+                                                                    <s:if test='#attr.row.tglMelahirkan==null'>
+                                                                        <s:url var="urlViewDelete" namespace="/ijinKeluar" action="edit_ijinKeluar" escapeAmp="false">
+                                                                            <s:param name="id"><s:property value="#attr.row.ijinKeluarId" /></s:param>
+                                                                            <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                        </s:url>
+                                                                        <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">
+                                                                        </sj:a>
+                                                                    </s:if>
+                                                                </s:if>
                                                             </display:column>
 
                                                             <display:column media="html" title="View" style="text-align:center;font-size:9">
@@ -446,33 +449,40 @@
                                                             <display:column property="positionName" sortable="true" title="Jabatan"  />
                                                             <display:column property="ijinName" sortable="true" title="Nama Ijin"  />
                                                             <display:column property="stTanggalAwal" sortable="true" title="Tanggal Awal"  />
-
-                                                            <s:if test='#attr.row.ijinId == "IJ013"'>
-                                                                <display:column property="tanggalAkhirBaru" sortable="true" title="Tanggal Akhir"  />
-                                                            </s:if>
-                                                            <s:else>
-                                                                <display:column property="stTanggalAkhir" sortable="true" title="Tanggal Akhir"  />
-                                                            </s:else>
-                                                            <%--<display:column property="stTanggalAkhir" sortable="true" title="Tanggal Akhir"  />--%>
-
-                                                            <s:if test='#attr.row.ijinId == "IJ013"'>
-                                                                <display:column property="lamaIjinBaru" sortable="true" title="Lama"  />
-                                                            </s:if>
-                                                            <s:else>
-                                                                <display:column property="lamaIjin" sortable="true" title="Lama"  />
-                                                            </s:else>
-                                                            <%--<display:column property="lamaIjin" sortable="true" title="Lama"  />--%>
-
-                                                            <s:if test="#attr.row.notApprove">
+                                                            <display:column style="text-align:center;" title="Tanggal Akhir">
+                                                                <script>
+                                                                    var tglMelahirkan = '<s:property value="%{#attr.row.tglMelahirkan}"/>';
+                                                                    var tanggalAkhirBaru = '<s:property value="%{#attr.row.tanggalAkhirBaru}"/>';
+                                                                    var stTanggalAkhir = '<s:property value="%{#attr.row.stTanggalAkhir}"/>';
+                                                                    if (tglMelahirkan =="" ){
+                                                                        document.write(stTanggalAkhir);
+                                                                    } else{
+                                                                        document.write(tanggalAkhirBaru);
+                                                                    }
+                                                                </script>
+                                                            </display:column>
+                                                            <display:column style="text-align:center;" title="Lama">
+                                                                <script>
+                                                                    var tglMelahirkan = '<s:property value="%{#attr.row.tglMelahirkan}"/>';
+                                                                    var lamaIjin = '<s:property value="%{#attr.row.lamaIjin}"/>';
+                                                                    var lamaIjinBaru = '<s:property value="%{#attr.row.lamaIjinBaru}"/>';
+                                                                    if (tglMelahirkan =="" ){
+                                                                        document.write(lamaIjin);
+                                                                    } else{
+                                                                        document.write(lamaIjinBaru);
+                                                                    }
+                                                                </script>
+                                                            </display:column>
+                                                            <s:if test='#attr.row.notApprove==true'>
                                                                 <display:column media="html" title="Approve Atasan">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>" name="icon_edit">
                                                                 </display:column>
                                                             </s:if>
                                                             <s:else>
                                                                     <display:column media="html" title="Approve Atasan">
-                                                                        <s:if test="#attr.row.cancel">
+                                                                        <s:if test='#attr.row.cancel==true'>
                                                                         </s:if>
-                                                                        <s:elseif test="#attr.row.ijinKeluarApprove">
+                                                                        <s:elseif test='#attr.row.ijinKeluarApprove==true'>
                                                                             <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                         </s:elseif>
                                                                         <s:else>

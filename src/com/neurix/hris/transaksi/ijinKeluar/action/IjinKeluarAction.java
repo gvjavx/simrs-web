@@ -1927,13 +1927,13 @@ public class IjinKeluarAction extends BaseMasterAction {
         }
     }
 
-    public String cekIfAbsensi(String nip, String tglDari, String tglSelesai){
+    public String cekIfAbsensi(String id,String nip, String tglDari, String tglSelesai){
         String status ="";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
 
         try{
-            status = ijinKeluarBo.cekIfAbsensi(nip, tglDari,tglSelesai);
+            status = ijinKeluarBo.cekIfAbsensi(id,nip, tglDari,tglSelesai);
         }catch (GeneralBOException e1) {
             logger.error("[TrainingAction.printSuratJaminan] Error when downloading ,", e1);
         }
