@@ -143,7 +143,8 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
                     "INNER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') d ON b.id_detail_checkup = d.id_detail_checkup\n" +
-                    "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
+                    "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON d.id_ruangan = tt.id_tempat_tidur \n"+
+                    "INNER JOIN mt_simrs_ruangan e ON tt.id_ruangan = e.id_ruangan\n" +
                     "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
 //                    "INNER JOIN (SELECT * FROM (\n" +
 //                    "SELECT *, rank() OVER(PARTITION BY id_rawat_inap ORDER BY created_date DESC) as rank\n" +

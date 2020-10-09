@@ -142,6 +142,72 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
     }
 
     @Override
+    public CrudResponse saveApproveDokter(DokterTeam bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if(bean != null){
+            ItSimrsDokterTeamEntity dokterTeamEntity = dokterTeamDao.getById("idTeamDokter", bean.getIdTeamDokter());
+            if(dokterTeamEntity != null){
+                dokterTeamEntity.setFlagApprove(bean.getFlagApprove());
+                dokterTeamEntity.setKeterangan(bean.getKeterangan());
+                dokterTeamEntity.setAction("U");
+                dokterTeamEntity.setLastUpdate(bean.getLastUpdate());
+                dokterTeamEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    dokterTeamDao.updateAndSave(dokterTeamEntity);
+                    response.setStatus("success");
+                    response.setMsg("success");
+                }catch (HibernateException e){
+                    logger.error(e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg("Error when edit flag approve, "+e.getMessage());
+                }
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse saveDokterTeam(DokterTeam bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsDokterTeamEntity entity = new ItSimrsDokterTeamEntity();
+        entity.setIdTeamDokter("TDT"+getNextId());
+        entity.setIdDokter(bean.getIdDokter());
+        entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+        entity.setIdPelayanan(bean.getIdPelayanan());
+        entity.setJenisDpjp(bean.getJenisDpjp());
+        entity.setFlag("Y");
+        entity.setAction("C");
+        entity.setCreatedDate(bean.getCreatedDate());
+        entity.setCreatedWho(bean.getCreatedWho());
+        entity.setLastUpdate(bean.getLastUpdate());
+        entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+        try {
+            dokterTeamDao.addAndSave(entity);
+            response.setStatus("success");
+            response.setMsg("Berhasil");
+        } catch (HibernateException e){
+            logger.error("[TeamDokterBoImpl.savaAdd] Error when save add dokter team ",e);
+            response.setStatus("error");
+            response.setMsg("Error"+e.getMessage());
+        }
+        return response;
+    }
+
+    @Override
+    public List<ItSimrsDokterTeamEntity> cekRequestDokter(String idDetailCheckup) throws GeneralBOException {
+        List<ItSimrsDokterTeamEntity> entityList = new ArrayList<>();
+        if(idDetailCheckup != null){
+            try {
+                entityList = dokterTeamDao.cekRequestDokter(idDetailCheckup);
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+            }
+        }
+        return entityList;
+    }
+
+    @Override
     public List<ItSimrsDokterTeamEntity> getListEntityTeamDokter(DokterTeam bean) throws GeneralBOException{
         logger.info("[TeamDokterBoImpl.getListEntityTeamDokter] Start >>>>>>>>");
         List<ItSimrsDokterTeamEntity> entities = new ArrayList<>();

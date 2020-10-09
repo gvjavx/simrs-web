@@ -190,7 +190,7 @@
                                     <s:hidden id="is_laka" name="rawatInap.isLaka"/>
                                     <s:hidden id="id_ruangan_lama" name="rawatInap.idRuangan"/>
 
-                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "ptpn"'>
+                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "rekanan"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
@@ -258,18 +258,10 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    <s:if test='rawatInap.metodePembayaran != null && rawatInap.metodePembayaran != ""'>
+                                    <s:if test='rawatInap.idJenisPeriksa == "umum"'>
                                         <tr>
-                                            <td><b>Metode Pembayaran</b></td>
                                             <td>
-                                                <table>
-                                                    <script>
-                                                        var metode = '<s:property value="rawatInap.metodePembayaran"/>';
-                                                        var met = metode.replace("_", " ");
-                                                        var meto = convertSentenceCase(met);
-                                                        document.write(meto);
-                                                    </script>
-                                                </table>
+                                                <button onclick="showUangMuka()" class="btn btn-primary"><i class="fa fa-money"></i> Uang Muka</button>
                                             </td>
                                         </tr>
                                     </s:if>
@@ -294,7 +286,7 @@
                                                 <s:elseif test='rawatInap.idJenisPeriksa == "bpjs"'>
                                                     <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                 </s:elseif>
-                                                <s:elseif test='rawatInap.idJenisPeriksa == "ptpn"'>
+                                                <s:elseif test='rawatInap.idJenisPeriksa == "rekanan"'>
                                                     <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                 </s:elseif>
                                                 <s:else>
@@ -553,14 +545,16 @@
                     </div>
                     <div class="box-body">
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
+                                onclick="showModal(1)"><i class="fa fa-plus"></i> Request Dokter
                         </button>
                         <table class="table table-bordered table-striped" id="tbl_dokter">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Dokter</td>
                                 <td>Nama</td>
-                                <td>Nama Pelayanan</td>
+                                <td>Spesialis</td>
+                                <td>Jenis DPJP</td>
+                                <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -892,7 +886,7 @@
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                                 <option value="">[Select One]</option>
                                                 <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
-                                                    <s:if test='rawatInap.idJenisPeriksa == "umum" || rawatInap.idJenisPeriksa == "ptpn"'>
+                                                    <s:if test='rawatInap.idJenisPeriksa == "umum" || rawatInap.idJenisPeriksa == "rekanan"'>
                                                         <option value="selesai">Selesai</option>
                                                         <option value="rawat_intensif">Rawat Intensif</option>
                                                         <option value="rawat_isolasi">Rawat Isolasi</option>
@@ -1184,7 +1178,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Tambah Dokter</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Request Dokter</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_dokter">
@@ -1196,7 +1190,7 @@
                         <label class="col-md-3" style="margin-top: 7px">Nama Dokter</label>
                         <div class="col-md-7">
                             <select id="dok_id_dokter" style="width: 100%" class="form-control select2"
-                                    onchange="var warn =$('#war_dok').is(':visible'); if (warn){$('#cor_dok').show().fadeOut(3000);$('#war_dok').hide()}">
+                                    onchange="var warn =$('#war_dok').is(':visible'); if (warn){$('#cor_dok').show().fadeOut(3000);$('#war_dok').hide()}; setSpesialis(this.value)">
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -1207,12 +1201,40 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Spesialis</label>
+                        <div class="col-md-7">
+                           <input class="form-control" id="pelayanan_dokter" style="margin-top: 7px" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis DPJP</label>
+                        <div class="col-md-7">
+                            <select id="dok_jenis_dpjp" style="width: 100%" class="form-control select2"
+                                    onchange="var warn =$('#war_dok_jenis_dpjp').is(':visible'); if (warn){$('#cor_dok_jenis_dpjp').show().fadeOut(3000);$('#war_dok_jenis_dpjp').hide()}">
+                                <option value="">[Select One]</option>
+                                <option value="konsultasi">Konsultasi</option>
+                                <option value="rawat_bersama">Rawat Bersama</option>
+                                <option value="rawat_ali">Rawat Alih</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_dok_jenis_dpjp"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_dok_jenis_dpjp"><i
+                                    class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_dokter"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_dokter"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1299,7 +1321,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_tindakan"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_tindakan">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1323,7 +1345,7 @@
                     <p id="msg_diagnosa"></p>
                 </div>
                 <div class="row">
-                    <%--<s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "ptpn"'>--%>
+                    <%--<s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "rekanan"'>--%>
                         <div class="form-group">
                             <label class="col-md-3">Diagnosa</label>
                             <div class="col-md-7">
@@ -1373,7 +1395,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_diagnosa"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_diagnosa">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1425,7 +1447,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_icd9"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_icd9">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1525,7 +1547,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_lab"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_lab"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_lab">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1588,7 +1610,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_diet"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_diet"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_diet"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1695,7 +1717,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_obat"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_obat"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_obat"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1787,7 +1809,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_ruang" onclick="saveEditRuang()"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_ruang"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2079,7 +2101,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObatTtd()"><i
-                        class="fa fa-arrow-right"></i> Buat Resep
+                        class="fa fa-check"></i> Buat Resep
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_resep_head"><i
@@ -2192,7 +2214,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_resiko" onclick="saveResiko('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_resiko" onclick="saveResiko('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resiko"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2261,7 +2283,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveAsesmen('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveAsesmen('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2468,7 +2490,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveVitalSign('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveVitalSign('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2690,7 +2712,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveObCairan('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveObCairan('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2813,7 +2835,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2923,7 +2945,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -3047,7 +3069,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_cancel_diet"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_cancel_diet"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_cancel_diet"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -3126,7 +3148,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_laka"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_laka"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -3169,28 +3191,6 @@
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="modal-confirm-dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
-                </h4>
-            </div>
-            <div class="modal-body">
-                <h4 class="text-center">Do you want save this record?</h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
-                </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <%--Modal Plan Kegiatan Rawat--%>
 
@@ -3318,7 +3318,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_vitalsign" onclick="saveUpdatePlan('vitalsign')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_vitalsign" onclick="saveUpdatePlan('vitalsign')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_vitalsign"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -3466,7 +3466,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_cairan" onclick="saveUpdatePlan('cairan')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_cairan" onclick="saveUpdatePlan('cairan')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_cairan"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -3569,7 +3569,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_nonpar"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_nonpar"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_nonpar"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -3631,9 +3631,97 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-uang_muka">
+    <div class="modal-dialog" style="width: 55%;">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Daftar Uang Muka Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert-default alert-dismissible" style="display: none" id="def_uang_muka">
+                        <p id="msg_def_uang_muka"></p>
+                    </div>
+                    <div class="alert alert-success alebody_uang_mukart-dismissible" style="display: none" id="suc_uang_muka">
+                        <p id="msg_suc_uang_muka"></p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="war_uang_muka">
+                        <p id="msg_war_uang_muka"></p>
+                    </div>
+                    <div class="row" style="margin-top: -10px" id="form-tambah-uang-muka">
+                        <div class="col-md-3">
+                            <button class="btn btn-success" id="btn_uang_muka" onclick="cekBtnUangMuka(this.id)"><i id="icon_uang_muka" class="fa fa-plus"></i> <span id="cek_name"> Tambah</span></button>
+                        </div>
+                        <div id="form-cek-uang" style="display: none">
+                            <div class="col-md-5">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        Rp.
+                                    </div>
+                                    <input class="form-control" id="uang_muka_ri" oninput="convertRpAtas(this.id, this.value, 'h_uang_muka_ri')">
+                                    <input type="hidden" id="h_uang_muka_ri">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-success" onclick="conUangMuka()"><i class="fa fa-check"></i> Save</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-striped" style="font-size: 13px">
+                                <thead>
+                                <tr>
+                                    <td width="20%">Tanggal</td>
+                                    <td>Pelayanan</td>
+                                    <td>Bukti</td>
+                                    <td align="center" width="15%">Jumlah (Rp.)</td>
+                                    <td align="center" width="15%">Status</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_uang_muka">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="mask"></div>
 
 <div id="modal-temp"></div>
+
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="modal-confirm-rm">
     <div class="modal-dialog modal-sm">
@@ -3675,6 +3763,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/RespirasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/IcuAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
