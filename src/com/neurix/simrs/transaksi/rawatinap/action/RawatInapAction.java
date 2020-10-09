@@ -1242,7 +1242,7 @@ public class RawatInapAction extends BaseMasterAction {
                     dokterTeam.setIdPelayanan(obj.getString("id_pelayanan"));
                     dokterTeam.setJenisDpjp(obj.getString("prioritas"));
                     teamList.add(dokterTeam);
-                    if("DPJP 1".equalsIgnoreCase(obj.getString("prioritas"))){
+                    if("dpjp_1".equalsIgnoreCase(obj.getString("prioritas"))){
                         idDokterDpjp = obj.getString("id_dpjp");
                     }
                 }

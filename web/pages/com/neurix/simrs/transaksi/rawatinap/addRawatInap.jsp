@@ -258,11 +258,13 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <button onclick="showUangMuka()" class="btn btn-primary"><i class="fa fa-money"></i> Uang Muka</button>
-                                        </td>
-                                    </tr>
+                                    <s:if test='rawatInap.idJenisPeriksa == "umum"'>
+                                        <tr>
+                                            <td>
+                                                <button onclick="showUangMuka()" class="btn btn-primary"><i class="fa fa-money"></i> Uang Muka</button>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -543,14 +545,16 @@
                     </div>
                     <div class="box-body">
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
+                                onclick="showModal(1)"><i class="fa fa-plus"></i> Request Dokter
                         </button>
                         <table class="table table-bordered table-striped" id="tbl_dokter">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Dokter</td>
                                 <td>Nama</td>
-                                <td>Nama Pelayanan</td>
+                                <td>Spesialis</td>
+                                <td>Jenis DPJP</td>
+                                <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -1174,7 +1178,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Tambah Dokter</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Request Dokter</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_dokter">
@@ -1186,13 +1190,41 @@
                         <label class="col-md-3" style="margin-top: 7px">Nama Dokter</label>
                         <div class="col-md-7">
                             <select id="dok_id_dokter" style="width: 100%" class="form-control select2"
-                                    onchange="var warn =$('#war_dok').is(':visible'); if (warn){$('#cor_dok').show().fadeOut(3000);$('#war_dok').hide()}">
+                                    onchange="var warn =$('#war_dok').is(':visible'); if (warn){$('#cor_dok').show().fadeOut(3000);$('#war_dok').hide()}; setSpesialis(this.value)">
                             </select>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_dok"><i
                                     class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_dok"><i
+                                    class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Spesialis</label>
+                        <div class="col-md-7">
+                           <input class="form-control" id="pelayanan_dokter" style="margin-top: 7px" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis DPJP</label>
+                        <div class="col-md-7">
+                            <select id="dok_jenis_dpjp" style="width: 100%" class="form-control select2"
+                                    onchange="var warn =$('#war_dok_jenis_dpjp').is(':visible'); if (warn){$('#cor_dok_jenis_dpjp').show().fadeOut(3000);$('#war_dok_jenis_dpjp').hide()}">
+                                <option value="">[Select One]</option>
+                                <option value="konsultasi">Konsultasi</option>
+                                <option value="rawat_bersama">Rawat Bersama</option>
+                                <option value="rawat_ali">Rawat Alih</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_dok_jenis_dpjp"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_dok_jenis_dpjp"><i
                                     class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
@@ -3600,7 +3632,7 @@
 </div>
 
 <div class="modal fade" id="modal-uang_muka">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog" style="width: 55%;">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -3612,7 +3644,7 @@
                     <div class="alert-default alert-dismissible" style="display: none" id="def_uang_muka">
                         <p id="msg_def_uang_muka"></p>
                     </div>
-                    <div class="alert alert-success alert-dismissible" style="display: none" id="suc_uang_muka">
+                    <div class="alert alert-success alebody_uang_mukart-dismissible" style="display: none" id="suc_uang_muka">
                         <p id="msg_suc_uang_muka"></p>
                     </div>
                     <div class="alert alert-danger alert-dismissible" style="display: none" id="war_uang_muka">
@@ -3643,10 +3675,11 @@
                             <table class="table table-bordered table-striped" style="font-size: 13px">
                                 <thead>
                                 <tr>
-                                    <td>Tanggal</td>
+                                    <td width="20%">Tanggal</td>
+                                    <td>Pelayanan</td>
                                     <td>Bukti</td>
-                                    <td align="center" width="30%">Jumlah (Rp.)</td>
-                                    <td align="center" width="20%">Status</td>
+                                    <td align="center" width="15%">Jumlah (Rp.)</td>
+                                    <td align="center" width="15%">Status</td>
                                 </tr>
                                 </thead>
                                 <tbody id="body_uang_muka">

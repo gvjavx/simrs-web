@@ -381,7 +381,7 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <input class="form-control dpjp" style="margin-top: 7px" value="DPJP 1" disabled="disabled">
+                                <input class="form-control dpjp" style="margin-top: 7px" value="dpjp_1" disabled="disabled">
                             </div>
                         </div>
                     </div>
@@ -642,7 +642,8 @@
     function tambahDPJP(){
         var cekDpjp = $('.dpjp').length;
         var cekValue = $('#dokter_dpjp_'+cekDpjp).val();
-        if(cekValue != ''){
+        var cekJenis = $('#jenis_dpjp_'+cekDpjp).val();
+        if(cekValue != '' && cekJenis != ''){
             var idDpjp = $('.id_dpjp');
             var idIsi = "";
             var aw = "(";
@@ -663,6 +664,7 @@
             }
             var count = cekDpjp + 1;
             $('#dokter_dpjp_'+cekDpjp).attr('disabled', 'disabled');
+            $('#jenis_dpjp_'+cekDpjp).attr('disabled', 'disabled');
             var html = '<div class="row" id="set_dpjp_'+count+'">\n' +
                 '<div class="form-group">\n' +
                 '    <div class="col-md-offset-3 col-md-4">\n' +
@@ -671,7 +673,12 @@
                 '        </select>\n' +
                 '    </div>\n' +
                 '    <div class="col-md-4">\n' +
-                '        <input class="form-control dpjp" style="margin-top: 7px" value="DPJP '+count+'" disabled="disabled">\n' +
+                '<select class="form-control select2 dpjp" id="jenis_dpjp_'+count+'">' +
+                    '<option value="">[Select One]</option>'+
+                    '<option value="konsultasi">Konsultasi</option>'+
+                    '<option value="rawat_bersama">Rawat Bersama</option>'+
+                '</select>'+
+                // '        <input class="form-control dpjp" style="margin-top: 7px" value="DPJP '+count+'" disabled="disabled">\n' +
                 '    </div>\n' +
                 '    <div class="col-md-1">\n' +
                 '        <button onclick="delDpjp(\'set_dpjp_'+count+'\')" style="margin-top: 8px; margin-left: -20px" class="btn btn-danger"><i class="fa fa-trash"></i></button>\n' +

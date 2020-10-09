@@ -163,13 +163,19 @@ function listSelectDokter(isi) {
     CheckupAction.getListDokterByBranchId(isi, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
-                option += "<option value='" + item.idDokter + '|' + item.idPelayanan + "'>" + item.namaDokter + ' - ' + item.namaPelayanan + "</option>";
+                option += "<option value='" + item.idDokter + '|' + item.idPelayanan + '|'+ item.namaPelayanan +"'>" + item.namaDokter + "</option>";
             });
             $('#dok_id_dokter').html(option);
         } else {
             $('#dok_id_dokter').html(option);
         }
     });
+}
+
+function setSpesialis(value){
+    if(value != ''){
+        $('#pelayanan_dokter').val(value.split("|")[2]);
+    }
 }
 
 function listSelectRuangan(id) {
@@ -711,6 +717,7 @@ function formatRupiah(angka) {
 
 function saveDokter(id) {
     var idDokter = $('#dok_id_dokter').val();
+    var jenis = $('#dok_jenis_dpjp').val();
     var idDok = "";
     var pelayanan = "";
     if (idDokter != '') {
@@ -719,7 +726,7 @@ function saveDokter(id) {
         pelayanan = data[1];
     }
 
-    if (idDetailCheckup != '' && idDok != '' && pelayanan != '') {
+    if (idDetailCheckup != '' && idDok != '' && pelayanan != '' && jenis != '') {
         $('#save_dokter').hide();
         $('#load_dokter').show();
         if (id != '') {
@@ -735,10 +742,10 @@ function saveDokter(id) {
                     $('#warning_dokter').show().fadeOut(5000);
                     $('#msg_dokter').text(response.msg);
                 }
-            })
+            });
         } else {
             dwr.engine.setAsync(true);
-            TeamDokterAction.saveDokter(idDetailCheckup, idDok, pelayanan, function (response) {
+            TeamDokterAction.saveDokterRequest(idDetailCheckup, idDok, pelayanan, jenis, function (response) {
                 if (response.status == "success") {
                     dwr.engine.setAsync(false);
                     listDokter();
@@ -749,12 +756,17 @@ function saveDokter(id) {
                     $('#warning_dokter').show().fadeOut(5000);
                     $('#msg_dokter').text(response.msg);
                 }
-            })
+            });
         }
     } else {
         $('#warning_dokter').show().fadeOut(5000);
         $('#msg_dokter').text('Silahkan cek kembali data inputan...!');
-        $('#war_dok').show();
+        if(idDokter == ''){
+            $('#war_dok').show();
+        }
+        if(jenis == ''){
+            $('#war_dok_jenis_dpjp').show();
+        }
     }
 }
 
@@ -763,14 +775,61 @@ function listDokter() {
     var data = [];
     var dokter = "";
     CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, function (response) {
-        data = response;
-        if (data.length > 0) {
-            $.each(data, function (i, item) {
+        if (response.length > 0) {
+            $.each(response, function (i, item) {
+                var jenis = "";
+                var status = "";
+                var menunggu = "";
+                var disetujui = "";
+                var menolak = "";
+                var label = "";
+                var btn = "";
+
+                if(item.jenisDpjp == "dpjp_1"){
+                    jenis = "DPJP 1";
+                    status = "disetujui";
+                }else if(item.jenisDpjp == "konsultasi"){
+                    if(item.flagApprove != null){
+                        if(item.flagApprove == "Y"){
+                            status = "disetujui";
+                            btn = '<img class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\', \'' + item.idPelayanan + '\')" src="' + pathImages + '/pages/images/icons8-create-25.png" style="cursor: pointer;">';
+                        }else if(item.flagApprove == "N"){
+                            status = "ditolak";
+                        }
+                    }else{
+                        status = "menunggu persetujuan";
+                    }
+                    jenis = "Konsultasi";
+                }else if(item.jenisDpjp == "rawat_bersama"){
+                    if(item.flagApprove != null){
+                        if(item.flagApprove == "Y"){
+                            status = "disetujui";
+                        }else if(item.flagApprove == "N"){
+                            status = "ditolak";
+                        }
+                    }else{
+                        status = "menunggu persetujuan";
+                    }
+                    jenis = "Rawat Bersama";
+                }else if(item.jenisDpjp == "rawat_alih"){
+                    if(item.flagApprove != null){
+                        if(item.flagApprove == "Y"){
+                            status = "disetujui";
+                        }else if(item.flagApprove == "N"){
+                            status = "ditolak";
+                        }
+                    }else{
+                        status = "menunggu persetujuan";
+                    }
+                    jenis = "Rawat Alih";
+                }
                 table += "<tr>" +
                     "<td>" + item.idDokter + '<input value="' + item.idDokter + '" type="hidden" id="dokter' + i + '">' + "</td>" +
                     "<td>" + item.namaDokter + "</td>" +
                     "<td>" + item.namaPelayanan + "</td>" +
-                    "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\', \'' + item.idPelayanan + '\')" src="' + pathImages + '/pages/images/icons8-create-25.png" style="cursor: pointer;">' + "</td>" +
+                    "<td>" + jenis + "</td>" +
+                    "<td>" + status + "</td>" +
+                    "<td align='center'>" + btn + "</td>" +
                     "</tr>";
                 dokter = item.idDokter;
             });
@@ -3104,7 +3163,6 @@ function listUangMuka() {
     RawatInapAction.getListUangMuka(noCheckup, {
         callback: function (response) {
             if (response.length > 0) {
-                console.log(response);
                 $.each(response, function (i, item) {
                     var status = "belum bayar";
                     var color = 'style="padding: 4px; color: white; background-color: #d33724; border-radius: 5px"';
@@ -3114,9 +3172,10 @@ function listUangMuka() {
                     }
                     table += '<tr>' +
                         '<td>' + converterDateTime(item.createdDate) + '</td>' +
+                        '<td>' + item.namaPelayanan + '</td>' +
                         '<td>' + item.id + '</td>' +
                         '<td align="right">' + formatRupiahAtas(item.jumlah) + '</td>' +
-                        '<td><span ' + color + '>' + status + '</span></td>' +
+                        '<td align="center"><span ' + color + '>' + status + '</span></td>' +
                         '</tr>';
                 });
                 $('#body_uang_muka').html(table);

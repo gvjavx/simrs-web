@@ -997,6 +997,12 @@ ALTER COLUMN id_ruangan TYPE VARCHAR(50);
 ALTER TABLE it_simrs_tindakan_rawat
 ALTER COLUMN id_tindakan TYPE VARCHAR(50);
 
+-- 2020-10-09
+ALTER TABLE it_simrs_dokter_team
+ADD COLUMN flag_approve VARCHAR(1),
+ADD COLUMN keterangan VARCHAR(1000);
+
+
 
 
 

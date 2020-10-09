@@ -234,4 +234,18 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                 .list();
         return results;
     }
+
+    public List<ImSimrsPelayananEntity> getJutsPelayananByBranch(String branchId) throws HibernateException {
+        List<ImSimrsPelayananEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPelayananEntity.class)
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.ne("tipePelayanan", "radiologi"))
+                .add(Restrictions.ne("tipePelayanan", "lab"))
+                .add(Restrictions.ne("tipePelayanan", "apotek_ri"))
+                .add(Restrictions.ne("tipePelayanan", "apotek"))
+                .add(Restrictions.ne("tipePelayanan", "gudang_obat"))
+                .add(Restrictions.ne("tipePelayanan", "gizi"))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
 }

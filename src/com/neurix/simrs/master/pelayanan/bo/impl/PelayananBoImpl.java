@@ -561,4 +561,9 @@ public class PelayananBoImpl implements PelayananBo{
     public List<ImSimrsPelayananEntity> getPelayananByBranch(String branchId) throws GeneralBOException {
         return pelayananDao.getPelayananByBranch(branchId);
     }
+
+    @Override
+    public List<ImSimrsPelayananEntity> getJustPelayananByBranch(String branchId) throws GeneralBOException {
+        return pelayananDao.getJutsPelayananByBranch(branchId);
+    }
 }
