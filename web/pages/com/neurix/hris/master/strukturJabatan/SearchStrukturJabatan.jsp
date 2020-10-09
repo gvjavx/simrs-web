@@ -107,7 +107,7 @@
                 }else{
                     if (confirm('Are you sure you want to Delete this Record?')) {
                         StrukturJabatanAction.saveDelete(id, branch, position, parent,function(data) {
-                            if (data==""){
+                            if (data===""){
                                 alert('Record has been Deleted successfully.');
                                 location.reload();
                             } else {
@@ -152,7 +152,7 @@
                 var branch = $(this).attr('branch');
                 var nip =$(this).attr('nip');
                 console.log(nip);
-                if (nip=="-"){
+                if (nip==="-"){
                     StrukturJabatanAction.initStrukturJabatanSearch(id, function(item) {
                         selectParent(branch, 'Delete');
                         $('#strukturJabatanIdDelete').val(item.strukturJabatanId);
