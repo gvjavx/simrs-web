@@ -382,7 +382,11 @@ public class ObatBoImpl implements ObatBo {
         String idSeqObat = getIdNextSeqObat();
 
         // header obat
-        headerObatEntity.setIdObat("OBT" + id);
+        if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())){
+            headerObatEntity.setIdObat(bean.getIdPabrik());
+        } else {
+            headerObatEntity.setIdObat("OBT" + id);
+        }
         headerObatEntity.setNamaObat(bean.getNamaObat());
         headerObatEntity.setMerk(bean.getMerk());
         headerObatEntity.setIdPabrik(bean.getIdPabrik());

@@ -295,18 +295,21 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_exits"></p>
                 </div>
-                <div class="row">
+                <div class="row" id="row-check-id-pabrik">
                     <label class="col-md-3" style="margin-top: 7px">Generate Id Obat</label>
                     <label class="switch">
                         <input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">
                         <span class="slider round"></span>
                     </label>
+                    <%--<input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">--%>
+
+
                 </div>
 
                 <div class="row">
 
                     <div class="form-group" id="dis-id-pabrik">
-                        <label class="col-md-3" style="margin-top: 7px">ID Pabrik</label>
+                        <label class="col-md-3" style="margin-top: 7px">ID Obat</label>
                         <div class="col-md-7">
                             <s:textfield type="text" min="1" cssClass="form-control"
                                          cssStyle="margin-top: 7px" id="add_pabrik"
@@ -324,7 +327,7 @@
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
                             <s:textfield onkeypress="var warn =$('#war_nama').is(':visible'); if (warn){$('#cor_nama').show().fadeOut(3000);$('#war_nama').hide()}"
-                                         type="text" cssClass="form-control" id="add_nama_obat"></s:textfield>
+                                         type="text" cssClass="form-control" id="add_nama_obat" cssStyle="margin-top : 7px"></s:textfield>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_nama"><i
@@ -916,6 +919,7 @@
         $('#flag-bpjs').val(flagBpjs);
         $('#id_kategori').val(idKategori);
         $('#modal-obat').modal({show:true, backdrop:'static'});
+        $("#row-check-id-pabrik").hide();
         showListKandunganObat(idObat);
     }
 
@@ -1104,8 +1108,9 @@
     }
 
     function hideIdPabrik() {
-        var checkIdPabrik =  $("#check-id-pabrik").val();
-        if (checkIdPabrik){
+        var checkIdPabrik = document.getElementById("check-id-pabrik");
+        console.log(checkIdPabrik);
+        if (checkIdPabrik.checked == true){
             $("#dis-id-pabrik").hide();
         } else {
             $("#dis-id-pabrik").show();

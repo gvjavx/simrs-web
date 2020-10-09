@@ -1276,3 +1276,31 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     last_update_who = 'migrasi_admin';
 
 --
+
+-- 2020-10-09
+
+    -- Table: public.im_simrs_bentuk_barang
+
+    -- DROP TABLE public.im_simrs_bentuk_barang;
+
+    CREATE TABLE public.im_simrs_bentuk_barang
+    (
+        id_bentuk character varying(30) COLLATE pg_catalog."default" NOT NULL,
+        bentuk character varying(100) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT im_simrs_bentuk_barang_pkey PRIMARY KEY (id_bentuk)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.im_simrs_bentuk_barang
+        OWNER to postgres;
+
+--
