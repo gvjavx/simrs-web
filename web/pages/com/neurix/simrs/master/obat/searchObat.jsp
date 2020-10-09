@@ -296,6 +296,29 @@
                     <p id="msg_exits"></p>
                 </div>
                 <div class="row">
+                    <label class="col-md-3" style="margin-top: 7px">Generate Id Obat</label>
+                    <label class="switch">
+                        <input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <div class="row">
+
+                    <div class="form-group" id="dis-id-pabrik">
+                        <label class="col-md-3" style="margin-top: 7px">ID Pabrik</label>
+                        <div class="col-md-7">
+                            <s:textfield type="text" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="add_pabrik"
+                                         onkeypress="var warn =$('#war_pabrik').is(':visible'); if (warn){$('#cor_pabrik').show().fadeOut(3000);$('#war_pabrik').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_pabrik"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_pabrik"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
                     <input type="hidden" id="fin_id_obat">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
@@ -327,20 +350,6 @@
                                id="war_jenis"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_jenis"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">ID Pabrik</label>
-                        <div class="col-md-7">
-                            <s:textfield type="text" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="add_pabrik"
-                                         onkeypress="var warn =$('#war_pabrik').is(':visible'); if (warn){$('#cor_pabrik').show().fadeOut(3000);$('#war_pabrik').hide()}"></s:textfield>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_pabrik"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_pabrik"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -1092,6 +1101,15 @@
 
     function resetSessionKandunganObat() {
         ObatAction.resetSessionKandunganObat();
+    }
+
+    function hideIdPabrik() {
+        var checkIdPabrik =  $("#check-id-pabrik").val();
+        if (checkIdPabrik){
+            $("#dis-id-pabrik").hide();
+        } else {
+            $("#dis-id-pabrik").show();
+        }
     }
 
 
