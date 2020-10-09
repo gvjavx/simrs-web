@@ -258,7 +258,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" style="color: white"><i class="fa fa-medkit"></i> TPPRI</h4>
             </div>
-            <div class="modal-body" style="height: 450px;overflow-y: scroll;">
+            <div class="modal-body" style="height: 70%;overflow-y: scroll;">
                 <div class="alert alert-success alert-dismissible" style="display: none" id="success">
                     <h4><i class="icon fa fa-info"></i> Info!</h4>
                     <p id="msg_suc"></p>
@@ -381,7 +381,7 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <input class="form-control dpjp" style="margin-top: 7px" value="DPJP 1" disabled="disabled">
+                                <input class="form-control dpjp" style="margin-top: 7px" value="dpjp_1" disabled="disabled">
                             </div>
                         </div>
                     </div>
@@ -403,6 +403,17 @@
                                 <select class="form-control select2" id="kamar" style="width: 100%">
                                     <option value=''>[Select One]</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group" style="display: none" id="form-is-uangmuka">
+                            <label class="col-md-3" style="margin-top: 10px">Ada uang muka?</label>
+                            <div class="col-md-4">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" id="cek_uang_muka" value="Y" onclick="cekUangMuka(this.id)">
+                                    <label for="cek_uang_muka"></label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -436,7 +447,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_fin" onclick="confirm()"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_fin" onclick="confirm()"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_fin"><i
@@ -462,7 +473,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes            </button>
             </div>
         </div>
     </div>
@@ -537,8 +548,7 @@
                         $('#kamar').html('');
                         getDokterDpjp('dokter_dpjp_1', null);
                         if (res.idJenisPeriksaPasien == "umum") {
-                            $('#form-metode_pembayaran').show();
-                            $('#form-uang_muka').show();
+                            $('#form-is-uangmuka').show();
                         } else {
                             $('#form-metode_pembayaran').hide();
                             $('#form-uang_muka').hide();
@@ -632,7 +642,8 @@
     function tambahDPJP(){
         var cekDpjp = $('.dpjp').length;
         var cekValue = $('#dokter_dpjp_'+cekDpjp).val();
-        if(cekValue != ''){
+        var cekJenis = $('#jenis_dpjp_'+cekDpjp).val();
+        if(cekValue != '' && cekJenis != ''){
             var idDpjp = $('.id_dpjp');
             var idIsi = "";
             var aw = "(";
@@ -653,6 +664,7 @@
             }
             var count = cekDpjp + 1;
             $('#dokter_dpjp_'+cekDpjp).attr('disabled', 'disabled');
+            $('#jenis_dpjp_'+cekDpjp).attr('disabled', 'disabled');
             var html = '<div class="row" id="set_dpjp_'+count+'">\n' +
                 '<div class="form-group">\n' +
                 '    <div class="col-md-offset-3 col-md-4">\n' +
@@ -661,7 +673,12 @@
                 '        </select>\n' +
                 '    </div>\n' +
                 '    <div class="col-md-4">\n' +
-                '        <input class="form-control dpjp" style="margin-top: 7px" value="DPJP '+count+'" disabled="disabled">\n' +
+                '<select class="form-control select2 dpjp" id="jenis_dpjp_'+count+'">' +
+                    '<option value="">[Select One]</option>'+
+                    '<option value="konsultasi">Konsultasi</option>'+
+                    '<option value="rawat_bersama">Rawat Bersama</option>'+
+                '</select>'+
+                // '        <input class="form-control dpjp" style="margin-top: 7px" value="DPJP '+count+'" disabled="disabled">\n' +
                 '    </div>\n' +
                 '    <div class="col-md-1">\n' +
                 '        <button onclick="delDpjp(\'set_dpjp_'+count+'\')" style="margin-top: 8px; margin-left: -20px" class="btn btn-danger"><i class="fa fa-trash"></i></button>\n' +
@@ -744,6 +761,7 @@
         var dataDpjp    = [];
         var dataDokter = $('.id_dpjp');
         var dataPrio = $('.dpjp');
+        var isUangMuka = $('#cek_uang_muka').is(':checked');
         $.each(dataDokter, function (i, item) {
             if(item.value != ''){
                 var data = item.value.split("|");
@@ -753,14 +771,18 @@
                     'id_dpjp':idDokter,
                     'id_pelayanan':idPelayanan,
                     'prioritas':dataPrio[i].value
-                })
+                });
             }
         });
 
         if(tindakLanjut == "rawat_inap"){
             if(dataDpjp.length > 0 && kelasKamar && kamar != ''){
                 if(jenisPasien == "umum"){
-                    if(metodeBayar && uangMuka != ''){
+                    if(isUangMuka){
+                        if(metodeBayar && uangMuka != ''){
+                            cek = true;
+                        }
+                    }else{
                         cek = true;
                     }
                 }else{
@@ -770,7 +792,11 @@
         }else{
             if(dataDpjp.length > 0 && kamar != ''){
                 if(jenisPasien == "umum"){
-                    if(metodeBayar && uangMuka != ''){
+                    if(isUangMuka){
+                        if(metodeBayar && uangMuka != ''){
+                            cek = true;
+                        }
+                    }else{
                         cek = true;
                     }
                 }else{
@@ -932,6 +958,17 @@
         }
         $('#modal-temp').load(context, function (res, status, xhr) {
         });
+    }
+
+    function cekUangMuka(id){
+        var cek = $('#'+id).is(':checked');
+        if(cek){
+            $('#form-metode_pembayaran').show();
+            $('#form-uang_muka').show();
+        }else{
+            $('#form-metode_pembayaran').hide();
+            $('#form-uang_muka').hide();
+        }
     }
 
 </script>

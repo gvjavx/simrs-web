@@ -17,8 +17,11 @@ import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
+import com.neurix.simrs.transaksi.checkupdetail.dao.UangMukaDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsUangMukaPendaftaranEntity;
+import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.moncairan.dao.MonCairanDao;
 import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
 import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
@@ -81,6 +84,7 @@ public class RawatInapBoImpl implements RawatInapBo {
     private RiwayatTindakanDao riwayatTindakanDao;
     private RekananOpsDao rekananOpsDao;
     private TempatTidurDao tempatTidurDao;
+    private UangMukaDao uangMukaDao;
 
     public List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException {
         logger.info("[RawatInapBoImpl.getListEntityByCriteria] Start >>>>>>>");
@@ -1214,7 +1218,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                         entity.setIdRiwayatTindakan("RWT"+riwayatTindakanDao.getNextSeq());
                         entity.setIdDetailCheckup(bean.getIdDetailCheckup());
                         entity.setIdTindakan(rawatInap.getIdRawatInap());
-                        entity.setNamaTindakan("Kamar "+rawatInap.getNamaRangan());
+                        entity.setNamaTindakan("Kamar "+rawatInap.getNamaRangan()+" ("+rawatInap.getLamakamar()+" hari @Rp."+rawatInap.getTarif()+")");
                         entity.setKeterangan("kamar");
 
                         try {
@@ -1268,6 +1272,45 @@ public class RawatInapBoImpl implements RawatInapBo {
         }
         logger.info("[RawatInapBoImpl.saveAdd] End <<<<<<<<");
         return response;
+    }
+
+    @Override
+    public CrudResponse saveUangMuka(UangMuka bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if(bean != null){
+            ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
+            uangMukaPendaftaranEntity.setId("UM" + bean.getBranchId() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
+            uangMukaPendaftaranEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+            uangMukaPendaftaranEntity.setFlag("Y");
+            uangMukaPendaftaranEntity.setAction("C");
+            uangMukaPendaftaranEntity.setCreatedDate(bean.getCreatedDate());
+            uangMukaPendaftaranEntity.setCreatedWho(bean.getCreatedWho());
+            uangMukaPendaftaranEntity.setLastUpdate(bean.getCreatedDate());
+            uangMukaPendaftaranEntity.setLastUpdateWho(bean.getCreatedWho());
+            uangMukaPendaftaranEntity.setJumlah(bean.getJumlah());
+
+            try {
+                uangMukaDao.addAndSave(uangMukaPendaftaranEntity);
+                response.setStatus("success");
+                response.setMsg("success");
+            } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg("Error ketika insert data ke databse, "+e.getMessage());
+                logger.error("[CheckupBoImpl.saveAdd] Error When Saving" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public List<UangMuka> getAllListUangMuka(UangMuka bean) throws GeneralBOException {
+        return rawatInapDao.getAllListUangMuka(bean);
+    }
+
+    private String dateFormater(String type) {
+        Date date = new Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     protected List<MtSimrsRuanganEntity> getListEntityRuangan(Ruangan bean) {
@@ -1405,5 +1448,9 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     public void setTempatTidurDao(TempatTidurDao tempatTidurDao) {
         this.tempatTidurDao = tempatTidurDao;
+    }
+
+    public void setUangMukaDao(UangMukaDao uangMukaDao) {
+        this.uangMukaDao = uangMukaDao;
     }
 }

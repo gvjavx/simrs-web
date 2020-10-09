@@ -218,7 +218,6 @@ public class TindakanAction extends BaseTransactionAction {
         KategoriTindakanBo kategoriTindakanBo = (KategoriTindakanBo) ctx.getBean("kategoriTindakanBoProxy");
         KategoriTindakan kategoriTindakan = new KategoriTindakan();
         kategoriTindakan.setFlag("Y");
-        kategoriTindakan.setBranchId(CommonUtil.userBranchLogin());
 
         try {
             listOfKategoriTidakans = kategoriTindakanBo.getDataByCriteria(kategoriTindakan);
@@ -264,7 +263,7 @@ public class TindakanAction extends BaseTransactionAction {
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         if(branchId != null && !"".equalsIgnoreCase(branchId)){
             try {
-                branchList = pelayananBo.getPelayananByBranch(branchId);
+                branchList = pelayananBo.getJustPelayananByBranch(branchId);
             } catch (GeneralBOException e) {
                 logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
             }

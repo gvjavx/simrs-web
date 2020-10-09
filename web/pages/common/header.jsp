@@ -438,7 +438,9 @@ apply the skin class to the body tag so the changes take effect.
 
         $(':input').on('focus', function () {
             $(this).attr('autocomplete', 'off');
-        })
+        });
+
+        $('#myTable').css('width', '100%');
 
     });
 
@@ -613,8 +615,12 @@ apply the skin class to the body tag so the changes take effect.
         if(idHidden != '' && idHidden != null){
             val = val.replace(/[.]/g, '');
             var numbers = /^[0-9]+$/;
-            if(val.match(numbers)){
-                $('#'+idHidden).val(val);
+            if(val != ''){
+                if(val.match(numbers)) {
+                    $('#' + idHidden).val(val);
+                }
+            }else{
+                $('#' + idHidden).val('');
             }
         }
     }

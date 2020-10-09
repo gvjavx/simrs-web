@@ -1411,7 +1411,7 @@ function saveLab(id) {
         if (idKategori == '') {
             $('#war_kategori_lab').show();
         }
-        if (idLab == '') {
+        if (idLab == '' || idLab == null) {
             $('#war_lab').show();
         }
         if (idParameter == '' || idParameter == null) {

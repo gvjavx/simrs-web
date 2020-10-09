@@ -4482,7 +4482,25 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         return results;
     }
 
-    public List<ItPayrollEntity> getDataPayrollByBulanBranchApproveNull(String branchId) throws HibernateException {
+    public List<ItPayrollEntity> getDataPayrollByBulanBranchApproveNull(String branchId,String tipe) throws HibernateException {
+        String tipeWhere="";
+        switch (tipe) {
+            case "T":
+                tipeWhere = "flagThr";
+                break;
+            case "JP":
+                tipeWhere = "flagJasprod";
+                break;
+            case "IN":
+                tipeWhere = "flagInsentif";
+                break;
+            case "CP":
+                tipeWhere = "flagCutiPanjang";
+                break;
+            case "CT":
+                tipeWhere = "flagCutiTahunan";
+                break;
+        }
         List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
                 .add(Restrictions.eq("branchId", branchId))

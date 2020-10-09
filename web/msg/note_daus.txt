@@ -674,5 +674,10 @@ delete from im_hris_cuti_panjang;
 update im_functions set flag='Y' where func_id =837;
 update im_functions set flag='Y' where func_id =14;
 update im_functions set flag='Y' where func_id =1182;
-update im_functions set func_name='Payroll Iuran Pegawai DPLK' where func_id =1182;
+update im_functions set func_name='Iuran Pegawai DPLK' where func_id =1182;
+update im_functions set func_name='Skala Gaji Pensiun' where func_id =1825;
+update im_functions set flag='N' where func_id =1835;
+ALTER TABLE im_hris_payroll_skala_gaji_dapenbun ADD COLUMN tipe_dapen_id character varying(20);
+update im_hris_payroll_skala_gaji_dapenbun set tipe_dapen_id='DP01';
+
 -- buatkan user super admin

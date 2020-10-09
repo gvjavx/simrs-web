@@ -1650,7 +1650,7 @@
                                                        onBeforeTopics="beforeProcessSave"
                                                        onCompleteTopics="closeDialog,successDialog"
                                                        onSuccessTopics="successDialog" onErrorTopics="errorDialog">
-                                                <i class="fa fa-arrow-right"></i>
+                                                <i class="fa fa-check"></i>
                                                 yes
                                             </sj:submit>
                                         </div>
@@ -1867,7 +1867,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" onclick="saveFormAdmisi()"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
             </div>
         </div>

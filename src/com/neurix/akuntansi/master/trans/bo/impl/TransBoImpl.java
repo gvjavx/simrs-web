@@ -7,6 +7,7 @@ import com.neurix.akuntansi.master.trans.dao.TransDao;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -253,8 +254,8 @@ public class TransBoImpl implements TransBo {
 
                     returnTrans.setCreatedWho(transEntity.getCreatedWho());
                     returnTrans.setCreatedDate(transEntity.getCreatedDate());
-                    returnTrans.setStCreatedDate(transEntity.getCreatedDate().toString());
-                    returnTrans.setStLastUpdate(transEntity.getLastUpdate().toString());
+                    returnTrans.setStCreatedDate(CommonUtil.convertTimestampToStringLengkap(transEntity.getCreatedDate()));
+                    returnTrans.setStLastUpdate(CommonUtil.convertTimestampToStringLengkap(transEntity.getLastUpdate()));
                     returnTrans.setLastUpdate(transEntity.getLastUpdate());
                     returnTrans.setAction(transEntity.getAction());
                     returnTrans.setFlag(transEntity.getFlag());

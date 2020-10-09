@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printHasilPeriksaLab" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.7715610000000104"/>
 	<property name="ireport.x" value="24"/>
-	<property name="ireport.y" value="479"/>
+	<property name="ireport.y" value="431"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -391,7 +391,7 @@ AND b.flag = 'Y']]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Dokter]]></text>
+				<text><![CDATA[Dokter Radiologi]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="9" y="1" width="115" height="14" uuid="eca0d581-c440-4096-913f-87cbd82daafa"/>
@@ -439,7 +439,7 @@ AND b.flag = 'Y']]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Penanggung Jawab]]></text>
+				<text><![CDATA[Petugas Radiologi]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="8" y="79" width="115" height="15" uuid="0d39b4c6-0038-40f6-af92-5b7acfbc0ea2"/>

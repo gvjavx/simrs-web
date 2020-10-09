@@ -17,11 +17,10 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var golonganId = document.getElementById("golonganId1").value;
-            var point = document.getElementById("point1").value;
             var nilai = document.getElementById("nilai1").value;
 
-            if (golonganId != '' && point != '' && nilai != '' ) {
-                if(isNaN(point) ==  false && isNaN(nilai) == false){
+            if (golonganId != '' && nilai != '' ) {
+                if(isNaN(nilai) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -32,10 +31,6 @@
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";
-                    if (isNaN(point)) {
-                        msg += 'Field <strong>point</strong> Harus angka tanpa koma.' + '<br/>';
-                    }
-
                     if (isNaN(nilai)) {
                         msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
                     }
@@ -49,10 +44,6 @@
                 var msg = "";
                 if (golonganId == '') {
                     msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
-                }
-
-                if (point == '') {
-                    msg += 'Field <strong>Point</strong> is required.' + '<br/>';
                 }
 
                 if (nilai == '') {
@@ -118,20 +109,9 @@
                         </td>
                         <td>
                             <table>
-                                <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGajiPensiun.golonganId"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Ms. Kerja Gol. :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield type="number" min="0" id="point1" name="payrollSkalaGajiPensiun.poin" required="true"  cssClass="form-control"/>
+                                <s:action id="comboGolongan" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
+                                <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golonganId1" name="payrollSkalaGajiPensiun.golonganId"
+                                          listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="" />
                             </table>
                         </td>
                     </tr>

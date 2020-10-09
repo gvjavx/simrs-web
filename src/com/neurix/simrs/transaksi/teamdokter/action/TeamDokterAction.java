@@ -173,4 +173,30 @@ public class TeamDokterAction extends BaseMasterAction {
         logger.info("[TeamDokterAction.editDokter] end process >>>");
         return response;
     }
+
+    public CrudResponse saveDokterRequest(String idDetailCheckup, String idDokter, String pelayanan, String jenisDpjp){
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TeamDokterBo dokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            DokterTeam dokterTeam = new DokterTeam();
+            dokterTeam.setIdDetailCheckup(idDetailCheckup);
+            dokterTeam.setIdDokter(idDokter);
+            dokterTeam.setCreatedWho(userLogin);
+            dokterTeam.setLastUpdate(updateTime);
+            dokterTeam.setCreatedDate(updateTime);
+            dokterTeam.setLastUpdateWho(userLogin);
+            dokterTeam.setAction("C");
+            dokterTeam.setFlag("Y");
+            dokterTeam.setIdPelayanan(pelayanan);
+            dokterTeam.setJenisDpjp(jenisDpjp);
+            response = dokterBo.savaAdd(dokterTeam);
+        }catch (GeneralBOException e) {
+            response.setStatus("error");
+            response.setMsg("Error"+e.getMessage());
+        }
+        return response;
+    }
 }
