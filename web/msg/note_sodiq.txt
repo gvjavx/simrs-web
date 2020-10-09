@@ -1002,6 +1002,9 @@ ALTER TABLE it_simrs_dokter_team
 ADD COLUMN flag_approve VARCHAR(1),
 ADD COLUMN keterangan VARCHAR(1000);
 
+ALTER TABLE im_simrs_tindakan
+DROP COLUMN tindakan;
+
 
 
 
