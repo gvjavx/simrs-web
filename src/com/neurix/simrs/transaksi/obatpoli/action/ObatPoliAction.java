@@ -805,7 +805,7 @@ public class ObatPoliAction extends BaseMasterAction {
         permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
         permintaanObatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
         permintaanObatPoli.setFlagOtherBranch("Y");
-//        permintaanObatPoli.setTujuanPelayanan("GDG");
+
         boolean isPoli = false;
         List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList();
 
