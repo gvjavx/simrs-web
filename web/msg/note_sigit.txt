@@ -1283,8 +1283,7 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
     -- DROP TABLE public.im_simrs_bentuk_barang;
 
-    CREATE TABLE public.im_simrs_bentuk_barang
-    (
+    CREATE TABLE public.im_simrs_bentuk_barang    (
         id_bentuk character varying(30) COLLATE pg_catalog."default" NOT NULL,
         bentuk character varying(100) COLLATE pg_catalog."default",
         flag character varying(1) COLLATE pg_catalog."default",
