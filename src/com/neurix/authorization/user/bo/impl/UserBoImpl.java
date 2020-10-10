@@ -132,6 +132,13 @@ public class UserBoImpl implements UserBo {
         userPK.setId(username);
 
         ImUsers loginUser = (ImUsers) userDao.getById(userPK,active);
+
+        // changed by Sigit, 2020-10-10
+        boolean checkForEmail = loginUser == null;
+        if (checkForEmail){
+            loginUser = userDao.getById("email", username);
+        }
+
         UserDetailsLogin userDetailsLogin = null;
         if (loginUser != null) {
 
@@ -3162,5 +3169,10 @@ public class UserBoImpl implements UserBo {
 
         logger.info("[UserBoImpl.getUserByIdDevice] end process <<<");
         return user;
+    }
+
+    @Override
+    public ImUsers getUserByEmailId(String email) throws GeneralBOException {
+        return userDao.getById("email", email);
     }
 }

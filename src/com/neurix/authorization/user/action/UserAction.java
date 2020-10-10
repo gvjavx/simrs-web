@@ -12,11 +12,13 @@ import com.neurix.authorization.position.model.Position;
 import com.neurix.authorization.role.bo.RoleBo;
 import com.neurix.authorization.role.model.Roles;
 import com.neurix.authorization.user.bo.UserBo;
+import com.neurix.authorization.user.model.ImUsers;
 import com.neurix.authorization.user.model.User;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -1013,5 +1015,28 @@ public class UserAction extends BaseMasterAction {
 
         logger.info("[UserAction.getUserData] end process <<<");
         return user;
+    }
+
+    public CrudResponse checkEmailAvailable(String email){
+        CrudResponse response = new CrudResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        UserBo userBo = (UserBo) ctx.getBean("userBoProxy");
+
+        try {
+            ImUsers users = userBo.getUserByEmailId(email);
+            if (users == null){
+                response.setStatus("success");
+            } else {
+                response.setStatus("error");
+                response.setMsg("Email Not Available");
+            }
+        } catch (GeneralBOException e){
+            logger.error("Error Where Search By Email Address");
+            response.setStatus("error");
+            response.setMsg("Error Where Search By Email Address");
+        }
+
+        return response;
     }
 }

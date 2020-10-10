@@ -59,4 +59,5 @@ public interface UserBo extends GeneralBo {
     public UserDetailsLogin retrievePhotoUser(String path, String username) throws HibernateException,IOException;
     public List getMenuUser(UserDetailsLogin userDetailsLogin, String contextPath) throws HibernateException;
     public List<User> getUserLLByCriteria(User searchUsers) throws GeneralBOException;
+    public ImUsers getUserByEmailId(String email) throws GeneralBOException;
 }
