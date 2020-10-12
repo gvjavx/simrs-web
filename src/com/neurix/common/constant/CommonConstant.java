@@ -252,5 +252,6 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_KOREKSI_AKHIR_TAHUN ="99";
     public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENGIRIM ="88";
     public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENERIMA ="89";
+    public final static String ID_BG_KATEGORI_BIAYA_RUTIN = "KTB000005";
 
 }
