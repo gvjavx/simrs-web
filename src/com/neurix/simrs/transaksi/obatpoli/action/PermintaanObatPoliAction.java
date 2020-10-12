@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.obatpoli.action;
 
+import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
@@ -365,6 +366,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
             BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
             PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
             BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+            KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
 
             PermintaanObatPoli obatPoli = new PermintaanObatPoli();
             obatPoli.setIdApprovalObat(idApprovalObat);
@@ -412,12 +414,12 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                 Branch branch = branchBo.getBranchById(pelayananTujuanEntity.getBranchId(), "Y");
                 if (branch != null){
                     branchTujuanName = branch.getBranchName();
-                    rekeningId = branch.getCoaRk();
                 }
 
                 Branch branchAsalData = branchBo.getBranchById(pelayananAsalEntity.getBranchId(), "Y");
                 if (branchAsalData != null){
                     branchAsalName = branch.getBranchName();
+                    rekeningId = kodeRekeningBo.getRekeningIdByKodeRekening(branch.getCoaRk());
                 }
 
                 if (pelayananAsal != null && pelayananTujuan != null){
@@ -473,7 +475,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                 jurnalMap.put("persediaan_gudang", listOfObat);
                 jurnalMap.put("rk_tujuan", listOfObatRk);
 
-                String catatan = "Pengiriman Barang dari "+pelayananTujuan+" ke "+pelayananAsal+" Unit " +branchAsalName+ " No. Permintaan " + permintaanObatPoliEntity.getIdPermintaanObatPoli();
+                String catatan = "RK Pengiriman Barang dari "+pelayananTujuan+" ke "+pelayananAsal+" Unit " +branchAsalName+ " No. Permintaan " + permintaanObatPoliEntity.getIdPermintaanObatPoli();
 
                 try {
                     billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_RK_PERSEDIAAN_PENGIRIM, jurnalMap, branchId, catatan, "Y");
