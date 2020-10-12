@@ -713,6 +713,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
 
         PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
         permintaanObatPoli.setIdPermintaanObatPoli(idPermintaan);
+        permintaanObatPoli.setFlagReqPelayanan("Y");
         List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
 
         try {
