@@ -411,15 +411,15 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                 ImSimrsPelayananEntity pelayananAsalEntity = pelayananBo.getPelayananById(permintaanObatPoliEntity.getIdPelayanan());
                 ImSimrsPelayananEntity pelayananTujuanEntity = pelayananBo.getPelayananById(permintaanObatPoliEntity.getTujuanPelayanan());
 
-                Branch branch = branchBo.getBranchById(pelayananTujuanEntity.getBranchId(), "Y");
+                Branch branch = branchBo.getBranchById(branchTujuan, "Y");
                 if (branch != null){
                     branchTujuanName = branch.getBranchName();
                 }
 
-                Branch branchAsalData = branchBo.getBranchById(pelayananAsalEntity.getBranchId(), "Y");
+                Branch branchAsalData = branchBo.getBranchById(branchAsal, "Y");
                 if (branchAsalData != null){
                     branchAsalName = branch.getBranchName();
-                    rekeningId = kodeRekeningBo.getRekeningIdByKodeRekening(branch.getCoaRk());
+                    rekeningId = kodeRekeningBo.getRekeningIdByKodeRekening(branchAsalData.getCoaRk());
                 }
 
                 if (pelayananAsal != null && pelayananTujuan != null){
