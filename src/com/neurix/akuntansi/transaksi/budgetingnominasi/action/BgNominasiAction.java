@@ -517,8 +517,7 @@ public class BgNominasiAction {
                                                  String tahun,
                                                  String unit,
                                                  String idKategori,
-                                                 String periode,
-                                                 String idTransNilaiDasar ) throws JSONException{
+                                                 String periode ) throws JSONException{
         logger.info("[BgNominasiAction.setPerhitunganToSession] START >>>");
 
         CrudResponse response = new CrudResponse();
@@ -599,6 +598,12 @@ public class BgNominasiAction {
             if (!"".equalsIgnoreCase(obj.get("nama_rutin").toString())){
                 perhitungan.setNamaBiayaRutin(obj.get("nama_rutin").toString());
             }
+            if (obj.get("id_trans_nilai_dasar") != null){
+                if (!"".equalsIgnoreCase(obj.get("id_trans_nilai_dasar").toString())){
+                    perhitungan.setIdTransNilaiDasar(obj.get("id_trans_nilai_dasar").toString());
+                }
+            }
+
             perhitungan.setUrutan(i);
             perhitungan.setIdParameterBudgeting(idParam);
             perhitungan.setIdNilaiParameter(idNilaiParam);
@@ -629,7 +634,6 @@ public class BgNominasiAction {
                     parameterNilaiBudgeting.setNamaMaster(budgetingPerhitunganBo.getMasterByKodering(masterId) != null ? budgetingPerhitunganBo.getMasterByKodering(masterId).getNama() : "");
                     parameterNilaiBudgeting.setIdKategoriBudgeting(idKategori);
                     parameterNilaiBudgeting.setPeriode(periode);
-                    parameterNilaiBudgeting.setIdTransNilaiDasar(idTransNilaiDasar);
                     break;
                 }
             }
@@ -644,7 +648,6 @@ public class BgNominasiAction {
             parameterNilaiBudgeting.setNamaMaster(budgetingPerhitunganBo.getMasterByKodering(masterId) != null ? budgetingPerhitunganBo.getMasterByKodering(masterId).getNama() : "");
             parameterNilaiBudgeting.setIdKategoriBudgeting(idKategori);
             parameterNilaiBudgeting.setPeriode(periode);
-            parameterNilaiBudgeting.setIdTransNilaiDasar(idTransNilaiDasar);
             sessionNilaiParam.add(parameterNilaiBudgeting);
         }
 
