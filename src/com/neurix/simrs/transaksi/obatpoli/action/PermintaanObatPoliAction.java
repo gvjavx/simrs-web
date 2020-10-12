@@ -402,7 +402,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
             MtSimrsPermintaanObatPoliEntity permintaanObatPoliEntity = obatPoliBo.getPermintaanObatPolyByIdApproval(idApprovalObat);
             ImtSimrsApprovalTransaksiObatEntity approvalTransaksiObatEntity = obatPoliBo.getApprovalEntityById(idApprovalObat);
             if (permintaanObatPoliEntity != null && approvalTransaksiObatEntity != null){
-                otherBranch     = permintaanObatPoliEntity.getBranchId().equalsIgnoreCase(approvalTransaksiObatEntity.getBranchId());
+                otherBranch     = !permintaanObatPoliEntity.getBranchId().equalsIgnoreCase(approvalTransaksiObatEntity.getBranchId());
                 branchTujuan    = approvalTransaksiObatEntity.getBranchId();
                 branchAsal      = permintaanObatPoliEntity.getBranchId();
 
@@ -433,6 +433,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
 
                 TransaksiObatDetail obatDetail = new TransaksiObatDetail();
                 obatDetail.setIdApprovalObat(idApprovalObat);
+                obatDetail.setTipePermintaan("002");
 
                 List<ImtSimrsTransaksiObatDetailEntity> listTransaksiObatDetail = transaksiObatBo.getListEntityTransObatDetail(obatDetail);
                 if (listTransaksiObatDetail.size() > 0){
@@ -677,6 +678,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
 
         PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
         permintaanObatPoli.setIdPermintaanObatPoli(idPermintaan);
+        permintaanObatPoli.setFlagReqPelayanan("Y");
         List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList<>();
 
         try {
