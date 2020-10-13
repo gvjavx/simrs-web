@@ -600,6 +600,8 @@ public class BudgetingBoImpl implements BudgetingBo {
                                                 pengadaanEntity.setCreatedWho(bean.getCreatedWho());
                                                 pengadaanEntity.setLastUpdate(bean.getLastUpdate());
                                                 pengadaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                                pengadaanEntity.setPembayaran(budgetingPengadaan.getPembayaran() == null || "".equalsIgnoreCase(budgetingPengadaan.getPembayaran()) ? "Termin 0" : budgetingPengadaan.getPembayaran());
+
                                                 if (budgetingPengadaan.getNoPengadaan() != null && !"".equalsIgnoreCase(budgetingPengadaan.getNoPengadaan())){
                                                     pengadaanEntity.setNoPengadaan(budgetingPengadaan.getNoPengadaan());
                                                 } else {
@@ -1290,6 +1292,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgetingPengadaan.setRealisasi(new BigDecimal(0));
                 budgetingPengadaan.setSelisih(budgetingPengadaan.getSubTotal().subtract(budgetingPengadaan.getRealisasi()));
                 budgetingPengadaan.setNoPengadaan(pengadaanEntity.getNoPengadaan());
+                budgetingPengadaan.setPembayaran(pengadaanEntity.getPembayaran());
                 budgetingPengadaans.add(budgetingPengadaan);
             }
 

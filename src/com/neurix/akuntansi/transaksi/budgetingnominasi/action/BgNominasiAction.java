@@ -598,9 +598,11 @@ public class BgNominasiAction {
             if (!"".equalsIgnoreCase(obj.get("nama_rutin").toString())){
                 perhitungan.setNamaBiayaRutin(obj.get("nama_rutin").toString());
             }
-            if (obj.get("id_trans_nilai_dasar") != null){
-                if (!"".equalsIgnoreCase(obj.get("id_trans_nilai_dasar").toString())){
-                    perhitungan.setIdTransNilaiDasar(obj.get("id_trans_nilai_dasar").toString());
+            if (obj.has("id_trans_nilai_dasar")){
+                if (obj.get("id_trans_nilai_dasar") != null){
+                    if (!"".equalsIgnoreCase(obj.get("id_trans_nilai_dasar").toString())){
+                        perhitungan.setIdTransNilaiDasar(obj.get("id_trans_nilai_dasar").toString());
+                    }
                 }
             }
 
