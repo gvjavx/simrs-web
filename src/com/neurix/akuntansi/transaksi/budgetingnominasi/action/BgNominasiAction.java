@@ -691,8 +691,10 @@ public class BgNominasiAction {
         perhitunganBudgeting.setBranchId(unit);
         perhitunganBudgeting.setTipe(tipe);
 
+        List<ParameterBudgeting> filterListNilaiParam = sessionNilaiParam.stream().filter(p -> "BYA".equalsIgnoreCase(p.getMasterId())).collect(Collectors.toList());
+
         try {
-            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(convertNilaiParameterToEntity(sessionNilaiParam), generateIdItemRutinIfExist(sessionPerhitungan), new ArrayList<>(), perhitunganBudgeting);
+            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(convertNilaiParameterToEntity(filterListNilaiParam), generateIdItemRutinIfExist(sessionPerhitungan), new ArrayList<>(), perhitunganBudgeting);
             response.setStatus("success");
         } catch (GeneralBOException e){
             logger.info("[BgNominasiAction.saveAdd] ERROR ", e);
