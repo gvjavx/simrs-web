@@ -9,6 +9,7 @@ import com.neurix.simrs.master.jenisobat.dao.JenisObatDao;
 import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
 import com.neurix.simrs.master.kategoripersediaan.dao.KategoriPersedianDao;
+import com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity;
 import com.neurix.simrs.master.marginobat.dao.MarginObatDao;
 import com.neurix.simrs.master.marginobat.model.ImSimrsMarginObatEntity;
 import com.neurix.simrs.master.obat.bo.ObatBo;
@@ -2336,5 +2337,10 @@ public class ObatBoImpl implements ObatBo {
 
     private TransaksiStok getSumKreditTransaksiStok(String idBarang, String periode, String branchId, String idPelayanan){
         return obatDao.getSumKreditByPeriodeTransaksiStok(branchId, idPelayanan, periode, idBarang);
+    }
+
+    @Override
+    public List<ImSimrsKategoriPersediaanEntity> getAllKategoriPersediaan() throws GeneralBOException {
+        return kategoriPersedianDao.getAll();
     }
 }

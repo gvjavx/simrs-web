@@ -12,6 +12,7 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
@@ -1282,6 +1283,14 @@ public class ObatAction extends BaseMasterAction {
         }
 
         return "print_aging";
+    }
+
+    public List<ImSimrsKategoriPersediaanEntity> getAllKategoriPersediaan(){
+        logger.info("[LaporanAkuntansiAction.getAllKategoriPersediaan] START Process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        return obatBo.getAllKategoriPersediaan();
     }
 
 }
