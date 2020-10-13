@@ -61,6 +61,15 @@ public class PermintaanObatPoli{
 
     private String isMobile;
     private String flagOtherBranch;
+    private String flagReqPelayanan;
+
+    public String getFlagReqPelayanan() {
+        return flagReqPelayanan;
+    }
+
+    public void setFlagReqPelayanan(String flagReqPelayanan) {
+        this.flagReqPelayanan = flagReqPelayanan;
+    }
 
     public String getFlagOtherBranch() {
         return flagOtherBranch;

@@ -69,7 +69,7 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
                 status = "Struktur jabatan ini masih memiliki jabatan di bawahnya , silahkan hapus / pindahkan terlebih dahulu jabatan di bawahnya";
             }
 
-            if (!"".equalsIgnoreCase(status)){
+            if ("".equalsIgnoreCase(status)){
                 ImStrukturJabatanEntity imStrukturJabatanEntity = null;
                 ImStrukturJabatanHistoryEntity imStrukturJabatanHistoryEntity = new ImStrukturJabatanHistoryEntity();
                 String idHistory = "";

@@ -249,14 +249,11 @@ public class CommonConstant {
     public final static String METODE_MESIN_ABSENSI = CommonUtil.getPropertyParams("metode.mesin.absensi");
     public final static String IJIN_GANTI_HARI = CommonUtil.getPropertyParams("ijin.ganti.hari");
     public final static String CUTI_TAHUNAN = CommonUtil.getPropertyParams("cuti.id.tahunan");
-    public final static String TIPE_HARI_ON_CALL = CommonUtil.getPropertyParams("tipe.hari.on.call");
-//    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KOREKSI ="67";
-//    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KAS_KELUAR ="68";
-//    public final static String TRANSAKSI_ID_PENYEWAAN_LAHAN ="69";
     public final static String TRANSAKSI_ID_KOREKSI_AKHIR_TAHUN ="99";
     public final static String DEFAULT_RESET_CUTI_PANJANG =CommonUtil.getPropertyParams("default.cuti.panjang");
     public final static String ROLE_ID_ADMIN_SUPER = CommonUtil.getPropertyParams("role.id.admin.super");
     public final static String ID_IJIN_MELAHIRKAN = CommonUtil.getPropertyParams("id.ijin.melahirkan");
-
+    public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENGIRIM ="88";
+    public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENERIMA ="89";
 
 }

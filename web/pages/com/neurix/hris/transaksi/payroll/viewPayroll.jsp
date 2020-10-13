@@ -300,20 +300,20 @@
 
                                                             <display:column property="nip" sortable="true" title="NIP"  />
                                                             <display:column property="nama" sortable="true" title="Nama" />
-                                                            <display:column property="departmentName" sortable="true" title="Bagian" />
-                                                            <display:column property="positionName" sortable="true" title="Jabatan" />
-                                                            <display:column property="golonganName" sortable="true" title="Golongan" />
+                                                            <display:column property="departmentName" sortable="true" title="Bidang/Divisi" />
+                                                            <display:column property="positionName" sortable="true" title="Jabatan/Posisi" />
+                                                            <display:column property="golonganName" sortable="true" title="Level" />
                                                             <display:column style="text-align:right;" property="totalA" sortable="true" title="Gaji Kotor" />
                                                             <display:column style="text-align:right;" property="totalB" sortable="true" title="Potongan" />
                                                             <display:column style="text-align:right;" property="pphGaji" sortable="true" title="PPh" />
                                                             <display:column style="text-align:right;" property="totalGajiBersih" sortable="true" title="Gaji Bersih" />
                                                             <display:column style="text-align:center;" property="proporsiGaji" sortable="true" title="Proporsi Gaji" />
-                                                            <display:column style="text-align:right;" property="totalRapel" sortable="true" title="Rapel" />
-                                                            <display:column style="text-align:right;" property="totalThr" sortable="true" title="Thr" />
-                                                            <display:column style="text-align:right;" property="totalPendidikan" sortable="true" title="Pendidikan" />
-                                                            <display:column style="text-align:right;" property="totalJasProd" sortable="true" title="Jasprod" />
-                                                            <display:column style="color: #4d9900;" property="tanggalJubileum" sortable="true" title="Jubileum" />
-                                                            <display:column style="color: #b3b300;" property="stTanggalPensiun" sortable="true" title="Pensiun" />
+                                                            <%--<display:column style="text-align:right;" property="totalRapel" sortable="true" title="Rapel" />--%>
+                                                            <%--<display:column style="text-align:right;" property="totalThr" sortable="true" title="Thr" />--%>
+                                                            <%--<display:column style="text-align:right;" property="totalPendidikan" sortable="true" title="Pendidikan" />--%>
+                                                            <%--<display:column style="text-align:right;" property="totalJasProd" sortable="true" title="Jasprod" />--%>
+                                                            <%--<display:column style="color: #4d9900;" property="tanggalJubileum" sortable="true" title="Jubileum" />--%>
+                                                            <%--<display:column style="color: #b3b300;" property="stTanggalPensiun" sortable="true" title="Pensiun" />--%>
                                                             <%--<display:column style="text-align:center;" media="html" title="Promosi">
                                                                 <s:if test="#attr.row.flagPromosiOn">
                                                                     <a href="javascript:;" payrollId="<s:property value="%{#attr.row.payrollId}"/>"

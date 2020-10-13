@@ -70,6 +70,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         String idPermintaanResep    = "%";
         String flag                 = "%";
         String branchId             = "%";
+        String tipePermintaan       = "001";
 
         if (bean.getIdTransaksiObatDetail() != null && !"".equalsIgnoreCase(bean.getIdTransaksiObatDetail())){
             idTransaksi = bean.getIdTransaksiObatDetail();
@@ -89,6 +90,10 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
         if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
             branchId = bean.getBranchId();
+        }
+
+        if (bean.getTipePermintaan() != null && !"".equalsIgnoreCase(bean.getTipePermintaan())){
+            tipePermintaan = bean.getTipePermintaan();
         }
 
         String SQL = "\n" +
@@ -111,7 +116,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "\tid_approval_obat,\n" +
                 "\tbranch_id \n" +
                 "\tFROM mt_simrs_approval_transaksi_obat \n" +
-                "\tWHERE tipe_permintaan = '001' \n" +
+//                "\tWHERE tipe_permintaan = '001' \n" +
+                "\tWHERE tipe_permintaan = :tipe \n" +
 //                "\tAND flag = 'Y'\n" +
                 ") ato ON ato.id_approval_obat = tod.id_approval_obat\n" +
                 "INNER JOIN mt_simrs_permintaan_resep pr ON pr.id_approval_obat = ato.id_approval_obat\n" +
@@ -127,6 +133,103 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 .setParameter("idPermintaanResep", idPermintaanResep)
                 .setParameter("flag", flag)
                 .setParameter("branchId", branchId)
+                .setParameter("tipe", tipePermintaan)
+                .list();
+
+        List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = new ArrayList<>();
+
+        if (results.size() > 0)
+        {
+            ImtSimrsTransaksiObatDetailEntity obatDetailEntity;
+            for (Object[] obj : results)
+            {
+                obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
+                obatDetailEntity.setIdTransaksiObatDetail(obj[0].toString());
+                obatDetailEntity.setIdApprovalObat(obj[1].toString());
+                obatDetailEntity.setIdObat(obj[2].toString());
+                obatDetailEntity.setQty((BigInteger) obj[3]);
+                obatDetailEntity.setFlag(obj[4].toString());
+                obatDetailEntity.setAction(obj[5].toString());
+                obatDetailEntity.setCreatedDate((Timestamp) obj[6]);
+                obatDetailEntity.setCreatedWho(obj[7].toString());
+                obatDetailEntity.setLastUpdate((Timestamp)obj[8]);
+                obatDetailEntity.setLastUpdateWho(obj[9].toString());
+                obatDetailEntity.setJenisSatuan(obj[10].toString());
+                obatDetailEntity.setFlagVerifikasi(obj[11] == null ? "" : obj[11].toString());
+                obatDetailEntities.add(obatDetailEntity);
+            }
+        }
+
+        return obatDetailEntities;
+    }
+
+    public List<ImtSimrsTransaksiObatDetailEntity> getListEntityTransObatDetailsReqUnit(TransaksiObatDetail bean){
+
+        String idTransaksi          = "%";
+        String idApprovalObat       = "%";
+        String idPermintaanResep    = "%";
+        String flag                 = "%";
+        String branchId             = "%";
+        String tipePermintaan       = "%";
+
+        if (bean.getIdTransaksiObatDetail() != null && !"".equalsIgnoreCase(bean.getIdTransaksiObatDetail())){
+            idTransaksi = bean.getIdTransaksiObatDetail();
+        }
+
+        if (bean.getIdApprovalObat() != null && !"".equalsIgnoreCase(bean.getIdApprovalObat())){
+            idApprovalObat = bean.getIdApprovalObat();
+        }
+
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            flag = bean.getFlag();
+        }
+
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            branchId = bean.getBranchId();
+        }
+
+        if (bean.getTipePermintaan() != null && !"".equalsIgnoreCase(bean.getTipePermintaan())){
+            tipePermintaan = bean.getTipePermintaan();
+        }
+
+        String SQL = "\n" +
+                "SELECT \n" +
+                "tod.id_transaksi_obat_detail,\n" +
+                "tod.id_approval_obat,\n" +
+                "tod.id_obat,\n" +
+                "tod.qty,\n" +
+                "tod.flag,\n" +
+                "tod.action,\n" +
+                "tod.created_date,\n" +
+                "tod.created_who,\n" +
+                "tod.last_update,\n" +
+                "tod.last_update_who,\n" +
+                "tod.jenis_satuan, tod.flag_verifikasi\n" +
+                "FROM mt_simrs_transaksi_obat_detail tod\n" +
+                "INNER JOIN \n" +
+                "(\n" +
+                "\tSELECT \n" +
+                "\tid_approval_obat,\n" +
+                "\tbranch_id \n" +
+                "\tFROM mt_simrs_approval_transaksi_obat \n" +
+//                "\tWHERE tipe_permintaan = '001' \n" +
+                "\tWHERE tipe_permintaan LIKE :tipe \n" +
+//                "\tAND flag = 'Y'\n" +
+                ") ato ON ato.id_approval_obat = tod.id_approval_obat\n" +
+                "INNER JOIN mt_simrs_permintaan_obat_poli pr ON pr.id_approval_obat = ato.id_approval_obat\n" +
+                "WHERE tod.flag LIKE :flag \n" +
+                "AND ato.branch_id LIKE :branchId \n" +
+                "AND tod.id_approval_obat LIKE :idApprovalObat \n" +
+                "AND tod.id_transaksi_obat_detail LIKE :idTransaksi";
+//                "AND pr.id_permintaan_resep LIKE :idPermintaanResep ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idTransaksi", idTransaksi)
+                .setParameter("idApprovalObat", idApprovalObat)
+//                .setParameter("idPermintaanResep", idPermintaanResep)
+                .setParameter("flag", flag)
+                .setParameter("branchId", branchId)
+                .setParameter("tipe", tipePermintaan)
                 .list();
 
         List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = new ArrayList<>();

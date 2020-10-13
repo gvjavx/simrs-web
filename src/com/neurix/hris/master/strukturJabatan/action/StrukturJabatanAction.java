@@ -281,7 +281,7 @@ public class StrukturJabatanAction extends BaseMasterAction{
 
             deleteStrukturJabatan.setStrukturJabatanId(strukturId);
             deleteStrukturJabatan.setBranchId(Branch);
-            deleteStrukturJabatan.setPositionId(position.toString());
+            deleteStrukturJabatan.setPositionId(position);
             deleteStrukturJabatan.setParentId(Parent);
 
             String userLogin = CommonUtil.userLogin();

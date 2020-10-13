@@ -2707,22 +2707,22 @@ public class PayrollAction extends BaseMasterAction{
         Branch branch = branchBo.getBranchById(branchId,"Y");
 
         if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branchId)){
-            if ("Y".equalsIgnoreCase(statusApprove)){
-                transId=CommonConstant.TRANSAKSI_ID_PAYROLL;
-                keterangan = "Pembayaran gaji "+branch.getBranchName()+" pada bulan "+bulan+" pada tahun "+tahun+" dengan Tipe "+CommonUtil.convertTipePayroll(tipe);
-                searchPayroll.setSdm(true);
-                Map data = payrollBo.getDataForBilling(searchPayroll);
-                billingSystemBo.createJurnal(transId,data,branchId,keterangan,"Y");
-            }
+//            if ("Y".equalsIgnoreCase(statusApprove)){
+//                transId=CommonConstant.TRANSAKSI_ID_PAYROLL;
+//                keterangan = "Pembayaran gaji "+branch.getBranchName()+" pada bulan "+bulan+" pada tahun "+tahun+" dengan Tipe "+CommonUtil.convertTipePayroll(tipe);
+//                searchPayroll.setSdm(true);
+//                Map data = payrollBo.getDataForBilling(searchPayroll);
+//                billingSystemBo.createJurnal(transId,data,branchId,keterangan,"Y");
+//            }
             payrollBo.approvePayroll(searchPayroll);
         }else{
-            if ("Y".equalsIgnoreCase(statusApprove)) {
-                //Kirim RK Dari Pusat Ke Unit
-                transId = CommonConstant.TRANSAKSI_ID_KIRIM_RK;
-                keterangan = "Setoran modal pembayaran payroll unit " + branch.getBranchName() + " pada bulan " + bulan + " tahun " + tahun + " dengan tipe " + CommonUtil.convertTipePayroll(tipe);
-                Map data = payrollBo.getDataForBilling(searchPayroll);
-                billingSystemBo.createJurnal(transId, data, CommonConstant.ID_KANPUS, keterangan, "Y");
-            }
+//            if ("Y".equalsIgnoreCase(statusApprove)) {
+//                //Kirim RK Dari Pusat Ke Unit
+//                transId = CommonConstant.TRANSAKSI_ID_KIRIM_RK;
+//                keterangan = "Setoran modal pembayaran payroll unit " + branch.getBranchName() + " pada bulan " + bulan + " tahun " + tahun + " dengan tipe " + CommonUtil.convertTipePayroll(tipe);
+//                Map data = payrollBo.getDataForBilling(searchPayroll);
+//                billingSystemBo.createJurnal(transId, data, CommonConstant.ID_KANPUS, keterangan, "Y");
+//            }
             payrollBo.approvePayroll(searchPayroll);
         }
 
@@ -2746,19 +2746,19 @@ public class PayrollAction extends BaseMasterAction{
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
         Branch branch = branchBo.getBranchById(branchId,"Y");
 
-        //menerima RK
-        transId =CommonConstant.TRANSAKSI_ID_TERIMA_RK;
-        keterangan = "Penerimaan modal pembayaran payroll unit "+branch.getBranchName()+" bulan "+bulan+" tahun "+tahun+" Tipe Payroll "+CommonUtil.convertTipePayroll(tipe);
-        searchPayroll.setSdm(false);
-        Map data = payrollBo.getDataForBilling(searchPayroll);
-        billingSystemBo.createJurnal(transId,data,branchId,keterangan,"Y");
-
-        //Membuat Jurnal Payroll
-        transId=CommonConstant.TRANSAKSI_ID_PAYROLL;
-        keterangan = "Pembayaran gaji "+branch.getBranchName()+" pada bulan "+bulan+" pada tahun "+tahun+" dengan Tipe "+CommonUtil.convertTipePayroll(tipe);
-        searchPayroll.setSdm(true);
-        data = payrollBo.getDataForBilling(searchPayroll);
-        billingSystemBo.createJurnal(transId,data,branchId,keterangan,"Y");
+//        //menerima RK
+//        transId =CommonConstant.TRANSAKSI_ID_TERIMA_RK;
+//        keterangan = "Penerimaan modal pembayaran payroll unit "+branch.getBranchName()+" bulan "+bulan+" tahun "+tahun+" Tipe Payroll "+CommonUtil.convertTipePayroll(tipe);
+//        searchPayroll.setSdm(false);
+//        Map data = payrollBo.getDataForBilling(searchPayroll);
+//        billingSystemBo.createJurnal(transId,data,branchId,keterangan,"Y");
+//
+//        //Membuat Jurnal Payroll
+//        transId=CommonConstant.TRANSAKSI_ID_PAYROLL;
+//        keterangan = "Pembayaran gaji "+branch.getBranchName()+" pada bulan "+bulan+" pada tahun "+tahun+" dengan Tipe "+CommonUtil.convertTipePayroll(tipe);
+//        searchPayroll.setSdm(true);
+//        data = payrollBo.getDataForBilling(searchPayroll);
+//        billingSystemBo.createJurnal(transId,data,branchId,keterangan,"Y");
 
         payrollBo.approvePayrollAks(searchPayroll);
         session.removeAttribute("listOfResult");
