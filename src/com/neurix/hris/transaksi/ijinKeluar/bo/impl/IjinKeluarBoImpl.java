@@ -2445,7 +2445,6 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 
                 notifikasiList.add(notifAdmin);
             }
-
         }
         logger.info("[IjinKeluarBoImpl.saveEdit] end process <<<");
         return notifikasiList;

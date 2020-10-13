@@ -4,6 +4,8 @@ import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.authorization.user.dao.UserDao;
+import com.neurix.authorization.user.model.User;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -71,6 +73,15 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     private String CLICK_ACTION = "TASK_CUTI";
     private IjinKeluarDao ijinKeluarDao;
     private GolonganDao golonganDao;
+    private UserDao userDao;
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public String getCLICK_ACTION() {
         return CLICK_ACTION;
@@ -326,7 +337,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     }
 
     @Override
-    public void savePengajuanBatal(CutiPegawai bean) throws GeneralBOException {
+    public List<Notifikasi> savePengajuanBatal(CutiPegawai bean) throws GeneralBOException {
+        List<Notifikasi> notifikasiList = new ArrayList<>();
         if (bean!=null){
             String cutiPegawaiId = bean.getCutiPegawaiId();
             ItCutiPegawaiEntity itCutiPegawaiEntity = null;
@@ -357,12 +369,31 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 logger.error("[CutiPegawaiBoImpl.saveEdit] Error, not found data alat with request id, please check again your data ...");
                 throw new GeneralBOException("Error, not found data alat with request id, please check again your data ...");
             }
+
+            List<User> usersList = userDao.getUserByBranchAndRole(itCutiPegawaiEntity.getUnitId(),CommonConstant.ROLE_ID_ADMIN);
+            ImBiodataEntity biodataEntity = biodataDao.getById("nip",itCutiPegawaiEntity.getNip());
+            for (User user : usersList) {
+                Notifikasi notif = new Notifikasi();
+                notif.setNip(user.getUserId());
+                notif.setNoRequest(itCutiPegawaiEntity.getCutiPegawaiId());
+                notif.setTipeNotifId("umum");
+                notif.setTipeNotifName(("Pemberitahuan"));
+                notif.setNote("Data dispensasi "+ biodataEntity.getNamaPegawai()+" pada tanggal " + CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari()) + " s/d "+
+                        CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai())+" menunggu untuk dibatalkan ");
+                notif.setCreatedWho(itCutiPegawaiEntity.getNip());
+                notif.setTo("self");
+
+                notifikasiList.add(notif);
+            }
         }
+        return notifikasiList;
     }
 
     @Override
-    public void saveCancel(CutiPegawai bean) throws GeneralBOException {
+    public List<Notifikasi> saveCancel(CutiPegawai bean) throws GeneralBOException {
         logger.info("[CutiPegawaiBoImpl.saveEdit] start process >>>");
+        List<Notifikasi> notifikasiList = new ArrayList<>();
+
         if (bean!=null) {
             String cutiPegawaiId = bean.getCutiPegawaiId();
             ItCutiPegawaiEntity itCutiPegawaiEntity = null;
@@ -428,8 +459,50 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     }
                 }
             }
+
+            ImBiodataEntity biodataEntity = biodataDao.getById("nip",bean.getNip());
+
+            //Send notif ke atasan
+            Notifikasi notifAtasan= new Notifikasi();
+            notifAtasan.setNip(bean.getNip());
+            notifAtasan.setNoRequest(cutiPegawaiId);
+            notifAtasan.setTipeNotifId("umum");
+            notifAtasan.setTipeNotifName("Pemberitahuan");
+            notifAtasan.setNote("Cuti Pegawai dari " + biodataEntity.getNamaPegawai() + " pada tanggal " + CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari())+" s/d "+ CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai())+" dibatalkan ");
+            notifAtasan.setCreatedWho(bean.getNip());
+            notifAtasan.setTo("atasan");
+
+            notifikasiList.add(notifAtasan);
+
+            //Send notif ke yang mengajukan
+            Notifikasi notifSelf= new Notifikasi();
+            notifSelf.setNip(bean.getNip());
+            notifSelf.setNoRequest(cutiPegawaiId);
+            notifSelf.setTipeNotifId("umum");
+            notifSelf.setTipeNotifName(("Pemberitahuan"));
+            notifSelf.setNote("Cuti anda pada tanggal "+ CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari())+" s/d "+ CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai())+" berhasil dibatalkan ");
+            notifSelf.setCreatedWho(bean.getNip());
+            notifSelf.setTo("self");
+
+            notifikasiList.add(notifSelf);
+
+            List<User> users = userDao.getUserByBranchAndRole(itCutiPegawaiEntity.getUnitId(),CommonConstant.ROLE_ID_ADMIN);
+            for (User user : users){
+                //Send notif ke yang mengajukan
+                Notifikasi notifAdmin= new Notifikasi();
+                notifAdmin.setNip(user.getUserId());
+                notifAdmin.setNoRequest(cutiPegawaiId);
+                notifAdmin.setTipeNotifId("umum");
+                notifAdmin.setTipeNotifName(("Pemberitahuan"));
+                notifAdmin.setNote("Cuti dari " + biodataEntity.getNamaPegawai() + " pada tanggal " + CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalDari())+" s/d "+ CommonUtil.convertDateToString(itCutiPegawaiEntity.getTanggalSelesai())+" dibatalkan ");
+                notifAdmin.setCreatedWho(bean.getNip());
+                notifAdmin.setTo("self");
+
+                notifikasiList.add(notifAdmin);
+            }
         }
         logger.info("[CutiPegawaiBoImpl.saveEdit] end process <<<");
+        return notifikasiList;
     }
 
     @Override
@@ -1970,8 +2043,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             if ("TP03".equalsIgnoreCase(biodata.getTipePegawai())){
                 Date tanggalSekarang = new Date(new java.util.Date().getTime());
                 Date tanggalMasuk = new Date(new java.util.Date().getTime());
-                if (result.getTanggalMasuk()!=null){
-                    tanggalMasuk = CommonUtil.dateUtiltoDateSql(result.getTanggalMasuk());
+                if (biodata.getTanggalMasuk()!=null){
+                    tanggalMasuk = CommonUtil.dateUtiltoDateSql(biodata.getTanggalMasuk());
                 }
 
                 int selisihTahun = CommonUtil.getDiffYears(tanggalMasuk ,tanggalSekarang);
