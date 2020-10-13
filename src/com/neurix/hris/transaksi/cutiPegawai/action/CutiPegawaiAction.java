@@ -442,6 +442,8 @@ public class CutiPegawaiAction extends BaseMasterAction {
             CutiPegawai cancelCutiPegawai = getCutiPegawai();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
             java.sql.Date dateStart = CommonUtil.convertToDate(cutiPegawai.getStTanggalDari());
             java.sql.Date dateEnd = CommonUtil.convertToDate(cutiPegawai.getStTanggalSelesai());
@@ -458,7 +460,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
 //            Edit sisa cuti jika cancel
             if ("normal".equalsIgnoreCase(cancelCutiPegawai.getJenisCuti()))
                 cutiPegawaiBoProxy.editSisaCuti(cancelCutiPegawai);
-            cutiPegawaiBoProxy.saveCancel(cancelCutiPegawai);
+
+                List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.saveCancel(cancelCutiPegawai);
+
+                for (Notifikasi notifikasi : notifikasiList){
+                    notifikasiBo.sendNotif(notifikasi);
+                }
+
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -483,6 +491,8 @@ public class CutiPegawaiAction extends BaseMasterAction {
             CutiPegawai cancelCutiPegawai = getCutiPegawai();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
             java.sql.Date dateStart = CommonUtil.convertToDate(cutiPegawai.getStTanggalDari());
             java.sql.Date dateEnd = CommonUtil.convertToDate(cutiPegawai.getStTanggalSelesai());
@@ -496,7 +506,12 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cancelCutiPegawai.setAction("U");
             cancelCutiPegawai.setFlag("Y");
 
-            cutiPegawaiBoProxy.savePengajuanBatal(cancelCutiPegawai);
+            List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.savePengajuanBatal(cancelCutiPegawai);
+
+
+            for (Notifikasi notifikasi : notifikasiList){
+                notifikasiBo.sendNotif(notifikasi);
+            }
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
