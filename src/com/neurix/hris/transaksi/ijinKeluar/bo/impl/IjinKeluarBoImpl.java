@@ -423,7 +423,7 @@ public class IjinKeluarBoImpl implements IjinKeluarBo {
 //                condition = "Error, not found data alat with request id, please check again your data ...";
             }
 
-             List<User> usersList = userDao.getUserByBranchAndRole(CommonConstant.ROLE_ID_ADMIN,imIjinKeluarEntity.getUnitId());
+             List<User> usersList = userDao.getUserByBranchAndRole(imIjinKeluarEntity.getUnitId(),CommonConstant.ROLE_ID_ADMIN);
              for (User user : usersList) {
                  Notifikasi notif = new Notifikasi();
                  notif.setNip(user.getUserId());

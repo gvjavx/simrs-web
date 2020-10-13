@@ -24,6 +24,24 @@ public class DokterTeam extends BaseModel {
     private String namaPelayanan;
     private String jenisDpjp;
     private String sip;
+    private String flagApprove;
+    private String keterangan;
+
+    public String getFlagApprove() {
+        return flagApprove;
+    }
+
+    public void setFlagApprove(String flagApprove) {
+        this.flagApprove = flagApprove;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
 
     public String getSip() {
         return sip;

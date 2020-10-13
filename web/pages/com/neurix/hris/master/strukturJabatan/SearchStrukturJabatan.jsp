@@ -539,7 +539,7 @@
                                 </tr>
                             </table>
 
-                            <table style="width: 90%;" class="tree table table-bordered">
+                            <table style="width: 100%;" class="tree table table-bordered">
                             </table>
                         </center>
                     </s:form>

@@ -1204,7 +1204,7 @@ public class BiodataBoImpl implements BiodataBo {
         if (bean!=null) {
             if ("Y".equalsIgnoreCase(bean.getFlagDokterKso())){
                 bean.setNip(dokterDao.getNextDokter());
-                bean.setTanggalAktif(bean.getTanggalMasuk());
+                bean.setTanggalAktif(CommonUtil.convertStringToDate(bean.getStTanggalMasuk()));
             }
 
             String status = cekStatus(bean.getNip(), bean.getNoKtp());

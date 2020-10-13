@@ -103,4 +103,12 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
         }
         return res;
     }
+
+    public List<ItSimrsDokterTeamEntity> cekRequestDokter(String idDetailCheckup){
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsDokterTeamEntity.class);
+        criteria.add(Restrictions.eq("idDetailCheckup", idDetailCheckup));
+        criteria.add(Restrictions.eq("flag", "Y"));
+        List<ItSimrsDokterTeamEntity> listOfResult = criteria.list();
+        return listOfResult;
+    }
 }

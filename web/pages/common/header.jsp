@@ -37,6 +37,7 @@ apply the skin class to the body tag so the changes take effect.
 <link rel="stylesheet" href="<s:url value="/pages/plugins/iCheck/all.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/modal-style.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/info_box.css"/>">
+<link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/w3switch.css"/>">
 <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />--%>
 
 <%--<link rel="stylesheet" href="<s:url value="/pages/css/style-form.css"/>">--%>
@@ -438,7 +439,9 @@ apply the skin class to the body tag so the changes take effect.
 
         $(':input').on('focus', function () {
             $(this).attr('autocomplete', 'off');
-        })
+        });
+
+        $('#myTable').css('width', '100%');
 
     });
 
@@ -613,8 +616,12 @@ apply the skin class to the body tag so the changes take effect.
         if(idHidden != '' && idHidden != null){
             val = val.replace(/[.]/g, '');
             var numbers = /^[0-9]+$/;
-            if(val.match(numbers)){
-                $('#'+idHidden).val(val);
+            if(val != ''){
+                if(val.match(numbers)) {
+                    $('#' + idHidden).val(val);
+                }
+            }else{
+                $('#' + idHidden).val('');
             }
         }
     }

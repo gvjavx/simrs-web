@@ -3,9 +3,11 @@ package com.neurix.simrs.master.dokter.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -234,6 +236,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "WHERE c.branch_id = :branchId\n" + notLike +
+                    "AND c.tipe_pelayanan = 'rawat_jalan' \n"+
                     "ORDER BY c.nama_pelayanan ASC";
 
             List<Object[]> result = new ArrayList<>();
@@ -264,11 +267,15 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "b.nama_dokter, \n" +
                     "c.id_pelayanan, \n" +
                     "c.nama_pelayanan, \n" +
-                    "a.id_team_dokter\n" +
+                    "a.id_team_dokter, \n" +
+                    "a.flag_approve, \n" +
+                    "a.jenis_dpjp, \n" +
+                    "a.keterangan\n" +
                     "FROM it_simrs_dokter_team a\n" +
                     "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
                     "INNER JOIN im_simrs_pelayanan c ON a.id_pelayanan = c.id_pelayanan\n" +
-                    "WHERE a.id_detail_checkup = :id";
+                    "WHERE a.id_detail_checkup = :id \n" +
+                    "ORDER BY a.created_date ASC";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -283,6 +290,9 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     dokter.setIdPelayanan(obj[2] != null ? obj[2].toString() : "");
                     dokter.setNamaPelayanan(obj[3] != null ? obj[3].toString() : "");
                     dokter.setIdTeamDokter(obj[4] != null ? obj[4].toString() : "");
+                    dokter.setFlagApprove(obj[5] != null ? obj[5].toString() : null);
+                    dokter.setJenisDpjp(obj[6] != null ? obj[6].toString() : null);
+                    dokter.setKeterangan(obj[7] != null ? obj[7].toString() : null);
                     dokterList.add(dokter);
                 }
             }

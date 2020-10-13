@@ -369,7 +369,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
 
                 RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
-                riwayatTindakan.setIdDetailCheckup(checkup.getNoCheckup());
+                riwayatTindakan.setNoCheckup(checkup.getNoCheckup());
                 riwayatTindakan.setBranchId(CommonUtil.userBranchLogin());
 
                 try {
@@ -466,7 +466,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 if(ppnObat != null && ppnObat.intValue() > 0){
                     reportParams.put("ppnObat", ppnObat);
                 }else{
-                    reportParams.put("ppnObat", "");
+                    reportParams.put("ppnObat", 0);
                 }
 
 
