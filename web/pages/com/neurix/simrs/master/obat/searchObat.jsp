@@ -27,6 +27,15 @@
                 $("#sel_fin_kandungan_obat").html(str);
                 //console.log(list);
             });
+
+            ObatAction.getAllKategoriPersediaan(function (list) {
+                var str = "<option value=''>[Select One]</option>";
+                $.each(list, function (i, item) {
+                    str += "<option value='"+item.idKategoriPersediaan+"'>"+item.nama+"</option>";
+                });
+                $("#id_kategori").html(str);
+            });
+
         });
 
     </script>
@@ -540,9 +549,9 @@
                         </div>
                         <div class="col-md-3" style="margin-top: 7px;">
                             <select class="form-control" id="id_kategori">
-                                <option value="obat">Obat</option>
-                                <option value="alkses">Alkes</option>
-                                <option value="bhp">Barang Habis Pakai</option>
+                                <%--<option value="obat">Obat</option>--%>
+                                <%--<option value="alkses">Alkes</option>--%>
+                                <%--<option value="bhp">Barang Habis Pakai</option>--%>
                             </select>
                         </div>
                         <div class="col-md-6"></div>
@@ -898,7 +907,7 @@
         }
     }
 
-    function editObat(idObat, nama, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerBiji, idPbarik, mrek, minStok, flagKronis, flagGeneric, flagBpjs, idKategori) {
+    function editObat(idObat, nama, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerBiji, idPbarik, mrek, minStok, flagKronis, flagGeneric, flagBpjs, margin, idKategori) {
         $('#load_obat, #war_nama, #war_jenis, #war_harga, #war_stok').hide();
         $('#save_obat').attr('onclick', 'saveObat(\'' + idObat + '\')').show();
         $('#add_nama_obat').val(nama);
@@ -918,8 +927,12 @@
         $('#flag-generic').val(flagGeneric);
         $('#flag-bpjs').val(flagBpjs);
         $('#id_kategori').val(idKategori);
+        $("#margin").val(margin);
         $('#modal-obat').modal({show:true, backdrop:'static'});
         $("#row-check-id-pabrik").hide();
+
+        console.log( "kronis" + flagKronis);
+        console.log( "generic " + flagGeneric);
         showListKandunganObat(idObat);
     }
 
