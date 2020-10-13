@@ -211,7 +211,7 @@
                         <td align="" id="label-divisi-name">Divisi Name</td>
                         <td align="center">Sub Total</td>
                         <td align="center">Realisasi</td>
-                        <td align="center">Selisih</td>
+                        <td align="center">Capaian</td>
                         <td align="center">Action</td>
                     </tr>
                     </thead>
@@ -263,7 +263,7 @@
                         <td>Rekening</td>
                         <td align="center">Sub Total</td>
                         <td align="center">Realisasi</td>
-                        <td align="center">Selisih</td>
+                        <td align="center">Capaian</td>
                         <td align="center">Action</td>
                     </tr>
                     </thead>
@@ -314,7 +314,7 @@
                         <td>Periode</td>
                         <td align="center">Sub Total</td>
                         <td align="center">Realisasi</td>
-                        <td align="center">Selisih</td>
+                        <td align="center">Capaian</td>
                         <td align="center">Action</td>
                     </tr>
                     </thead>
@@ -377,7 +377,7 @@
                         <td align="center">Sub Total</td>
                         <td align="center">Nilai Kontrak</td>
                         <td align="center">Realisasi</td>
-                        <td align="center">Selisih</td>
+                        <td align="center">Capaian</td>
                     </tr>
                     </thead>
                     <tbody id="body-budgeting-view-pengadaan" style="font-size: 13px">
@@ -699,6 +699,23 @@
         }
     }
 
+    function formatSelisihPendapatan(angka) {
+        if(angka != null && angka != ''){
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+
+            if (angka < 0){
+                return "<span style='color: darkgreen'> + "+ribuan+"</span>";
+            } else {return "<span style='color: indianred'> - "+ribuan+"</span>";
+
+            }
+
+        }else{
+            return 0;
+        }
+    }
+
 
     function formatDate(date) {
         var d = new Date(date),
@@ -804,9 +821,15 @@
                    '<td>'+item.namaMaster+'</td>' +
                    '<td>'+item.namaDivisi+'</td>' +
                    '<td align="right">'+ formatRupiah(item.nilaiTotal)+'</td>' +
-                   '<td align="right">'+ formatRupiah(item.realisasi) +'</td>' +
-                   '<td align="right">'+ formatSelisih(parseInt(item.nilaiTotal) - parseInt(item.realisasi)) +'</td>' +
-                   '<td align="center"><button class="btn btn-sm btn-success" onclick="viewDetailPerRekening(\''+id+'\',\''+unit+'\',\''+tahun+'\', \''+item.divisiId+'\', \''+item.masterId+'\')"><i class="fa fa-search"></i></button></td>' +
+                   '<td align="right">'+ formatRupiah(item.realisasi) +'</td>' ;
+
+               if ("PDT" == id){
+                   str += '<td align="right">'+ formatSelisihPendapatan(parseInt(item.nilaiTotal) - parseInt(item.realisasi)) +'</td>' ;
+               } else {
+                   str += '<td align="right">'+ formatSelisih(parseInt(item.nilaiTotal) - parseInt(item.realisasi)) +'</td>' ;
+               }
+
+                   str += '<td align="center"><button class="btn btn-sm btn-success" onclick="viewDetailPerRekening(\''+id+'\',\''+unit+'\',\''+tahun+'\', \''+item.divisiId+'\', \''+item.masterId+'\')"><i class="fa fa-search"></i></button></td>' +
                    '</tr>';
            })
             $("#body-budgeting-view").html(str);
@@ -826,9 +849,15 @@
                 str += '<tr>' +
                     '<td>'+item.periode+'</td>' +
                     '<td align="right">'+ formatRupiah(parseInt(item.nilaiTotal))+'</td>' +
-                    '<td align="right">'+ formatRupiah(parseInt(item.realisasi)) +'</td>' +
-                    '<td align="right">'+ formatSelisih(parseInt(item.totalRealisasi)) +'</td>' +
-                    '<td align="center">'+btnListDetail(item.periode)+'</td>' +
+                    '<td align="right">'+ formatRupiah(parseInt(item.realisasi)) +'</td>' ;
+
+                if ("PDT" == id){
+                    str += '<td align="right">'+ formatSelisihPendapatan(parseInt(item.totalRealisasi)) +'</td>' ;
+                } else {
+                    str += '<td align="right">'+ formatSelisih(parseInt(item.totalRealisasi)) +'</td>' ;
+
+                }
+                    str += '<td align="center">'+btnListDetail(item.periode)+'</td>' +
                     '</tr>';
 
                 nilaiTotal = parseInt(nilaiTotal) + parseInt(setNullToString(item.nilaiTotal));
@@ -839,9 +868,15 @@
             str += '<tr>' +
                 '<td align="right">Total </td>' +
                 '<td align="right">'+ formatRupiah(nilaiTotal)+'</td>' +
-                '<td align="right">'+ formatRupiah(realisasi) +'</td>' +
-                '<td align="right">'+ formatSelisih(totalRealisai) +'</td>' +
-                '<td align="center"></td>' +
+                '<td align="right">'+ formatRupiah(realisasi) +'</td>';
+
+            if ("PDT" == id){
+                str += '<td align="right">'+ formatSelisihPendapatan(totalRealisai) +'</td>' ;
+            } else {
+                str += '<td align="right">'+ formatSelisih(totalRealisai) +'</td>';
+            }
+
+            str += '<td align="center"></td>' +
                 '</tr>';
 
             $("#body-budgeting-view-detail-periode").html(str);
@@ -870,9 +905,14 @@
 //                   '<td>'+item.periode+'</td>' +
                     '<td>'+item.nama+'</td>' +
                     '<td align="right">'+ formatRupiah(item.nilaiTotal)+'</td>' +
-                    '<td align="right">'+ formatRupiah(item.realisasi) +'</td>' +
-                    '<td align="right">'+ formatSelisih(item.totalRealisasi) +'</td>' +
-                    '<td align="center"><button class="btn btn-sm btn-success" onclick="viewDetailPerPeriode(\''+id+'\',\''+unit+'\',\''+tahun+'\', \''+item.divisiId+'\', \''+item.masterId+'\', \''+item.rekeningId+'\')"><i class="fa fa-search"></i></button></td>' +
+                    '<td align="right">'+ formatRupiah(item.realisasi) +'</td>' ;
+                    if ("PDT" == id){
+                        str += '<td align="right">'+ formatSelisihPendapatan(item.totalRealisasi) +'</td>';
+                    } else {
+                        str += '<td align="right">'+ formatSelisih(item.totalRealisasi) +'</td>';
+                    }
+
+                    str += '<td align="center"><button class="btn btn-sm btn-success" onclick="viewDetailPerPeriode(\''+id+'\',\''+unit+'\',\''+tahun+'\', \''+item.divisiId+'\', \''+item.masterId+'\', \''+item.rekeningId+'\')"><i class="fa fa-search"></i></button></td>' +
                     '</tr>';
             })
             $("#body-budgeting-view-detail").html(str);
