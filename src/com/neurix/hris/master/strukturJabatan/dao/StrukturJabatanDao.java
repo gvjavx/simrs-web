@@ -585,14 +585,11 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
                 "\tleft join it_hris_pegawai_position posisiPegawai on posisiPegawai.branch_id = jabatan.branch_id and posisiPegawai.position_id = jabatan.position_id\n" +
                 "where\n" +
                 "\tjabatan.parent_id ilike '"+idParent+"%'\n" +
-                "\tand jabatan.flag = 'Y'\n" +
-                "\tand posisi.flag = 'Y'\n" +
-                "\tand posisiPegawai.flag = 'Y'";
+                "\tand jabatan.flag = 'Y'\n";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
-
 
         for (Object[] row : results) {
             ImStrukturJabatanEntity result  = new ImStrukturJabatanEntity();

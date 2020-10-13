@@ -7,6 +7,7 @@ import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsPermintaanObatPoliEntity
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.obatpoli.model.PermintaanObatPoli;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
+import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsApprovalTransaksiObatEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.json.JSONException;
@@ -48,5 +49,7 @@ public interface ObatPoliBo {
     public List<PermintaanObatPoli> getCekRequestExist(PermintaanObatPoli bean) throws GeneralBOException;
     public MtSimrsPermintaanObatPoliEntity getEntityPermintaanObatPoliById(String id) throws GeneralBOException;
     public void updateAddStockPoli(TransaksiObatDetail bean, String idPoli) throws GeneralBOException;
+    public MtSimrsPermintaanObatPoliEntity getPermintaanObatPolyByIdApproval(String idApproval) throws GeneralBOException;
+    public ImtSimrsApprovalTransaksiObatEntity getApprovalEntityById(String id) throws GeneralBOException;
 
 }

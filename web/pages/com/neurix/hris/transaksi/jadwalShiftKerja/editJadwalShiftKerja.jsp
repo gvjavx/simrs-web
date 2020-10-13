@@ -311,7 +311,7 @@
                 <form class="form-horizontal" id="myForm">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-sm-offset-3 col-sm-1">
+                            <div class="col-sm-offset-3 col-sm-2">
                                 <label class="control-label">Sub Divisi</label>
                             </div>
                             <div class="col-sm-4">
@@ -321,7 +321,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-offset-3 col-sm-1">
+                            <div class="col-sm-offset-3 col-sm-2">
                                 <label class="control-label">Shift</label>
                             </div>
                             <div class="col-sm-4">
@@ -331,7 +331,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-offset-3 col-sm-1">
+                            <div class="col-sm-offset-3 col-sm-2">
                                 <label class="control-label">On Call</label>
                             </div>
                             <div class="col-sm-4">

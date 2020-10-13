@@ -249,10 +249,8 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             itJadwalShiftKerjaDetailEntity.setProfesiId(jadwalShiftKerjaDetail.getProfesiid());
             itJadwalShiftKerjaDetailEntity.setProfesiName(jadwalShiftKerjaDetail.getProfesiName());
             itJadwalShiftKerjaDetailEntity.setOnCall(jadwalShiftKerjaDetail.getOnCall());
-            itJadwalShiftKerjaDetailEntity.setFlagLibur(jadwalShiftKerjaDetail.getFlagLibur());
-            itJadwalShiftKerjaDetailEntity.setFlagPanggil(jadwalShiftKerjaDetail.getFlagPanggil());
-            itJadwalShiftKerjaDetailEntity.setPanggilDate(jadwalShiftKerjaDetail.getPanggilDate());
-            itJadwalShiftKerjaDetailEntity.setPanggilWho(jadwalShiftKerjaDetail.getPanggilWho());
+            itJadwalShiftKerjaDetailEntity.setFlagLibur("N");
+            itJadwalShiftKerjaDetailEntity.setFlagPanggil("N");
 
             itJadwalShiftKerjaDetailEntity.setFlag(bean.getFlag());
             itJadwalShiftKerjaDetailEntity.setAction(bean.getAction());

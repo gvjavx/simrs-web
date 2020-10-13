@@ -1048,8 +1048,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         List<ImSimrsObatEntity> obatEntities = getListEntityObat(obat);
 
-        ImSimrsObatEntity obatEntity = new ImSimrsObatEntity();
+        ImSimrsObatEntity obatEntity = null;
         if (obatEntities.size() > 0) {
+            obatEntity = new ImSimrsObatEntity();
             obatEntity = obatEntities.get(0);
         }
 
@@ -2245,8 +2246,14 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         if (notFound)
             obatEntity = getObatById(bean.getIdObat(), bean.getBranchAsal(), bean.getIdBarang());
 
+        java.util.Date now = new java.util.Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+
+        String seq = getIdNextSeqObat();
+        String idBarang = f.format(now) + seq;
+
         ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();
-        newObatEntity.setIdBarang(obatEntity.getIdBarang());
+        newObatEntity.setIdBarang(idBarang);
         newObatEntity.setNamaObat(obatEntity.getNamaObat());
         newObatEntity.setMerk(obatEntity.getMerk());
         newObatEntity.setLembarPerBox(obatEntity.getLembarPerBox());
@@ -2363,12 +2370,12 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 obatEntity.setAverageHargaBiji(newAvgHargaBijian);
             }
 
-
+            obatEntity.setIdBarang(idBarang);
             obatEntity.setAction("U");
             obatEntity.setLastUpdate(time);
             obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
             try {
-                obatDao.updateAndSave(obatEntity);
+                obatDao.addAndSave(obatEntity);
             } catch (HibernateException e) {
                 logger.error("[ObatPoliBoImpl.updateAddStockGudangOtherBranch update] ERROR.", e);
                 throw new GeneralBOException("[ObatPoliBoImpl.updateAddStockGudangOtherBranch update] ERROR." + e.getMessage());
@@ -3206,8 +3213,18 @@ public class ObatPoliBoImpl implements ObatPoliBo {
     }
 
     @Override
+    public MtSimrsPermintaanObatPoliEntity getPermintaanObatPolyByIdApproval(String idApproval) throws GeneralBOException {
+        return permintaanObatPoliDao.getById("idApprovalObat", idApproval);
+    }
+
+    @Override
     public MtSimrsPermintaanObatPoliEntity getEntityPermintaanObatPoliById(String id) throws GeneralBOException {
         return permintaanObatPoliDao.getById("idPermintaanObatPoli", id);
+    }
+
+    @Override
+    public ImtSimrsApprovalTransaksiObatEntity getApprovalEntityById(String id) throws GeneralBOException {
+        return approvalTransaksiObatDao.getById("idApprovalObat", id);
     }
 
     // list method seq

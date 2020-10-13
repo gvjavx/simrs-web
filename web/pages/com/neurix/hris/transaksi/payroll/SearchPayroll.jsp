@@ -155,7 +155,7 @@
                                                 <td>
                                                     <table>
                                                         <s:select list="#{'PR':'Payroll', 'T':'THR', 'CP':'Cuti Panjang', 'CT':'Cuti Tahunan',
-                                        'JP':'Jasa Operassional', 'JB':'PMP', 'PN':'SHT', 'IN':'Insentif'}" id="tipe" name="payroll.tipe"
+                                        'JP':'Jasa Operasional', 'JB':'PMP', 'PN':'SHT', 'IN':'Insentif'}" id="tipe" name="payroll.tipe"
                                                                   cssClass="form-control" />
                                                     </table>
                                                 </td>
