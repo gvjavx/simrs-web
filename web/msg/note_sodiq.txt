@@ -1005,6 +1005,75 @@ ADD COLUMN keterangan VARCHAR(1000);
 ALTER TABLE im_simrs_tindakan
 DROP COLUMN tindakan;
 
+-- WEEKEND
+CREATE TABLE im_simrs_jenis_diet
+(
+	id_jenis_diet VARCHAR(50) PRIMARY KEY NOT NULL,
+	nama_jenis_diet VARCHAR(100),
+	action VARCHAR(1),
+	flag VARCHAR(1),
+	created_date TIMESTAMP WITHOUT TIME ZONE,
+	created_who VARCHAR(100),
+	last_update TIMESTAMP WITHOUT TIME ZONE,
+	last_update_who VARCHAR(100)
+)
+
+ALTER TABLE it_simrs_order_gizi
+DROP COLUMN diet_pagi,
+DROP COLUMN bentuk_makan_pagi,
+DROP COLUMN diet_siang,
+DROP COLUMN bentuk_makan_siang,
+DROP COLUMN diet_malam,
+DROP COLUMN bentuk_makan_malam;
+
+CREATE TABLE it_simrs_detail_jenis_diet
+(
+	id_detail_jenis_diet VARCHAR(50) PRIMARY KEY NOT NULL,
+	id_order_gizi VARCHAR(50),
+	id_jenis_diet VARCHAR(50),
+	nama_jenis_diet VARCHAR(100),
+	action VARCHAR(1),
+	flag VARCHAR(1),
+	created_date TIMESTAMP WITHOUT TIME ZONE,
+	created_who VARCHAR(100),
+	last_update TIMESTAMP WITHOUT TIME ZONE,
+	last_update_who VARCHAR(100)
+);
+
+ALTER TABLE it_simrs_order_gizi
+ALTER COLUMN tgl_order TYPE TIMESTAMP WITHOUT TIME ZONE;
+
+CREATE SEQUENCE seq_detail_jenis_diet;
+
+INSERT INTO im_simrs_jenis_diet VALUES
+('JDD00000001','Diet Vitamin', 'C', 'Y', now(), 'adminrs', now(), 'adminrs'),
+('JDD00000002','Diet Kalori', 'C', 'Y', now(), 'adminrs', now(), 'adminrs'),
+('JDD00000003','Diet Lemak', 'C', 'Y', now(), 'adminrs', now(), 'adminrs'),
+('JDD00000004','Diet Asam', 'C', 'Y', now(), 'adminrs', now(), 'adminrs'),
+('JDD00000005','Diet Gula', 'C', 'Y', now(), 'adminrs', now(), 'adminrs');
+
+INSERT INTO im_functions VALUES
+(2350, 'Recovery Room', '/recoveryroom/initForm_recoveryroom.action', 2600, 2, now(), 'admin', now(), 'admin', 'Y','C', 2350),
+(2351, 'init', '/recoveryroom/initForm_recoveryroom.action', 2350, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2352, 'search', '/recoveryroom/searchRR_recoveryroom.action', 2350, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2353, 'add', '/recoveryroom/add_recoveryroom.action', 2350, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2350, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2351, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2352, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2353, 32, 'Y', now(), now(), 'admin', 'admin');
+
+INSERT INTO im_functions VALUES
+(3100, 'Dashboard', '/initdashboard/initForm_initdashboard.action', 10, 1, now(), 'admin', now(), 'admin', 'Y','C', 3100),
+(2355, 'init dashboard', '/initdashboard/initForm_initdashboard.action', 3100, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(3100, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2355, 32, 'Y', now(), now(), 'admin', 'admin');
+
+
+
 
 
 

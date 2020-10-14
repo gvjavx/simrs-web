@@ -17,6 +17,7 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -189,6 +190,17 @@ public class PermintaanGiziAction extends BaseMasterAction {
 
     @Override
     public String initForm() {
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
+
+        RawatInap rawatInap = new RawatInap();
+        rawatInap.setStTglTo(tglToday);
+        rawatInap.setStTglFrom(tglToday);
+        setRawatInap(rawatInap);
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
         return "search";
     }
 

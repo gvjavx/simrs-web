@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkup.model;
 
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -77,7 +78,8 @@ public class HeaderCheckup {
     private String noSep;
     private String jenisTransaksi;
     private BigDecimal tarifBpjs;
-    private List<Tindakan> tindakanList;
+    private List<Tindakan> tindakanList = new ArrayList<>();
+    private List<DokterTeam> dokterTeamList = new ArrayList<>();
     private List<Asesmen> asesmenList = new ArrayList<>();
 
     private String ketKeyakinan;
@@ -161,6 +163,60 @@ public class HeaderCheckup {
     private String urlLab;
     private String ketAcuanP;
     private String ketAcuanL;
+    private Boolean rawatInap;
+
+    private String jmlRJ;
+    private String jmlRI;
+    private String jmlIGD;
+    private String jmlTelemedic;
+
+    public String getJmlRJ() {
+        return jmlRJ;
+    }
+
+    public void setJmlRJ(String jmlRJ) {
+        this.jmlRJ = jmlRJ;
+    }
+
+    public String getJmlRI() {
+        return jmlRI;
+    }
+
+    public void setJmlRI(String jmlRI) {
+        this.jmlRI = jmlRI;
+    }
+
+    public String getJmlIGD() {
+        return jmlIGD;
+    }
+
+    public void setJmlIGD(String jmlIGD) {
+        this.jmlIGD = jmlIGD;
+    }
+
+    public String getJmlTelemedic() {
+        return jmlTelemedic;
+    }
+
+    public void setJmlTelemedic(String jmlTelemedic) {
+        this.jmlTelemedic = jmlTelemedic;
+    }
+
+    public Boolean getRawatInap() {
+        return rawatInap;
+    }
+
+    public void setRawatInap(Boolean rawatInap) {
+        this.rawatInap = rawatInap;
+    }
+
+    public List<DokterTeam> getDokterTeamList() {
+        return dokterTeamList;
+    }
+
+    public void setDokterTeamList(List<DokterTeam> dokterTeamList) {
+        this.dokterTeamList = dokterTeamList;
+    }
 
     public String getKetAcuanP() {
         return ketAcuanP;

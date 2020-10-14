@@ -13,7 +13,11 @@
 
 
     <bean id="orderGiziBo" class="com.neurix.simrs.transaksi.ordergizi.bo.impl.OrderGiziBoImpl"
-          p:orderGiziDao-ref="orderGiziDao"/>
+          p:orderGiziDao-ref="orderGiziDao"
+          p:orderJenisDietDao-ref="orderJenisDietDao"
+          p:jenisDietDao-ref="jenisDietDao"
+          p:dietGiziDao-ref="dietGiziDao"
+    />
 
     <bean id="orderGiziBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="orderGiziBo">
@@ -39,5 +43,6 @@
 
     <bean id="orderGiziDao" class="com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao"
           p:sessionFactory-ref="sessionFactory" />
-
+    <bean id="orderJenisDietDao" class="com.neurix.simrs.transaksi.ordergizi.dao.OrderJenisDietDao"
+          p:sessionFactory-ref="sessionFactory" />
 </beans>

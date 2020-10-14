@@ -1427,6 +1427,31 @@ public class CheckupAction extends BaseMasterAction {
         return "init_add";
     }
 
+    public List<Pelayanan> getComboPelayananCtx() {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setTipePelayanan("rawat_jalan");
+        pelayanan.setBranchId(CommonUtil.userBranchLogin());
+        try {
+            pelayananList = pelayananBoProxy.getByCriteria(pelayanan);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+        }
+        return pelayananList;
+    }
+
+    public List<Pelayanan> getComboPelayananWithLabCtx(String tipe) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananBo.getListPelayananWithLab(tipe);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+        }
+        return pelayananList;
+    }
+
     public String getComboPelayananWithLab() {
 
         List<Pelayanan> pelayananList = new ArrayList<>();

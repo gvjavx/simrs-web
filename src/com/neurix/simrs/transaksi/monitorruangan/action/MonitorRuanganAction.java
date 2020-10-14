@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.monitorruangan.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.lab.bo.LabBo;
 import com.neurix.simrs.master.lab.model.Lab;
@@ -31,7 +32,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MonitorRuanganAction extends BaseMasterAction {
+public class MonitorRuanganAction extends BaseTransactionAction {
     protected static transient Logger logger = Logger.getLogger(MonitorRuanganAction.class);
     private MonitorRuanganBo monitorRuanganBoProxy;
     private CheckupDetailBo checkupDetailBoProxy;
@@ -43,34 +44,8 @@ public class MonitorRuanganAction extends BaseMasterAction {
     private RawatInapBo rawatInapBoProxy;
     private OrderGiziBo orderGiziBoProxy;
     private Ruangan ruangan;
-
     public static Logger getLogger() {
         return logger;
-    }
-
-    @Override
-    public String add() {
-        return null;
-    }
-
-    @Override
-    public String edit() {
-        return null;
-    }
-
-    @Override
-    public String delete() {
-        return null;
-    }
-
-    @Override
-    public String view() {
-        return null;
-    }
-
-    @Override
-    public String save() {
-        return null;
     }
 
     @Override
@@ -229,13 +204,11 @@ public class MonitorRuanganAction extends BaseMasterAction {
 
     @Override
     public String initForm() {
-
         Ruangan ruangan = new Ruangan();
         setRuangan(ruangan);
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         return "search";
-
     }
 
 
@@ -275,22 +248,11 @@ public class MonitorRuanganAction extends BaseMasterAction {
         this.orderGiziBoProxy = orderGiziBoProxy;
     }
 
-
     public Ruangan getRuangan() {
         return ruangan;
     }
 
     public void setRuangan(Ruangan ruangan) {
         this.ruangan = ruangan;
-    }
-
-    @Override
-    public String downloadPdf() {
-        return null;
-    }
-
-    @Override
-    public String downloadXls() {
-        return null;
     }
 }

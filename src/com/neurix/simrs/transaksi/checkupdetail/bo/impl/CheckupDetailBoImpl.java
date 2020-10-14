@@ -774,6 +774,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 dkt.setJenisDpjp(dokterTeam.getJenisDpjp());
                 dkt.setCreatedWho(bean.getCreatedWho());
                 dkt.setLastUpdateWho(bean.getLastUpdateWho());
+                dkt.setFlagApprove(dokterTeam.getFlagApprove());
                 response = saveTeamDokter(dkt);
             }
         }
@@ -811,7 +812,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                     tindakanRawatEntity.setAction("U");
                     tindakanRawatEntity.setApproveFlag("Y");
 
-                    if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                    if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                         tindakanRawatEntity.setTarif(tindakanEntity.getTarifBpjs());
                     } else {
                         tindakanRawatEntity.setTarif(tindakanEntity.getTarif());
@@ -931,6 +932,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         entity.setLastUpdateWho(bean.getLastUpdateWho());
         entity.setJenisDpjp(bean.getJenisDpjp());
+        entity.setFlagApprove(bean.getFlagApprove());
 
         try {
             dokterTeamDao.addAndSave(entity);

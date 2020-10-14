@@ -2519,8 +2519,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return finalResponse;
     }
 
-    private CrudResponse
-    rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka, String idDokterDpjp, String idPoli) {
+    private CrudResponse rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka, String idDokterDpjp, String idPoli) {
         logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
 
         CrudResponse finalResponse = new CrudResponse();
@@ -3199,6 +3198,20 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
+        return ruanganList;
+
+    }
+
+    public List<Ruangan> listJustRuangan(String idKelas) {
+        List<Ruangan> ruanganList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+        try {
+            ruanganList = ruanganBo.getJustListRuangan(idKelas, branchId);
+        } catch (GeneralBOException e) {
+            logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+        }
         return ruanganList;
 
     }

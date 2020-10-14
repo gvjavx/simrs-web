@@ -192,7 +192,7 @@ public class TeamDokterAction extends BaseMasterAction {
             dokterTeam.setFlag("Y");
             dokterTeam.setIdPelayanan(pelayanan);
             dokterTeam.setJenisDpjp(jenisDpjp);
-            response = dokterBo.savaAdd(dokterTeam);
+            response = dokterBo.saveDokterTeam(dokterTeam);
         }catch (GeneralBOException e) {
             response.setStatus("error");
             response.setMsg("Error"+e.getMessage());

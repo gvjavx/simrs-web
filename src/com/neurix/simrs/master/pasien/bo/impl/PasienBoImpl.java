@@ -858,17 +858,16 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setNoKtp(pasien.getNoKtp());
             pasienEntity.setNoBpjs(pasien.getNoBpjs());
             pasienEntity.setTempatLahir(pasien.getTempatLahir());
-
-            pasienEntity.setNoTelp(pasien.getNoTelp());
-
+            if(pasien.getNoTelp() != null && !"".equalsIgnoreCase(pasien.getNoTelp())){
+                String trimNoTelp = pasien.getNoTelp().replace("-","").replace("_","");
+                pasienEntity.setNoTelp(trimNoTelp);
+            }
             if (pasien.getTglLahir() != null && !"".equalsIgnoreCase(pasien.getTglLahir())) {
                 pasienEntity.setTglLahir(java.sql.Date.valueOf(pasien.getTglLahir()));
             }
-
             BigInteger bigInteger = new BigInteger(pasien.getDesaId());
             pasienEntity.setDesaId(bigInteger);
-            pasienEntity.setJalan(pasien.getJalan());
-
+            pasienEntity.setJalan(pasien.getAlamat());
             pasienEntity.setSuku(pasien.getSuku());
             pasienEntity.setAgama(pasien.getAgama());
             pasienEntity.setProfesi(pasien.getProfesi());
@@ -888,6 +887,32 @@ public class PasienBoImpl implements PasienBo {
                 response.setIdPasien(pasienEntity.getIdPasien());
                 response.setNoKtp(pasienEntity.getNoKtp());
                 response.setNama(pasienEntity.getNama());
+                response.setJenisKelamin(pasienEntity.getJenisKelamin());
+                response.setNoBpjs(pasienEntity.getNoBpjs());
+                response.setTempatLahir(pasienEntity.getTempatLahir());
+                response.setNoTelp(pasienEntity.getNoTelp());
+                response.setTglLahir(pasienEntity.getTglLahir().toString());
+                response.setDesaId(pasienEntity.getDesaId().toString());
+                if (pasienEntity.getDesaId() != null) {
+                    List<Object[]> objs = provinsiDao.getListAlamatByDesaId(pasienEntity.getDesaId().toString());
+                    if (!objs.isEmpty()) {
+                        for (Object[] obj : objs) {
+                            response.setDesa(obj[0].toString());
+                            response.setKecamatan(obj[1].toString());
+                            response.setKota(obj[2].toString());
+                            response.setProvinsi(obj[3].toString());
+                            response.setKecamatanId(obj[4].toString());
+                            response.setKotaId(obj[5].toString());
+                            response.setProvinsiId(obj[6].toString());
+                        }
+                    }
+                }
+                response.setJalan(pasienEntity.getJalan());
+                response.setSuku(pasienEntity.getSuku());
+                response.setAgama(pasienEntity.getAgama());
+                response.setProfesi(pasienEntity.getProfesi());
+                response.setUrlKtp(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_KTP_PASIEN + pasienEntity.getUrlKtp());
+                response.setImgKtp(pasienEntity.getUrlKtp());
                 response.setStatus("success");
                 response.setMsg("Berhasil");
 
@@ -902,7 +927,6 @@ public class PasienBoImpl implements PasienBo {
             logger.error("[PasienBoImpl.saveAdd] Error when saving data pasien data is null");
             throw new GeneralBOException(" Error when saving data pasien data is null");
         }
-
         logger.info("[PasienBoImpl.saveAdd] End <<<<<<<");
         return response;
     }
