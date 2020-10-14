@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.simrs.transaksi.reseponline.model.ImSimrsSettingHargaPengirimanEntity">
-        <table name="im_simrs_setting_harga_pengiriman" schema="public" catalog="simrs"/>
+        <table name="im_simrs_setting_harga_pengiriman" schema="public" />
         <attributes>
             <id name="id">
                 <column name="id"/>

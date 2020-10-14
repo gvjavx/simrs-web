@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.simrs.transaksi.asesmenrawatinap.model.ItSimrsImplementasiPerawatEntity">
-        <table name="it_simrs_implementasi_perawat" schema="public" catalog="simrs"/>
+        <table name="it_simrs_implementasi_perawat" schema="public" />
         <attributes>
             <id name="idImplementasiPerawat">
                 <column name="id_implementasi_perawat"/>

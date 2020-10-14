@@ -45,6 +45,7 @@ public class BudgetingPengadaan{
     private String noKontrakAdendum3;
     private String idNilaiParam;
 
+
     public String getIdNilaiParam() {
         return idNilaiParam;
     }

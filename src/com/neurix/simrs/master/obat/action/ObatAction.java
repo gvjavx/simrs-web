@@ -12,6 +12,7 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
@@ -356,7 +357,7 @@ public class ObatAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox, BigInteger bijiLembar, BigInteger minStok, String flagKronis, String flagGeneric, String flagBpjs, String idKategoriPersediaan) {
+    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox, BigInteger bijiLembar, BigInteger minStok, String flagKronis, String flagGeneric, String flagBpjs, Integer margin, String idKategoriPersediaan) {
         logger.info("[ObatAction.saveObatInap] start process >>>");
         CheckObatResponse response = new CheckObatResponse();
         try {
@@ -386,6 +387,7 @@ public class ObatAction extends BaseMasterAction {
             obat.setFlagGeneric(flagGeneric);
             obat.setFlagBpjs(flagBpjs);
             obat.setIdKategoriPersediaan(idKategoriPersediaan);
+            obat.setMargin(margin == null ? new Integer(0) : margin);
 
             if (kandunganObats != null && kandunganObats.size() > 0){
                 List<KandunganObat> kandunganObatsFiltered = kandunganObats.stream().filter(p -> p.getIdObat().equalsIgnoreCase(idObat)).collect(Collectors.toList());
@@ -1282,6 +1284,14 @@ public class ObatAction extends BaseMasterAction {
         }
 
         return "print_aging";
+    }
+
+    public List<ImSimrsKategoriPersediaanEntity> getAllKategoriPersediaan(){
+        logger.info("[LaporanAkuntansiAction.getAllKategoriPersediaan] START Process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        return obatBo.getAllKategoriPersediaan();
     }
 
 }

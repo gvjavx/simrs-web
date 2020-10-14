@@ -255,5 +255,6 @@ public class CommonConstant {
     public final static String ID_IJIN_MELAHIRKAN = CommonUtil.getPropertyParams("id.ijin.melahirkan");
     public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENGIRIM ="88";
     public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENERIMA ="89";
+    public final static String ID_BG_KATEGORI_BIAYA_RUTIN = "KTB000005";
 
 }
