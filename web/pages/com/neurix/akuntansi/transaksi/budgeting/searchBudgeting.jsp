@@ -813,7 +813,8 @@
         $("#view-id").val(id);
         $("#view-id-unit").val(unit);
         $("#view-id-tahun").val(tahun);
-        BudgetingAction.getListBudgetingRealisasi(id, unit, tahun, function(res){
+        var status = $("#sel-status").val();
+        BudgetingAction.getListBudgetingRealisasi(id, unit, tahun, status, function(res){
            var str = "";
            $.each(res, function (i, item) {
                str += '<tr>' +
@@ -840,7 +841,8 @@
         $("#modal-view-detail-periode").modal('show');
         $("#view-id-detail-rekening").val(rekening);
         $("#view-divisi-id").val(divisi);
-        BudgetingAction.getListBudgetingPerPeriode(id, unit, tahun, divisi, master, rekening, function(res){
+        var status = $("#sel-status").val();
+        BudgetingAction.getListBudgetingPerPeriode(id, unit, tahun, divisi, master, rekening, status,  function(res){
             var str = "";
             var nilaiTotal      = 0;
             var realisasi       = 0;
@@ -898,7 +900,8 @@
 
     function viewDetailPerRekening(id, unit, tahun, divisi, master) {
         $("#modal-view-detail").modal('show');
-        BudgetingAction.getListBudgetingPerRekening(id, unit, tahun, divisi, master, function(res){
+        var status = $("#sel-status").val();
+        BudgetingAction.getListBudgetingPerRekening(id, unit, tahun, divisi, master, status, function(res){
             var str = "";
             $.each(res, function (i, item) {
                 str += '<tr>' +

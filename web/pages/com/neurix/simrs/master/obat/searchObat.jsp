@@ -822,8 +822,10 @@
             $('#load_obat').show();
 
             if (id != '') {
+                console.log(" edit --> KLIK");
                 dwr.engine.setAsync(true);
                 ObatAction.editObat(id, nama, jenis, merek, pabrik, lembarBox, bijiLembar, minStok, flagKronis, flagGeneric, flagBpjs, margin, idKategori,  function (response) {
+                    dwr.engine.setAsync(false);
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         $('#save_obat').show();

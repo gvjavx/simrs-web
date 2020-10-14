@@ -1563,15 +1563,15 @@ public class BudgetingBoImpl implements BudgetingBo {
     }
 
     @Override
-    public List<ParameterBudgeting> getListBudgetingRealisasi(String idJenisBudgeting, String unit, String tahun) {
-        return budgetingDao.getListBudgeting(idJenisBudgeting, unit, tahun);
+    public List<ParameterBudgeting> getListBudgetingRealisasi(String idJenisBudgeting, String unit, String tahun, String status) {
+        return budgetingDao.getListBudgeting(idJenisBudgeting, unit, tahun, status);
     }
 
     @Override
-    public List<ParameterBudgeting> getListBudgetingRealisasiPerperiode(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String rekeningId) {
+    public List<ParameterBudgeting> getListBudgetingRealisasiPerperiode(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String rekeningId, String status) {
         int n = 12;
         List<ParameterBudgeting> listOfResults = new ArrayList<>();
-        List<ParameterBudgeting> listRealisasi = budgetingDao.getListBudgetingDetailPerPeriode(idJenisBudgeting, unit, tahun, divisiId, masterId, rekeningId);
+        List<ParameterBudgeting> listRealisasi = budgetingDao.getListBudgetingDetailPerPeriode(idJenisBudgeting, unit, tahun, divisiId, masterId, rekeningId, status);
         for (int i = 1; i<=n ; i++){
             ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
             String bulan = i <= 9 ? "0" + String.valueOf(i) : String.valueOf(i);
@@ -1604,8 +1604,8 @@ public class BudgetingBoImpl implements BudgetingBo {
     }
 
     @Override
-    public List<ParameterBudgeting> getListBudgetingRealisasiPerKodeRekening(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId) {
-        return budgetingDao.getListBudgetingPerRekening(idJenisBudgeting, unit, tahun, divisiId, masterId);
+    public List<ParameterBudgeting> getListBudgetingRealisasiPerKodeRekening(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String status) {
+        return budgetingDao.getListBudgetingPerRekening(idJenisBudgeting, unit, tahun, divisiId, masterId, status);
     }
 
     @Override
