@@ -839,7 +839,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     // jika harga bukan pengembalian reture pakai harga terakhir;
                     BigDecimal hargaRata = new BigDecimal(0);
                     if (!"reture".equalsIgnoreCase(jenis)){
-                        hargaRata = obatEntity.getHargaTerakhir().multiply(new BigDecimal(cons));
+                        hargaRata = trans.getNetto();
                     } else {
                         if ("box".equalsIgnoreCase(trans.getJenisSatuan())){
                             hargaRata = hargaRata.add(obatEntity.getAverageHargaBox());
