@@ -598,6 +598,8 @@ public class ObatBoImpl implements ObatBo {
                     marginObatEntity.setCreatedDateWho(bean.getLastUpdateWho());
                     marginObatEntity.setLastUpdate(bean.getLastUpdate());
                     marginObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    marginObatEntity.setFlag("Y");
+                    marginObatEntity.setAction("C");
                     try {
                         marginObatDao.addAndSave(marginObatEntity);
                         response.setStatus("success");
