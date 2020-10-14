@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.simrs.master.marginobat.model.ImSimrsMarginObatEntity">
-        <table name="im_simrs_margin_obat" schema="public" catalog="simrs_sodiq"/>
+        <table name="im_simrs_margin_obat" schema="public"/>
         <attributes>
             <id name="idMarginObat">
                 <column name="id_margin_obat"/>

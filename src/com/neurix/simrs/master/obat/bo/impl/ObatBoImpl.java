@@ -589,6 +589,25 @@ public class ObatBoImpl implements ObatBo {
                         logger.error("[ObatBoImpl.saveEdit] error when update margin obat " + e.getMessage());
                         throw new GeneralBOException("[ObatBoImpl.saveEdit] error when update header obat " + e.getMessage());
                     }
+                } else {
+                    marginObatEntity = new ImSimrsMarginObatEntity();
+                    marginObatEntity.setIdMarginObat("MRG"+headerObatEntity.getIdObat());
+                    marginObatEntity.setIdObat(headerObatEntity.getIdObat());
+                    marginObatEntity.setStandarMargin(bean.getStandarMargin());
+                    marginObatEntity.setCreatedDate(bean.getLastUpdate());
+                    marginObatEntity.setCreatedDateWho(bean.getLastUpdateWho());
+                    marginObatEntity.setLastUpdate(bean.getLastUpdate());
+                    marginObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    try {
+                        marginObatDao.addAndSave(marginObatEntity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMessage("Found Error when update margin obat " + e.getMessage());
+                        logger.error("[ObatBoImpl.saveEdit] error when add margin obat " + e.getMessage());
+                        throw new GeneralBOException("[ObatBoImpl.saveEdit] error when add header obat " + e.getMessage());
+                    }
                 }
 
                 // loop jenis obat;
