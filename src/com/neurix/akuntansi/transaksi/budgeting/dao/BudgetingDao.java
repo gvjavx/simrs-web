@@ -647,7 +647,7 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         else
             divisiId = "LIKE '"+divisiId+"'";
 
-        if (masterId == null)
+        if (masterId == null || "".equalsIgnoreCase(masterId))
             masterId = "is NULL ";
         else
             masterId = "LIKE '"+masterId+"'";
