@@ -190,7 +190,7 @@
                                     <s:hidden id="is_laka" name="rawatInap.isLaka"/>
                                     <s:hidden id="id_ruangan_lama" name="rawatInap.idRuangan"/>
 
-                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "ptpn"'>
+                                    <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "rekanan"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
@@ -258,18 +258,10 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    <s:if test='rawatInap.metodePembayaran != null && rawatInap.metodePembayaran != ""'>
+                                    <s:if test='rawatInap.idJenisPeriksa == "umum"'>
                                         <tr>
-                                            <td><b>Metode Pembayaran</b></td>
                                             <td>
-                                                <table>
-                                                    <script>
-                                                        var metode = '<s:property value="rawatInap.metodePembayaran"/>';
-                                                        var met = metode.replace("_", " ");
-                                                        var meto = convertSentenceCase(met);
-                                                        document.write(meto);
-                                                    </script>
-                                                </table>
+                                                <button onclick="showUangMuka()" class="btn btn-primary"><i class="fa fa-money"></i> Uang Muka</button>
                                             </td>
                                         </tr>
                                     </s:if>
@@ -294,7 +286,7 @@
                                                 <s:elseif test='rawatInap.idJenisPeriksa == "bpjs"'>
                                                     <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                 </s:elseif>
-                                                <s:elseif test='rawatInap.idJenisPeriksa == "ptpn"'>
+                                                <s:elseif test='rawatInap.idJenisPeriksa == "rekanan"'>
                                                     <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
                                                 </s:elseif>
                                                 <s:else>
@@ -436,60 +428,7 @@
 
                             </div>
                         </div>
-                        <%--<div class="row">--%>
-                            <%--<div class="form-group">--%>
-                                <%--<div class="col-md-12">--%>
-                                    <%--<a href="<%= request.getContextPath() %>/rekammedik/initRekamMedik_rekammedik.action?id=<s:property value="rawatInap.idDetailCheckup"/>&tipe=RI" class="btn btn-primary pull-left"><i class="fa fa-user-plus"></i> E-Rekam Medik</a>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
                     </div>
-                    <%--<div class="box-header with-border"></div>--%>
-                    <%--<div class="box-header with-border">--%>
-                        <%--<h3 class="box-title"><i class="fa fa-hospital-o"></i> Asesmen</h3>--%>
-                    <%--</div>--%>
-                    <%--<div class="box-body">--%>
-                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap10')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Riwayat Kesehatan--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap11')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Keadaan Umum--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap12')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Pemeriksaan Fisik--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap13')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Asesmen Nyeri--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap1')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Resiko Dekubitus--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap2')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Fungsional--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap3')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Skrining Gizi Pasien Dewasa--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" onclick="showModalResiko('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap4')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Skrining Gizi Pasien Anak--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap5')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Seksual dan Reproduksi--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap9')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Kebutuhan Komunikasi. Kognisi dan Edukasi--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap6')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Psikososial dan Ekonomi--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap7')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Spritual--%>
-                        <%--</button>--%>
-                        <%--<button class="btn btn-primary" onclick="showModalAsesmen('<s:property value="rawatInap.noCheckup"/>','<s:property value="rawatInap.idDetailCheckup"/>','inap8')">--%>
-                            <%--<i class="fa fa-edit"></i> Form Diagnose Keperawatan yang muncul--%>
-                        <%--</button>--%>
-                    <%--</div>--%>
-
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border" id="pos_rm">
                         <div class="row">
@@ -533,11 +472,11 @@
                            </s:if>
                            <div class="col-md-6">
                                <div class="btn-group btn-hide dropdown">
-                                   <button onclick="setRekamMedis()" type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
+                                   <button onclick="setRekamMedis()" type="button" class="btn btn-primary hvr-icon-down"><i class="fa fa-edit"></i> Asesmen
                                    </button>
                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
                                            data-toggle="dropdown" style="height: 34px">
-                                       <span class="caret"></span>
+                                       <span class="caret hvr-icon"></span>
                                        <span class="sr-only">Toggle Dropdown</span>
                                    </button>
                                    <ul class="dropdown-menu" role="menu" id="asesmen_ri">
@@ -552,15 +491,21 @@
                         <h3 class="box-title"><i class="fa fa-user-md"></i> Dokter</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
+                        <a class="btn btn-success hvr-icon-spin" style="margin-bottom: 10px; width: 150px"
+                                onclick="showModal(1)"><i class="fa fa-plus hvr-icon"></i> Request Dokter
+                        </a>
+                        <button class="btn btn-primary notification icon" style="margin-bottom: 10px; margin-left: 5px"
+                                onclick="refreshTable('dok_ref', 'dokter')"><i class="fa fa-refresh" id="dok_ref"></i> Refresh
+                            <span class="notification-number" style="display: none" id="notif_dok">new</span>
                         </button>
                         <table class="table table-bordered table-striped" id="tbl_dokter">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Dokter</td>
                                 <td>Nama</td>
-                                <td>Nama Pelayanan</td>
+                                <td>Spesialis</td>
+                                <td>Jenis DPJP</td>
+                                <td align="center">Status</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -575,8 +520,8 @@
                         <h3 class="box-title"><i class="fa fa-stethoscope"></i> Diagnosa</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(3)"><i class="fa fa-plus"></i> Tambah Diagnosa
+                        <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"
+                                onclick="showModal(3)"><i class="fa fa-plus hvr-icon"></i> Tambah Diagnosa
                         </button>
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -600,8 +545,8 @@
                         <h3 class="box-title"><i class="fa fa-stethoscope"></i> ICD9</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(8)"><i class="fa fa-plus"></i> Tambah ICD9
+                        <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"
+                                onclick="showModal(8)"><i class="fa fa-plus hvr-icon"></i> Tambah ICD9
                         </button>
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -720,8 +665,8 @@
                         <h3 class="box-title"><i class="fa fa-medkit"></i> Tindakan</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(2)"><i class="fa fa-plus"></i> Tambah Tindakan
+                        <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"
+                                onclick="showModal(2)"><i class="fa fa-plus hvr-icon"></i> Tambah Tindakan
                         </button>
                         <table class="table table-bordered table-striped" id="tabel_tindakan">
                             <thead>
@@ -748,16 +693,19 @@
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Penunjang Medis</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(4)"><i class="fa fa-plus"></i> Penunjang Medis
+                        <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"
+                                onclick="showModal(4)"><i class="fa fa-plus hvr-icon"></i> Penunjang Medis
+                        </button>
+                        <button class="btn btn-primary" style="margin-bottom: 10px;"
+                                onclick="refreshTable('lab_ref', 'lab')"><i class="fa fa-refresh" id="lab_ref"></i> Refresh
                         </button>
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Order</td>
+                                <td>Jenis Penunjang</td>
                                 <td>Pemeriksaan</td>
                                 <td>Status</td>
-                                <td>Jenis Lab</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -770,11 +718,14 @@
                     <div class="box-header with-border" id="pos_diet">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Diet</h3>
+                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Gizi</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(5)"><i class="fa fa-plus"></i> Order Diet
+                        <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"
+                                onclick="showModal(5)"><i class="fa fa-plus hvr-icon"></i> Order Gizi
+                        </button>
+                        <button class="btn btn-primary" style="margin-bottom: 10px;"
+                                onclick="refreshTable('gizi_ref', 'gizi')"><i class="fa fa-refresh" id="gizi_ref"></i> Refresh
                         </button>
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -793,31 +744,6 @@
                         </table>
                     </div>
                     </s:if>
-                    <%--<div class="box-header with-border" id="pos_obat">--%>
-                    <%--</div>--%>
-                    <%--<div class="box-header with-border">--%>
-                    <%--<h3 class="box-title"><i class="fa fa-plus-square"></i> Obat Penunjang</h3>--%>
-                    <%--</div>--%>
-                    <%--<div class="box-body">--%>
-                    <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"--%>
-                    <%--onclick="showModal(6)"><i class="fa fa-plus"></i> Obat Penunjang--%>
-                    <%--</button>--%>
-                    <%--<table class="table table-bordered table-striped">--%>
-                    <%--<thead>--%>
-                    <%--<tr bgcolor="#90ee90">--%>
-                    <%--<td>Tanggal</td>--%>
-                    <%--<td>ID Obat</td>--%>
-                    <%--<td>Obat</td>--%>
-                    <%--<td align="center">Qty</td>--%>
-                    <%--<td>Jenis Satuan</td>--%>
-                    <%--<td align="center">Action</td>--%>
-                    <%--</tr>--%>
-                    <%--</thead>--%>
-                    <%--<tbody id="body_obat">--%>
-
-                    <%--</tbody>--%>
-                    <%--</table>--%>
-                    <%--</div>--%>
                     <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
                     <div class="box-header with-border" id="pos_ruangan">
                     </div>
@@ -834,8 +760,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Masuk</td>
                                 <td>Tanggal Keluar</td>
-                                <td>No Ruangan</td>
-                                <td>Nama Ruangan</td>
+                                <td>Ruangan</td>
                                 <td>Kelas</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
@@ -853,7 +778,7 @@
                         <h3 class="box-title"><i class="fa fa-medkit"></i> Order Resep Obat</h3>
                     </div>
                     <div class="box-body">
-                        <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px" onclick="showModal(7)"><i class="fa fa-plus"></i> Tambah Resep</button>
+                        <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px" onclick="showModal(7)"><i class="fa fa-plus hvr-icon"></i> Tambah Resep</button>
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
@@ -893,7 +818,7 @@
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                                 <option value="">[Select One]</option>
                                                 <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
-                                                    <s:if test='rawatInap.idJenisPeriksa == "umum" || rawatInap.idJenisPeriksa == "ptpn"'>
+                                                    <s:if test='rawatInap.idJenisPeriksa == "umum" || rawatInap.idJenisPeriksa == "rekanan"'>
                                                         <option value="selesai">Selesai</option>
                                                         <option value="rawat_intensif">Rawat Intensif</option>
                                                         <option value="rawat_isolasi">Rawat Isolasi</option>
@@ -955,6 +880,7 @@
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
                                                     <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    <option value="rr">Recovery Room</option>
                                                     <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
                                                     <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
                                                     <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
@@ -1125,43 +1051,43 @@
                                 <div class="form-group">
                                     <div class="col-md-offset-4 col-md-4 text-center">
                                         <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
-                                            <a href="initForm_rawatinap.action" class="btn btn-warning"
+                                            <a href="initForm_rawatinap.action" class="btn btn-warning hvr-icon-wobble-horizontal"
                                                style="margin-top: 15px;">
                                                 <i
-                                                        class="fa fa-arrow-left"></i> Back
+                                                        class="fa fa-arrow-left hvr-icon"></i> Back
                                             </a>
                                         </s:if>
                                         <s:elseif test='rawatInap.kategoriRuangan == "rawat_intensif"'>
-                                            <a href="initForm_rawatintensif.action" class="btn btn-warning"
+                                            <a href="initForm_rawatintensif.action" class="btn btn-warning hvr-icon-wobble-horizontal"
                                                style="margin-top: 15px;">
                                                 <i
-                                                        class="fa fa-arrow-left"></i> Back
+                                                        class="fa fa-arrow-left hvr-icon"></i> Back
                                             </a>
                                         </s:elseif>
                                         <s:elseif test='rawatInap.kategoriRuangan == "kamar_operasi"'>
-                                            <a href="initForm_rawatoperasi.action" class="btn btn-warning"
+                                            <a href="initForm_rawatoperasi.action" class="btn btn-warning hvr-icon-wobble-horizontal"
                                                style="margin-top: 15px;">
                                                 <i
-                                                        class="fa fa-arrow-left"></i> Back
+                                                        class="fa fa-arrow-left hvr-icon"></i> Back
                                             </a>
                                         </s:elseif>
                                         <s:elseif test='rawatInap.kategoriRuangan == "rawat_isolasi"'>
-                                            <a href="initForm_rawatisolasi.action" class="btn btn-warning"
+                                            <a href="initForm_rawatisolasi.action" class="btn btn-warning hvr-icon-wobble-horizontal"
                                                style="margin-top: 15px;">
                                                 <i
-                                                        class="fa fa-arrow-left"></i> Back
+                                                        class="fa fa-arrow-left hvr-icon"></i> Back
                                             </a>
                                         </s:elseif>
                                         <s:elseif test='rawatInap.kategoriRuangan == "ruang_bersalin"'>
-                                            <a href="initForm_rawatbersalin.action" class="btn btn-warning"
+                                            <a href="initForm_rawatbersalin.action" class="btn btn-warning hvr-icon-wobble-horizontal"
                                                style="margin-top: 15px;">
                                                 <i
-                                                        class="fa fa-arrow-left"></i> Back
+                                                        class="fa fa-arrow-left hvr-icon"></i> Back
                                             </a>
                                         </s:elseif>
-                                        <button class="btn btn-success" onclick="confirmPemeriksaanPasien()"
+                                        <button class="btn btn-success hvr-icon-pulse-grow" onclick="confirmPemeriksaanPasien()"
                                                 style="margin-top: 15px;" id="save_ket"><i
-                                                class="fa fa-check"></i> Save
+                                                class="fa fa-check hvr-icon"></i> Save
                                         </button>
                                         <button style="display: none; cursor: no-drop; margin-top: 15px;" type="button"
                                                 class="btn btn-success" id="load_ket"><i class="fa fa-spinner fa-spin"></i>
@@ -1185,7 +1111,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Tambah Dokter</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Request Dokter</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_dokter">
@@ -1197,7 +1123,7 @@
                         <label class="col-md-3" style="margin-top: 7px">Nama Dokter</label>
                         <div class="col-md-7">
                             <select id="dok_id_dokter" style="width: 100%" class="form-control select2"
-                                    onchange="var warn =$('#war_dok').is(':visible'); if (warn){$('#cor_dok').show().fadeOut(3000);$('#war_dok').hide()}">
+                                    onchange="var warn =$('#war_dok').is(':visible'); if (warn){$('#cor_dok').show().fadeOut(3000);$('#war_dok').hide()}; setSpesialis(this.value)">
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -1208,12 +1134,40 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Spesialis</label>
+                        <div class="col-md-7">
+                           <input class="form-control" id="pelayanan_dokter" style="margin-top: 7px" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis DPJP</label>
+                        <div class="col-md-7">
+                            <select id="dok_jenis_dpjp" style="width: 100%" class="form-control select2"
+                                    onchange="var warn =$('#war_dok_jenis_dpjp').is(':visible'); if (warn){$('#cor_dok_jenis_dpjp').show().fadeOut(3000);$('#war_dok_jenis_dpjp').hide()}">
+                                <option value="">[Select One]</option>
+                                <option value="konsultasi">Konsultasi</option>
+                                <option value="rawat_bersama">Rawat Bersama</option>
+                                <option value="rawat_ali">Rawat Alih</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_dok_jenis_dpjp"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_dok_jenis_dpjp"><i
+                                    class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_dokter"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_dokter"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1300,7 +1254,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_tindakan"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_tindakan">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1324,7 +1278,7 @@
                     <p id="msg_diagnosa"></p>
                 </div>
                 <div class="row">
-                    <%--<s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "ptpn"'>--%>
+                    <%--<s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "rekanan"'>--%>
                         <div class="form-group">
                             <label class="col-md-3">Diagnosa</label>
                             <div class="col-md-7">
@@ -1374,7 +1328,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_diagnosa"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_diagnosa">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1426,7 +1380,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_icd9"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_icd9">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1447,7 +1401,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    <p id="msg_lab"></pid>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -1456,7 +1410,7 @@
                             <s:action id="comboLab" namespace="/kategorilab"
                                       name="getListKategoriLab_kategorilab"/>
                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="var warn =$('#war_kategori_lab').is(':visible'); if (warn){$('#cor_kategori_lab').show().fadeOut(3000);$('#war_kategori_lab').hide()}; listSelectLab(this)"
+                                      onchange="var warn =$('#war_kategori_lab').is(':visible'); if (warn){$('#cor_kategori_lab').show().fadeOut(3000);$('#war_kategori_lab').hide()}; listSelectLab(this.value)"
                                       list="#comboLab.listOfKategoriLab" id="lab_kategori"
                                       listKey="idKategoriLab"
                                       listValue="namaKategori"
@@ -1471,10 +1425,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Unit</label>
+                        <label class="col-md-3" style="margin-top: 7px">Paket</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"
-                                    onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this);">
+                                    onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">
                                 <option value=''>[Select One]</option>
                             </select>
                         </div>
@@ -1502,11 +1456,31 @@
                         </div>
                     </div>
                 </div>
+                <div style="display: none" id="form_ttd">
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <span>Tanda Tangan</span>
+                            </div>
+                            <div class="col-md-7">
+                                <canvas style="margin-left: 0px" class="paint-canvas-ttd" id="ttd_pengirim" width="310"
+                                        onmouseover="paintTtd('ttd_pengirim')"></canvas>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-danger" style="margin-left: -20px"
+                                        onclick="removePaint('ttd_pengirim')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_lab"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_lab"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_lab">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1522,7 +1496,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Diet</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Gizi</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_diet">
@@ -1547,20 +1521,81 @@
                                 <i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 10px">Keterangan</label>
+                        <label class="col-md-3" style="margin-top: 10px">Jenis Diet</label>
                         <div class="col-md-7">
-                            <select style="margin-top: 7px" class="form-control" id="keterangan_diet" onchange="var warn =$('#war_keterangan_diet').is(':visible'); if (warn){$('#cor_keterangan_diet').show().fadeOut(3000);$('#war_keterangan_diet').hide()}">
-                                <option value="">[Select One]</option>
-                                <option value="Pagi">Pagi</option>
-                                <option value="Siang">Siang</option>
-                                <option value="Malam">Malam</option>
+                            <select id="jenis_diet" class="form-control select2" multiple style="width: 100%"
+                                    onchange="var warn =$('#war_jenis_diet').is(':visible'); if (warn){$('#cor_jenis_diet').show().fadeOut(3000);$('#war_jenis_diet').hide()}">
+
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_keterangan_diet"><i
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_jenis_diet"><i
                                     class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_keterangan_diet">
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_jenis_diet">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak">
+                    <div class="form-group">
+                        <label class="col-md-3">Keterangan</label>
+                        <div class="col-md-7">
+                            <div class="form-check">
+                                <input type="checkbox" name="ket_diet" id="ket_diet1" value="pagi"
+                                       onclick="var warn =$('#war_ket_diet').is(':visible'); if (warn){$('#cor_ket_diet').show().fadeOut(3000);$('#war_ket_diet').hide()}; setDiet(this.id)">
+                                <label for="ket_diet1"></label> Pagi
+                            </div>
+                            <div class="form-check" style="margin-left: 10px">
+                                <input type="checkbox" name="ket_diet" id="ket_diet2" value="siang"
+                                       onclick="var warn =$('#war_ket_diet').is(':visible'); if (warn){$('#cor_ket_diet').show().fadeOut(3000);$('#war_ket_diet').hide()}; setDiet(this.id)">
+                                <label for="ket_diet2"></label> Siang
+                            </div>
+                            <div class="form-check" style="margin-left: 10px">
+                                <input type="checkbox" name="ket_diet" id="ket_diet3" value="malam"
+                                       onclick="var warn =$('#war_ket_diet').is(':visible'); if (warn){$('#cor_ket_diet').show().fadeOut(3000);$('#war_ket_diet').hide()}; setDiet(this.id)">
+                                <label for="ket_diet3"></label> Malam
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 6px; display: none; margin-left: -20px" id="war_ket_diet"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 6px; display: none; margin-left: -20px" id="cor_ket_diet">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <hr class="garis">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="table_add_diet" class="table table-bordered" style="font-size: 12px">
+                            <thead>
+                            <tr>
+                                <td>Waktu</td>
+                                <td>Bentuk</td>
+                                <td>Jenis</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_add_diet"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr class="garis">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-4">Order Untuk Besok?</label>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="besok_diet" id="besok_diet" value="Y">
+                                <label for="besok_diet"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_besok_diet"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_besok_diet">
                                 <i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
@@ -1569,9 +1604,80 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_diet"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_diet"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_diet"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-diet-edit">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Edit Order Gizi</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_edit_diet">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_edit_diet"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 10px">Bentuk Diet</label>
+                        <div class="col-md-7">
+                            <s:action id="comboDiet0" namespace="/rawatinap"
+                                      name="getComboBoxDietGizi_rawatinap"/>
+                            <s:select list="#comboDiet0.listOfDietGizi" listKey="idDietGizi" listValue="namaDietGizi" id="edit_bentuk_diet"
+                                      onchange="var warn =$('#war_edit_bentuk_diet').is(':visible'); if (warn){$('#cor_edit_bentuk_diet').show().fadeOut(3000);$('#war_edit_bentuk_diet').hide()}"
+                                      headerKey="" headerValue="[Select One]" cssClass="form-control select2" cssStyle="width: 100%"/>
+
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_edit_bentuk_diet"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_edit_bentuk_diet">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 10px">Jenis Diet</label>
+                        <div class="col-md-7">
+                            <select id="edit_jenis_diet" class="form-control select2" multiple style="width: 100%"
+                                    onchange="var warn =$('#war_edit_jenis_diet').is(':visible'); if (warn){$('#cor_edit_jenis_diet').show().fadeOut(3000);$('#war_edit_jenis_diet').hide()}">
+
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_edit_jenis_diet"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_edit_jenis_diet">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak">
+                    <div class="form-group">
+                        <label class="col-md-3">Keterangan</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="edit_keterangan" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="edit_save_diet"><i class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="edit_load_diet"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -1676,7 +1782,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_obat"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_obat"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_obat"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1768,7 +1874,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_ruang" onclick="saveEditRuang()"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_ruang"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2060,7 +2166,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObatTtd()"><i
-                        class="fa fa-arrow-right"></i> Buat Resep
+                        class="fa fa-check"></i> Buat Resep
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_resep_head"><i
@@ -2173,7 +2279,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_resiko" onclick="saveResiko('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_resiko" onclick="saveResiko('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_resiko"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2242,7 +2348,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveAsesmen('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveAsesmen('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2449,7 +2555,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveVitalSign('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveVitalSign('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2671,7 +2777,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveObCairan('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveObCairan('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2794,7 +2900,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2904,7 +3010,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_asesmen" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -3028,7 +3134,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_cancel_diet"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_cancel_diet"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_cancel_diet"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -3107,7 +3213,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_laka"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_laka"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -3150,28 +3256,6 @@
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="modal-confirm-dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
-                </h4>
-            </div>
-            <div class="modal-body">
-                <h4 class="text-center">Do you want save this record?</h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
-                </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <%--Modal Plan Kegiatan Rawat--%>
 
@@ -3299,7 +3383,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_vitalsign" onclick="saveUpdatePlan('vitalsign')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_vitalsign" onclick="saveUpdatePlan('vitalsign')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_vitalsign"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -3447,7 +3531,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_cairan" onclick="saveUpdatePlan('cairan')"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_cairan" onclick="saveUpdatePlan('cairan')"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_cairan"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -3550,7 +3634,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_nonpar"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_nonpar"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_nonpar"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -3612,9 +3696,97 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-uang_muka">
+    <div class="modal-dialog" style="width: 55%;">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Daftar Uang Muka Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert-default alert-dismissible" style="display: none" id="def_uang_muka">
+                        <p id="msg_def_uang_muka"></p>
+                    </div>
+                    <div class="alert alert-success alebody_uang_mukart-dismissible" style="display: none" id="suc_uang_muka">
+                        <p id="msg_suc_uang_muka"></p>
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="war_uang_muka">
+                        <p id="msg_war_uang_muka"></p>
+                    </div>
+                    <div class="row" style="margin-top: -10px" id="form-tambah-uang-muka">
+                        <div class="col-md-3">
+                            <button class="btn btn-success" id="btn_uang_muka" onclick="cekBtnUangMuka(this.id)"><i id="icon_uang_muka" class="fa fa-plus"></i> <span id="cek_name"> Tambah</span></button>
+                        </div>
+                        <div id="form-cek-uang" style="display: none">
+                            <div class="col-md-5">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        Rp.
+                                    </div>
+                                    <input class="form-control" id="uang_muka_ri" oninput="convertRpAtas(this.id, this.value, 'h_uang_muka_ri')">
+                                    <input type="hidden" id="h_uang_muka_ri">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-success" onclick="conUangMuka()"><i class="fa fa-check"></i> Save</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-striped" style="font-size: 13px">
+                                <thead>
+                                <tr>
+                                    <td width="20%">Tanggal</td>
+                                    <td>Pelayanan</td>
+                                    <td>Bukti</td>
+                                    <td align="center" width="15%">Jumlah (Rp.)</td>
+                                    <td align="center" width="15%">Status</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_uang_muka">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="mask"></div>
 
 <div id="modal-temp"></div>
+
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes            </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="modal-confirm-rm">
     <div class="modal-dialog modal-sm">
@@ -3656,6 +3828,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/RespirasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/IcuAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
@@ -3727,6 +3900,10 @@
     var idRuangan = '<s:property value="rawatInap.idRuangan"/>';
     var namaRuangan = '<s:property value="rawatInap.namaRangan"/>';
     var stayRuangan = '<s:property value="rawatInap.isStay"/>';
+    var NOSEP = '<s:property value="rawatInap.noSep"/>';
+    var IdAsuransi = '<s:property value="rawatInap.idAsuransi"/>';
+    var isBpjsRekanan = "";
+    var setNotif = "";
 
     if (month.length < 2) {
         month = "0"+month;
@@ -3883,6 +4060,19 @@
 
     function setRekamMedis() {
         getListRekamMedis(kategoriRuangan, '', idDetailCheckup);
+    }
+
+    function getListComboJenisDiet(){
+        var option = '';
+        RawatInapAction.getComboBoxJenisGizi(function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.idJenisDiet+'">'+item.namaJenisDiet+'</option>'
+                });
+                $('#jenis_diet').html(option);
+                $('#edit_jenis_diet').html(option);
+            }
+        });
     }
 
 </script>

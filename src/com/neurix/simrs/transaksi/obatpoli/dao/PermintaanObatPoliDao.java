@@ -98,6 +98,13 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
             flag = bean.getFlag();
         }
 
+        String andBranch = "";
+        if (bean.getFlagOtherBranch() != null && !"".equalsIgnoreCase(bean.getFlagOtherBranch())){
+            andBranch = "AND pop.branch_id LIKE '"+branchId+"' \n";
+        } else {
+            andBranch = "AND ato.branch_id LIKE '"+branchId+"' \n";
+        }
+
         String SQL = "";
 
         if (isPoli) {
@@ -125,13 +132,13 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                     "INNER JOIN mt_simrs_transaksi_obat_detail tod ON tod.id_approval_obat = ato.id_approval_obat\n" +
                     "INNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" +
                     "WHERE pop.flag LIKE :flag\n" +
-                    "AND ato.branch_id LIKE :branchId\n" +
+//                    "AND ato.branch_id LIKE :branchId\n" +
                     "AND tod.id_obat LIKE :idObat\n" +
                     "AND ato.tipe_permintaan LIKE :tipePermintaan\n" +
                     "AND pop.id_pelayanan LIKE :idPelayanan\n" +
                     "AND og.id_jenis_obat LIKE :idJenisObat\n" +
                     "AND pop.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
-                    "AND pop.tujuan_pelayanan NOT LIKE :idTujuan\n" +
+                    "AND pop.tujuan_pelayanan NOT LIKE :idTujuan\n" + andBranch +
                     "GROUP BY pop.id_permintaan_obat_poli\n" +
                     ") popo ON popo.id_permintaan_obat_poli = pop.id_permintaan_obat_poli\n";
         } else {
@@ -159,19 +166,19 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                     "INNER JOIN mt_simrs_transaksi_obat_detail tod ON tod.id_approval_obat = ato.id_approval_obat\n" +
                     "INNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" +
                     "WHERE pop.flag LIKE :flag\n" +
-                    "AND ato.branch_id LIKE :branchId\n" +
+//                    "AND ato.branch_id LIKE :branchId\n" +
                     "AND tod.id_obat LIKE :idObat\n" +
                     "AND ato.tipe_permintaan LIKE :tipePermintaan\n" +
                     "AND pop.id_pelayanan LIKE :idPelayanan\n" +
                     "AND og.id_jenis_obat LIKE :idJenisObat\n" +
                     "AND pop.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
-                    "AND pop.tujuan_pelayanan LIKE :idTujuan\n" +
+                    "AND pop.tujuan_pelayanan LIKE :idTujuan\n" + andBranch +
                     "GROUP BY pop.id_permintaan_obat_poli\n" +
                     ") popo ON popo.id_permintaan_obat_poli = pop.id_permintaan_obat_poli\n";
         }
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("branchId", branchId)
+//                .setParameter("branchId", branchId)
                 .setParameter("idPelayanan", idPelayanan)
                 .setParameter("idTujuan", idTujuan)
                 .setParameter("idObat", idObat)

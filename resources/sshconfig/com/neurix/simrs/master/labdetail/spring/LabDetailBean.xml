@@ -6,10 +6,14 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="labDetailAction" class="com.neurix.simrs.master.labdetail.action.LabDetailAction"
+          p:labDetailBoProxy-ref="labDetailBoProxy"
+          p:labBoProxy-ref="labBoProxy"
     />
 
     <bean id="labDetailBo" class="com.neurix.simrs.master.labdetail.bo.impl.LabDetailBoImpl"
           p:labDetailDao-ref="labDetailDao"
+          p:parameterPemeriksaanDao-ref="parameterPemeriksaanDao"
+          p:labDao-ref="labDao"
     />
 
     <bean id="labDetailBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

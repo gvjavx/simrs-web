@@ -85,8 +85,13 @@
                         }
                     }});
             }else{
-                $('#warning_ttd').show().fadeOut(5000);
-                $('#msg_ttd').text("Silahkan lakukan ttd pada canvas berikut...!");
+                $('#waiting_dialog').dialog('close');
+                $('#info_dialog').dialog('open');
+                $('#ref').val(1);
+                $('#modal-ttd').modal('hide');
+                $('body').scrollTop(0);
+                // $('#warning_ttd').show().fadeOut(5000);
+                // $('#msg_ttd').text("Silahkan lakukan ttd pada canvas berikut...!");
             }
         }
 
@@ -633,8 +638,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
+                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
+                <%--</button>--%>
                 <button class="btn btn-success pull-right" onclick="uploadCanvas()"><i class="fa fa-check"></i> Save</button>
             </div>
         </div>

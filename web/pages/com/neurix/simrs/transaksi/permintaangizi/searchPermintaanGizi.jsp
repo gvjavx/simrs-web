@@ -50,7 +50,7 @@
                         <div class="form-group">
                             <s:form id="giziForm" method="post" namespace="/ordergizi" action="search_ordergizi.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="rawatInap.idPasien" required="false"
@@ -65,21 +65,21 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Status</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"--%>
-                                                  <%--id="status" name="rawatInap.statusPeriksa"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Waktu</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'siang':'Siang','sore':'Sore'}" cssStyle="margin-top: 7px"
+                                                  id="status" name="rawatInap.keterangan"
+                                                  headerKey="pagi" headerValue="Pagi"
+                                                  cssClass="form-control select2"/>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
                                         <s:action id="initComboKelas" namespace="/checkupdetail"
                                                   name="getListComboKelasRuangan_checkupdetail"/>
-                                        <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"
+                                        <s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this.value)"
                                                   list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
                                                   name="rawatInap.idKelas"
                                                   listKey="idKelasRuangan"
@@ -99,7 +99,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Tanggal Masuk</label>
+                                    <label class="control-label col-sm-4">Tanggal Order</label>
                                     <div class="col-sm-2">
                                         <div class="input-group date" style="margin-top: 7px">
                                             <div class="input-group-addon">
@@ -128,7 +128,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_rawatinap.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_ordergizi.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -185,13 +185,14 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Permintaan Gizi</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 12px">
                             <thead >
                             <tr bgcolor="#90ee90">
-                                <td>ID Rawat Inap</td>
-                                <td>ID Pasien</td>
+                                <td>No RM</td>
                                 <td>Nama</td>
                                 <td>Ruangan</td>
+                                <td>Jenis Diet</td>
+                                <td>Alergi</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -199,24 +200,20 @@
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td><s:property value="idRawatInap"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="namaRangan"/> [<s:property value="noRuangan"/>]</td>
-                                    <td style="vertical-align: middle">
-                                        <s:if test='#row.cekApprove == false'>
-                                            <label class="label label-success"> telah dikonfirmasi</label>
+                                    <td><s:property value="jenisDiet"/></td>
+                                    <td><s:property value="alergi"/></td>
+                                    <td>
+                                        <s:if test='#row.approveFlag == "Y"'>
+                                            siap kirim
                                         </s:if>
                                         <s:else>
-                                            <label class="label label-warning"> order gizi baru</label>
+                                            belum dibuat
                                         </s:else>
                                     </td>
                                     <td align="center">
-                                        <s:if test='#row.cekApprove == false'>
-                                        </s:if>
-                                        <s:else>
-                                            <img onclick="listOrderGizi('<s:property value="idRawatInap"/>', '<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -392,22 +389,20 @@
     }
 
     function listSelectRuangan(id) {
-        var idx = id.selectedIndex;
-        var idKelas = id.options[idx].value;
-        var flag = false;
         var option = "";
-        CheckupDetailAction.listRuangan(idKelas, flag, function (response) {
-            option = "<option value=''>[Select One]</option>";
-            if (response != null) {
-                $.each(response, function (i, item) {
-                    option += "<option value='" + item.idRuangan + "'>" + item.noRuangan + "-" + item.namaRuangan + "</option>";
-                });
-                $('#ruangan_ruang').html(option);
-            } else {
-                $('#ruangan_ruang').html(option);;
-            }
-        });
-
+        if(id != ''){
+            CheckupDetailAction.listJustRuangan(idKelas, flag, function (response) {
+                option = "<option value=''>[Select One]</option>";
+                if (response != null) {
+                    $.each(response, function (i, item) {
+                        option += "<option value='" + item.idRuangan + "'>[" + item.noRuangan + "]-" + item.namaRuangan + "</option>";
+                    });
+                    $('#ruangan_ruang').html(option);
+                } else {
+                    $('#ruangan_ruang').html(option);
+                }
+            });
+        }
     }
 
 

@@ -60,6 +60,15 @@ public class PermintaanObatPoli{
     private String idBatch;
 
     private String isMobile;
+    private String flagOtherBranch;
+
+    public String getFlagOtherBranch() {
+        return flagOtherBranch;
+    }
+
+    public void setFlagOtherBranch(String flagOtherBranch) {
+        this.flagOtherBranch = flagOtherBranch;
+    }
 
     public String getIsMobile() {
         return isMobile;

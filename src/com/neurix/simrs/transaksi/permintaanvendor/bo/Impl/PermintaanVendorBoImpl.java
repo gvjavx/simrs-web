@@ -1009,7 +1009,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             throw new GeneralBOException("[PermintaanVendorBoImpl.updateAddStockGudang] ERROR." + e.getMessage());
         }
 
-        updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji());
+        updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji(), bean.getBranchId());
         saveTransaksiStok(newObatEntity, bean.getIdVendor(), bean.getIdPelayanan());
 
         logger.info("[PermintaanVendorBoImpl.updateAddStockGudang] END <<<");
@@ -1397,11 +1397,13 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         logger.info("[PermintaanVendorBoImpl.saveToRiwayatBarangMasuk] END <<<");
     }
 
-    private void updateAllNewAverageHargaByObatId(String idObat, BigDecimal avgBox, BigDecimal avgLembar, BigDecimal avgBiji) throws GeneralBOException {
+    @Override
+    public void updateAllNewAverageHargaByObatId(String idObat, BigDecimal avgBox, BigDecimal avgLembar, BigDecimal avgBiji, String branchId) throws GeneralBOException {
         logger.info("[PermintaanVendorBoImpl.updateAllNewAverageHargaByObatId] START >>>");
 
         Obat obat = new Obat();
         obat.setIdObat(idObat);
+        obat.setBranchId(branchId);
 
         List<ImSimrsObatEntity> obatEntities = getListEntityObat(obat);
 
@@ -2005,28 +2007,29 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     @Override
     public TransaksiObatBatch getBatchByIdTransAndNoBatch(String idTrans, String noBatch) throws GeneralBOException {
 
-        TransaksiObatBatch obatBatch = new TransaksiObatBatch();
-        obatBatch.setIdTransaksiObatDetail(idTrans);
-        obatBatch.setNoBatch(Integer.valueOf(noBatch));
-        obatBatch.setJenis("do");
-        List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchObat(obatBatch);
-        if (batchEntities.size() > 0){
-            MtSimrsTransaksiObatDetailBatchEntity batchEntity = batchEntities.get(0);
-            obatBatch.setStExpDate(CommonUtil.ddMMyyyyFormat(batchEntity.getExpiredDate()));
-            obatBatch.setDiskon(batchEntity.getDiskon());
-            obatBatch.setBruto(batchEntity.getBruto());
-            obatBatch.setNetto(batchEntity.getNetto());
-            obatBatch.setQtyApprove(batchEntity.getQtyApprove());
-            obatBatch.setId(batchEntity.getId());
-            obatBatch.setNoFaktur(batchEntity.getNoFaktur());
-            obatBatch.setNoDo(batchEntity.getNoDo());
-            obatBatch.setNoInvoice(batchEntity.getNoInvoice());
-            obatBatch.setStTglFaktur(batchEntity.getTanggalFaktur() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTanggalFaktur()) : null);
-            obatBatch.setStTglInvoice(batchEntity.getTglInvoice() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTglInvoice()) : null);
-            obatBatch.setStTglDo(batchEntity.getTglDo() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTglDo()) : null);
-            return obatBatch;
+        if (noBatch != null){
+            TransaksiObatBatch obatBatch = new TransaksiObatBatch();
+            obatBatch.setIdTransaksiObatDetail(idTrans);
+            obatBatch.setNoBatch(Integer.valueOf(noBatch));
+            obatBatch.setJenis("do");
+            List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchObat(obatBatch);
+            if (batchEntities.size() > 0){
+                MtSimrsTransaksiObatDetailBatchEntity batchEntity = batchEntities.get(0);
+                obatBatch.setStExpDate(CommonUtil.ddMMyyyyFormat(batchEntity.getExpiredDate()));
+                obatBatch.setDiskon(batchEntity.getDiskon());
+                obatBatch.setBruto(batchEntity.getBruto());
+                obatBatch.setNetto(batchEntity.getNetto());
+                obatBatch.setQtyApprove(batchEntity.getQtyApprove());
+                obatBatch.setId(batchEntity.getId());
+                obatBatch.setNoFaktur(batchEntity.getNoFaktur());
+                obatBatch.setNoDo(batchEntity.getNoDo());
+                obatBatch.setNoInvoice(batchEntity.getNoInvoice());
+                obatBatch.setStTglFaktur(batchEntity.getTanggalFaktur() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTanggalFaktur()) : null);
+                obatBatch.setStTglInvoice(batchEntity.getTglInvoice() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTglInvoice()) : null);
+                obatBatch.setStTglDo(batchEntity.getTglDo() != null ? CommonUtil.yyyyMMddFormat(batchEntity.getTglDo()) : null);
+                return obatBatch;
+            }
         }
-
         return null;
     }
 
@@ -2067,6 +2070,16 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
     @Override
     public List<DocPo> getListImgByItem(String idItem) throws GeneralBOException {
         return permintaanVendorDao.getListImg(idItem);
+    }
+
+    @Override
+    public List<TransaksiObatBatch> getListBatchByJenisItem(String idItem, String jenis) throws GeneralBOException {
+        return permintaanVendorDao.getListBatchByJenis(idItem, jenis);
+    }
+
+    @Override
+    public List<TransaksiObatBatch> getListBatchByJenisItem(String idItem, String jenis, String idApproval, String batch) throws GeneralBOException {
+        return permintaanVendorDao.getListBatchByJenis(idItem, jenis, idApproval, batch);
     }
 
     // for get sequence id

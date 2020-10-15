@@ -287,6 +287,24 @@ public class PermintaanResepAction extends BaseMasterAction{
         return response;
     }
 
+    public List<PermintaanResep> getListRespPasien(String noCheckup){
+        logger.info("[PermintaanResepAction.getListRespPasien] start process >>>");
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
+
+        if(!"".equalsIgnoreCase(noCheckup) && noCheckup != null){
+            try {
+                permintaanResepList = permintaanResepBo.getListResepPasien(noCheckup);
+            }catch (GeneralBOException e){
+                logger.error("[PermintaanResepAction.getListRespPasien] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+        }
+        logger.info("[PermintaanResepAction.getListRespPasien] END process >>>");
+        return permintaanResepList;
+    }
+
     @Override
     public String add() {
         return null;

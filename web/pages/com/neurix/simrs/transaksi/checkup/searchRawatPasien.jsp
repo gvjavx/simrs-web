@@ -111,13 +111,6 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4" for="headerCheckup.jalan">Alamat</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:textarea cssStyle="margin-top: 7px" id="alamat" name="headerCheckup.jalan"--%>
-                                                    <%--required="false" readonly="false" cssClass="form-control"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Tanggal Masuk</label>
                                     <div class="col-sm-2">
@@ -152,28 +145,29 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                    data-toggle="dropdown" style="height: 34px">
-                                                <span class="caret"></span>
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="add_checkup.action?tipe=umum">
-                                                    <i class="fa fa-user-plus"></i>Pasien Umum</a></li>
-                                                <li><a href="add_checkup.action?tipe=bpjs">
-                                                    <i class="fa fa-user-plus"></i>Pasien BPJS</a></li>
-                                                <li><a href="add_checkup.action?tipe=paket_perusahaan">
-                                                    <i class="fa fa-user-plus"></i>Pasien Paket Perusahaan</a></li>
-                                                <li><a href="add_checkup.action?tipe=paket_individu">
-                                                    <i class="fa fa-user-plus"></i>Pasien Paket Individu</a></li>
-                                                <li><a href="add_checkup.action?tipe=asuransi">
-                                                    <i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>
-                                                <li><a href="add_checkup.action?tipe=ptpn">
-                                                    <i class="fa fa-user-plus"></i>Pasien PTPN</a></li>
-                                            </ul>
-                                        </div>
+                                        <a href="add_checkup.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</a>
+                                        <%--<div class="btn-group">--%>
+                                            <%--<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>--%>
+                                            <%--<button type="button" class="btn btn-primary dropdown-toggle"--%>
+                                                    <%--data-toggle="dropdown" style="height: 34px">--%>
+                                                <%--<span class="caret"></span>--%>
+                                                <%--<span class="sr-only">Toggle Dropdown</span>--%>
+                                            <%--</button>--%>
+                                            <%--<ul class="dropdown-menu" role="menu">--%>
+                                                <%--<li><a href="add_checkup.action?tipe=umum">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Umum</a></li>--%>
+                                                <%--<li><a href="add_checkup.action?tipe=bpjs">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien BPJS</a></li>--%>
+                                                <%--<li><a href="add_checkup.action?tipe=paket_perusahaan">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Medical Checkup</a></li>--%>
+                                                <%--<li><a href="add_checkup.action?tipe=paket_individu">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Promo</a></li>--%>
+                                                <%--<li><a href="add_checkup.action?tipe=asuransi">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>--%>
+                                                <%--<li><a href="add_checkup.action?tipe=rekanan">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Rekanan</a></li>--%>
+                                            <%--</ul>--%>
+                                        <%--</div>--%>
                                         <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>
                                                 <%--class="fa fa-plus"></i> Tambah Rawat Pasien</a>--%>
                                         <a type="button" class="btn btn-warning" id="btnFingerPrint"><i

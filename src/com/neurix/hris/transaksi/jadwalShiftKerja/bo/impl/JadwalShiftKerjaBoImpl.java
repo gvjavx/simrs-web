@@ -816,11 +816,11 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
     }
 
     @Override
-    public List<HistoryOnCall> getHistoryOnCall (HistoryOnCall search){
+    public List<HistoryOnCall> getHistoryOnCall (HistoryOnCall search) {
         List<HistoryOnCall> list = new ArrayList<>();
 
-        List<ItHrisHistoryOnCallEntity> historyOnCallEntities = historyOnCallDao.getByJadwalIdAndNip(search.getJadwalShiftKerjaDetailId(),search.getNip());
-        for (ItHrisHistoryOnCallEntity data : historyOnCallEntities){
+        List<ItHrisHistoryOnCallEntity> historyOnCallEntities = historyOnCallDao.getByJadwalIdAndNip(search.getJadwalShiftKerjaDetailId(), search.getNip());
+        for (ItHrisHistoryOnCallEntity data : historyOnCallEntities) {
             HistoryOnCall newData = new HistoryOnCall();
             newData.setHistoryOnCallId(data.getHistoryOnCallId());
             newData.setJadwalShiftKerjaDetailId(data.getJadwalShiftKerjaDetailId());
@@ -837,6 +837,21 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
             list.add(newData);
         }
+
+        return list;
+    }
+
+    public List<JadwalPelayananDTO> getListJadwalDokter(String branchId, String idPelayanan, String notLike) throws GeneralBOException {
+        logger.info("[JadwalShiftKerjaBoImpl.getListJadwalDokter] start process >>>");
+        List<JadwalPelayananDTO> list = new ArrayList<>();
+        if(branchId != null && !"".equalsIgnoreCase(branchId) && idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+            try {
+                list = jadwalShiftKerjaDao.getListJadwalDokter(branchId, idPelayanan, notLike);
+            }catch (HibernateException e){
+                logger.error("[JadwalShiftKerjaBoImpl.getListJadwalDokter], error mencari jadwal shift kerja dokter");
+            }
+        }
+        logger.info("[JadwalShiftKerjaBoImpl.getListJadwalDokter] end process >>>");
         return list;
     }
 }

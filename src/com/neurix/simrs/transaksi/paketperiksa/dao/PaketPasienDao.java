@@ -167,10 +167,17 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                     "b.id_kategori_item, \n" +
                     "b.id_item, \n" +
                     "b.jenis_item, \n" +
-                    "a.id\n" +
+                    "a.id,\n" +
+                    "c.id_pelayanan,\n" +
+                    "c.urutan\n" +
                     "FROM it_simrs_paket_pasien a\n" +
                     "INNER JOIN mt_simrs_item_paket_periksa b ON a.id_paket = b.id_paket\n" +
-                    "WHERE a.id_pasien = :id AND a.flag = 'Y' ORDER BY b.id_kategori_item ASC";
+                    "INNER JOIN mt_simrs_detail_paket c ON b.id_paket = c.id_paket AND b.id_pelayanan = c.id_pelayanan\n" +
+                    "WHERE a.id_pasien = :id\n" +
+                    "AND a.flag = 'Y'\n" +
+                    "AND b.flag = 'Y'\n" +
+                    "AND c.urutan = 1\n" +
+                    "ORDER BY b.id_kategori_item ASC";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -186,6 +193,8 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                     paketPeriksa.setIdItem(obj[3] == null ? "" : obj[3].toString());
                     paketPeriksa.setJenisItem(obj[4] == null ? "" : obj[4].toString());
                     paketPeriksa.setIdPaketPasien(obj[5] == null ? "" : obj[5].toString());
+                    paketPeriksa.setIdPelayanan(obj[6] == null ? "" : obj[6].toString());
+                    paketPeriksa.setUrutan(obj[7] == null ? null : (BigInteger) obj[7]);
                     paketPeriksaList.add(paketPeriksa);
                 }
             }
@@ -194,20 +203,28 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
         return paketPeriksaList;
     }
 
-    public List<PaketPeriksa> getItemPaketWithIdPaket(String idPaket) {
+    public List<PaketPeriksa> getItemPaketWithIdPaket(String idPaket, String urutan) {
 
         List<PaketPeriksa> paketPeriksaList = new ArrayList<>();
 
         if (idPaket != null && !"".equalsIgnoreCase(idPaket)) {
-
-            String SQL = "SELECT \n" +
-                    "id_item_paket,\n" +
-                    "id_paket,\n" +
-                    "id_kategori_item,\n" +
-                    "id_item,\n" +
-                    "jenis_item\n" +
-                    "FROM mt_simrs_item_paket_periksa\n" +
-                    "WHERE id_paket = :id ORDER BY id_kategori_item ASC";
+            String no = "AND b.urutan = 1 \n";
+            if(urutan != null && !"".equalsIgnoreCase(urutan)){
+                no = "AND b.urutan = "+urutan+" \n";
+            }
+            String SQL = "SELECT  \n" +
+                    "a.id_item_paket, \n" +
+                    "a.id_paket, \n" +
+                    "a.id_kategori_item, \n" +
+                    "a.id_item, \n" +
+                    "a.jenis_item,\n" +
+                    "b.id_pelayanan,\n" +
+                    "b.urutan\n" +
+                    "FROM mt_simrs_item_paket_periksa a\n" +
+                    "INNER JOIN mt_simrs_detail_paket b ON a.id_paket = b.id_paket AND a.id_pelayanan = b.id_pelayanan\n" +
+                    "WHERE a.id_paket = :id\n" + no +
+                    "AND a.flag = 'Y'\n" +
+                    "ORDER BY id_kategori_item ASC";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -222,6 +239,8 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                     paketPeriksa.setIdKategoriItem(obj[2] == null ? "" : obj[2].toString());
                     paketPeriksa.setIdItem(obj[3] == null ? "" : obj[3].toString());
                     paketPeriksa.setJenisItem(obj[4] == null ? "" : obj[4].toString());
+                    paketPeriksa.setIdPelayanan(obj[5] == null ? "" : obj[5].toString());
+                    paketPeriksa.setUrutan(obj[6] == null ? null : (BigInteger) obj[6]);
                     paketPeriksaList.add(paketPeriksa);
                 }
             }
@@ -242,9 +261,9 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                     "b.id_item,\n" +
                     "b.jenis_item,\n" +
                     "CASE\n" +
-                    "WHEN b.jenis_item = 'tindakan' THEN c.tindakan\n" +
-                    "WHEN b.jenis_item = 'radiologi' THEN d.nama_detail_periksa\n" +
-                    "WHEN b.jenis_item = 'laboratorium' THEN d.nama_detail_periksa\n" +
+                    "WHEN b.jenis_item = 'tindakan' THEN c.nama_tindakan\n" +
+                    "WHEN b.jenis_item = 'radiologi' THEN d.nama_pemeriksaan\n" +
+                    "WHEN b.jenis_item = 'laboratorium' THEN d.nama_pemeriksaan\n" +
                     "ELSE null\n" +
                     "END as keterangan,\n" +
                     "d.nama_lab,\n" +
@@ -252,12 +271,26 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                     "a.id_paket\n" +
                     "FROM mt_simrs_paket a\n" +
                     "INNER JOIN mt_simrs_item_paket_periksa b ON a.id_paket = b.id_paket\n" +
-                    "LEFT JOIN im_simrs_tindakan c ON b.id_item = c.id_tindakan\n" +
-                    "LEFT JOIN (SELECT a.id_lab_detail, a.nama_detail_periksa, b.id_lab, b.nama_lab\n" +
+                    "LEFT JOIN (\n" +
+                    "SELECT \n" +
+                    "a.id_tindakan,\n" +
+                    "b.nama_tindakan\n" +
+                    "FROM im_simrs_tindakan a\n" +
+                    "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
+                    ") c ON b.id_item = c.id_tindakan\n" +
+                    "LEFT JOIN (\n" +
+                    "SELECT \n" +
+                    "a.id_lab_detail, \n" +
+                    "c.nama_pemeriksaan, \n" +
+                    "b.id_lab,\n" +
+                    "b.nama_lab\n" +
                     "FROM im_simrs_lab_detail a\n" +
                     "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
+                    "INNER JOIN im_simrs_parameter_pemeriksaan c ON a.id_parameter_pemeriksaan = c.id_parameter_pemeriksaan\n" +
                     ") d ON b.id_item = d.id_lab_detail\n" +
-                    "WHERE a.id_paket = :id AND b.flag = 'Y' ORDER BY d.id_lab ASC";
+                    "WHERE a.id_paket = :id \n" +
+                    "AND b.flag = 'Y'\n" +
+                    "ORDER BY d.id_lab ASC\n";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -345,7 +378,7 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
         return paketPeriksaList;
     }
 
-    public List<PaketPeriksa> getPaketPeriksaRawatJalan(String branchId) {
+    public List<PaketPeriksa> getPaketPeriksa(String branchId, String tipe) {
 
         List<PaketPeriksa> paketPeriksaList = new ArrayList<>();
 
@@ -355,16 +388,19 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                     "a.id_paket,\n" +
                     "a.nama_paket,\n" +
                     "a.flag,\n" +
-                    "a.id_pelayanan,\n" +
+                    "b.id_pelayanan,\n" +
                     "a.tarif,\n" +
-                    "b.nama_pelayanan\n" +
+                    "c.nama_pelayanan\n" +
                     "FROM mt_simrs_paket a\n" +
-                    "INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
-                    "WHERE a.branch_id = :id AND b.tipe_pelayanan = 'rawat_jalan'\n";
+                    "INNER JOIN (SELECT * FROM mt_simrs_detail_paket WHERE urutan = 1) b ON a.id_paket = b.id_paket\n" +
+                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "WHERE a.branch_id = :id\n" +
+                    "AND c.tipe_pelayanan = :tipe\n";
 
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", branchId)
+                    .setParameter("tipe", tipe)
                     .list();
 
             if (results.size() > 0) {

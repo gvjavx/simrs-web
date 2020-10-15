@@ -101,7 +101,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
         BatasTutupPeriod batasTutupPeriod = new BatasTutupPeriod();
         batasTutupPeriod.setUnit(unit);
         batasTutupPeriod.setTahun(tahun);
-        batasTutupPeriod.setBulan(bulan);
+        batasTutupPeriod.setBulan("12a".equalsIgnoreCase(bulan) || "12b".equalsIgnoreCase(bulan) ? "12" : bulan);
 
         // get current date
         Date dateNow = new Date(System.currentTimeMillis());
@@ -113,6 +113,46 @@ public class TutuPeriodAction extends BaseTransactionAction {
         if (batasTutupPeriodEntities.size() > 0){
 
             ItSimrsBatasTutupPeriodEntity periodEntity = batasTutupPeriodEntities.get(0);
+
+            String disableButton = "Y";
+            String disableLock = "Y";
+            if ("12b".equalsIgnoreCase(bulan)){
+                if (periodEntity.getFlagDesemberA() != null || !"".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+                    if (periodEntity.getFlagDesemberB() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
+                        disableLock = "N";
+                    } else if (periodEntity.getFlagDesemberB() != null && "P".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
+                        disableButton = "N";
+                    }
+                }
+            } else if ("12a".equalsIgnoreCase(bulan)){
+                if (periodEntity.getNoJurnalKoreksi() != null && !"".equalsIgnoreCase(periodEntity.getNoJurnalKoreksi())){
+                    if (periodEntity.getFlagDesemberA() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+                        disableLock = "N";
+                    } else if (periodEntity.getFlagDesemberA() != null && "P".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+                        disableButton = "N";
+                    }
+                }
+            }
+
+//            if ("12a".equalsIgnoreCase(bulan)){
+//                if (periodEntity.getNoJurnalKoreksi() != null && !"".equalsIgnoreCase(periodEntity.getNoJurnalKoreksi())){
+//                    if (periodEntity.getFlagDesemberA() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+//                        disableLock = "N";
+//                    } else if (periodEntity.getFlagDesemberA() != null && "P".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+//                        disableButton = "N";
+//                    }
+//                }
+//            } else if ("12b".equalsIgnoreCase(bulan)){
+//                if (periodEntity.getFlagDesemberA() != null || !"".equalsIgnoreCase(periodEntity.getFlagDesemberA())){
+//                    if (periodEntity.getFlagDesemberB() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
+//                        if (periodEntity.getFlagDesemberB() == null || "".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
+//                            disableLock = "N";
+//                        } else if (periodEntity.getFlagDesemberB() != null && "P".equalsIgnoreCase(periodEntity.getFlagDesemberB())){
+//                            disableButton = "N";
+//                        }
+//                    }
+//                }
+//            }
 
             batasTutupPeriod = new BatasTutupPeriod();
             batasTutupPeriod.setId(periodEntity.getId());
@@ -141,6 +181,11 @@ public class TutuPeriodAction extends BaseTransactionAction {
 
             batasTutupPeriod.setStatusTanggal(statusTanggal);
             batasTutupPeriod.setFlagTutup(periodEntity.getFlagTutup());
+            batasTutupPeriod.setDisableButton(disableButton);
+            batasTutupPeriod.setDisableLock(disableLock);
+            batasTutupPeriod.setFlagDesemberA(periodEntity.getFlagDesemberA());
+            batasTutupPeriod.setFlagDesemberB(periodEntity.getFlagDesemberB());
+            batasTutupPeriod.setNoJurnalKoreksi(periodEntity.getNoJurnalKoreksi());
             return batasTutupPeriod;
         }
 
@@ -158,6 +203,17 @@ public class TutuPeriodAction extends BaseTransactionAction {
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
 
+        boolean bulanBerjalan = "12a".equalsIgnoreCase(bulan) || "12b".equalsIgnoreCase(bulan);
+
+        // set tipe period
+        String tipePeriod = "";
+        if ("12a".equalsIgnoreCase(bulan) || "12b".equalsIgnoreCase(bulan)){
+            tipePeriod = bulan;
+        }
+
+        // set bulan
+        bulan = "12a".equalsIgnoreCase(bulan) || "12b".equalsIgnoreCase(bulan) ? "12" : bulan;
+
         // set object tutup period, Sigit
         TutupPeriod tutupPeriod = new TutupPeriod();
         tutupPeriod.setUnit(unit);
@@ -169,6 +225,7 @@ public class TutuPeriodAction extends BaseTransactionAction {
         tutupPeriod.setCreatedWho(userLogin);
         tutupPeriod.setLastUpdate(time);
         tutupPeriod.setLastUpdateWho(userLogin);
+        tutupPeriod.setTipePeriode(tipePeriod);
 
         List<TutupPeriod> listJurnalTransData = new ArrayList<>();
 
@@ -219,6 +276,19 @@ public class TutuPeriodAction extends BaseTransactionAction {
             response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. "+e);
             return response;
         }
+
+        if (bulanBerjalan){
+            try {
+                tutupPeriodBo.updateSaldoAkhirBulanBerjalan(tutupPeriod);
+                response.setStatus("success");
+            } catch (GeneralBOException e){
+                logger.error("[TutupPeriodAction.saveTutupPeriod] ERROR. ", e);
+                response.setStatus("error");
+                response.setMsg("[TutupPeriodAction.saveTutupPeriod] ERROR. "+e);
+                return response;
+            }
+        }
+
         return response;
     }
 
@@ -544,6 +614,38 @@ public class TutuPeriodAction extends BaseTransactionAction {
         return response;
     }
 
+    public CrudResponse saveLockPeriodKoreksi(String unit, String tahun, String bulan){
+        CrudResponse response = new CrudResponse();
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
+
+        TutupPeriod tutupPeriod = new TutupPeriod();
+        tutupPeriod.setUnit(unit);
+        tutupPeriod.setTahun(tahun);
+        tutupPeriod.setBulan(bulan);
+        tutupPeriod.setFlagTutup("P");
+        tutupPeriod.setFlag("Y");
+        tutupPeriod.setCreatedDate(time);
+        tutupPeriod.setCreatedWho(userLogin);
+        tutupPeriod.setLastUpdate(time);
+        tutupPeriod.setLastUpdateWho(userLogin);
+
+        try {
+            tutupPeriodBo.saveUpdateLockPeriodKoreksi(tutupPeriod);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.error("[TutupPeriodAction.saveLockPeriodKoreksi] ERROR. ", e);
+            response.setStatus("error");
+            response.setMsg("[TutupPeriodAction.saveLockPeriodKoreksi] ERROR. "+e);
+            return response;
+        }
+        return response;
+    }
+
     public CrudResponse saveAddToRiwayatTindakan(String idDetail, String jenisPasien) {
         logger.info("[CheckupDetailAction.saveAddToRiwayatTindakan] START process >>>");
 
@@ -655,10 +757,10 @@ public class TutuPeriodAction extends BaseTransactionAction {
                     }
 
                     if (riwayatTindakanList.isEmpty()) {
-                        PeriksaLab lab = new PeriksaLab();
+                        BigDecimal totalTarif = null;
 
                         try {
-                            lab = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdLab(), entity.getIdPeriksaLab());
+                            totalTarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdPeriksaLab());
                         }catch (HibernateException e){
                             logger.error("Found Error "+e.getMessage());
                             response.setStatus("error");
@@ -669,10 +771,10 @@ public class TutuPeriodAction extends BaseTransactionAction {
                         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                         riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
                         riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
-                        riwayatTindakan.setNamaTindakan("Periksa Lab " + entity.getLabName());
-                        riwayatTindakan.setTotalTarif(lab.getTarif());
-                        riwayatTindakan.setKeterangan(lab.getKategoriLabName());
-                        if ("ptpn".equalsIgnoreCase(jenisPasien)){
+                        riwayatTindakan.setNamaTindakan("Periksa "+entity.getKategoriLabName()+" " + entity.getLabName());
+                        riwayatTindakan.setTotalTarif(totalTarif);
+                        riwayatTindakan.setKeterangan(entity.getKategori());
+                        if ("rekanan".equalsIgnoreCase(jenisPasien)){
                             jenisPasien = "bpjs";
                         }
                         riwayatTindakan.setJenisPasien(jenisPasien);
@@ -864,4 +966,36 @@ public class TutuPeriodAction extends BaseTransactionAction {
         response.setStatus("success");
         return response;
     }
+
+    public ItSimrsBatasTutupPeriodEntity getSettingBulanDesember(String tahun) {
+        logger.info("[TutupPeriodAction.getSettingBulanDesember] START process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("tutupPeriodBoProxy");
+
+        BatasTutupPeriod batas = new BatasTutupPeriod();
+        batas.setTahun(tahun);
+        batas.setBulan("12");
+
+        List<ItSimrsBatasTutupPeriodEntity> batasTutupPeriodEntities = new ArrayList<>();
+        try {
+            batasTutupPeriodEntities = tutupPeriodBo.getListEntityBatasTutupPeriode(batas);
+        } catch (GeneralBOException e){
+            logger.error("[TutupPeriodAction.getSettingBulanDesember] Found error when get Data :" + e.getMessage());
+
+        }
+
+        logger.info("[TutupPeriodAction.getSettingBulanDesember] END process <<<");
+        if (batasTutupPeriodEntities.size() > 0){
+            return batasTutupPeriodEntities.get(0);
+        }
+        return null;
+    }
+
+    public BatasTutupPeriod checkBulanTerakhirSaldoAkhir(String tahun, String branch) {
+        logger.info("[TutupPeriodAction.checkBulanTerakhirSaldoAkhir] START process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TutupPeriodBo tutupPeriodBo = (TutupPeriodBo) ctx.getBean("TutupPeriodBoProxy");
+        return tutupPeriodBo.getLastBulanBerjalanSaldoAkhir(tahun, branch);
+    }
+
 }

@@ -87,6 +87,7 @@ apply the skin class to the body tag so the changes take effect.
 <script src="<s:url value="/pages/plugins/typeahead/bootstrap3-typeahead.js"/>"></script>
 <%--<script src="<s:url value="/pages/js/jquery-ui.js"/>"></script>--%>
 <link rel="<s:url value="/pages/plugins/datepicker/datepicker3.css"/>">
+<link rel="<s:url value="/pages/bootstraplte/css/toast.css"/>">
 <%--<link rel="stylesheet" href="../../plugins/datepicker/datepicker3.css">--%>
 <%--<script src="<s:url value="/pages/dist/js/adminlte.min.js"/>"></script>--%>
 
@@ -100,6 +101,7 @@ apply the skin class to the body tag so the changes take effect.
 <script src="<s:url value="/pages/plugins/morris/morris.min.js"/>"></script>
 <script src="<s:url value="/pages/plugins/morris/raphael.min.js"/>"></script>
 <script src="<s:url value="/pages/dist/js/spinner.js"/>"></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/toast.js"/>'></script>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>--%>
 <%--<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>--%>
 <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>--%>
@@ -144,19 +146,6 @@ apply the skin class to the body tag so the changes take effect.
     .popover {
         z-index: 5000;
     }
-
-
-    /*hr {*/
-        /*-moz-border-bottom-colors: none;*/
-        /*-moz-border-image: none;*/
-        /*-moz-border-left-colors: none;*/
-        /*-moz-border-right-colors: none;*/
-        /*-moz-border-top-colors: none;*/
-        /*border-color: #EEEEEE -moz-use-text-color #FFFFFF;*/
-        /*border-style: solid none;*/
-        /*border-width: 1px 0;*/
-        /*margin: 18px 0;*/
-    /*}*/
 
     .card {
         background: #fff;
@@ -275,44 +264,6 @@ apply the skin class to the body tag so the changes take effect.
         }
     }
 
-    <%--.se-pre-con {--%>
-        <%--position: fixed;--%>
-        <%--left: 0px;--%>
-        <%--top: 0px;--%>
-        <%--width: 100%;--%>
-        <%--height: 100%;--%>
-        <%--z-index: 9999;--%>
-        <%--background: url("<s:url value="/pages/images/logo-nmu-copy.png"/>") center no-repeat #fff;--%>
-        <%--background-size: 100px 100px;--%>
-    <%--}--%>
-    /*.pulse-button {*/
-
-        /*position: relative;*/
-        /*width: 100px;*/
-        /*height: 100px;*/
-        /*border: none;*/
-        /*box-shadow: 0 0 0 0 rgba(232, 76, 61, 0.7);*/
-        /*border-radius: 50%;*/
-        /*background-color: #e84c3d;*/
-        /*background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/173024/jonathanlarradet_copy.png");*/
-        /*background-size:cover;*/
-        /*background-repeat: no-repeat;*/
-        /*cursor: pointer;*/
-        /*-webkit-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);*/
-        /*-moz-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);*/
-        /*-ms-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);*/
-        /*animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);*/
-    /*}*/
-    /*.pulse-button:hover*/
-    /*{*/
-        /*-webkit-animation: none;-moz-animation: none;-ms-animation: none;animation: none;*/
-    /*}*/
-
-    /*@-webkit-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}*/
-    /*@-moz-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}*/
-    /*@-ms-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}*/
-    /*@keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}*/
-
     @-webkit-keyframes sploosh {
         0% {
             box-shadow: 0 0 0 0px rgba(71, 225, 141, .7);
@@ -378,19 +329,41 @@ apply the skin class to the body tag so the changes take effect.
         margin: 1rem;
     }
 
+    .span-success{
+        font-size: 13px;
+        padding: 5px;
+        color: white;
+        background-color: #0F9E5E;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
+    .span-warning{
+        font-size: 13px;
+        padding: 5px;
+        color: white;
+        background-color: darkorange;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
+    .span-danger{
+        font-size: 13px;
+        padding: 5px;
+        color: white;
+        background-color: #d33724;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
+
 </style>
 <script>
 
     var contextPathHeader = '<%= request.getContextPath() %>';
 
     $(window).load(function() {
-        // Animate loader off screen
         $(".se-pre-con").fadeOut("slow");
     });
 
     $( document ).ready(function() {
-//        $('#popoverData').popover();
-        //$('#popoverData').tooltip({container: 'body'});
 
         $('#myTableAllRows').DataTable({
             paging: false,
@@ -431,8 +404,6 @@ apply the skin class to the body tag so the changes take effect.
             dateFormat:'dd-mm-yy'
         });
 
-//        cekSession();
-
         $('.dropdown').on('show.bs.dropdown', function(e){
             $(this).find('.dropdown-menu').first().stop(true, true).slideDown(350);
         });
@@ -441,25 +412,19 @@ apply the skin class to the body tag so the changes take effect.
             $(this).find('.dropdown-menu').first().stop(true, true).slideUp(350);
         });
 
-    });
+        $(':input').on('focus', function () {
+            $(this).attr('autocomplete', 'off');
+        });
 
-    <%--function cekSession(){--%>
-        <%--var persons = '<%= session.getAttribute("user_name") %>';--%>
-        <%--setInterval(function (){--%>
-<%--//            if(null == persons){--%>
-<%--//                logout();--%>
-<%--//            }--%>
-        <%--},1000);--%>
-    <%--}--%>
+        $('#myTable').css('width', '100%');
+
+    });
 
     $(function () {
         $('.select2').select2({});
-        //Datemask dd/mm/yyyy
         $('.datemask').inputmask('yyyy-mm-dd', { 'placeholder': 'yyyy-mm-dd' })
         $('.datemask2').inputmask('dd-mm-yyyy', { 'placeholder': 'dd-mm-yyyy' })
-        //Money Euro
         $('[data-mask]').inputmask()
-
     });
 
     window.checkDec = function(el){
@@ -468,6 +433,7 @@ apply the skin class to the body tag so the changes take effect.
             el.value = el.value.substring(0,el.value.length - 1);
         }
     }
+
     function formatRupiahAtas(angka) {
         if(angka != null && angka != '' && angka > 0){
             var reverse = angka.toString().split('').reverse().join(''),
@@ -611,6 +577,182 @@ apply the skin class to the body tag so the changes take effect.
         }else{
             return "";
         }
+    }
+
+    function replaceTitik(val){
+        var res = 0;
+        if(val != ''){
+            res = val.replace(/[.]/g, '');
+        }
+    }
+
+    function convertRpAtas(id, val, idHidden) {
+        $('#'+id).val(formatRupiahAtas2(val));
+        if(idHidden != '' && idHidden != null){
+            val = val.replace(/[.]/g, '');
+            var numbers = /^[0-9]+$/;
+            if(val != ''){
+                if(val.match(numbers)) {
+                    $('#' + idHidden).val(val);
+                }
+            }else{
+                $('#' + idHidden).val('');
+            }
+        }
+    }
+
+    function converterRupiah(value){
+        var res = "";
+        if(value != null && value != ''){
+            res = formatRupiahAtas(value);
+        }
+        document.write(res);
+    }
+
+    function cekScrol(id, idTujuan) {
+        var cek = $('#'+id).hasClass("fa fa-unlock");
+        if(cek){
+            $('#'+id).removeClass("fa fa-unlock");
+            $('#'+id).addClass("fa fa-lock");
+            $('#' + idTujuan).attr('style', 'height: 70%; overflow-y: scroll;');
+        }else {
+            $('#'+id).removeClass("fa fa-lock");
+            $('#'+id).addClass("fa fa-unlock");
+            $('#' + idTujuan).removeAttr('style');
+        }
+    }
+
+    function setCanvasAtas(id) {
+        var canvas = document.getElementById(id);
+        var ctx = canvas.getContext('2d');
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            var img = new Image();
+            img.onload = function () {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function setProvAtas(id, idHidden){
+        var functions, mapped;
+        $('#'+id).typeahead({
+            minLength: 1,
+            source: function (query, process) {
+                functions = [];
+                mapped = {};
+                var data = [];
+                dwr.engine.setAsync(false);
+                ProvinsiAction.initComboProvinsi(query, function (listdata) {
+                    data = listdata;
+                });
+
+                $.each(data, function (i, item) {
+                    var labelItem = item.provinsiName;
+                    mapped[labelItem] = {id: item.provinsiId, label: labelItem};
+                    functions.push(labelItem);
+                });
+                process(functions);
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                var namaAlat = selectedObj.label;
+                document.getElementById(idHidden).value = selectedObj.id;
+                return namaAlat;
+            }
+        });
+    }
+
+    function setKabAtas(id, idHidden, idProv){
+        var prov = $('#'+idProv).val();
+        var functions, mapped;
+        $('#'+id).typeahead({
+            minLength: 1,
+            source: function (query, process) {
+                functions = [];
+                mapped = {};
+                var data = [];
+                dwr.engine.setAsync(false);
+                ProvinsiAction.initComboKota(query, prov, function (listdata) {
+                    data = listdata;
+                });
+                $.each(data, function (i, item) {
+                    var labelItem = item.kotaName;
+                    mapped[labelItem] = {id: item.kotaId, label: labelItem};
+                    functions.push(labelItem);
+                });
+                process(functions);
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                var namaAlat = selectedObj.label;
+                document.getElementById(idHidden).value = selectedObj.id;
+                return namaAlat;
+            }
+        });
+    }
+
+    function setKecAtas(id, idHidden, idKab){
+        var functions, mapped;
+        var kab = $('#'+idKab).val();
+        $('#'+id).typeahead({
+            minLength: 1,
+            source: function (query, process) {
+                functions = [];
+                mapped = {};
+                var data = [];
+                dwr.engine.setAsync(false);
+                ProvinsiAction.initComboKecamatan(query, kab, function (listdata) {
+                    data = listdata;
+                });
+                $.each(data, function (i, item) {
+                    var labelItem = item.kecamatanName;
+                    mapped[labelItem] = {id: item.kecamatanId, label: labelItem};
+                    functions.push(labelItem);
+                });
+                process(functions);
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                var namaAlat = selectedObj.label;
+                document.getElementById(idHidden).value = selectedObj.id;
+                return namaAlat;
+            }
+        });
+    }
+
+    function setDesAtas(id, idHidden, idKec){
+        var kec = $('#'+idKec).val();
+        var functions, mapped;
+        $('#'+id).typeahead({
+            minLength: 1,
+            source: function (query, process) {
+                functions = [];
+                mapped = {};
+                var data = [];
+                dwr.engine.setAsync(false);
+                ProvinsiAction.initComboDesa(query, kec, function (listdata) {
+                    data = listdata;
+                });
+                $.each(data, function (i, item) {
+                    var labelItem = item.desaName;
+                    mapped[labelItem] = {id: item.desaId, label: labelItem};
+                    functions.push(labelItem);
+                });
+                process(functions);
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                var namaAlat = selectedObj.label;
+                document.getElementById(idHidden).value = selectedObj.id;
+                return namaAlat;
+            }
+        });
     }
 
 </script>

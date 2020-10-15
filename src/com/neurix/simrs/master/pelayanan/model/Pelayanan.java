@@ -33,6 +33,15 @@ public class Pelayanan extends BaseModel implements Serializable {
     private String branchName;
     private String branchUser;
     private String kategoriPelayanan;
+    private String notOwnBranch;
+
+    public String getNotOwnBranch() {
+        return notOwnBranch;
+    }
+
+    public void setNotOwnBranch(String notOwnBranch) {
+        this.notOwnBranch = notOwnBranch;
+    }
 
     public String getKategoriPelayanan() {
         return kategoriPelayanan;

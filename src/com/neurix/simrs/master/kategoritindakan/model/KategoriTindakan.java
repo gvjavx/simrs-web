@@ -16,6 +16,15 @@ public class KategoriTindakan {
     private String stLastUpdate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public String getIdKategoriTindakan() {
         return idKategoriTindakan;

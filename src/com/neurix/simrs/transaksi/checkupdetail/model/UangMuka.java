@@ -21,6 +21,33 @@ public class UangMuka extends BaseModel {
     private String stDate;
     private BigInteger dibayar;
     private String noJurnal;
+    private String branchId;
+    private String noCheckup;
+    private String namaPelayanan;
+
+    public String getNoCheckup() {
+        return noCheckup;
+    }
+
+    public void setNoCheckup(String noCheckup) {
+        this.noCheckup = noCheckup;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     private String flagRefund;
 

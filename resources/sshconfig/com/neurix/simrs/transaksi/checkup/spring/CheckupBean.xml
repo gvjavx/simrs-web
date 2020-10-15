@@ -81,6 +81,11 @@
           p:itemPaketDao-ref="itemPaketDao"
           p:labDetailDao-ref="labDetailDao"
           p:orderPeriksaLabDao-ref="orderPeriksaLabDao"
+          p:rekananOpsDao-ref="rekananOpsDao"
+          p:detailPaketDao-ref="detailPaketDao"
+          p:pelayananPaketDao-ref="pelayananPaketDao"
+          p:tempatTidurDao-ref="tempatTidurDao"
+          p:rawatInapDao-ref="rawatInapDao"
 
     />
 
@@ -146,5 +151,9 @@
           p:sessionFactory-ref="sessionFactory" />
 
     <bean id="headerCheckupLogDao" class="com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupLogDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="orderPeriksaLabDao"/>
+
+    <bean id="pelayananPaketDao" class="com.neurix.simrs.transaksi.checkup.dao.PelayananPaketDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

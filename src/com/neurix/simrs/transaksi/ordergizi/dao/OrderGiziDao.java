@@ -70,6 +70,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
             String dateTo = "";
             String branchId = "%";
             String jenisPeriksa = "%";
+            String keterangan = "%";
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 idPasien = bean.getIdPasien();
@@ -119,6 +120,10 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                 jenisPeriksa = bean.getIdJenisPeriksa();
             }
 
+            if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
+                keterangan = bean.getKeterangan();
+            }
+
 
             String SQL = "SELECT\n" +
                     "b.id_detail_checkup,\n" +
@@ -137,19 +142,21 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     "e.nama_ruangan,\n" +
                     "f.nama_kelas_ruangan,\n" +
                     "f.id_kelas_ruangan,\n" +
-                    "b.no_sep, \n" +
-                    "d.id_rawat_inap\n" +
+                    "b.no_sep,\n" +
+                    "d.id_rawat_inap,\n" +
+                    "g.id_order_gizi,\n" +
+                    "g.keterangan,\n" +
+                    "g.bentuk_diet,\n" +
+                    "g.approve_flag,\n" +
+                    "g.diterima_flag\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
                     "INNER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') d ON b.id_detail_checkup = d.id_detail_checkup\n" +
-                    "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
+                    "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON d.id_ruangan = tt.id_tempat_tidur \n" +
+                    "INNER JOIN mt_simrs_ruangan e ON tt.id_ruangan = e.id_ruangan\n" +
                     "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
-//                    "INNER JOIN (SELECT * FROM (\n" +
-//                    "SELECT *, rank() OVER(PARTITION BY id_rawat_inap ORDER BY created_date DESC) as rank\n" +
-//                    "FROM it_simrs_order_gizi) a WHERE rank = 1\n" +
-//                    ") g ON d.id_rawat_inap = g.id_rawat_inap\n" +
-                    "INNER JOIN (SELECT id_rawat_inap FROM it_simrs_order_gizi GROUP BY id_rawat_inap) g ON d.id_rawat_inap = g.id_rawat_inap\n" +
+                    "INNER JOIN it_simrs_order_gizi g ON d.id_rawat_inap = g.id_rawat_inap\n" +
                     "WHERE a.id_pasien LIKE :idPasien\n" +
                     "AND a.nama LIKE :nama\n" +
                     "AND b.id_pelayanan LIKE :idPelayanan\n" +
@@ -159,14 +166,15 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     "AND e.id_ruangan LIKE :idRuang\n" +
                     "AND b.id_detail_checkup LIKE :idDetailCheckup\n" +
                     "AND a.branch_id LIKE :branchId\n" +
-                    "AND b.id_jenis_periksa_pasien LIKE :jenisPeriksa\n" +
-                    "AND a.flag = 'Y' \n";
+                    "AND b.id_jenis_periksa_pasien LIKE :jenisPeriksa \n" +
+                    "AND g.flag = 'Y' \n" +
+                    "AND g.keterangan LIKE :ket \n";
 
             List<Object[]> results = new ArrayList<>();
 
             if (!"".equalsIgnoreCase(dateFrom) && !"".equalsIgnoreCase(dateTo)) {
 
-                SQL = SQL + "AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy') \n";
+                SQL = SQL + "AND CAST(g.tgl_order AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') AND CAST(g.tgl_order AS date) <= to_date(:dateTo, 'dd-MM-yyyy') \n";
 
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("idPasien", idPasien)
@@ -181,13 +189,14 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                         .setParameter("dateTo", dateTo)
                         .setParameter("branchId", branchId)
                         .setParameter("jenisPeriksa", jenisPeriksa)
+                        .setParameter("ket", keterangan)
                         .list();
 
             } else {
 
                 if (!"".equalsIgnoreCase(bean.getStTglFrom())) {
 
-                    SQL = SQL + "AND CAST(a.created_date AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') \n";
+                    SQL = SQL + "AND CAST(g.tgl_order AS date) >= to_date(:dateFrom, 'dd-MM-yyyy') \n";
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("idPasien", idPasien)
@@ -201,10 +210,11 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                             .setParameter("dateFrom", dateFrom)
                             .setParameter("branchId", branchId)
                             .setParameter("jenisPeriksa", jenisPeriksa)
+                            .setParameter("ket", keterangan)
                             .list();
                 } else if (!"".equalsIgnoreCase(bean.getStTglTo())) {
 
-                    SQL = SQL + "AND CAST(a.created_date AS date) <= to_date(:dateTo, 'dd-MM-yyyy') \n";
+                    SQL = SQL + "AND CAST(g.tgl_order AS date) <= to_date(:dateTo, 'dd-MM-yyyy') \n";
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("idPasien", idPasien)
@@ -218,6 +228,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                             .setParameter("dateTo", dateTo)
                             .setParameter("branchId", branchId)
                             .setParameter("jenisPeriksa", jenisPeriksa)
+                            .setParameter("ket", keterangan)
                             .list();
                 } else {
 
@@ -234,34 +245,43 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                             .setParameter("idDetailCheckup", idDetailCheckup)
                             .setParameter("branchId", branchId)
                             .setParameter("jenisPeriksa", jenisPeriksa)
+                            .setParameter("ket", keterangan)
                             .list();
                 }
             }
 
-            if (!results.isEmpty()) {
-                RawatInap rawatInap;
+            if (results.size() > 0) {
                 for (Object[] obj : results) {
-                    rawatInap = new RawatInap();
-                    rawatInap.setIdDetailCheckup(obj[0].toString());
-                    rawatInap.setNoCheckup(obj[1].toString());
+                    RawatInap rawatInap = new RawatInap();
+                    rawatInap.setIdDetailCheckup(obj[0] == null ? "" : obj[0].toString());
+                    rawatInap.setNoCheckup(obj[1] == null ? "" : obj[1].toString());
                     rawatInap.setIdPasien(obj[2] == null ? "" : obj[2].toString());
                     rawatInap.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
-
                     String jalan = obj[4] == null ? "" : obj[4].toString();
-
                     rawatInap.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
                     rawatInap.setDesaId(obj[6] == null ? "" : obj[6].toString());
-                    rawatInap.setStatusPeriksa(obj[7].toString());
-                    rawatInap.setStatusPeriksaName(obj[8].toString());
+                    rawatInap.setStatusPeriksa(obj[7] == null ? "" : obj[7].toString());
+                    rawatInap.setStatusPeriksaName(obj[8] == null ? "" : obj[8].toString());
                     rawatInap.setKeteranganSelesai(obj[9] == null ? "" : obj[9].toString());
-                    rawatInap.setIdRawatInap(obj[10].toString());
-                    rawatInap.setIdRuangan(obj[11].toString());
-                    rawatInap.setNoRuangan(obj[12].toString());
-                    rawatInap.setNamaRangan(obj[13].toString());
-                    rawatInap.setKelasRuanganName(obj[14].toString());
-                    rawatInap.setIdKelas(obj[15].toString());
+                    rawatInap.setIdRawatInap(obj[10] == null ? "" : obj[10].toString());
+                    rawatInap.setIdRuangan(obj[11] == null ? "" : obj[11].toString());
+                    rawatInap.setNoRuangan(obj[12] == null ? "" : obj[12].toString());
+                    rawatInap.setNamaRangan(obj[13] == null ? "" : obj[13].toString());
+                    rawatInap.setKelasRuanganName(obj[14] == null ? "" : obj[14].toString());
+                    rawatInap.setIdKelas(obj[15] == null ? "" : obj[15].toString());
                     rawatInap.setNoSep(obj[16] == null ? "" : obj[16].toString());
-                    rawatInap.setIdRawatInap(obj[17].toString());
+                    rawatInap.setIdRawatInap(obj[17] == null ? "" : obj[17].toString());
+                    rawatInap.setIdOrderGizi(obj[18] == null ? "" : obj[18].toString());
+                    rawatInap.setKeterangan(obj[19] == null ? "" : obj[19].toString());
+                    rawatInap.setBentukGizi(obj[20] == null ? "" : obj[20].toString());
+                    rawatInap.setApproveFlag(obj[21] == null ? "" : obj[21].toString());
+                    rawatInap.setDiterimaFlag(obj[22] == null ? "" : obj[22].toString());
+                    if(obj[18] != null){
+                        rawatInap.setJenisDiet(getJenisDiet(obj[18].toString()));
+                    }
+                    if(obj[2] != null){
+                        rawatInap.setAlergi(getAlergi(obj[2].toString()));
+                    }
 
                     if (!"".equalsIgnoreCase(rawatInap.getDesaId())) {
                         List<Object[]> objDesaList = getListAlamatByDesaId(rawatInap.getDesaId());
@@ -282,8 +302,6 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                             }
                         }
                     }
-
-                    rawatInap.setCekApprove(cekStatusOrderGizi(obj[17].toString()));
                     rawatInap.setAlamat(jalan);
                     rawatInapList.add(rawatInap);
                 }
@@ -308,8 +326,57 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", desaId)
                 .list();
-
         return results;
+    }
+
+    public String getJenisDiet(String id) {
+        String res = "";
+        String SQL = "SELECT\n" +
+                "id_detail_jenis_diet, \n"+
+                "nama_jenis_diet\n" +
+                "FROM it_simrs_detail_jenis_diet\n" +
+                "WHERE id_order_gizi = :id\n" +
+                "AND flag = 'Y'";
+
+        List<Object[]> results = new ArrayList<>();
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .list();
+
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                if(!"".equalsIgnoreCase(res)){
+                    res = res +", "+obj[1].toString();
+                }else{
+                    res = obj[1].toString();
+                }
+            }
+        }
+        return res;
+    }
+
+    public String getAlergi(String id) {
+        String res = "";
+        String SQL = "SELECT \n" +
+                "id_alergi, \n"+
+                "alergi\n" +
+                "FROM it_simrs_checkup_alergi\n" +
+                "WHERE id_pasien = :id \n" +
+                "AND flag = 'Y' \n";
+        List<Object[]> results = new ArrayList<>();
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .list();
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                if(!"".equalsIgnoreCase(res)){
+                    res = res +", "+obj[1].toString();
+                }else{
+                    res = obj[1].toString();
+                }
+            }
+        }
+        return res;
     }
 
     public boolean cekStatusOrderGizi(String idRawatInap) {

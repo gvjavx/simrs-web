@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class JenisPeriksaPasienDao extends GenericDao<ImJenisPeriksaPasienEntity
             }
         }
 
+        criteria.addOrder(Order.desc("keterangan"));
         List<ImJenisPeriksaPasienEntity> result = criteria.list();
         return result;
     }

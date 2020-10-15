@@ -10,8 +10,6 @@ function paintTtd(id, change){
     }else{
         colorPicker = document.querySelector(".js-color-picker");
     }
-    // var clr = $('.js-color-picker').val();
-    // context.strokeStyle = clr;
 
     colorPicker.addEventListener("change", function (evt) {
         context.strokeStyle = evt.target.value;

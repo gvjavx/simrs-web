@@ -110,5 +110,9 @@ public interface CheckupBo {
     public List<HeaderCheckup> getRiwayatPemeriksaan(String idPasien) throws GeneralBOException;
 
     public Dokter getNamaSipDokter(String id, String tipe) throws GeneralBOException;
+    public List<PelayananPaket> getListPelayananPaket(String noCheckup) throws GeneralBOException;
+    public CrudResponse nextItemPaketToPeriksa(PelayananPaket bean, HeaderDetailCheckup detail) throws GeneralBOException;
+
+    public CrudResponse saveAddWithResponse(HeaderCheckup checkup) throws GeneralBOException;
 
 }

@@ -243,7 +243,6 @@
         $('#det_nama_paket').text(namaPaket);
         $('#det_tarif_paket').text("Rp. "+formatRupiah(tarif));
         PaketPeriksaAction.detailPaket(idpaket, function (response) {
-            console.log(response);
             if(response.length > 0){
                 var table1 = "";
                 var table2 = "";

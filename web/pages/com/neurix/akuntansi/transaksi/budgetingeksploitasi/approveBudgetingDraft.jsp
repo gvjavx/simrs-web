@@ -89,6 +89,13 @@
                                                     <option value="2021">2021</option>
                                                     <option value="2022">2022</option>
                                                     <option value="2023">2023</option>
+                                                    <option value="2024">2024</option>
+                                                    <option value="2025">2025</option>
+                                                    <option value="2026">2026</option>
+                                                    <option value="2027">2027</option>
+                                                    <option value="2028">2028</option>
+                                                    <option value="2029">2029</option>
+                                                    <option value="2030">2030</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -755,7 +762,7 @@
 
     function showBtn(id, branchId){
         if ("rugi" != id && "laba" != id){
-            return '<button class="btn btn-success" onclick="viewDetail(\''+id+'\', \''+branchId+'\')"><i class="fa fa-search"></i> View</budtton>';
+            return '<buttton class="btn btn-success" onclick="viewDetail(\''+id+'\', \''+branchId+'\')"><i class="fa fa-search"></i> View</buttton>';
         }
         return "";
     }
@@ -980,10 +987,10 @@
                             '<td align="center">';
 
                         if ("INV" == jenis){
-                            str += '<button class="btn btn-sm btn-success" onclick="viewListPengadaan(\''+ data.idNilaiParameter +'\')">';
+                            str += '<button class="btn btn-sm btn-success" onclick="viewListPengadaan(\''+ data.idNilaiParameter +'\')"><i class="fa fa-search"></i></button>';
                         }
 
-                           str += '<i class="fa fa-search"></i></button></td>' +
+                           str += '</td>' +
                             '</tr>';
                     });
                 });

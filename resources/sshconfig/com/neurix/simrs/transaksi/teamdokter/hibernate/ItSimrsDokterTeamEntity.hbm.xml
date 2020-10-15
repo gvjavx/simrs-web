@@ -47,6 +47,13 @@
         <property name="jenisDpjp">
             <column name="jenis_dpjp"/>
         </property>
+        <property name="flagApprove">
+            <column name="flag_approve"/>
+        </property>
+        <property name="keterangan">
+            <column name="keterangan"/>
+        </property>
+
 
 
     </class>

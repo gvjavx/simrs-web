@@ -1,11 +1,16 @@
 package com.neurix.simrs.master.ruangan.bo.impl;
 
 import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.common.exception.GeneralBOException;
 
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
+import com.neurix.simrs.master.kelasruangan.dao.KelasRuanganDao;
+import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
 import com.neurix.simrs.master.kelasruangan.model.KelasRuangan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
@@ -30,6 +35,16 @@ import java.util.Map;
 public class RuanganBoImpl implements RuanganBo {
     protected static transient Logger logger = Logger.getLogger(RuanganBoImpl.class);
     private RuanganDao ruanganDao;
+    private KelasRuanganDao kelasRuanganDao;
+    private BranchDao branchDao;
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
+
+    public void setKelasRuanganDao(KelasRuanganDao kelasRuanganDao) {
+        this.kelasRuanganDao = kelasRuanganDao;
+    }
 
     public static void setLogger(Logger logger) {
         RuanganBoImpl.logger = logger;
@@ -107,9 +122,7 @@ public class RuanganBoImpl implements RuanganBo {
                 ruangan.setIdKelasRuangan(listEntity.getIdKelasRuangan());
                 ruangan.setKeterangan(listEntity.getKeterangan());
                 ruangan.setTarif(listEntity.getTarif());
-//                ruangan.setStTarif(CommonUtil.numbericFormat(listEntity.getTarif(),"###,###"));
                 ruangan.setBranchId(listEntity.getBranchId());
-//                ruangan.setNamaKelasRuangan(listEntity.getImSimrsKelasRuanganEntity().getNamaKelasRuangan());
                 ruangan.setSisaKuota(listEntity.getSisaKuota());
                 ruangan.setKuota(listEntity.getKuota());
                 ruangan.setFlag(listEntity.getFlag());
@@ -118,38 +131,22 @@ public class RuanganBoImpl implements RuanganBo {
                 ruangan.setCreatedWho(listEntity.getCreatedWho());
                 ruangan.setStLastUpdate(listEntity.getLastUpdate().toString());
                 ruangan.setLastUpdateWho(listEntity.getLastUpdateWho());
-
-                ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-                KelasRuangan kelasRuangan = new KelasRuangan();
-                KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) context.getBean("kelasRuanganBoProxy");
-                kelasRuangan.setIdKelasRuangan(listEntity.getIdKelasRuangan());
-                kelasRuangan.setFlag("Y");
-                List<KelasRuangan> kelasRuangans = kelasRuanganBo.getByCriteria(kelasRuangan);
-                if(kelasRuangans.size() > 0){
-                    String kelasRuanganName = kelasRuangans.get(0).getNamaKelasRuangan();
-                    ruangan.setNamaKelasRuangan(kelasRuanganName);
+                ImSimrsKelasRuanganEntity kelasRuanganEntity = kelasRuanganDao.getById("idKelasRuangan", listEntity.getIdKelasRuangan());
+                if(kelasRuanganEntity != null){
+                    ruangan.setNamaKelasRuangan(kelasRuanganEntity.getNamaKelasRuangan());
                 }
 
-                if (listEntity.getBranchId() != null){
-//                    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-                    Branch branch = new Branch();
-                    BranchBo branchBo = (BranchBo) context.getBean("branchBoProxy");
-                    branch.setBranchId(listEntity.getBranchId());
-                    branch.setFlag("Y");
-                    List<Branch> branches = branchBo.getByCriteria(branch);
-                    if(branches.size() > 0){
-                        String branchName = branches.get(0).getBranchName();
-                        ruangan.setBranchName(branchName);
-                    }
-                }else {
-                    ruangan.setBranchName("-");
+                ImBranchesPK primaryKey = new ImBranchesPK();
+                primaryKey.setId(listEntity.getBranchId());
+                ImBranches branches = branchDao.getById(primaryKey, "Y");
+                if(branches != null){
+                    ruangan.setBranchName(branches.getBranchName());
                 }
 
                 result.add(ruangan);
             }
         }
         logger.info("[RuanganBoImpl.getByCriteria] End <<<<<<");
-
         return result;
     }
 
@@ -163,7 +160,7 @@ public class RuanganBoImpl implements RuanganBo {
                 MtSimrsRuanganEntity mtSimrsRuanganEntity = new MtSimrsRuanganEntity();
                 String id = getIdRuangan();
 
-                mtSimrsRuanganEntity.setIdRuangan("R" + id);
+                mtSimrsRuanganEntity.setIdRuangan("RUA" + id);
                 mtSimrsRuanganEntity.setNamaRuangan(ruangan.getNamaRuangan());
                 mtSimrsRuanganEntity.setNoRuangan(ruangan.getNoRuangan());
                 mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
@@ -385,6 +382,11 @@ public class RuanganBoImpl implements RuanganBo {
     @Override
     public List<Ruangan> getListRuangan(Ruangan bean) throws GeneralBOException {
         return ruanganDao.getListRuanganKamar(bean);
+    }
+
+    @Override
+    public List<Ruangan> getJustListRuangan(String idKelas, String branchId) throws GeneralBOException {
+        return ruanganDao.getListJustRuanganKamar(idKelas, branchId);
     }
 
     public String getIdRuangan() {

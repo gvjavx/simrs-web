@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.rawatinap.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import org.hibernate.Criteria;
@@ -168,7 +169,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "INNER JOIN im_simrs_jenis_periksa_pasien jenis ON b.id_jenis_periksa_pasien = jenis.id_jenis_periksa_pasien\n" +
                     "INNER JOIN im_simrs_status_pasien c ON b.status_periksa = c.id_status_pasien\n" +
                     "INNER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') d ON b.id_detail_checkup = d.id_detail_checkup\n" +
-                    "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
+                    "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON d.id_ruangan = tt.id_tempat_tidur \n"+
+                    "INNER JOIN mt_simrs_ruangan e ON tt.id_ruangan = e.id_ruangan\n" +
                     "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
                     "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = b.id_detail_checkup\n" +
                     "WHERE a.id_pasien LIKE :idPasien\n" +
@@ -278,12 +280,16 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
 
                     RawatInap rawatInap = new RawatInap();
 
-                    if ("umum".equalsIgnoreCase(inap.getIdJenisPeriksa())) {
-                        if ("Y".equalsIgnoreCase(inap.getStatusBayar())) {
-                            rawatInap.setIsBayar("Y");
-                        } else {
-                            rawatInap.setIsBayar("N");
+                    if(obj[21] != null){
+                        if ("umum".equalsIgnoreCase(inap.getIdJenisPeriksa())) {
+                            if ("Y".equalsIgnoreCase(inap.getStatusBayar())) {
+                                rawatInap.setIsBayar("Y");
+                            } else {
+                                rawatInap.setIsBayar("N");
+                            }
                         }
+                    }else{
+                        rawatInap.setIsBayar("Y");
                     }
 
                     rawatInap.setIdDetailCheckup(obj[0].toString());
@@ -360,7 +366,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             if (!"".equalsIgnoreCase(type)) {
                 jenisPasien = "AND b.id_jenis_periksa_pasien = '" + type + "' \n";
             } else {
-                jenisPasien = "AND b.id_jenis_periksa_pasien IN ('bpjs', 'ptpn') \n";
+                jenisPasien = "AND b.id_jenis_periksa_pasien IN ('bpjs', 'rekanan') \n";
             }
 
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
@@ -454,7 +460,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     " FROM it_simrs_rawat_inap\n" +
                     ")a WHERE a.rank = 1" +
                     ") d ON b.id_detail_checkup = d.id_detail_checkup\n" +
-                    "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
+                    "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON d.id_ruangan = tt.id_tempat_tidur \n"+
+                    "INNER JOIN mt_simrs_ruangan e ON tt.id_ruangan = e.id_ruangan\n" +
                     "INNER JOIN im_simrs_kelas_ruangan f ON e.id_kelas_ruangan = f.id_kelas_ruangan\n" +
                     "WHERE a.id_pasien LIKE :idPasien\n" +
                     "AND a.nama LIKE :nama\n" +
@@ -683,7 +690,13 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             String idDetailCheckup = "";
             String branchId = "";
             String tgl = "";
+            String flag = "";
 
+            if (bean.getFlagTppri() != null && !"".equalsIgnoreCase(bean.getFlagTppri())) {
+                flag = "AND b.flag_tppri = '" + bean.getFlagTppri() + "' \n";
+            }else{
+                flag = "AND b.flag_tppri IS NULL \n";
+            }
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 idPasien = "AND a.id_pasien LIKE '%" + bean.getIdPasien() + "%' \n";
             }
@@ -728,8 +741,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "WHERE b.status_periksa = '3'\n" +
                     "AND b.tindak_lanjut IN ('rawat_inap','rawat_intensif','rawat_isolasi','kamar_operasi','ruang_bersalin')\n" +
                     "AND d.id_detail_checkup IS NULL \n" +
-                    "AND b.flag_tppri IS NULL \n" +
-                    branchId + idPasien + nama + idDetailCheckup + tgl;
+                    flag + branchId + idPasien + nama + idDetailCheckup + tgl;
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -778,11 +790,14 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 "a.status,\n" +
                 "a.tgl_masuk,\n" +
                 "a.tgl_keluar,\n" +
-                "a.keterangan\n" +
+                "a.keterangan,\n" +
+                "tt.id_tempat_tidur, \n" +
+                "tt.nama_tempat_tidur\n" +
                 "FROM it_simrs_rawat_inap a\n" +
-                "INNER JOIN mt_simrs_ruangan b ON a.id_ruangan = b.id_ruangan\n" +
+                "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON a.id_ruangan = tt.id_tempat_tidur\n" +
+                "INNER JOIN mt_simrs_ruangan b ON tt.id_ruangan = b.id_ruangan\n" +
                 "INNER JOIN im_simrs_kelas_ruangan c ON b.id_kelas_ruangan = c.id_kelas_ruangan\n" +
-                "WHERE a.flag = 'Y' \n" + idRawatInap + idDetilCheckup +
+                "WHERE a.flag = 'Y' \n" + idRawatInap + "\n" +idDetilCheckup +
                 "ORDER BY a.created_date ASC";
 
         List<Object[]> result = new ArrayList<>();
@@ -803,6 +818,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                 rawatInap.setTglMasuk(objects[9] == null ? null : (Timestamp) objects[9]);
                 rawatInap.setTglKeluar(objects[10] == null ? null : (Timestamp) objects[10]);
                 rawatInap.setKeterangan(objects[11] == null ? null : objects[11].toString());
+                rawatInap.setIdTempatTidur(objects[12] == null ? null : objects[12].toString());
+                rawatInap.setNamaTempatTidur(objects[13] == null ? null : objects[13].toString());
                 rawatInapList.add(rawatInap);
             }
         }
@@ -823,10 +840,11 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "CAST(DATE_PART('day', a.tgl_keluar - a.tgl_masuk) + 1 AS BIGINT) as hari, \n" +
                     "b.tarif\n" +
                     "FROM it_simrs_rawat_inap a\n" +
-                    "INNER JOIN mt_simrs_ruangan b ON a.id_ruangan = b.id_ruangan\n" +
-                    "WHERE status = '3'\n" +
-                    "AND tgl_keluar IS NOT NULL\n" +
-                    "AND id_detail_checkup = :id";
+                    "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON a.id_ruangan = tt.id_tempat_tidur\n" +
+                    "INNER JOIN mt_simrs_ruangan b ON tt.id_ruangan = b.id_ruangan\n" +
+                    "WHERE a.status = '3'\n" +
+                    "AND a.tgl_keluar IS NOT NULL\n" +
+                    "AND a.id_detail_checkup = :id ";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -849,5 +867,54 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             }
         }
         return rawatInapList;
+    }
+
+    public List<UangMuka> getAllListUangMuka(UangMuka bean) {
+        List<UangMuka> uangMukaArrayList = new ArrayList<>();
+        if(bean != null){
+            String condition = "";
+            if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+                condition = "AND b.id_detail_checkup = '"+bean.getIdDetailCheckup()+"' \n";
+            }
+            if(bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())){
+                condition = condition + " AND a.no_checkup = '"+bean.getNoCheckup()+"' \n";
+            }
+            if (!"".equalsIgnoreCase(condition)) {
+                String SQL = "SELECT\n" +
+                        "a.no_checkup,\n" +
+                        "b.id_detail_checkup,\n" +
+                        "c.id,\n" +
+                        "c.created_date,\n" +
+                        "c.status_bayar,\n" +
+                        "d.nama_pelayanan,\n" +
+                        "c.jumlah,\n" +
+                        "c.jumlah_dibayar \n"+
+                        "FROM it_simrs_header_checkup a\n" +
+                        "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                        "INNER JOIN it_simrs_uang_muka_pendaftaran c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                        "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                        "WHERE c.flag = 'Y' " + condition +
+                        "ORDER BY c.created_date ASC";
+
+                List<Object[]> result = new ArrayList<>();
+                result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                        .list();
+                if (result.size() > 0) {
+                    for (Object[] obj : result) {
+                        UangMuka uangMuka = new UangMuka();
+                        uangMuka.setNoCheckup(obj[0] == null ? null : obj[0].toString());
+                        uangMuka.setIdDetailCheckup(obj[1] == null ? null : obj[1].toString());
+                        uangMuka.setId(obj[2] == null ? null : obj[2].toString());
+                        uangMuka.setCreatedDate(obj[3] == null ? null : (Timestamp) obj[3]);
+                        uangMuka.setStatusBayar(obj[4] == null ? null : (String) obj[4]);
+                        uangMuka.setNamaPelayanan(obj[5] == null ? null : (String) obj[5]);
+                        uangMuka.setJumlah(obj[6] == null ? null : (BigInteger) obj[6]);
+                        uangMuka.setDibayar(obj[7] == null ? null : (BigInteger) obj[7]);
+                        uangMukaArrayList.add(uangMuka);
+                    }
+                }
+            }
+        }
+        return uangMukaArrayList;
     }
 }

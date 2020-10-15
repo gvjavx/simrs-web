@@ -93,6 +93,14 @@
         <property name="tglInvoice">
             <column name="tgl_invoice" sql-type="date"  />
         </property>
-
+        <property name="hargaJual">
+            <column name="harga_jual" sql-type="date"  />
+        </property>
+        <property name="hargaRata">
+            <column name="harga_rata" sql-type="date"  />
+        </property>
+        <property name="qtyReture">
+            <column name="qty_reture" sql-type="bigint"  />
+        </property>
     </class>
 </hibernate-mapping>

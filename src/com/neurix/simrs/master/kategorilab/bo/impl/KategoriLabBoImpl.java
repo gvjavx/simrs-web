@@ -254,6 +254,17 @@ public class KategoriLabBoImpl implements KategoriLabBo {
     }
 
     @Override
+    public List<KategoriLab> getKategoriLab(String idLab, String branchId) throws GeneralBOException {
+        List<KategoriLab> kategoriLabList = new ArrayList<>();
+        try {
+            kategoriLabList = kategoriLabDao.getKategoriLabByLab(idLab, branchId);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return kategoriLabList;
+    }
+
+    @Override
     public List<KategoriLab> getAll() throws GeneralBOException {
         return null;
     }

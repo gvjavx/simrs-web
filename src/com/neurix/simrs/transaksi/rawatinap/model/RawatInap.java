@@ -117,6 +117,43 @@ public class RawatInap {
     private BigInteger lamakamar;
     private String isKasir;
     private String isBayar;
+    private String namaTempatTidur;
+    private String idTempatTidur;
+
+    private String jenisDiet;
+    private String bentukGizi;
+
+    public String getBentukGizi() {
+        return bentukGizi;
+    }
+
+    public void setBentukGizi(String bentukGizi) {
+        this.bentukGizi = bentukGizi;
+    }
+
+    public String getJenisDiet() {
+        return jenisDiet;
+    }
+
+    public void setJenisDiet(String jenisDiet) {
+        this.jenisDiet = jenisDiet;
+    }
+
+    public String getIdTempatTidur() {
+        return idTempatTidur;
+    }
+
+    public void setIdTempatTidur(String idTempatTidur) {
+        this.idTempatTidur = idTempatTidur;
+    }
+
+    public String getNamaTempatTidur() {
+        return namaTempatTidur;
+    }
+
+    public void setNamaTempatTidur(String namaTempatTidur) {
+        this.namaTempatTidur = namaTempatTidur;
+    }
 
     public String getIsBayar() {
         return isBayar;

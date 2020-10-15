@@ -24,4 +24,7 @@ public interface PelayananBo extends BaseMasterBo<Pelayanan> {
 
     public List<Pelayanan> getListPelayananWithLab(String tipe) throws GeneralBOException;
     public List<ImSimrsPelayananEntity> getByCriteria(Map criteria) throws GeneralBOException;
+
+    public List<ImSimrsPelayananEntity> getPelayananByBranch(String branchId) throws GeneralBOException;
+    public List<ImSimrsPelayananEntity> getJustPelayananByBranch(String branchId) throws GeneralBOException;
 }

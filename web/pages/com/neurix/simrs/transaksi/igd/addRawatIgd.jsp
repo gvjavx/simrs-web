@@ -255,21 +255,21 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    <s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>
-                                        <tr>
-                                            <td><b>Metode Pembayaran</b></td>
-                                            <td>
-                                                <table>
-                                                    <script>
-                                                        var metode = '<s:property value="headerDetailCheckup.metodePembayaran"/>';
-                                                        var met = metode.replace("_", " ");
-                                                        var meto = convertSentenceCase(met);
-                                                        document.write(meto);
-                                                    </script>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </s:if>
+                                    <%--<s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>--%>
+                                        <%--<tr>--%>
+                                            <%--<td><b>Metode Pembayaran</b></td>--%>
+                                            <%--<td>--%>
+                                                <%--<table>--%>
+                                                    <%--<script>--%>
+                                                        <%--var metode = '<s:property value="headerDetailCheckup.metodePembayaran"/>';--%>
+                                                        <%--var met = metode.replace("_", " ");--%>
+                                                        <%--var meto = convertSentenceCase(met);--%>
+                                                        <%--document.write(meto);--%>
+                                                    <%--</script>--%>
+                                                <%--</table>--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
+                                    <%--</s:if>--%>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -1181,7 +1181,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_alergi"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_alergi"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1226,7 +1226,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_dokter"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_dokter"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1312,7 +1312,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_tindakan"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_tindakan">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1366,7 +1366,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_diagnosa"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_diagnosa">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1418,7 +1418,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_icd9"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_icd9">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1439,7 +1439,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    Silahkan cek kembali data inputan!
+                    <p id="msg_lab"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -1495,11 +1495,31 @@
                         </div>
                     </div>
                 </div>
+                <div style="display: none" id="form_ttd">
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <span>Tanda Tangan</span>
+                            </div>
+                            <div class="col-md-7">
+                                <canvas style="margin-left: 0px" class="paint-canvas-ttd" id="ttd_pengirim" width="310"
+                                        onmouseover="paintTtd('ttd_pengirim')"></canvas>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-danger" style="margin-left: -20px"
+                                        onclick="removePaint('ttd_pengirim')"><i
+                                        class="fa fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_lab"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_lab"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_lab">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1607,7 +1627,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_obat"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_obat"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_obat"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -1901,7 +1921,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_resep_head" onclick="saveResepObatTtd()"><i
-                        class="fa fa-arrow-right"></i> Buat Resep
+                        class="fa fa-check"></i> Buat Resep
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_resep_head"><i
@@ -2019,7 +2039,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_laka"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_laka"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -2130,7 +2150,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes            </button>
             </div>
         </div>
     </div>
@@ -2216,6 +2236,9 @@
     var tempidRm = "";
     var jenisTrans = 'igd';
     var jenisPelayanan = 'igd';
+    var NOSEP = '<s:property value="headerDetailCheckup.noSep"/>';
+    var IdAsuransi = '<s:property value="headerDetailCheckup.idAsuransi"/>';
+    var isBpjsRekanan = "";
 
     $(document).ready(function () {
         $('#igd').addClass('active');
@@ -2360,7 +2383,6 @@
 
     function showObatSerupa() {
         var biji = $("#resep_stok_biji").val();
-        console.log("showObatSerupa = "+biji);
         if (parseInt(biji) == 0){
             $("#obat-serupa").show();
             $("#flag-obat-serupa").val("Y")

@@ -3,27 +3,39 @@ package com.neurix.simrs.master.tindakan.action;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
 import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import com.neurix.simrs.master.kategoritindakanina.bo.KategoriTindakanInaBo;
 import com.neurix.simrs.master.kategoritindakanina.model.KategoriTindakanIna;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.master.tindakan.bo.HeaderTindakanBo;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
+import com.neurix.simrs.master.tindakan.model.HeaderTindakan;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class TindakanAction extends BaseMasterAction {
+public class TindakanAction extends BaseTransactionAction {
     protected static transient Logger logger = Logger.getLogger(TindakanAction.class);
     private Tindakan tindakan;
     private TindakanBo tindakanBoProxy;
@@ -107,181 +119,37 @@ public class TindakanAction extends BaseMasterAction {
         return tindakanBoProxy;
     }
 
-    public Tindakan init(String kode, String flag){
-        logger.info("[TindakanAction.init] start process >>>>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<Tindakan> listOfResult = (List<Tindakan>) session.getAttribute("listOfResultTindakan");
-
-        if (kode != null && !"".equalsIgnoreCase(kode)){
-            if (listOfResult != null){
-                for (Tindakan tindakan : listOfResult){
-                    if (kode.equalsIgnoreCase(tindakan.getIdTindakan()) && flag.equalsIgnoreCase(tindakan.getFlag())){
-                        setTindakan(tindakan);
-                        break;
-                    }
-                }
-            } else {
-                setTindakan(new Tindakan());
-            }
-            logger.info("[TindakanAction.init] end process >>>>>");
+    public Tindakan initTindakan(String idTindakan){
+        logger.info("[TindakanAction.initTindakan] start process >>>>>");
+        List<Tindakan> tindakanList = new ArrayList<>();
+        Tindakan tindakanRes = new Tindakan();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
+        Tindakan tindakan = new Tindakan();
+        tindakan.setIdTindakan(idTindakan);
+        tindakan.setFlag("Y");
+        try {
+            tindakanList = tindakanBo.getDataTindakan(tindakan);
+        }catch (GeneralBOException e){
+            logger.error(e.getMessage());
         }
-        return getTindakan();
-    }
-
-    @Override
-    public String add() {
-        logger.info("[TindakanAction.add] start process >>>");
-        Tindakan addTindakan = new Tindakan();
-        setAddOrEdit(true);
-        setAdd(true);
-
-        String branchId = CommonUtil.userBranchLogin();
-        if (branchId != null){
-            addTindakan.setBranchUser(branchId);
-            addTindakan.setBranchId(branchId);
-        }else {
-            addTindakan.setBranchUser("");
-            addTindakan.setBranchId("");
+        if(tindakanList.size() > 0){
+            tindakanRes = tindakanList.get(0);
         }
-        tindakan = addTindakan;
-        setTindakan(addTindakan);
-//        HttpSession session = ServletActionContext.getRequest().getSession();
-//        session.removeAttribute("listOfResult");
-
-        logger.info("[TindakanAction.add] stop process >>>");
-        return "init_add";
-    }
-
-    @Override
-    public String edit() {
-        logger.info("[TindakanAction.edit] start process >>>");
-        String itemId = getId();
-        String itemFlag = getFlag();
-
-        Tindakan editTindakan = new Tindakan();
-
-        if(itemFlag != null){
-            try {
-                editTindakan = init(itemId, itemFlag);
-            } catch (GeneralBOException e) {
-                Long logId = null;
-                try {
-                    logId = tindakanBoProxy.saveErrorMessage(e.getMessage(), "TindakanBO.getByCriteria");
-                } catch (GeneralBOException e1) {
-                    logger.error("[TindakanAction.edit] Error when retrieving edit data,", e1);
-                }
-                logger.error("[TindakanAction.edit] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
-                return "failure";
-            }
-
-            if(editTindakan != null) {
-                String branchId = CommonUtil.userBranchLogin();
-//                Ruangan data = new Ruangan();
-                if (branchId != null){
-                    editTindakan.setBranchUser(branchId);
-                }else {
-                    editTindakan.setBranchUser("");
-                }
-
-                setTindakan(editTindakan);
-            } else {
-                editTindakan.setFlag(itemFlag);
-                //editPayrollSkalaGaji.getSkalaGajiId(itemId);
-                setTindakan(editTindakan);
-                addActionError("Error, Unable to find data with id = " + itemId);
-                return "failure";
-            }
-        } else {
-            //editPayrollSkalaGaji.getSkalaGajiId(itemId);
-            editTindakan.setFlag(getFlag());
-            setTindakan(editTindakan);
-            addActionError("Error, Unable to edit again with flag = N.");
-            return "failure";
-        }
-
-        setAddOrEdit(true);
-        logger.info("[TindakanAction.edit] end process >>>");
-        return "init_edit";
-    }
-
-    @Override
-    public String delete() {
-        logger.info("[TindakanAction.delete] start process");
-
-        String tindakanId = getId();
-        String tindakanFlag = getFlag();
-
-        Tindakan deleteTindakan = new Tindakan();
-
-        if (flag != null){
-            try{
-                deleteTindakan = init(getId(), getFlag());
-            }catch (GeneralBOException e){
-                Long logId = null;
-                try {
-                    logId = tindakanBoProxy.saveErrorMessage(e.getMessage(), "TindakanBO.getById");
-                } catch (GeneralBOException e1) {
-                    logger.error("[TindakanAction.delete] Error when retrieving delete data,", e1);
-                }
-                logger.error("[TindakanAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
-                return "failure";
-            }
-
-            if (deleteTindakan != null) {
-                setTindakan(deleteTindakan);
-            }else {
-                deleteTindakan.setIdTindakan(tindakanId);
-                deleteTindakan.setFlag(tindakanFlag);
-                setTindakan(deleteTindakan);
-                addActionError("Error, Unable to find data with id = " + tindakanId);
-                return "failure";
-            }
-        }else {
-            deleteTindakan.setIdTindakan(tindakanId);
-            deleteTindakan.setFlag(tindakanFlag);
-            setTindakan(deleteTindakan);
-            addActionError("Error, Unable to delete again with flag = N.");
-            return "failure";
-        }
-
-        logger.info("[TindakanAction.delete] end process <<<<<<");
-        return "init_delete";
-    }
-
-    @Override
-    public String view() {
-
-        return null;
-    }
-
-    @Override
-    public String save() {
-
-        return null;
+        logger.info("[TindakanAction.initTindakan] end process >>>>>");
+        return tindakanRes;
     }
 
     @Override
     public String search() {
         logger.info("[TindakanAction.search] start process >>>");
-
         Tindakan searchTindakan = getTindakan();
         List<Tindakan> listOfsearchTindakan = new ArrayList();
 
         try {
-            listOfsearchTindakan = tindakanBoProxy.getByCriteria(searchTindakan);
+            listOfsearchTindakan = tindakanBoProxy.getDataTindakan(searchTindakan);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = tindakanBoProxy.saveErrorMessage(e.getMessage(), "TindakanBO.getByCriteria");
-            } catch (GeneralBOException e1) {
-                logger.error("[TindakanAction.search] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[TindakanAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
-            return ERROR;
+            logger.error("[TindakanAction.save] Error when searching alat by criteria, Found problem when searching data by criteria, please inform to your admin."+ e.getMessage());
         }
 
         String branchId = CommonUtil.userBranchLogin();
@@ -291,16 +159,12 @@ public class TindakanAction extends BaseMasterAction {
         }else {
             data.setBranchUser("");
         }
-        tindakan = data;
-
+        setTindakan(data);
         HttpSession session = ServletActionContext.getRequest().getSession();
-
-        session.removeAttribute("listOfResultTindakan");
-        session.setAttribute("listOfResultTindakan", listOfsearchTindakan);
-
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfsearchTindakan);
         logger.info("[TindakanAction.search] end process <<<");
-
-        return SUCCESS;
+        return "search";
     }
 
     @Override
@@ -316,23 +180,11 @@ public class TindakanAction extends BaseMasterAction {
             data.setBranchUser("");
             data.setBranchId("");
         }
-        tindakan = data;
-
-        session.removeAttribute("listOfResultTindakan");
+        setTindakan(data);
+        session.removeAttribute("listOfResult");
         logger.info("[TindakanAction.initForm] end process >>>");
-        return INPUT;
-    }
 
-    @Override
-    public String downloadPdf() {
-
-        return null;
-    }
-
-    @Override
-    public String downloadXls() {
-
-        return null;
+        return "search";
     }
 
     public String initComboKategori() {
@@ -358,6 +210,65 @@ public class TindakanAction extends BaseMasterAction {
         listOfComboKategoriTindakan.addAll(listOfKategoriTidakans);
 
         return "init_combo";
+    }
+
+    public List<KategoriTindakan> getComboKategoriTindakan() {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        List<KategoriTindakan> listOfKategoriTidakans = new ArrayList<>();
+        KategoriTindakanBo kategoriTindakanBo = (KategoriTindakanBo) ctx.getBean("kategoriTindakanBoProxy");
+        KategoriTindakan kategoriTindakan = new KategoriTindakan();
+        kategoriTindakan.setFlag("Y");
+
+        try {
+            listOfKategoriTidakans = kategoriTindakanBo.getDataByCriteria(kategoriTindakan);
+        } catch (GeneralBOException e) {
+            logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+        return listOfKategoriTidakans;
+    }
+
+    public List<HeaderTindakan> getComboTindakan() {
+        List<HeaderTindakan> tindakanList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        HeaderTindakanBo headerTindakanBo = (HeaderTindakanBo) ctx.getBean("headerTindakanBoProxy");
+        HeaderTindakan headerTindakan = new HeaderTindakan();
+        headerTindakan.setFlag("Y");
+
+        try {
+            tindakanList = headerTindakanBo.getByCriteria(headerTindakan);
+        } catch (GeneralBOException e) {
+            logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+        return tindakanList;
+    }
+
+    public List<Branch> getComboBranch() {
+        List<Branch> branchList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        Branch branch = new Branch();
+        branch.setFlag("Y");
+
+        try {
+            branchList = branchBo.getByCriteria(branch);
+        } catch (GeneralBOException e) {
+            logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+        return branchList;
+    }
+
+    public List<ImSimrsPelayananEntity> getComboPelayanan(String branchId) {
+        List<ImSimrsPelayananEntity> branchList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        if(branchId != null && !"".equalsIgnoreCase(branchId)){
+            try {
+                branchList = pelayananBo.getJustPelayananByBranch(branchId);
+            } catch (GeneralBOException e) {
+                logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+            }
+        }
+        return branchList;
     }
 
     public String initComboKategoriIna() {
@@ -410,104 +321,115 @@ public class TindakanAction extends BaseMasterAction {
         return "init_combo";
     }
 
-    public String saveAdd(){
+    public CrudResponse saveAdd(String data){
         logger.info("[TindakanAction.saveAdd] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
+        CrudResponse response = new CrudResponse();
 
         try {
-            Tindakan tindakan = getTindakan();
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            JSONArray json = new JSONArray(data);
+            List<Tindakan> tindakanList = new ArrayList<>();
+            if(json != null){
+                for (int i = 0; i < json.length(); i++){
+                    JSONObject object = json.getJSONObject(i);
+                    Tindakan tindakan = new Tindakan();
+                    tindakan.setIdKategoriTindakan(object.getString("id_kategori_tindakan"));
+                    tindakan.setIdHeaderTindakan(object.getString("id_header_tindakan"));
+                    tindakan.setIdPelayanan(object.getString("id_pelayanan"));
+                    tindakan.setBranchId(object.getString("branch_id"));
+                    tindakan.setTarif(new BigInteger(object.getString("tarif")));
+                    tindakan.setTarifBpjs(new BigInteger(object.getString("tarif_bpjs")));
+                    tindakan.setDiskon(new BigDecimal(object.getString("diskon")));
+                    tindakan.setIsIna(object.getString("is_ina"));
+                    tindakan.setIsElektif(object.getString("is_elektif"));
+                    tindakan.setCreatedWho(userLogin);
+                    tindakan.setLastUpdate(updateTime);
+                    tindakan.setCreatedDate(updateTime);
+                    tindakan.setLastUpdateWho(userLogin);
+                    tindakan.setAction("C");
+                    tindakan.setFlag("Y");
+                    tindakanList.add(tindakan);
+                }
 
-            tindakan.setCreatedWho(userLogin);
-            tindakan.setLastUpdate(updateTime);
-            tindakan.setCreatedDate(updateTime);
-            tindakan.setLastUpdateWho(userLogin);
-            tindakan.setAction("C");
-            tindakan.setFlag("Y");
-
-            tindakanBoProxy.saveAdd(tindakan);
-        }catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = tindakanBoProxy.saveErrorMessage(e.getMessage(), "tindakanBO.saveAdd");
-            } catch (GeneralBOException e1) {
-                logger.error("[tindakanAction.saveAdd] Error when saving error,", e1);
-                throw new GeneralBOException(e1.getMessage());
+                if(tindakanList.size() > 0){
+                    response = tindakanBo.saveAdd(tindakanList);
+                }else{
+                    response.setStatus("error");
+                    response.setMsg("Mohon maaf data tindakan tidak ada...!");
+                }
+            }else{
+                response.setStatus("error");
+                response.setMsg("Mohon maaf data tindakan tidak ada...!");
             }
-            logger.error("[tindakanAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e.getMessage());
+        }catch (JSONException e) {
+            response.setStatus("error");
+            response.setMsg("Mohon maaf tidak bisa dilanjutkan dikarenakan, "+e.getMessage());
         }
-
-
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResultTindakan");
-
         logger.info("[tindakanAction.saveAdd] end process >>>");
-        return "success_save_add";
+        return response;
     }
 
-    public String saveEdit(){
-        logger.info("[TindakanAction.saveEdit] start process >>>");
+    public CrudResponse saveEdit(String data){
+        logger.info("[TindakanAction.saveAdd] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
+        CrudResponse response = new CrudResponse();
+
         try {
-
-            Tindakan editTindakan = getTindakan();
-
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-            editTindakan.setLastUpdateWho(userLogin);
-            editTindakan.setLastUpdate(updateTime);
-            editTindakan.setAction("U");
-            editTindakan.setFlag("Y");
-
-            tindakanBoProxy.saveEdit(editTindakan);
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = tindakanBoProxy.saveErrorMessage(e.getMessage(), "TindakanBO.saveEdit");
-            } catch (GeneralBOException e1) {
-                logger.error("[TindakanAction.saveEdit] Error when saving error,", e1);
-                throw new GeneralBOException(e1.getMessage());
+            JSONObject object = new JSONObject(data);
+            if(object != null){
+                Tindakan tindakan = new Tindakan();
+                tindakan.setIdTindakan(object.getString("id_tindakan"));
+                tindakan.setIdHeaderTindakan(object.getString("id_header_tindakan"));
+                tindakan.setIdKategoriTindakan(object.getString("id_kategori_tindakan"));
+                tindakan.setTarifBpjs(new BigInteger(object.getString("tarif")));
+                tindakan.setTarifBpjs(new BigInteger(object.getString("tarif_bpjs")));
+                tindakan.setDiskon(new BigDecimal(object.getString("diskon")));
+                tindakan.setIsIna(object.getString("is_ina"));
+                tindakan.setIsElektif(object.getString("is_elektif"));
+                tindakan.setLastUpdate(updateTime);
+                tindakan.setLastUpdateWho(userLogin);
+                tindakan.setAction("U");
+                tindakan.setFlag("Y");
+                response = tindakanBo.saveEdit(tindakan);
+            }else{
+                response.setStatus("error");
+                response.setMsg("Mohon maaf data tindakan tidak ada...!");
             }
-            logger.error("[TindakanAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e.getMessage());
+        }catch (JSONException e) {
+            response.setStatus("error");
+            response.setMsg("Mohon maaf tidak bisa dilanjutkan dikarenakan, "+e.getMessage());
         }
-
-        logger.info("[TindakanAction.saveEdit] end process <<<");
-        return "success_save_edit";
+        logger.info("[tindakanAction.saveAdd] end process >>>");
+        return response;
     }
 
-    public String saveDelete(){
-        logger.info("[TindakanAction.saveDelete] start process >>>>");
-
-        try{
-            Tindakan deleteTindakan = getTindakan();
-
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-            deleteTindakan.setLastUpdate(updateTime);
-            deleteTindakan.setLastUpdateWho(userLogin);
-            deleteTindakan.setAction("U");
-            deleteTindakan.setFlag("N");
-
-            tindakanBoProxy.saveDelete(deleteTindakan);
-        }catch (GeneralBOException e){
-            Long logId = null;
-            try {
-                logId = tindakanBoProxy.saveErrorMessage(e.getMessage(), "TindakanBo.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[TindakanAction.saveDelete] Error when saving error,", e1);
-                throw new GeneralBOException(e1.getMessage());
-            }
-            logger.error("[TindakanAction.saveDelete] Error when editing item pasien," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e.getMessage());
+    public CrudResponse saveDelete(String idTindakan){
+        logger.info("[TindakanAction.saveDelete] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
+        CrudResponse response = new CrudResponse();
+        try {
+            Tindakan tindakan = new Tindakan();
+            tindakan.setIdTindakan(idTindakan);
+            tindakan.setLastUpdate(updateTime);
+            tindakan.setLastUpdateWho(userLogin);
+            tindakan.setAction("D");
+            tindakan.setFlag("N");
+            response = tindakanBo.saveEdit(tindakan);
+        }catch (GeneralBOException e) {
+            response.setStatus("error");
+            response.setMsg("Mohon maaf tidak bisa dilanjutkan dikarenakan, "+e.getMessage());
         }
-        logger.info("[TindakanAction.saveDelete] end process <<<");
-        return "success_save_delete";
+        logger.info("[tindakanAction.saveAdd] end process >>>");
+        return response;
     }
 
     public ImSimrsTindakanEntity getDataTindakanById(String id){

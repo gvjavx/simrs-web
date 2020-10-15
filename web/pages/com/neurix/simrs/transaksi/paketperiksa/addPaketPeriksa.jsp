@@ -66,6 +66,10 @@
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
         }
+
+        .garis {
+            color: #ddd;
+        }
     </style>
 </head>
 
@@ -153,6 +157,24 @@
                             </sj:dialog>
                         </div>
                         <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-3" style="margin-top: 5px">Diskon Tarif Tindakan (%)
+                                    ?</label>
+                                <div class="col-md-1">
+                                    <div class="form-check" style="margin-top: 5px;">
+                                        <input type="checkbox" name="persen" id="persen" value="Y"
+                                               onclick="cekPersen(this.id, 'jml_persen')">
+                                        <label for="persen"></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <input style="margin-left: -55px; width: 75%" class="form-control" id="jml_persen"
+                                           type="number" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="garis">
+                        <div class="row">
                             <div class="col-md-6">
                                 <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px;"--%>
                                 <%--onclick="showModal(2)"><i class="fa fa-plus"></i> Tindakan--%>
@@ -166,27 +188,29 @@
                                     <div class="form-group">
                                         <label class="col-md-3" style="margin-top: 7px">Poli</label>
                                         <div class="col-md-7">
-                                    <s:action id="initComboPoli" namespace="/checkup"
-                                              name="getComboPelayananPaketPeriksa_checkup"/>
-                                    <s:select cssStyle="margin-top: 7px; width: 100%"
-                                              list="#initComboPoli.listOfPelayananPaket" id="poli"
-                                              name="headerCheckup.idPelayanan" listKey="idPelayanan"
-                                              listValue="namaPelayanan"
-                                              onchange="$(this).css('border',''); listKategori(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"
-                                              headerKey="" headerValue="[Select one]"
-                                              cssClass="form-control select2"/>
+                                            <s:action id="initComboPoli" namespace="/checkup"
+                                                      name="getComboPelayananPaketPeriksa_checkup"/>
+                                            <s:select cssStyle="margin-top: 7px; width: 100%"
+                                                      list="#initComboPoli.listOfPelayananPaket" id="poli"
+                                                      name="headerCheckup.idPelayanan" listKey="idPelayanan"
+                                                      listValue="namaPelayanan"
+                                                      onchange="$(this).css('border',''); listKategori(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"
+                                                      headerKey="" headerValue="[Select one]"
+                                                      cssClass="form-control select2"/>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                               id="war_poli"><i class="fa fa-times"></i> required</p>
+                                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                               id="cor_poli"><i class="fa fa-check"></i> correct</p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                                           id="war_poli"><i class="fa fa-times"></i> required</p>
-                                        <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                                           id="cor_poli"><i class="fa fa-check"></i> correct</p>
-                                    </div>
-                                </div>
                                     <div class="form-group">
                                         <label class="col-md-3" style="margin-top: 7px">Kategori</label>
                                         <div class="col-md-7">
-                                            <select style="margin-top: 7px" class="form-control select2" id="tin_id_ketgori_tindakan" onchange="listSelectTindakan(this); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}">
+                                            <select style="margin-top: 7px" class="form-control select2"
+                                                    id="tin_id_ketgori_tindakan"
+                                                    onchange="listSelectTindakan(this.value); var warn =$('#war_kategori').is(':visible'); if (warn){$('#cor_kategori').show().fadeOut(3000);$('#war_kategori').hide()}">
                                                 <option value="">[Select One]</option>
                                             </select>
                                         </div>
@@ -202,7 +226,7 @@
                                         <div class="col-md-7">
                                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                                     id="tin_id_tindakan"
-                                                    onchange="getTarifTindakan(this); var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide();}">
+                                                    onchange="getTarifTindakan(this.value); var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide();}">
                                                 <option value=''>[Select One]</option>
                                             </select>
                                         </div>
@@ -222,35 +246,41 @@
                                                    onchange="$(this).css('border','')" value="1">
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="form_tarif_tindakan">
                                         <label class="col-md-3" style="margin-top: 7px">Tarif Tindakan</label>
                                         <div class="col-md-7">
-                                            <input type="number" min="1" class="form-control" style="margin-top: 7px"
+                                            <input min="1" class="form-control" style="margin-top: 7px"
                                                    id="tin_tarif"
                                                    oninput="$(this).css('border','')"
-                                                   onchange="$(this).css('border','')"  disabled>
+                                                   onchange="$(this).css('border','')" disabled>
+                                            <input type="hidden" id="h_tin_tarif">
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="form_tarif_tindakan_paket">
                                         <label class="col-md-3" style="margin-top: 7px">Tarif Paket</label>
                                         <div class="col-md-7">
-                                            <input type="number" min="1" class="form-control" style="margin-top: 7px"
+                                            <input min="1" class="form-control" style="margin-top: 7px"
                                                    id="tin_tarif_paket"
-                                                   oninput="$(this).css('border','')"
+                                                   oninput="$(this).css('border',''); convertRp('tin_tarif_paket', this.value)"
                                                    onchange="$(this).css('border','')">
+                                            <input type="hidden" id="h_tin_tarif_paket">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-offset-3 col-md-7" style="margin-top: 7px">
-                                            <button class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
-                                            <button class="btn btn-success" onclick="saveTindakan()"><i class="fa fa-plus"></i> Tambah</button>
+                                            <button onclick="window.location.reload(true)" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
+                                            <button class="btn btn-success" onclick="saveTindakan()"><i
+                                                    class="fa fa-plus"></i> Tambah
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <table class="table table-bordered table-striped" style="margin-top: 20px" id="table_tindakan">
+                                <table class="table table-bordered table-striped"
+                                       style="margin-top: 20px; font-size: 12px" id="table_tindakan">
                                     <thead>
                                     <tr bgcolor="#90ee90">
+                                        <td>Pelayanan</td>
                                         <td>Tindakan</td>
                                         <td align="center" width="15%">Qty</td>
                                         <td align="center" width="15%">Tarif Paket</td>
@@ -270,13 +300,31 @@
                                     <p id="msg_lab"></p>
                                 </div>
                                 <div class="row">
-                                    <div class="form-group" style="margin-top: 42px">
+                                    <div class="form-group">
+                                        <label class="col-md-3" style="margin-top: 7px">Poli Untuk Lab</label>
+                                        <div class="col-md-7">
+                                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                                    id="lab_poli"
+                                                    onchange="var warn =$('#war_poli_lab').is(':visible'); if (warn){$('#cor_poli_lab').show().fadeOut(3000);$('#war_poli_lab').hide()};">
+                                                <option value=''>[Select One]</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                               id="war_poli_lab"><i
+                                                    class="fa fa-times"></i> required</p>
+                                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                               id="cor_poli_lab"><i
+                                                    class="fa fa-check"></i> correct</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="col-md-3" style="margin-top: 7px">Kategori Lab</label>
                                         <div class="col-md-7">
                                             <s:action id="comboLab" namespace="/kategorilab"
                                                       name="getListKategoriLab_kategorilab"/>
                                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                      onchange="var warn =$('#war_kategori_lab').is(':visible'); if (warn){$('#cor_kategori_lab').show().fadeOut(3000);$('#war_kategori_lab').hide()}; listSelectLab(this)"
+                                                      onchange="var warn =$('#war_kategori_lab').is(':visible'); if (warn){$('#cor_kategori_lab').show().fadeOut(3000);$('#war_kategori_lab').hide()}; listSelectLab(this.value)"
                                                       list="#comboLab.listOfKategoriLab" id="lab_kategori"
                                                       listKey="idKategoriLab + '|' + namaKategori"
                                                       listValue="namaKategori"
@@ -295,7 +343,7 @@
                                         <div class="col-md-7">
                                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                                     id="lab_lab"
-                                                    onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this);">
+                                                    onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">
                                                 <option value=''>[Select One]</option>
                                             </select>
                                         </div>
@@ -325,33 +373,38 @@
                                                id="cor_parameter"><i class="fa fa-check"></i> correct</p>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="form_lab_tarif">
                                         <label class="col-md-3" style="margin-top: 7px">Tarif Lab</label>
                                         <div class="col-md-7">
-                                            <input type="number" min="1" class="form-control" style="margin-top: 7px"
+                                            <input min="1" class="form-control" style="margin-top: 7px"
                                                    id="lab_tarif"
-                                                   oninput="$(this).css('border','')"
-                                                   onchange="$(this).css('border','')"  disabled>
+                                                   oninput="$(this).css('border',''); convertRp('lab_tarif', this.value)"
+                                                   onchange="$(this).css('border','')" disabled>
+                                            <input type="hidden" id="h_lab_tarif">
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="form_lab_tarif_paket">
                                         <label class="col-md-3" style="margin-top: 7px">Tarif Paket Lab</label>
                                         <div class="col-md-7">
-                                            <input type="number" min="1" class="form-control" style="margin-top: 7px"
+                                            <input min="1" class="form-control" style="margin-top: 7px"
                                                    id="lab_tarif_paket"
-                                                   oninput="$(this).css('border','')"
+                                                   oninput="$(this).css('border',''); convertRp('lab_tarif', this.value)"
                                                    onchange="$(this).css('border','')">
+                                            <input type="hidden" id="h_lab_tarif_paket">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-offset-3 col-md-7" style="margin-top: 7px">
-                                            <button class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
-                                            <button class="btn btn-success" onclick="saveLab()"><i class="fa fa-plus"></i> Tambah</button>
+                                            <%--<button class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>--%>
+                                            <button class="btn btn-success" onclick="saveLab()"><i
+                                                    class="fa fa-plus"></i> Tambah
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <table class="table table-bordered table-striped" style="margin-top: 20px" id="table_lab">
+                                <table class="table table-bordered table-striped"
+                                       style="margin-top: 20px; font-size: 12px" id="table_lab">
                                     <thead>
                                     <tr bgcolor="#90ee90">
                                         <td>Jenis Lab</td>
@@ -373,50 +426,68 @@
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
+                        <div class="alert alert-danger alert-dismissible" style="display: none"
+                             id="warning_paket">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_paket"></p>
+                        </div>
                         <div class="row">
-                            <div class="alert alert-danger alert-dismissible" style="display: none"
-                                 id="warning_paket">
-                                <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                                <p id="msg_paket"></p>
+                            <div class="col-md-6">
+                                <table class="table table-bordered table-striped"
+                                       style="margin-top: 20px; font-size: 12px" id="table_pelayanan">
+                                    <thead>
+                                    <tr bgcolor="#90ee90">
+                                        <td>Pelayanan</td>
+                                        <td width="20%" align="center">Urutan</td>
+                                        <td width="20%" align="center">Action</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body_pelayanan">
+                                    </tbody>
+                                </table>
                             </div>
-                                <div class="form-group">
-                                    <div class="col-md-3">
-                                        <label>Nama Paket</label>
-                                        <input class="form-control" id="nama_paket" oninput="var warn =$('#war_paket').is(':visible'); if (warn){$('#cor_paket').show().fadeOut(3000);$('#war_paket').hide()}">
-                                        <p style="color: red; display: none;"
-                                           id="war_paket"><i class="fa fa-times"></i> required</p>
-                                        <p style="color: green; display: none;"
-                                           id="cor_paket"><i class="fa fa-check"></i> correct</p>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>Tarif Paket</label>
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                Rp.
-                                            </div>
-                                            <input type="hidden" id="tarif_paket">
-                                            <input class="form-control" id="nominal_tarif_paket" oninput="var warn =$('#war_tarif_paket').is(':visible'); if (warn){$('#cor_tarif_paket').show().fadeOut(3000);$('#war_tarif_paket').hide()}">
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Nama Paket</label>
+                                    <input class="form-control" id="nama_paket"
+                                           oninput="var warn =$('#war_paket').is(':visible'); if (warn){$('#cor_paket').show().fadeOut(3000);$('#war_paket').hide()}">
+                                    <p style="color: red; display: none;"
+                                       id="war_paket"><i class="fa fa-times"></i> required</p>
+                                    <p style="color: green; display: none;"
+                                       id="cor_paket"><i class="fa fa-check"></i> correct</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Tarif Paket</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            Rp.
                                         </div>
-                                        <p style="color: red; display: none;"
-                                           id="war_tarif_paket"><i class="fa fa-times"></i> required</p>
-                                        <p style="color: green; display: none;"
-                                           id="cor_tarif_paket"><i class="fa fa-check"></i> correct</p>
+                                        <input type="hidden" id="tarif_paket">
+                                        <input class="form-control" id="nominal_tarif_paket" disabled
+                                               oninput="var warn =$('#war_tarif_paket').is(':visible'); if (warn){$('#cor_tarif_paket').show().fadeOut(3000);$('#war_tarif_paket').hide()}">
                                     </div>
-                                    <div class="col-md-4">
-                                        <div style="margin-top: 23px">
-                                            <a class="btn btn-warning" href="initForm_paketperiksa.action"><i
-                                                    class="fa fa-arrow-left"></i> Back</a>
-                                            <a class="btn btn-success" id="save_paket"
-                                               onclick="savePaket()"><i class="fa fa-check"></i> Save</a>
-                                            <button style="display: none; cursor: no-drop;" type="button"
-                                                    class="btn btn-success" id="load_paket"><i
-                                                    class="fa fa-spinner fa-spin"></i>
-                                                Sedang Menyimpan...
-                                            </button>
-                                        </div>
+                                    <p style="color: red; display: none;"
+                                       id="war_tarif_paket"><i class="fa fa-times"></i> required</p>
+                                    <p style="color: green; display: none;"
+                                       id="cor_tarif_paket"><i class="fa fa-check"></i> correct</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="margin-top: 23px">
+                                        <a class="btn btn-warning" href="initForm_paketperiksa.action"><i
+                                                class="fa fa-arrow-left"></i> Back</a>
+                                        <a class="btn btn-success" id="save_paket"
+                                           onclick="savePaket()"><i class="fa fa-check"></i> Save</a>
+                                        <button style="display: none; cursor: no-drop;" type="button"
+                                                class="btn btn-success" id="load_paket"><i
+                                                class="fa fa-spinner fa-spin"></i>
+                                            Sedang Menyimpan...
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
                     <div class="box-header with-border"></div>
                 </div>
@@ -453,6 +524,7 @@
 <script type='text/javascript'>
 
     var idDetailCheckup = "";
+    var tempData = [];
 
     $(document).ready(function () {
         $('#paket_periksa').addClass('active');
@@ -462,40 +534,100 @@
             tarif.value = formatRupiah2(this.value);
             var val = tarif.value.replace(/[.]/g, '');
 
-            if(val != ''){
+            if (val != '') {
                 $('#tarif_paket').val(val);
-            }else{
+            } else {
                 $('#tarif_paket').val('');
             }
         });
     });
 
     function getTarifTindakan(var1) {
-        var idx = var1.selectedIndex;
-        var idTindakan = var1.options[idx].value;
-
-        var id = "";
-        var tindakan = idTindakan.split("|");
-        if(tindakan[0] != 'null' && tindakan[0] != ''){
-            id = tindakan[0];
-        }
-        TindakanAction.getDataTindakanById(id, function (tindakan) {
-            if (tindakan != null && tindakan.idTindakan != null){
-                $("#tin_tarif").val(tindakan.tarif);
-                $("#tin_tarif_paket").val(tindakan.tarif);
+        var cekPersen = $('#persen').is(':checked');
+        var jmlPersen = $('#jml_persen').val();
+        if (var1 != '') {
+            if ("all" == var1) {
+                $('#form_tarif_tindakan').hide();
+                $('#form_tarif_tindakan_paket').hide();
+            } else {
+                $('#form_tarif_tindakan').show();
+                $('#form_tarif_tindakan_paket').show();
+                var id = '';
+                if (var1.split("|")[0] != 'null' && var1.split("|")[0] != '') {
+                    id = var1.split("|")[0];
+                }
+                if (id != '') {
+                    TindakanAction.getDataTindakanById(id, function (tindakan) {
+                        if (tindakan != null && tindakan.idTindakan != null) {
+                            var tarif = "";
+                            if (cekPersen) {
+                                if (jmlPersen != '' && parseInt(jmlPersen) > 0) {
+                                    var persen = 100 - parseInt(jmlPersen);
+                                    var hasil = persen / 100;
+                                    tarif = hasil * tindakan.tarif;
+                                    $('#persen').attr('disabled', true);
+                                    $('#persen').attr('style', 'cursor:no-drop');
+                                    $('#jml_persen').attr('disabled', true);
+                                } else {
+                                    $('#warning_tindakan').show().fadeOut(5000);
+                                    $('#msg_tin').text("Diskon Tarif tidak boleh kosong dan 0...!");
+                                }
+                            } else {
+                                tarif = tindakan.tarif;
+                                $('#persen').attr('disabled', true);
+                                $('#persen').attr('style', 'cursor:no-drop');
+                                $('#jml_persen').attr('disabled', true);
+                            }
+                            $("#tin_tarif").val(formatRupiahAtas(tindakan.tarif));
+                            $("#h_tin_tarif").val(tindakan.tarif);
+                            $("#tin_tarif_paket").val(formatRupiahAtas(tarif));
+                            $("#h_tin_tarif_paket").val(tarif);
+                        }
+                    });
+                }
             }
-        })
+        }
     }
 
     function getTarifLab(var1) {
-        console.log(var1);
-        LabDetailAction.labDetailEntityByIdLab(var1, function (response) {
-            console.log(response);
-            if (response != null && response.idLabDetail != null){
-                $("#lab_tarif").val(response.tarif);
-                $("#lab_tarif_paket").val(response.tarif);
+        var cekPersen = $('#persen').is(':checked');
+        var jmlPersen = $('#jml_persen').val();
+        if (var1 != '') {
+            if ("all" == var1) {
+                $('#form_lab_tarif').hide();
+                $('#form_lab_tarif_paket').hide();
+            } else {
+                $('#form_lab_tarif').show();
+                $('#form_lab_tarif_paket').show();
+                LabDetailAction.labDetailEntityByIdLab(var1, function (response) {
+                    if (response != null && response.idLabDetail != null) {
+                        var tarif = "";
+                        if (cekPersen) {
+                            if (jmlPersen != '' && parseInt(jmlPersen) > 0) {
+                                var persen = 100 - parseInt(jmlPersen);
+                                var hasil = persen / 100;
+                                tarif = hasil * response.tarif;
+                                $('#persen').attr('disabled', true);
+                                $('#persen').attr('style', 'cursor:no-drop');
+                                $('#jml_persen').attr('disabled', true);
+                            } else {
+                                $('#warning_lab').show().fadeOut(5000);
+                                $('#msg_lab').text("Diskon Tarif tidak boleh kosong dan 0...!");
+                            }
+                        } else {
+                            tarif = response.tarif;
+                            $('#persen').attr('disabled', true);
+                            $('#persen').attr('style', 'cursor:no-drop');
+                            $('#jml_persen').attr('disabled', true);
+                        }
+                        $("#lab_tarif").val(formatRupiahAtas(response.tarif));
+                        $("#lab_tarif_paket").val(formatRupiahAtas(tarif));
+                        $("#h_lab_tarif").val(response.tarif);
+                        $("#h_lab_tarif_paket").val(tarif);
+                    }
+                });
             }
-        });
+        }
     }
 
     function formatRupiah2(angka) {
@@ -514,33 +646,36 @@
         return rupiah;
     }
 
-    function toContent(){
+    function toContent() {
         window.location.href = 'initForm_paketperiksa.action';
     }
 
-    function listSelectTindakan(idKategori) {
-        var idx = idKategori.selectedIndex
-        if (idx > 0) {
-            var option = "<option value=''>[Select One]</option>";
-            var idKtg = idKategori.options[idx].value;
-            CheckupDetailAction.getListComboTindakan(idKtg, function (response) {
-                if (response != null) {
-                    console.log(response);
+    function listSelectTindakan(value) {
+        var option = '<option value="">[Select One]</option>';
+        if (value != '') {
+            CheckupDetailAction.getListComboTindakan(value, function (response) {
+                if (response.length > 0) {
+                    option = option + '<option value="all">Select All</option>';
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idTindakan + "|" + item.tindakan + "'>" + item.tindakan + "</option>";
                     });
                     $('#tin_id_tindakan').html(option);
                 } else {
-                    $('#tin_id_tindakan').html('');
+                    $('#tin_id_tindakan').html(option);
                 }
             });
         } else {
-            $('#tin_id_tindakan').html('');
+            $('#tin_id_tindakan').html(option);
         }
     }
 
-    function listKategori(idPelayanan){
-        if(idPelayanan != null && idPelayanan != ''){
+    function listKategori(idPelayanan) {
+        if (idPelayanan != null && idPelayanan != '') {
+            $('#tin_tarif').val('');
+            $('#h_tin_tarif').val('');
+            $('#tin_tarif_paket').val('');
+            $('#h_tin_tarif_paket').val('');
+            $('#tin_id_tindakan').val('').trigger('change');
             var option = "<option value=''>[Select One]</option>";
             PaketPeriksaAction.getListKategoriTindakan(idPelayanan, function (response) {
                 if (response.length > 0) {
@@ -552,11 +687,10 @@
                     $('#tin_id_ketgori_tindakan').html('');
                 }
             });
-        }else{
+        } else {
             $('#tin_id_ketgori_tindakan').html('');
         }
     }
-
 
     function showModal(select) {
 
@@ -567,67 +701,121 @@
             $('#tin_qty').val('1');
             $('#load_tindakan, #warning_tindakan, #war_kategori, #war_tindakan, #war_perawat').hide();
             $('#save_tindakan').attr('onclick', 'saveTindakan(\'' + id + '\')').show();
-            $('#modal-tindakan').modal('show');
+            // $('#modal-tindakan').modal('show');
 
         } else if (select == 4) {
             $('#lab_kategori, #lab_lab').val('').trigger('change');
             $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
             $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
-            $('#modal-lab').modal('show');
+            // $('#modal-lab').modal('show');
         }
     }
 
     function saveTindakan() {
 
+        var idPoli = $('#poli').val();
+        var namaPoli = $('#poli option:selected').text();
         var idKategori = $('#tin_id_ketgori_tindakan').val();
         var idTindakan = $('#tin_id_tindakan').val();
-        var tarifPaket = $("#tin_tarif_paket").val();
+        var tarifPaket = $("#h_tin_tarif_paket").val();
         var qty = $('#tin_qty').val();
-        var cek = false;
         var data = $('#table_tindakan').tableToJSON();
+        var cekPersen = $('#persen').is(':checked');
+        var jmlPersen = $('#jml_persen').val();
+        var row = data.length;
+        var cek = false;
 
-        if (idTindakan != '' && idTindakan != null && idKategori != null && qty > 0 && idKategori != '' && tarifPaket != '') {
-
-
+        if (idTindakan != '' && idTindakan != null && idKategori != null && qty > 0 && idKategori != '') {
             var id = "";
             var tin = "";
 
             var tindakan = idTindakan.split("|");
-            if(tindakan[0] != 'null' && tindakan[0] != ''){
+            if (tindakan[0] != 'null' && tindakan[0] != '') {
                 id = tindakan[0];
             }
 
-            if(tindakan[1] != 'null' && tindakan[1] != ''){
+            if (tindakan[1] != 'null' && tindakan[1] != '') {
                 tin = tindakan[1];
             }
 
-            var data = $('#table_tindakan').tableToJSON();
-            var row = data.length;
-            var cek = false;
+            if (idTindakan == "all") {
+                CheckupDetailAction.getListComboTindakan(idKategori, function (response) {
+                    if (response.length > 0) {
+                        var table = "";
+                        $.each(response, function (ix, itemx) {
+                            $.each(data, function (i, item) {
+                                var tin2 = $('#tindakan_id' + i).val();
+                                if (itemx.idTindakan == tin2) {
+                                    cek = true;
+                                }
+                            });
+                        });
+                        if (cek) {
+                            $('#warning_tindakan').show().fadeOut(5000);
+                            $('#msg_tin').text("Data tindakan sudah ada dalam list...!");
+                        } else {
+                            var setAppend = false;
+                            var isPersen = false;
+                            if (cekPersen) {
+                                if (jmlPersen != '' && parseInt(jmlPersen) > 0) {
+                                    setAppend = false;
+                                    isPersen = true;
+                                } else {
+                                    setAppend = true;
+                                }
+                            }
 
-            $.each(data, function (i, item) {
-                var tin2 = data[i]["Tindakan"];
-                if(tin == tin2){
-                    cek = true;
+                            if (setAppend) {
+                                $('#warning_tindakan').show().fadeOut(5000);
+                                $('#msg_tin').text("Diskon Tarif tidak boleh kosong dan 0...!");
+                            } else {
+                                $.each(response, function (i, item) {
+                                    row = row + i;
+                                    var tarif = item.tarif;
+                                    if (isPersen) {
+                                        var persen = 100 - parseInt(jmlPersen);
+                                        var hasil = persen / 100;
+                                        tarif = hasil * item.tarif;
+                                    }
+                                    table += '<tr id="row' + item.idTindakan + '">' +
+                                        '<td>' + namaPoli + '<input type="hidden" value="' + idPoli + '" id="poli_id' + row + '">' + '</td>' +
+                                        '<td>' + item.tindakan + '<input type="hidden" value="' + item.idTindakan + '" id="tindakan_id' + row + '">' + '</td>' +
+                                        '<td align="center">' + qty + '<input type="hidden" value="' + idKategori + '" id="kategori_id' + row + '">' + '</td>' +
+                                        '<td align="center">' + formatRupiahAtas(tarif) + '<input type="hidden" value="' + tarif + '" id="tin_tarif_id' + row + '">' + '</td>' +
+                                        '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + item.idTindakan + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                                        '</tr>';
+
+                                });
+                            }
+                            $('#body_tindakan').append(table);
+                            $('#tin_id_tindakan').val('').trigger('change');
+                        }
+                    }
+                });
+            } else {
+                $.each(data, function (i, item) {
+                    var tin2 = $('#tindakan_id' + i).val();
+                    if (id == tin2) {
+                        cek = true;
+                    }
+                });
+                if (cek) {
+                    $('#warning_tindakan').show().fadeOut(5000);
+                    $('#msg_tin').text("Data tindakan sudah ada dalam list...!");
+                } else {
+                    var table = '<tr id="row' + id + '">' +
+                        '<td>' + namaPoli + '<input type="hidden" value="' + idPoli + '" id="poli_id' + row + '">' + '</td>' +
+                        '<td>' + tin + '<input type="hidden" value="' + id + '" id="tindakan_id' + row + '">' + '</td>' +
+                        '<td align="center">' + qty + '<input type="hidden" value="' + idKategori + '" id="kategori_id' + row + '">' + '</td>' +
+                        '<td align="center">' + formatRupiahAtas(tarifPaket) + '<input type="hidden" value="' + tarifPaket + '" id="tin_tarif_id' + row + '">' + '</td>' +
+                        '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + id + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                        '</tr>';
+
+                    $('#body_tindakan').append(table);
+                    // $('#modal-tindakan').modal('hide');
+                    // $('#poli').attr('disabled','');
+                    $('#tin_id_tindakan').val('').trigger('change');
                 }
-            });
-
-            if(cek){
-                $('#warning_tindakan').show().fadeOut(5000);
-                $('#msg_tin').text("Data tindakan sudah ada dalam list...!");
-            }else{
-
-                var table = '<tr id="row'+id+'">' +
-                    '<td>' + tin + '<input type="hidden" value="'+id+'" id="tindakan_id'+row+'">' + '</td>' +
-                    '<td align="center">' + qty + '<input type="hidden" value="'+idKategori+'" id="kategori_id'+row+'">' +'</td>' +
-                    '<td align="center">' + tarifPaket + '<input type="hidden" value="'+tarifPaket+'" id="tin_tarif_id'+row+'">' +'</td>' +
-                    '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\''+id+'\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>'
-                '</tr>';
-
-                $('#body_tindakan').append(table);
-                $('#modal-tindakan').modal('hide');
-                $('#poli').attr('disabled','');
-                $('#tin_id_tindakan').val('').trigger('change');
             }
 
         } else {
@@ -645,111 +833,254 @@
         }
 
         hitungTotal();
+        // tempSelectPoli();
+        tempSelectPoli();
     }
 
-    function delRow(id){
-        $('#row'+id).remove();
+    function tempSelectPoli() {
+        var data = $('#table_tindakan').tableToJSON();
+        if (data.length > 0) {
+            $.each(data, function (ix, itemx) {
+                var idPel = $('#poli_id' + ix).val();
+                var Pel = data[ix]["Pelayanan"];
+                var cekPoint = false;
+                if(tempData.length > 0){
+                    $.each(tempData, function (id, itemd) {
+                        if(idPel == itemd.id_pelayanan){
+                            cekPoint = true;
+                        }
+                    });
+                    if(!cekPoint){
+                        tempData.push({
+                            'id_pelayanan': idPel,
+                            'pelayanan': Pel
+                        });
+                    }
+                }else{
+                    tempData.push({
+                        'id_pelayanan': idPel,
+                        'pelayanan': Pel
+                    });
+                }
+            });
+        } else {
+            tempData = [];
+        }
+
+        var option = '<option value="">[Select One]</option>';
+        var table = "";
+        var long = tempData.length;
+        if (long > 0) {
+            $.each(tempData, function (i, item) {
+                option += '<option value="' + item.id_pelayanan + '">' + item.pelayanan + '</option>';
+                var urut = i + 1;
+                table +=
+                    '<tr>' +
+                    '<td>' + item.pelayanan + '<input type="hidden" id="poli_id_' + urut + '" value="' + item.id_pelayanan + '">' + '</td>' +
+                    '<td align="center">' + '<input id="urut_val_' + urut + '" onchange="setUrut(this.value, \'' + urut + '\')" class="form-control" type="number" min="1" max="' + long + '" value="' + urut + '" disabled>' +
+                    '<input type="hidden" id="urut_' + urut + '">' + '</td>' +
+                    '<td align="center">' +
+                    '<img id="btn_urut' + urut + '" onclick="setUrutanPelayanan(\'' + urut + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                    '</tr>';
+            });
+        }
+        $('#body_pelayanan').html(table);
+        $('#lab_poli').html(option);
     }
 
-    function listSelectLab(select) {
-        var idx = select.selectedIndex;
-        if (idx > 0) {
-            var idKategori = select.options[idx].value;
-            var kat = idKategori.split("|");
+    function setUrutanPelayanan(i) {
+        var data = $('#table_pelayanan').tableToJSON();
+        var src = '<s:url value="/pages/images/icons8-save-25.png"/>';
+        $('#urut_val_' + i).attr('disabled', false);
+        $('#btn_urut' + i).removeAttr('src');
+        $('#btn_urut' + i).attr('src', src);
+        $('#btn_urut' + i).attr('onclick', 'saveUrutanPelayanan(\'' + i + '\')');
+    }
+
+    function saveUrutanPelayanan(i) {
+        var data = $('#table_tindakan').tableToJSON();
+        var nilai = $('#urut_val_' + i).val();
+        var cek = false;
+        $.each(data, function (i, item) {
+            var pem = $('#urut_' + i).val();
+            if (nilai == pem) {
+                cek = true;
+            }
+        });
+        if (cek) {
+            $('#warning_paket').show().fadeOut(5000);
+            $('#msg_paket').text("Nomor urutan pelayanan tidak boleh sama...!");
+        } else {
+            var src = '<s:url value="/pages/images/icons8-create-25.png"/>';
+            $('#btn_urut' + i).removeAttr('src');
+            $('#btn_urut' + i).attr('src', src);
+            $('#btn_urut' + i).attr('onclick', 'setUrutanPelayanan(\'' + i + '\')');
+            $('#urut_val_' + i).attr('disabled', true);
+        }
+    }
+
+    function setUrut(val, id) {
+        $('#urut_' + id).val(val);
+    }
+
+    function delRow(id) {
+        $('#row' + id).remove();
+        tempSelectPoli();
+    }
+
+    function listSelectLab(value) {
+        if (value != '') {
+            var kat = value.split("|");
             var id = "";
             var ktr = "";
 
-            if(kat[0] != 'null' && kat[0] != ''){
+            if (kat[0] != 'null' && kat[0] != '') {
                 id = kat[0];
             }
 
-            if(kat[1] != 'null' && kat[1] != ''){
+            if (kat[1] != 'null' && kat[1] != '') {
                 ktr = kat[1];
             }
 
             var option = "<option value=''>[Select One]</option>";
             LabAction.listLab(id, function (response) {
-                if (response != null) {
+                if (response.length > 0) {
                     $.each(response, function (i, item) {
-                        option += "<option value='" + item.idLab +'|'+item.namaLab+ "'>" + item.namaLab + "</option>";
+                        option += "<option value='" + item.idLab + '|' + item.namaLab + "'>" + item.namaLab + "</option>";
                     });
                     $('#lab_lab').html(option);
                 } else {
-                    $('#lab_lab').html('');
+                    $('#lab_lab').html(option);
                 }
             });
         } else {
-            $('#lab_lab').html('');
+            $('#lab_lab').html(option);
         }
     }
 
-    function listSelectParameter(select) {
-        var idx = select.selectedIndex;
-        if (idx > 0) {
-            var idLab = select.options[idx].value;
-            var option = "";
-            if(idLab != ''){
-                var labId = idLab.split("|");
-                if(labId[0] != 'null' && labId[0] != ''){
-                    LabDetailAction.listLabDetail(labId[0], function (response) {
-                        if (response != null) {
-                            $.each(response, function (i, item) {
-                                option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
-                            });
-                            $('#lab_parameter').html(option);
-                        } else {
-                            $('#lab_parameter').html('');
-                        }
-                    });
-                }
+    function listSelectParameter(value) {
+        var option = '<option value="">[Select One]</option>';
+        if (value != '') {
+            var labId = value.split("|");
+            if (labId[0] != 'null' && labId[0] != '') {
+                LabDetailAction.getListComboParameter(labId[0], function (response) {
+                    if (response.length > 0) {
+                        option = option + '<option value="all">Select All</option>';
+                        $.each(response, function (i, item) {
+                            option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
+                        });
+                        $('#lab_parameter').html(option);
+                    } else {
+                        $('#lab_parameter').html(option);
+                    }
+                });
             }
         } else {
-            $('#lab_parameter').html('');
+            $('#lab_parameter').html(option);
         }
     }
 
     function saveLab() {
-
+        var poli = $('#lab_poli').val();
         var idKategori = $('#lab_kategori').val();
         var idLab = $('#lab_lab').val();
         var idParameter = $('#lab_parameter').val();
-        var tarifAsli = $('#lab_tarif').val();
-        var tarifPaket = $('#lab_tarif_paket').val();
+        var tarifAsli = $('#h_lab_tarif').val();
+        var tarifPaket = $('#h_lab_tarif_paket').val();
         var namaParameter = $('#lab_parameter option:selected').text();
+        var data = $('#table_lab').tableToJSON();
+        var cekPersen = $('#persen').is(':checked');
+        var jmlPersen = $('#jml_persen').val();
+        var row = data.length;
+        var cek = false;
 
-        if (idKategori != '' && idLab != '') {
-
+        if (idKategori != '' && idLab != '' && idParameter != '') {
             var idk = idKategori.split("|")[0];
             var idl = idLab.split("|")[0];
 
-            var data = $('#table_lab').tableToJSON();
-            var row = data.length;
-
-            var cek = false;
-
             $.each(data, function (i, item) {
-                var jen = data[i]["Pemeriksaan"];
-                if(idLab.split("|")[1] == jen){
+                var jen = $('#parameter_id' + i).val();
+                if (idParameter == jen) {
                     cek = true;
                 }
             });
 
-            if(cek){
-                $('#warning_lab').show().fadeOut(5000);
-                $('#msg_lab').text("Data sudah ada di dalam list...!");
-            }else{
-                var table = '<tr id="row'+idl+'">' +
-                    '<td>'+idKategori.split("|")[1]+
-                    '<input type="hidden" id="lab_id'+row+'" value="'+idl+'">'+
-                    '</td>' +
-                    '<td>'+idLab.split("|")[1]+'<input type="hidden" id="kategori_lab'+row+'" value="'+idk+'">'+'</td>' +
-                    '<td>'+ namaParameter + '<input type="hidden" id="parameter_id'+row+'" value="'+idParameter+'"></td>'+
-                    '<td>'+ tarifAsli + '</td>'+
-                    '<td>'+ tarifPaket + '<input type="hidden" id="lab_tarif_id'+row+'" value="'+tarifPaket+'"></td>'+
-                    '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\''+idl+'\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>'+
-                    '</tr>';
-                $('#body_lab').append(table);
-                $('#lab_parameter').val('').trigger('change')
+            if ("all" == idParameter) {
+                LabDetailAction.getListComboParameter(idl, function (response) {
+                    if (response.length > 0) {
+                        var table = "";
+                        $.each(response, function (ix, itemx) {
+                            $.each(data, function (i, item) {
+                                var jen = $('#parameter_id' + i).val();
+                                if (itemx.idLabDetail == jen) {
+                                    cek = true;
+                                }
+                            });
+                        });
+                        if (cek) {
+                            $('#warning_lab').show().fadeOut(5000);
+                            $('#msg_lab').text("Data sudah ada di dalam list...!");
+                        } else {
+                            var setAppend = false;
+                            var isPersen = false;
+                            if (cekPersen) {
+                                if (jmlPersen != '' && parseInt(jmlPersen) > 0) {
+                                    setAppend = false;
+                                    isPersen = true;
+                                } else {
+                                    setAppend = true;
+                                }
+                            }
+
+                            if (setAppend) {
+                                $('#warning_lab').show().fadeOut(5000);
+                                $('#msg_lab').text("Diskon Tarif tidak boleh kosong dan 0...!");
+                            } else {
+                                $.each(response, function (i, item) {
+                                    row = row + i;
+                                    var tarif = item.tarif;
+                                    if (isPersen) {
+                                        var persen = 100 - parseInt(jmlPersen);
+                                        var hasil = persen / 100;
+                                        tarif = hasil * item.tarif;
+                                    }
+                                    table += '<tr id="row' + item.idLabDetail + '">' +
+                                        '<td>' + idKategori.split("|")[1] +
+                                        '<input type="hidden" id="kategori_lab' + row + '" value="' + idk + '">' +
+                                        '<input type="hidden" id="poli_id' + row + '" value="' + poli + '">' +
+                                        '</td>' +
+                                        '<td>' + idLab.split("|")[1] + '<input type="hidden" id="lab_id' + row + '" value="' + idl + '">' + '</td>' +
+                                        '<td>' + item.namaDetailPeriksa + '<input type="hidden" id="parameter_id' + row + '" value="' + item.idLabDetail + '"></td>' +
+                                        '<td>' + formatRupiahAtas(item.tarif) + '</td>' +
+                                        '<td>' + formatRupiahAtas(tarif) + '<input type="hidden" id="lab_tarif_id' + row + '" value="' + tarif + '"></td>' +
+                                        '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + item.idLabDetail + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                                        '</tr>';
+                                });
+                                $('#body_lab').append(table);
+                                $('#lab_parameter').val('').trigger('change');
+                            }
+                        }
+                    }
+                });
+            } else {
+                if (cek) {
+                    $('#warning_lab').show().fadeOut(5000);
+                    $('#msg_lab').text("Data sudah ada di dalam list...!");
+                } else {
+                    var table = '<tr id="row' + idl + '">' +
+                        '<td>' + idKategori.split("|")[1] +
+                        '<input type="hidden" id="kategori_lab' + row + '" value="' + idk + '">' +
+                        '<input type="hidden" id="poli_id' + row + '" value="' + poli + '">' +
+                        '</td>' +
+                        '<td>' + idLab.split("|")[1] + '<input type="hidden" id="lab_id' + row + '" value="' + idl + '">' + '</td>' +
+                        '<td>' + namaParameter + '<input type="hidden" id="parameter_id' + row + '" value="' + idParameter + '"></td>' +
+                        '<td>' + formatRupiahAtas(tarifAsli) + '</td>' +
+                        '<td>' + formatRupiahAtas(tarifPaket) + '<input type="hidden" id="lab_tarif_id' + row + '" value="' + tarifPaket + '"></td>' +
+                        '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + idl + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                        '</tr>';
+                    $('#body_lab').append(table);
+                    $('#lab_parameter').val('').trigger('change')
+                }
             }
 
         } else {
@@ -769,92 +1100,128 @@
         hitungTotal();
     }
 
-    function hitungTotal(){
+    function hitungTotal() {
         var tindakan = $('#table_tindakan').tableToJSON();
         var lab = $('#table_lab').tableToJSON();
 
-
         var totalTindakan = 0;
         $.each(tindakan, function (i, item) {
-            var tarifTindakan = $('#tin_tarif_id'+i).val();
+            var tarifTindakan = $('#tin_tarif_id' + i).val();
             totalTindakan = parseInt(totalTindakan) + parseInt(tarifTindakan);
         });
 
         var totalLab = 0;
         $.each(lab, function (i, item) {
-            var tarifpaket = $('#lab_tarif_id'+i).val();
+            var tarifpaket = $('#lab_tarif_id' + i).val();
             totalLab = parseInt(totalLab) + parseInt(tarifpaket);
         });
 
-
-        var total = 0; total = totalTindakan + totalLab;
+        var total = 0;
+        total = totalTindakan + totalLab;
         $('#tarif_paket').val(total);
-        $('#nominal_tarif_paket').val(total);
-        console.log("total -> "+total);
+        $('#nominal_tarif_paket').val(formatRupiahAtas(total));
     }
 
-    function savePaket(){
-        var idPelayanan = $('#poli').val();
+    function savePaket() {
         var namaPaket = $('#nama_paket').val();
         var tarifPaket = $('#tarif_paket').val();
-
         var tindakan = $('#table_tindakan').tableToJSON();
         var lab = $('#table_lab').tableToJSON();
+        var pelayanan = $('#table_pelayanan').tableToJSON();
         var result = [];
+        var resultPel = [];
 
         $.each(tindakan, function (i, item) {
-            var idTindakan = $('#tindakan_id'+i).val();
-            var idKategori = $('#kategori_id'+i).val();
-            var tarifTindakan = $('#tin_tarif_id'+i).val();
-            result.push({'kategori_item':idKategori, 'id_item':idTindakan, 'jenis_item':'tindakan', 'tarif':tarifTindakan});
+            var idPoli = $('#poli_id' + i).val();
+            var idTindakan = $('#tindakan_id' + i).val();
+            var idKategori = $('#kategori_id' + i).val();
+            var tarifTindakan = $('#tin_tarif_id' + i).val();
+
+            result.push({
+                'kategori_item': idKategori,
+                'id_item': idTindakan,
+                'jenis_item': 'tindakan',
+                'tarif': tarifTindakan,
+                'id_pelayanan': idPoli
+            });
         });
 
         $.each(lab, function (i, item) {
-            var idKategori = $('#kategori_lab'+i).val();
-            var idLab = $('#lab_id'+i).val();
-            var idParameter = $('#parameter_id'+i).val();
+            var idPoli = $('#poli_id' + i).val();
+            var idKategori = $('#kategori_lab' + i).val();
+            var idLab = $('#lab_id' + i).val();
+            var idParameter = $('#parameter_id' + i).val();
             var jenisLab = lab[i]["Jenis Lab"];
-            var tarifpaket = $('#lab_tarif_id'+i).val();
+            var tarifpaket = $('#lab_tarif_id' + i).val();
 
-            if(idParameter != '' && idParameter != 'null'){
-                var params = idParameter.split(",");
-                for(i = 0; i < params.length; i++){
-                    result.push({'kategori_item':idLab, 'id_item':params[i], 'jenis_item':jenisLab.toLowerCase(), 'tarif':tarifpaket});
-                }
-            }else{
-                result.push({'kategori_item':idLab, 'id_item':params[i], 'jenis_item':jenisLab.toLowerCase(), 'tarif':tarifpaket});
-            }
+            result.push({
+                'kategori_item': idLab,
+                'id_item': idParameter,
+                'jenis_item': jenisLab.toLowerCase(),
+                'tarif': tarifpaket,
+                'id_pelayanan': idPoli
+            });
         });
 
-        var jsonStinng = JSON.stringify(result);
+        $.each(pelayanan, function (i, item) {
+            i = i + 1
+            var idPoli = $('#poli_id_' + i).val();
+            var urutan = $('#urut_val_' + i).val();
+            resultPel.push({
+                'id_pelayanan': idPoli,
+                'urutan': urutan
+            });
+        });
 
-        if(result.length > 0 && namaPaket != '' && tarifPaket != ''){
+        if (result.length > 0 && namaPaket != '' && tarifPaket != '') {
             $("#waiting_dialog").dialog('open');
+            var jsonStinng = JSON.stringify(result);
+            var jsonStinngPel = JSON.stringify(resultPel);
             dwr.engine.setAsync(true);
-            PaketPeriksaAction.savePaket(idPelayanan, namaPaket, tarifPaket, jsonStinng, {callback: function (response) {
-                    if(response.status == "success"){
+            PaketPeriksaAction.savePaket(namaPaket, jsonStinng, jsonStinngPel, {
+                callback: function (response) {
+                    if (response.status == "success") {
                         $("#waiting_dialog").dialog('close');
                         $('#info_dialog').dialog('open');
                         $('body').scrollTop(0);
-                    }else{
+                    } else {
                         $("#waiting_dialog").dialog('close');
                         $('#error_dialog').dialog('open');
                         $('#errorMessage').text(response.msg);
-
                     }
-                }});
-        }else{
+                }
+            });
+        } else {
             $('#warning_paket').show().fadeOut(5000);
             $('#msg_paket').text("Silahkan cek kembali data inputan anda..!");
-            if(namaPaket == ''){
+            if (namaPaket == '') {
                 $('#war_paket').show();
             }
-            if(tarifPaket == ''){
+            if (tarifPaket == '') {
                 $('#war_tarif_paket').show();
             }
         }
     }
 
+    function convertRp(id, val) {
+        $('#' + id).val(formatRupiahAtas2(val));
+        val = val.replace(/[.]/g, '');
+        var numbers = /^[0-9]+$/;
+        if(val.match(numbers)){
+            $('#h_' + id).val(val);
+        }
+    }
+
+    function cekPersen(id, idTujuan) {
+        var cek = $('#' + id).is(':checked');
+        if (cek) {
+            $('#' + idTujuan).removeAttr('disabled', false);
+            $('#tin_tarif_paket, #lab_tarif_paket').attr('disabled', true);
+        } else {
+            $('#' + idTujuan).attr('disabled', true);
+            $('#tin_tarif_paket, #lab_tarif_paket').removeAttr('disabled', false);
+        }
+    }
 
 </script>
 
