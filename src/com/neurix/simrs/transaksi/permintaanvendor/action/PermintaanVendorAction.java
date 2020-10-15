@@ -838,8 +838,10 @@ public class PermintaanVendorAction extends BaseMasterAction {
 
                     // jika harga bukan pengembalian reture pakai harga terakhir;
                     BigDecimal hargaRata = new BigDecimal(0);
+                    BigDecimal hargaTotal = new BigDecimal(0);
                     if (!"reture".equalsIgnoreCase(jenis)){
-                        hargaRata = obatEntity.getHargaTerakhir().multiply(new BigDecimal(cons));
+                        hargaRata = trans.getNetto();
+                        hargaTotal = hargaRata;
                     } else {
                         if ("box".equalsIgnoreCase(trans.getJenisSatuan())){
                             hargaRata = hargaRata.add(obatEntity.getAverageHargaBox());
@@ -848,9 +850,9 @@ public class PermintaanVendorAction extends BaseMasterAction {
                         } if ("biji".equalsIgnoreCase(trans.getJenisSatuan())){
                             hargaRata = hargaRata.add(obatEntity.getAverageHargaBiji());
                         }
+                        hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyApprove()));
                     }
 
-                    BigDecimal hargaTotal = hargaRata.multiply(new BigDecimal(trans.getQtyApprove()));
                     BigDecimal hargaPpn = new BigDecimal( 0);
 
                     // hutang usaha
