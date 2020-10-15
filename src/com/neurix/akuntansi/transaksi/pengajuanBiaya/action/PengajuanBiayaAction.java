@@ -38,8 +38,7 @@ import sun.misc.BASE64Decoder;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
+import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -65,6 +64,15 @@ public class PengajuanBiayaAction extends BaseMasterAction {
     private PengajuanBiayaRk pengajuanBiayaRk;
     private List<PengajuanBiaya> listOfComboPengajuanBiaya = new ArrayList<PengajuanBiaya>();
     private String rkId;
+    private InputStream inputStream;
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
 
     public PengajuanBiayaRk getPengajuanBiayaRk() {
         return pengajuanBiayaRk;
@@ -779,6 +787,24 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         session.removeAttribute("listOfResult");
         logger.info("[PengajuanBiayaAction.initFormPembayaranDo] end process >>>");
         return "init_do";
+    }
+
+    public String addDo() {
+        logger.info("[PengajuanBiayaAction.addDo] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        String branchId = CommonUtil.userBranchLogin();
+        PengajuanBiayaRk data = new PengajuanBiayaRk();
+        if (branchId!=null){
+            data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
+        }else{
+            data.setBranchId("");
+        }
+
+        setPengajuanBiayaRk(data);
+        session.removeAttribute("listOfResult");
+        logger.info("[PengajuanBiayaAction.addDo] end process >>>");
+        return "init_add_do";
     }
 
     public String initFormPengajuan() {
@@ -1662,6 +1688,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         session.setAttribute("listOfResult", pengajuanBiayaRkList);
 
         String branchId = CommonUtil.userBranchLogin();
+
         if (branchId!=null){
             search.setBranchIdUser(branchId);
         }else{
@@ -1670,8 +1697,63 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         setPengajuanBiayaRk(search);
         logger.info("[PengajuanBiayaAction.searchPembayaranDo] end process <<<");
 
-        return "success_pengajuan_rk";
+        // send to csv
+
+        if ("csv".equalsIgnoreCase(search.getTipeCetak())){
+            try {
+                DataOutputStream doStream = null; // declare a print stream object
+
+                doStream = new DataOutputStream(new FileOutputStream("tarikan_pembayaran_do.csv"));
+
+                doStream.writeBytes("\n");
+                doStream.writeBytes("Nama Report : Tarikan Pembayaran DO p");
+                doStream.writeBytes("\n");
+                doStream.writeBytes("Tanggal Penarikan : "+CommonUtil.convertDateToString(new java.util.Date()));
+                doStream.writeBytes("\n");
+                String[] headers = "ID,Unit,No. DO,Jatuh Tempo,ID Vendor,Vendor,Jumlah(RP),ID RK,No. Jurnal, Status".split(",");
+
+                for(int i=0; i < headers.length; i++)
+                {
+                    if(i != headers.length-1)
+                        doStream.writeBytes("\""+headers[i]+"\", ");
+                    else
+                        doStream.writeBytes("\""+headers[i]+"\"");
+                }
+                doStream.writeBytes("\n");
+
+                for (PengajuanBiayaRk a : pengajuanBiayaRkList){
+                    doStream.writeBytes("\""+a.getPengajuanBiayaRkId()+"\""+",");
+                    doStream.writeBytes("\""+a.getBranchName()+"\""+",");
+                    doStream.writeBytes("\""+a.getNoTransaksi()+"\""+",");
+                    doStream.writeBytes("\""+a.getStTanggalInvoice()+"\""+",");
+                    doStream.writeBytes("\""+a.getMasterId()+"\""+",");
+                    doStream.writeBytes("\""+a.getMasterName()+"\""+",");
+                    doStream.writeBytes("\""+a.getStJumlah()+"\""+",");
+                    doStream.writeBytes("\""+a.getRkId()+"\""+",");
+                    doStream.writeBytes("\""+a.getNoJurnal()+"\""+",");
+                    doStream.writeBytes("\""+a.getStatusName()+"\"");
+                    doStream.writeBytes("\n");
+                }
+
+                doStream.flush();
+                doStream.close();
+                setInputStream(new FileInputStream("tarikan_pembayaran_do.csv"));
+
+            } // end try
+            catch (Exception e) {
+                e.printStackTrace();
+            } // end catch
+
+            return "export_hasil_csv_do";
+        }else{
+            if ("search".equalsIgnoreCase(search.getTipe())){
+                return "success_pengajuan_rk";
+            }else{
+                return "success_add_pengajuan_rk";
+            }
+        }
     }
+
 
     public void kirimPengajuanPembayaranDoRk(String data,String branchId,String branchIdUser) {
         logger.info("[PengajuanBiayaAction.kirimPengajuanPembayaranDoRk] start process >>>");
@@ -1883,6 +1965,69 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         }
         logger.info("[PengajuanBiayaAction.pembayaranDo] end process <<<");
     }
+
+    public String eksportCsvDo(String branchId,String masterId,String pengajuanBiayaId,
+                               String rkId,String stTanggalDari,String stTanggalSelesai,String statusPembayaran){
+
+        PengajuanBiayaRk search = new PengajuanBiayaRk();
+        search.setBranchId(branchId);
+        search.setMasterId(masterId);
+        search.setPengajuanBiayaRkId(pengajuanBiayaId);
+        search.setRkId(rkId);
+        search.setStTanggalDari(stTanggalDari);
+        search.setStTanggalSelesai(stTanggalSelesai);
+        search.setStatus(statusPembayaran);
+
+        DataOutputStream doStream = null; // declare a print stream object
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanBiayaBo pengajuanBiayaBo= (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+
+        List<PengajuanBiayaRk> pengajuanBiayaRkList = pengajuanBiayaBo.getDaftarPembayaranDo(search);
+
+        try {
+            doStream = new DataOutputStream(new FileOutputStream("tarikan_pembayaran_do.csv"));
+
+            doStream.writeBytes("\n");
+            doStream.writeBytes("Nama Report : Tarikan Pembayaran DO p");
+            doStream.writeBytes("\n");
+            doStream.writeBytes("Tanggal Penarikan : "+CommonUtil.convertDateToString(new java.util.Date()));
+            doStream.writeBytes("\n");
+            String[] headers = "ID,Unit,No. DO,Jatuh Tempo,ID Vendor,Vendor,Jumlah(RP),ID RK,No. Jurnal, Status".split(",");
+
+            for(int i=0; i < headers.length; i++)
+            {
+                if(i != headers.length-1)
+                    doStream.writeBytes("\""+headers[i]+"\", ");
+                else
+                    doStream.writeBytes("\""+headers[i]+"\"");
+            }
+            doStream.writeBytes("\n");
+
+            for (PengajuanBiayaRk a : pengajuanBiayaRkList){
+                doStream.writeBytes("\""+a.getPengajuanBiayaRkId()+"\""+",");
+                doStream.writeBytes("\""+a.getBranchName()+"\""+",");
+                doStream.writeBytes("\""+a.getNoTransaksi()+"\""+",");
+                doStream.writeBytes("\""+a.getStTanggalInvoice()+"\""+",");
+                doStream.writeBytes("\""+a.getMasterId()+"\""+",");
+                doStream.writeBytes("\""+a.getMasterName()+"\""+",");
+                doStream.writeBytes("\""+a.getStJumlah()+"\""+",");
+                doStream.writeBytes("\""+a.getRkId()+"\""+",");
+                doStream.writeBytes("\""+a.getNoJurnal()+"\""+",");
+                doStream.writeBytes("\""+a.getStatusName()+"\"");
+                doStream.writeBytes("\n");
+            }
+
+            doStream.flush();
+            doStream.close();
+            setInputStream(new FileInputStream("tarikan_pembayaran_do.csv"));
+
+        } // end try
+        catch (Exception e) {
+            e.printStackTrace();
+        } // end catch
+        return "export_hasil_csv_do";
+    }
+
     public String paging(){
         return SUCCESS;
     }
