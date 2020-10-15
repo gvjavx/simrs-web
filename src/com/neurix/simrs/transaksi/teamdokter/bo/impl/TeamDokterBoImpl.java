@@ -208,6 +208,19 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
     }
 
     @Override
+    public List<ItSimrsDokterTeamEntity> cekRequestDokterByIdDokter(String idDokter) throws GeneralBOException {
+        List<ItSimrsDokterTeamEntity> entityList = new ArrayList<>();
+        if(idDokter != null){
+            try {
+                entityList = dokterTeamDao.cekRequestDokterByIdDokter(idDokter);
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+            }
+        }
+        return entityList;
+    }
+
+    @Override
     public List<ItSimrsDokterTeamEntity> getListEntityTeamDokter(DokterTeam bean) throws GeneralBOException{
         logger.info("[TeamDokterBoImpl.getListEntityTeamDokter] Start >>>>>>>>");
         List<ItSimrsDokterTeamEntity> entities = new ArrayList<>();
