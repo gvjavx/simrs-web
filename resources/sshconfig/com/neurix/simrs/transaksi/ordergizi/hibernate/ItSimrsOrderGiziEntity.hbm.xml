@@ -52,5 +52,8 @@
         <property name="bentukDiet">
             <column name="bentuk_diet" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="waktu">
+            <column name="waktu"/>
+        </property>
     </class>
 </hibernate-mapping>

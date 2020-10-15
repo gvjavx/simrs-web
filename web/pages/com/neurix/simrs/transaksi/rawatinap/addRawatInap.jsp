@@ -734,8 +734,8 @@
                                 <td >ID Diet Gizi</td>
                                 <td >Bentuk Diet</td>
                                 <td >Keterangan</td>
-                                <td align="center"width="10%">Status</td>
-                                <td align="center" rowspan="2" width="18%">Action</td>
+                                <td align="center">Status</td>
+                                <td align="center"width="18%">Action</td>
                             </tr>
                             </thead>
                             <tbody id="body_diet">
@@ -3696,6 +3696,89 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail-dokter">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Detail Persetujuan Dokter</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <td width="30%">ID Dokter</td>
+                                <td><span id="det_id_dokter"></span></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">Nama Dokter</td>
+                                <td><span id="det_nama_dokter"></span></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">Status Request</td>
+                                <td ><span id="det_status_dokter"></span></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">Keterangan</td>
+                                <td><span id="det_keterangan_dokter"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-konsultasi-dokter">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Konsultasi Selesai</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_kon_dokter">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_kon_dokter"></p>
+                    </div>
+                    <div class="row">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <td width="30%">ID Dokter</td>
+                                <td><span id="kon_id_dokter"></span></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">Nama Dokter</td>
+                                <td><span id="kon_nama_dokter"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-success" id="save_kon"><i class="fa fa-check"></i> Selesai
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_kon"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-uang_muka">
     <div class="modal-dialog" style="width: 55%;">
         <div class="modal-content">
@@ -4060,19 +4143,6 @@
 
     function setRekamMedis() {
         getListRekamMedis(kategoriRuangan, '', idDetailCheckup);
-    }
-
-    function getListComboJenisDiet(){
-        var option = '';
-        RawatInapAction.getComboBoxJenisGizi(function (res) {
-            if(res.length > 0){
-                $.each(res, function (i, item) {
-                    option += '<option value="'+item.idJenisDiet+'">'+item.namaJenisDiet+'</option>'
-                });
-                $('#jenis_diet').html(option);
-                $('#edit_jenis_diet').html(option);
-            }
-        });
     }
 
 </script>

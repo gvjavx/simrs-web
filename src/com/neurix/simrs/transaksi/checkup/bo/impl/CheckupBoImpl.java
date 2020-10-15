@@ -511,6 +511,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     dokterTeam.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
                     dokterTeam.setIdDokter(bean.getIdDokter());
                     dokterTeam.setIdPelayanan(bean.getIdPelayanan());
+                    dokterTeam.setFlagApprove("Y");
                     saveTeamDokter(dokterTeam);
                 }
 
@@ -1218,6 +1219,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         entity.setJenisDpjp(bean.getJenisDpjp());
         entity.setFlag("Y");
         entity.setAction("C");
+        entity.setFlagApprove(bean.getFlagApprove());
         entity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         entity.setCreatedWho(CommonUtil.userLogin());
         entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));

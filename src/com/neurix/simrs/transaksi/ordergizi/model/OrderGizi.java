@@ -31,6 +31,15 @@ public class OrderGizi {
     private String keterangan;
     private String bentukDiet;
     private List<String> listJenisGizi;
+    private String waktu;
+
+    public String getWaktu() {
+        return waktu;
+    }
+
+    public void setWaktu(String waktu) {
+        this.waktu = waktu;
+    }
 
     public List<String> getListJenisGizi() {
         return listJenisGizi;

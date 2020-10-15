@@ -60,7 +60,7 @@ public class OrderGiziAction extends BaseTransactionAction {
                         OrderGizi orderGizi = new OrderGizi();
                         orderGizi.setIdRawatInap(obj.getString("id_rawat_inap"));
                         orderGizi.setIdDietGizi(obj.getString("id_diet_gizi"));
-                        orderGizi.setKeterangan(obj.getString("waktu"));
+                        orderGizi.setWaktu(obj.getString("waktu"));
                         orderGizi.setTglOrder(updateTime);
                         orderGizi.setCreatedWho(userLogin);
                         orderGizi.setCreatedDate(updateTime);

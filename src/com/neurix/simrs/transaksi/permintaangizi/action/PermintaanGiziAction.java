@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.permintaangizi.action;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
@@ -11,6 +12,9 @@ import com.neurix.simrs.transaksi.permintaangizi.bo.PermintaanGiziBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -202,6 +206,49 @@ public class PermintaanGiziAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         return "search";
+    }
+
+    public CrudResponse updateGizi(String data){
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanGiziBo permintaanGiziBo = (PermintaanGiziBo) ctx.getBean("permintaanGiziBoProxy");
+
+        try {
+            JSONArray json = new JSONArray(data);
+            if (json != null) {
+                try {
+                    List<OrderGizi> orderGiziList = new ArrayList<>();
+                    for (int i = 0; i < json.length(); i++) {
+                        JSONObject obj = json.getJSONObject(i);
+                        OrderGizi orderGizi = new OrderGizi();
+                        orderGizi.setIdOrderGizi(obj.getString("id_order_gizi"));
+                        if(obj.has("keterangan")){
+                            orderGizi.setKeterangan(obj.getString("keterangan"));
+                        }
+                        orderGizi.setApproveFlag(obj.getString("status"));
+                        orderGizi.setLastUpdate(now);
+                        orderGizi.setLastUpdateWho(userLogin);
+                        orderGizi.setAction("U");
+                        orderGizi.setFlag("Y");
+                        orderGiziList.add(orderGizi);
+                    }
+                    response = permintaanGiziBo.updateGizi(orderGiziList);
+                } catch (GeneralBOException e) {
+                    response.setStatus("error");
+                    response.setMsg("Found Error :" + e.getMessage());
+                    logger.error("[OrderGiziAction.saveOrderGizi] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.", e);
+                }
+            } else {
+                response.setStatus("error");
+                response.setMsg("Data json tidak ada...!");
+            }
+        } catch (JSONException e) {
+            response.setStatus("error");
+            response.setMsg("Error when parse JSON Objact, " + e.getMessage());
+        }
+        return response;
     }
 
     @Override

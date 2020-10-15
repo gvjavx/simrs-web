@@ -168,7 +168,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     "AND a.branch_id LIKE :branchId\n" +
                     "AND b.id_jenis_periksa_pasien LIKE :jenisPeriksa \n" +
                     "AND g.flag = 'Y' \n" +
-                    "AND g.keterangan LIKE :ket \n";
+                    "AND g.waktu LIKE :ket \n";
 
             List<Object[]> results = new ArrayList<>();
 
@@ -346,9 +346,13 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
         if (results.size() > 0) {
             for (Object[] obj : results) {
                 if(!"".equalsIgnoreCase(res)){
-                    res = res +", "+obj[1].toString();
+                    if(obj[1] != null){
+                        res = res +", "+obj[1].toString();
+                    }
                 }else{
-                    res = obj[1].toString();
+                    if(obj[1] != null){
+                        res = obj[1].toString();
+                    }
                 }
             }
         }
@@ -370,9 +374,13 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
         if (results.size() > 0) {
             for (Object[] obj : results) {
                 if(!"".equalsIgnoreCase(res)){
-                    res = res +", "+obj[1].toString();
+                    if(obj[1] != null){
+                        res = res +", "+obj[1].toString();
+                    }
                 }else{
-                    res = obj[1].toString();
+                    if(obj[1] != null){
+                        res = obj[1].toString();
+                    }
                 }
             }
         }

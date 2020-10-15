@@ -137,6 +137,37 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
     }
 
     @Override
+    public CrudResponse doneDokter(DokterTeam bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsDokterTeamEntity entityList = null;
+        try {
+            entityList = dokterTeamDao.getById("idTeamDokter", bean.getIdTeamDokter());
+        } catch (HibernateException e){
+            logger.error("[TeamDokterBoImpl.saveEdit] Error when save edit dokter team ",e);
+            throw new GeneralBOException("[TeamDokterBoImpl.savaAdd] Error when save edit dokter team "+e.getMessage());
+        }
+        if(entityList != null){
+            entityList.setFlagApprove("S");
+            entityList.setAction(bean.getAction());
+            entityList.setLastUpdate(bean.getLastUpdate());
+            entityList.setLastUpdateWho(bean.getLastUpdateWho());
+            try {
+                dokterTeamDao.updateAndSave(entityList);
+                response.setStatus("success");
+                response.setMsg("Bwrhasil");
+            } catch (HibernateException e){
+                logger.error("[TeamDokterBoImpl.saveEdit] Error when edit dokter team ",e);
+                response.setStatus("error");
+                response.setMsg("Error"+e.getMessage());
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("ID Dokte team tidak ditemukan...!");
+        }
+        return response;
+    }
+
+    @Override
     public DokterTeam getNamaDokter(String idDetailCheckup) throws GeneralBOException {
         return dokterTeamDao.getNamaDokter(idDetailCheckup);
     }

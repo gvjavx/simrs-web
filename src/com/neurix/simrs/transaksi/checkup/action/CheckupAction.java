@@ -1319,33 +1319,6 @@ public class CheckupAction extends BaseMasterAction {
         return df.format(date);
     }
 
-//    private String createJurnalUangMuka(String idPasien, String jumlah){
-////        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-////        BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
-//
-//        String transId = "01";
-//
-//        String noNota = "";
-//        try {
-//            noNota = billingSystemBoProxy.createInvoiceNumber(transId);
-//        } catch (GeneralBOException e){
-//            logger.error("[CheckupAction.createJurnalUangMuka] Error create uang muka, ", e);
-//        }
-//
-//        Map hsCriteria = new HashMap();
-//        hsCriteria.put("master_id", idPasien);
-//        hsCriteria.put("no_nota", noNota);
-//        hsCriteria.put("uang_muka", new BigDecimal(jumlah));
-//
-//        try {
-//            billingSystemBoProxy.createJurnal(transId, hsCriteria, CommonUtil.userBranchLogin(), "Uang Muka "+idPasien, "Y", "");
-//        } catch (GeneralBOException e){
-//            logger.error("[CheckupAction.createJurnalUangMuka] Error create uang muka, ", e);
-//        }
-//
-//        return noNota;
-//    }
-
     public String getComboJenisPeriksaPasien() {
         List<JenisPriksaPasien> lisJenisPeriksa = new ArrayList<>();
         JenisPriksaPasien jenisPriksaPasien = new JenisPriksaPasien();
@@ -3773,7 +3746,7 @@ public class CheckupAction extends BaseMasterAction {
         return dokterList;
     }
 
-    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup) {
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup, String approve) {
 
         logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
 
@@ -3783,7 +3756,7 @@ public class CheckupAction extends BaseMasterAction {
 
         if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
             try {
-                dokterList = dokterBo.getListDokterByIdDetailCheckup(idDetailCheckup);
+                dokterList = dokterBo.getListDokterByIdDetailCheckup(idDetailCheckup, approve);
             } catch (GeneralBOException e) {
                 logger.error("Found Error, " + e.getMessage());
             }

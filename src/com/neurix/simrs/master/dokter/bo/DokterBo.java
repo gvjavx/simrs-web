@@ -23,5 +23,5 @@ public interface DokterBo extends BaseMasterBo<Dokter> {
     List<Dokter> typeaheadDokter(String dokterName) throws GeneralBOException;
 
     public List<Dokter> getListDokterByBranchId(String branchId, String idDokter) throws GeneralBOException;
-    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailChekcup) throws GeneralBOException;
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailChekcup, String approve) throws GeneralBOException;
 }

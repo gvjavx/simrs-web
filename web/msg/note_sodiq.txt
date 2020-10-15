@@ -1072,6 +1072,13 @@ INSERT INTO im_func_roles VALUES
 (3100, 32, 'Y', now(), now(), 'admin', 'admin'),
 (2355, 32, 'Y', now(), now(), 'admin', 'admin');
 
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_kunjungan VARCHAR(1),
+ADD COLUMN berkas VARCHAR(100);
+
+ALTER TABLE it_simrs_order_gizi
+ADD COLUMN waktu VARCHAR(100);
+
 
 
 

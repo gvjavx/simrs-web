@@ -318,7 +318,7 @@
                                     <td><span id="id_kelas"></span></td>
                                 </tr>
                                 <tr>
-                                    <td>Rekam Medis</td>
+                                    <td><b>Rekam Medis</b></td>
                                     <td>
                                         <div class="btn-group dropdown">
                                             <button onclick="getListRekamMedis('tppri', '', $('#h_id_detail_pasien').val())"
@@ -472,6 +472,31 @@
                                     <input class="form-control" id="val_uang_muka"
                                            oninput="convertRp(this.id, this.value)">
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 10px">Boleh Dikunjungin ?</label>
+                            <div class="col-md-4">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" id="cek_kunjungan" value="Y">
+                                    <label for="cek_kunjungan"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3" style="margin-top: 10px">Upload Berkas</label>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                 <span class="input-group-btn">
+                              <span class="btn btn-default btn-file">
+                               Browse… <input type="file" id="berkas" accept=".jpg" onchange="setCanvasAtasWithText('img_berkas','url_berkas')">
+                              </span>
+                              </span>
+                                <canvas id="img_berkas" style="display: none"></canvas>
+                                <input type="text" id="url_berkas" class="form-control" readonly style="margin-top: 7px">
                             </div>
                         </div>
                     </div>
@@ -1201,6 +1226,17 @@
         }
         var kelasKamar = $('#kelas_kamar').val();
         var kamar = $('#kamar').val();
+        var cekKunjungan = $('#cek_kunjungan').is(':checked');
+        var cekBerkas = $('#berkas').val();
+        var finalBerkas = "";
+        if(cekBerkas != ''){
+            finalBerkas = convertToDataURL(document.getElementById('img_berkas'));
+        }
+
+        var bolehKunjungan = "N";
+        if(cekKunjungan){
+            bolehKunjungan = "Y"
+        }
         $.each(dataDokter, function (i, item) {
             if (item.value != '') {
                 var data = item.value.split("|");
@@ -1224,7 +1260,9 @@
             'kelas_kamar': kelasKamar,
             'kamar': kamar,
             'metode_pembayaran': metodeBayar,
-            'uang_muka': uangMuka
+            'uang_muka': uangMuka,
+            'kunjungan': bolehKunjungan,
+            'img_berkas': finalBerkas
         }
 
         var result = JSON.stringify(data);
@@ -1239,6 +1277,7 @@
                         $('#load_fin').hide();
                         $('#info_dialog').dialog('open');
                         $('#modal-detail').modal('hide');
+                        $('body').scrollTop(0);
                     } else {
                         $('#save_fin').show();
                         $('#load_fin').hide();

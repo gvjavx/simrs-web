@@ -353,6 +353,14 @@ apply the skin class to the body tag so the changes take effect.
         border-radius: 5px;
         box-shadow: 1px 3px 8px grey
     }
+    .span-primary{
+        font-size: 13px;
+        padding: 5px;
+        color: white;
+        background-color: #367fa9;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
 
 </style>
 <script>
@@ -637,6 +645,24 @@ apply the skin class to the body tag so the changes take effect.
             img.src = event.target.result;
         }
         reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function setCanvasAtasWithText(id, tujuan) {
+        var canvas = document.getElementById(id);
+        var ctx = canvas.getContext('2d');
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            var img = new Image();
+            img.onload = function () {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+        $('#'+tujuan).val(event.target.files[0].name);
     }
 
     function setProvAtas(id, idHidden){

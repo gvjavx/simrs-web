@@ -1279,6 +1279,8 @@ public class RawatInapAction extends BaseMasterAction {
                 String tindakLanjut = object.getString("tindak_lanjut");
                 String kelasKamar = object.getString("kelas_kamar");
                 String kamar = object.getString("kamar");
+                String kunjungan = "";
+                String berkas = "";
                 String metodeBayar = null;
                 String uangMuka = null;
                 String idDokterDpjp = null;
@@ -1303,6 +1305,13 @@ public class RawatInapAction extends BaseMasterAction {
                 }
                 if (object.has("uang_muka")) {
                     uangMuka = object.getString("uang_muka");
+                }
+
+                if (object.has("img_berkas")) {
+                    berkas = object.getString("img_berkas");
+                }
+                if (object.has("kunjungan")) {
+                    kunjungan = object.getString("kunjungan");
                 }
                 if (!"".equalsIgnoreCase(noCheckup) && !"".equalsIgnoreCase(idDetailCheckup)) {
 
@@ -1826,6 +1835,32 @@ public class RawatInapAction extends BaseMasterAction {
                                     if (uangMuka != null && !"".equalsIgnoreCase(uangMuka)) {
                                         headerDetailCheckup.setCoverBiaya(new BigDecimal(uangMuka));
                                     }
+                                }
+
+                                if(berkas != null && !"".equalsIgnoreCase(berkas)){
+                                    try {
+                                        BASE64Decoder decoder = new BASE64Decoder();
+                                        byte[] decodedBytes = decoder.decodeBuffer(berkas);
+                                        String fileName = idDetailCheckup + "-berkas-pasien.png";
+                                        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                                        if (image == null) {
+                                            logger.error("Buffered Image is null");
+                                            finalResponse.setStatus("error");
+                                            finalResponse.setMsg("Buffered Image is null");
+                                        } else {
+                                            File f = new File(uploadFile);
+                                            ImageIO.write(image, "png", f);
+                                            headerDetailCheckup.setBerkas(fileName);
+                                        }
+                                    }catch (IOException e){
+                                        finalResponse.setStatus("error");
+                                        finalResponse.setMsg("Found Error, "+e.getMessage());
+                                    }
+                                }
+
+                                if(kunjungan != null && !"".equalsIgnoreCase(kunjungan)){
+                                    headerDetailCheckup.setFlagKunjungan(kunjungan);
                                 }
 
                                 try {

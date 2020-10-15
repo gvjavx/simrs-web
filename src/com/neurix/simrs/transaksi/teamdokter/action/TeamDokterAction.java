@@ -199,4 +199,27 @@ public class TeamDokterAction extends BaseMasterAction {
         }
         return response;
     }
+
+    public CrudResponse doneDokter(String idTeamDokter){
+        logger.info("[TeamDokterAction.editDokter] start process >>>");
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TeamDokterBo dokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            DokterTeam dokterTeam = new DokterTeam();
+            dokterTeam.setIdTeamDokter(idTeamDokter);
+            dokterTeam.setLastUpdate(updateTime);
+            dokterTeam.setLastUpdateWho(userLogin);
+            dokterTeam.setAction("U");
+            response = dokterBo.doneDokter(dokterTeam);
+        }catch (GeneralBOException e) {
+            logger.error(e.getMessage());
+            response.setMsg(e.getMessage());
+            response.setStatus("error");
+        }
+        logger.info("[TeamDokterAction.editDokter] end process >>>");
+        return response;
+    }
 }

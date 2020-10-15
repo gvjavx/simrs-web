@@ -16,6 +16,7 @@ public interface TeamDokterBo {
     public List<ItSimrsDokterTeamEntity> getListEntityTeamDokter(DokterTeam bean) throws GeneralBOException;
     public CrudResponse savaAdd(DokterTeam bean) throws GeneralBOException;
     public CrudResponse saveEdit(DokterTeam bean) throws GeneralBOException;
+    public CrudResponse doneDokter(DokterTeam bean) throws GeneralBOException;
 
     public DokterTeam getNamaDokter(String idDetailCheckup) throws GeneralBOException;
     public CrudResponse saveApproveDokter(DokterTeam bean) throws GeneralBOException;
