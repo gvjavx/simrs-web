@@ -46,8 +46,8 @@ public interface BudgetingBo {
     List<BudgetingPengadaan> getTerminPembayaran(String pengadaanId);
     public List<Budgeting> getListLabaRugi(String tahun, String unit, String status);
     public String ceckAvailBudgetingByTahun(String tahun);
-    public List<ParameterBudgeting> getListBudgetingRealisasi(String idJenisBudgeting, String unit, String tahun);
-    public List<ParameterBudgeting> getListBudgetingRealisasiPerperiode(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String rekeningId);
-    public List<ParameterBudgeting> getListBudgetingRealisasiPerKodeRekening(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId);
+    public List<ParameterBudgeting> getListBudgetingRealisasi(String idJenisBudgeting, String unit, String tahun, String status);
+    public List<ParameterBudgeting> getListBudgetingRealisasiPerperiode(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String rekeningId, String status);
+    public List<ParameterBudgeting> getListBudgetingRealisasiPerKodeRekening(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String status);
     public String getIdBudgetingDetailInvestasi(String status, String unit, String tahun, String divisi, String tipe);
 }

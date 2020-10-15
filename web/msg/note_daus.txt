@@ -681,3 +681,32 @@ ALTER TABLE im_hris_payroll_skala_gaji_dapenbun ADD COLUMN tipe_dapen_id charact
 update im_hris_payroll_skala_gaji_dapenbun set tipe_dapen_id='DP01';
 
 -- buatkan user super admin
+
+CREATE TABLE public.it_akun_pengajuan_biaya_rk
+(
+    pengajuan_biaya_rk_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    no_transaksi character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    master_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    jumlah numeric(25,2) NOT NULL,
+    status character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    jatuh_tempo date,
+    rk_id character varying(20) COLLATE pg_catalog."default",
+    approve_keu_flag character varying(1) COLLATE pg_catalog."default",
+    aprove_keu_id character varying(100) COLLATE pg_catalog."default",
+    approve_keu_date timestamp without time zone,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    branch_id character varying(5) COLLATE pg_catalog."default" NOT NULL,
+    tanggal_pengajuan date NOT NULL,
+    no_faktur character varying(30) COLLATE pg_catalog."default",
+    no_invoice character varying(30) COLLATE pg_catalog."default",
+    tgl_faktur date,
+    tgl_do date,
+    metode_bayar character varying(100) COLLATE pg_catalog."default",
+    no_jurnal character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_pengajuan_biaya_rk_pkey PRIMARY KEY (pengajuan_biaya_rk_id)
+);

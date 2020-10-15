@@ -315,11 +315,11 @@
         var posisi ="";
         switch(value) {
             case "SMK":
-                transaksi = "59";
+                transaksi = "69";
                 posisi="K";
                 break;
             case "PDU":
-                transaksi = "65";
+                transaksi = "68";
                 posisi="D";
                 break;
         }
@@ -341,11 +341,11 @@
         var posisi ="";
         switch(value) {
             case "SMK":
-                transaksi = "59";
+                transaksi = "69";
                 posisi="D";
                 break;
             case "PDU":
-                transaksi = "65";
+                transaksi = "68";
                 posisi="K";
                 break;
         }
@@ -383,11 +383,11 @@
         switch(value) {
             case "SMK":
                 $('#transaksi').val("SMK");
-                $('#tipe_transaksi').val("59");
+                $('#tipe_transaksi').val("69");
                 break;
             case "PDU":
                 $('#transaksi').val("PDU");
-                $('#tipe_transaksi').val("65");
+                $('#tipe_transaksi').val("68");
                 break;
         }
     }
