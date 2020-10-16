@@ -111,15 +111,19 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     "c.id_detail_checkup, \n" +
                     "c.tgl_masuk, \n" +
                     "tt.id_tempat_tidur, \n" +
-                    "tt.nama_tempat_tidur \n" +
+                    "tt.nama_tempat_tidur,\n" +
+                    "c.cover_biaya,\n" +
+                    "c.id_jenis_periksa_pasien\n" +
                     "FROM im_simrs_kelas_ruangan a\n" +
                     "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
                     "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON b.id_ruangan = tt.id_ruangan\n" +
                     "LEFT JOIN (\n" +
-                    "SELECT * \n" +
+                    "SELECT a.id_detail_checkup, a.id_ruangan, a.tgl_masuk, c.cover_biaya, c.id_jenis_periksa_pasien\n" +
                     "FROM it_simrs_rawat_inap a\n" +
-                    "INNER JOIN it_simrs_header_checkup b \n" +
+                    "INNER JOIN it_simrs_header_checkup b\n" +
                     "ON a.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup c \n" +
+                    "ON a.id_detail_checkup = c.id_detail_checkup\n" +
                     "AND a.status = '1' \n" +
                     "WHERE a.flag = 'Y' \n" +
                     "AND b.branch_id LIKE :branchId) c ON tt.id_tempat_tidur = c.id_ruangan\n" +
@@ -156,6 +160,8 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     if(obj[8] != null){
                         ruangan.setNamaTempatTidur(obj[8].toString());
                     }
+                    ruangan.setCoverBiaya(obj[9] != null ? null : new BigInteger(obj[9].toString()));
+                    ruangan.setJenisPasien(obj[10] == null ? "" : obj[10].toString());
                     ruanganList.add(ruangan);
 
                 }

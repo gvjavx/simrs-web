@@ -48,6 +48,24 @@ public class Ruangan extends BaseModel {
     private String kategori;
     private String idTempatTidur;
     private String namaTempatTidur;
+    private BigInteger coverBiaya;
+    private String jenisPasien;
+
+    public BigInteger getCoverBiaya() {
+        return coverBiaya;
+    }
+
+    public void setCoverBiaya(BigInteger coverBiaya) {
+        this.coverBiaya = coverBiaya;
+    }
+
+    public String getJenisPasien() {
+        return jenisPasien;
+    }
+
+    public void setJenisPasien(String jenisPasien) {
+        this.jenisPasien = jenisPasien;
+    }
 
     public String getIdTempatTidur() {
         return idTempatTidur;
