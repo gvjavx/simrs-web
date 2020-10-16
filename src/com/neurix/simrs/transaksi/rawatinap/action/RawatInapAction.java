@@ -6,6 +6,9 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.common.util.FirebasePushNotif;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
+import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
 import com.neurix.simrs.bpjs.eklaim.model.*;
 import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
@@ -1296,6 +1299,34 @@ public class RawatInapAction extends BaseMasterAction {
                     if ("dpjp_1".equalsIgnoreCase(obj.getString("prioritas"))) {
                         idDokterDpjp = obj.getString("id_dpjp");
                         dokterTeam.setFlagApprove("Y");
+                    }
+                    if("konsultasi".equalsIgnoreCase(obj.getString("prioritas"))) {
+                        //PUSH NOTIF
+
+                        List<NotifikasiFcm> resultNotif = new ArrayList<>();
+                        NotifikasiFcm beanNotif = new NotifikasiFcm();
+                        beanNotif.setUserId(dokterTeam.getIdDokter());
+
+                        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                        NotifikasiFcmBo notifikasiFcmBo = (NotifikasiFcmBo) ctx.getBean("notifikasiFcmBoProxy");
+
+                        resultNotif = notifikasiFcmBo.getByCriteria(beanNotif);
+                        FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan konsultasi" , "dr. meminta persetujuan untuk konsultasi" , "SK", resultNotif.get(0).getOs(), null);
+
+                    }
+                    if("rawat_bersama".equalsIgnoreCase(obj.getString("prioritas"))) {
+                        //PUSH NOTIF
+
+                        List<NotifikasiFcm> resultNotif = new ArrayList<>();
+                        NotifikasiFcm beanNotif = new NotifikasiFcm();
+                        beanNotif.setUserId(dokterTeam.getIdDokter());
+
+                        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                        NotifikasiFcmBo notifikasiFcmBo = (NotifikasiFcmBo) ctx.getBean("notifikasiFcmBoProxy");
+
+                        resultNotif = notifikasiFcmBo.getByCriteria(beanNotif);
+                        FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan rawat bersama" , "dr. meminta persetujuan untuk rawat bersama" , "SK", resultNotif.get(0).getOs(), null);
+
                     }
                     teamList.add(dokterTeam);
                 }

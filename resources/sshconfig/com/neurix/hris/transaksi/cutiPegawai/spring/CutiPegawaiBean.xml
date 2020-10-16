@@ -38,6 +38,7 @@
           p:departmentDao-ref="departmentDao"
           p:positionDao-ref="positionDao"
           p:branchDao-ref="branchDao"
+          p:ijinKeluarDao-ref="ijinKeluarDao"
     />
 
     <bean id="cutiPegawaiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

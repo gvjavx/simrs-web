@@ -2,7 +2,8 @@
 <!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 3.0//EN" "http://getahead.org/dwr/dwr30.dtd">
 
 <dwr>
-    <allow>
+
+  <allow>
       <create creator="new">
         <param name="class" value="com.neurix.authorization.user.action.UserLoginAction"/>
       </create>
@@ -123,6 +124,9 @@
       </create>
       <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail"/>
+      <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.HistoryOnCall"/>
+
+
       <convert converter="bean" match="com.neurix.hris.master.shift.model.Shift"/>
       <convert converter="bean" match="com.neurix.hris.master.group.model.Group"/>
 

@@ -165,7 +165,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t( SELECT * FROM im_hris_pegawai ) pegawai LEFT JOIN\n" +
                 "\t( SELECT * FROM it_hris_pegawai_position ) posisi ON pegawai.nip=posisi.nip\n" +
                 "WHERE\n" +
-                "\tpegawai.flag='Y' AND tanggal_pensiun<='"+tanggal6Bulan+"' AND tanggal_pensiun>='"+tanggalSekarang+"' AND posisi.flag='Y'";
+                "\tpegawai.flag='Y' AND tanggal_pra_pensiun<='"+tanggal6Bulan+"' AND tanggal_pensiun>='"+tanggalSekarang+"' AND posisi.flag='Y'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -704,10 +704,12 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setFlagPercobaan((String) row[88]);
             result.setPositionPltId((String) row[89]);
             result.setNipLama((String) row[90]);
+            result.setFlagDokterKso((String) row[91]);
+            result.setJenisPegawai((String) row[92]);
 
-            result.setBagianId((String) row[91]);
-            result.setBagianName((String) row[92]);
-            result.setProfesiId((String)row[93]);
+            result.setBagianId((String) row[93]);
+            result.setBagianName((String) row[94]);
+            result.setProfesiId((String)row[95]);
 
             result.setDivisiName((String)row[9]);
             listOfResult.add(result);

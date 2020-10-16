@@ -297,9 +297,17 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="absensiPegawai.branchId" required="true"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                                                        <s:if test='absensiPegawai.branchIdUser == "KP"'>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="absensiPegawai.branchId" disabled="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
+                                                            <s:hidden id="branchId" name="pembayaranUtangPiutang.branchId" />
+                                                        </s:else>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -318,18 +326,18 @@
                                                 </td>
                                             </tr>--%>
 
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Bagian :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:action id="comboBagian" namespace="/strukturJabatan" name="searchBagian_strukturJabatan"/>
-                                                        <s:select cssClass="form-control" list="#comboBagian.listComboStrukturJabatan" id="bagian" required="true"
-                                                                  listKey="bagian" listValue="bagianName" name="absensiPegawai.bagian" headerKey="" headerValue="" />
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                            <%--<tr>--%>
+                                                <%--<td>--%>
+                                                    <%--<label class="control-label"><small>Bagian :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<s:action id="comboBagian" namespace="/strukturJabatan" name="searchBagian_strukturJabatan"/>--%>
+                                                        <%--<s:select cssClass="form-control" list="#comboBagian.listComboStrukturJabatan" id="bagian" required="true"--%>
+                                                                  <%--listKey="bagian" listValue="bagianName" name="absensiPegawai.bagian" headerKey="" headerValue="" />--%>
+                                                    <%--</table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
                                             <tr>
                                                 <td></td>
                                                 <td><hr></td>
@@ -395,17 +403,6 @@
                                                 <td>
                                                     <table>
                                                         <s:select list="#{'Y':'Y','N':'N'}" id="lembur" name="absensiPegawai.lembur"
-                                                                  headerKey="" headerValue="" cssClass="form-control" />
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Ijin :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:select list="#{'Y':'Y','N':'N'}" id="ijin" name="absensiPegawai.ijin"
                                                                   headerKey="" headerValue="" cssClass="form-control" />
                                                     </table>
                                                 </td>
@@ -496,17 +493,17 @@
                                                                     </s:if>
                                                                 </s:if>
                                                             </display:column>
-                                                            <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                                <s:if test="#attr.row.cekAdmin">
-                                                                    <s:url var="urlDelete" namespace="/absensi" action="delete_absensi" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                    </s:url>
-                                                                    <sj:a onClickTopics="showDialogMenuView" href="%{urlDelete}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                                    </sj:a>
-                                                                </s:if>
-                                                            </display:column>
+                                                            <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
+                                                                <%--<s:if test="#attr.row.cekAdmin">--%>
+                                                                    <%--<s:url var="urlDelete" namespace="/absensi" action="delete_absensi" escapeAmp="false">--%>
+                                                                        <%--<s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>--%>
+                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                                    <%--</s:url>--%>
+                                                                    <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlDelete}">--%>
+                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                                                    <%--</sj:a>--%>
+                                                                <%--</s:if>--%>
+                                                            <%--</display:column>--%>
                                                             <%--<display:column media="html" title="Edit" style="text-align:center;font-size:9">--%>
                                                                 <%--<s:if test="#attr.row.cekAdmin">--%>
                                                                     <%--<s:url var="urlEdit" namespace="/absensi" action="editAbsensi_absensi" escapeAmp="false">--%>
@@ -537,6 +534,7 @@
                                                             <display:column property="ijin" sortable="true" title="ijin" style="text-align:center" />
                                                             <display:column property="lembur" sortable="true" title="lembur" style="text-align:center" />
                                                             <display:column property="realisasiJamLembur" sortable="true" title="Realisasi Lembur" style="text-align:center" />
+                                                            <display:column property="flagCutiGantiHari" sortable="true" title="Cuti Ganti Hari" style="text-align:center" />
                                                             <display:setProperty name="paging.banner.item_name">Absensi</display:setProperty>
                                                             <display:setProperty name="paging.banner.items_name">Absensi</display:setProperty>
                                                             <display:setProperty name="export.excel.filename">Absensi.xls</display:setProperty>

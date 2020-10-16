@@ -67,6 +67,16 @@ public class Mutasi extends BaseModel {
 
     private String tipePegawai;
 
+    private String branchIdUser;
+
+    public String getBranchIdUser() {
+        return branchIdUser;
+    }
+
+    public void setBranchIdUser(String branchIdUser) {
+        this.branchIdUser = branchIdUser;
+    }
+
     public String getLevelBaruName() {
         return levelBaruName;
     }

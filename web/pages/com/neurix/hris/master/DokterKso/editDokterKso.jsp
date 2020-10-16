@@ -112,7 +112,7 @@
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
-                <legend align="left">Delete Dokter KSO</legend>
+                <legend align="left">Delete Dokter Tamu</legend>
 
                 <table>
                     <tr>
@@ -125,7 +125,7 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Dokter KSO ID :</small></label>
+                            <label class="control-label"><small>Dokter Tamu ID :</small></label>
                         </td>
                         <td>
                             <table>

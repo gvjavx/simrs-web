@@ -12,6 +12,7 @@ import com.neurix.hris.master.groupMember.model.GroupMember;
 import com.neurix.hris.master.groupShift.bo.GroupShiftBo;
 import com.neurix.hris.master.groupShift.model.GroupShift;
 import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
+import com.neurix.hris.transaksi.jadwalShiftKerja.model.HistoryOnCall;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalKerjaDTO;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail;
@@ -509,6 +510,8 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
 
             jadwalShiftKerja.setLastUpdate(updateTime);
             jadwalShiftKerja.setLastUpdateWho(userLogin);
+            jadwalShiftKerja.setCreatedDate(updateTime);
+            jadwalShiftKerja.setCreatedWho(userLogin);
             jadwalShiftKerja.setAction("U");
             jadwalShiftKerja.setFlag("Y");
 
@@ -776,26 +779,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             return null;
         }
         logger.info("[JadwalShiftKerjaAction.searchPegawaiByGrup] end process <<<");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<JadwalShiftKerjaDetail> listOfResult = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
-
-        if (listOfResult!=null){
-            for(JadwalShiftKerjaDetail jadwalShiftKerjaDetail : jadwalShiftKerjaDetailList){
-                boolean ada = false;
-                for (JadwalShiftKerjaDetail detail : listOfResult) {
-                    if (detail.getNip().equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())) {
-                        ada = true;
-                        break;
-                    }
-                }
-                if (!ada){
-                    finalResult.add(jadwalShiftKerjaDetail);
-                }
-            }
-        }else{
-            finalResult=jadwalShiftKerjaDetailList;
-        }
-        return finalResult;
+        return jadwalShiftKerjaDetailList;
     }
     public void savePegawaiShift(String nip , String nama,String posisi,String grup,String grupId, String shift,String shiftId,String onCall) {
         logger.info("[JadwalShiftKerjaAction.savePegawaiShift] start process >>>");
@@ -826,14 +810,14 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         logger.info("[JadwalShiftKerjaAction.savePegawaiShift] end process <<<");
         return listOfResult;
     }
-    public List<JadwalShiftKerjaDetail> deletePegawaiShift(String nip) {
+    public List<JadwalShiftKerjaDetail> deletePegawaiShift(String nip,String shift) {
         logger.info("[JadwalShiftKerjaAction.deletePegawaiShift] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<JadwalShiftKerjaDetail> listOfResult = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
         List<JadwalShiftKerjaDetail> finalResult = new ArrayList<>();
 
         for (JadwalShiftKerjaDetail detail : listOfResult){
-            if (!nip.equalsIgnoreCase(detail.getNip())){
+            if (!nip.equalsIgnoreCase(detail.getNip())||!shift.equalsIgnoreCase(detail.getShiftId())){
                 finalResult.add(detail);
             }
         }
@@ -907,7 +891,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         return response;
     }
 
-    public void savePanggilBerdasarkanId(String id){
+    public void savePanggilBerdasarkanId(String id,String keterangan){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
         NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
@@ -918,12 +902,27 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         data.setFlagPanggil("Y");
         data.setPanggilDate(updateTime);
         data.setPanggilWho(userLogin);
+        data.setKeteranganPanggil(keterangan);
 
         List<Notifikasi> notifCuti = jadwalShiftKerjaBo.savePanggilBerdasarkanId(data);
 
         for (Notifikasi notifikasi : notifCuti ){
             notifikasiBo.sendNotif(notifikasi);
         }
+    }
+
+    public void saveLiburBerdasarkanId(String id){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
+        JadwalShiftKerjaDetail data = new JadwalShiftKerjaDetail();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        data.setJadwalShiftKerjaDetailId(id);
+        data.setFlagLibur("Y");
+        data.setLastUpdate(updateTime);
+        data.setLastUpdateWho(userLogin);
+
+        jadwalShiftKerjaBo.saveLiburBerdasarkanId(data);
     }
 
     public JadwalShiftKerja searchUserBagian(){
@@ -935,6 +934,66 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             data.setGroupId(CommonUtil.userBagianId());
         }
         return data;
+    }
+
+    public JadwalShiftKerja cekJadwalKerja(String nip,String shiftId,String onCall){
+        JadwalShiftKerja jadwalShiftKerja= new JadwalShiftKerja();
+        String status ="";
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<JadwalShiftKerjaDetail> listOfResult = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
+        int jumlahJadwal = 0;
+        if (listOfResult!=null){
+            for (JadwalShiftKerjaDetail jadwalShiftKerjaDetail : listOfResult){
+                if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())){
+                    jumlahJadwal++;
+                }
+                if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())&&shiftId.equalsIgnoreCase(jadwalShiftKerjaDetail.getShiftId())){
+                    status="Pegawai dengan shift ini sudah ada";
+                    break;
+                }
+            }
+            if ("Y".equalsIgnoreCase(onCall)){
+                for (JadwalShiftKerjaDetail jadwalShiftKerjaDetail : listOfResult) {
+                    if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())) {
+                        status="Jadwal dengan On Call Hanya Bisa 1 Kali";
+                        break;
+                    }
+                }
+            }else{
+                for (JadwalShiftKerjaDetail jadwalShiftKerjaDetail : listOfResult){
+                    if (nip.equalsIgnoreCase(jadwalShiftKerjaDetail.getNip())&&"Y".equalsIgnoreCase(jadwalShiftKerjaDetail.getOnCall())){
+                        status="Jadwal dengan On Call Hanya Bisa 1 Kali";
+                        break;
+                    }
+                }
+            }
+        }
+
+        jadwalShiftKerja.setStatusSave(status);
+        jadwalShiftKerja.setJumlahJadwal(jumlahJadwal);
+        return jadwalShiftKerja;
+    }
+
+    public List<HistoryOnCall> searchHistoryOnCallSession() {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<HistoryOnCall> historyOnCalls = (List<HistoryOnCall>) session.getAttribute("listOfResultHistoryOnCall");
+
+        return historyOnCalls;
+    }
+
+
+    public void searchHistoryOnCall(String id,String nip) {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
+        HistoryOnCall historyOnCall = new HistoryOnCall();
+        historyOnCall.setFlag("Y");
+        historyOnCall.setJadwalShiftKerjaDetailId(id);
+        historyOnCall.setNip(nip);
+
+        List<HistoryOnCall> historyOnCalls = jadwalShiftKerjaBo.getHistoryOnCall(historyOnCall);
+        session.setAttribute("listOfResultHistoryOnCall",historyOnCalls);
     }
 
     @Override

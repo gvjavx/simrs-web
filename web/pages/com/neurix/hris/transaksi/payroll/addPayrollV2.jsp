@@ -227,6 +227,7 @@
                                                             <display:column style="text-align:right;" property="totalB" sortable="true" title="Potongan" />
                                                             <display:column style="text-align:right;" property="pphGaji" sortable="true" title="PPh" />
                                                             <display:column style="text-align:right;" property="totalGajiBersih" sortable="true" title="Gaji Bersih" />
+                                                            <display:column style="text-align:center;" property="proporsiGaji" sortable="true" title="Proporsi Gaji" />
                                                         </display:table>
                                                     </td>
                                                 </tr>

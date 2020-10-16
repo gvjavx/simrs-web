@@ -25,6 +25,7 @@ public class ItJadwalShiftKerjaDetailEntity implements Serializable {
     private String flagPanggil;
     private String panggilWho;
     private Timestamp panggilDate;
+    private String flagLibur;
 
     private Timestamp createdDate;
     private String flag;
@@ -32,6 +33,14 @@ public class ItJadwalShiftKerjaDetailEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getFlagLibur() {
+        return flagLibur;
+    }
+
+    public void setFlagLibur(String flagLibur) {
+        this.flagLibur = flagLibur;
+    }
 
     public String getFlagPanggil() {
         return flagPanggil;

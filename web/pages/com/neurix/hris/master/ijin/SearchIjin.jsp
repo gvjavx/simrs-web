@@ -114,8 +114,18 @@
 
                                 </td>
                             </tr>
-
-
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Agama :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:select list="#{'all':'Semua','islam':'Islam', 'kristen' : 'Kristen', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
+                                            'budha' : 'Buddha', 'kong hu cu' : 'Kong Hu Cu'}" headerKey="" headerValue="[ Select One ]" id="agama" name="ijin.agama"
+                                                  cssClass="form-control" />
+                                    </table>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Flag :</small></label>
@@ -205,6 +215,7 @@
                                             <display:column property="jumlahIjin" sortable="true" title="Jumlah Hari"  />
                                             <display:column property="gender" sortable="true" title="Gender"  />
                                             <display:column property="tipeHari" sortable="true" title="Tipe Hari"  />
+                                            <display:column property="agamaName" sortable="true" title="Agama"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
                                             <display:column property="createdDate" sortable="true" title="Created date"  />

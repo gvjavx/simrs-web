@@ -26,14 +26,6 @@
             var persenKso = document.getElementById("persenKso1").value;
             var persenKs = document.getElementById("persenKs1").value;
 
-            console.log(nip);
-            console.log(branchId);
-            console.log(masterId);
-            console.log(jenisKso);
-            console.log(positionId);
-            console.log(persenKso);
-            console.log(persenKs);
-
             if (nip != ''&& branchId != '' && masterId != '' && jenisKso != ''
                     && persenKso != '' && persenKs != '' && positionId != '') {
                 if (confirm('Do you want to save this record?')) {
@@ -108,7 +100,7 @@
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
-                <legend align="left">Add Dokter KSO</legend>
+                <legend align="left">Add Dokter Tamu</legend>
 
                 <table>
                     <tr>

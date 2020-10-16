@@ -200,7 +200,7 @@ public class DispensasiController implements ModelDriven<Object> {
                 search.setFlag("Y");
                 search.setGender("L");
 
-                modelIjin = ijinBoProxy.getComboIjinIdWithKelamin(nip);
+                modelIjin = ijinBoProxy.getComboIjinIdWithKelamin(nip,"N");
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {

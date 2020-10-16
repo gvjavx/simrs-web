@@ -20,6 +20,7 @@ public class JadwalShiftKerjaDetail extends BaseModel {
     private String shiftId;
     private String shiftGroupId;
     private String onCall;
+    private String flagLibur;
 
     private String positionName;
     private String shiftName;
@@ -29,6 +30,23 @@ public class JadwalShiftKerjaDetail extends BaseModel {
     private String flagPanggil;
     private String panggilWho;
     private Timestamp panggilDate;
+    private String keteranganPanggil;
+
+    public String getKeteranganPanggil() {
+        return keteranganPanggil;
+    }
+
+    public void setKeteranganPanggil(String keteranganPanggil) {
+        this.keteranganPanggil = keteranganPanggil;
+    }
+
+    public String getFlagLibur() {
+        return flagLibur;
+    }
+
+    public void setFlagLibur(String flagLibur) {
+        this.flagLibur = flagLibur;
+    }
 
     public String getPanggilWho() {
         return panggilWho;
@@ -60,6 +78,43 @@ public class JadwalShiftKerjaDetail extends BaseModel {
 
     public void setOnCall(String onCall) {
         this.onCall = onCall;
+    }
+
+    private String jadwalName;
+    private String jamAwal;
+    private String jamAkhir;
+    private String branchId;
+
+    public String getJadwalName() {
+        return jadwalName;
+    }
+
+    public void setJadwalName(String jadwalName) {
+        this.jadwalName = jadwalName;
+    }
+
+    public String getJamAwal() {
+        return jamAwal;
+    }
+
+    public void setJamAwal(String jamAwal) {
+        this.jamAwal = jamAwal;
+    }
+
+    public String getJamAkhir() {
+        return jamAkhir;
+    }
+
+    public void setJamAkhir(String jamAkhir) {
+        this.jamAkhir = jamAkhir;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 
     public String getProfesiid() {

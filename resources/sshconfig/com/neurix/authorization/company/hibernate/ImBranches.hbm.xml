@@ -148,6 +148,12 @@
         <property name="kodering">
             <column name="kodering" sql-type="varchar" length="100"/>
         </property>
+        <property name="lat">
+            <column name="lat" sql-type="varchar" length="100"/>
+        </property>
+        <property name="lon">
+            <column name="lon" sql-type="varchar" length="100"/>
+        </property>
 
         <set name="imAreasBranchesUsers" inverse="true" lazy="true" where="flag='Y'">
             <key>

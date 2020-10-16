@@ -166,18 +166,17 @@
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:if test='absensiPegawai.branchId == "KP"'>
+                                                    <s:if test='absensiPegawai.branchIdUser == "KP"'>
                                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                         <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
                                                     </s:if>
                                                     <s:else>
                                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId" disabled="true"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                        <s:hidden id="branchId" name="absensiPegawai.branchId"/>
+                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="absensiPegawai.branchId" disabled="true"
+                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
+                                                        <s:hidden id="branchId" name="pembayaranUtangPiutang.branchId" />
                                                     </s:else>
-
                                                 </table>
                                             </td>
                                         </tr>

@@ -8,6 +8,9 @@
     <bean id="jadwalShiftKerjaAction" class="com.neurix.hris.transaksi.jadwalShiftKerja.action.JadwalShiftKerjaAction"
           p:jadwalShiftKerjaBoProxy-ref="jadwalShiftKerjaBoProxy" />
 
+    <bean id="jadwalShiftKerjaController" class="com.neurix.hris.mobileapi.JadwalShiftController"
+          p:jadwalShiftKerjaBoProxy-ref="jadwalShiftKerjaBoProxy" />
+
     <bean id="jadwalShiftKerjaBo" class="com.neurix.hris.transaksi.jadwalShiftKerja.bo.impl.JadwalShiftKerjaBoImpl"
           p:jadwalShiftKerjaDao-ref="jadwalShiftKerjaDao"
           p:jadwalShiftKerjaDetailDao-ref="jadwalShiftKerjaDetailDao"
@@ -19,6 +22,8 @@
           p:personilPositionDao-ref="personilPositionDao"
           p:positionDao-ref="positionDao"
           p:liburDao-ref="liburDao"
+          p:positionBagianDao-ref="positionBagianDao"
+          p:historyOnCallDao-ref="historyOnCallDao"
     />
 
     <bean id="jadwalShiftKerjaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -50,5 +55,7 @@
     <bean id="groupShiftDao" class="com.neurix.hris.master.groupShift.dao.GroupShiftDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="shiftDao" class="com.neurix.hris.master.shift.dao.ShiftDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="historyOnCallDao" class="com.neurix.hris.transaksi.jadwalShiftKerja.dao.HistoryOnCallDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

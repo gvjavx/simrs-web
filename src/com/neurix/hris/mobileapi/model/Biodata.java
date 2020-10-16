@@ -22,6 +22,15 @@ public class Biodata implements Serializable {
     private String tipePegawaiId;
     private String tipePegawai;
     private String agama;
+    private String flagShift;
+
+    public String getFlagShift() {
+        return flagShift;
+    }
+
+    public void setFlagShift(String flagShift) {
+        this.flagShift = flagShift;
+    }
 
     public String getAgama() {
         return agama;

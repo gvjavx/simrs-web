@@ -58,11 +58,26 @@
                     }
                     dwr.engine.setAsync(false);
                     JadwalShiftKerjaAction.cekTanggal(unit,tglAwal,tglAkhir,function(listdata) {
-                        if (listdata=="00"){
-                            if (confirm('Do you want to save this record?')) {
-                                JadwalShiftKerjaAction.cekLibur(awal,akhir,function(response) {
-                                    if (response.status=="error"){
-                                        if (confirm("ini adalah hari libur. Ingin melanjutkan?")){
+                        var rowCount = $('.shiftTable tr').length;
+                        if (rowCount!=null&&rowCount>1){
+                            if (listdata=="00"){
+                                if (confirm('Do you want to save this record?')) {
+                                    JadwalShiftKerjaAction.cekLibur(awal,akhir,function(response) {
+                                        if (response.status=="error"){
+                                            if (confirm("ini adalah hari libur. Ingin melanjutkan?")){
+                                                event.originalEvent.options.submit = true;
+                                                $.publish('showDialog');
+                                                // if (confirm('Do you want to save this record?')) {
+                                                //     event.originalEvent.options.submit = true;
+                                                //     $.publish('showDialog');
+                                                // } else {
+                                                //     // Cancel Submit comes with 1.8.0
+                                                //     event.originalEvent.options.submit = false;
+                                                // }
+                                            }else{
+                                                event.originalEvent.options.submit = false;
+                                            }
+                                        } else{
                                             event.originalEvent.options.submit = true;
                                             $.publish('showDialog');
                                             // if (confirm('Do you want to save this record?')) {
@@ -72,33 +87,29 @@
                                             //     // Cancel Submit comes with 1.8.0
                                             //     event.originalEvent.options.submit = false;
                                             // }
-                                        }else{
-                                            event.originalEvent.options.submit = false;
                                         }
-                                    } else{
-                                        event.originalEvent.options.submit = true;
-                                        $.publish('showDialog');
-                                        // if (confirm('Do you want to save this record?')) {
-                                        //     event.originalEvent.options.submit = true;
-                                        //     $.publish('showDialog');
-                                        // } else {
-                                        //     // Cancel Submit comes with 1.8.0
-                                        //     event.originalEvent.options.submit = false;
-                                        // }
-                                    }
-                                });
-                            } else {
+                                    });
+                                } else {
+                                    // Cancel Submit comes with 1.8.0
+                                    event.originalEvent.options.submit = false;
+                                }
+                            } else{
                                 // Cancel Submit comes with 1.8.0
                                 event.originalEvent.options.submit = false;
+                                var msg = "Tanggal ini sudah ada";
+                                document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                                $.publish('showErrorValidationDialog');
                             }
                         } else{
                             // Cancel Submit comes with 1.8.0
                             event.originalEvent.options.submit = false;
-                            var msg = "Tanggal ini sudah ada";
+                            var msg = '<strong>Daftar pegawai shift kerja masih kosong</strong>.' + '<br/>';
                             document.getElementById('errorValidationMessage').innerHTML = msg;
 
                             $.publish('showErrorValidationDialog');
                         }
+
                     });
                 } else {
                     event.originalEvent.options.submit = false;
@@ -199,16 +210,16 @@
                                                             <div class="input-group-addon">
                                                                 <i class="fa fa-calendar"></i>
                                                             </div>
-                                                            <s:textfield id="tglAwal" name="jadwalShiftKerja.stTanggalAwal" cssClass="form-control pull-right"
-                                                                         required="false" cssStyle=""/>
+                                                            <s:textfield id="tglAwal" name="jadwalShiftKerja.stTanggalAwal" cssClass="form-control pull-right" readonly="true"
+                                                                         required="false" cssStyle="background-color: white"/>
                                                             <div class="input-group-addon">
                                                                 s/d
                                                             </div>
                                                             <div class="input-group-addon">
                                                                 <i class="fa fa-calendar"></i>
                                                             </div>
-                                                            <s:textfield id="tglAkhir" name="jadwalShiftKerja.stTanggalAkhir" cssClass="form-control pull-right"
-                                                                         cssStyle=""/>
+                                                            <s:textfield id="tglAkhir" name="jadwalShiftKerja.stTanggalAkhir" cssClass="form-control pull-right" readonly="true"
+                                                                         cssStyle="background-color: white"/>
                                                         </div>
                                                     </table>
                                                 </td>
@@ -374,32 +385,32 @@
                 <form class="form-horizontal" id="myForm">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-sm-offset-3 col-sm-1">
-                                <label class="control-label">Grup</label>
+                            <div class="col-sm-offset-2 col-sm-2">
+                                <label class="control-label">Sub Divisi</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-5">
                                 <s:action id="comboSubDiv" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
                                 <s:select list="#comboSubDiv.comboListOfPositionBagian" id="profesiId" name="shift.profesiId"
                                           listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" cssClass="form-control" onchange="listShift();listPerson()"/>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-offset-3 col-sm-1">
+                            <div class="col-sm-offset-2 col-sm-2">
                                 <label class="control-label">Shift</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-5">
                                 <s:action id="comboShift" namespace="/groupShift" name="initComboShift_groupShift"/>
                                 <s:select cssClass="form-control" list="#comboShift.listOfComboShift" id="ShiftId" name=""
                                           required="true" listKey="shiftId" listValue="shiftName" headerKey="" headerValue="[Select one]" />
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-offset-3 col-sm-1">
-                                <label class="control-label">On Call</label>
+                            <div class="col-sm-offset-2 col-sm-2">
+                                <label class="control-label">Jenis Shift</label>
                             </div>
-                            <div class="col-sm-4">
-                                <s:select list="#{'Y':'Y'}" id="onCall"
-                                          headerKey="N" headerValue="N" cssClass="form-control"/>
+                            <div class="col-sm-5">
+                                <s:select list="#{'Y':'On Call'}" id="onCall"
+                                          headerKey="N" headerValue="Normal" cssClass="form-control"/>
                             </div>
                         </div>
                         <br>
@@ -530,7 +541,7 @@
                 "<th style='text-align: center; background-color:  #90ee90'>NIP</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Nama Pegawai</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Posisi</th>"+
-                "<th style='text-align: center; background-color:  #90ee90'>Grup</th>"+
+                "<th style='text-align: center; background-color:  #90ee90'>Sub Divisi</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Shift</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>On Call</th>"+
                 "<th style='text-align: center; background-color:  #90ee90'>Hapus</th>"+
@@ -546,7 +557,7 @@
                     '<td align="center">' + item.shiftName + '</td>' +
                     '<td align="center">' + item.onCall + '</td>' +
                     '<td align="center">' +
-                    "<a href='javascript:;' class ='item-delete-shift' data ='"+item.nip+"' nama ='"+item.namaPegawai+"' posisi ='"+item.positionName+"' >" +
+                    "<a href='javascript:;' class ='item-delete-shift' data ='"+item.nip+"' nama ='"+item.namaPegawai+"' shift ='"+item.shiftId+"' posisi ='"+item.positionName+"' >" +
                     "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>'>"+
                     '</a>' +
                     '</td>' +
@@ -557,6 +568,7 @@
                 "pageLength": 20,
                 "bDestroy":true
             });
+
         });
     };
     $('.groupShiftTable').on('click', '.item-add-shift', function () {
@@ -574,19 +586,37 @@
             alert(pesan);
         }else{
             dwr.engine.setAsync(false);
-
-            JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,grupId,shift,shiftId,onCall,function() {
-                resultPerson();
-                listPerson();
-            });
+            JadwalShiftKerjaAction.cekJadwalKerja(nip,shiftId,onCall,function (data) {
+                if (data.statusSave==""){
+                    if (data.jumlahJadwal===1){
+                        if (confirm("Sudah ada jadwal sebelumnya apakah anda ingin menambahkan shift gantung ?")) {
+                            JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,grupId,shift,shiftId,onCall,function() {
+                                resultPerson();
+                                listPerson();
+                            });
+                        }
+                    }else if (data.jumlahJadwal===0){
+                        JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,grupId,shift,shiftId,onCall,function() {
+                            resultPerson();
+                            listPerson();
+                        });
+                    }else if (data.jumlahJadwal>3) {
+                        alert("Hanya bisa menambahkan maksimal 2 jadwal");
+                    }
+                } else{
+                    alert(data.statusSave);
+                }
+            })
         }
     });
     $('.shiftTable').on('click', '.item-delete-shift', function () {
         if (confirm("Apakah data ini ingin dihapus ?")){
             var nip = $(this).attr('data');
+            var shift = $(this).attr('shift');
             dwr.engine.setAsync(false);
-            JadwalShiftKerjaAction.deletePegawaiShift(nip,function() {
+            JadwalShiftKerjaAction.deletePegawaiShift(nip,shift,function() {
                 resultPerson();
+                $('.odd').remove();
             });
         }
     });

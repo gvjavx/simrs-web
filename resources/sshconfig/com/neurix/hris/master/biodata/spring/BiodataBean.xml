@@ -11,6 +11,9 @@
     <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
           p:biodataBoProxy-ref="biodataBoProxy" />
 
+    <bean id="jadwalShiftController" class="com.neurix.hris.mobileapi.JadwalShiftController"
+          p:biodataBoProxy-ref="biodataBoProxy" />
+
     <bean id="personalAction" class="com.neurix.hris.master.biodata.action.BiodataAction"
           p:biodataBoProxy-ref="biodataBoProxy" />
 
@@ -44,6 +47,8 @@
           p:tunjLainPegawaiDao-ref="tunjLainPegawaiDao"
           p:golonganPkwtDao-ref="golonganPkwtDao"
           p:profesiDao-ref="profesiDao"
+          p:mutasiDao-ref="mutasiDao"
+          p:dokterDao-ref="dokterDao"
     />
 
     <bean id="biodataBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

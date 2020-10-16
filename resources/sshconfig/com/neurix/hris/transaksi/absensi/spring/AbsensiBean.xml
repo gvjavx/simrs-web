@@ -46,6 +46,7 @@
           p:absensiDashboardDao-ref="absensiDashboardDao"
           p:shiftDao-ref="shiftDao"
           p:companyDao-ref="companyDao"
+          p:mesinAbsensiDetailOnCallDao-ref="mesinAbsensiDetailOnCallDao"
     />
 
     <bean id="absensiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -100,6 +101,7 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="absensiDashboardDao" class="com.neurix.hris.transaksi.absensi.dao.AbsensiDashboardDao"
           p:sessionFactory-ref="sessionFactory" />
-
+    <bean id="mesinAbsensiDetailOnCallDao" class="com.neurix.hris.transaksi.absensi.dao.MesinAbsensiDetailOnCallDao"
+          p:sessionFactory-ref="sessionFactory" />
 
 </beans>

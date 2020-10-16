@@ -110,7 +110,7 @@
                                 event.originalEvent.options.submit = false;
                             }
                         }else {
-                            if (confirm('Apakah ingin dilanjutkan? Cuti yang diajukan tahun depan dapat mereset cuti tahunan anda ke tahun berikutnya!!!')) {
+                            if (confirm('Cuti yang diajukan adalah untuk tahun depan , jika dilanjutkan sisa cuti tahun ini akan hangus dan sisa cuti tahunan tahun depan akan direset !!! Apakah anda ingin melanjutkan ?')) {
                                 event.originalEvent.options.submit = true;
                                 $.publish('showDialog');
 
@@ -236,8 +236,6 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
-            console.log(event);
-            console.log(data);
             document.getElementById('errorMessageCuti').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialogCuti');
         });

@@ -3,6 +3,12 @@ package com.neurix.simrs.transaksi.teamdokter.action;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.common.util.FirebasePushNotif;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
+import com.neurix.hris.transaksi.notifikasi.bo.impl.NotifikasiBoImpl;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
+import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
@@ -178,6 +184,8 @@ public class TeamDokterAction extends BaseMasterAction {
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TeamDokterBo dokterBo = (TeamDokterBo) ctx.getBean("teamDokterBoProxy");
+        NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+        NotifikasiFcmBo notifikasiFcmBo = (NotifikasiFcmBo) ctx.getBean("notifikasiFcmBoProxy");
         try {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -193,6 +201,16 @@ public class TeamDokterAction extends BaseMasterAction {
             dokterTeam.setIdPelayanan(pelayanan);
             dokterTeam.setJenisDpjp(jenisDpjp);
             response = dokterBo.saveDokterTeam(dokterTeam);
+
+            //PUSH NOTIF
+
+            List<NotifikasiFcm> resultNotif = new ArrayList<>();
+            NotifikasiFcm beanNotif = new NotifikasiFcm();
+            beanNotif.setUserId(idDokter);
+
+            resultNotif = notifikasiFcmBo.getByCriteria(beanNotif);
+            FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan " + jenisDpjp, "dr. meminta persetujuan untuk " + jenisDpjp, "SK", resultNotif.get(0).getOs(), null);
+
         }catch (GeneralBOException e) {
             response.setStatus("error");
             response.setMsg("Error"+e.getMessage());

@@ -23,6 +23,16 @@ public class BranchController implements ModelDriven<Object> {
     private List<Branch> listOfBranch;
     private Branch model;
 
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
     }
@@ -75,6 +85,7 @@ public class BranchController implements ModelDriven<Object> {
 
         com.neurix.authorization.company.model.Branch bean = new com.neurix.authorization.company.model.Branch();
         bean.setAreaId("0002");
+        bean.setBranchId(branchId);
         try {
             modelBranch = branchBoProxy.getByCriteria(bean);
         } catch (GeneralBOException e) {
@@ -97,6 +108,8 @@ public class BranchController implements ModelDriven<Object> {
                 model.setBranchId(branch.getBranchId());
                 model.setBranchAddress(branch.getBranchAddress());
                 model.setBranchName(branch.getBranchName());
+                model.setLat(branch.getLat());
+                model.setLon(branch.getLon());
 
                 listOfBranch.add(model);
             }

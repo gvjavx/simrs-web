@@ -466,27 +466,36 @@
         var tmp_table = "";
         AbsensiAction.searchAbsensiFinal(function (listdata) {
             tmp_table = "<thead style='font-size: 10px' ><tr class='active'>" +
-                // "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>View</th>" +
-                // "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAll'></th>" +
-                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Tanggal</th>" +
-                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Hari</th>" +
-                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>PIN</th>" +
-                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>NIP</th>" +
-                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Nama</th>" +
-                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Bidang/Divisi</th>" +
-                "<th colspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Jam Kerja</th>" +
-                "<th colspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Lembur</th>" +
-                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Pengajuan Lembur</th>" +
-                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Realisasi Lembur</th>" +
-                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Perhitungan Lembur</th>" +
-                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Biaya Lembur</th>" +
-                "<th rowspan='2' style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc''>Status</th>" +
+                // "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>View</th>" +
+                // "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'><input type='checkbox' id='checkAll'></th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Tanggal</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Hari</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>PIN</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>NIP</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Nama</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Bidang/Divisi</th>" +
+                "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>On Call</th>" +
+                "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Jam Kerja</th>" +
+                "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Jam Kerja 2</th>" +
+                // "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Lembur</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Pengajuan Lembur</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Realisasi Lembur</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Perhitungan Lembur</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Biaya Lembur</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Status On Call</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Status</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Status 2</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Cuti Ganti Hari</th>" +
                 "</tr>" +
                 "<tr class='active'>" +
-                "<th style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>In</th>" +
-                "<th style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Out</th>" +
-                "<th style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>Start</th>" +
-                "<th style='text-align: center; vertical-align: middle; color: #fff; background-color:  #3c8dbc'>End</th>" +
+                "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>In</th>" +
+                "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Out</th>" +
+                "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>In</th>" +
+                "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Out</th>" +
+                "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>In</th>" +
+                "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Out</th>" +
+                // "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Start</th>" +
+                // "<th style='text-align: center; vertical-align: middle; background-color:  #90ee90'>End</th>" +
                 "</tr>" +
                 "</thead>";
             var i = i;
@@ -506,15 +515,22 @@
                     '<td align="center">' + item.nip + '</td>' +
                     '<td align="center">' + item.nama + '</td>' +
                     '<td align="center" class="ceknull">' + item.divisi + '</td>' +
+                    '<td align="center" class="ceknull">' + item.jamMasukOnCall + '</td>' +
+                    '<td align="center" class="ceknull">' + item.jamPulangOnCall + '</td>' +
                     '<td align="center" class="ceknull">' + item.jamMasuk + '</td>' +
                     '<td align="center" class="ceknull">' + item.jamPulang + '</td>' +
-                    '<td align="center" class="ceknull">' + item.awalLembur + '</td>' +
-                    '<td align="center" class="ceknull">' + item.selesaiLembur + '</td>' +
+                    '<td align="center" class="ceknull">' + item.jamMasuk2 + '</td>' +
+                    '<td align="center" class="ceknull">' + item.jamPulang2 + '</td>' +
+                    // '<td align="center" class="ceknull">' + item.awalLembur + '</td>' +
+                    // '<td align="center" class="ceknull">' + item.selesaiLembur + '</td>' +
                     '<td align="center">' + item.pengajuanLembur + '</td>' +
                     '<td align="center">' + item.realisasiJamLembur + '</td>' +
                     '<td align="center">' + item.jamLembur + '</td>' +
                     '<td align="center" class="ceknull">' + item.stBiayaLembur + '</td>' +
-                    '<td align="center">' + item.statusName + '</td>' +
+                    '<td align="center" class="ceknull">' + item.statusNameOnCall + '</td>' +
+                    '<td align="center" class="ceknull">' + item.statusName + '</td>' +
+                    '<td align="center" class="ceknull">' + item.statusName2 + '</td>' +
+                    '<td align="center" class="ceknull">' + item.flagCutiGantiHari + '</td>' +
                     "</tr>";
             });
             $('.absensiDetailTable').append(tmp_table);
@@ -525,7 +541,7 @@
             $('#saveAdd').show();
             $("#absensiDetailTable .ceknull:contains('null')").html("-");
         });
-    }
+    };
     $(document).ready(function(){
         loadFinal();
         $('#tanggal1').datepicker({

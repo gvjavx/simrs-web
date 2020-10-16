@@ -101,15 +101,15 @@ public class CompanyBoImpl implements CompanyBo {
                 else
                     imCompanyOld.setIuranPerusahaanJkmJkk(BigDecimal.valueOf(0.0));
 
-                if (companyNew.getParamDapen() != null)
-                    imCompanyOld.setParamDapen(companyNew.getParamDapen());
-                else
-                    imCompanyOld.setParamDapen(BigDecimal.valueOf(0.0));
-
-                if (companyNew.getParamDapenPegawai() != null)
-                    imCompanyOld.setParamDapenPegawai(companyNew.getParamDapenPegawai());
-                else
-                    imCompanyOld.setParamDapenPegawai(BigDecimal.valueOf(0.0));
+//                if (companyNew.getParamDapen() != null)
+//                    imCompanyOld.setParamDapen(companyNew.getParamDapen());
+//                else
+//                    imCompanyOld.setParamDapen(BigDecimal.valueOf(0.0));
+//
+//                if (companyNew.getParamDapenPegawai() != null)
+//                    imCompanyOld.setParamDapenPegawai(companyNew.getParamDapenPegawai());
+//                else
+//                    imCompanyOld.setParamDapenPegawai(BigDecimal.valueOf(0.0));
 
                 if (companyNew.getBiayaJabatan() != null)
                     imCompanyOld.setBiayaJabatan(companyNew.getBiayaJabatan());
@@ -208,6 +208,7 @@ public class CompanyBoImpl implements CompanyBo {
             resultCompany.setParamDapen(imCompany.getParamDapen());
             resultCompany.setParamDapenPegawai(imCompany.getParamDapenPegawai());
             resultCompany.setBiayaJabatan(imCompany.getBiayaJabatan());
+            resultCompany.setJarakAbsenMobile(imCompany.getJarakAbsenMobile());
         }
 
         logger.info("[CompanyBoImpl.getBranchById] end process <<<");

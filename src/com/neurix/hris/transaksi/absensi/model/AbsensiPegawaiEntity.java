@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.absensi.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -65,6 +66,107 @@ public class AbsensiPegawaiEntity implements Serializable {
     private Double pengajuanLembur;
     private Integer point;
     private String golongan;
+
+    private String statusAbsensi2;
+    private String jamMasuk2;
+    private String jamPulang2;
+    private String statusName2;
+    private String statusAbsensiOnCall;
+    private String jamMasukOnCall;
+    private String jamPulangOnCall;
+    private String statusNameOnCall;
+    private String flagPanggil;
+    private String flagCutiGantiHari;
+
+    private BigInteger telat;
+
+    public BigInteger getTelat() {
+        return telat;
+    }
+
+    public void setTelat(BigInteger telat) {
+        this.telat = telat;
+    }
+
+    public String getFlagCutiGantiHari() {
+        return flagCutiGantiHari;
+    }
+
+    public void setFlagCutiGantiHari(String flagCutiGantiHari) {
+        this.flagCutiGantiHari = flagCutiGantiHari;
+    }
+
+    public String getStatusAbsensi2() {
+        return statusAbsensi2;
+    }
+
+    public void setStatusAbsensi2(String statusAbsensi2) {
+        this.statusAbsensi2 = statusAbsensi2;
+    }
+
+    public String getJamMasuk2() {
+        return jamMasuk2;
+    }
+
+    public void setJamMasuk2(String jamMasuk2) {
+        this.jamMasuk2 = jamMasuk2;
+    }
+
+    public String getJamPulang2() {
+        return jamPulang2;
+    }
+
+    public void setJamPulang2(String jamPulang2) {
+        this.jamPulang2 = jamPulang2;
+    }
+
+    public String getStatusName2() {
+        return statusName2;
+    }
+
+    public void setStatusName2(String statusName2) {
+        this.statusName2 = statusName2;
+    }
+
+    public String getStatusAbsensiOnCall() {
+        return statusAbsensiOnCall;
+    }
+
+    public void setStatusAbsensiOnCall(String statusAbsensiOnCall) {
+        this.statusAbsensiOnCall = statusAbsensiOnCall;
+    }
+
+    public String getJamMasukOnCall() {
+        return jamMasukOnCall;
+    }
+
+    public void setJamMasukOnCall(String jamMasukOnCall) {
+        this.jamMasukOnCall = jamMasukOnCall;
+    }
+
+    public String getJamPulangOnCall() {
+        return jamPulangOnCall;
+    }
+
+    public void setJamPulangOnCall(String jamPulangOnCall) {
+        this.jamPulangOnCall = jamPulangOnCall;
+    }
+
+    public String getStatusNameOnCall() {
+        return statusNameOnCall;
+    }
+
+    public void setStatusNameOnCall(String statusNameOnCall) {
+        this.statusNameOnCall = statusNameOnCall;
+    }
+
+    public String getFlagPanggil() {
+        return flagPanggil;
+    }
+
+    public void setFlagPanggil(String flagPanggil) {
+        this.flagPanggil = flagPanggil;
+    }
 
     public String getKeteranganSesuaikan() {
         return keteranganSesuaikan;

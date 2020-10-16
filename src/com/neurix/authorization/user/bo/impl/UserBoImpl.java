@@ -3165,4 +3165,19 @@ public class UserBoImpl implements UserBo {
         logger.info("[UserBoImpl.getUserByIdDevice] end process <<<");
         return user;
     }
+
+    @Override
+    public List<User> getUserByRoleAndBranch(String roleId,String branchId) throws GeneralBOException {
+        logger.info("[UserBoImpl.getUserByRoleAndBranch] start process <<<");
+        List<User> result = new ArrayList<>();
+
+        try {
+            result = userDao.getUserByBranchAndRole(branchId,roleId);
+        } catch (GeneralBOException e){
+            logger.info("[UserBoImpl.getUserByRoleAndBranch] error get user id device");
+        }
+
+        logger.info("[UserBoImpl.getUserByRoleAndBranch] end process <<<");
+        return result;
+    }
 }

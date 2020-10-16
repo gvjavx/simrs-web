@@ -1633,6 +1633,8 @@ public class IjinKeluarAction extends BaseMasterAction {
             IjinKeluar cancelIjinKeluar = getIjinKeluar();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
             cancelIjinKeluar.setCancelFlag("Y");
             cancelIjinKeluar.setCancelDate(updateTime);
@@ -1642,7 +1644,11 @@ public class IjinKeluarAction extends BaseMasterAction {
             cancelIjinKeluar.setAction("U");
             cancelIjinKeluar.setFlag("Y");
 
-            ijinKeluarBoProxy.saveEdit(cancelIjinKeluar);
+            List<Notifikasi> notifikasiList = ijinKeluarBoProxy.saveCancel(cancelIjinKeluar);
+
+            for (Notifikasi notifikasi : notifikasiList){
+                notifikasiBo.sendNotif(notifikasi);
+            }
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -1667,6 +1673,8 @@ public class IjinKeluarAction extends BaseMasterAction {
             IjinKeluar cancelIjinKeluar = getIjinKeluar();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
             cancelIjinKeluar.setFlagPengajuanBatal("Y");
             cancelIjinKeluar.setLastUpdateWho(userLogin);
@@ -1674,7 +1682,12 @@ public class IjinKeluarAction extends BaseMasterAction {
             cancelIjinKeluar.setAction("U");
             cancelIjinKeluar.setFlag("Y");
 
-            ijinKeluarBoProxy.savePengajuanBatal(cancelIjinKeluar);
+            List<Notifikasi> notifikasiList = ijinKeluarBoProxy.savePengajuanBatal(cancelIjinKeluar);
+
+            for (Notifikasi notifikasi : notifikasiList){
+                notifikasiBo.sendNotif(notifikasi);
+            }
+
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -1953,5 +1966,31 @@ public class IjinKeluarAction extends BaseMasterAction {
         }else{
             return "";
         }
+    }
+
+    public  Integer calculateLiburWeekend (String stTanggalAwal , String stTanggalAkhir) throws ParseException {
+        int jumlahHari = 0;
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+        java.sql.Date tanggalAwal = new java.sql.Date(sdf1.parse(stTanggalAwal).getTime());
+        java.sql.Date tanggalAkhir = new java.sql.Date(sdf1.parse(stTanggalAkhir).getTime());
+
+        Calendar start = Calendar.getInstance();
+        start.setTime(tanggalAwal);
+        Calendar end = Calendar.getInstance();
+        end.setTime(tanggalAkhir);
+        end.add(Calendar.DATE,1);
+        java.util.Date date;
+
+        for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+            Calendar tanggal = Calendar.getInstance();
+            tanggal.setTime(date);
+            int day = tanggal.get(Calendar.DAY_OF_WEEK);
+
+            if (day == 1||day==7){
+                jumlahHari++;
+            }
+        }
+        return jumlahHari;
     }
 }

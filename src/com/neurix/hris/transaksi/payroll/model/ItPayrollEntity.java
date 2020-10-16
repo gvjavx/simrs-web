@@ -290,6 +290,25 @@ public class ItPayrollEntity implements Serializable {
     private BigDecimal peralihanSankhus;
     private BigDecimal peralihanTunjangan;
 
+    private Date tanggalEfektif;
+    private BigDecimal proporsiGaji;
+
+    public BigDecimal getProporsiGaji() {
+        return proporsiGaji;
+    }
+
+    public void setProporsiGaji(BigDecimal proporsiGaji) {
+        this.proporsiGaji = proporsiGaji;
+    }
+
+    public Date getTanggalEfektif() {
+        return tanggalEfektif;
+    }
+
+    public void setTanggalEfektif(Date tanggalEfektif) {
+        this.tanggalEfektif = tanggalEfektif;
+    }
+
     public String getApprovalAksFlag() {
         return approvalAksFlag;
     }

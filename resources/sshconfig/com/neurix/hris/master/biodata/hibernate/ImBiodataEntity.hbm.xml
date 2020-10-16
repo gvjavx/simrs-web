@@ -263,7 +263,12 @@
         <property name="flagPercobaan">
             <column name="flag_percobaan" sql-type="varchar" length="1" />
         </property>
-
+        <property name="flagDokterKso">
+            <column name="flag_dokter_kso" sql-type="varchar" length="1" />
+        </property>
+        <property name="jenisPegawai">
+            <column name="jenis_pegawai"/>
+        </property>
         <property name="nipLama">
             <column name="nip_lama" sql-type="varchar" length="15" />
         </property>

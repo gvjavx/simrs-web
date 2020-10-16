@@ -9,6 +9,8 @@ import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
+import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -24,6 +26,15 @@ public class DokterKsoTindakanBoImpl implements DokterKsoTindakanBo {
     protected static transient Logger logger = Logger.getLogger(DokterKsoTindakanBoImpl.class);
     private DokterKsoTindakanDao dokterKsoTindakanDao;
     private TindakanDao tindakanDao;
+    private RiwayatTindakanDao riwayatTindakanDao;
+
+    public RiwayatTindakanDao getRiwayatTindakanDao() {
+        return riwayatTindakanDao;
+    }
+
+    public void setRiwayatTindakanDao(RiwayatTindakanDao riwayatTindakanDao) {
+        this.riwayatTindakanDao = riwayatTindakanDao;
+    }
 
     public TindakanDao getTindakanDao() {
         return tindakanDao;
@@ -92,7 +103,7 @@ public class DokterKsoTindakanBoImpl implements DokterKsoTindakanBo {
                 logger.error("[PelayananBoImpl.getByCriteria] Error get pelayanan data "+e.getMessage());
             }
 
-            if (!entityList.isEmpty()){
+            if (entityList.size()!=0){
                 DokterKsoTindakan dokterKsoTindakan = null;
                 for (ImSimrsDokterKsoTindakan ksoTindakan: entityList){
                     dokterKsoTindakan = new DokterKsoTindakan();
@@ -103,20 +114,12 @@ public class DokterKsoTindakanBoImpl implements DokterKsoTindakanBo {
                     dokterKsoTindakan.setAction(ksoTindakan.getAction());
                     dokterKsoTindakan.setFlag(ksoTindakan.getFlag());
                     dokterKsoTindakan.setCreatedDate(ksoTindakan.getCreatedDate());
-//                    dokterKso.setStCreatedDate(entity.getCreatedDate().toString());
                     dokterKsoTindakan.setCreatedWho(ksoTindakan.getCreatedWho());
-//                    dokterKso.setStLastUpdate(ksoTindakan.getLastUpdate().toString());
                     dokterKsoTindakan.setLastUpdate(ksoTindakan.getLastUpdate());
                     dokterKsoTindakan.setLastUpdateWho(ksoTindakan.getLastUpdateWho());
-                    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
                     if (ksoTindakan.getTindakanId() != null){
-                        RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
-                        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) context.getBean("riwayatTindakanBoProxy");
-                        riwayatTindakan.setIdTindakan(ksoTindakan.getTindakanId());
-                        riwayatTindakan.setFlag("Y");
-                        List<RiwayatTindakan> riwayatTindakans = riwayatTindakanBo.getByCriteria(riwayatTindakan);
-                        String tindakanName = riwayatTindakans.get(0).getNamaTindakan();
-                        dokterKsoTindakan.setTindakanName(tindakanName);
+                        ItSimrsRiwayatTindakanEntity riwayatTindakanEntity = riwayatTindakanDao.getById("idTindakan",ksoTindakan.getTindakanId());
+                        dokterKsoTindakan.setTindakanName(riwayatTindakanEntity.getNamaTindakan());
                     }
 
                     result.add(dokterKsoTindakan);

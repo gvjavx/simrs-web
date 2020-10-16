@@ -756,7 +756,7 @@ created_date = '2020-09-22 00:00:00',
 created_who = 'admin',
 last_update = '2020-09-22 00:00:00',
 last_update_who = 'admin',
-tipe = 'ptpn'
+tipe = 'ptpn';
 
 -- 2020-09-24
 CREATE TABLE public.im_simrs_detail_rekanan_ops

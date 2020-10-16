@@ -45,7 +45,7 @@ public class StatusMutasiDao extends GenericDao<ImHrisStatusMutasiEntity, String
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.desc("statusMutasiId"));
+        criteria.addOrder(Order.asc("createdDate"));
         List<ImHrisStatusMutasiEntity> results = criteria.list();
 
         return results;

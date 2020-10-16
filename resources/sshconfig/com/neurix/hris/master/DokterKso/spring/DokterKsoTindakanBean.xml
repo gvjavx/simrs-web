@@ -10,6 +10,7 @@
     <bean id="dokterKsoTindakanBo" class="com.neurix.hris.master.dokterKsoTindakan.bo.Impl.DokterKsoTindakanBoImpl"
           p:dokterKsoTindakanDao-ref="dokterKsoTindakanDao"
           p:tindakanDao-ref="tindakanDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
     />
 
     <!--<bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"-->

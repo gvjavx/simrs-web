@@ -184,6 +184,7 @@ public class CommonConstant {
 
 
     public final static String RESOURCE_PATH_FAKTUR_PAJAK = "/upload/faktur_pajak/";
+    public final static String RESOURCE_PATH_SERTIFIKAT = "/upload/sertifikat/";
     public final static String RESOURCE_PATH_LAMPIRAN = "/upload/lampiran/";
     public final static String RESOURCE_PATH_IPA = "/upload/ipa/";
     public final static String REK_BANK_BRI_TELE = "01041802112149";
@@ -246,6 +247,8 @@ public class CommonConstant {
 
     //CONSTANT HCM
     public final static String METODE_MESIN_ABSENSI = CommonUtil.getPropertyParams("metode.mesin.absensi");
+    public final static String IJIN_GANTI_HARI = CommonUtil.getPropertyParams("ijin.ganti.hari");
+    public final static String CUTI_TAHUNAN = CommonUtil.getPropertyParams("cuti.id.tahunan");
 //    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KOREKSI ="67";
 //    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KAS_KELUAR ="68";
 //    public final static String TRANSAKSI_ID_PENYEWAAN_LAHAN ="69";

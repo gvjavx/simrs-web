@@ -25,6 +25,7 @@ import com.neurix.hris.transaksi.cutiPegawai.bo.CutiPegawaiBo;
 import com.neurix.hris.transaksi.cutiPegawai.dao.CutiPegawaiDao;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
 import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
+import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao;
 import com.neurix.hris.transaksi.notifikasi.dao.NotifikasiDao;
 import com.neurix.hris.transaksi.notifikasi.dao.NotifikasiFcmDao;
 import com.neurix.hris.transaksi.notifikasi.model.ImNotifikasiEntity;
@@ -65,7 +66,15 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     private PositionDao positionDao;
     private BranchDao branchDao;
     private String CLICK_ACTION = "TASK_CUTI";
-    java.util.Date date = null;
+    private IjinKeluarDao ijinKeluarDao;
+
+    public IjinKeluarDao getIjinKeluarDao() {
+        return ijinKeluarDao;
+    }
+
+    public void setIjinKeluarDao(IjinKeluarDao ijinKeluarDao) {
+        this.ijinKeluarDao = ijinKeluarDao;
+    }
 
     public BranchDao getBranchDao() {
         return branchDao;
@@ -438,22 +447,65 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     public  List<Notifikasi> saveAddCuti ( CutiPegawai bean ) throws GeneralBOException {
         logger.info("[CutiPegawaiBoImpl.saveAdd] start process >>>");
         List<Notifikasi> notifikasiList = new ArrayList<>();
-        String atasanNip = null;
         String nip=bean.getNip(),cutiPegawaiId;
+
+        //validasi
+        ImBiodataEntity biodataEntity = biodataDao.getById("nip",bean.getNip());
+        bean.setTanggalAktif(biodataEntity.getTanggalAktif());
+
+        Calendar c = Calendar.getInstance();
+        java.util.Date tanggalSekarang = new java.util.Date(c.getTimeInMillis());
+        c.setTime(tanggalSekarang);
+        int year1 = c.get(Calendar.YEAR);
+
+        Calendar d = Calendar.getInstance();
+        java.util.Date tanggalAktif = new java.util.Date(biodataEntity.getTanggalAktif().getTime());
+        d.setTime(tanggalAktif);
+        int year2 = d.get(Calendar.YEAR);
+
+//        Date tanggalSekarang = new Date(c.getTimeInMillis());
+
+        int tahunMasaKerja = year1-year2;
+        if (!"normal".equalsIgnoreCase(bean.getJenisCuti())){
+            if (tahunMasaKerja<5){
+                String status1 ="Tanggal Pengajuan Cuti di Luar Tanggungan Harus Melewati 5 Tahun Masa Kerja";
+                logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error :, " + status1);
+                throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + status1);
+            }
+        }
+
+        Calendar start = Calendar.getInstance();
+        start.setTime(bean.getTanggalDari());
+        Calendar end = Calendar.getInstance();
+        end.setTime(bean.getTanggalSelesai());
+        end.add(Calendar.DATE,1);
+        java.util.Date date;
+
+        for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+            Date tanggal = CommonUtil.dateUtiltoDateSql(date);
+            String statusValidasi ="";
+
+            //validasi jika tanggal itu sudah diajukan
+            try {
+                statusValidasi = ijinKeluarDao.cekPengajuanDiTanggalYangSama(tanggal,bean.getNip());
+            }catch (HibernateException e){
+                logger.error("[IjinKeluarBoImpl.saveAddIjinKeluar] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+            }
+
+            if (!"".equalsIgnoreCase(statusValidasi)){
+                logger.error("[IjinKeluarBoImpl.saveAddIjinKeluar] Error, " + statusValidasi);
+                throw new GeneralBOException(statusValidasi);
+            }
+        }
+
         if (bean!=null) {
             String tahunCuti = cekTahunCuti(bean.getNip(), bean.getTanggalDari(), bean.getTanggalSelesai());
             if (!tahunCuti.equalsIgnoreCase("false")){
 
                 String status = cekStatusCuti(bean.getNip(), bean.getCutiId(), bean.getJenisCuti());
                 if (!status.equalsIgnoreCase("exist")){
-
                     java.util.Date tglMulai = bean.getTanggalDari();
-
-//                    try {
-//                        date = new SimpleDateFormat("dd-MM-yyyy").parse(tglMulai);
-//                    } catch (ParseException e) {
-//                        throw new GeneralBOException("Error " + e.getMessage());
-//                    }
 
                     List<ItCutiPegawaiEntity> itCutiPegawaiEntities = null;
                     try{
@@ -479,7 +531,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                             cutiPegawaiID = cutiPegawaiDao.getNextCutiPegawaiId();
                         } catch (HibernateException e) {
                             logger.error("[CutiPegawaiBoImpl.saveCutiBersama] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when getting sequence cutiPegawai Id , please info to your admin..." + e.getMessage());
+                                throw new GeneralBOException("Found problem when getting sequence cutiPegawai Id , please info to your admin..." + e.getMessage());
                         }
                         // creating object entity serializable
                         ItCutiPegawaiEntity itCutiPegawaiEntity = new ItCutiPegawaiEntity();
@@ -571,6 +623,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                         if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
                             itCutiPegawaiEntity1.setSisaCutiHari(BigInteger.valueOf(1095));
+
                         else
                             itCutiPegawaiEntity1.setSisaCutiHari(BigInteger.valueOf(12).subtract(bean.getLamaHariCuti()));
 
@@ -817,16 +870,13 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                             notifikasiList.add(notifAtasan);
 
                         }
-
-
                     }
 
                 }else {
                     throw new GeneralBOException("Peringatan!!! User sudah melakukan Cuti diluar tanggungan");
                 }
-
             }else {
-                throw new GeneralBOException("Peringatan!!! Reset Cuti Tahunan Sudah Dilakukan di tahun berikutnya");
+                throw new GeneralBOException("Peringatan!!! Pengajuan cuti tidak bisa dilakukan karena sisa cuti pada tahun ini sudah hangus.");
             }
         }
         logger.info("[CutiPegawaiBoImpl.saveAdd] end process <<<");
@@ -836,7 +886,6 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     @Override
     public CutiPegawai saveAdd(CutiPegawai bean) throws GeneralBOException {
         logger.info("[CutiPegawaiBoImpl.saveAdd] start process >>>");
-        List<Notifikasi> notifikasiList = new ArrayList<>();
 
         String atasanNip = null,nip=bean.getNip(),cutiPegawaiId;
         if (bean!=null) {

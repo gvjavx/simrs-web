@@ -114,13 +114,10 @@
                         </td>
                         <td>
                             <table>
-                                    <%--<s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Apotek',--%>
-                                    <%--'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'LAB'}" id="tipePelayanan" name="pelayanan.tipePelayanan"--%>
-                                    <%--listKey="positionId" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                <s:select list="#{'plt':'PLT', 'pjs' : 'PJS', 'percobaan' : 'Percobaan', 'pegawai_baru' : 'Pegawai Baru'}"
-                                          id="namaMappingPersenGaji3" name="mappingPersenGaji.namaMappingPersenGaji" disabled="true"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                        <s:hidden id="namaMappingPersenGaji3" name="mappingPersenGaji.namaMappingPersenGaji" />
+                                <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
+                                <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="namaMappingPersenGaji3" name="mappingPersenGaji.namaMappingPersenGaji" disabled="true"
+                                          listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
+                                        <s:hidden id="namaMappingPersenGaji4" name="mappingPersenGaji.namaMappingPersenGaji" />
                             </table>
                         </td>
                     </tr>

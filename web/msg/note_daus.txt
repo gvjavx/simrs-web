@@ -391,9 +391,9 @@ ALTER TABLE im_company ADD COLUMN param_dapen numeric (10,5);
 update im_akun_trans set tipe_pembayaran=null where trans_id IN ('69','70','68','67','66');
 
 -- 21-08-2020
+ALTER TABLE im_mesin_absensi ADD COLUMN branch_id character varying (10);
 update im_mesin_absensi set mesin_address='10.88.70.232:8080',branch_id='KP';
 ALTER TABLE im_mesin_absensi ADD COLUMN last_get timestamp without time zone;
-ALTER TABLE im_mesin_absensi ADD COLUMN branch_id character varying (10);
 
 update im_functions set func_name='Kas/Bank Masuk' where func_name='Kas Masuk';
 update im_functions set func_name='Kas/Bank Keluar' where func_name='Kas Keluar';
@@ -523,3 +523,111 @@ ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN on_call character varyi
 ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN flag_panggil character varying(1);
 ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN panggil_who character varying(100);
 ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN panggil_date timestamp without time zone;
+
+--24-09-2020
+
+CREATE TABLE public.it_hris_mesin_absensi_detail_on_call
+(
+    mesin_absensi_detail_on_call_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    pin character varying(10) COLLATE pg_catalog."default",
+    status character varying(2) COLLATE pg_catalog."default",
+    scan_date timestamp without time zone,
+    action character varying(1) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    last_update timestamp without time zone,
+    created_date timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT mesin_absensi_detail_on_call_id_pk PRIMARY KEY (mesin_absensi_detail_on_call_id)
+);
+
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN status_absensi_2 character varying(2);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN status_absensi_on_call character varying(2);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_masuk_2 character varying(5);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_masuk_on_call character varying(5);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_keluar_2 character varying(5);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_pulang_on_call character varying(5);
+
+CREATE TABLE public.im_hris_status_mutasi
+(
+    status_mutasi_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    status_mutasi_name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT im_hris_status_mutasi_pkey PRIMARY KEY (status_mutasi_id)
+);
+
+insert into im_hris_status_mutasi values ('P','Pensiun','C','Y','admin','2020-01-03 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('M','Mutasi Tempat Kerja','C','Y','admin','2020-01-01 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('R','Mutasi Bidang/Divisi','C','Y','admin','2020-01-02 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('PH','PHK','C','Y','admin','2020-01-04 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('MD','Meninggal Dunia','C','Y','admin','2020-01-05 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('KB','Kontrak Berakhir','C','Y','admin','2020-01-06 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('RS','Resign','C','Y','admin','2020-01-06 00:00:00','2020-01-01 00:00:00','admin');
+
+ALTER TABLE im_hris_pegawai ADD COLUMN flag_dokter_kso character varying(1);
+update im_hris_pegawai set flag_dokter_kso='N';
+
+CREATE TABLE public.im_hris_jenis_pegawai
+(
+    jenis_pegawai_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    jenis_pegawai_name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    CONSTRAINT im_hris_jenis_pegawai_pkey PRIMARY KEY (jenis_pegawai_id)
+);
+
+ALTER TABLE im_hris_pegawai ADD COLUMN jenis_pegawai character varying(20);
+insert into im_hris_jenis_pegawai values ('plt','Plt','Y','C','admin','admin','2020-01-03 00:00:00','2020-01-01 00:00:00');
+insert into im_hris_jenis_pegawai values ('pjt','PJS','Y','C','admin','admin','2020-01-03 00:00:00','2020-01-01 00:00:00');
+insert into im_hris_jenis_pegawai values ('percobaan','Percobaan','Y','C','admin','admin','2020-01-03 00:00:00','2020-01-01 00:00:00');
+insert into im_hris_jenis_pegawai values ('pegawai_baru','Pegawai Baru','Y','C','admin','admin','2020-01-03 00:00:00','2020-01-01 00:00:00');
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN flag_cuti_ganti_hari character varying(1);
+
+ALTER TABLE im_hris_ijin ADD COLUMN flag_diajukan_admin character varying(1);
+update im_hris_ijin set flag_diajukan_admin='N';
+
+ALTER TABLE im_hris_status_mutasi ADD COLUMN flag_gaji_proporsional character varying(1);
+update im_hris_status_mutasi set flag_gaji_proporsional='N';
+update im_hris_status_mutasi set flag_gaji_proporsional='Y' where status_mutasi_id='RS';
+update im_hris_status_mutasi set flag_gaji_proporsional='Y' where status_mutasi_id='KB';
+
+ALTER TABLE it_hris_payroll ADD COLUMN proporsi_gaji numeric(10,6);
+
+ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN flag_libur character varying(1);
+update it_hris_jadwal_shift_kerja_detail set flag_libur='N';
+
+ALTER TABLE im_hris_ijin ADD COLUMN agama character varying(100);
+update im_hris_ijin set agama='all';
+
+update im_functions set flag='Y' where func_id=1237;
+
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN telat bigint;
+update it_hris_absensi_pegawai set telat=0;
+
+CREATE SEQUENCE IF NOT EXISTS seq_history_on_call INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+
+
+CREATE TABLE public.it_hris_history_on_call
+(
+    history_on_call_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    jadwal_shift_kerja_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    panggil_date timestamp without time zone NOT NULL,
+    nip character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    created_who character varying COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying COLLATE pg_catalog."default" NOT NULL,
+    keterangan_panggil character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT it_hris_history_on_call_pkey PRIMARY KEY (history_on_call_id)
+);
