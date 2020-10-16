@@ -1085,6 +1085,19 @@ INSERT INTO im_simrs_kelas_ruangan VALUES
 INSERT INTO mt_simrs_ruangan VALUES
 ('21','RR','R001','Y','11',NULL,100000,'RS01','Y',now(),'adminrs',now(),'Ike Nurjanah','U',1,1);
 
+UPDATE im_simrs_jenis_periksa_pasien
+SET id_jenis_periksa_pasien = 'rekanan',
+keterangan = 'Rekanan'
+WHERE id_jenis_periksa_pasien = 'ptpn';
+
+UPDATE im_simrs_jenis_periksa_pasien
+SET keterangan = 'Medical Checkup'
+WHERE id_jenis_periksa_pasien = 'paket_perusahaan';
+
+UPDATE im_simrs_jenis_periksa_pasien
+SET keterangan = 'Promo'
+WHERE id_jenis_periksa_pasien = 'paket_individu';
+
 
 
 
