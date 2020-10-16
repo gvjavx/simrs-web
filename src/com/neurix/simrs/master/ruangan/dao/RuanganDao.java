@@ -167,7 +167,7 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     if(obj[9] != null && !"".equalsIgnoreCase(obj[9].toString())){
                         ruangan.setTarifBpjs((BigDecimal) obj[9]);
                     }
-                    if(obj[0] != null && !"".equalsIgnoreCase(obj[5].toString())){
+                    if(obj[10] != null && !"".equalsIgnoreCase(obj[10].toString())){
                         ruangan.setTipeTransaksi(obj[10].toString());
                         if("bpjs".equalsIgnoreCase(ruangan.getTipeTransaksi())){
                             if(ruangan.getTarifBpjs() != null && ruangan.getTarifTindakan() != null && ruangan.getTarifTindakan().intValue() > 0){
@@ -179,7 +179,7 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                             }
                         }
                     }
-                    ruangan.setNamaPasien(obj[11] == null ? "" : obj[11].toString());
+                    ruangan.setNamaPasien(obj[11] == null ? null : obj[11].toString());
                     ruangan.setIdPasien(obj[12] == null ? "" : obj[12].toString());
                     ruanganList.add(ruangan);
                 }

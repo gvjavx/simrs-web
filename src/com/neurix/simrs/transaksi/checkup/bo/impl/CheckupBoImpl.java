@@ -730,6 +730,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 if ("paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "paket_individu".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     insertItemPaketToPeriksa(detailCheckupEntity.getIdDetailCheckup(), bean.getIdPasien(), bean.getIdDokter(), bean.getCreatedWho(), bean.getBranchId(), bean.getIdJenisPeriksaPasien(), bean.getIdPaket(), headerEntity.getNoCheckup());
                 }
+            }else{
+                throw new GeneralBOException("[CheckupBoImpl.saveAdd] ID Pelayanan tidak ditemukan...!");
             }
             logger.info("[CheckupBoImpl.saveAdd] End <<<<<<<");
         }
