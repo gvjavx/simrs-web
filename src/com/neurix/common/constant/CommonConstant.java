@@ -197,9 +197,9 @@ public class CommonConstant {
     public final static String JUNK_MASTER_PIUTANG_PPN = "JNK";
     public final static String KODE_REKENING_LABA_RUGI = "3.3.00.00.02";
 
+    public final static String KODERING_FARMASI_RJ = "05.00.00";
     public final static String KODERING_FARMASI_RI = "05.00.01";
     public final static String KODERING_INSTALASI_RI = "06.01.01";
-    public final static String KODERING_FARMASI_RJ = "05.00.00";
 
     public final static String CUTI_ID_DILUAR_TANGGUNJAWAB = CommonUtil.getPropertyParams("cuti.id.diluar.tanggungjawab");
 
