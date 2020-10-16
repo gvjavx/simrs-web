@@ -208,11 +208,11 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
     }
 
     @Override
-    public List<ItSimrsDokterTeamEntity> cekRequestDokterByIdDokter(String idDokter) throws GeneralBOException {
-        List<ItSimrsDokterTeamEntity> entityList = new ArrayList<>();
+    public List<DokterTeam> cekRequestDokterByIdDokter(String idDokter, String flagApprove) throws GeneralBOException {
+        List<DokterTeam> entityList = new ArrayList<>();
         if(idDokter != null){
             try {
-                entityList = dokterTeamDao.cekRequestDokterByIdDokter(idDokter);
+                entityList = dokterTeamDao.cekRequestDokterByIdDokter(idDokter, flagApprove);
             }catch (HibernateException e){
                 logger.error(e.getMessage());
             }
