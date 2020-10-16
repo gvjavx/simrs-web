@@ -2301,7 +2301,6 @@
     function searchNoRM(id, value) {
         var functions, mapped;
         var tipe = $('#jenis_pasien').val();
-        console.log(value);
         if(value != ''){
             $('#' + id).typeahead({
                 minLength: 1,
@@ -2317,9 +2316,9 @@
                         var labelItem = "";
 
                         if (item.noBpjs != '' && item.noBpjs != null) {
-                            labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama;
+                            labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama+"-"+item.desa;
                         } else {
-                            labelItem = item.idPasien + "-" + item.nama;
+                            labelItem = item.idPasien + "-" + item.nama+"-"+item.desa;
                         }
                         mapped[labelItem] = {
                             id: item.idPasien,

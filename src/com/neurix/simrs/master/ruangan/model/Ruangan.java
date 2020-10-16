@@ -48,9 +48,18 @@ public class Ruangan extends BaseModel {
     private String kategori;
     private String idTempatTidur;
     private String namaTempatTidur;
-    private BigInteger coverBiaya;
+    private BigDecimal coverBiaya;
     private String jenisPasien;
     private BigDecimal totalTarif;
+    private String idPasien;
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
 
     public BigDecimal getTotalTarif() {
         return totalTarif;
@@ -60,11 +69,11 @@ public class Ruangan extends BaseModel {
         this.totalTarif = totalTarif;
     }
 
-    public BigInteger getCoverBiaya() {
+    public BigDecimal getCoverBiaya() {
         return coverBiaya;
     }
 
-    public void setCoverBiaya(BigInteger coverBiaya) {
+    public void setCoverBiaya(BigDecimal coverBiaya) {
         this.coverBiaya = coverBiaya;
     }
 
