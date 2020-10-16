@@ -50,6 +50,15 @@ public class Ruangan extends BaseModel {
     private String namaTempatTidur;
     private BigInteger coverBiaya;
     private String jenisPasien;
+    private BigDecimal totalTarif;
+
+    public BigDecimal getTotalTarif() {
+        return totalTarif;
+    }
+
+    public void setTotalTarif(BigDecimal totalTarif) {
+        this.totalTarif = totalTarif;
+    }
 
     public BigInteger getCoverBiaya() {
         return coverBiaya;

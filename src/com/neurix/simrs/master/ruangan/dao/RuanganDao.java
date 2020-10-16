@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -142,11 +143,8 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     .list();
 
             if (results != null) {
-
-                Ruangan ruangan;
                 for (Object[] obj : results) {
-
-                    ruangan = new Ruangan();
+                    Ruangan ruangan = new Ruangan();
                     ruangan.setIdKelasRuangan(obj[0] == null ? "" : obj[0].toString());
                     ruangan.setIdRuangan(obj[1] == null ? "" : obj[1].toString());
                     ruangan.setNamaRuangan(obj[2] == null ? "" : obj[2].toString());
@@ -162,13 +160,42 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     }
                     ruangan.setCoverBiaya(obj[9] != null ? null : new BigInteger(obj[9].toString()));
                     ruangan.setJenisPasien(obj[10] == null ? "" : obj[10].toString());
+                    ruangan.setTotalTarif(getSumAllTarifTindakan(obj[5].toString()));
                     ruanganList.add(ruangan);
-
                 }
             }
         }
 
         return ruanganList;
+    }
+
+    public BigDecimal getSumAllTarifTindakan(String idDetail) {
+        BigDecimal jumlah = new BigDecimal(0);
+        if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+            String SQL = "SELECT \n" +
+                    "id_detail_checkup,\n" +
+                    "SUM(total_tarif) as total_tarif\n" +
+                    "FROM\n" +
+                    "it_simrs_riwayat_tindakan\n" +
+                    "WHERE \n" +
+                    "id_detail_checkup = :idDetail\n" +
+                    "AND id_riwayat_tindakan NOT IN (\n" +
+                    "\tSELECT id_riwayat_tindakan \n" +
+                    "\tFROM it_simrs_tindakan_transitoris\n" +
+                    "\tWHERE id_detail_checkup = :idDetail\n" +
+                    ")\n" +
+                    "GROUP BY id_detail_checkup";
+
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idDetail", idDetail)
+                    .list();
+            if (results.size() > 0) {
+                for (Object[] obj : results) {
+                    jumlah = (BigDecimal) obj[1];
+                }
+            }
+        }
+        return jumlah;
     }
 
     public List<MtSimrsRuanganEntity> getDataPelayanan(String namaRuangan) throws HibernateException {
