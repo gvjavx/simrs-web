@@ -4071,6 +4071,13 @@
             $('#pel_ri_active, #rawat_bersalin').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
+        if(kategoriRuangan == 'rr'){
+            $('#title-pages').text("Recovery Room");
+            $('#rr').addClass('active');
+            urlPages = 'recoveryroom';
+            $('#pel_ri_active, #rr').addClass('active');
+            $('#pel_ri_open').addClass('menu-open');
+        }
 
         $('#img_ktp').on('click', function(e){
             e.preventDefault();

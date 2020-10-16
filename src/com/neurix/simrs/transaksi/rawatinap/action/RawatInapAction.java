@@ -326,7 +326,7 @@ public class RawatInapAction extends BaseMasterAction {
                 if (rwtList.size() > 0) {
                     RawatInap rwt = rwtList.get(0);
                     rawatInap.setIdRawatInap(rwt.getIdRawatInap());
-                    rawatInap.setIdRuangan(rwt.getIdRuangan());
+                    rawatInap.setIdRuangan(rwt.getIdTempatTidur());
                     rawatInap.setNoRuangan(rwt.getNoRuangan());
                     rawatInap.setNamaRangan(rwt.getNamaRangan());
                     rawatInap.setKategoriRuangan(rwt.getKategoriRuangan());

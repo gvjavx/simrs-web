@@ -2585,6 +2585,7 @@
             setPelayanan();
         }
         $('#jenis_pasien').val(jenis);
+        $('#btn-finger').hide();
     }
 
     function showPasienBaru(){
@@ -2750,7 +2751,8 @@
                     $('#desa11').val(response.desaId);
                     $('#no_telp').val(response.noTelp);
                     $('#close_pos').val(1);
-                    $('#btn-finger').show();
+                    $('#kunjungan').val("Baru").attr('disabled', true);
+                    $('#kunjungan_val').val("Baru");
                     $('#modal-daftar-pasien').modal('hide');
                     $('body').scrollTop(0);
                 } else {

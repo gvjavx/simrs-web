@@ -110,21 +110,22 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     "b.status_ruangan,\n" +
                     "c.id_detail_checkup, \n" +
                     "c.tgl_masuk, \n" +
-                    "b.sisa_kuota, \n" +
-                    "b.kuota \n" +
+                    "tt.id_tempat_tidur, \n" +
+                    "tt.nama_tempat_tidur \n" +
                     "FROM im_simrs_kelas_ruangan a\n" +
                     "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
+                    "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON b.id_ruangan = tt.id_ruangan\n" +
                     "LEFT JOIN (\n" +
                     "SELECT * \n" +
                     "FROM it_simrs_rawat_inap a\n" +
                     "INNER JOIN it_simrs_header_checkup b \n" +
                     "ON a.no_checkup = b.no_checkup\n" +
-                    "AND a.status = '1' \n"+
+                    "AND a.status = '1' \n" +
                     "WHERE a.flag = 'Y' \n" +
-                    "AND b.branch_id LIKE :branchId) c On b.id_ruangan = c.id_ruangan\n" +
-                    "WHERE a.id_kelas_ruangan LIKE :idKelas\n" +
-                    "AND b.id_ruangan LIKE :idRuang\n" +
-                    "AND b.nama_ruangan LIKE :namaRuang\n" +
+                    "AND b.branch_id LIKE :branchId) c ON tt.id_tempat_tidur = c.id_ruangan\n" +
+                    "WHERE a.id_kelas_ruangan LIKE :idKelas \n" +
+                    "AND b.id_ruangan LIKE :idRuang \n" +
+                    "AND b.nama_ruangan LIKE :namaRuang \n" +
                     "ORDER BY a.id_kelas_ruangan ASC";
 
             List<Object[]> results = new ArrayList<>();
@@ -149,14 +150,12 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     ruangan.setStatusRuangan(obj[4] == null ? "" : obj[4].toString());
                     ruangan.setIdDetailCheckup(obj[5] == null ? "" : obj[5].toString());
                     ruangan.setTglMasuk(obj[6] == null ? "" : obj[6].toString());
-
                     if(obj[7] != null){
-                        ruangan.setSisaKuota((Integer) obj[7]);
+                        ruangan.setIdTempatTidur(obj[7].toString());
                     }
                     if(obj[8] != null){
-                        ruangan.setKuota((Integer) obj[8]);
+                        ruangan.setNamaTempatTidur(obj[8].toString());
                     }
-
                     ruanganList.add(ruangan);
 
                 }
