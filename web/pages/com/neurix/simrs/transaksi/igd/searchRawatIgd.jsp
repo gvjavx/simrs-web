@@ -136,28 +136,29 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                    data-toggle="dropdown" style="height: 34px">
-                                                <span class="caret"></span>
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="addRawatIgd_igd.action?tipe=umum">
-                                                    <i class="fa fa-user-plus"></i>Pasien Umum</a></li>
-                                                <li><a href="addRawatIgd_igd.action?tipe=bpjs">
-                                                    <i class="fa fa-user-plus"></i>Pasien BPJS</a></li>
-                                                <li><a href="addRawatIgd_igd.action?tipe=paket_perusahaan">
-                                                    <i class="fa fa-user-plus"></i>Pasien Medical Checkup</a></li>
-                                                <li><a href="addRawatIgd_igd.action?tipe=paket_individu">
-                                                    <i class="fa fa-user-plus"></i>Pasien Promo</a></li>
-                                                <li><a href="addRawatIgd_igd.action?tipe=asuransi">
-                                                    <i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>
-                                                <li><a href="addRawatIgd_igd.action?tipe=ptpn">
-                                                    <i class="fa fa-user-plus"></i>Pasien Rekanan</a></li>
-                                            </ul>
-                                        </div>
+                                        <a href="addRawatIgd_igd.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</a>
+                                        <%--<div class="btn-group">--%>
+                                            <%--<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>--%>
+                                            <%--<button type="button" class="btn btn-primary dropdown-toggle"--%>
+                                                    <%--data-toggle="dropdown" style="height: 34px">--%>
+                                                <%--<span class="caret"></span>--%>
+                                                <%--<span class="sr-only">Toggle Dropdown</span>--%>
+                                            <%--</button>--%>
+                                            <%--<ul class="dropdown-menu" role="menu">--%>
+                                                <%--<li><a href="addRawatIgd_igd.action?tipe=umum">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Umum</a></li>--%>
+                                                <%--<li><a href="addRawatIgd_igd.action?tipe=bpjs">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien BPJS</a></li>--%>
+                                                <%--<li><a href="addRawatIgd_igd.action?tipe=paket_perusahaan">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Medical Checkup</a></li>--%>
+                                                <%--<li><a href="addRawatIgd_igd.action?tipe=paket_individu">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Promo</a></li>--%>
+                                                <%--<li><a href="addRawatIgd_igd.action?tipe=asuransi">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>--%>
+                                                <%--<li><a href="addRawatIgd_igd.action?tipe=ptpn">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Rekanan</a></li>--%>
+                                            <%--</ul>--%>
+                                        <%--</div>--%>
                                         <a type="button" class="btn btn-warning" id="btnFingerPrint"><i
                                                 class="fa fa-plus"></i> With Finger Print</a>
                                         <a type="button" class="btn btn-danger" href="initForm_igd.action">

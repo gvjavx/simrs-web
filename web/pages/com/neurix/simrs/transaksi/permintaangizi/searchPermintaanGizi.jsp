@@ -175,11 +175,12 @@
                                                    buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         window.location.reload(true);
+                                                                                         closePoz();
                                                                                      }
                                                                             }"
                                         >
                                             <s:hidden id="close_pos"></s:hidden>
+                                            <s:hidden id="data_pos"></s:hidden>
                                             <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
                                                  name="icon_success">
                                             Record has been saved successfully.
@@ -538,9 +539,11 @@
         var idOrder = $('[name=id_order_gizi]');
         $.each(idOrder, function (i, item) {
             if (item.checked) {
+                var noCheckup = $('#no_checkup_'+item.value).val();
                 data.push({
                     'id_order_gizi': item.value,
-                    'status': 'Y'
+                    'status': 'Y',
+                    'no_checkup': noCheckup
                 });
             }
         });
@@ -551,11 +554,9 @@
                 callback: function (res) {
                     if(res.status == "success"){
                         $('#info_dialog').dialog('open');
+                        $('#data_pos').val(json);
+                        $('#close_pos').val(2);
                         $('body').scrollTop(0);
-                        $.each(data, function (i, item) {
-                            var noCheckup = $('#no_checkup_'+item.id_order_gizi).val();
-                            window.open(contextPathHeader + '/ordergizi/printBarcodeGizi_ordergizi.action?id=' + noCheckup + '&order=' + item.id_order_gizi, '_blank');
-                        });
                     }else{
                         $('#error_dialog').dialog('open');
                         $('#errorMessage').text(res.msg);
@@ -597,6 +598,7 @@
                             $('#save_not_approve').show();
                             $('#info_dialog').dialog('open');
                             $('body').scrollTop(0);
+                            $('#close_pos').val(1);
                         }else{
                             $('#load_not_approve').hide();
                             $('#save_not_approve').show();
@@ -609,6 +611,21 @@
         } else {
             $('#warning_not-approve').show().fadeOut(5000);
             $('#msg_not-approve').text('Silahkan cek kembali inputan anda...!');
+        }
+    }
+
+    function closePoz(){
+        var pos = $('#close_pos').val();
+        var data = $('#data_pos').val();
+        if(pos == 1){
+            window.location.reload(true);
+        }
+        if(pos == 2){
+            window.location.reload(true);
+            var json = JSON.parse(data);
+            $.each(json, function (i, item) {
+                window.open(contextPathHeader + '/ordergizi/printBarcodeGizi_ordergizi.action?id=' + item.no_checkup + '&order=' + item.id_order_gizi, '_blank');
+            });
         }
     }
 </script>

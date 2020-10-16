@@ -3337,7 +3337,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         // tipe transaksi
         String tipe = getTipe();
         setTipe(tipe);
-
         HeaderCheckup checkup = new HeaderCheckup();
 
         if (CommonConstant.ROLE_ADMIN_IGD.equalsIgnoreCase(CommonUtil.roleAsLogin())) {

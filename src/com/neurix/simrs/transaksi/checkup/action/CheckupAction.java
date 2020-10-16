@@ -588,6 +588,7 @@ public class CheckupAction extends BaseMasterAction {
                         if (pasien != null) {
                             checkup.setUrlKtp(pasien.getUrlKtp());
                             checkup.setNoBpjs(pasien.getNoBpjs());
+                            checkup.setImgKtp(pasien.getImgKtp());
                         }
                     }
 
@@ -636,6 +637,116 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.add] end process <<<");
 
         return "init_add";
+    }
+
+    public HeaderCheckup getCheckupOnline(String noCheckupOnline){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RegistrasiOnlineBo registrasiOnlineBo = (RegistrasiOnlineBo) ctx.getBean("registrasiOnlineBoProxy");
+        AntrianOnlineBo antrianOnlineBo = (AntrianOnlineBo) ctx.getBean("antrianOnlineBoProxy");
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        HeaderCheckup checkup = new HeaderCheckup();
+        RegistrasiOnline online = new RegistrasiOnline();
+        List<RegistrasiOnline> registrasiOnlineList = new ArrayList<>();
+        RegistrasiOnline registrasiOnline = new RegistrasiOnline();
+        registrasiOnline.setNoCheckupOnline(noCheckupOnline);
+
+        try {
+            registrasiOnlineList = registrasiOnlineBo.getByCriteria(registrasiOnline);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search no checkup online " + e.getMessage());
+        }
+
+        if (registrasiOnlineList.size() > 0) {
+
+            online = registrasiOnlineList.get(0);
+            AntianOnline antianOnline = new AntianOnline();
+            antianOnline.setNoCheckupOnline(online.getNoCheckupOnline());
+            List<AntianOnline> antianOnlineList = new ArrayList<>();
+
+            try {
+                antianOnlineList = antrianOnlineBo.getByCriteria(antianOnline);
+            } catch (GeneralBOException e) {
+                logger.error("Founf Error when antrian online " + e.getMessage());
+            }
+
+            if (antianOnlineList.size() > 0) {
+
+                antianOnline = antianOnlineList.get(0);
+                checkup.setNama(online.getNama());
+                checkup.setIdPasien(online.getIdPasien());
+                checkup.setJenisKelamin(online.getJenisKelamin());
+                checkup.setNoKtp(online.getNoKtp());
+                checkup.setTempatLahir(online.getTempatLahir());
+                checkup.setTglLahir(online.getTglLahir());
+                checkup.setStTglLahir(online.getTglLahir().toString());
+                checkup.setJalan(online.getJalan());
+                checkup.setSuku(online.getSuku());
+                checkup.setProfesi(online.getProfesi());
+                checkup.setNoTelp(online.getNoTelp());
+                checkup.setIdJenisPeriksaPasien(online.getIdJenisPeriksaPasien());
+                if(antianOnline.getLastUpdate() != null){
+                    String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(antianOnline.getLastUpdate());
+                    checkup.setTglDaftar(formatDate);
+                }
+                checkup.setJamAwal(antianOnline.getJamAwal());
+                checkup.setJamAkhir(antianOnline.getJamAkhir());
+                checkup.setTglCheckupOnline(antianOnline.getTglCheckup());
+
+                Pasien pasien = new Pasien();
+                pasien.setIdPasien(online.getIdPasien());
+                List<Pasien> pasienList = new ArrayList<>();
+
+                try {
+                    pasienList = pasienBo.getByCriteria(pasien);
+                } catch (GeneralBOException e) {
+                    logger.error("FOund Error " + e.getMessage());
+                }
+
+                if (pasienList.size() > 0) {
+
+                    pasien = pasienList.get(0);
+                    if (pasien != null) {
+                        checkup.setUrlKtp(pasien.getUrlKtp());
+                        checkup.setNoBpjs(pasien.getNoBpjs());
+                        checkup.setImgKtp(pasien.getImgKtp());
+                    }
+                }
+
+                checkup.setIdPelayanan(antianOnline.getIdPelayanan());
+                checkup.setIdDokter(antianOnline.getIdDokter());
+                checkup.setDesaId(online.getDesaId());
+                checkup.setKecamatanId(online.getKecamatanId());
+                checkup.setKotaId(online.getKotaId());
+                checkup.setProvinsiId(online.getProvinsiId());
+                checkup.setNamaDesa(online.getNamaDesa());
+                checkup.setNamaKecamatan(online.getNamaKecamatan());
+                checkup.setNamaKota(online.getNamaKota());
+                checkup.setNamaProvinsi(online.getNamaProvinsi());
+                checkup.setAgama(online.getAgama());
+                checkup.setNoCheckupOnline(online.getNoCheckupOnline());
+
+                List<HeaderCheckup> checkups = new ArrayList<>();
+                HeaderCheckup header = new HeaderCheckup();
+                header.setIdPasien(online.getIdPasien());
+
+                try {
+                    checkups = checkupBo.getByCriteria(header);
+                } catch (GeneralBOException e) {
+                    logger.error("Found Error when search pasien in traksaksi");
+                }
+
+                if (checkups.size() > 0) {
+                    checkup.setJenisKunjungan("Lama");
+                } else {
+                    checkup.setJenisKunjungan("Baru");
+                }
+
+                checkup.setIsOnline("Y");
+                checkup.setTglAntian(antianOnline.getLastUpdate());
+            }
+        }
+        return checkup;
     }
 
     @Override
@@ -1062,6 +1173,7 @@ public class CheckupAction extends BaseMasterAction {
 
                                     Tindakan tin = new Tindakan();
                                     tin.setTarifBpjs(entity.getTarifBpjs());
+                                    tin.setTarif(entity.getTarif());
                                     tin.setTindakan(entity.getTindakan());
                                     tin.setIdTindakan(entity.getIdTindakan());
                                     tin.setKategoriInaBpjs(entity.getKategoriInaBpjs());

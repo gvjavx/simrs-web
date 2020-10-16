@@ -1079,6 +1079,12 @@ ADD COLUMN berkas VARCHAR(100);
 ALTER TABLE it_simrs_order_gizi
 ADD COLUMN waktu VARCHAR(100);
 
+INSERT INTO im_simrs_kelas_ruangan VALUES
+('11','Recovery Room','Y','C',now(),'adminrs',now(),'adminrs','03.06.01','O065','rr');
+
+INSERT INTO mt_simrs_ruangan VALUES
+('21','RR','R001','Y','11',NULL,100000,'RS01','Y',now(),'adminrs',now(),'Ike Nurjanah','U',1,1);
+
 
 
 

@@ -560,6 +560,23 @@ apply the skin class to the body tag so the changes take effect.
         return today;
     }
 
+    function converterDateYmdHms(dateTime) {
+
+        var today = "";
+        if (dateTime != '' && dateTime != null) {
+
+            today = new Date(dateTime);
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var hh = ((today.getHours() < 10 ? '0' : '') + today.getHours());
+            var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
+            var sec = today.getSeconds();
+            today = yyyy + '-' + mm + '-' + dd + ' ' +hh+':'+min+':'+sec;
+        }
+        return today;
+    }
+
     function diff(start, end) {
         start = start.split(":");
         end = end.split(":");

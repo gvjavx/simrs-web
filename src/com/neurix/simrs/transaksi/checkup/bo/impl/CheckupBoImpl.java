@@ -492,7 +492,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 }
 
                 if ("Y".equalsIgnoreCase(bean.getIsOnline())) {
-                    detailCheckupEntity.setTglAntrian(bean.getTglAntian());
+                    detailCheckupEntity.setTglAntrian(Timestamp.valueOf(bean.getStTglAntrian()));
                 } else {
                     detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
                 }

@@ -320,6 +320,21 @@ function selectKeterangan(idKtg) {
             $('#form-tgl-kontrol').hide();
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
+        }else if (idKtg == "rr") {
+            getKamar(null, 'rr');
+            $('#label_kamar').text('Ruangan');
+            $('#form-catatan').show();
+            $('#form-kamar').show();
+            if (kategoriRuangan == 'rawat_inap') {
+                $('#form-stay').show();
+            }
+
+            $('#form-selesai').hide();
+            $('#form-ket-rawat_inap').hide();
+            $('#form-rs-rujukan').hide();
+            $('#form-tgl-kontrol').hide();
+            $('#form-pemeriksaan').hide();
+            $('#form-kelas_kamar').hide();
         } else {
             $('#form-selesai').hide();
             $('#form-catatan').hide();
@@ -2993,7 +3008,7 @@ function confirmPemeriksaanPasien() {
             }
         }
         if (tindakLanjut == "rawat_intensif" || tindakLanjut == "rawat_isolasi" ||
-            tindakLanjut == "kamar_operasi" || tindakLanjut == "ruang_bersalin") {
+            tindakLanjut == "kamar_operasi" || tindakLanjut == "ruang_bersalin" || tindakLanjut == "rr") {
             if (idRuangan != '') {
                 cek = true;
             }
@@ -3115,6 +3130,7 @@ function savePemeriksaanPasien() {
                     }
                 }
             } else {
+                console.log(tindakLanjut);
                 var stay = "N";
                 if (kategoriRuangan == 'rawat_inap') {
                     if (isStay) {

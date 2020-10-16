@@ -330,33 +330,84 @@
         });
 
         function resetField() {
-            $('#pembayaran').val('');
-            $('#uang_muka').val('');
-            $('#diagnosa_awal').val('');
-            $('#perujuk').val('');
-            $('#intansi_perujuk').val('');
-            $('#no_rujukan').val('');
-            $('#ppk_rujukan').val('');
-            $('#tgl_rujukan').val('');
-            $('#url_do').val('');
-            $('#status_bpjs').val('');
-            $('#status_rujukan').val('');
-            $('#is_laka').val('');
-            $('#id_asuransi').val('');
-            $('#no_kartu').val('');
-            $('#nominal_cover_biaya').val('');
-            $('#no_kartu_ptpn').val('');
-            $('#unit_ptpn').val('');
-            $('#unit_pg').val('');
-            $('#cek_is_bpjs').val('');
-            $('#poli').val('').trigger('change');
-            $('#nama_dokter').val('');
-            $('#asuransi').val('');
-            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan, #kunjungan, #perujuk').val('');
+            $('#id_online').val(null);
+            $('#pembayaran').val(null);
+            $('#uang_muka').val(null);
+            $('#diagnosa_awal').val(null);
+            $('#perujuk').val(null);
+            $('#intansi_perujuk').val(null);
+            $('#no_rujukan').val(null);
+            $('#ppk_rujukan').val(null);
+            $('#tgl_rujukan').val(null);
+            $('#url_do').val(null);
+            $('#status_bpjs').val(null);
+            $('#status_rujukan').val(null);
+            $('#is_laka').val(null);
+            $('#id_asuransi').val(null);
+            $('#no_kartu').val(null);
+            $('#nominal_cover_biaya').val(null);
+            $('#no_kartu_ptpn').val(null);
+            $('#unit_ptpn').val(null);
+            $('#unit_pg').val(null);
+            $('#cek_is_bpjs').val(null);
+            $('#poli').val(null).trigger('change');
+            $('#nama_dokter').val(null);
+            $('#asuransi').val(null);
+            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan, #kunjungan, #perujuk').val(null);
             var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
             $('#img-upload').attr('src', img);
-            $('#imgInp').attr('value', '');
+            $('#imgInp').attr('value', null);
+            $('#kelas_pasien').val(null);
+            $('#no_mr').val(null);
+            $('#idPelayananBpjs').val(null);
+            $('#id_checkup_online').val(null);
+            $('#tanggal_rujukan').val(null);
+            $('#h_no_kartu').val(null);
+            $('#h_id_asuransi').val(null);
+            $('#h_no_rujukan').val(null);
+            $('#id_paket').val(null);
+            $('#cover_biaya_paket').val(null);
+            $('#pembayaran').val(null);
+            $('#uang_muka_val').val(null);
+            $('#uang_muka').val(null);
+            $('#url_do').val(null);
 
+            $('#tgl_rujukan').val(null);
+            $('#ppk_rujukan').val(null);
+            $('#intansi_perujuk').val(null);
+            $('#no_rujukan').val(null);
+            $('#perujuk').val(null);
+            $('#no_kartu_ptpn').val(null);
+            $('#unit_pg').val(null);
+
+            $('#unit_ptpn').val(null);
+            $('#cek_is_bpjs').val(null);
+            $('#foto_surat').val(null);
+            $('#tanggal_kejadian').val(null);
+            $('#no_polisi').val(null);
+            $('#no_kartu').val(null);
+            $('#asuransi').val(null);
+            $('#kunjungan').val(null);
+            $('#paket_perusahaan').val(null);
+            $('#paket').val(null);
+            $('#dokter').val(null);
+            $('#nama_dokter').val(null);
+            $('#id_lab').val(null);
+            $('#poli').val(null);
+            $('#hubungan').val(null);
+            $('#no_telp').val(null);
+            $('#nama_penanggung').val(null);
+
+            $('#img_ktp').val(null);
+            $('#diagnosa_awal').val(null);
+            $('#diagnosa_ket').val(null);
+            $('#is_order_lab').val(null);
+            $('#last_id_detail_checkup').val(null);
+
+            $('#is_online').val(null);
+            $('#tgl_antrian').val(null);
+            $('#is_laka').val(null);
+            $('#poli').attr('disabled', false);
         }
 
         function formatRupiah2(angka) {
@@ -473,6 +524,18 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <label class="col-md-4" style="margin-top: 7px">NO Checkup Online</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    <input class="form-control" id="id_online" onchange="searchNoCheckup(this.value)" placeholder="Scan No Checkup Online">
+                                                    <div class="input-group-btn">
+                                                        <a class="btn btn-success" onclick="searchNoCheckup($('#id_online').val())"> <span id="load_online"><i
+                                                                class="fa fa-search"></i> Check</span></a> Check</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 10px">Jenis Pasien</label>
                                             <div class="col-md-8">
                                                 <select name="headerCheckup.idJenisPeriksaPasien" class="form-control select2" id="jenis_pasien" onchange="setJenisPasien(this.value)"></select>
@@ -537,9 +600,6 @@
                                                              cssClass="form-control" cssStyle="margin-top: 7px"/>
                                             </div>
                                         </div>
-
-                                        <s:hidden name="headerCheckup.isOnline" id="tes_online"/>
-                                        <s:hidden name="headerCheckup.tglAntian"/>
 
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Tanggal Lahir</label>
@@ -714,9 +774,6 @@
                                 </div>
                             </div>
 
-                            <s:hidden name="headerCheckup.isOrderLab" id="is_order_lab"></s:hidden>
-                            <s:hidden name="headerCheckup.lastIdDetailCheckup" id="last_id_detail_checkup"></s:hidden>
-
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Kunjungan</h3>
@@ -765,7 +822,7 @@
                                                 <div class="input-group" style="margin-top: 7px;">
                                                     <input readonly class="form-control" id="nama_dokter"
                                                            style="cursor: pointer"
-                                                           placeholder="*klik untuk mencari jadwal dokter">
+                                                           placeholder="*klik untuk jadwal dokter">
                                                     <div class="input-group-btn">
                                                         <a class="btn btn-success">
                                                                 <span id="btn-dokter"><i
@@ -842,8 +899,6 @@
                                                             class="fa fa-check"></i> correct</span>
                                                 </div>
 
-                                                <s:hidden id="is_laka"></s:hidden>
-
                                             </div>
                                             <div class="form-group" id="form_no_kartu">
                                                 <label class="col-md-4" style="margin-top: 10px">No Kartu
@@ -865,6 +920,7 @@
                                                     <s:textfield oninput="$('#h_no_rujukan').val(this.value)"
                                                                  cssStyle="margin-top: 7px"
                                                                  cssClass="form-control"
+                                                                 id="no_polisi"
                                                                  onkeypress="var warn =$('#war_no_asuransi').is(':visible'); if (warn){$('#con_no_asuransi').show().fadeOut(3000);$('#war_no_asuransi').hide()}"></s:textfield>
                                                 </div>
                                             </div>
@@ -876,6 +932,7 @@
                                                         Kejadian</label>
                                                     <div class="col-md-8">
                                                         <s:textfield cssStyle="margin-top: 7px"
+                                                                     id="tanggal_kejadian"
                                                                      cssClass="form-control datepicker"
                                                                      onchange="$('#tanggal_rujukan').val(this.value)"></s:textfield>
                                                     </div>
@@ -887,7 +944,7 @@
                                                         <div class="input-group" style="margin-top: 7px">
                                                     <span class="input-group-btn">
                                                         <span class="btn btn-default btn-file">
-                                                            Browse… <s:file accept=".jpg"
+                                                            Browse… <s:file accept=".jpg" id="foto_surat"
                                                                             name="fileUploadDocPolisi"></s:file>
                                                         </span>
                                                     </span>
@@ -900,8 +957,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <s:hidden name="headerCheckup.isRekananWithBpjs" id="cek_is_bpjs"></s:hidden>
 
                             <div id="form-rekanan" style="display: none">
                                 <div class="box-header with-border"></div>
@@ -1068,14 +1123,19 @@
                             <s:hidden name="headerCheckup.kelasPasien" id="kelas_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.noMr" id="no_mr"></s:hidden>
                             <s:hidden name="headerCheckup.idPelayananBpjs" id="idPelayananBpjs"></s:hidden>
-                            <s:hidden name="headerCheckup.noCheckupOnline"></s:hidden>
+                            <s:hidden name="headerCheckup.noCheckupOnline" id="id_checkup_online"></s:hidden>
                             <s:hidden name="headerCheckup.tglRujukan" id="tanggal_rujukan"></s:hidden>
                             <s:hidden name="headerCheckup.noKartuAsuransi" id="h_no_kartu"></s:hidden>
                             <s:hidden name="headerCheckup.idAsuransi" id="h_id_asuransi"></s:hidden>
                             <s:hidden name="headerCheckup.noRujukan" id="h_no_rujukan"></s:hidden>
                             <s:hidden name="headerCheckup.idPaket" id="id_paket"></s:hidden>
                             <s:hidden name="headerCheckup.coverBiaya" id="cover_biaya_paket"></s:hidden>
-
+                            <s:hidden name="headerCheckup.isOnline" id="is_online"/>
+                            <s:hidden name="headerCheckup.stTglAntrian" id="tgl_antrian"/>
+                            <s:hidden name="headerCheckup.isRekananWithBpjs" id="cek_is_bpjs"></s:hidden>
+                            <s:hidden name="headerCheckup.isOrderLab" id="is_order_lab"></s:hidden>
+                            <s:hidden name="headerCheckup.lastIdDetailCheckup" id="last_id_detail_checkup"></s:hidden>
+                            <s:hidden id="is_laka"></s:hidden>
 
                             <div id="form-uang-muka">
                                 <div class="box-header with-border"></div>
@@ -1245,6 +1305,7 @@
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
                                                                                          closePos();
+                                                                                         $('body').scrollTop(0);
                                                                                      }
                                                                             }">
                                         <s:hidden id="close_pos"></s:hidden>
@@ -1540,12 +1601,9 @@
 
 <script type='text/javascript'>
 
-    var idPelayanan = $('#id_pelayanan_poli').val();
-    var isOnline = '<s:property value="headerCheckup.isOnlne"/>';
     var contextPath = '<%= request.getContextPath() %>';
 
     $(document).ready(function () {
-
         $('#pendaftaran').addClass('active');
         listJenisPasien();
         setPelayanan();
@@ -1652,47 +1710,6 @@
         }
     }
 
-    function initlistPenjamin() {
-        var tipe = '<s:property value="tipe"/>';
-        var option = "";
-        CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
-            if (response.length > 0) {
-                option = "<option value=''>[Select One]</option>";
-                $.each(response, function (i, item) {
-                    option += '<option value="' + item.idJenisPeriksaPasien + '">' + item.keterangan + '</option>';
-                });
-                $('#penjamin').html(option);
-            }
-        });
-
-        $('#penjamin').val(tipe).trigger('change').attr('disabled', true);
-
-        if (tipe == 'asuransi') {
-            listSelectAsuransi();
-        }
-        if (tipe == 'paket_perusahaan' || tipe == 'paket_individu') {
-            listSelectPaket(tipe);
-        }
-        if (tipe == 'rekanan') {
-            listSelectRekanan();
-        }
-
-        $('#id_jenis_periksa').val(tipe);
-    }
-
-    function listPenjaminNoBpjs() {
-        var option = "";
-        CheckupAction.getComboJenisPeriksaPasienNotBpjs(function (response) {
-            if (response.length > 0) {
-                option = "<option value=''>[Select One]</option>";
-                $.each(response, function (i, item) {
-                    option += '<option value="' + item.idJenisPeriksaPasien + '">' + item.keterangan + '</option>';
-                });
-                $('#penjamin').html(option);
-            }
-        });
-    }
-
     function listSelectAsuransi() {
         var option = "<option value=''>[Select One]</option>";
         CheckupAction.getComboAsuransi(function (response) {
@@ -1755,9 +1772,9 @@
             var tipeRekanan = rekanan[2];
 
             if (isBpjs == 'Y') {
-                $('#form_no_bpjs, #form_rujukan').show();
+                $('#form-no-bpjs, #form-rujukan').show();
             } else {
-                $('#form_no_bpjs, #form_rujukan').hide();
+                $('#form-no-bpjs, #form-rujukan').hide();
             }
 
             if (tipeRekanan == 'ptpn') {
@@ -1903,35 +1920,6 @@
 
         } else {
             $('#form-lab').hide();
-        }
-    }
-
-    function initListDokter() {
-        var idDokter = '<s:property value="headerCheckup.idDokter"></s:property>';
-        if (idPelayanan != '') {
-            var option = "";
-            CheckupAction.listOfDokter(idPelayanan, function (response) {
-                option = "<option value=''>[Select One]</option>";
-                if (response.length > 0) {
-                    $.each(response, function (i, item) {
-                        if (idDokter == item.idDokter) {
-                            $('#dokter').val(idDokter);
-                            $('#nama_dokter').val(item.namaDokter);
-                        }
-                    });
-                }
-            });
-            $('#poli').val(idPelayanan).trigger('change');
-        }
-
-        var isLama = '<s:property value="headerCheckup.jenisKunjungan"></s:property>';
-        if (isLama != '') {
-
-            if (isLama == "Lama") {
-                $('#kunjungan').val("Lama").trigger('change');
-            } else {
-                $('#kunjungan').val("Baru").trigger('change');
-            }
         }
     }
 
@@ -2536,6 +2524,7 @@
     }
 
     function setJenisPasien(jenis){
+        var online = $('#is_online').val();
         if(jenis == "umum"){
             $('#form-uang-muka').show();
             $('#form-paket-perusahaan').hide();
@@ -2582,14 +2571,19 @@
             listSelectAsuransi();
             $('#form-asuransi').show();
             $('#form-paket').hide();
-            $('#form-paket-perusahaan').show();
+            $('#form-paket-perusahaan').hide();
             $('#form-no-bpjs').hide();
             $('#form-rujukan').hide();
             $('#form-uang-muka').hide();
             $('#form-rekanan').hide();
             $('#poli').attr('disabled', false);
         }
-        setPelayanan();
+
+        if(online == "Y"){
+            $('#poli').attr('disabled', true);
+        }else{
+            setPelayanan();
+        }
         $('#jenis_pasien').val(jenis);
     }
 
@@ -2730,7 +2724,6 @@
         PaketPeriksaAction.saveNewPasien(objectString, {
             callback: function (response) {
                 if (response.status == "success") {
-                    console.log(response);
                     $('#save_add').show();
                     $('#load_add').hide();
                     $('#info_dialog').dialog('open');
@@ -2781,6 +2774,162 @@
         var idPasien = $('#id_pasien').val();
     }
 
+    function searchNoCheckup(id){
+        if(id != ''){
+            $('#load_online').html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...');
+            dwr.engine.setAsync(true);
+            CheckupAction.getCheckupOnline(id, {
+                callback: function (response) {
+                    if(response.idPasien != null){
+                        $('#load_online').html('<i class="fa fa-search"></i> Check');
+                        var today = new Date();
+                        var dd = String(today.getDate()).padStart(2, '0');
+                        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                        var yyyy = today.getFullYear();
+                        var tglToday = mm + '-' + dd + '-' + yyyy;
+
+                        var daftar = new Date(response.tglCheckupOnline);
+                        var dDaf = String(daftar.getDate()).padStart(2, '0');
+                        var mDaf = String(daftar.getMonth() + 1).padStart(2, '0'); //January is 0!
+                        var yDaf = daftar.getFullYear();
+                        var tglDaftar = mDaf + '-' + dDaf + '-' + yDaf;
+
+                        var tgl1 = new Date(tglToday);
+                        var tgl2 = new Date(tglDaftar);
+
+                        var tanggalToday = Math.abs(tgl1);
+                        var tanggalCheckup = Math.abs(tgl2);
+
+                        var time = response.jamAwal;
+                        var char = time.split(":");
+                        var hh2 = char[0];
+                        var min2 = char[1];
+
+                        var timeDaftar = new Date();
+                        timeDaftar.setHours(hh2, min2, 0);
+                        timeDaftar.setMinutes(timeDaftar.getMinutes() - 30);
+
+                        var timeToday = new Date();
+
+                        if (tanggalToday == tanggalCheckup) {
+                            if(Math.abs(timeToday) <= Math.abs(timeDaftar)){
+                                $('#id_pasien').val(response.idPasien);
+                                $('#no_bpjs').val(response.noBpjs);
+                                $('#no_ktp').val(response.noKtp);
+                                $('#nama_pasien').val(response.nama);
+                                $('#jenis_kelamin').val(response.jenisKelamin);
+                                $('#tempat_lahir').val(response.tempatLahir);
+                                $('#tanggal_lahir').val(response.tglLahir);
+                                $('#agama').val(response.agama);
+                                $('#profesi').val(response.profesi);
+                                $('#jalan').val(response.jalan);
+                                $('#suku').val(response.suku);
+                                $('#img_ktp').val(response.imgKtp);
+                                $('#img-upload').attr('src', response.urlKtp);
+                                $('#provinsi').val(response.namaProvinsi);
+                                $('#kabupaten').val(response.namaKota);
+                                $('#kecamatan').val(response.namaKecamatan);
+                                $('#desa').val(response.namaDesa);
+                                $('#provinsi11').val(response.provinsiId);
+                                $('#kabupaten11').val(response.kotaId);
+                                $('#kecamatan11').val(response.kecamatanId);
+                                $('#desa11').val(response.desaId);
+                                $('#no_telp').val(response.noTelp);
+                                $('#poli').val(response.idPelayanan).trigger('change').attr('disabled', true);
+                                $('#dokter').val(response.idDokter);
+                                CheckupAction.listOfDokter(response.idPelayanan, function (res) {
+                                    if (res.length > 0) {
+                                        $.each(res, function (i, item) {
+                                            if (response.idDokter == item.idDokter) {
+                                                $('#nama_dokter').val(item.namaDokter);
+                                            }
+                                        });
+                                    }
+                                });
+                                $('#is_online').val(response.isOnline);
+                                $('#tgl_antrian').val(converterDateYmdHms(response.tglAntian));
+                                $('#id_checkup_online').val(response.noCheckupOnline);
+                                $('#jenis_pasien').val(response.idJenisPeriksaPasien).trigger('change').attr('disabled', true);
+                            }else{
+                                $('#warning_pasien').show().fadeOut(5000);
+                                $('#msg_pasien').text("Verifikasi sudah tidak bisa dilakukan, dikarenakan sudah lewat dari jam awal pelayanan...!, Silahkan lakukan pendaftaran manual.");
+                            }
+                        } else {
+                            $('#warning_pasien').show().fadeOut(5000);
+                            $('#msg_pasien').text("Verifikasi sudah tidak bisa dilakukan, dikarenakan sudah lewat dari jam awal pelayanan...!, Silahkan lakukan pendaftaran manual.");
+                        }
+                    }else{
+                        $('#load_online').html('<i class="fa fa-search"></i> Check');
+                        $('#id_pasien').val(null);
+                        $('#no_bpjs').val(null);
+                        $('#no_ktp').val(null);
+                        $('#nama_pasien').val(null);
+                        $('#jenis_kelamin').val(null);
+                        $('#tempat_lahir').val(null);
+                        $('#tanggal_lahir').val(null);
+                        $('#agama').val(null);
+                        $('#profesi').val(null);
+                        $('#jalan').val(null);
+                        $('#suku').val(null);
+                        $('#img_ktp').val(null);
+                        var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
+                        $('#img-upload').attr('src', img);
+                        $('#provinsi').val(null);
+                        $('#kabupaten').val(null);
+                        $('#kecamatan').val(null);
+                        $('#desa').val(null);
+                        $('#provinsi11').val(null);
+                        $('#kabupaten11').val(null);
+                        $('#kecamatan11').val(null);
+                        $('#desa11').val(null);
+                        $('#no_telp').val(null);
+                        $('#poli').val(null).trigger('change').attr('disabled', false);
+                        $('#dokter').val(null);
+                        $('#nama_dokter').val(null);
+                        $('#is_online').val(null);
+                        $('#tgl_antrian').val(null);
+                        $('#id_checkup_online').val(null);
+                        $('#jenis_pasien').attr('disabled', false);
+                        $('#warning_pasien').show().fadeOut(5000);
+                        $('#msg_pasien').text("No Checkup Online tidak ditemukan...!");
+                    }
+                }
+            });
+        }else{
+            $('#id_pasien').val(null);
+            $('#no_bpjs').val(null);
+            $('#no_ktp').val(null);
+            $('#nama_pasien').val(null);
+            $('#jenis_kelamin').val(null);
+            $('#tempat_lahir').val(null);
+            $('#tanggal_lahir').val(null);
+            $('#agama').val(null);
+            $('#profesi').val(null);
+            $('#jalan').val(null);
+            $('#suku').val(null);
+            $('#img_ktp').val(null);
+            var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
+            $('#img-upload').attr('src', img);
+            $('#provinsi').val(null);
+            $('#kabupaten').val(null);
+            $('#kecamatan').val(null);
+            $('#desa').val(null);
+            $('#provinsi11').val(null);
+            $('#kabupaten11').val(null);
+            $('#kecamatan11').val(null);
+            $('#desa11').val(null);
+            $('#no_telp').val(null);
+            $('#poli').val(null).trigger('change').attr('disabled', false);
+            $('#dokter').val(null);
+            $('#nama_dokter').val(null);
+            $('#is_online').val(null);
+            $('#tgl_antrian').val(null);
+            $('#id_checkup_online').val(null);
+            $('#jenis_pasien').attr('disabled', false);
+            $('#warning_pasien').show().fadeOut(5000);
+            $('#msg_pasien').text("No Checkup Online tidak ditemukan...!");
+        }
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

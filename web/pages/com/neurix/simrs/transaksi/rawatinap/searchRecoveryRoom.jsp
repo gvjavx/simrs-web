@@ -13,7 +13,7 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#pel_ri_active, #rr').addClass('active');
+            $('#pel_ri_active, #rawat_rr').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
             selectKamar();
         });
@@ -49,7 +49,7 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="rawatInapForm" method="post" namespace="/recoveryroom" action="searchOperasi_recoveryroom.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="rawatInapForm" method="post" namespace="/recoveryroom" action="searchRR_recoveryroom.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
@@ -266,7 +266,7 @@
 
     function selectKamar(){
         var option = "<option value=''>[Select One]</option>";
-        CheckupDetailAction.listRuangan(null, false, 'kamar_operasi',
+        CheckupDetailAction.listRuangan(null, false, 'rr',
             { callback: function (response) {
                     if (response.length > 0) {
                         $.each(response, function (i, item) {

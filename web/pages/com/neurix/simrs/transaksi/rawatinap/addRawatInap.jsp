@@ -881,9 +881,6 @@
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
                                                     <option value="ruang_bersalin">Ruang Bersalin</option>
                                                     <option value="rr">Recovery Room</option>
-                                                    <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
-                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
-                                                    <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
                                                 </s:elseif>
                                                 <s:elseif test='rawatInap.kategoriRuangan == "ruang_bersalin"'>
                                                     <s:if test='rawatInap.isStay == "Y"'>
@@ -895,9 +892,17 @@
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
                                                     <option value="kamar_operasi">Kamar Operasi</option>
-                                                    <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
-                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
-                                                    <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
+                                                </s:elseif>
+                                                <s:elseif test='rawatInap.kategoriRuangan == "rr"'>
+                                                    <s:if test='rawatInap.isStay == "Y"'>
+                                                        <option value="kembali_ke_inap">Kembali Ke Inap</option>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <option value="rawat_inap">Rawat Inap</option>
+                                                    </s:else>
+                                                    <option value="rawat_intensif">Rawat Intensif</option>
+                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
+                                                    <option value="kamar_operasi">Kamar Operasi</option>
                                                 </s:elseif>
                                             </select>
                                         </div>
@@ -1080,6 +1085,13 @@
                                         </s:elseif>
                                         <s:elseif test='rawatInap.kategoriRuangan == "ruang_bersalin"'>
                                             <a href="initForm_rawatbersalin.action" class="btn btn-warning hvr-icon-wobble-horizontal"
+                                               style="margin-top: 15px;">
+                                                <i
+                                                        class="fa fa-arrow-left hvr-icon"></i> Back
+                                            </a>
+                                        </s:elseif>
+                                        <s:elseif test='rawatInap.kategoriRuangan == "rr"'>
+                                            <a href="initForm_recoveryroom.action" class="btn btn-warning hvr-icon-wobble-horizontal"
                                                style="margin-top: 15px;">
                                                 <i
                                                         class="fa fa-arrow-left hvr-icon"></i> Back

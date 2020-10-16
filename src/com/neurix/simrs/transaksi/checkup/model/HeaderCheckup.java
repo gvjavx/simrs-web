@@ -170,6 +170,61 @@ public class HeaderCheckup {
     private String jmlIGD;
     private String jmlTelemedic;
 
+    private String imgKtp;
+    private String jamAwal;
+    private String jamAkhir;
+    private String tglDaftar;
+    private String tglCheckupOnline;
+    private String stTglAntrian;
+
+    public String getStTglAntrian() {
+        return stTglAntrian;
+    }
+
+    public void setStTglAntrian(String stTglAntrian) {
+        this.stTglAntrian = stTglAntrian;
+    }
+
+    public String getTglCheckupOnline() {
+        return tglCheckupOnline;
+    }
+
+    public void setTglCheckupOnline(String tglCheckupOnline) {
+        this.tglCheckupOnline = tglCheckupOnline;
+    }
+
+    public String getJamAwal() {
+        return jamAwal;
+    }
+
+    public void setJamAwal(String jamAwal) {
+        this.jamAwal = jamAwal;
+    }
+
+    public String getJamAkhir() {
+        return jamAkhir;
+    }
+
+    public void setJamAkhir(String jamAkhir) {
+        this.jamAkhir = jamAkhir;
+    }
+
+    public String getTglDaftar() {
+        return tglDaftar;
+    }
+
+    public void setTglDaftar(String tglDaftar) {
+        this.tglDaftar = tglDaftar;
+    }
+
+    public String getImgKtp() {
+        return imgKtp;
+    }
+
+    public void setImgKtp(String imgKtp) {
+        this.imgKtp = imgKtp;
+    }
+
     public String getJmlRJ() {
         return jmlRJ;
     }
