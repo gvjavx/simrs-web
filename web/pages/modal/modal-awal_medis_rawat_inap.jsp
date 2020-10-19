@@ -279,8 +279,8 @@
                         <div class="col-md-6">
                             <span class="text-center">TTD DPJP</span>
                             <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('ap9')" class="paint-canvas-ttd" id="ap9"></canvas>
-                            <input class="form-control nama_dokter" placeholder="Nama Terang" id="nama_terang_ap9">
-                            <input style="margin-top: 3px" class="form-control sip_dokter" placeholder="SIP" id="sip_ap9">
+                            <input class="form-control nama_dokter_ri" placeholder="Nama Terang" id="nama_terang_ap9">
+                            <input style="margin-top: 3px" class="form-control sip_dokter_ri" placeholder="SIP" id="sip_ap9">
                             <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ap9')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
