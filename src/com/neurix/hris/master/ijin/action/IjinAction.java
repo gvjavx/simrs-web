@@ -260,16 +260,7 @@ public class IjinAction extends BaseMasterAction {
 
             ijinBoProxy.saveDelete(deleteIjin);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = ijinBoProxy.saveErrorMessage(e.getMessage(), "IjinBO.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[IjinAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[IjinAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[IjinAction.saveDelete] end process <<<");

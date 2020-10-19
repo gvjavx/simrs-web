@@ -22,15 +22,14 @@
         }
 
         $.subscribe('beforeProcessSaveCancelIjinKeluar', function (event, data) {
+            var id =document.getElementById("ijinKeluarId5").value;
             var keterangan = document.getElementById("cancelNote").value;
             var nip = document.getElementById("nipId").value;
             var tglDari = document.getElementById("tgl2").value;
             var tglSelesai = document.getElementById("tgl1").value;
-            console.log(tglDari);
-            console.log(tglSelesai);
             if (keterangan!=="") {
 
-                IjinKeluarAction.cekIfAbsensi(nip, tglDari, tglSelesai, function(listdata){
+                IjinKeluarAction.cekIfAbsensi(id,nip, tglDari, tglSelesai, function(listdata){
                     if (listdata=="tidak"){
                         if (confirm('Do you want to save this record?')) {
                             event.originalEvent.options.submit = true;
@@ -41,7 +40,7 @@
                             event.originalEvent.options.submit = false;
                         }
                     }else {
-                        alert("Data Tersebut Tidak Bisa Dibatalkan Karena Telah Masuk Absensi")
+                        alert("Data Tersebut Tidak Bisa Dibatalkan Karena Telah Masuk Absensi");
                         event.originalEvent.options.submit = false;
                     }
                 });

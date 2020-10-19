@@ -1,6 +1,8 @@
 package com.neurix.hris.master.studyJurusan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.study.dao.StudyDao;
+import com.neurix.hris.master.study.model.ImStudyEntity;
 import com.neurix.hris.master.studyJurusan.bo.StudyJurusanBo;
 import com.neurix.hris.master.studyJurusan.dao.StudyJurusanDao;
 import com.neurix.hris.master.studyJurusan.model.ImStudyJurusanEntity;
@@ -25,6 +27,15 @@ public class StudyJurusanBoImpl implements StudyJurusanBo {
 
     protected static transient Logger logger = Logger.getLogger(StudyJurusanBoImpl.class);
     private StudyJurusanDao studyJurusanDao;
+    private StudyDao studyDao;
+
+    public StudyDao getStudyDao() {
+        return studyDao;
+    }
+
+    public void setStudyDao(StudyDao studyDao) {
+        this.studyDao = studyDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -52,6 +63,15 @@ public class StudyJurusanBoImpl implements StudyJurusanBo {
             String idHistory = "";
             ImStudyJurusanEntity imStudyJurusanEntity = null;
             ImStudyJurusanHistoryEntity historyEntity = new ImStudyJurusanHistoryEntity();
+
+            //validasi
+            List<ImStudyEntity> studyEntityList = studyDao.getListStudyByJurusanId(studyJurusanId);
+
+            if (studyEntityList.size()>0){
+                String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
 
             try {
                 // Get data from database by ID

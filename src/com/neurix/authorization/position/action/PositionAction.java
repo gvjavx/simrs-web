@@ -268,15 +268,6 @@ public class PositionAction extends BaseMasterAction {
             entryPosition.setAction("C");
             positionBoProxy.saveAdd(entryPosition);
         }  catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "payrollSkalaGajiBO.saveAdd");
-            } catch (GeneralBOException e1) {
-                logger.error("[pelayananAction.saveAdd] Error when saving error,", e1);
-                throw new GeneralBOException(e1.getMessage());
-            }
-            logger.error("[pelayananAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             throw new GeneralBOException(e.getMessage());
         }
 
@@ -306,20 +297,8 @@ public class PositionAction extends BaseMasterAction {
 
                 positionBoProxy.saveDelete(deletePosition);
 
-            } catch (UsernameNotFoundException e) {
-                logger.error("[PositionAction.save] Error when deleting item position,", e);
-                addActionError("Error, " + e.getMessage());
-                return ERROR;
             } catch (GeneralBOException e) {
-                Long logId = null;
-                try {
-                    logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.saveDelete");
-                } catch (GeneralBOException e1) {
-                    logger.error("[PositionAction.save] Error when saving error,", e1);
-                }
-                logger.error("[PositionAction.save] Error when deleting item ," + "[" + logId + "] Found problem when saving delete data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when saving delete data, please inform to your admin.\n" + e.getMessage());
-                return ERROR;
+                throw new GeneralBOException(e.getMessage());
             }
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");

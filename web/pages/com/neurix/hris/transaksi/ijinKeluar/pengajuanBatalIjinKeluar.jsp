@@ -24,13 +24,12 @@
         $.subscribe('beforeProcessSavePengajuanBatalIjinKeluar', function (event, data) {
             var keterangan = document.getElementById("cancelNote0").value;
             var nip = document.getElementById("nipId0").value;
+            var id = document.getElementById("ijinKeluarId0").value;
             var tglDari = document.getElementById("tgl20").value;
             var tglSelesai = document.getElementById("tgl1").value;
-            console.log(tglDari);
-            console.log(tglSelesai);
             if (keterangan!=="") {
 
-                IjinKeluarAction.cekIfAbsensi(nip, tglDari, tglSelesai, function(listdata){
+                IjinKeluarAction.cekIfAbsensi(id,nip, tglDari, tglSelesai, function(listdata){
                     if (listdata=="tidak"){
                         if (confirm('Do you want to save this record?')) {
                             event.originalEvent.options.submit = true;
@@ -97,7 +96,7 @@
                         <td>
                             <table>
                                 <div>
-                                    <s:textfield  id="ijinKeluarId" name="ijinKeluar.ijinKeluarId" required="true" readonly="true" cssClass="form-control"/>
+                                    <s:textfield  id="ijinKeluarId0" name="ijinKeluar.ijinKeluarId" required="true" readonly="true" cssClass="form-control"/>
                                 </div>
                             </table>
                         </td>

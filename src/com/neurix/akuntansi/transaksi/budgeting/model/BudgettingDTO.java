@@ -47,6 +47,16 @@ public class BudgettingDTO {
     private BigDecimal nilaiAdendum2;
     private BigDecimal nilaiAdendum3;
 
+    private boolean cetak=false;
+
+    public boolean isCetak() {
+        return cetak;
+    }
+
+    public void setCetak(boolean cetak) {
+        this.cetak = cetak;
+    }
+
     public BigDecimal getNilaiAdendum1() {
         return nilaiAdendum1;
     }

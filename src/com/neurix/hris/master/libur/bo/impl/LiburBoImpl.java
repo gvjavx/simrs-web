@@ -1,6 +1,7 @@
 package com.neurix.hris.master.libur.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.libur.bo.LiburBo;
 import com.neurix.hris.master.libur.dao.LiburDao;
 import com.neurix.hris.master.libur.model.ImLiburEntity;
@@ -292,6 +293,7 @@ public class LiburBoImpl implements LiburBo {
                     returnLibur.setLiburKeterangan(liburEntity.getLiburKeterangan());
                     returnLibur.setAction(liburEntity.getAction());
                     returnLibur.setFlag(liburEntity.getFlag());
+                    returnLibur.setStTanggal(CommonUtil.convertDateToString(liburEntity.getTanggal()));
 
                     ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
                     if (liburEntity.getTipeLiburId() != null){

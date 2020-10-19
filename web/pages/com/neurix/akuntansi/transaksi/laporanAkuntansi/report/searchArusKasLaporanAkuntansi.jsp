@@ -123,7 +123,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Pendapatan :</small></label>
+                                                    <label class="control-label"><small>Tipe Arus Kas :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>

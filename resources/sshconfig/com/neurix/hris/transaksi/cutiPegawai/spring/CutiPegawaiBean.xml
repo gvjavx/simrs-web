@@ -39,6 +39,8 @@
           p:positionDao-ref="positionDao"
           p:branchDao-ref="branchDao"
           p:ijinKeluarDao-ref="ijinKeluarDao"
+          p:golonganDao-ref="golonganDao"
+          p:userDao-ref="userDao"
     />
 
     <bean id="cutiPegawaiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

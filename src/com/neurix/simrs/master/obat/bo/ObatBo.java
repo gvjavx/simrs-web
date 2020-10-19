@@ -4,6 +4,7 @@ import com.neurix.akuntansi.master.reportDetail.model.ReportDetail;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity;
 import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
@@ -54,4 +55,5 @@ public interface ObatBo{
     public List<ImSimrsBentukBarangEntity> getLitBentukBarangByFlag(String flag) throws GeneralBOException;
     public ImSimrsBentukBarangEntity getBentukBarangById(String idBentuk) throws GeneralBOException;
     public List<Aging> getListAging(String branchId, String idPelayanan, String periode) throws GeneralBOException;
+    public List<ImSimrsKategoriPersediaanEntity> getAllKategoriPersediaan() throws GeneralBOException;
 }

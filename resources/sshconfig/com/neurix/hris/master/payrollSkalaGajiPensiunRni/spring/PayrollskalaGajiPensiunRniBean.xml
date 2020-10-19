@@ -11,6 +11,7 @@
     <bean id="payrollSkalaGajiPensiunRniBo" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.bo.impl.PayrollSkalaGajiPensiunRniBoImpl"
           p:payrollSkalaGajiPensiunRniDao-ref="payrollSkalaGajiPensiunRniDao"
           p:payrollSkalaGajiPensiunRniHistoryDao-ref="payrollSkalaGajiPensiunRniHistoryDao"
+          p:payrollDanaPensiunDao-ref="payrollDanaPensiunDao"
     />
 
     <bean id="payrollSkalaGajiPensiunRniBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

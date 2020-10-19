@@ -119,7 +119,7 @@
                             </div>
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Bagian :</small></label>
+                                    <label class="control-label"><small>Sub Bidang/Divisi :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -198,7 +198,7 @@
                         <br>
                         <br>
                         <center>
-                            <table id="showdata" width="8 0%">
+                            <table id="showdata" width="80%">
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -236,7 +236,7 @@
                                             <display:column property="positionId" sortable="true" title="Id"/>
                                             <display:column property="positionName" sortable="true" title="Posisi"/>
                                             <display:column property="departmentName" sortable="true" title="Bidang/Divisi"/>
-                                            <display:column property="bagianName" sortable="true" title="Bagian"/>
+                                            <display:column property="bagianName" sortable="true" title="Sub Bidang/Divisi"/>
                                             <display:column property="kelompokName" sortable="true" title="Kelompok Jabatan"/>
                                             <display:column property="kodering" sortable="true" title="Kodering"/>
                                             <display:column property="flag" sortable="true" title="flag"  />

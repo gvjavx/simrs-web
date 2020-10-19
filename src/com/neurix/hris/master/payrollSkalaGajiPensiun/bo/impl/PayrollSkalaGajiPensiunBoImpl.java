@@ -1,6 +1,8 @@
 package com.neurix.hris.master.payrollSkalaGajiPensiun.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.golonganDapen.dao.GolonganDapenDao;
+import com.neurix.hris.master.golonganDapen.model.ImGolonganDapenEntity;
 import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
 import com.neurix.hris.master.payrollSkalaGaji.model.PayrollSkalaGaji;
 import com.neurix.hris.master.payrollSkalaGajiPensiun.bo.PayrollSkalaGajiPensiunBo;
@@ -26,6 +28,15 @@ public class PayrollSkalaGajiPensiunBoImpl implements PayrollSkalaGajiPensiunBo 
 
     protected static transient Logger logger = Logger.getLogger(PayrollSkalaGajiPensiunBoImpl.class);
     private PayrollSkalaGajiPensiunDao payrollSkalaGajiPensiunDao;
+    private GolonganDapenDao golonganDapenDao;
+
+    public GolonganDapenDao getGolonganDapenDao() {
+        return golonganDapenDao;
+    }
+
+    public void setGolonganDapenDao(GolonganDapenDao golonganDapenDao) {
+        this.golonganDapenDao = golonganDapenDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -233,9 +244,11 @@ public class PayrollSkalaGajiPensiunBoImpl implements PayrollSkalaGajiPensiunBo 
                     returnPayrollSkalaGaji = new payrollSkalaGajiPensiun();
                     returnPayrollSkalaGaji.setSkalaGajiPensiunId(payrollSkalaGajiEntity.getSkalaGajiPensiunId());
                     returnPayrollSkalaGaji.setGolonganId(payrollSkalaGajiEntity.getGolonganId());
-                    if(payrollSkalaGajiEntity.getGolonganId() != null){
-                        returnPayrollSkalaGaji.setGolonganName(payrollSkalaGajiEntity.getImGolonganEntity().getGolonganName());
+                    ImGolonganDapenEntity golonganDapenEntity = golonganDapenDao.getById("golonganDapenId",payrollSkalaGajiEntity.getGolonganId());
+                    if (golonganDapenEntity!=null){
+                        returnPayrollSkalaGaji.setGolonganName(golonganDapenEntity.getGolonganDapenName());
                     }
+
                     returnPayrollSkalaGaji.setNilai(payrollSkalaGajiEntity.getNilai());
                     returnPayrollSkalaGaji.setPoin(payrollSkalaGajiEntity.getPoin());
 

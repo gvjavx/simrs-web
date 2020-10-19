@@ -51,7 +51,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll
+            Penggajian
         </h1>
     </section>
     <!-- Main content -->
@@ -60,7 +60,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i>Pencarian Payroll</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i>Pencarian Penggajian</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -155,7 +155,7 @@
                                                 <td>
                                                     <table>
                                                         <s:select list="#{'PR':'Payroll', 'T':'THR', 'CP':'Cuti Panjang', 'CT':'Cuti Tahunan',
-                                        'JP':'Jasa Operassional', 'JB':'PMP', 'PN':'SHT', 'IN':'Insentif'}" id="tipe" name="payroll.tipe"
+                                        'JP':'Jasa Operasional', 'JB':'PMP', 'PN':'SHT', 'IN':'Insentif'}" id="tipe" name="payroll.tipe"
                                                                   cssClass="form-control" />
                                                     </table>
                                                 </td>
@@ -357,6 +357,7 @@
                                                             </display:column>
                                                             <display:column property="bulan" title="Bulan"  />
                                                             <display:column property="tahun" title="Tahun"  />
+                                                            <display:column property="tipeName" title="Tipe"  />
                                                             <display:column property="jumlahPegawai" title="Jumlah Pegawai"  />
                                                             <display:column style="text-align:right;" property="totalA" title="Jumlah Kotor"  />
                                                             <display:column style="text-align:right;" property="totalGajiBersih" title="Jumlah Bersih"  />

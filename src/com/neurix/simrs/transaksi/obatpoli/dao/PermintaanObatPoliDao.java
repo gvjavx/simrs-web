@@ -98,11 +98,18 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
             flag = bean.getFlag();
         }
 
+        String joinPelayanan = "";
         String andBranch = "";
-        if (bean.getFlagOtherBranch() != null && !"".equalsIgnoreCase(bean.getFlagOtherBranch())){
+        String otherBranch = "";
+        if (bean.getFlagOtherBranch() != null && "Y".equalsIgnoreCase(bean.getFlagOtherBranch())){
             andBranch = "AND pop.branch_id LIKE '"+branchId+"' \n";
         } else {
             andBranch = "AND ato.branch_id LIKE '"+branchId+"' \n";
+            if (bean.getFlagReqPelayanan() != null && "Y".equalsIgnoreCase(bean.getFlagReqPelayanan())){
+                otherBranch = "AND pop.branch_id != ato.branch_id \n";
+            } else {
+                otherBranch = "AND pop.branch_id = ato.branch_id \n";
+            }
         }
 
         String SQL = "";
@@ -164,7 +171,7 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                     "FROM mt_simrs_permintaan_obat_poli pop\n" +
                     "INNER JOIN mt_simrs_approval_transaksi_obat ato ON ato.id_approval_obat = pop.id_approval_obat\n" +
                     "INNER JOIN mt_simrs_transaksi_obat_detail tod ON tod.id_approval_obat = ato.id_approval_obat\n" +
-                    "INNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" +
+                    "INNER JOIN im_simrs_obat_gejala og On og.id_obat = tod.id_obat\n" + joinPelayanan +
                     "WHERE pop.flag LIKE :flag\n" +
 //                    "AND ato.branch_id LIKE :branchId\n" +
                     "AND tod.id_obat LIKE :idObat\n" +
@@ -172,7 +179,7 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
                     "AND pop.id_pelayanan LIKE :idPelayanan\n" +
                     "AND og.id_jenis_obat LIKE :idJenisObat\n" +
                     "AND pop.id_permintaan_obat_poli LIKE :idPermintaanObatPoli\n" +
-                    "AND pop.tujuan_pelayanan LIKE :idTujuan\n" + andBranch +
+                    "AND pop.tujuan_pelayanan LIKE :idTujuan\n" + andBranch + otherBranch +
                     "GROUP BY pop.id_permintaan_obat_poli\n" +
                     ") popo ON popo.id_permintaan_obat_poli = pop.id_permintaan_obat_poli\n";
         }

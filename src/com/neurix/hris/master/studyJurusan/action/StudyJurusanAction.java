@@ -259,14 +259,6 @@ public class StudyJurusanAction extends BaseMasterAction{
 
             studyJurusanBoProxy.saveDelete(deleteStudyJurusan);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = studyJurusanBoProxy.saveErrorMessage(e.getMessage(), "StudyJurusanBO.saveDelete");
-            } catch (GeneralBOException e1) {
-                throw new GeneralBOException(e1.getMessage());
-            }
-            logger.error("[StudyJurusanAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
             throw new GeneralBOException(e.getMessage());
         }
 

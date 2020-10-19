@@ -274,13 +274,14 @@ public class StrukturJabatanAction extends BaseMasterAction{
 
     public String saveDelete(String strukturId, String Branch, String position, String Parent){
         logger.info("[StrukturJabatanAction.saveDelete] start process >>>");
+        String status;
         try {
 
             StrukturJabatan deleteStrukturJabatan = new StrukturJabatan();
 
             deleteStrukturJabatan.setStrukturJabatanId(strukturId);
             deleteStrukturJabatan.setBranchId(Branch);
-            deleteStrukturJabatan.setPositionId(position.toString());
+            deleteStrukturJabatan.setPositionId(position);
             deleteStrukturJabatan.setParentId(Parent);
 
             String userLogin = CommonUtil.userLogin();
@@ -293,7 +294,7 @@ public class StrukturJabatanAction extends BaseMasterAction{
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             StrukturJabatanBo strukturBo = (StrukturJabatanBo) ctx.getBean("strukturJabatanBoProxy");
-            strukturBo.saveDelete(deleteStrukturJabatan);
+            status = strukturBo.saveDeleteStruktur(deleteStrukturJabatan);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -309,7 +310,7 @@ public class StrukturJabatanAction extends BaseMasterAction{
 
         logger.info("[StrukturJabatanAction.saveDelete] end process <<<");
 
-        return "success_save_delete";
+        return status;
     }
 
     public String saveAdd(){

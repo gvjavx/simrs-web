@@ -9,7 +9,9 @@
           p:payrollSkalaGajiPensiunBoProxy-ref="payrollSkalaGajiPensiunBoProxy" />
 
     <bean id="payrollSkalaGajiPensiunBo" class="com.neurix.hris.master.payrollSkalaGajiPensiun.bo.impl.PayrollSkalaGajiPensiunBoImpl"
-          p:payrollSkalaGajiPensiunDao-ref="payrollSkalaGajiPensiunDao" />
+          p:payrollSkalaGajiPensiunDao-ref="payrollSkalaGajiPensiunDao"
+          p:golonganDapenDao-ref="golonganDapenDao"
+    />
 
     <bean id="payrollSkalaGajiPensiunBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="payrollSkalaGajiPensiunBo">

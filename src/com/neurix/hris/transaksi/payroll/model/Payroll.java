@@ -158,6 +158,16 @@ public class Payroll extends BaseModel {
 
     private BigDecimal proporsiGaji;
 
+    private String tipeName;
+
+    public String getTipeName() {
+        return tipeName;
+    }
+
+    public void setTipeName(String tipeName) {
+        this.tipeName = tipeName;
+    }
+
     public BigDecimal getProporsiGaji() {
         return proporsiGaji;
     }

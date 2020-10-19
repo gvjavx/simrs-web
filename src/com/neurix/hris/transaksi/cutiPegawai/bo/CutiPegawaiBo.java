@@ -21,9 +21,9 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
     public void saveDelete(CutiPegawai bean) throws GeneralBOException;
     public void saveEdit(CutiPegawai bean) throws GeneralBOException;
 
-    public void saveCancel(CutiPegawai bean) throws GeneralBOException;
+    public List<Notifikasi> saveCancel(CutiPegawai bean) throws GeneralBOException;
 
-    public void savePengajuanBatal(CutiPegawai bean) throws GeneralBOException;
+    public List<Notifikasi> savePengajuanBatal(CutiPegawai bean) throws GeneralBOException;
 
     public void saveTolakPengajuanBatal(CutiPegawai bean) throws GeneralBOException;
 
@@ -92,4 +92,6 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
     public String cekPengajuanCuti(String nip);
 
     List<CutiPegawai> searchApprovalByCriteria(CutiPegawai bean) throws GeneralBOException;
+
+    List<CutiPegawai> getCriteriaForResetCutiTahunan(String unit) throws GeneralBOException;
 }

@@ -10,6 +10,7 @@
     />
     <bean id="tipePegawaiBo" class="com.neurix.hris.master.tipepegawai.bo.impl.TipePegawaiBoImpl"
           p:tipePegawaiDao-ref="tipePegawaiDao"
+          p:biodataDao-ref="biodataDao"
     />
     <bean id="tipePegawaiBoProxy"
           class="org.springframework.aop.framework.ProxyFactoryBean"

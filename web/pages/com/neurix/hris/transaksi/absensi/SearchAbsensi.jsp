@@ -443,48 +443,111 @@
                                                     </td>
                                                 </tr>
                                             </table>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-5"></label>
+                                                <div class="col-sm-5" style="display: none">
+
+                                                    <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                                               closeTopics="closeDialog" modal="true"
+                                                               resizable="false"
+                                                               height="250" width="600" autoOpen="false"
+                                                               title="Searching ...">
+                                                        Please don't close this window, server is processing your request ...
+                                                        <br>
+                                                        <center>
+                                                            <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                 src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                 name="image_indicator_write">
+                                                            <br>
+                                                            <img class="spin" border="0"
+                                                                 style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                 src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                 name="image_indicator_write">
+                                                        </center>
+                                                    </sj:dialog>
+                                                    <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
+                                                               resizable="false"
+                                                               closeOnEscape="false"
+                                                               height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                               buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                         window.location.reload(true);
+                                                                                     }
+                                                                            }"
+                                                    >
+                                                        <s:hidden id="close_pos"></s:hidden>
+                                                        <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                             name="icon_success">
+                                                        Record has been saved successfully.
+                                                    </sj:dialog>
+                                                    <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"
+                                                               resizable="false" cssStyle="text-align:left;"
+                                                               height="650" width="900" autoOpen="false" title="View Detail"
+                                                    >
+                                                        <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
+                                                                     alt="Loading..."/></center>
+                                                    </sj:dialog>
+                                                    <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
+                                                               height="620" width="900" autoOpen="false"
+                                                               title="Absensi">
+                                                        <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                                    </sj:dialog>
+                                                    <sj:dialog id="view_dialog_menu_absensi" openTopics="showDialogMenuView" modal="true"
+                                                               height="570" width="700" autoOpen="false"
+                                                               title="Absensi">
+                                                    </sj:dialog>
+                                                    <sj:dialog id="view_dialog_keterangan" openTopics="showDialogMenuKeterangan" modal="true"
+                                                               height="680" width="700" autoOpen="false"
+                                                               title="Absensi">
+                                                    </sj:dialog>
+                                                </div>
+                                            </div>
                                         </div>
                                         <br>
                                         <br>
-                                        <center>
-                                            <table id="showdata" width="80%">
-                                                <tr>
-                                                    <td align="center">
-                                                        <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading"
-                                                                   closeTopics="closeDialogLoading" modal="true"
-                                                                   resizable="false"
-                                                                   height="250" width="600" autoOpen="false"
-                                                                   title="Save Data ...">
-                                                            Please don't close this window, server is processing your request ...
-                                                            <br>
-                                                            <center>
-                                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
-                                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
-                                                                     name="image_indicator_write">
-                                                                <br>
-                                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
-                                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
-                                                                     name="image_indicator_write">
-                                                            </center>
-                                                        </sj:dialog>
-
-                                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="620" width="900" autoOpen="false"
-                                                                   title="Absensi">
-                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                                        </sj:dialog>
-                                                        <sj:dialog id="view_dialog_menu_absensi" openTopics="showDialogMenuView" modal="true"
-                                                                   height="570" width="700" autoOpen="false"
-                                                                   title="Absensi">
-                                                        </sj:dialog>
-                                                        <sj:dialog id="view_dialog_keterangan" openTopics="showDialogMenuKeterangan" modal="true"
-                                                                   height="680" width="700" autoOpen="false"
-                                                                   title="Absensi">
-                                                        </sj:dialog>
-                                                        <s:set name="listOfAbsensi" value="#session.listOfResultAbsensi" scope="request" />
-                                                        <display:table name="listOfAbsensi" class="tableAbsensi table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_absensi.action" export="true" id="row" pagesize="30" style="font-size:10">
-                                                            <display:column media="html" title="Refresh">
+                                        <div style="text-align: left !important;">
+                                            <div class="box-header with-border"></div>
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Absensi</h3>
+                                            </div>
+                                            <div class="box-body">
+                                                <table id="tableAbsensi" class="tableAbsensi table table-bordered table-striped" style="font-size: 11px">
+                                                    <thead >
+                                                    <tr bgcolor="#90ee90" style="text-align: center">
+                                                        <td>ID </td>
+                                                        <td>Tanggal </td>
+                                                        <td>NIP </td>
+                                                        <td>Nama</td>
+                                                        <td>Posisi </td>
+                                                        <td>Masuk 1</td>
+                                                        <td>Pulang 1</td>
+                                                        <td>Status </td>
+                                                        <td>Masuk 2</td>
+                                                        <td>Pulang 2</td>
+                                                        <td>Status 2</td>
+                                                        <td>Lembur </td>
+                                                        <td align="center">Refresh</td>
+                                                        <td align="center">View</td>
+                                                        <td align="center">On Call</td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <s:iterator value="#session.listOfResultAbsensi" var="row">
+                                                        <tr>
+                                                            <td style="text-align: center"><s:property value="absensiPegawaiId"/></td>
+                                                            <td style="text-align: center"><s:property value="stTanggal"/></td>
+                                                            <td style="text-align: center"><s:property value="nip"/></td>
+                                                            <td><s:property value="nama"/></td>
+                                                            <td><s:property value="jabatan"/></td>
+                                                            <td style="text-align: center"><s:property value="jamMasuk"/></td>
+                                                            <td style="text-align: center"><s:property value="jamPulang"/></td>
+                                                            <td style="text-align: center"><s:property value="statusName"/></td>
+                                                            <td style="text-align: center"><s:property value="jamMasuk2"/></td>
+                                                            <td style="text-align: center"><s:property value="jamPulang2"/></td>
+                                                            <td style="text-align: center"><s:property value="statusName2"/></td>
+                                                            <td style="text-align: center"><s:property value="lembur"/></td>
+                                                            <td align="center">
                                                                 <s:if test="#attr.row.cekAdmin">
                                                                     <s:if test="#attr.row.cekMangkir">
                                                                         <a href="javascript:;"  tanggal="<s:property value="%{#attr.row.stTanggal}"/>" nip="<s:property value="%{#attr.row.nip}"/>" href="javascript:;" class="item-refresh" cssClass="item-refresh">
@@ -492,30 +555,8 @@
                                                                         </a>
                                                                     </s:if>
                                                                 </s:if>
-                                                            </display:column>
-                                                            <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
-                                                                <%--<s:if test="#attr.row.cekAdmin">--%>
-                                                                    <%--<s:url var="urlDelete" namespace="/absensi" action="delete_absensi" escapeAmp="false">--%>
-                                                                        <%--<s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>--%>
-                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
-                                                                    <%--</s:url>--%>
-                                                                    <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlDelete}">--%>
-                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
-                                                                    <%--</sj:a>--%>
-                                                                <%--</s:if>--%>
-                                                            <%--</display:column>--%>
-                                                            <%--<display:column media="html" title="Edit" style="text-align:center;font-size:9">--%>
-                                                                <%--<s:if test="#attr.row.cekAdmin">--%>
-                                                                    <%--<s:url var="urlEdit" namespace="/absensi" action="editAbsensi_absensi" escapeAmp="false">--%>
-                                                                        <%--<s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>--%>
-                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
-                                                                    <%--</s:url>--%>
-                                                                    <%--<sj:a onClickTopics="showDialogMenuView" href="%{urlEdit}">--%>
-                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_trash">--%>
-                                                                    <%--</sj:a>--%>
-                                                                <%--</s:if>--%>
-                                                            <%--</display:column>--%>
-                                                            <display:column media="html" title="View" style="text-align:center;font-size:9">
+                                                            </td>
+                                                            <td align="center">
                                                                 <s:url var="urlViewDelete" namespace="/absensi" action="view_absensi" escapeAmp="false">
                                                                     <s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>
                                                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
@@ -523,52 +564,26 @@
                                                                 <sj:a onClickTopics="showDialogMenuView" href="%{urlViewDelete}">
                                                                     <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">
                                                                 </sj:a>
-                                                            </display:column>
-                                                            <display:column property="nip" sortable="true" title="NIP"  />
-                                                            <display:column property="nama" sortable="true" title="Nama"  />
-                                                            <display:column property="jabatan" sortable="true" title="Jabatan" />
-                                                            <display:column property="stTanggal" sortable="true" title="Tanggal" style="text-align:center" />
-                                                            <display:column property="jamMasuk" sortable="true" title="Jam Masuk" style="text-align:center" />
-                                                            <display:column property="jamKeluar" sortable="true" title="Jam Pulang" style="text-align:center" />
-                                                            <display:column property="statusName" sortable="true" title="status" style="text-align:left" />
-                                                            <display:column property="ijin" sortable="true" title="ijin" style="text-align:center" />
-                                                            <display:column property="lembur" sortable="true" title="lembur" style="text-align:center" />
-                                                            <display:column property="realisasiJamLembur" sortable="true" title="Realisasi Lembur" style="text-align:center" />
-                                                            <display:column property="flagCutiGantiHari" sortable="true" title="Cuti Ganti Hari" style="text-align:center" />
-                                                            <display:setProperty name="paging.banner.item_name">Absensi</display:setProperty>
-                                                            <display:setProperty name="paging.banner.items_name">Absensi</display:setProperty>
-                                                            <display:setProperty name="export.excel.filename">Absensi.xls</display:setProperty>
-                                                            <display:setProperty name="export.csv.filename">Absensi.csv</display:setProperty>
-                                                            <display:setProperty name="export.pdf.filename">Absensi.pdf</display:setProperty>
-                                                            <%--<display:column media="html" title="Keterangan" style="text-align:center;font-size:9">
-                                                                <s:if test="#attr.row.cekAdmin">
-                                                                    <s:if test="#attr.row.absensiApprove">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
-                                                                    </s:if>
-                                                                    <s:elseif test="#attr.row.notApprove">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_failure.ico"/>" name="icon_edit">
-                                                                    </s:elseif>
-                                                                    <s:elseif test="#attr.row.noted">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_list_outstanding.png"/>" name="icon_edit">
-                                                                    </s:elseif>
-                                                                    <s:elseif test="#attr.row.clear">
-                                                                    </s:elseif>
-                                                                    <s:else>
-                                                                        <s:url var="urlKeterangan" namespace="/absensi" action="addKeteranganById_absensi" escapeAmp="false">
-                                                                            <s:param name="id"><s:property value="#attr.row.absensiPegawaiId" /></s:param>
-                                                                            <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                        </s:url>
-                                                                        <sj:a onClickTopics="showDialogMenuKeterangan" href="%{urlKeterangan}">
-                                                                            <img border="0" src="<s:url value="/pages/images/edit_task.png"/>" name="icon_edit">
-                                                                        </sj:a>
-                                                                    </s:else>
+                                                            </td>
+                                                            <td align="center">
+                                                                <s:if test='#attr.row.tipeHari=="on_call"'>
+                                                                    <a href="javascript:;"
+                                                                       tanggal="<s:property value="%{#attr.row.stTanggal}"/>"
+                                                                       nip="<s:property value="%{#attr.row.nip}"/>"
+                                                                       nama="<s:property value="%{#attr.row.nama}"/>"
+                                                                       posisi="<s:property value="%{#attr.row.jabatan}"/>"
+                                                                       href="javascript:;" class="item-view-oncall">
+                                                                        <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>">
+                                                                    </a>
                                                                 </s:if>
-                                                            </display:column>--%>
-                                                        </display:table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </center>
+                                                            </td>
+                                                        </tr>
+                                                    </s:iterator>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
                                     </s:form>
                                 </td>
                             </tr>
@@ -577,30 +592,110 @@
                 </div>
             </div>
         </div>
-        <!-- Your Page Content Here -->
-        <div class="row">
-            <div class="col-md-12">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-
-            </div>
-        </div>
     </section>
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+<div class="modal fade" id="modal-detail-oncall">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail On Call</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">NIP</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_nip" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Nama</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_nama" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" >Tanggal</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_tanggal" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" >Jabatan</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_posisi" onkeypress="$(this).css('border','')" readonly="true"
+                                                 cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <table style="width: 100%;"
+                                           class="historyOncallTable table table-bordered">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <%@ include file="/pages/common/footer.jsp" %>
-
-
 <%@ include file="/pages/common/lastScript.jsp" %>
 
 </body>
 </html>
 <script>
     $(document).ready(function() {
+        window.loadHistoryOnCall = function () {
+            $('.historyOncallTable').find('tbody').remove();
+            $('.historyOncallTable').find('thead').remove();
+            dwr.engine.setAsync(false);
+            var tmp_table = "";
+            AbsensiAction.searchAbsensiOnCallSession(function (listdata) {
+                tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196'>No</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196''>Absensi On Call ID</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196''>NIP</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jam Masuk</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jam Pulang</th>" +
+                    "<th style='text-align: center; color: #fff; background-color:  #30d196''>Lama Lembur</th>" +
+                    "</tr></thead>";
+                var i = i;
+                $.each(listdata, function (i, item) {
+                    tmp_table += '<tr style="font-size: 12px;">' +
+                        '<td align="center">' + (i + 1) + '</td>' +
+                        '<td align="center">' + item.absensiOnCallId + '</td>' +
+                        '<td align="center">' + item.nip + '</td>' +
+                        '<td align="center">' + item.jamMasuk + '</td>' +
+                        '<td align="center">' + item.jamPulang + '</td>' +
+                        '<td align="center">' + item.lamaLembur + '</td>' +
+                        "</tr>";
+                });
+                $('.historyOncallTable').append(tmp_table);
+            });
+        };
+
         $('#tgl1').datepicker({
             dateFormat: 'dd-mm-yy'
         });
@@ -617,7 +712,23 @@
                 });
             }
         });
+        $('#tableAbsensi').DataTable({
+            "pageLength": 100,
+            "order": []
+        });
+        $('.tableAbsensi').on('click', '.item-view-oncall', function() {
+            var nip =$(this).attr('nip');
+            var tanggal =$(this).attr('tanggal');
+            $('#mod_tanggal').val(tanggal);
+            $('#mod_nama').val($(this).attr('nama'));
+            $('#mod_nip').val($(this).attr('nip'));
+            $('#mod_posisi').val($(this).attr('posisi'));
+            AbsensiAction.searchAbsensiOnCall(nip,tanggal,function () {});
 
+            loadHistoryOnCall();
+
+            $("#modal-detail-oncall").modal('show');
+        });
 
     });
 </script>

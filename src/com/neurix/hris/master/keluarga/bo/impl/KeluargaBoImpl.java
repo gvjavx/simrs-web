@@ -2,6 +2,8 @@ package com.neurix.hris.master.keluarga.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.keluarga.bo.KeluargaBo;
 import com.neurix.hris.master.keluarga.dao.KeluargaDao;
 import com.neurix.hris.master.keluarga.model.Keluarga;
@@ -9,6 +11,7 @@ import com.neurix.hris.master.keluarga.model.ImKeluargaEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +29,15 @@ public class KeluargaBoImpl implements KeluargaBo {
 
     protected static transient Logger logger = Logger.getLogger(KeluargaBoImpl.class);
     private KeluargaDao keluargaDao;
+    private BiodataDao biodataDao;
+
+    public BiodataDao getBiodataDao() {
+        return biodataDao;
+    }
+
+    public void setBiodataDao(BiodataDao biodataDao) {
+        this.biodataDao = biodataDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -64,16 +76,19 @@ public class KeluargaBoImpl implements KeluargaBo {
 
             if (imKeluargaEntity != null) {
 
-                // Modify from bean to entity serializable
-                imKeluargaEntity.setKeluargaId(bean.getKeluargaId());
-                imKeluargaEntity.setName(bean.getName());
-                //imKeluargaEntity.setNip(bean.getNip());
-                imKeluargaEntity.setStatusKeluarga(bean.getStatusKeluargaId());
-                imKeluargaEntity.setTanggalLahir(bean.getTanggalLahir());
                 imKeluargaEntity.setFlag(bean.getFlag());
                 imKeluargaEntity.setAction(bean.getAction());
                 imKeluargaEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 imKeluargaEntity.setLastUpdate(bean.getLastUpdate());
+
+                // update jumlah anak keluarga
+                if (imKeluargaEntity.getStatusKeluarga().contains("A")){
+                    ImBiodataEntity biodataEntity = biodataDao.getById("nip",imKeluargaEntity.getNip());
+                    BigInteger jumlahAnak = biodataEntity.getJumlahAnak();
+                    BigInteger totJumlahAnak = jumlahAnak.subtract(BigInteger.ONE);
+                    biodataEntity.setJumlahAnak(totJumlahAnak);
+                    biodataDao.updateAndSave(biodataEntity);
+                }
 
                 try {
                     // Delete (Edit) into database
@@ -82,7 +97,6 @@ public class KeluargaBoImpl implements KeluargaBo {
                     logger.error("[KeluargaBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data Keluarga, please info to your admin..." + e.getMessage());
                 }
-
 
             } else {
                 logger.error("[KeluargaBoImpl.saveDelete] Error, not found data Keluarga with request id, please check again your data ...");
@@ -178,6 +192,15 @@ public class KeluargaBoImpl implements KeluargaBo {
             } catch (HibernateException e) {
                 logger.error("[KeluargaBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving new data Keluarga, please info to your admin..." + e.getMessage());
+            }
+
+            // update jumlah anak keluarga
+            if (bean.getStatusKeluargaId().contains("A")){
+                ImBiodataEntity biodataEntity = biodataDao.getById("nip",bean.getNip());
+                BigInteger jumlahAnak = biodataEntity.getJumlahAnak();
+                BigInteger totJumlahAnak = jumlahAnak.add(BigInteger.ONE);
+                biodataEntity.setJumlahAnak(totJumlahAnak);
+                biodataDao.updateAndSave(biodataEntity);
             }
         }
 

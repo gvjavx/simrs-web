@@ -1015,7 +1015,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
                     ImPosition position = positionDao.getById("positionId",pengajuanBiayaDetailEntity.getDivisiId());
                     String[] koderingPosisi = position.getKodering().split("\\.");
-                    List<ImPosition> positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MADYA);
+                    List<ImPosition> positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MADYA);
 
                     for (ImPosition imPosition : positionList ){
                         userList=userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId());

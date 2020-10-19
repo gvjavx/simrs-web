@@ -517,10 +517,10 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
 
         List<IjinKeluarEntity> ijinKeluarEntityList = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
                 .add(Restrictions.eq("nip", nip))
-                .add(Restrictions.or(
-                        Restrictions.isNull("approvalFlag"),
-                        Restrictions.eq("approvalFlag", "Y")
-                ))
+//                .add(Restrictions.or(
+//                        Restrictions.isNull("approvalFlag"),
+//                        Restrictions.eq("approvalFlag", "Y")
+//                ))
                 .add(Restrictions.eq("cancelFlag", "N"))
                 .add(Restrictions.le("tanggalAwal",tanggal))
                 .add(Restrictions.ge("tanggalAkhir",tanggal))
@@ -528,20 +528,20 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
 
         List<LemburEntity> lemburEntityList = this.sessionFactory.getCurrentSession().createCriteria(LemburEntity.class)
                 .add(Restrictions.eq("nip", nip))
-                .add(Restrictions.or(
-                        Restrictions.isNull("approvalFlag"),
-                        Restrictions.eq("approvalFlag", "Y")
-                ))
+//                .add(Restrictions.or(
+//                        Restrictions.isNull("approvalFlag"),
+//                        Restrictions.eq("approvalFlag", "Y")
+//                ))
                 .add(Restrictions.le("tanggalAwalSetuju",tanggal))
                 .add(Restrictions.ge("tanggalAkhirSetuju",tanggal))
                 .list();
 
         List<ItCutiPegawaiEntity> cutiPegawaiEntityList = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
                 .add(Restrictions.eq("nip", nip))
-                .add(Restrictions.or(
-                        Restrictions.isNull("approvalFlag"),
-                        Restrictions.eq("approvalFlag", "Y")
-                ))
+//                .add(Restrictions.or(
+//                        Restrictions.isNull("approvalFlag"),
+//                        Restrictions.eq("approvalFlag", "Y")
+//                ))
                 .add(Restrictions.eq("cancelFlag", "N"))
                 .add(Restrictions.le("tanggalDari",tanggal))
                 .add(Restrictions.ge("tanggalSelesai",tanggal))
@@ -549,12 +549,21 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
                 .list();
 
         if (ijinKeluarEntityList.size()>0){
-            results = "ERROR : sudah mengajukan Dispensasi di tanggal ini";
+            results = "ERROR : sudah pernah mengajukan dispensasi di tanggal ini ( di approve / not approve )";
         } else if (lemburEntityList.size()>0) {
-            results = "ERROR : sudah mengajukan Lembur di tanggal ini";
+            results = "ERROR : sudah pernah mengajukan lembur di tanggal ini ( di approve / not approve )";
         } else if (cutiPegawaiEntityList.size()>0) {
-            results = "ERROR : sudah mengajukan Cuti di tanggal ini";
+            results = "ERROR : sudah pernah mengajukan cuti di tanggal ini ( di approve / not approve )";
         }
+        return results;
+    }
+
+    public List<IjinKeluarEntity> getListIjinKeluarByIjinId(String id) throws HibernateException {
+
+        List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
+                .add(Restrictions.eq("ijinId", id))
+                .list();
+
         return results;
     }
 }

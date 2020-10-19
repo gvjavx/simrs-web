@@ -2410,25 +2410,42 @@ public class PayrollAction extends BaseMasterAction{
         List<Payroll> listDataPayroll = new ArrayList();
         List<Payroll> listDataPayrollBackup = new ArrayList();
 
-        String tipe="";
-        if (("Y").equalsIgnoreCase(payroll.getFlagPayroll())){
-            tipe="PR";
-        }else if (("Y").equalsIgnoreCase(payroll.getFlagThr())){
-            tipe="T";
-        }else if (("Y").equalsIgnoreCase(payroll.getFlagJasprod())){
-            tipe="JP";
-        }else if (("Y").equalsIgnoreCase(payroll.getFlagJubileum())){
-            tipe="JB";
-        }else if (("Y").equalsIgnoreCase(payroll.getFlagPensiun())){
-            tipe="PN";
-        }else if (("Y").equalsIgnoreCase(payroll.getFlagInsentif())){
-            tipe="IN";
-        }else if (("Y").equalsIgnoreCase(payroll.getFlagCutiPanjang())){
-            tipe="CP";
-        }else if (("Y").equalsIgnoreCase(payroll.getFlagCutiTahunan())){
-            tipe="CT";
+        payroll.setFlagPayroll("N");
+        payroll.setFlagThr("N");
+        payroll.setFlagCutiPanjang("N");
+        payroll.setFlagCutiTahunan("N");
+        payroll.setFlagJasprod("N");
+        payroll.setFlagJubileum("N");
+        payroll.setFlagJubileum("N");
+        payroll.setFlagPensiun("N");
+        payroll.setFlagInsentif("N");
+
+        switch (payroll.getTipe()){
+            case "PR":
+                payroll.setFlagPayroll("Y");
+                break;
+            case "T":
+                payroll.setFlagThr("Y");
+                break;
+            case "CP":
+                payroll.setFlagCutiPanjang("Y");
+                break;
+            case "CT":
+                payroll.setFlagCutiTahunan("Y");
+                break;
+            case "JP":
+                payroll.setFlagJasprod("Y");
+                break;
+            case "JB":
+                payroll.setFlagJubileum("Y");
+                break;
+            case "PN":
+                payroll.setFlagPensiun("Y");
+                break;
+            case "IN":
+                payroll.setFlagInsentif("Y");
+                break;
         }
-        payroll.setTipe(tipe);
         try {
             listDataPayroll = payrollBoProxy.dataAddPayroll(payroll);
             listDataPayrollBackup = payrollBoProxy.copyDataPayroll(listDataPayroll);
@@ -10476,7 +10493,34 @@ public class PayrollAction extends BaseMasterAction{
             session.removeAttribute("listOfResult");
             List<Payroll> listOfsearchPayroll= payrollBoProxy.getSearchHome(searchPayroll);
             session.setAttribute("listOfResult", listOfsearchPayroll);
-
+            for (Payroll payroll : listOfsearchPayroll){
+                switch (searchPayroll.getTipe()){
+                    case "PR":
+                        payroll.setTipeName("Gaji");
+                        break;
+                    case "T":
+                        payroll.setTipeName("THR");
+                        break;
+                    case "CP":
+                        payroll.setTipeName("Cuti Panjang");
+                        break;
+                    case "CT":
+                        payroll.setTipeName("Cuti Tahunan");
+                        break;
+                    case "JP":
+                        payroll.setTipeName("Jasa Operasional");
+                        break;
+                    case "JB":
+                        payroll.setTipeName("PMP");
+                        break;
+                    case "PN":
+                        payroll.setTipeName("Pensiun");
+                        break;
+                    case "IN":
+                        payroll.setTipeName("Gaji");
+                        break;
+                }
+            }
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

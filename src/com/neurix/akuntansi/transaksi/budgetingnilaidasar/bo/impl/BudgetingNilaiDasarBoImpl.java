@@ -274,7 +274,8 @@ public class BudgetingNilaiDasarBoImpl implements BudgetingNilaiDasarBo {
                 if (filterTransList.size() > 0)
                     nilaiDasar.setNilai(filterTransList.get(0).getNilai());
                 if ("persen".equalsIgnoreCase(masterNilaiDasar.getTipe())){
-                    nilaiDasar.setNilaiTotal(nilaiDasar.getNilai().divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
+                    BigDecimal nilai = nilaiDasar.getNilai() == null ? new BigDecimal(0) : nilaiDasar.getNilai();
+                    nilaiDasar.setNilaiTotal(nilai.divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP, 2));
                 } else {
                     nilaiDasar.setNilaiTotal(nilaiDasar.getNilai());
                 }

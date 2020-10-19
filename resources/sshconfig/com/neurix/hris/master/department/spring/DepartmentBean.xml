@@ -9,7 +9,10 @@
           p:departmentBoProxy-ref="departmentBoProxy" />
 
     <bean id="departmentBo" class="com.neurix.hris.master.department.bo.impl.DepartmentBoImpl"
-          p:departmentDao-ref="departmentDao" />
+          p:departmentDao-ref="departmentDao"
+          p:positionBagianDao-ref="positionBagianDao"
+          p:positionDao-ref="positionDao"
+    />
 
     <bean id="departmentBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="departmentBo">

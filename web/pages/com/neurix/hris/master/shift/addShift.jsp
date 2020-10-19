@@ -118,7 +118,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2">Grup :</label>
+        <label class="control-label col-sm-2">Sub Divisi :</label>
         <div class="col-sm-8" align="left">
             <s:action id="comboSubDiv" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
             <s:select list="#comboSubDiv.comboListOfPositionBagian" id="kelompokPositionId" name="shift.profesiId"

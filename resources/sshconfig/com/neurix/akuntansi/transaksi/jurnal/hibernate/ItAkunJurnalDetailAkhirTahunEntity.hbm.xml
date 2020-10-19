@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.akuntansi.transaksi.jurnal.model.ItAkunJurnalDetailAkhirTahunEntity">
-        <table name="it_akun_jurnal_detail_akhir_tahun" schema="public" catalog="simrs"/>
+        <table name="it_akun_jurnal_detail_akhir_tahun" schema="public" />
         <attributes>
             <id name="jurnalDetailId">
                 <column name="jurnal_detail_id"/>

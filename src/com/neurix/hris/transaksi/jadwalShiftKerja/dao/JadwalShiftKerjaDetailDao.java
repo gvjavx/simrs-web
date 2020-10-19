@@ -92,8 +92,7 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
                 "WHERE\n" +
                 "\tpegawai.shift='Y' AND\n" +
                 "\tpegawai.flag='Y' AND\n" +
-                "\tposisi.flag='Y' AND\n" +
-                "\tpegawai.pin IS NOT NULL \n" +
+                "\tposisi.flag='Y'\n" +
                 tipeWhere;
 
         results = this.sessionFactory.getCurrentSession()

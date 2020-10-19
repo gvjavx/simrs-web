@@ -8,6 +8,12 @@ import com.neurix.authorization.position.model.ImPositionHistory;
 import com.neurix.authorization.position.model.Position;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.exception.GenerateBoLog;
+import com.neurix.hris.master.department.dao.DepartmentDao;
+import com.neurix.hris.master.department.model.ImDepartmentEntity;
+import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
+import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
+import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
+import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -23,6 +29,45 @@ public class PositionBoImpl implements PositionBo {
     protected static transient Logger logger = Logger.getLogger(PositionBoImpl.class);
     private PositionDao positionDao;
     private PositionHistoryDao positionHistoryDao;
+    private DepartmentDao departmentDao;
+    private PositionBagianDao positionBagianDao;
+    private PersonilPositionDao personilPositionDao;
+
+    public PersonilPositionDao getPersonilPositionDao() {
+        return personilPositionDao;
+    }
+
+    public void setPersonilPositionDao(PersonilPositionDao personilPositionDao) {
+        this.personilPositionDao = personilPositionDao;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        PositionBoImpl.logger = logger;
+    }
+
+    public PositionDao getPositionDao() {
+        return positionDao;
+    }
+
+    public DepartmentDao getDepartmentDao() {
+        return departmentDao;
+    }
+
+    public void setDepartmentDao(DepartmentDao departmentDao) {
+        this.departmentDao = departmentDao;
+    }
+
+    public PositionBagianDao getPositionBagianDao() {
+        return positionBagianDao;
+    }
+
+    public void setPositionBagianDao(PositionBagianDao positionBagianDao) {
+        this.positionBagianDao = positionBagianDao;
+    }
 
     public PositionHistoryDao getPositionHistoryDao() {
         return positionHistoryDao;
@@ -210,7 +255,7 @@ public class PositionBoImpl implements PositionBo {
         logger.info("[PositionBoImpl.saveAdd] start process >>>");
 
         if (position != null) {
-            String status = cekStatus(position.getPositionName(), position.getKodering());
+            String status = cekStatus(position.getPositionName());
             if (!status.equalsIgnoreCase("Exist")){
                 ImPosition imPosition = new ImPosition();
 
@@ -220,7 +265,12 @@ public class PositionBoImpl implements PositionBo {
                 imPosition.setDepartmentId(position.getDepartmentId());
                 imPosition.setKelompokId(position.getKelompokId());
                 imPosition.setBagianId(position.getBagianId());
-                imPosition.setKodering(position.getKodering());
+
+                ImPositionBagianEntity positionBagianEntity = positionBagianDao.getById("bagianId",position.getBagianId());
+                List<ImPosition> positionList = positionDao.getListByBagianId(position.getBagianId());
+                String sId = String.format("%02d", positionList.size()+1);
+
+                imPosition.setKodering(positionBagianEntity.getKodering()+"."+sId);
 
                 imPosition.setCreatedDate(position.getCreatedDate());
                 imPosition.setLastUpdate(position.getLastUpdate());
@@ -411,6 +461,15 @@ public class PositionBoImpl implements PositionBo {
         if (position != null) {
 
             String positionId = position.getPositionId();
+
+            //validasi
+            List<ItPersonilPositionEntity> personilPositionEntityList= personilPositionDao.getListPersonilPositionByPositionId(positionId);
+
+            if (personilPositionEntityList.size()>0){
+                String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
 
             ImPosition imPosition = null;
             ImPositionHistory historyEntity = new ImPositionHistory();
@@ -701,13 +760,12 @@ public class PositionBoImpl implements PositionBo {
         }
         return positions;
     }
-    public String cekStatus(String positionName, String kodering)throws GeneralBOException{
+    public String cekStatus(String positionName)throws GeneralBOException{
         String status ="";
         List<ImPosition> imPositions = new ArrayList<>();
         List<ImPosition> positionList = new ArrayList<>();
         try {
             imPositions = positionDao.getListPosition(positionName);
-            positionList = positionDao.getListPositionKodering(kodering);
         } catch (HibernateException e) {
             logger.error("[PositionBoImpl.cekStatus] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

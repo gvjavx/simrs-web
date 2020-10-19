@@ -50,7 +50,6 @@
     <section class="content-header">
         <h1>
             Cuti Panjang
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -212,7 +211,9 @@
 
                                             <display:column property="flag" sortable="true" title="Flag" />
                                             <display:column property="createdWho" sortable="true" title="CreatedWho"/>
-
+                                            <display:setProperty name="export.excel.filename">CutiPanjang.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">CutiPanjang.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">CutiPanjang.pdf</display:setProperty>
                                         </display:table>
                                     </td>
                                 </tr>

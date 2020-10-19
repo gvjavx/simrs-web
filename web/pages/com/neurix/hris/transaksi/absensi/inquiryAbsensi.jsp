@@ -474,7 +474,7 @@
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>NIP</th>" +
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Nama</th>" +
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Bidang/Divisi</th>" +
-                "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>On Call</th>" +
+                "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Stand By OC</th>" +
                 "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Jam Kerja</th>" +
                 "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Jam Kerja 2</th>" +
                 // "<th colspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90'>Lembur</th>" +
@@ -482,7 +482,7 @@
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Realisasi Lembur</th>" +
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Perhitungan Lembur</th>" +
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Biaya Lembur</th>" +
-                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Status On Call</th>" +
+                "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>St. Stand By OC</th>" +
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Status</th>" +
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Status 2</th>" +
                 "<th rowspan='2' style='text-align: center; vertical-align: middle; background-color:  #90ee90''>Cuti Ganti Hari</th>" +

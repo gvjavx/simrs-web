@@ -2,7 +2,6 @@
 <!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 3.0//EN" "http://getahead.org/dwr/dwr30.dtd">
 
 <dwr>
-
   <allow>
       <create creator="new">
         <param name="class" value="com.neurix.authorization.user.action.UserLoginAction"/>
@@ -125,8 +124,6 @@
       <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.jadwalShiftKerja.model.HistoryOnCall"/>
-
-
       <convert converter="bean" match="com.neurix.hris.master.shift.model.Shift"/>
       <convert converter="bean" match="com.neurix.hris.master.group.model.Group"/>
 
@@ -174,6 +171,7 @@
       <convert converter="bean" match="com.neurix.hris.transaksi.absensi.model.AbsensiPegawaiEntity"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.absensi.model.MesinAbsensiDetail"/>
       <convert converter="bean" match="com.neurix.hris.transaksi.absensi.model.PegawaiTambahanAbsensi"/>
+      <convert converter="bean" match="com.neurix.hris.transaksi.absensi.model.AbsensiOnCall"/>
 
 
       <create creator="new">
@@ -463,6 +461,7 @@
       <convert converter="bean" match="com.neurix.simrs.master.obat.model.KandunganObat"/>
       <convert converter="bean" match="com.neurix.simrs.master.obat.model.ImSimrsKandunganObatEntity"/>
       <convert converter="bean" match="com.neurix.simrs.master.obat.model.ImSimrsKandunganObatDetailEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity"/>
 
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkup.model.CheckResponse"/>
       <convert converter="bean" match="com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup"/>
