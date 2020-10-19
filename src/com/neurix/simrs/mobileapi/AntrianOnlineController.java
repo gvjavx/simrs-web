@@ -110,6 +110,8 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private String idDetailCheckup;
     private String flagCall;
 
+    private String findNoAntrian;
+
     public String getFlagCall() {
         return flagCall;
     }
@@ -161,6 +163,14 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private String audioFileName;
 
     private Thread recordThread;
+
+    public String getFindNoAntrian() {
+        return findNoAntrian;
+    }
+
+    public void setFindNoAntrian(String findNoAntrian) {
+        this.findNoAntrian = findNoAntrian;
+    }
 
     public void setTelemedicBoProxy(TelemedicBo telemedicBoProxy) {
         this.telemedicBoProxy = telemedicBoProxy;
@@ -376,7 +386,25 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 antrian.setJamAwal(item.getJamAwal());
                 antrian.setJamAkhir(item.getJamAkhir());
                 antrian.setNoAntrian(item.getNoAntrian());
-                antrian.setNoCheckupOnline(item.getNoCheckupOnline());
+
+                if  (findNoAntrian != null) {
+                    List<AntianOnline> temp = new ArrayList<>();
+
+                    try {
+                        temp = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, null, CommonUtil.convertStringToDate(tglCheckup), jamAwal, jamAkhir, branchId);
+                    } catch (GeneralBOException e) {
+                        logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
+                        throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
+                    }
+
+                    for (AntianOnline item2 : temp) {
+                        if (item2.getNoCheckupOnline().equalsIgnoreCase(noCheckupOnline)) {
+                            antrian.setNoAntrian(item2.getNoAntrian());
+                            break;
+                        }
+                    }
+
+                } else antrian.setNoCheckupOnline(item.getNoCheckupOnline());
                 antrian.setNoCheckup(item.getNoCheckup());
                 antrian.setIdDetailCheckup(item.getIdDetailCheckup());
                 antrian.setTglCheckup(item.getTglCheckup());
