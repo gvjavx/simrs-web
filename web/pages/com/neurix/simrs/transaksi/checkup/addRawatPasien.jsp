@@ -70,7 +70,7 @@
 
             if (idPasien != '' && noKtp != '' && namaPasien != '' && jenisKelamin != '' && tempatLahir != ''
                 && tglLahir != '' && agama != '' && poli != '' && dokter != '' && penjamin != ''
-                && provinsi != '' && kota != '' && kecamatan != '' && desa != '') {
+                && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && tipe != '') {
 
 
                 if (tipe == "umum") {
