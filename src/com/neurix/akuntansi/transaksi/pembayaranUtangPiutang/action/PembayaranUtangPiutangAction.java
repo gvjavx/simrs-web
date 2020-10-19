@@ -1064,13 +1064,9 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
         }else{
             piutangDetailArrayList.addAll(piutangDetailList);
             for (PembayaranUtangPiutangDetail pembayaranUtangPiutangDetail:piutangDetailList){
-                if (pembayaranUtangPiutangDetail.getMasterId().equalsIgnoreCase(kodeVendor)&&pembayaranUtangPiutangDetail.getNoNota().equalsIgnoreCase(noNota)){
-                    if (tipePengajuanBiaya.equalsIgnoreCase("N")){
-                        status="Pembayaran vendor dengan nomor nota ini sudah ada";
-                    }else{
-                        status="Pengeluaran kas hanya boleh 1 transaksi pengajuan biaya";
-                    }
+                if (pembayaranUtangPiutangDetail.getMasterId().equalsIgnoreCase(kodeVendor)&&pembayaranUtangPiutangDetail.getNoNota().equalsIgnoreCase(noNota)&&pembayaranUtangPiutangDetail.getRekeningId().equalsIgnoreCase(rekeningId)){
                     ada=true;
+                    status="Pengeluaran/Pemasukan dengan data ini ( kode rekening,vendor , no nota ) sudah ada.";
                     break;
                 }
             }

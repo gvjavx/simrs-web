@@ -721,7 +721,9 @@ public class UserBoImpl implements UserBo {
                             icon="<i class=\"fa fa-cogs\"></i>";
                         }else if (("Kas/Bank Masuk").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-money\"></i>";
-                        }else if (("Kas/Bank Keluar").equalsIgnoreCase(menuName)){
+                        }else if (("Kas/Bank Keluar").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-money\"></i>";
+                        }else if (("Koreksi/Penyesuaian").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-money\"></i>";
                         }else if (("Obat").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-medkit\"></i>";
