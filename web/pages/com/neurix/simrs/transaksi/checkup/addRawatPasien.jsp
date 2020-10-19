@@ -408,6 +408,7 @@
             $('#tgl_antrian').val(null);
             $('#is_laka').val(null);
             $('#poli').attr('disabled', false);
+            $('#jenis_pasien').attr('disabled', false);
         }
 
         function formatRupiah2(angka) {
@@ -1727,7 +1728,7 @@
     }
 
     function listJenisPasien() {
-        var option = "";
+        var option = '<option value="">[Select One]</option>';
         CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {

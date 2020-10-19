@@ -72,21 +72,22 @@
                 && tglLahir != '' && agama != '' && poli != '' && dokter != '' && penjamin != ''
                 && provinsi != '' && kota != '' && kecamatan != '' && desa != '') {
 
-                // if (tipe == "umum") {
-                //     if (pembayaran != '' && uangMuka != '') {
-                //         $('#confirm_dialog').dialog('open');
-                //     } else {
-                //         $("html, body").animate({scrollTop: 0}, 600);
-                //         $('#warning_pasien').show().fadeOut(10000);
-                //         $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
-                //         if (pembayaran == '') {
-                //             $('#war_pembayaran').show();
-                //         }
-                //         if (uangMuka == '') {
-                //             $('#war_uang_muka').show();
-                //         }
-                //     }
-                // }
+                if (tipe == "umum") {
+                    $('#confirm_dialog').dialog('open');
+                    // if (pembayaran != '' && uangMuka != '') {
+                    //     $('#confirm_dialog').dialog('open');
+                    // } else {
+                    //     $("html, body").animate({scrollTop: 0}, 600);
+                    //     $('#warning_pasien').show().fadeOut(10000);
+                    //     $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
+                    //     if (pembayaran == '') {
+                    //         $('#war_pembayaran').show();
+                    //     }
+                    //     if (uangMuka == '') {
+                    //         $('#war_uang_muka').show();
+                    //     }
+                    // }
+                }
 
                 if (tipe == "bpjs") {
                     if (diagnosaBpjs != '') {
@@ -474,8 +475,8 @@
                             </div>
                         </div>
                     </div>
-                    <s:form id="addCheckupForm" enctype="multipart/form-data" method="post" namespace="/checkup"
-                            action="saveAdd_checkup.action" theme="simple">
+                    <s:form id="igdForm" enctype="multipart/form-data" method="post" namespace="/igd"
+                            action="saveAddRawatIgd_igd.action" theme="simple">
                         <div class="box-body">
                             <div class="alert alert-danger alert-dismissible" id="warning_pasien" style="display: none">
                                 <h4><i class="icon fa fa-ban"></i> Warning!</h4>
@@ -532,7 +533,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 10px">Jenis Pasien</label>
                                             <div class="col-md-8">
-                                                <select name="headerCheckup.idJenisPeriksaPasien" class="form-control select2" id="jenis_pasien" onchange="setJenisPasien(this.value)"></select>
+                                                <select class="form-control select2" id="jenis_pasien" onchange="setJenisPasien(this.value)"></select>
                                             </div>
                                         </div>
                                         <div class="form-group" id="form-no-bpjs" style="display: none">
@@ -787,7 +788,7 @@
                                                     <%--onchange="$(this).css('border',''); listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"--%>
                                                     <%--headerKey="" headerValue="[Select one]"--%>
                                                     <%--cssClass="form-control select2"/>--%>
-                                                <select name="headerCheckup.idPelayanan" class="form-control select2" id="poli" onchange="listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}">
+                                                <select class="form-control select2" id="poli" onchange="listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}">
                                                 </select>
                                                 <span style="color: red; display: none" id="war_poli"><i
                                                         class="fa fa-times"></i> required</span>
@@ -799,9 +800,8 @@
                                             <label class="col-md-4" style="margin-top: 10px">Unit Pemeriksaan</label>
                                             <div class="col-md-8">
                                                 <select id="id_lab" class="form-control select2"
-                                                        name="headerCheckup.idLab"
                                                         style="margin-top: 7px; width: 100%"
-                                                        onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#con_lab').show().fadeOut(3000);$('#war_lab').hide()}">
+                                                        onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#con_lab').show().fadeOut(3000);$('#war_lab').hide()}; setOrderLab(this.value)">
                                                     <option value=''>[Select One]</option>
                                                 </select>
                                                 <span style="color: red; display: none" id="war_lab"><i
@@ -1130,6 +1130,9 @@
                             <s:hidden name="headerCheckup.isOrderLab" id="is_order_lab"></s:hidden>
                             <s:hidden name="headerCheckup.lastIdDetailCheckup" id="last_id_detail_checkup"></s:hidden>
                             <s:hidden id="is_laka"></s:hidden>
+                            <s:hidden name="headerCheckup.idPelayanan" id="h_id_pelayanan"></s:hidden>
+                            <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="h_id_jenis_pasien"></s:hidden>
+                            <s:hidden name="headerCheckup.idLab" id="h_id_order_lab"></s:hidden>
 
                             <div id="form-uang-muka">
                                 <div class="box-header with-border"></div>
@@ -1242,7 +1245,7 @@
                                                         onclick="window.location.reload(true)">
                                                     <i class="fa fa-refresh"></i> Reset
                                                 </button>
-                                                <a type="button" class="btn btn-warning" href="initForm_checkup.action">
+                                                <a type="button" class="btn btn-warning" href="initForm_igd.action">
                                                     <i class="fa fa-arrow-left"></i> Back
                                                 </a>
                                             </div>
@@ -1264,7 +1267,7 @@
                                                     class="fa fa-times"></i> No
                                             </button>
                                             <sj:submit targets="crud" type="button" cssClass="btn btn-success"
-                                                       formIds="addCheckupForm" id="save" name="save"
+                                                       formIds="igdForm" id="save" name="save"
                                                        onBeforeTopics="beforeProcessSave"
                                                        onCompleteTopics="closeDialog,successDialog"
                                                        onSuccessTopics="successDialog" onErrorTopics="errorDialog">
@@ -1673,7 +1676,7 @@
     }
 
     function listJenisPasien() {
-        var option = "";
+        var option = '<option value="">[Select One]</option>';
         CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
@@ -1839,6 +1842,7 @@
         if (idPelayanan != null && idPelayanan != '') {
             $('#nama_dokter').attr('onclick', 'showJadwalDokter(\'' + idPelayanan + '\')');
             $('#btn-dokter').attr('onclick', 'showJadwalDokter(\'' + idPelayanan + '\')');
+            $('#h_id_pelayanan').val(idPelayanan);
             PelayananAction.getDataPelayanan(idPelayanan, function (res) {
                 var option2 = "<option value=''>[Select One]</option>";
                 if (res.idPelayanan != null) {
@@ -2518,6 +2522,7 @@
             $('#form-uang-muka').hide();
             $('#form-rekanan').hide();
         }
+        $('#h_id_jenis_pasien').val(jenis);
         $('#jenis_pasien').val(jenis);
     }
 
@@ -2861,6 +2866,10 @@
             $('#warning_pasien').show().fadeOut(5000);
             $('#msg_pasien').text("No Checkup Online tidak ditemukan...!");
         }
+    }
+
+    function setOrderLab(val){
+        $('#h_id_order_lab').val(val);
     }
 </script>
 

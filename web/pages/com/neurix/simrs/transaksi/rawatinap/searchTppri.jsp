@@ -392,7 +392,7 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-2">
-                                <button onclick="tambahDPJP()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
+                                <button onclick="tambahDPJP('')" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                                     DPJP
                                 </button>
                             </div>
@@ -412,7 +412,7 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <input class="form-control dpjp" style="margin-top: 7px" value="dpjp_1"
+                                <input class="form-control dpjp" style="margin-top: 7px" id="jenis_dpjp_1" value="dpjp_1"
                                        disabled="disabled">
                             </div>
                         </div>
@@ -733,7 +733,7 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-2">
-                                <button onclick="tambahDPJP()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
+                                <button onclick="tambahDPJP('add')" class="btn btn-success"><i class="fa fa-plus"></i> Tambah
                                     DPJP
                                 </button>
                             </div>
@@ -747,13 +747,13 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 10px">Dokter DPJP</label>
                             <div class="col-md-4">
-                                <select class="form-control select2 id_dpjp" id="dokter_add_dpjp_1" style="width: 100%"
-                                        onchange="$('#msg_dpjp').hide()">
+                                <select class="form-control select2 add_id_dpjp" id="dokter_add_dpjp_1" style="width: 100%"
+                                        onchange="$('#msg_add_dpjp').hide()">
                                     <option value=''>[Select One]</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <input class="form-control dpjp" style="margin-top: 7px" value="dpjp_1"
+                                <input class="form-control add_dpjp" style="margin-top: 7px" value="dpjp_1"
                                        disabled="disabled" placeholder="DPJP 1">
                             </div>
                         </div>
@@ -1024,58 +1024,109 @@
             });
     }
 
-    function tambahDPJP() {
-        var cekDpjp = $('.dpjp').length;
-        var cekValue = $('#dokter_dpjp_' + cekDpjp).val();
-        var cekJenis = $('#jenis_dpjp_' + cekDpjp).val();
-        if (cekValue != '' && cekJenis != '') {
-            var idDpjp = $('.id_dpjp');
-            var idIsi = "";
-            var aw = "(";
-            var ak = ")";
-            var valId = null;
-            $.each(idDpjp, function (i, item) {
-                if (item.value != '' && item.value) {
-                    var sp = item.value.split("|");
-                    if (idIsi != '') {
-                        idIsi = idIsi + ", " + "'" + sp[0] + "'";
-                    } else {
-                        idIsi = "'" + sp[0] + "'";
+    function tambahDPJP(tipe) {
+        if(tipe == 'add'){
+            var cekDpjp = $('.add_dpjp').length;
+            var cekValue = $('#dokter_add_dpjp_' + cekDpjp).val();
+            var cekJenis = $('#jenis_add_dpjp_' + cekDpjp).val();
+            if (cekValue != '' && cekJenis != '') {
+                var idDpjp = $('.add_id_dpjp');
+                var idIsi = "";
+                var aw = "(";
+                var ak = ")";
+                var valId = null;
+                $.each(idDpjp, function (i, item) {
+                    if (item.value != '' && item.value) {
+                        var sp = item.value.split("|");
+                        if (idIsi != '') {
+                            idIsi = idIsi + ", " + "'" + sp[0] + "'";
+                        } else {
+                            idIsi = "'" + sp[0] + "'";
+                        }
                     }
+                });
+                if (idIsi != '') {
+                    valId = aw + idIsi + ak;
                 }
-            });
-            if (idIsi != '') {
-                valId = aw + idIsi + ak;
+                var count = cekDpjp + 1;
+                $('#dokter_add_dpjp_' + cekDpjp).attr('disabled', 'disabled');
+                $('#jenis_add_dpjp_' + cekDpjp).attr('disabled', 'disabled');
+                var html = '<div class="row" id="set_dpjp_' + count + '">\n' +
+                    '<div class="form-group">\n' +
+                    '    <div class="col-md-offset-3 col-md-4">\n' +
+                    '        <select class="form-control select2 add_id_dpjp" id="dokter_add_dpjp_' + count + '" style="width: 100%"\n' +
+                    '            <option value=\'\'>[Select One]</option>\n' +
+                    '        </select>\n' +
+                    '    </div>\n' +
+                    '    <div class="col-md-4">\n' +
+                    '<select class="form-control select2 add_dpjp" id="jenis_add_dpjp_' + count + '">' +
+                    '<option value="">[Select One]</option>' +
+                    '<option value="konsultasi">Konsultasi</option>' +
+                    '<option value="rawat_bersama">Rawat Bersama</option>' +
+                    '</select>' +
+                    '    </div>\n' +
+                    '    <div class="col-md-1">\n' +
+                    '        <button onclick="delDpjp(\'set_dpjp_' + count + '\')" style="margin-top: 8px; margin-left: -20px" class="btn btn-danger"><i class="fa fa-trash"></i></button>\n' +
+                    '    </div>\n' +
+                    '</div>\n' +
+                    '</div>';
+                $('#set_add_dpjp').append(html);
+                $('.select2').select2();
+                getDokterDpjp('dokter_add_dpjp_' + count, valId);
+            } else {
+                $('#msg_add_dpjp').show();
             }
-            var count = cekDpjp + 1;
-            $('#dokter_dpjp_' + cekDpjp).attr('disabled', 'disabled');
-            $('#jenis_dpjp_' + cekDpjp).attr('disabled', 'disabled');
-            var html = '<div class="row" id="set_dpjp_' + count + '">\n' +
-                '<div class="form-group">\n' +
-                '    <div class="col-md-offset-3 col-md-4">\n' +
-                '        <select class="form-control select2 id_dpjp" id="dokter_dpjp_' + count + '" style="width: 100%"\n' +
-                '            <option value=\'\'>[Select One]</option>\n' +
-                '        </select>\n' +
-                '    </div>\n' +
-                '    <div class="col-md-4">\n' +
-                '<select class="form-control select2 dpjp" id="jenis_dpjp_' + count + '">' +
-                '<option value="">[Select One]</option>' +
-                '<option value="konsultasi">Konsultasi</option>' +
-                '<option value="rawat_bersama">Rawat Bersama</option>' +
-                '</select>' +
-                // '        <input class="form-control dpjp" style="margin-top: 7px" value="DPJP '+count+'" disabled="disabled">\n' +
-                '    </div>\n' +
-                '    <div class="col-md-1">\n' +
-                '        <button onclick="delDpjp(\'set_dpjp_' + count + '\')" style="margin-top: 8px; margin-left: -20px" class="btn btn-danger"><i class="fa fa-trash"></i></button>\n' +
-                '    </div>\n' +
-                '</div>\n' +
-                '</div>';
-            $('#set_dpjp').append(html);
-            $('#set_add_dpjp').append(html);
-            $('.select2').select2();
-            getDokterDpjp('dokter_dpjp_' + count, valId);
-        } else {
-            $('#msg_dpjp').show();
+        }else{
+            var cekDpjp = $('.dpjp').length;
+            var cekValue = $('#dokter_dpjp_' + cekDpjp).val();
+            var cekJenis = $('#jenis_dpjp_' + cekDpjp).val();
+            if (cekValue != '' && cekJenis != '') {
+                var idDpjp = $('.id_dpjp');
+                var idIsi = "";
+                var aw = "(";
+                var ak = ")";
+                var valId = null;
+                $.each(idDpjp, function (i, item) {
+                    if (item.value != '' && item.value) {
+                        var sp = item.value.split("|");
+                        if (idIsi != '') {
+                            idIsi = idIsi + ", " + "'" + sp[0] + "'";
+                        } else {
+                            idIsi = "'" + sp[0] + "'";
+                        }
+                    }
+                });
+                if (idIsi != '') {
+                    valId = aw + idIsi + ak;
+                }
+                var count = cekDpjp + 1;
+                $('#dokter_dpjp_' + cekDpjp).attr('disabled', 'disabled');
+                $('#jenis_dpjp_' + cekDpjp).attr('disabled', 'disabled');
+                var html = '<div class="row" id="set_dpjp_' + count + '">\n' +
+                    '<div class="form-group">\n' +
+                    '    <div class="col-md-offset-3 col-md-4">\n' +
+                    '        <select class="form-control select2 id_dpjp" id="dokter_dpjp_' + count + '" style="width: 100%"\n' +
+                    '            <option value=\'\'>[Select One]</option>\n' +
+                    '        </select>\n' +
+                    '    </div>\n' +
+                    '    <div class="col-md-4">\n' +
+                    '<select class="form-control select2 dpjp" id="jenis_dpjp_' + count + '">' +
+                    '<option value="">[Select One]</option>' +
+                    '<option value="konsultasi">Konsultasi</option>' +
+                    '<option value="rawat_bersama">Rawat Bersama</option>' +
+                    '</select>' +
+                    '    </div>\n' +
+                    '    <div class="col-md-1">\n' +
+                    '        <button onclick="delDpjp(\'set_dpjp_' + count + '\')" style="margin-top: 8px; margin-left: -20px" class="btn btn-danger"><i class="fa fa-trash"></i></button>\n' +
+                    '    </div>\n' +
+                    '</div>\n' +
+                    '</div>';
+                $('#set_dpjp').append(html);
+                $('.select2').select2();
+                getDokterDpjp('dokter_dpjp_' + count, valId);
+            } else {
+                $('#msg_dpjp').show();
+            }
         }
     }
 
@@ -1115,7 +1166,6 @@
                     $('#kelas_kamar').html(option);
                     $('#kelas_kamar').attr('disabled', 'disabled');
                 }
-                console.log('tes');
             } else {
                 $('#kelas_kamar').html(option);
             }
