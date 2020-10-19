@@ -83,6 +83,25 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String flagCover;
     private String flagSisa;
 
+    private String flagKunjungan;
+    private String berkas;
+
+    public String getFlagKunjungan() {
+        return flagKunjungan;
+    }
+
+    public void setFlagKunjungan(String flagKunjungan) {
+        this.flagKunjungan = flagKunjungan;
+    }
+
+    public String getBerkas() {
+        return berkas;
+    }
+
+    public void setBerkas(String berkas) {
+        this.berkas = berkas;
+    }
+
     public String getFlagSisa() {
         return flagSisa;
     }

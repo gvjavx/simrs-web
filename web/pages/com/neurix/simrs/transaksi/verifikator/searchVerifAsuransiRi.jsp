@@ -474,7 +474,7 @@
                     $('#h_id_pelayanan').val(res.idPelayanan);
                     $('#h_metode_bayar').val(res.metodePembayaran);
                     $('#h_jenis_pasien').val(res.idJenisPeriksaPasien);
-                    $('#h_no_checkup').val(res.noChekcup);
+                    $('#h_no_checkup').val(noCheckup);
                     setLabelJenisPasien('jenis_pasien', res.idJenisPeriksaPasien);
                     $('#save_fin').show();
                     $('#load_fin').hide();
@@ -758,6 +758,11 @@
         var metodePembayaran = $('#h_metode_bayar').val();
         var jenisPasien = $('#h_jenis_pasien').val();
         var idDetailCheckup = $('#h_id_detail_pasien').val();
+        var cekResep = $('#tabel_resep').tableToJSON();
+        var isResep = "N";
+        if(cekResep.length > 0){
+            isResep = "Y";
+        }
 
         data = {
             'no_checkup':noCheckup,
@@ -765,7 +770,8 @@
             'id_detail_checkup': idDetailCheckup,
             'jenis_pasien': jenisPasien,
             'id_pelayanan': idPelayanan,
-            'metode_bayar': metodePembayaran
+            'metode_bayar': metodePembayaran,
+            'is_resep':isResep
         }
         var result = JSON.stringify(data);
         $('#save_fin').hide();
@@ -916,6 +922,7 @@
         $('#modal-confirm-dialog').modal('hide');
         var data = [];
         var dataDetail = "";
+        var noCheckup = $('#h_no_checkup').val();
         var idPasien = $('#h_id_pasien').val();
         var idPelayanan = $('#h_id_pelayanan').val();
         var idDetailCheckup = $('#h_id_detail_pasien').val();

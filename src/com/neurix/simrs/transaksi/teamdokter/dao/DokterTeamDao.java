@@ -111,4 +111,41 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
         List<ItSimrsDokterTeamEntity> listOfResult = criteria.list();
         return listOfResult;
     }
+
+    public List<DokterTeam> cekRequestDokterByIdDokter(String idDokter, String flagApprove){
+
+        String query = " AND dt.flag_approve IS NULL";
+        if (flagApprove != null) {
+            query = " AND dt.flag_approve = '" + flagApprove + "' ";
+        }
+
+
+        List<DokterTeam> listOfResult = new ArrayList<>();
+
+        String sql = "SELECT dt.id_team_dokter, dk.nama_dokter, dt.id_dokter, dt.id_detail_checkup, dt.jenis_dpjp, dt.flag_approve, dt.keterangan, pl.nama_pelayanan \n" +
+                "FROM it_simrs_dokter_team dt\n" +
+                "JOIN im_simrs_dokter dk ON dk.id_dokter = dt.id_dokter\n" +
+                "JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = dt.id_pelayanan\n" +
+                "WHERE dt.id_dokter = :id" + query;
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+                .setParameter("id", idDokter)
+                .list();
+        if (result.size() > 0){
+            for (Object[] item : result) {
+                DokterTeam dokterTeam = new DokterTeam();
+                dokterTeam.setIdTeamDokter(item[0].toString());
+                dokterTeam.setNamaDokter(item[1].toString());
+                dokterTeam.setIdDokter(item[2].toString());
+                dokterTeam.setIdDetailCheckup(item[3].toString());
+                dokterTeam.setJenisDpjp(item[4].toString());
+                dokterTeam.setFlagApprove(item[5] != null ? item[5].toString() : "");
+                dokterTeam.setKeterangan(item[6] != null ? item[6].toString() : "");
+                dokterTeam.setNamaPelayanan(item[7].toString());
+
+                listOfResult.add(dokterTeam);
+            }
+        }
+        return listOfResult;
+    }
 }

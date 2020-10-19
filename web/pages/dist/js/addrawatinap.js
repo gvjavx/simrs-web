@@ -163,7 +163,7 @@ function listSelectDokter(isi) {
     CheckupAction.getListDokterByBranchId(isi, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
-                option += "<option value='" + item.idDokter + '|' + item.idPelayanan + '|'+ item.namaPelayanan +"'>" + item.namaDokter + "</option>";
+                option += "<option value='" + item.idDokter + '|' + item.idPelayanan + '|' + item.namaPelayanan + "'>" + item.namaDokter + "</option>";
             });
             $('#dok_id_dokter').html(option);
         } else {
@@ -172,8 +172,8 @@ function listSelectDokter(isi) {
     });
 }
 
-function setSpesialis(value){
-    if(value != ''){
+function setSpesialis(value) {
+    if (value != '') {
         $('#pelayanan_dokter').val(value.split("|")[2]);
     }
 }
@@ -308,6 +308,21 @@ function selectKeterangan(idKtg) {
         } else if (idKtg == "ruang_bersalin") {
             getKamar(null, 'ruang_bersalin');
             $('#label_kamar').text('Ruang Bersalin');
+            $('#form-catatan').show();
+            $('#form-kamar').show();
+            if (kategoriRuangan == 'rawat_inap') {
+                $('#form-stay').show();
+            }
+
+            $('#form-selesai').hide();
+            $('#form-ket-rawat_inap').hide();
+            $('#form-rs-rujukan').hide();
+            $('#form-tgl-kontrol').hide();
+            $('#form-pemeriksaan').hide();
+            $('#form-kelas_kamar').hide();
+        }else if (idKtg == "rr") {
+            getKamar(null, 'rr');
+            $('#label_kamar').text('Ruangan');
             $('#form-catatan').show();
             $('#form-kamar').show();
             if (kategoriRuangan == 'rawat_inap') {
@@ -650,6 +665,7 @@ function showModal(select) {
         $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
         $('#modal-lab').modal({show: true, backdrop: 'static'});
     } else if (select == 5) {
+        getListComboJenisDiet();
         $('#bentuk_diet, #keterangan_diet').val('');
         $('#bentuk_diet, #keterangan_diet').val('').removeAttr('disabled');
         $('#save_diet').attr('onclick', 'saveDiet(\'' + id + '\')').show();
@@ -752,6 +768,7 @@ function saveDokter(id) {
                     $('#modal-dokter').modal('hide');
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(1);
+                    startInterval();
                 } else {
                     $('#warning_dokter').show().fadeOut(5000);
                     $('#msg_dokter').text(response.msg);
@@ -761,10 +778,10 @@ function saveDokter(id) {
     } else {
         $('#warning_dokter').show().fadeOut(5000);
         $('#msg_dokter').text('Silahkan cek kembali data inputan...!');
-        if(idDokter == ''){
+        if (idDokter == '') {
             $('#war_dok').show();
         }
-        if(jenis == ''){
+        if (jenis == '') {
             $('#war_dok_jenis_dpjp').show();
         }
     }
@@ -772,71 +789,117 @@ function saveDokter(id) {
 
 function listDokter() {
     var table = "";
-    var data = [];
     var dokter = "";
-    CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, function (response) {
+    var cek = false;
+    CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, null, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
                 var jenis = "";
                 var status = "";
-                var menunggu = "";
-                var disetujui = "";
-                var menolak = "";
-                var label = "";
                 var btn = "";
+                var label = "";
 
-                if(item.jenisDpjp == "dpjp_1"){
+                if (item.jenisDpjp == "dpjp_1") {
                     jenis = "DPJP 1";
-                    status = "disetujui";
-                }else if(item.jenisDpjp == "konsultasi"){
-                    if(item.flagApprove != null){
-                        if(item.flagApprove == "Y"){
-                            status = "disetujui";
-                            btn = '<img class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\', \'' + item.idPelayanan + '\')" src="' + pathImages + '/pages/images/icons8-create-25.png" style="cursor: pointer;">';
-                        }else if(item.flagApprove == "N"){
-                            status = "ditolak";
-                        }
-                    }else{
-                        status = "menunggu persetujuan";
-                    }
+                } else if (item.jenisDpjp == "konsultasi") {
                     jenis = "Konsultasi";
-                }else if(item.jenisDpjp == "rawat_bersama"){
-                    if(item.flagApprove != null){
-                        if(item.flagApprove == "Y"){
-                            status = "disetujui";
-                        }else if(item.flagApprove == "N"){
-                            status = "ditolak";
-                        }
-                    }else{
-                        status = "menunggu persetujuan";
-                    }
+                } else if (item.jenisDpjp == "rawat_bersama") {
                     jenis = "Rawat Bersama";
-                }else if(item.jenisDpjp == "rawat_alih"){
-                    if(item.flagApprove != null){
-                        if(item.flagApprove == "Y"){
-                            status = "disetujui";
-                        }else if(item.flagApprove == "N"){
-                            status = "ditolak";
-                        }
-                    }else{
-                        status = "menunggu persetujuan";
-                    }
+                } else if (item.jenisDpjp == "rawat_alih") {
                     jenis = "Rawat Alih";
+                }
+                if (item.flagApprove != null) {
+                    if (item.flagApprove == "Y") {
+                        if (item.jenisDpjp == "konsultasi") {
+                            btn = '<img onclick="doneDokter(\'' + item.idTeamDokter + '\', \'' + item.idDokter + '\', \'' + item.namaDokter + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-power-off-button-25.png">';
+                        }
+                        status = "disetujui";
+                        label = 'class="span-success"';
+                    } else if (item.flagApprove == "N") {
+                        btn = '<img onclick="detailApprove(\'' + item.idDokter + '\', \'' + item.namaDokter + '\', \'' + item.flagApprove + '\', \'' + item.keterangan + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-test-passed-25-orange.png">';
+                        status = "ditolak";
+                        label = 'class="span-danger"';
+                    } else if (item.flagApprove == "S") {
+                        status = "selesai";
+                        label = 'class="span-primary"';
+                    }
+                } else {
+                    status = "menunggu persetujuan";
+                    label = 'class="span-warning"';
+                    cek = true;
                 }
                 table += "<tr>" +
                     "<td>" + item.idDokter + '<input value="' + item.idDokter + '" type="hidden" id="dokter' + i + '">' + "</td>" +
                     "<td>" + item.namaDokter + "</td>" +
                     "<td>" + item.namaPelayanan + "</td>" +
                     "<td>" + jenis + "</td>" +
-                    "<td>" + status + "</td>" +
+                    "<td align='center'>" + '<span ' + label + '>' + status + '</span>' + "</td>" +
                     "<td align='center'>" + btn + "</td>" +
                     "</tr>";
                 dokter = item.idDokter;
             });
+            if(cek){
+                startInterval();
+            }
+            $('#tin_id_dokter').val(dokter);
+            $('#body_dokter').html(table);
         }
     });
-    $('#tin_id_dokter').val(dokter);
-    $('#body_dokter').html(table);
+}
+
+function detailApprove(id, nama, sts, keterangan) {
+    $('#det_id_dokter').text(id);
+    $('#det_nama_dokter').text(nama);
+    var status = '';
+    var label = "";
+    if(sts == "Y"){
+        status = "disetujui";
+        label = 'class="span-success"';
+    }else if(sts == "N"){
+        status = "ditolak";
+        label = 'class="span-danger"';
+    }else if(sts == "S"){
+        status = "selesai";
+        label = 'class="span-success"';
+    }
+    $('#det_status_dokter').text(status);
+    $('#det_status_dokter').addClass(label);
+
+    if (keterangan != 'null') {
+        $('#det_keterangan_dokter').text(keterangan);
+    }
+    $('#modal-detail-dokter').modal({show: true, backdrop: 'static'});
+}
+
+function doneDokter(id, idDokter, nama) {
+    $('#kon_id_dokter').text(idDokter);
+    $('#kon_nama_dokter').text(nama);
+    $('#save_kon').attr('onclick', 'saveDoneDokter(\'' + id + '\')');
+    $('#modal-konsultasi-dokter').modal({show: true, backdrop: 'static'});
+}
+
+function saveDoneDokter(id) {
+    $('#save_kon').hide();
+    $('#load_kon').show();
+    dwr.engine.setAsync(true);
+    TeamDokterAction.doneDokter(id, {
+        callback: function (res) {
+            if (res.status == "success") {
+                dwr.engine.setAsync(false);
+                $('#save_kon').show();
+                $('#load_kon').hide();
+                listDokter();
+                $('#modal-konsultasi-dokter').modal('hide');
+                $('#info_dialog').dialog('open');
+                $('#close_pos').val(1);
+            }else{
+                $('#save_kon').show();
+                $('#load_kon').hide();
+                $('#warning_kon_dokter').show().fadeOut(5000);
+                $('#msg_kon_dokter').text(response.msg);
+            }
+        }
+    });
 }
 
 function listDokterKeterangan(idPelayanan) {
@@ -1231,10 +1294,8 @@ function saveLab(id) {
 }
 
 function listLab() {
-
     var table = "";
     var data = [];
-
     PeriksaLabAction.listOrderLab(idDetailCheckup, function (response) {
         data = response;
         if (data.length > 0) {
@@ -1246,7 +1307,6 @@ function listLab() {
                 var dateFormat = converterDate(new Date(tanggal));
                 var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\',\'' + item.kategoriLabName + '\')" src="' + pathImages + '/pages/images/icons8-create-25.png" style="cursor: pointer;">';
                 var crn = '<img border="0" class="hvr-grow" onclick="detailLab(\'' + item.idPeriksaLab + '\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-search-25.png" style="cursor: pointer;">';
-
                 var tipe = "";
 
                 if (item.kategoriLabName == "Radiologi") {
@@ -1542,16 +1602,74 @@ function listObat() {
 }
 
 function saveDiet(id) {
-
-    var bentukDiet = $('#bentuk_diet').val();
-    var keteranganDiet = $('#keterangan_diet').val();
-
-    if (bentukDiet != '' && keteranganDiet != '') {
-        $('#save_diet').hide();
-        $('#load_diet').show();
-        dwr.engine.setAsync(true);
-        if (id != '') {
-            OrderGiziAction.editOrderGizi(id, bentukDiet, function (response) {
+    if (id != null && id != '') {
+        var bentukDiet = $('#edit_bentuk_diet').val();
+        var jenisDiet = $('#edit_jenis_diet').val();
+        if (bentukDiet && jenisDiet != '') {
+            $('#edit_save_diet').hide();
+            $('#edit_load_diet').show();
+            dwr.engine.setAsync(true);
+            OrderGiziAction.editOrderGizi(id, bentukDiet, jenisDiet, function (response) {
+                if (response.status == "success") {
+                    dwr.engine.setAsync(false);
+                    listDiet();
+                    $('#modal-diet-edit').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(5);
+                    $('#edit_save_diet').show();
+                    $('#edit_load_diet').hide();
+                } else {
+                    $('#edit_save_diet').show();
+                    $('#edit_load_diet').hide();
+                    $('#warning_edit_diet').show().fadeOut(5000);
+                    $('#msg_edit_diet').text(response.message);
+                }
+            });
+        } else {
+            $('#warning_edit_diet').show().fadeOut(5000);
+            $('#msg_edit_diet').text("Silahkan cek kembali inputan anda...!");
+            if (bentukDiet == '') {
+                $('#war_edit_bentuk_diet').show();
+            }
+            if (jenisDiet == '' || jenisDiet == null) {
+                $('#war_edit_jenis_diet').show();
+            }
+        }
+    } else {
+        var data = [];
+        var bentukDiet = $('#bentuk_diet').val();
+        var jenisDiet = $('#jenis_diet').val();
+        var ketData = $('[name=ket_diet]');
+        var isBesok = $('#besok_diet').is(':checked');
+        var besok = "N";
+        if (isBesok) {
+            besok = "Y";
+        }
+        var keteranganDiet = "";
+        $.each(ketData, function (i, item) {
+            if (item.checked) {
+                keteranganDiet = 'cek';
+            }
+        });
+        var table = $('#table_add_diet').tableToJSON();
+        $.each(table, function (i, item) {
+            var waktu = $('#waktu_' + i).val();
+            var bentuk = $('#bentuk_' + i).val();
+            var jenis = $('#jenis_' + i).val();
+            var bentukText = $('#bentuk_text_' + i).val();
+            data.push({
+                'id_rawat_inap': idRawatInap,
+                'waktu': waktu,
+                'id_diet_gizi': bentuk,
+                'id_jenis_diet': jenis
+            });
+        });
+        if (bentukDiet != '' && keteranganDiet != '' && jenisDiet != '') {
+            $('#save_diet').hide();
+            $('#load_diet').show();
+            dwr.engine.setAsync(true);
+            var result = JSON.stringify(data);
+            OrderGiziAction.saveOrderGizi(result, besok, function (response) {
                 if (response.status == "success") {
                     dwr.engine.setAsync(false);
                     listDiet();
@@ -1568,31 +1686,17 @@ function saveDiet(id) {
                 }
             });
         } else {
-            OrderGiziAction.saveOrderGizi(idRawatInap, bentukDiet, keteranganDiet, function (response) {
-                if (response.status == "success") {
-                    dwr.engine.setAsync(false);
-                    listDiet();
-                    $('#modal-diet').modal('hide');
-                    $('#info_dialog').dialog('open');
-                    $('#close_pos').val(5);
-                    $('#save_diet').show();
-                    $('#load_diet').hide();
-                } else {
-                    $('#save_diet').show();
-                    $('#load_diet').hide();
-                    $('#warning_diet').show().fadeOut(5000);
-                    $('#msg_diet').text(response.message);
-                }
-            });
-        }
-    } else {
-        $('#warning_diet').show().fadeOut(5000);
-        $('#msg_diet').text("Silahkan cek kembali inputan anda...!");
-        if (bentukDiet == '') {
-            $('#war_bentuk_diet').show();
-        }
-        if (keteranganDiet == '') {
-            $('#war_keterangan_diet').show();
+            $('#warning_diet').show().fadeOut(5000);
+            $('#msg_diet').text("Silahkan cek kembali inputan anda...!");
+            if (bentukDiet == '') {
+                $('#war_bentuk_diet').show();
+            }
+            if (jenisDiet == '' || jenisDiet == null) {
+                $('#war_jenis_diet').show();
+            }
+            if (keteranganDiet == '') {
+                $('#war_ket_diet').show();
+            }
         }
     }
 }
@@ -1600,18 +1704,17 @@ function saveDiet(id) {
 function listDiet() {
     var table = "";
     var data = [];
-
     OrderGiziAction.listOrderGizi(idRawatInap, function (response) {
         data = response;
         if (data != null) {
             $.each(data, function (i, item) {
-                var tanggal = item.createdDate;
+                var tanggal = item.tglOrder;
                 var dateFormat = converterDate(new Date(tanggal));
                 var label = "";
                 var btn = "";
 
                 if (item.diterimaFlag == "R") {
-                    label = '<label class="label label-danger"> dibatalakan</label>';
+                    label = '<span class="span-danger"> dibatalkan</span>';
                 } else {
                     if (item.approveFlag == "Y") {
                         btn = '<div class="input-group">' +
@@ -1620,11 +1723,11 @@ function listDiet() {
                             '<span id="status' + item.idOrderGizi + '"></span>' +
                             '</div>' +
                             '</div>';
-                        label = '<label class="label label-info"> telah dikonfirmasi</label>';
+                        label = '<span class="span-success"> telah dikonfirmasi</span>';
                     } else {
-                        btn = '<img border="0" class="hvr-grow" onclick="editDiet(\'' + item.idOrderGizi + '\',\'' + item.idDietGizi + '\',\'' + item.keterangan + '\')" src="' + pathImages + '/pages/images/icons8-create-25.png" style="cursor: pointer;">' +
-                            '<img border="0" class="hvr-grow" onclick="cancelDiet(\'' + item.idOrderGizi + '\')" src="' + pathImages + '/pages/images/icons8-cancel-25.png" style="cursor: pointer;">';
-                        label = '<label class="label label-warning"> menunggu konfirmasi</label>'
+                        btn = '<img border="0" class="hvr-grow" onclick="editDiet(\'' + item.idOrderGizi + '\',\'' + item.idDietGizi + '\',\'' + item.waktu + '\')" src="' + pathImages + '/pages/images/icons8-create-25.png" style="cursor: pointer;">' +
+                            '<img border="0" class="hvr-grow" onclick="cancelDiet(\'' + item.idOrderGizi + '\')" src="' + pathImages + '/pages/images/cancel-flat-new.png" style="cursor: pointer;">';
+                        label = '<span class="span-warning"> menunggu konfirmasi</span>'
                     }
 
                     if (item.diterimaFlag == "Y") {
@@ -1634,7 +1737,7 @@ function listDiet() {
                             '<img src="' + pathImages + '/pages/images/icon_success.ico" style="height: 20px; width: 20px;">' +
                             '</div>' +
                             '</div>';
-                        label = '<label class="label label-success"> telah diterima</label>';
+                        label = '<span class="span-success"> telah diterima</span>';
                     }
                 }
 
@@ -1642,8 +1745,8 @@ function listDiet() {
                     "<td>" + dateFormat + "</td>" +
                     "<td>" + item.idDietGizi + "</td>" +
                     "<td>" + item.bentukDiet + "</td>" +
-                    "<td>" + item.keterangan + "</td>" +
-                    "<td style='vertical-align: middle' >" + label + "</td>" +
+                    "<td>" + item.waktu + "</td>" +
+                    "<td align='center'>" + label + "</td>" +
                     "<td align='center'>" + btn + "</td>" +
                     "</tr>"
             });
@@ -1713,7 +1816,6 @@ function editLab(id, idLab, idKategoriLab, kategoriName) {
     $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
     $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
     $('#lab_kategori').val(idKategoriLab).trigger('change').attr('disabled', true);
-    ;
     var idParameter = [];
     PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
         if (response.length > 0) {
@@ -1728,11 +1830,21 @@ function editLab(id, idLab, idKategoriLab, kategoriName) {
 }
 
 function editDiet(id, idDietGizi, keterangan) {
-    $('#load_diet, #warning_diet, #war_bentuk_diet, #war_keterangan_diet').hide();
-    $('#bentuk_diet').val(idDietGizi).trigger('change');
-    $('#keterangan_diet').val(keterangan).attr('disabled', 'true');
-    $('#save_diet').attr('onclick', 'saveDiet(\'' + id + '\')').show();
-    $('#modal-diet').modal({show: true, backdrop: 'static'});
+    getListComboJenisDiet();
+    var idJenis = [];
+    RawatInapAction.getComboBoxOrderJenisGizi(id, function (res) {
+        if (res.length > 0) {
+            $.each(res, function (i, item) {
+                idJenis.push(item.idJenisDiet);
+            });
+        }
+    });
+    $('#edit_jenis_diet').val(idJenis).trigger('change');
+    $('#edit_load_diet, #warning_edit_jenis_diet, #war_edit_bentuk_diet, #war_edit_keterangan_diet').hide();
+    $('#edit_bentuk_diet').val(idDietGizi).trigger('change');
+    $('#edit_keterangan').val(keterangan).attr('disabled', 'true');
+    $('#edit_save_diet').attr('onclick', 'saveDiet(\'' + id + '\')').show();
+    $('#modal-diet-edit').modal({show: true, backdrop: 'static'});
 }
 
 function editObat(id, idobat, qty, jenis, namaObat, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerLembar) {
@@ -2797,7 +2909,7 @@ function searchICD9(id) {
 
 function getListNamaDokter() {
     var option = '<option value="">[Select One]</option>';
-    CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, function (res) {
+    CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, "Y", function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
                 option += '<option value="' + item.idDokter + '|' + item.idPelayanan + '">' + item.namaDokter + ' - ' + item.namaPelayanan + '</option>';
@@ -2896,7 +3008,7 @@ function confirmPemeriksaanPasien() {
             }
         }
         if (tindakLanjut == "rawat_intensif" || tindakLanjut == "rawat_isolasi" ||
-            tindakLanjut == "kamar_operasi" || tindakLanjut == "ruang_bersalin") {
+            tindakLanjut == "kamar_operasi" || tindakLanjut == "ruang_bersalin" || tindakLanjut == "rr") {
             if (idRuangan != '') {
                 cek = true;
             }
@@ -3018,6 +3130,7 @@ function savePemeriksaanPasien() {
                     }
                 }
             } else {
+                console.log(tindakLanjut);
                 var stay = "N";
                 if (kategoriRuangan == 'rawat_inap') {
                     if (isStay) {
@@ -3199,12 +3312,12 @@ function cekBtnUangMuka(id) {
     }
 }
 
-function conUangMuka(){
+function conUangMuka() {
     var uangmuka = $('#h_uang_muka_ri').val();
-    if(uangmuka != '' && uangmuka != null){
-        $('#modal-confirm-dialog').modal({show: true, backdrop:'static'});
+    if (uangmuka != '' && uangmuka != null) {
+        $('#modal-confirm-dialog').modal({show: true, backdrop: 'static'});
         $('#save_con').attr('onclick', 'saveUangMuka()');
-    }else{
+    } else {
         $('#war_uang_muka').show().fadeOut(5000);
         $('#msg_war_uang_muka').text("Silahkan cek kembali uang muka anda....!");
     }
@@ -3219,7 +3332,7 @@ function saveUangMuka() {
     dwr.engine.setAsync(true);
     RawatInapAction.saveUangMuka(idDetailCheckup, uangmuka, {
         callback: function (res) {
-            if(res.status = "success"){
+            if (res.status = "success") {
                 $('#form-tambah-uang-muka').show();
                 $('#def_uang_muka').hide();
                 $('#suc_uang_muka').show().fadeOut(5000);
@@ -3229,12 +3342,112 @@ function saveUangMuka() {
                 $('#form-cek-uang').hide();
                 $('#btn_uang_muka').removeClass("btn btn-warning").addClass("btn btn-success");
                 $('#icon_uang_muka').removeClass("fa fa-times").addClass("fa fa-plus");
-            }else{
+            } else {
                 $('#form-tambah-uang-muka').show();
                 $('#def_uang_muka').hide();
                 $('#war_uang_muka').show().fadeOut(5000);
                 $('#msg_def_uang_muka').text(res.msg);
             }
+        }
+    });
+}
+
+function refreshTable(id, tipe) {
+    $('#' + id).addClass("fa-spin");
+    setTimeout(function () {
+        if ("dokter" == tipe) {
+            listDokter();
+            stopInterval();
+        }
+        if ("gizi" == tipe) {
+            listDiet();
+        }
+        if ("lab" == tipe) {
+            listLab();
+        }
+        $('#' + id).removeClass("fa-spin");
+    }, 500);
+}
+
+function startInterval() {
+    setNotif = setInterval(cekDokter, 5000);
+}
+
+function stopInterval() {
+    clearInterval(setNotif);
+    $('#notif_dok').hide();
+}
+
+function cekDokter() {
+    RawatInapAction.cekDokterApporve(idDetailCheckup, function (res) {
+        var cek = true;
+        if (res.length > 0) {
+            $.each(res, function (i, item) {
+                if(item.flagApprove == null){
+                    cek = false;
+                }
+            });
+        }
+        if(cek){
+            $('#notif_dok').show();
+        }
+    });
+}
+
+function setDiet(id) {
+    var bentuk = $('#bentuk_diet').val();
+    var jenis = $('#jenis_diet').val();
+    var bentukText = $('#bentuk_diet option:selected').text();
+    var jenisText = $('#jenis_diet option:selected').text();
+    var ket = $('#' + id).val();
+    var keterangan = "";
+    if ("pagi" == ket) {
+        keterangan = "Pagi";
+    }
+    if ("siang" == ket) {
+        keterangan = "Siang";
+    }
+    if ("malam" == ket) {
+        keterangan = "Malam";
+    }
+    var table = "";
+    var idCount = $('#table_add_diet').tableToJSON().length;
+    if ($('#' + id).is(':checked')) {
+        if (bentuk && jenis != '') {
+            table = '<tr id="' + ket + '">' +
+                '<td>' + keterangan + '<input type="hidden" value="' + ket + '" id="waktu_' + idCount + '"></td>' +
+                '<td>' + bentukText +
+                '<input type="hidden" value="' + bentuk + '" id="bentuk_' + idCount + '">' +
+                '<input type="hidden" value="' + bentukText + '" id="bentuk_text_' + idCount + '">' +
+                '</td>' +
+                '<td>' + jenisText + '<input type="hidden" value="' + jenis + '" id="jenis_' + idCount + '"></td>' +
+                '</tr>';
+            $('#body_add_diet').append(table);
+        } else {
+            $('#warning_diet').show().fadeOut(5000);
+            $('#msg_diet').text("Silahkan cek kembali inputan anda...!");
+            if (bentuk == '') {
+                $('#war_bentuk_diet').show();
+            }
+            if (jenis == '' || jenisDiet == null) {
+                $('#war_jenis_diet').show();
+            }
+            $('#' + id).prop('checked', false);
+        }
+    } else {
+        $('#' + ket).remove();
+    }
+}
+
+function getListComboJenisDiet(){
+    var option = '';
+    RawatInapAction.getComboBoxJenisGizi(function (res) {
+        if(res.length > 0){
+            $.each(res, function (i, item) {
+                option += '<option value="'+item.idJenisDiet+'">'+item.namaJenisDiet+'</option>'
+            });
+            $('#jenis_diet').html(option);
+            $('#edit_jenis_diet').html(option);
         }
     });
 }

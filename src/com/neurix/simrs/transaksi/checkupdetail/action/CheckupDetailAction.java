@@ -2519,8 +2519,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return finalResponse;
     }
 
-    private CrudResponse
-    rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka, String idDokterDpjp, String idPoli) {
+    private CrudResponse rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka, String idDokterDpjp, String idPoli) {
         logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
 
         CrudResponse finalResponse = new CrudResponse();
@@ -2868,6 +2867,9 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                                         Tindakan tin = new Tindakan();
                                                         tin.setIdTindakan(entity.getIdTindakan());
+                                                        tin.setTindakan(entity.getTindakan());
+                                                        tin.setTarifBpjs(entity.getTarifBpjs());
+                                                        tin.setTarif(entity.getTarif());
                                                         tin.setKategoriInaBpjs(entity.getKategoriInaBpjs());
                                                         tindakans.add(tin);
                                                     }
@@ -3203,6 +3205,20 @@ public class CheckupDetailAction extends BaseMasterAction {
 
     }
 
+    public List<Ruangan> listJustRuangan(String idKelas) {
+        List<Ruangan> ruanganList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+        try {
+            ruanganList = ruanganBo.getJustListRuangan(idKelas, branchId);
+        } catch (GeneralBOException e) {
+            logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+        }
+        return ruanganList;
+
+    }
+
     public String getListComboKeteranganKeluar() {
         logger.info("[CheckupDetailAction.getListComboKeteranganKeluar] start process >>>");
 
@@ -3321,7 +3337,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         // tipe transaksi
         String tipe = getTipe();
         setTipe(tipe);
-
         HeaderCheckup checkup = new HeaderCheckup();
 
         if (CommonConstant.ROLE_ADMIN_IGD.equalsIgnoreCase(CommonUtil.roleAsLogin())) {

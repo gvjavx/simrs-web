@@ -3,8 +3,11 @@ package com.neurix.simrs.master.dietgizi.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.dietgizi.bo.DietGiziBo;
 import com.neurix.simrs.master.dietgizi.dao.DietGiziDao;
+import com.neurix.simrs.master.dietgizi.dao.JenisDietDao;
 import com.neurix.simrs.master.dietgizi.model.DietGizi;
 import com.neurix.simrs.master.dietgizi.model.ImSimrsDietGizi;
+import com.neurix.simrs.master.dietgizi.model.ImSimrsJenisDietEntity;
+import com.neurix.simrs.master.dietgizi.model.JenisDiet;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -17,6 +20,7 @@ public class DietGiziBoImpl implements DietGiziBo {
 
     private static transient Logger logger = Logger.getLogger(DietGiziBoImpl.class);
     private DietGiziDao dietGiziDao;
+    private JenisDietDao jenisDietDao;
 
     @Override
     public List<DietGizi> getByCriteria(DietGizi bean) throws GeneralBOException {
@@ -47,6 +51,46 @@ public class DietGiziBoImpl implements DietGiziBo {
 
         logger.info("[DietGiziBoImpl.getByCriteria] End <<<<<<<<");
         return results;
+    }
+
+    @Override
+    public List<JenisDiet> getJenisDietByCiteria(JenisDiet bean) throws GeneralBOException {
+        List<ImSimrsJenisDietEntity> results = new ArrayList<>();
+        List<JenisDiet> jenisDietList = new ArrayList<>();
+        Map hsCriteria = new HashMap();
+        if (bean != null) {
+            if (bean.getIdJenisDiet() != null && !"".equalsIgnoreCase(bean.getIdJenisDiet())) {
+                hsCriteria.put("id_jenis_diet", bean.getIdJenisDiet());
+            }
+            if (bean.getNamaJenisDiet() != null && !"".equalsIgnoreCase(bean.getNamaJenisDiet())) {
+                hsCriteria.put("nama_jenis", bean.getNamaJenisDiet());
+            }
+            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
+                hsCriteria.put("flag", bean.getFlag());
+            }
+
+            try {
+                results = jenisDietDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[DietGiziBoImpl.getListEntityDietGizi] Error When search gizi data ");
+            }
+
+            if (results.size() > 0){
+                for (ImSimrsJenisDietEntity entity: results){
+                    JenisDiet jenisDiet = new JenisDiet();
+                    jenisDiet.setIdJenisDiet(entity.getIdJenisDiet());
+                    jenisDiet.setNamaJenisDiet(entity.getNamaJenisDiet());
+                    jenisDiet.setAction(entity.getAction());
+                    jenisDiet.setFlag(entity.getFlag());
+                    jenisDiet.setCreatedDate(entity.getCreatedDate());
+                    jenisDiet.setCreatedWho(entity.getCreatedWho());
+                    jenisDiet.setLastUpdate(entity.getLastUpdate());
+                    jenisDiet.setLastUpdateWho(entity.getLastUpdateWho());
+                    jenisDietList.add(jenisDiet);
+                }
+            }
+        }
+        return jenisDietList;
     }
 
     protected List<ImSimrsDietGizi> getListEntityDietGizi(DietGizi bean) throws GeneralBOException {
@@ -84,5 +128,9 @@ public class DietGiziBoImpl implements DietGiziBo {
 
     public void setDietGiziDao(DietGiziDao dietGiziDao) {
         this.dietGiziDao = dietGiziDao;
+    }
+
+    public void setJenisDietDao(JenisDietDao jenisDietDao) {
+        this.jenisDietDao = jenisDietDao;
     }
 }

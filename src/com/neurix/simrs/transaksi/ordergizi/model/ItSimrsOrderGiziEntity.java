@@ -11,13 +11,7 @@ import java.sql.Timestamp;
 public class ItSimrsOrderGiziEntity implements Serializable{
     private String idOrderGizi;
     private String idRawatInap;
-    private Date tglOrder;
-    private String dietPagi;
-    private String bentukMakanPagi;
-    private String dietSiang;
-    private String bentukMakanSiang;
-    private String dietMalam;
-    private String bentukMakanMalam;
+    private Timestamp tglOrder;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -26,10 +20,18 @@ public class ItSimrsOrderGiziEntity implements Serializable{
     private String lastUpdateWho;
     private String approveFlag;
     private String diterimaFlag;
-
     private String idDietGizi;
     private String keterangan;
     private String bentukDiet;
+    private String waktu;
+
+    public String getWaktu() {
+        return waktu;
+    }
+
+    public void setWaktu(String waktu) {
+        this.waktu = waktu;
+    }
 
     public String getIdDietGizi() {
         return idDietGizi;
@@ -97,60 +99,12 @@ public class ItSimrsOrderGiziEntity implements Serializable{
         this.idRawatInap = idRawatInap;
     }
 
-    public Date getTglOrder() {
+    public Timestamp getTglOrder() {
         return tglOrder;
     }
 
-    public void setTglOrder(Date tglOrder) {
+    public void setTglOrder(Timestamp tglOrder) {
         this.tglOrder = tglOrder;
-    }
-
-    public String getDietPagi() {
-        return dietPagi;
-    }
-
-    public void setDietPagi(String dietPagi) {
-        this.dietPagi = dietPagi;
-    }
-
-    public String getBentukMakanPagi() {
-        return bentukMakanPagi;
-    }
-
-    public void setBentukMakanPagi(String bentukMakanPagi) {
-        this.bentukMakanPagi = bentukMakanPagi;
-    }
-
-    public String getDietSiang() {
-        return dietSiang;
-    }
-
-    public void setDietSiang(String dietSiang) {
-        this.dietSiang = dietSiang;
-    }
-
-    public String getBentukMakanSiang() {
-        return bentukMakanSiang;
-    }
-
-    public void setBentukMakanSiang(String bentukMakanSiang) {
-        this.bentukMakanSiang = bentukMakanSiang;
-    }
-
-    public String getDietMalam() {
-        return dietMalam;
-    }
-
-    public void setDietMalam(String dietMalam) {
-        this.dietMalam = dietMalam;
-    }
-
-    public String getBentukMakanMalam() {
-        return bentukMakanMalam;
-    }
-
-    public void setBentukMakanMalam(String bentukMakanMalam) {
-        this.bentukMakanMalam = bentukMakanMalam;
     }
 
     public String getFlag() {
@@ -199,26 +153,5 @@ public class ItSimrsOrderGiziEntity implements Serializable{
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
-    }
-
-    @Override
-    public String toString() {
-        return "ItSimrsOrderGiziEntity{" +
-                "idOrderGizi='" + idOrderGizi + '\'' +
-                ", idRawatInap='" + idRawatInap + '\'' +
-                ", tglOrder=" + tglOrder +
-                ", dietPagi='" + dietPagi + '\'' +
-                ", bentukMakanPagi='" + bentukMakanPagi + '\'' +
-                ", dietSiang='" + dietSiang + '\'' +
-                ", bentukMakanSiang='" + bentukMakanSiang + '\'' +
-                ", dietMalam='" + dietMalam + '\'' +
-                ", bentukMakanMalam='" + bentukMakanMalam + '\'' +
-                ", flag='" + flag + '\'' +
-                ", action='" + action + '\'' +
-                ", createdDate=" + createdDate +
-                ", createdWho='" + createdWho + '\'' +
-                ", lastUpdate=" + lastUpdate +
-                ", lastUpdateWho='" + lastUpdateWho + '\'' +
-                '}';
     }
 }

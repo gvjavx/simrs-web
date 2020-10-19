@@ -780,7 +780,7 @@ function listSelectTindakanKategori(val) {
 
 function getListNamaDokter() {
     var option = '<option value="">[Select One]</option>';
-    CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, function (res) {
+    CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, null, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
                 option += '<option value="' + item.idDokter + '|' + item.idPelayanan + '">' + item.namaDokter + '</option>';

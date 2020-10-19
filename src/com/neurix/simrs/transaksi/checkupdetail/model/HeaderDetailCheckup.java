@@ -197,6 +197,25 @@ public class HeaderDetailCheckup extends BaseModel{
     private String namaRekanan;
     private String tipeLanjut;
 
+    private String flagKunjungan;
+    private String berkas;
+
+    public String getFlagKunjungan() {
+        return flagKunjungan;
+    }
+
+    public void setFlagKunjungan(String flagKunjungan) {
+        this.flagKunjungan = flagKunjungan;
+    }
+
+    public String getBerkas() {
+        return berkas;
+    }
+
+    public void setBerkas(String berkas) {
+        this.berkas = berkas;
+    }
+
     public String getTipeLanjut() {
         return tipeLanjut;
     }

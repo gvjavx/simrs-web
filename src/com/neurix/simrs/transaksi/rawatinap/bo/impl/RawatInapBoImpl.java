@@ -949,7 +949,8 @@ public class RawatInapBoImpl implements RawatInapBo {
                 "kamar_operasi".equalsIgnoreCase(bean.getTindakLanjut()) ||
                 "ruang_bersalin".equalsIgnoreCase(bean.getTindakLanjut()) ||
                 "rawat_inap".equalsIgnoreCase(bean.getTindakLanjut()) ||
-                "kembali_ke_inap".equalsIgnoreCase(bean.getTindakLanjut())) {
+                "kembali_ke_inap".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                "rr".equalsIgnoreCase(bean.getTindakLanjut())) {
 
             if ("rawat_inap".equalsIgnoreCase(bean.getTindakLanjut())) {
                 response = updateRawatInap(bean);
