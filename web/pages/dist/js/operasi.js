@@ -760,7 +760,7 @@ function saveDataOperasi(jenis, ket) {
         var va10 = $('#op10').val();
         var va11 = $('#op11').val();
 
-        var persetujuan = $('#persetujuan_op').val();
+        var persetujuan = $('#tindakan_medis_op').val();
         var parameter = $('[name=parameter]');
         var tanda = $('[name=tanda]');
 

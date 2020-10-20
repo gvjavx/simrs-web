@@ -1098,15 +1098,17 @@ UPDATE im_simrs_jenis_periksa_pasien
 SET keterangan = 'Promo'
 WHERE id_jenis_periksa_pasien = 'paket_individu';
 
-WEEKEND
+--WEEKEND
 ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
 ADD COLUMN nama_terang VARCHAR(100),
 ADD COLUMN sip VARCHAR(100);
 
-INSERT INTO im_simrs_dokter_pelayanan VALUES
-('DPL00000028','DKR00000003','PYN00000001','Y','C','migrasi','migrasi','2020-10-16 15:59:47.206894','2020-10-16 15:59:47.206894'),
-('DPL00000029','DKR00000004','PYN00000002','Y','C','migrasi','migrasi','2020-10-16 15:59:47.206894','2020-10-16 15:59:47.206894'),
-('DPL00000030','DKR00000005','PYN00000003','Y','C','migrasi','migrasi','2020-10-16 15:59:47.206894','2020-10-16 15:59:47.206894');
+ALTER TABLE it_simrs_implementasi_perawat
+ADD COLUMN sip VARCHAR(100);
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000239','RMM00000098','rawat_inap','17','Y','C','migrasi',now(),now(),'migrasi');
+
 
 
 

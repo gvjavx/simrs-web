@@ -2486,10 +2486,13 @@
         }else if(jenis == "bpjs" || jenis == "rekanan"){
             if(jenis == "rekanan"){
                 listSelectRekanan();
+                $('#form-rekanan').show();
+            }
+            if(jenis == "bpjs"){
+                $('#form-rekanan').hide();
             }
             $('#form-no-bpjs').show();
             $('#form-rujukan').show();
-            $('#form-rekanan').show();
             $('#form-uang-muka').hide();
             $('#form-paket-perusahaan').hide();
             $('#form-paket').hide();
