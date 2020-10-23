@@ -603,6 +603,8 @@ public class UserBoImpl implements UserBo {
                         menuNameString = "<li id=\"periksa_radiologi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else if (menuName.equalsIgnoreCase("Tindakan")) {
                         menuNameString = "<li id=\"tindakan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
+                    }else if (menuName.equalsIgnoreCase("Recovery Room")) {
+                        menuNameString = "<li id=\"rawat_rr\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }else {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }
@@ -719,7 +721,9 @@ public class UserBoImpl implements UserBo {
                             icon="<i class=\"fa fa-cogs\"></i>";
                         }else if (("Kas/Bank Masuk").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-money\"></i>";
-                        }else if (("Kas/Bank Keluar").equalsIgnoreCase(menuName)){
+                        }else if (("Kas/Bank Keluar").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-money\"></i>";
+                        }else if (("Koreksi/Penyesuaian").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-money\"></i>";
                         }else if (("Obat").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-medkit\"></i>";

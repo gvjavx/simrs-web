@@ -84,6 +84,8 @@
           p:rekananOpsDao-ref="rekananOpsDao"
           p:detailPaketDao-ref="detailPaketDao"
           p:pelayananPaketDao-ref="pelayananPaketDao"
+          p:tempatTidurDao-ref="tempatTidurDao"
+          p:rawatInapDao-ref="rawatInapDao"
 
     />
 

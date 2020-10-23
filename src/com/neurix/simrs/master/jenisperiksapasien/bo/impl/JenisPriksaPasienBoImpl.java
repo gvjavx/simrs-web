@@ -30,11 +30,9 @@ public class JenisPriksaPasienBoImpl implements JenisPriksaPasienBo {
         logger.info("[jenisPriksaPasienImpl.getListAllJenisPeriksa] Start >>>>>>");
         List<JenisPriksaPasien> result = new ArrayList<>();
         Map hsCriteria = new HashMap();
-
         if (bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
             hsCriteria.put("id_jenis_periksa_pasien", bean.getIdJenisPeriksaPasien());
         }
-
         hsCriteria.put("flag","Y");
 
         List<ImJenisPeriksaPasienEntity> imJenisPeriksaPasienEntityList = null;

@@ -3975,19 +3975,23 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     private BigDecimal getTotalThp(int bulan, String golonganId, String tipePegawai, BigDecimal tunjJabatan,
                                    BigDecimal tunjStruktural,BigDecimal tunjFungsional, BigDecimal tunjPeralihan,String tahun){
         BigDecimal totalThp = new BigDecimal(0);
-        if (tipePegawai.equalsIgnoreCase("TP01")){
-            ImPayrollSkalaGajiEntity skalaGajiPegawai = getSkalaGajiSimRs(golonganId,tahun);
-            totalThp = (skalaGajiPegawai.getTotal().add(tunjJabatan).add(tunjStruktural).add(tunjFungsional).add(tunjPeralihan)).multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12));
-        }
-        if (tipePegawai.equalsIgnoreCase("TP03")){
-            if (bulan>12){
-                bulan = 12;
+        try {
+            if (tipePegawai.equalsIgnoreCase("TP01")){
+                ImPayrollSkalaGajiEntity skalaGajiPegawai = getSkalaGajiSimRs(golonganId,tahun);
+                totalThp = (skalaGajiPegawai.getTotal().add(tunjJabatan).add(tunjStruktural).add(tunjFungsional).add(tunjPeralihan)).multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12));
             }
-            ImPayrollSkalaGajiPkwtEntity skalaGajiPkwt = getSkalaGajiSimRsPkwt(golonganId,tahun);
-            totalThp = totalThp.add(skalaGajiPkwt.getGajiPokok().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP))
-                    .add(totalThp.add(skalaGajiPkwt.getSantunanKhusus().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP)))
-                    .add(totalThp.add(skalaGajiPkwt.getTunjFunsional().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP)))
-                    .add(totalThp.add(skalaGajiPkwt.getTunjtambahan().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP)));
+            if (tipePegawai.equalsIgnoreCase("TP03")){
+                if (bulan>12){
+                    bulan = 12;
+                }
+                ImPayrollSkalaGajiPkwtEntity skalaGajiPkwt = getSkalaGajiSimRsPkwt(golonganId,tahun);
+                totalThp = totalThp.add(skalaGajiPkwt.getGajiPokok().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP))
+                        .add(totalThp.add(skalaGajiPkwt.getSantunanKhusus().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP)))
+                        .add(totalThp.add(skalaGajiPkwt.getTunjFunsional().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP)))
+                        .add(totalThp.add(skalaGajiPkwt.getTunjtambahan().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP)));
+            }
+        }catch (Exception e){
+            throw new GeneralBOException("Error saat mengambil total THP");
         }
         return totalThp;
     }
@@ -6443,7 +6447,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 payroll.setFlagSlip(false);
 
                 if(("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalFlag())){
-                    String DATE_FORMAT = "HH:mm dd-MM-yyyy";
+                    String DATE_FORMAT = "dd-MM-yyyy HH:mm";
                     SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
                     Date tanggalApp = itPayrollEntity1.getApprovalDate();
                     tanggal = sdf.format(tanggalApp);

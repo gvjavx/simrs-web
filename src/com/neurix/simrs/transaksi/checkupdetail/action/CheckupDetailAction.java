@@ -55,8 +55,11 @@ import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.ruangan.model.TempatTidur;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.mobileapi.antrian.model.Antrian;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
+import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
+import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -533,6 +536,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             try {
                 checkupDetailBoProxy.saveEdit(detailCheckup);
+                checkupDetailBoProxy.updateFlagPeriksaAntrianOnline(checkup.getIdDetailCheckup());
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.add] Error when update checkup detail");
             }
@@ -2519,8 +2523,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return finalResponse;
     }
 
-    private CrudResponse
-    rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka, String idDokterDpjp, String idPoli) {
+    private CrudResponse rujukRawatInap(String noCheckup, String idDetailCheckup, String kelas, String kamar, String metodeBayar, String uangMuka, String idDokterDpjp, String idPoli) {
         logger.info("[CheckupDetailAction.rujukRawatInap] start process >>>");
 
         CrudResponse finalResponse = new CrudResponse();
@@ -2868,6 +2871,9 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                                                         Tindakan tin = new Tindakan();
                                                         tin.setIdTindakan(entity.getIdTindakan());
+                                                        tin.setTindakan(entity.getTindakan());
+                                                        tin.setTarifBpjs(entity.getTarifBpjs());
+                                                        tin.setTarif(entity.getTarif());
                                                         tin.setKategoriInaBpjs(entity.getKategoriInaBpjs());
                                                         tindakans.add(tin);
                                                     }
@@ -3203,6 +3209,20 @@ public class CheckupDetailAction extends BaseMasterAction {
 
     }
 
+    public List<Ruangan> listJustRuangan(String idKelas) {
+        List<Ruangan> ruanganList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+        try {
+            ruanganList = ruanganBo.getJustListRuangan(idKelas, branchId);
+        } catch (GeneralBOException e) {
+            logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+        }
+        return ruanganList;
+
+    }
+
     public String getListComboKeteranganKeluar() {
         logger.info("[CheckupDetailAction.getListComboKeteranganKeluar] start process >>>");
 
@@ -3321,7 +3341,6 @@ public class CheckupDetailAction extends BaseMasterAction {
         // tipe transaksi
         String tipe = getTipe();
         setTipe(tipe);
-
         HeaderCheckup checkup = new HeaderCheckup();
 
         if (CommonConstant.ROLE_ADMIN_IGD.equalsIgnoreCase(CommonUtil.roleAsLogin())) {

@@ -198,6 +198,9 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         if("umum".equalsIgnoreCase(tipe)){
             ply = "('rawat_jalan', 'lab', 'radiologi')";
         }
+        if("igd".equalsIgnoreCase(tipe)){
+            ply = "('igd','ugd')";
+        }
         String SQL = "SELECT\n" +
                 "id_pelayanan,\n" +
                 "nama_pelayanan,\n" +

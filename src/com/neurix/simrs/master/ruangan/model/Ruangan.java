@@ -48,6 +48,42 @@ public class Ruangan extends BaseModel {
     private String kategori;
     private String idTempatTidur;
     private String namaTempatTidur;
+    private BigDecimal coverBiaya;
+    private String jenisPasien;
+    private BigDecimal totalTarif;
+    private String idPasien;
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public BigDecimal getTotalTarif() {
+        return totalTarif;
+    }
+
+    public void setTotalTarif(BigDecimal totalTarif) {
+        this.totalTarif = totalTarif;
+    }
+
+    public BigDecimal getCoverBiaya() {
+        return coverBiaya;
+    }
+
+    public void setCoverBiaya(BigDecimal coverBiaya) {
+        this.coverBiaya = coverBiaya;
+    }
+
+    public String getJenisPasien() {
+        return jenisPasien;
+    }
+
+    public void setJenisPasien(String jenisPasien) {
+        this.jenisPasien = jenisPasien;
+    }
 
     public String getIdTempatTidur() {
         return idTempatTidur;

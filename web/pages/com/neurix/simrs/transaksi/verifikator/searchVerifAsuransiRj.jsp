@@ -761,6 +761,11 @@
         var metodePembayaran = $('#h_metode_bayar').val();
         var jenisPasien = $('#h_jenis_pasien').val();
         var idDetailCheckup = $('#h_id_detail_pasien').val();
+        var cekResep = $('#tabel_resep').tableToJSON();
+        var isResep = "N";
+        if(cekResep.length > 0){
+            isResep = "Y";
+        }
 
         data = {
             'no_checkup':noCheckup,
@@ -768,7 +773,8 @@
             'id_detail_checkup': idDetailCheckup,
             'jenis_pasien': jenisPasien,
             'id_pelayanan': idPelayanan,
-            'metode_bayar': metodePembayaran
+            'metode_bayar': metodePembayaran,
+            'is_resep':isResep
         }
         var result = JSON.stringify(data);
         $('#save_fin').hide();

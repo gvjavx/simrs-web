@@ -965,7 +965,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "c.kategori\n" +
                 "FROM it_simrs_periksa_lab a\n" +
                 "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
-                "INNER JOIN im_simrs_kategori_lab c ON b.id_kategori_lab = c.id_kategori_lab\n" +
+                "INNER JOIN im_simrs_kategori_lab c ON a.id_kategori_lab = c.id_kategori_lab\n" +
                 "WHERE id_detail_checkup = :id \n"+ kat;
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -1665,6 +1665,97 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             }
         }
         return response;
+    }
+
+    public HeaderCheckup getCountAll(String branchId){
+        String branch = "%";
+        if(branchId != null && !"".equalsIgnoreCase(branchId)){
+            branch = branchId;
+        }
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        headerCheckup.setJmlRJ("0");
+        headerCheckup.setJmlRI("0");
+        headerCheckup.setJmlIGD("0");
+        headerCheckup.setJmlTelemedic("0");
+
+        String SQL = "SELECT * FROM (\n" +
+                "\tSELECT\n" +
+                "\tCAST('rawat_jalan' AS VARCHAR) AS jenis,\n" +
+                "\ta.no_checkup,\n" +
+                "\tCOUNT (a.no_checkup) as total\n" +
+                "\tFROM it_simrs_header_checkup a\n" +
+                "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "\tWHERE a.branch_id LIKE :branchId \n" +
+                "\tAND c.tipe_pelayanan = 'rawat_jalan'\n" +
+                "\tAND b.id_transaksi_online IS NULL\n" +
+                "\tGROUP BY a.no_checkup\n" +
+                ") a \n" +
+                "UNION ALL\n" +
+                "SELECT * FROM (\n" +
+                "\tSELECT\n" +
+                "\tCAST('rawat_inap' AS VARCHAR) AS jenis,\n" +
+                "\ta.no_checkup,\n" +
+                "\tCOUNT (a.no_checkup) as total\n" +
+                "\tFROM it_simrs_header_checkup a\n" +
+                "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "\tWHERE a.branch_id LIKE :branchId \n" +
+                "\tAND c.tipe_pelayanan = 'rawat_inap'\n" +
+                "\tAND b.id_transaksi_online IS NULL\n" +
+                "\tGROUP BY a.no_checkup\n" +
+                ") a \n" +
+                "UNION ALL\n" +
+                "SELECT * FROM (\n" +
+                "\tSELECT\n" +
+                "\tCAST('igd' AS VARCHAR) AS jenis,\n" +
+                "\ta.no_checkup,\n" +
+                "\tCOUNT (a.no_checkup) as total\n" +
+                "\tFROM it_simrs_header_checkup a\n" +
+                "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "\tWHERE a.branch_id LIKE :branchId \n" +
+                "\tAND c.tipe_pelayanan = 'igd'\n" +
+                "\tAND b.id_transaksi_online IS NULL\n" +
+                "\tGROUP BY a.no_checkup\n" +
+                ") a \n" +
+                "UNION ALL\n" +
+                "SELECT * FROM (\n" +
+                "\tSELECT\n" +
+                "\tCAST('telemedic' AS VARCHAR) AS jenis,\n" +
+                "\ta.no_checkup,\n" +
+                "\tCOUNT (a.no_checkup) as total\n" +
+                "\tFROM it_simrs_header_checkup a\n" +
+                "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "\tWHERE a.branch_id LIKE :branchId \n" +
+                "\tAND b.id_transaksi_online IS NOT NULL\n" +
+                "\tGROUP BY a.no_checkup\n" +
+                ") a \n";
+
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branch)
+                .list();
+        if(result.size() > 0){
+            for (Object[] obj: result){
+                if(obj[0] != null){
+                    if("rawat_jalan".equalsIgnoreCase(obj[0].toString())){
+                        headerCheckup.setJmlRJ(obj[2].toString());
+                    }
+                    if("rawat_inap".equalsIgnoreCase(obj[0].toString())){
+                        headerCheckup.setJmlRI(obj[2].toString());
+                    }
+                    if("igd".equalsIgnoreCase(obj[0].toString())){
+                        headerCheckup.setJmlIGD(obj[2].toString());
+                    }
+                    if("telemedic".equalsIgnoreCase(obj[0].toString())){
+                        headerCheckup.setJmlTelemedic(obj[2].toString());
+                    }
+                }
+            }
+        }
+        return headerCheckup;
     }
 
     public String getNextSeq() {

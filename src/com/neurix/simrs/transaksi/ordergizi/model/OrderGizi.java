@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.ordergizi.model;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Toshiba on 08/11/2019.
@@ -10,7 +11,7 @@ import java.sql.Timestamp;
 public class OrderGizi {
     private String idOrderGizi;
     private String idRawatInap;
-    private Date tglOrder;
+    private Timestamp tglOrder;
     private String dietPagi;
     private String bentukMakanPagi;
     private String dietSiang;
@@ -25,12 +26,28 @@ public class OrderGizi {
     private String lastUpdateWho;
     private String approveFlag;
     private String diterimaFlag;
-
     private BigDecimal tarifTotal;
-
     private String idDietGizi;
     private String keterangan;
     private String bentukDiet;
+    private List<String> listJenisGizi;
+    private String waktu;
+
+    public String getWaktu() {
+        return waktu;
+    }
+
+    public void setWaktu(String waktu) {
+        this.waktu = waktu;
+    }
+
+    public List<String> getListJenisGizi() {
+        return listJenisGizi;
+    }
+
+    public void setListJenisGizi(List<String> listJenisGizi) {
+        this.listJenisGizi = listJenisGizi;
+    }
 
     public String getIdDietGizi() {
         return idDietGizi;
@@ -96,11 +113,11 @@ public class OrderGizi {
         this.idRawatInap = idRawatInap;
     }
 
-    public Date getTglOrder() {
+    public Timestamp getTglOrder() {
         return tglOrder;
     }
 
-    public void setTglOrder(Date tglOrder) {
+    public void setTglOrder(Timestamp tglOrder) {
         this.tglOrder = tglOrder;
     }
 
@@ -198,26 +215,5 @@ public class OrderGizi {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
-    }
-
-    @Override
-    public String toString() {
-        return "ItSimrsOrderGiziEntity{" +
-                "idOrderGizi='" + idOrderGizi + '\'' +
-                ", idRawatInap='" + idRawatInap + '\'' +
-                ", tglOrder=" + tglOrder +
-                ", dietPagi='" + dietPagi + '\'' +
-                ", bentukMakanPagi='" + bentukMakanPagi + '\'' +
-                ", dietSiang='" + dietSiang + '\'' +
-                ", bentukMakanSiang='" + bentukMakanSiang + '\'' +
-                ", dietMalam='" + dietMalam + '\'' +
-                ", bentukMakanMalam='" + bentukMakanMalam + '\'' +
-                ", flag='" + flag + '\'' +
-                ", action='" + action + '\'' +
-                ", createdDate=" + createdDate +
-                ", createdWho='" + createdWho + '\'' +
-                ", lastUpdate=" + lastUpdate +
-                ", lastUpdateWho='" + lastUpdateWho + '\'' +
-                '}';
     }
 }

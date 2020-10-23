@@ -72,6 +72,14 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
                 hsCriteria.put("id_dokter", bean.getIdDokter());
             }
 
+            if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())) {
+                hsCriteria.put("no_checkup", bean.getNoCheckup());
+            }
+
+            if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
+                hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+            }
+
             List<ItSimrsAntianOnlineEntity> listOfAntrianOnline = new ArrayList<>();
 
 

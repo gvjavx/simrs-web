@@ -21,7 +21,6 @@ public class JadwalPelayananDTO extends BaseModel {
     private String kuota;
     private String flagLibur;
 
-
     //sodiq, 29-09-2020
     private String sip;
     private String kodeDpjp;

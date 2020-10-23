@@ -756,7 +756,7 @@ created_date = '2020-09-22 00:00:00',
 created_who = 'admin',
 last_update = '2020-09-22 00:00:00',
 last_update_who = 'admin',
-tipe = 'ptpn'
+tipe = 'ptpn';
 
 -- 2020-09-24
 CREATE TABLE public.im_simrs_detail_rekanan_ops
@@ -1001,6 +1001,118 @@ ALTER COLUMN id_tindakan TYPE VARCHAR(50);
 ALTER TABLE it_simrs_dokter_team
 ADD COLUMN flag_approve VARCHAR(1),
 ADD COLUMN keterangan VARCHAR(1000);
+
+ALTER TABLE im_simrs_tindakan
+DROP COLUMN tindakan;
+
+-- WEEKEND
+CREATE TABLE im_simrs_jenis_diet
+(
+	id_jenis_diet VARCHAR(50) PRIMARY KEY NOT NULL,
+	nama_jenis_diet VARCHAR(100),
+	action VARCHAR(1),
+	flag VARCHAR(1),
+	created_date TIMESTAMP WITHOUT TIME ZONE,
+	created_who VARCHAR(100),
+	last_update TIMESTAMP WITHOUT TIME ZONE,
+	last_update_who VARCHAR(100)
+)
+
+ALTER TABLE it_simrs_order_gizi
+DROP COLUMN diet_pagi,
+DROP COLUMN bentuk_makan_pagi,
+DROP COLUMN diet_siang,
+DROP COLUMN bentuk_makan_siang,
+DROP COLUMN diet_malam,
+DROP COLUMN bentuk_makan_malam;
+
+CREATE TABLE it_simrs_detail_jenis_diet
+(
+	id_detail_jenis_diet VARCHAR(50) PRIMARY KEY NOT NULL,
+	id_order_gizi VARCHAR(50),
+	id_jenis_diet VARCHAR(50),
+	nama_jenis_diet VARCHAR(100),
+	action VARCHAR(1),
+	flag VARCHAR(1),
+	created_date TIMESTAMP WITHOUT TIME ZONE,
+	created_who VARCHAR(100),
+	last_update TIMESTAMP WITHOUT TIME ZONE,
+	last_update_who VARCHAR(100)
+);
+
+ALTER TABLE it_simrs_order_gizi
+ALTER COLUMN tgl_order TYPE TIMESTAMP WITHOUT TIME ZONE;
+
+CREATE SEQUENCE seq_detail_jenis_diet;
+
+INSERT INTO im_simrs_jenis_diet VALUES
+('JDD00000001','Diet Vitamin', 'C', 'Y', now(), 'adminrs', now(), 'adminrs'),
+('JDD00000002','Diet Kalori', 'C', 'Y', now(), 'adminrs', now(), 'adminrs'),
+('JDD00000003','Diet Lemak', 'C', 'Y', now(), 'adminrs', now(), 'adminrs'),
+('JDD00000004','Diet Asam', 'C', 'Y', now(), 'adminrs', now(), 'adminrs'),
+('JDD00000005','Diet Gula', 'C', 'Y', now(), 'adminrs', now(), 'adminrs');
+
+INSERT INTO im_functions VALUES
+(2350, 'Recovery Room', '/recoveryroom/initForm_recoveryroom.action', 2600, 2, now(), 'admin', now(), 'admin', 'Y','C', 2350),
+(2351, 'init', '/recoveryroom/initForm_recoveryroom.action', 2350, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2352, 'search', '/recoveryroom/searchRR_recoveryroom.action', 2350, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2353, 'add', '/recoveryroom/add_recoveryroom.action', 2350, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2350, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2351, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2352, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2353, 32, 'Y', now(), now(), 'admin', 'admin');
+
+INSERT INTO im_functions VALUES
+(3100, 'Dashboard', '/initdashboard/initForm_initdashboard.action', 10, 1, now(), 'admin', now(), 'admin', 'Y','C', 3100),
+(2355, 'init dashboard', '/initdashboard/initForm_initdashboard.action', 3100, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(3100, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2355, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_kunjungan VARCHAR(1),
+ADD COLUMN berkas VARCHAR(100);
+
+ALTER TABLE it_simrs_order_gizi
+ADD COLUMN waktu VARCHAR(100);
+
+INSERT INTO im_simrs_kelas_ruangan VALUES
+('11','Recovery Room','Y','C',now(),'adminrs',now(),'adminrs','03.06.01','O065','rr');
+
+INSERT INTO mt_simrs_ruangan VALUES
+('21','RR','R001','Y','11',NULL,100000,'RS01','Y',now(),'adminrs',now(),'Ike Nurjanah','U',1,1);
+
+UPDATE im_simrs_jenis_periksa_pasien
+SET id_jenis_periksa_pasien = 'rekanan',
+keterangan = 'Rekanan'
+WHERE id_jenis_periksa_pasien = 'ptpn';
+
+UPDATE im_simrs_jenis_periksa_pasien
+SET keterangan = 'Medical Checkup'
+WHERE id_jenis_periksa_pasien = 'paket_perusahaan';
+
+UPDATE im_simrs_jenis_periksa_pasien
+SET keterangan = 'Promo'
+WHERE id_jenis_periksa_pasien = 'paket_individu';
+
+--WEEKEND
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100);
+
+ALTER TABLE it_simrs_implementasi_perawat
+ADD COLUMN sip VARCHAR(100);
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000239','RMM00000098','rawat_inap','17','Y','C','migrasi',now(),now(),'migrasi');
+
+
+
+
+
 
 
 
