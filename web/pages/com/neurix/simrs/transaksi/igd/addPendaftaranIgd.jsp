@@ -8,7 +8,6 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
-
     <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/addrawatpasien.css"/>">
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -73,20 +72,24 @@
                 && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && tipe != '') {
 
                 if (tipe == "umum") {
-                    $('#confirm_dialog').dialog('open');
-                    // if (pembayaran != '' && uangMuka != '') {
-                    //     $('#confirm_dialog').dialog('open');
-                    // } else {
-                    //     $("html, body").animate({scrollTop: 0}, 600);
-                    //     $('#warning_pasien').show().fadeOut(10000);
-                    //     $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
-                    //     if (pembayaran == '') {
-                    //         $('#war_pembayaran').show();
-                    //     }
-                    //     if (uangMuka == '') {
-                    //         $('#war_uang_muka').show();
-                    //     }
-                    // }
+                    var cek = $('#is_uang_muka').is(':checked');
+                    if(cek){
+                        if (pembayaran != '' && uangMuka != '') {
+                            $('#confirm_dialog').dialog('open');
+                        } else {
+                            $("html, body").animate({scrollTop: 0}, 600);
+                            $('#warning_pasien').show().fadeOut(10000);
+                            $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
+                            if (pembayaran == '') {
+                                $('#war_pembayaran').show();
+                            }
+                            if (uangMuka == '') {
+                                $('#war_uang_muka').show();
+                            }
+                        }
+                    }else{
+                        $('#confirm_dialog').dialog('open');
+                    }
                 }
 
                 if (tipe == "bpjs") {
@@ -518,205 +521,265 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">NO Checkup Online</label>
-                                            <div class="col-md-8">
-                                                <div class="input-group">
-                                                    <input class="form-control" id="id_online" onchange="searchNoCheckup(this.value)" placeholder="Scan No Checkup Online">
-                                                    <div class="input-group-btn">
-                                                        <a class="btn btn-success" onclick="searchNoCheckup($('#id_online').val())"> <span id="load_online"><i
-                                                                class="fa fa-search"></i> Check</span></a> Check</a>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">NO Checkup Online</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group">
+                                                        <input class="form-control" id="id_online" onchange="searchNoCheckup(this.value)" placeholder="Scan No Checkup Online">
+                                                        <div class="input-group-btn">
+                                                            <a class="btn btn-success" onclick="searchNoCheckup($('#id_online').val())"> <span id="load_online"><i
+                                                                    class="fa fa-search"></i> Check</span></a> Check</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 10px">Jenis Pasien</label>
-                                            <div class="col-md-8">
-                                                <select class="form-control select2" id="jenis_pasien" onchange="setJenisPasien(this.value)"></select>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">Jenis Pasien</label>
+                                                <div class="col-md-8">
+                                                    <select style="width: 100%" class="form-control select2" id="jenis_pasien" onchange="setJenisPasien(this.value)"></select>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group" id="form-no-bpjs" style="display: none">
-                                            <label class="col-md-4" style="margin-top: 7px">No BPJS</label>
-                                            <div class="col-md-8">
-                                                <div class="input-group" style="margin-top: 7px">
-                                                    <s:textfield id="no_bpjs" name="headerCheckup.noBpjs"
-                                                                 cssClass="form-control"
-                                                                 oninput="searchNoBpjs(this.id)"/>
-                                                    <div class="input-group-btn" onclick="checkBpjs()">
-                                                        <a class="btn btn-success">
+                                        <div class="row">
+                                            <div class="form-group" id="form-no-bpjs" style="display: none">
+                                                <label class="col-md-4" style="margin-top: 7px">No BPJS</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group" style="margin-top: 7px">
+                                                        <s:textfield id="no_bpjs" name="headerCheckup.noBpjs"
+                                                                     cssClass="form-control"
+                                                                     oninput="searchNoBpjs(this.id)"/>
+                                                        <div class="input-group-btn" onclick="checkBpjs()">
+                                                            <a class="btn btn-success">
                                                                 <span id="btn-cek"><i
                                                                         class="fa fa-search"></i> Check</span></a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">NO RM</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="id_pasien" name="headerCheckup.idPasien"
-                                                             oninput="searchNoRM(this.id, this.value)"
-                                                             onkeypress="$(this).css('border','');"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">NIK Pasien</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="no_ktp" name="headerCheckup.noKtp"
-                                                             onkeypress="$(this).css('border',''); searchNo"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Nama Pasien</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="nama_pasien" name="headerCheckup.nama"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
-                                            <div class="col-md-8">
-                                                <s:select list="#{'L':'Laki-Laki','P':'Perempuan'}"
-                                                          cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
-                                                          id="jenis_kelamin" name="headerCheckup.jenisKelamin"
-                                                          headerKey="" headerValue="[Select one]"
-                                                          cssClass="form-control"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Tempat Lahir</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="tempat_lahir" name="headerCheckup.tempatLahir"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Tanggal Lahir</label>
-                                            <div class="col-md-8">
-                                                <div class="input-group date" style="margin-top: 7px" id="st_tgl_lahir">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-calendar"></i>
-                                                    </div>
-                                                    <s:textfield id="tanggal_lahir" name="headerCheckup.stTglLahir"
-                                                                 cssClass="form-control datemask"
-                                                                 onchange="$('#st_tgl_lahir').css('border','')"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">NO RM</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield id="id_pasien" name="headerCheckup.idPasien"
+                                                                 oninput="searchNoRM(this.id, this.value)"
+                                                                 onkeypress="$(this).css('border','');"
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"/>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Agama</label>
-                                            <div class="col-md-8">
-                                                <s:select id="agama" name="headerCheckup.agama"
-                                                          list="#{'Islam':'Islam','Kristen':'Kristen','Katolik':'Katolik','Hindu':'Hindu','Buddha':'Buddha','Konghucu':'Konghucu'}"
-                                                          onchange="$(this).css('border','')"
-                                                          headerKey="" headerValue="[Select One]"
-                                                          cssStyle="margin-top: 7px" cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">NIK Pasien</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield id="no_ktp" name="headerCheckup.noKtp"
+                                                                 onkeypress="$(this).css('border',''); searchNo"
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Profesi</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="profesi" name="headerCheckup.profesi"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Nama Pasien</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield id="nama_pasien" name="headerCheckup.nama"
+                                                                 onkeypress="$(this).css('border','')"
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px" readonly="true"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Suku</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="suku" name="headerCheckup.suku"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
+                                                <div class="col-md-8">
+                                                    <s:select list="#{'L':'Laki-Laki','P':'Perempuan'}"
+                                                              cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
+                                                              id="jenis_kelamin" name="headerCheckup.jenisKelamin"
+                                                              headerKey="" headerValue="[Select one]"
+                                                              cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Alamat</label>
-                                            <div class="col-md-8">
-                                                <s:textarea id="jalan" rows="3" cssStyle="margin-top: 7px"
-                                                            onkeypress="$(this).css('border','')"
-                                                            name="headerCheckup.jalan" cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Tempat Lahir</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield id="tempat_lahir" name="headerCheckup.tempatLahir"
+                                                                 onkeypress="$(this).css('border','')"
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Tanggal Lahir</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group date" style="margin-top: 7px" id="st_tgl_lahir">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <s:textfield id="tanggal_lahir" name="headerCheckup.stTglLahir"
+                                                                     cssClass="form-control datemask"
+                                                                     onchange="$('#st_tgl_lahir').css('border','')"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Agama</label>
+                                                <div class="col-md-8">
+                                                    <s:select id="agama" name="headerCheckup.agama"
+                                                              list="#{'Islam':'Islam','Kristen':'Kristen','Katolik':'Katolik','Hindu':'Hindu','Buddha':'Buddha','Konghucu':'Konghucu'}"
+                                                              onchange="$(this).css('border','')"
+                                                              headerKey="" headerValue="[Select One]"
+                                                              cssStyle="margin-top: 7px" cssClass="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Profesi</label>
+                                                <div class="col-md-8">
+                                                    <s:select id="profesi"
+                                                              list="#{'Guru':'Guru','Dokter':'Dokter','Swasta':'Swasta','PNS':'PNS','Lainnya':'Lainnya'}"
+                                                              onchange="$('#ket_profesi').val(this.value); $(this).css('border',''); if(this.value == 'Lainnya'){$('#form_profesi').show()}else{$('#form_profesi').hide()} "
+                                                              headerKey="" headerValue="[Select One]"
+                                                              cssStyle="width: 100%" cssClass="form-control select2"/>
+                                                    <s:hidden name="headerCheckup.profesi" id="ket_profesi"></s:hidden>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="display: none" id="form_profesi">
+                                            <div class="form-group">
+                                                <div class="col-md-offset-4 col-md-8">
+                                                    <s:textfield cssClass="form-control" cssStyle="margin-top: 7px" oninput="$('#ket_profesi').val(this.value);"></s:textfield>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Suku</label>
+                                                <div class="col-md-8">
+                                                    <s:select id="suku"
+                                                              list="#{'Jawa':'Jawa','Batak':'Batak','Dayak':'Dayak','Asmat':'Asmat','Minahasa':'Minahasa','Melayu':'Melayu','Sunda':'Sunda','Madura':'Madura','Betawi':'Betawi','Bugis':'Bugis','Lainnya':'Lainnya'}"
+                                                              onchange="$('#ket_suku').val(this.value); $(this).css('border',''); if(this.value == 'Lainnya'){$('#form_jawa').show()}else{$('#form_jawa').hide()} "
+                                                              headerKey="" headerValue="[Select One]"
+                                                              cssStyle="width: 100%" cssClass="form-control select2"/>
+                                                    <s:hidden name="headerCheckup.suku" id="ket_suku"></s:hidden>
+                                                        <%--<s:textfield id="suku" name="headerCheckup.suku"--%>
+                                                        <%--onkeypress="$(this).css('border','')"--%>
+                                                        <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="display: none" id="form_jawa">
+                                            <div class="form-group">
+                                                <div class="col-md-offset-4 col-md-8">
+                                                    <s:textfield cssClass="form-control" cssStyle="margin-top: 7px" oninput="$('#ket_suku').val(this.value);"></s:textfield>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Alamat</label>
+                                                <div class="col-md-8">
+                                                    <s:textarea id="jalan" rows="3" cssStyle="margin-top: 7px"
+                                                                onkeypress="$(this).css('border','')"
+                                                                name="headerCheckup.jalan" cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-4">Provinsi</label>
-                                            <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="provinsi"
-                                                             name="headerCheckup.namaProvinsi"
-                                                             required="true" disabled="false"
-                                                             onkeypress="$(this).css('border',''); setProvAtas(this.id, 'provinsi11')"
-                                                             cssClass="form-control"/>
-                                                <s:textfield cssStyle="display: none; margin-top: 7px" id="provinsi11"
-                                                             name="headerCheckup.provinsiId" required="true"
-                                                             disabled="false" cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4">Provinsi</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield cssStyle="margin-top: 7px" id="provinsi"
+                                                                 name="headerCheckup.namaProvinsi"
+                                                                 required="true" disabled="false"
+                                                                 onkeypress="$(this).css('border',''); setProvAtas(this.id, 'provinsi11')"
+                                                                 cssClass="form-control"/>
+                                                    <s:textfield cssStyle="display: none; margin-top: 7px" id="provinsi11"
+                                                                 name="headerCheckup.provinsiId" required="true"
+                                                                 disabled="false" cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Kota</label>
-                                            <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="kabupaten"
-                                                             name="headerCheckup.namaKota"
-                                                             required="true" disabled="false"
-                                                             onkeypress="$(this).css('border',''); setKabAtas(this.id, 'kabupaten11', 'provinsi11')"
-                                                             cssClass="form-control"/>
-                                                <s:textfield cssStyle="display: none; margin-top: 7px" id="kabupaten11"
-                                                             name="headerCheckup.kotaId" required="true"
-                                                             disabled="false" cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Kota</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield cssStyle="margin-top: 7px" id="kabupaten"
+                                                                 name="headerCheckup.namaKota"
+                                                                 required="true" disabled="false"
+                                                                 onkeypress="$(this).css('border',''); setKabAtas(this.id, 'kabupaten11', 'provinsi11')"
+                                                                 cssClass="form-control"/>
+                                                    <s:textfield cssStyle="display: none; margin-top: 7px" id="kabupaten11"
+                                                                 name="headerCheckup.kotaId" required="true"
+                                                                 disabled="false" cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Kecamatan</label>
-                                            <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="kecamatan"
-                                                             name="headerCheckup.namaKecamatan"
-                                                             required="true" disabled="false"
-                                                             onkeypress="$(this).css('border',''); setKecAtas(this.id, 'kecamatan11', 'kabupaten11')"
-                                                             cssClass="form-control"/>
-                                                <s:textfield cssStyle="display: none; margin-top: 7px" id="kecamatan11"
-                                                             name="headerCheckup.kecamatanId" required="true"
-                                                             disabled="false" cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Kecamatan</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield cssStyle="margin-top: 7px" id="kecamatan"
+                                                                 name="headerCheckup.namaKecamatan"
+                                                                 required="true" disabled="false"
+                                                                 onkeypress="$(this).css('border',''); setKecAtas(this.id, 'kecamatan11', 'kabupaten11')"
+                                                                 cssClass="form-control"/>
+                                                    <s:textfield cssStyle="display: none; margin-top: 7px" id="kecamatan11"
+                                                                 name="headerCheckup.kecamatanId" required="true"
+                                                                 disabled="false" cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Kelurahan/Desa</label>
-                                            <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="desa"
-                                                             name="headerCheckup.namaDesa"
-                                                             required="true" disabled="false"
-                                                             onkeypress="$(this).css('border',''); setDesAtas(this.id, 'desa11', 'kecamatan11')"
-                                                             cssClass="form-control"/>
-                                                <s:textfield cssStyle="display: none; margin-top: 7px" id="desa11"
-                                                             name="headerCheckup.desaId" required="true"
-                                                             disabled="false" cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Kelurahan/Desa</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield cssStyle="margin-top: 7px" id="desa"
+                                                                 name="headerCheckup.namaDesa"
+                                                                 required="true" disabled="false"
+                                                                 onkeypress="$(this).css('border',''); setDesAtas(this.id, 'desa11', 'kecamatan11')"
+                                                                 cssClass="form-control"/>
+                                                    <s:textfield cssStyle="display: none; margin-top: 7px" id="desa11"
+                                                                 name="headerCheckup.desaId" required="true"
+                                                                 disabled="false" cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Foto Identitas</label>
-                                            <div class="col-md-8">
-                                                <img id="img-upload" width="100%"
-                                                     src="<s:url value="/pages/images/ktp-default.jpg"/>"
-                                                     style="border: darkgray solid 1px; height: 170px; margin-top: 7px"/>
-                                                <s:hidden name="headerCheckup.urlKtp" id="img_ktp"></s:hidden>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Foto Identitas</label>
+                                                <div class="col-md-8">
+                                                    <img id="img-upload" width="100%"
+                                                         src="<s:url value="/pages/images/ktp-default.jpg"/>"
+                                                         style="border: darkgray solid 1px; height: 170px; margin-top: 7px"/>
+                                                    <s:hidden name="headerCheckup.urlKtp" id="img_ktp"></s:hidden>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Diagnosa Awal</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="diagnosa_awal" style="margin-top: 7px"
-                                                             name="headerCheckup.diagnosa" autocomplete="off"
-                                                             onkeypress="$(this).css('border',''); searchDiagnosa(this.id)"
-                                                             cssClass="form-control" required="false"/>
-                                                <s:textarea rows="4" id="diagnosa_ket"
-                                                            cssStyle="margin-top: 7px" readonly="true"
-                                                            name="headerCheckup.namaDiagnosa"
-                                                            cssClass="form-control"></s:textarea>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Diagnosa Awal</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield id="diagnosa_awal" style="margin-top: 7px"
+                                                                 name="headerCheckup.diagnosa" autocomplete="off"
+                                                                 onkeypress="$(this).css('border',''); searchDiagnosa(this.id)"
+                                                                 cssClass="form-control" required="false"/>
+                                                    <s:textarea rows="4" id="diagnosa_ket"
+                                                                cssStyle="margin-top: 7px" readonly="true"
+                                                                name="headerCheckup.namaDiagnosa"
+                                                                cssClass="form-control"></s:textarea>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -730,39 +793,53 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-4">Nama Penanggung</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="nama_penanggung" name="headerCheckup.namaPenanggung"
-                                                             cssClass="form-control"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">No Telp.</label>
-                                            <div class="col-md-8">
-                                                <div class="input-group" style="margin-top: 7px">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-phone"></i>
-                                                    </div>
-                                                    <s:textfield id="no_telp" name="headerCheckup.noTelp"
-                                                                 data-inputmask="'mask': ['9999-9999-9999']"
-                                                                 data-mask=""
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4">Nama Penanggung</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield id="nama_penanggung" name="headerCheckup.namaPenanggung"
                                                                  cssClass="form-control"/>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">No Telp.</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group" style="margin-top: 7px">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-phone"></i>
+                                                        </div>
+                                                        <s:textfield id="no_telp" name="headerCheckup.noTelp"
+                                                                     data-inputmask="'mask': ['9999-9999-9999']"
+                                                                     data-mask=""
+                                                                     cssClass="form-control"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Hubungan</label>
-                                            <div class="col-md-8">
-                                                <s:select
-                                                        list="#{'Ayah':'Ayah','Ibu':'Ibu','Kakak':'Kakak','Adik':'Adik','Sepupu':'Sepupu','Ipar':'Ipar'}"
-                                                        cssStyle="margin-top: 7px"
-                                                        id="hubungan" name="headerCheckup.hubunganKeluarga"
-                                                        headerKey="" headerValue="[Select one]"
-                                                        cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Hubungan</label>
+                                                <div class="col-md-8">
+                                                    <s:select
+                                                            list="#{'Ayah':'Ayah','Ibu':'Ibu','Kakak':'Kakak','Adik':'Adik','Sepupu':'Sepupu','Ipar':'Ipar','Anak':'Anak','Suami':'Suami','Istri':'Istri','Lainnya':'Lainnya'}"
+                                                            onchange="$('#hub_keluarga').val(this.value); var cek = this.value; if(cek == 'Lainnya'){$('#ket_hubungan').show()}else{$('#ket_hubungan').hide()}"
+                                                            id="hubungan"
+                                                            headerKey="" headerValue="[Select one]"
+                                                            cssClass="form-control select2"/>
+                                                </div>
+                                                <s:hidden id="hub_keluarga" name="headerCheckup.hubunganKeluarga"></s:hidden>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="display: none" id="ket_hubungan">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Lainnya</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield oninput="$('#hub_keluarga').val(this.value)" cssClass="form-control" cssStyle="margin-top: 7px" placeholder="Keterangan Hubungan"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -776,95 +853,115 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 10px">Pelayanan</label>
-                                            <div class="col-md-8">
-                                                    <%--<s:action id="initComboPoli1" namespace="/checkup"--%>
-                                                    <%--name="getComboPelayanan_checkup"/>--%>
-                                                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                    <%--list="#initComboPoli1.listOfPelayanan"--%>
-                                                    <%--listKey="idPelayanan" id="poli_paket"--%>
-                                                    <%--listValue="namaPelayanan"--%>
-                                                    <%--onchange="$(this).css('border',''); listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"--%>
-                                                    <%--headerKey="" headerValue="[Select one]"--%>
-                                                    <%--cssClass="form-control select2"/>--%>
-                                                <select class="form-control select2" id="poli" onchange="listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}">
-                                                </select>
-                                                <span style="color: red; display: none" id="war_poli"><i
-                                                        class="fa fa-times"></i> required</span>
-                                                <span style="color: green; display: none" id="con_poli"><i
-                                                        class="fa fa-check"></i> correct</span>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">Pelayanan</label>
+                                                <div class="col-md-8">
+                                                        <%--<s:action id="initComboPoli1" namespace="/checkup"--%>
+                                                        <%--name="getComboPelayanan_checkup"/>--%>
+                                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                        <%--list="#initComboPoli1.listOfPelayanan"--%>
+                                                        <%--listKey="idPelayanan" id="poli_paket"--%>
+                                                        <%--listValue="namaPelayanan"--%>
+                                                        <%--onchange="$(this).css('border',''); listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"--%>
+                                                        <%--headerKey="" headerValue="[Select one]"--%>
+                                                        <%--cssClass="form-control select2"/>--%>
+                                                    <select style="width: 100%" class="form-control select2" id="poli" onchange="listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}">
+                                                    </select>
+                                                    <span style="color: red; display: none" id="war_poli"><i
+                                                            class="fa fa-times"></i> required</span>
+                                                    <span style="color: green; display: none" id="con_poli"><i
+                                                            class="fa fa-check"></i> correct</span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group" id="form-lab" style="display: none">
-                                            <label class="col-md-4" style="margin-top: 10px">Unit Pemeriksaan</label>
-                                            <div class="col-md-8">
-                                                <select id="id_lab" class="form-control select2"
-                                                        style="margin-top: 7px; width: 100%"
-                                                        onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#con_lab').show().fadeOut(3000);$('#war_lab').hide()}; setOrderLab(this.value)">
-                                                    <option value=''>[Select One]</option>
-                                                </select>
-                                                <span style="color: red; display: none" id="war_lab"><i
-                                                        class="fa fa-times"></i> required</span>
-                                                <span style="color: green; display: none" id="con_lab"><i
-                                                        class="fa fa-check"></i> correct</span>
+                                        <div class="row">
+                                            <div class="form-group" id="form-lab" style="display: none">
+                                                <label class="col-md-4" style="margin-top: 10px">Unit Pemeriksaan</label>
+                                                <div class="col-md-8">
+                                                    <select id="id_lab" class="form-control select2"
+                                                            style="margin-top: 7px; width: 100%"
+                                                            onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#con_lab').show().fadeOut(3000);$('#war_lab').hide()}; setOrderLab(this.value)">
+                                                        <option value=''>[Select One]</option>
+                                                    </select>
+                                                    <span style="color: red; display: none" id="war_lab"><i
+                                                            class="fa fa-times"></i> required</span>
+                                                    <span style="color: green; display: none" id="con_lab"><i
+                                                            class="fa fa-check"></i> correct</span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 10px">Dokter</label>
-                                            <div class="col-md-8">
-                                                <div class="input-group" style="margin-top: 7px;">
-                                                    <input readonly class="form-control" id="nama_dokter"
-                                                           style="cursor: pointer"
-                                                           placeholder="*klik untuk jadwal dokter">
-                                                    <div class="input-group-btn">
-                                                        <a class="btn btn-success">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">Dokter</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group" style="margin-top: 7px;">
+                                                        <input readonly class="form-control" id="nama_dokter"
+                                                               style="cursor: pointer"
+                                                               placeholder="*klik untuk jadwal dokter">
+                                                        <div class="input-group-btn">
+                                                            <a class="btn btn-success">
                                                                 <span id="btn-dokter"><i
                                                                         class="fa fa-search"></i> Dokter</span></a>
+                                                        </div>
                                                     </div>
+                                                    <s:hidden name="headerCheckup.idDokter" id="dokter"></s:hidden>
+                                                    <span style="color: red; display: none" id="war_dokter"><i
+                                                            class="fa fa-times"></i> required</span>
+                                                    <span style="color: green; display: none" id="con_dokter"><i
+                                                            class="fa fa-check"></i> correct</span>
                                                 </div>
-                                                <s:hidden name="headerCheckup.idDokter" id="dokter"></s:hidden>
-                                                <span style="color: red; display: none" id="war_dokter"><i
-                                                        class="fa fa-times"></i> required</span>
-                                                <span style="color: green; display: none" id="con_dokter"><i
-                                                        class="fa fa-check"></i> correct</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group" style="display: none" id="form-paket">
-                                            <label class="col-md-4" style="margin-top: 10px">Paket</label>
-                                            <div class="col-md-8">
-                                                <select id="paket"
-                                                        class="form-control select2"
-                                                        style="width: 100%"
-                                                        onchange="var warn =$('#war_paket').is(':visible'); if (warn){$('#con_paket').show().fadeOut(3000);$('#war_paket').hide()}; selectPelayanan(this.value)">
-                                                    <option value="">[Select One]</option>
-                                                </select>
-                                                <span style="color: red; display: none" id="warpaket"><i
-                                                        class="fa fa-times"></i> required</span>
-                                                <span style="color: green; display: none" id="con_paket"><i
-                                                        class="fa fa-check"></i> correct</span>
+                                        <div class="row">
+                                            <div class="form-group" style="display: none" id="form-paket">
+                                                <label class="col-md-4" style="margin-top: 10px">Paket</label>
+                                                <div class="col-md-8">
+                                                    <select id="paket"
+                                                            class="form-control select2"
+                                                            style="width: 100%"
+                                                            onchange="var warn =$('#war_paket').is(':visible'); if (warn){$('#con_paket').show().fadeOut(3000);$('#war_paket').hide()}; selectPelayanan(this.value)">
+                                                        <option value="">[Select One]</option>
+                                                    </select>
+                                                    <span style="color: red; display: none" id="warpaket"><i
+                                                            class="fa fa-times"></i> required</span>
+                                                    <span style="color: green; display: none" id="con_paket"><i
+                                                            class="fa fa-check"></i> correct</span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group" style="display: none" id="form-paket-perusahaan">
-                                            <label class="col-md-4" style="margin-top: 10px">Paket</label>
-                                            <div class="col-md-8">
-                                                <input style="margin-top: 7px" class="form-control"
-                                                       id="paket_perusahaan" readonly>
+                                        <div class="row">
+                                            <div class="form-group" style="display: none" id="form-paket-perusahaan">
+                                                <label class="col-md-4" style="margin-top: 10px">Paket</label>
+                                                <div class="col-md-8">
+                                                    <input style="margin-top: 7px" class="form-control"
+                                                           id="paket_perusahaan" readonly>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 10px">Kunjungan</label>
-                                            <div class="col-md-8">
-                                                <s:select cssStyle="margin-top: 7px"
-                                                          list="#{'Lama':'Lama','Baru':'Baru'}"
-                                                          onchange="$(this).css('border','')"
-                                                          id="kunjungan"
-                                                          headerKey="" headerValue="[Select one]"
-                                                          cssClass="form-control"/>
-                                                <s:hidden name="headerCheckup.jenisKunjungan"
-                                                          id="kunjungan_val"></s:hidden>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">Kunjungan RS</label>
+                                                <div class="col-md-8">
+                                                    <s:select cssStyle="margin-top: 7px"
+                                                              list="#{'Lama':'Lama','Baru':'Baru'}"
+                                                              onchange="$(this).css('border','')"
+                                                              id="kunjungan"
+                                                              headerKey="" headerValue="[Select one]"
+                                                              cssClass="form-control"/>
+                                                    <s:hidden name="headerCheckup.jenisKunjungan"
+                                                              id="kunjungan_val"></s:hidden>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">Kunjungan Poli</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield readonly="true" cssStyle="margin-top: 7px" cssClass="form-control"></s:textfield>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -878,71 +975,81 @@
                                 <div class="box-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 10px">Asuransi</label>
-                                                <div class="col-md-8">
-                                                    <select id="asuransi"
-                                                            class="form-control select2"
-                                                            style="width: 100%"
-                                                            onchange="var warn =$('#war_asuransi').is(':visible'); if (warn){$('#con_asuransi').show().fadeOut(3000);$('#war_asuransi').hide()}; showLaka(this.value);">
-                                                        <option value="">[Select One]</option>
-                                                    </select>
-                                                    <span style="color: red; display: none" id="war_asuransi"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_asuransi"><i
-                                                            class="fa fa-check"></i> correct</span>
-                                                </div>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px">Asuransi</label>
+                                                    <div class="col-md-8">
+                                                        <select id="asuransi"
+                                                                class="form-control select2"
+                                                                style="width: 100%"
+                                                                onchange="var warn =$('#war_asuransi').is(':visible'); if (warn){$('#con_asuransi').show().fadeOut(3000);$('#war_asuransi').hide()}; showLaka(this.value);">
+                                                            <option value="">[Select One]</option>
+                                                        </select>
+                                                        <span style="color: red; display: none" id="war_asuransi"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_asuransi"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
 
-                                            </div>
-                                            <div class="form-group" id="form_no_kartu">
-                                                <label class="col-md-4" style="margin-top: 10px">No Kartu
-                                                    Asuransi</label>
-                                                <div class="col-md-8">
-                                                    <s:textfield autocomplete="off" id="no_kartu"
-                                                                 oninput="$('#h_no_kartu').val(this.value)"
-                                                                 cssStyle="margin-top: 7px" cssClass="form-control"
-                                                                 onkeypress="var warn =$('#war_no_asuransi').is(':visible'); if (warn){$('#con_no_asuransi').show().fadeOut(3000);$('#war_no_asuransi').hide()}"></s:textfield>
-                                                    <span style="color: red; display: none" id="war_no_asuransi"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_no_asuransi"><i
-                                                            class="fa fa-check"></i> correct</span>
                                                 </div>
                                             </div>
-                                            <div class="form-group" id="form_jasaraharja_1" style="display: none">
-                                                <label class="col-md-4" style="margin-top: 10px">No Polisi</label>
-                                                <div class="col-md-8">
-                                                    <s:textfield oninput="$('#h_no_rujukan').val(this.value)"
-                                                                 cssStyle="margin-top: 7px"
-                                                                 cssClass="form-control"
-                                                                 id="no_polisi"
-                                                                 onkeypress="var warn =$('#war_no_asuransi').is(':visible'); if (warn){$('#con_no_asuransi').show().fadeOut(3000);$('#war_no_asuransi').hide()}"></s:textfield>
+                                            <div class="row">
+                                                <div class="form-group" id="form_no_kartu">
+                                                    <label class="col-md-4" style="margin-top: 10px">No Kartu
+                                                        Asuransi</label>
+                                                    <div class="col-md-8">
+                                                        <s:textfield autocomplete="off" id="no_kartu"
+                                                                     oninput="$('#h_no_kartu').val(this.value)"
+                                                                     cssStyle="margin-top: 7px" cssClass="form-control"
+                                                                     onkeypress="var warn =$('#war_no_asuransi').is(':visible'); if (warn){$('#con_no_asuransi').show().fadeOut(3000);$('#war_no_asuransi').hide()}"></s:textfield>
+                                                        <span style="color: red; display: none" id="war_no_asuransi"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_no_asuransi"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" id="form_jasaraharja_1" style="display: none">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px">No Polisi</label>
+                                                    <div class="col-md-8">
+                                                        <s:textfield oninput="$('#h_no_rujukan').val(this.value)"
+                                                                     cssStyle="margin-top: 7px"
+                                                                     cssClass="form-control"
+                                                                     id="no_polisi"
+                                                                     onkeypress="var warn =$('#war_no_asuransi').is(':visible'); if (warn){$('#con_no_asuransi').show().fadeOut(3000);$('#war_no_asuransi').hide()}"></s:textfield>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div id="form_jasaraharja_2" style="display: none">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px">Tanggal
-                                                        Kejadian</label>
-                                                    <div class="col-md-8">
-                                                        <s:textfield cssStyle="margin-top: 7px"
-                                                                     id="tanggal_kejadian"
-                                                                     cssClass="form-control datepicker"
-                                                                     onchange="$('#tanggal_rujukan').val(this.value)"></s:textfield>
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label class="col-md-4" style="margin-top: 10px">Tanggal
+                                                            Kejadian</label>
+                                                        <div class="col-md-8">
+                                                            <s:textfield cssStyle="margin-top: 7px"
+                                                                         id="tanggal_kejadian"
+                                                                         cssClass="form-control datepicker"
+                                                                         onchange="$('#tanggal_rujukan').val(this.value)"></s:textfield>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px">Foto Surat
-                                                        Polisi</label>
-                                                    <div class="col-md-8">
-                                                        <div class="input-group" style="margin-top: 7px">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label class="col-md-4" style="margin-top: 10px">Foto Surat
+                                                            Polisi</label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-group" style="margin-top: 7px">
                                                     <span class="input-group-btn">
                                                         <span class="btn btn-default btn-file">
                                                             Browse… <s:file accept=".jpg" id="foto_surat"
                                                                             name="fileUploadDocPolisi"></s:file>
                                                         </span>
                                                     </span>
-                                                            <input type="text" class="form-control" readonly>
+                                                                <input type="text" class="form-control" readonly>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -960,42 +1067,48 @@
                                 <div class="box-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 10px">Nama Rekanan</label>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px">Nama Rekanan</label>
 
-                                                <div class="col-md-8">
-                                                    <select id="unit_ptpn" class="form-control select2" style="width: 100%"
-                                                            onchange="var warn =$('#war_ptpn').is(':visible'); if (warn){$('#con_ptpn').show().fadeOut(3000);$('#war_ptpn').hide()}; cekPtpn(this.value);">
-                                                    </select>
-                                                    <span style="color: red; display: none" id="war_ptpn"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_ptpn"><i
-                                                            class="fa fa-check"></i> correct</span>
+                                                    <div class="col-md-8">
+                                                        <select id="unit_ptpn" class="form-control select2" style="width: 100%"
+                                                                onchange="var warn =$('#war_ptpn').is(':visible'); if (warn){$('#con_ptpn').show().fadeOut(3000);$('#war_ptpn').hide()}; cekPtpn(this.value);">
+                                                        </select>
+                                                        <span style="color: red; display: none" id="war_ptpn"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_ptpn"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group" id="form_pg" style="display: none">
-                                                <label class="col-md-4" style="margin-top: 10px">PG Unit</label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" id="unit_pg" style="margin-top: 7px">
-                                                    <span style="color: red; display: none" id="war_pg"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_pg"><i
-                                                            class="fa fa-check"></i> correct</span>
+                                            <div class="row">
+                                                <div class="form-group" id="form_pg" style="display: none">
+                                                    <label class="col-md-4" style="margin-top: 10px">PG Unit</label>
+                                                    <div class="col-md-8">
+                                                        <input class="form-control" id="unit_pg" style="margin-top: 7px">
+                                                        <span style="color: red; display: none" id="war_pg"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_pg"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 10px">No Kartu
-                                                    Rekanan</label>
-                                                <div class="col-md-8">
-                                                    <s:textfield id="no_kartu_ptpn"
-                                                                 cssStyle="margin-top: 7px" cssClass="form-control" oninput="$('#h_no_kartu').val(this.value)"
-                                                                 onkeypress="var warn =$('#war_no_kartu_ptpn').is(':visible'); if (warn){$('#con_no_kartu_ptpn').show().fadeOut(3000);$('#war_no_kartu_ptpn').hide()}"></s:textfield>
-                                                    <span style="color: red; display: none" id="war_no_kartu_ptpn"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_no_kartu_ptpn"><i
-                                                            class="fa fa-check"></i> correct</span>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px">No Kartu
+                                                        Rekanan</label>
+                                                    <div class="col-md-8">
+                                                        <s:textfield id="no_kartu_ptpn"
+                                                                     cssStyle="margin-top: 7px" cssClass="form-control" oninput="$('#h_no_kartu').val(this.value)"
+                                                                     onkeypress="var warn =$('#war_no_kartu_ptpn').is(':visible'); if (warn){$('#con_no_kartu_ptpn').show().fadeOut(3000);$('#war_no_kartu_ptpn').hide()}"></s:textfield>
+                                                        <span style="color: red; display: none" id="war_no_kartu_ptpn"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_no_kartu_ptpn"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1012,101 +1125,113 @@
                                     <input type="hidden" id="status_rujukan">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
-                                                <div class="col-md-8">
-                                                    <s:select list="#{'2':'PPK 2 - RS Lain'}"
-                                                              cssStyle="margin-top: 7px"
-                                                              name="headerCheckup.rujuk"
-                                                              onchange="changePlaceHolder(this); var warn =$('#war_perujuk').is(':visible'); if (warn){$('#con_perujuk').show().fadeOut(3000);$('#war_perujuk').hide()}"
-                                                              id="perujuk"
-                                                              headerKey="1" headerValue="PPK 1 - Puskesmas"
-                                                              cssClass="form-control"/>
-                                                    <span style="color: red; display: none" id="war_perujuk"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_perujuk"><i
-                                                            class="fa fa-check"></i> correct</span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 7px">No Rujukan</label>
-                                                <div class="col-md-8">
-                                                    <div class="input-group" style="margin-top: 7px">
-                                                        <s:textfield id="no_rujukan" cssClass="form-control"
-                                                                     oninput="$('#h_no_rujukan').val(this.value)"
-                                                                     onkeypress="var warn =$('#war_no_rujukan').is(':visible'); if (warn){$('#con_no_rujukan').show().fadeOut(3000);$('#war_no_rujukan').hide()}"></s:textfield>
-                                                        <div class="input-group-btn">
-                                                            <a class="btn btn-success" onclick="cekNoRujukan()">
-                                                                <span id="btn-cek-rujukan"><i class="fa fa-search"></i> Check</span></a>
-                                                        </div>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
+                                                    <div class="col-md-8">
+                                                        <s:select list="#{'2':'PPK 2 - RS Lain'}"
+                                                                  cssStyle="margin-top: 7px"
+                                                                  name="headerCheckup.rujuk"
+                                                                  onchange="changePlaceHolder(this); var warn =$('#war_perujuk').is(':visible'); if (warn){$('#con_perujuk').show().fadeOut(3000);$('#war_perujuk').hide()}"
+                                                                  id="perujuk"
+                                                                  headerKey="1" headerValue="PPK 1 - Puskesmas"
+                                                                  cssClass="form-control"/>
+                                                        <span style="color: red; display: none" id="war_perujuk"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_perujuk"><i
+                                                                class="fa fa-check"></i> correct</span>
                                                     </div>
-                                                    <span style="color: red; display: none" id="war_no_rujukan"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_no_rujukan"><i
-                                                            class="fa fa-check"></i> correct</span>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 7px">Keterangan
-                                                    Perujuk</label>
-                                                <div class="col-md-8">
-                                                    <s:textfield id="intansi_perujuk" name="headerCheckup.ketPerujuk"
-                                                                 cssClass="form-control" cssStyle="margin-top: 7px"
-                                                                 onkeypress="var warn =$('#war_ket_perujuk').is(':visible'); if (warn){$('#con_ket_perujuk').show().fadeOut(3000);$('#war_ket_perujuk').hide()}"/>
-                                                    <span style="color: red; display: none" id="war_ket_perujuk"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_ket_perujuk"><i
-                                                            class="fa fa-check"></i> correct</span>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 7px">No Rujukan</label>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group" style="margin-top: 7px">
+                                                            <s:textfield id="no_rujukan" cssClass="form-control"
+                                                                         oninput="$('#h_no_rujukan').val(this.value)"
+                                                                         onkeypress="var warn =$('#war_no_rujukan').is(':visible'); if (warn){$('#con_no_rujukan').show().fadeOut(3000);$('#war_no_rujukan').hide()}"></s:textfield>
+                                                            <div class="input-group-btn">
+                                                                <a class="btn btn-success" onclick="cekNoRujukan()">
+                                                                    <span id="btn-cek-rujukan"><i class="fa fa-search"></i> Check</span></a>
+                                                            </div>
+                                                        </div>
+                                                        <span style="color: red; display: none" id="war_no_rujukan"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_no_rujukan"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 7px">Keterangan
+                                                        Perujuk</label>
+                                                    <div class="col-md-8">
+                                                        <s:textfield id="intansi_perujuk" name="headerCheckup.ketPerujuk"
+                                                                     cssClass="form-control" cssStyle="margin-top: 7px"
+                                                                     onkeypress="var warn =$('#war_ket_perujuk').is(':visible'); if (warn){$('#con_ket_perujuk').show().fadeOut(3000);$('#war_ket_perujuk').hide()}"/>
+                                                        <span style="color: red; display: none" id="war_ket_perujuk"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_ket_perujuk"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 7px">No PPK Rujukan</label>
-                                                <div class="col-md-8">
-                                                    <s:textfield name="headerCheckup.noPpkRujukan" id="ppk_rujukan"
-                                                                 onkeypress="var warn =$('#war_ppk_rujukan').is(':visible'); if (warn){$('#con_ppk_rujukan').show().fadeOut(3000);$('#war_ppk_rujukan').hide()}"
-                                                                 cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                                    <span style="color: red; display: none" id="war_ppk_rujukan"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_ppk_rujukan"><i
-                                                            class="fa fa-check"></i> correct</span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 7px">Tanggal Rujukan</label>
-                                                <div class="col-md-8">
-                                                    <div class="input-group date" style="margin-top: 7px">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <s:textfield id="tgl_rujukan"
-                                                                     cssClass="form-control datepicker datemask"
-                                                                     onchange="var warn =$('#war_tgl_rujukan').is(':visible'); if (warn){$('#con_tgl_rujukan').show().fadeOut(3000);$('#war_tgl_rujukan').hide()}; $('#tanggal_rujukan').val(this.value)"
-                                                        />
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 7px">No PPK Rujukan</label>
+                                                    <div class="col-md-8">
+                                                        <s:textfield name="headerCheckup.noPpkRujukan" id="ppk_rujukan"
+                                                                     onkeypress="var warn =$('#war_ppk_rujukan').is(':visible'); if (warn){$('#con_ppk_rujukan').show().fadeOut(3000);$('#war_ppk_rujukan').hide()}"
+                                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                        <span style="color: red; display: none" id="war_ppk_rujukan"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_ppk_rujukan"><i
+                                                                class="fa fa-check"></i> correct</span>
                                                     </div>
-                                                    <span style="color: red; display: none" id="war_tgl_rujukan"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_tgl_rujukan"><i
-                                                            class="fa fa-check"></i> correct</span>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 7px">Foto Surat Rujuk</label>
-                                                <div class="col-md-8">
-                                                    <div class="input-group" style="margin-top: 7px" id="img_url">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 7px">Tanggal Rujukan</label>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group date" style="margin-top: 7px">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <s:textfield id="tgl_rujukan"
+                                                                         cssClass="form-control datepicker datemask"
+                                                                         onchange="var warn =$('#war_tgl_rujukan').is(':visible'); if (warn){$('#con_tgl_rujukan').show().fadeOut(3000);$('#war_tgl_rujukan').hide()}; $('#tanggal_rujukan').val(this.value)"
+                                                            />
+                                                        </div>
+                                                        <span style="color: red; display: none" id="war_tgl_rujukan"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_tgl_rujukan"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 7px">Foto Surat Rujuk</label>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group" style="margin-top: 7px" id="img_url">
                                                     <span class="input-group-btn">
                                                         <span class="btn btn-default btn-file">
                                                             Browse… <s:file id="url_do" accept=".jpg"
                                                                             name="fileUploadDoc"></s:file>
                                                         </span>
                                                     </span>
-                                                        <input type="text" class="form-control" readonly>
+                                                            <input type="text" class="form-control" readonly>
+                                                        </div>
+                                                        <span style="color: red; display: none" id="war_foto_rujukan"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_foto_rujukan"><i
+                                                                class="fa fa-check"></i> correct</span>
                                                     </div>
-                                                    <span style="color: red; display: none" id="war_foto_rujukan"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_foto_rujukan"><i
-                                                            class="fa fa-check"></i> correct</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1134,7 +1259,26 @@
                             <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="h_id_jenis_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.idLab" id="h_id_order_lab"></s:hidden>
 
-                            <div id="form-uang-muka">
+                            <div id="form-is-uang-muka" style="display: none">
+                                <div class="box-header with-border"></div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <label class="col-md-5">Apakah Ada Uang Muka ?</label>
+                                                <div class="col-md-7">
+                                                    <div class="form-check">
+                                                        <input onclick="isUangMuka(this.id)" type="checkbox" id="is_uang_muka" value="yes">
+                                                        <label for="is_uang_muka"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
                                     <h3 class="box-title"><i class="fa fa-money"></i> Pembayaran</h3>
@@ -1142,41 +1286,45 @@
                                 <div class="box-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 10px"> Metode Pembayaran</label>
-                                                <div class="col-md-8">
-                                                    <s:select
-                                                            list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
-                                                            cssStyle="margin-top: 7px"
-                                                            id="pembayaran"
-                                                            onchange="var warn =$('#war_pembayaran').is(':visible'); if (warn){$('#con_pembayaran').show().fadeOut(3000);$('#war_pembayaran').hide()}"
-                                                            name="headerCheckup.metodePembayaran"
-                                                            headerKey="" headerValue="[Select one]"
-                                                            cssClass="form-control"/>
-                                                    <span style="color: red; display: none" id="war_pembayaran"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_pembayaran"><i
-                                                            class="fa fa-check"></i> correct</span>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px"> Metode Pembayaran</label>
+                                                    <div class="col-md-8">
+                                                        <s:select
+                                                                list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
+                                                                cssStyle="margin-top: 7px"
+                                                                id="pembayaran"
+                                                                onchange="var warn =$('#war_pembayaran').is(':visible'); if (warn){$('#con_pembayaran').show().fadeOut(3000);$('#war_pembayaran').hide()}"
+                                                                name="headerCheckup.metodePembayaran"
+                                                                headerKey="" headerValue="[Select one]"
+                                                                cssClass="form-control"/>
+                                                        <span style="color: red; display: none" id="war_pembayaran"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_pembayaran"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 10px">Uang Muka</label>
-                                                <div class="col-md-8">
-                                                    <div class="input-group" style="margin-top: 7px">
-                                                        <div class="input-group-addon">
-                                                            Rp.
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px">Uang Muka</label>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group" style="margin-top: 7px">
+                                                            <div class="input-group-addon">
+                                                                Rp.
+                                                            </div>
+                                                            <s:hidden name="headerCheckup.uangMuka"
+                                                                      id="uang_muka_val"></s:hidden>
+                                                            <input id="uang_muka" class="form-control"
+                                                                   oninput="var warn =$('#war_uang_muka').is(':visible'); if (warn){$('#con_uang_muka').show().fadeOut(3000);$('#war_uang_muka').hide()}; convertRpAtas(this.id, this.value, 'uang_muka_val')"/>
                                                         </div>
-                                                        <s:hidden name="headerCheckup.uangMuka"
-                                                                  id="uang_muka_val"></s:hidden>
-                                                        <input id="uang_muka" class="form-control"
-                                                                     oninput="var warn =$('#war_uang_muka').is(':visible'); if (warn){$('#con_uang_muka').show().fadeOut(3000);$('#war_uang_muka').hide()}; convertRpAtas(this.id, this.value, 'uang_muka_val')"/>
+                                                        <span style="color: red; display: none" id="war_uang_muka"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_uang_muka"><i
+                                                                class="fa fa-check"></i> correct</span>
                                                     </div>
-                                                    <span style="color: red; display: none" id="war_uang_muka"><i
-                                                            class="fa fa-times"></i> required</span>
-                                                    <span style="color: green; display: none" id="con_uang_muka"><i
-                                                            class="fa fa-check"></i> correct</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1245,7 +1393,7 @@
                                                         onclick="window.location.reload(true)">
                                                     <i class="fa fa-refresh"></i> Reset
                                                 </button>
-                                                <a type="button" class="btn btn-warning" href="initForm_igd.action">
+                                                <a type="button" class="btn btn-warning" href="initForm_checkup.action">
                                                     <i class="fa fa-arrow-left"></i> Back
                                                 </a>
                                             </div>
@@ -2475,7 +2623,7 @@
 
     function setJenisPasien(jenis){
         if(jenis == "umum"){
-            $('#form-uang-muka').show();
+            $('#form-is-uang-muka').show();
             $('#form-paket-perusahaan').hide();
             $('#form-paket').hide();
             $('#form-asuransi').hide();
@@ -2493,7 +2641,7 @@
             }
             $('#form-no-bpjs').show();
             $('#form-rujukan').show();
-            $('#form-uang-muka').hide();
+            $('#form-is-uang-muka').hide();
             $('#form-paket-perusahaan').hide();
             $('#form-paket').hide();
             $('#form-asuransi').hide();
@@ -2502,7 +2650,7 @@
             $('#form-paket-perusahaan').show();
             $('#form-no-bpjs').hide();
             $('#form-rujukan').hide();
-            $('#form-uang-muka').hide();
+            $('#form-is-uang-muka').hide();
             $('#form-asuransi').hide();
             $('#form-rekanan').hide();
             $('#form-paket').hide();
@@ -2514,7 +2662,7 @@
             $('#form-rujukan').hide();
             $('#form-asuransi').hide();
             $('#form-rekanan').hide();
-            $('#form-uang-muka').hide();
+            $('#form-is-uang-muka').hide();
         }else if(jenis == "asuransi"){
             listSelectAsuransi();
             $('#form-asuransi').show();
@@ -2522,7 +2670,7 @@
             $('#form-paket-perusahaan').hide();
             $('#form-no-bpjs').hide();
             $('#form-rujukan').hide();
-            $('#form-uang-muka').hide();
+            $('#form-is-uang-muka').hide();
             $('#form-rekanan').hide();
         }
         $('#h_id_jenis_pasien').val(jenis);
@@ -2568,12 +2716,21 @@
         var kota = $('#add_id_kota').val();
         var kecamatan = $('#add_id_kecamatan').val();
         var desa = $('#add_id_desa').val();
+        var cekCondTgl = false;
 
         var ktp = document.getElementById('img_ktp_canvas');
         var cek = false;
 
+        var cekTglLahir = tanggalLahir.split("-");
+        $.each(cekTglLahir, function (i, item) {
+            var numbers = /^[0-9]+$/;
+            if(!item.match(numbers)){
+                cekCondTgl = true;
+            }
+        });
+
         if (nik != '' && nama != '' && jk != '' && tempatLahir != '' && tanggalLahir != '' &&
-            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && noTelp != '') {
+            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && noTelp != '' && !cekCondTgl) {
             cek = true;
         } else {
             $('#warning_add').show().fadeOut(5000);
@@ -2873,6 +3030,14 @@
 
     function setOrderLab(val){
         $('#h_id_order_lab').val(val);
+    }
+
+    function isUangMuka(id){
+        if($('#'+id).is(':checked')){
+            $('#form-uang-muka').show();
+        }else{
+            $('#form-uang-muka').hide();
+        }
     }
 </script>
 

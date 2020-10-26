@@ -3269,6 +3269,95 @@ function delICU(jenis, ket) {
     });
 }
 
+function setCustomeJenis(idSet, jenis){
+    var set = "";
+    if(jenis == 'loading' || jenis == 'darah' || jenis == 'cairan'){
+        var id = "";
+        var count = "";
+        var pc1 = "";
+        var pc2 = "";
+        if(jenis == 'loading'){
+            count = $('.jenis_loading').length;
+            id = 'loading'+count;
+            pc1 = 'jenis_loading';
+            pc2 = 'Loading';
+        }
+        if(jenis == 'darah'){
+            count = $('.jenis_darah').length;
+            id = 'darah'+count;
+            pc1 = 'jenis_darah';
+            pc2 = 'Darah';
+        }
+        if(jenis == 'cairan'){
+            count = $('.jenis_cairan').length;
+            id = 'cairan'+count;
+            pc1 = 'jenis_cairan';
+            pc2 = 'Cairan';
+        }
+
+        set = '<div class="row jarak" id="'+id+'">\n' +
+            '<div class="col-md-offset-3 col-md-5">\n' +
+            '    <input class="form-control '+pc1+'" placeholder="Jenis '+pc2+'">\n' +
+            '</div>\n' +
+            '<div class="col-md-3">\n' +
+            '    <input class="form-control '+pc1+'" placeholder="Nilai '+pc2+'" type="number">\n' +
+            '</div>\n' +
+            '<div class="col-md-1">\n' +
+            '    <button style="margin-top:2px; margin-left: -20px" onclick="delJenis(\''+id+'\')" class="btn btn-danger"><i class="fa fa-trash"></i></button>\n' +
+            '</div>\n' +
+            '</div>';
+    }
+    if(jenis == 'injeksi' || jenis == 'oral' || jenis == 'lainnya'){
+        var id = "";
+        var count = "";
+        var pc1 = "";
+        var pc2 = "";
+        var pc3 = "";
+        if(jenis == 'injeksi'){
+            count = $('.jenis_injeksi').length;
+            id = 'loading'+count;
+            pc1 = 'jenis_injeksi';
+            pc2 = 'awal_injeksi';
+            pc3 = 'akhir_injeksi';
+        }
+        if(jenis == 'oral'){
+            count = $('.jenis_oral').length;
+            id = 'darah'+count;
+            pc1 = 'jenis_oral';
+            pc2 = 'awal_oral';
+            pc3 = 'akhir_oral';
+        }
+        if(jenis == 'lainnya'){
+            count = $('.jenis_lainnya').length;
+            id = 'cairan'+count;
+            pc1 = 'jenis_lainnya';
+            pc2 = 'awal_lainnya';
+            pc3 = 'akhir_lainnya';
+        }
+
+        set = '<div class="row jarak" id="'+id+'">\n' +
+            '<div class="col-md-offset-3 col-md-5">\n' +
+            '    <input class="form-control '+pc1+'" placeholder="Jenis '+jenis+'">\n' +
+            '</div>\n' +
+            '<div class="col-md-3">\n' +
+            '    <div class="input-group">\n' +
+            '        <input class="form-control '+pc2+'" placeholder="N" style="font-size: 12px">\n' +
+            '        <div class="input-group-addon" style="font-size: 12px">x</div>\n' +
+            '        <input class="form-control '+pc3+'" placeholder="N" style="font-size: 12px">\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '<div class="col-md-1">\n' +
+            '    <button style="margin-top:2px; margin-left: -20px" onclick="delJenis(\''+id+'\')" class="btn btn-danger"><i class="fa fa-trash"></i></button>\n' +
+            '</div>\n' +
+            '</div>';
+    }
+    $('#'+idSet).append(set);
+}
+
+function delJenis(id){
+    $('#'+id).remove();
+}
+
 
 
 

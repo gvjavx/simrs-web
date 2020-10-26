@@ -3194,6 +3194,11 @@ public class RawatInapAction extends BaseMasterAction {
                     if(uangMuka != null && !"".equalsIgnoreCase(uangMuka)){
                         checkup.setUangMuka(new BigInteger(uangMuka));
                     }
+                    checkup.setIdJenisPeriksaPasien(jenisPasien);
+                    checkup.setBranchId(branchId);
+                    checkup.setIdPasien(responsePasien.getIdPasien());
+                    checkup.setStatusPeriksa("1");
+                    checkup.setJenisKunjungan("Baru");
                     checkup.setRawatInap(true);
                     response = checkupBo.saveAddWithResponse(checkup);
                 }

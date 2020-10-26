@@ -1109,6 +1109,13 @@ ADD COLUMN sip VARCHAR(100);
 INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000239','RMM00000098','rawat_inap','17','Y','C','migrasi',now(),now(),'migrasi');
 
+--FRIDAY 23-10-2020
+SELECT * FROM im_simrs_pelayanan
+WHERE id_pelayanan = 'PYN00000010'
+
+UPDATE im_simrs_pelayanan
+SET kategori_pelayanan = 'spesialis_mata'
+WHERE id_pelayanan = 'PYN00000010'
 
 
 

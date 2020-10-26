@@ -105,7 +105,7 @@
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}"
-                                                  cssStyle="margin-top: 7px"
+                                                  cssStyle="margin-top: 7px; width: 100%"
                                                   id="status" name="headerCheckup.statusPeriksa"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>

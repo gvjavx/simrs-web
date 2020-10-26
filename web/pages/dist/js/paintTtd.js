@@ -54,6 +54,10 @@ function paintTtd(id, change){
     paintCanvas.addEventListener("mousemove", drawLine);
     paintCanvas.addEventListener("mouseup", stopDrawing);
     paintCanvas.addEventListener("mouseout", stopDrawing);
+
+    paintCanvas.addEventListener("touchstart", startDrawing);
+    paintCanvas.addEventListener("touchmove", drawLine);
+    paintCanvas.addEventListener("touchend", stopDrawing);
 }
 
 function removePaint(id){
@@ -156,6 +160,38 @@ function removePaint(id){
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
         var url = contextPath+'/pages/images/scala-nyeri-number-2.jpg';
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else if("area_mata" == id){
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var url = contextPath+'/pages/images/mata.png';
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.src = url;
+        img.onload = function (ev) {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+        }
+    }else if("area_kulit_kelamin" == id){
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        if(jenisKelamin == "Perempuan"){
+            url = contextPath + '/pages/images/kk_girl.png';
+        }else{
+            url = contextPath + '/pages/images/kk_man.png';
+        }
 
         var ctx = canvas.getContext('2d');
         var img = new Image();

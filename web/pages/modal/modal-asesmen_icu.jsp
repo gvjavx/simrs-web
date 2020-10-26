@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal-icu-asesmen_icu">
-    <div class="modal-dialog" style="width: 80%">
+    <div class="modal-dialog" style="width: 80%; position: center">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1433,7 +1433,7 @@
 </div>
 
 <div class="modal fade" id="modal-icu-keseimbangan_icu">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog" style="width: 55%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1450,7 +1450,7 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Waktu</label>
-                            <div class="col-md-9">
+                            <div class="col-md-5">
                                 <select class="form-control select2 " id="waktu_keseimbangan_icu" style="width: 100%">
                                     <option value="">[Select One]</option>
                                     <option value="07:00">07:00</option>
@@ -1481,12 +1481,179 @@
                             </div>
                         </div>
                     </div>
-                    <div id="select_isi"></div>
-                    <div id="resus"></div>
-                    <div id="darah"></div>
-                    <div id="infus"></div>
-                    <div id="inpt_keseimbangan_icu"></div>
-                    <input type="hidden" id="is_new">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label><b>I. Parenteral</b></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3">Loading</label>
+                        <div class="col-md-5">
+                            <input class="form-control jenis_loading" placeholder="Jenis Loading">
+                        </div>
+                        <div class="col-md-3">
+                            <input class="form-control nilai_loading" placeholder="Nilai Loading" type="number">
+                        </div>
+                        <div class="col-md-1">
+                            <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_loading', 'loading')" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div id="set_loading"></div>
+                    <div class="row jarak">
+                        <label class="col-md-3">Darah</label>
+                        <div class="col-md-5">
+                            <input class="form-control jenis_darah" placeholder="Jenis Darah">
+                        </div>
+                        <div class="col-md-3">
+                            <input class="form-control nilai_darah" placeholder="Nilai Darah" type="number">
+                        </div>
+                        <div class="col-md-1">
+                            <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_darah', 'darah')" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div id="set_darah"></div>
+                    <div class="row jarak" >
+                        <label class="col-md-3">Cairan</label>
+                        <div class="col-md-5">
+                            <input class="form-control jenis_cairan" placeholder="Jenis Cairan">
+                        </div>
+                        <div class="col-md-3">
+                            <input class="form-control nilai_cairan" placeholder="Nilai Cairan" type="number">
+                        </div>
+                        <div class="col-md-1">
+                            <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_cairan', 'cairan')" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div id="set_cairan"></div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label><b>II. Obat-Obatan</b></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3">Injeksi</label>
+                        <div class="col-md-5">
+                            <input class="form-control" placeholder="Jenis Injeksi">
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <input class="form-control" id="nilai_injek_1" placeholder="N" style="font-size: 12px" oninput="cekNumber(this.id, this.value)">
+                                <div class="input-group-addon" style="font-size: 12px">x</div>
+                                <input class="form-control" placeholder="N" style="font-size: 12px">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_injeksi', 'injeksi')" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div id="set_injeksi"></div>
+                    <div class="row jarak">
+                        <label class="col-md-3">Oral</label>
+                        <div class="col-md-5">
+                            <input class="form-control" placeholder="Jenis Oral">
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="N" style="font-size: 12px">
+                                <div class="input-group-addon" style="font-size: 12px">x</div>
+                                <input class="form-control" placeholder="N" style="font-size: 12px">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_oral', 'oral')" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div id="set_oral"></div>
+                    <div class="row jarak">
+                        <label class="col-md-3">Lainnya</label>
+                        <div class="col-md-5">
+                            <input class="form-control" placeholder="Jenis Lainnya">
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="N" style="font-size: 12px">
+                                <div class="input-group-addon" style="font-size: 12px">x</div>
+                                <input class="form-control" placeholder="N" style="font-size: 12px">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_lainnya', 'lainnya')" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div id="set_lainnya"></div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label><b>III. Enteral</b></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3">NGT/Oral</label>
+                        <div class="col-md-5">
+                            <input class="form-control" placeholder="jam/hari">
+                        </div>
+                        <div class="col-md-1">
+                            <button style="margin-top:2px; margin-left: -20px" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-3">Minum</label>
+                        <div class="col-md-5">
+                            <input class="form-control" placeholder="jam/hari">
+                        </div>
+                        <div class="col-md-1">
+                            <button style="margin-top:2px; margin-left: -20px" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <hr class="garis">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label><b>IV. Output</b></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3">Drain 1</label>
+                        <div class="col-md-3">
+                            <input class="form-control" type="number">
+                        </div>
+                        <label class="col-md-2">Drain 2</label>
+                        <div class="col-md-3">
+                            <input class="form-control" type="number">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-3">Urin</label>
+                        <div class="col-md-3">
+                            <input class="form-control" type="number">
+                        </div>
+                        <label class="col-md-2">Muntah</label>
+                        <div class="col-md-3">
+                            <input class="form-control" type="number">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-3">BAB</label>
+                        <div class="col-md-3">
+                            <input class="form-control" type="number">
+                        </div>
+                        <label class="col-md-2">IWL</label>
+                        <div class="col-md-3">
+                            <input class="form-control" type="number">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-3">Stoma</label>
+                        <div class="col-md-3">
+                            <input class="form-control" type="number">
+                        </div>
+                    </div>
+                    <%--<div id="select_isi"></div>--%>
+                    <%--<div id="resus"></div>--%>
+                    <%--<div id="darah"></div>--%>
+                    <%--<div id="infus"></div>--%>
+                    <%--<div id="inpt_keseimbangan_icu"></div>--%>
+                    <%--<input type="hidden" id="is_new">--%>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

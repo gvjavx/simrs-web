@@ -47,6 +47,25 @@ function showModalSPS(jenis, idRM, isSetIdRM) {
         loadImgToCanvas(url, 'area_gigi2');
     }
 
+    if("pemeriksaan_kk" == jenis){
+        var url = "";
+        if(jenisKelamin == "Perempuan"){
+            url = contextPath + '/pages/images/kk_girl.png';
+        }else{
+            url = contextPath + '/pages/images/kk_man.png';
+        }
+        loadImgToCanvas(url, 'area_kulit_kelamin');
+    }
+    if("ophtal" == jenis){
+        console.log('jenssss');
+        var url = contextPath + '/pages/images/mata.png';
+        loadImgToCanvas(url, 'area_mata');
+    }
+
+    if("visus" == jenis){
+        setSph("sph-val");
+    }
+
     $('#modal-sps-' + jenis).modal({show: true, backdrop: 'static'});
     setDataPasien();
 }
@@ -2246,6 +2265,182 @@ function saveSPS(jenis, ket) {
         }
     }
 
+    if ("pengkajian_mata" == jenis) {
+        var va1 = $('#p1').val();
+        var va2 = $('#p2').val();
+        var va3 = $('#p3').val();
+        var va4 = $('#p4').val();
+
+        if (va1 && va2 && va3 && va4 != '') {
+            data.push({
+                'parameter': 'Tanggal Jam',
+                'jawaban': va1+" "+va2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Anamnese',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keluhan Utama',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if ("visus" == jenis) {
+        var va1 = $('#v1').val();
+        var va2 = $('#v2').val();
+        var va3 = $('#v3').val();
+        var va4 = $('#v4').val();
+        var va5 = $('#v5').val();
+        var va6 = $('#v6').val();
+        var va7 = $('#v7').val();
+        var va8 = $('#v8').val();
+        var va9 = $('#v9').val();
+        var va10 = $('#v10').val();
+        var va11 = $('#v11').val();
+        var va12 = $('#v12').val();
+        var va13 = $('#v13').val();
+        var va14 = $('#v14').val();
+        var va15 = $('#v15').val();
+        var va16 = $('#v16').val();
+        var va17 = $('#v17').val();
+        var va18 = $('#v18').val();
+        var va19 = $('#v19').val();
+        var va20 = $('#v20').val();
+        var va21 = $('#v21').val();
+        var va22 = $('#v22').val();
+        var va23 = $('#v23').val();
+        var va24 = $('#v24').val();
+        var va25 = $('#v25').val();
+        var va26 = $('#v26').val();
+        var va27 = $('#v27').val();
+        var va28 = $('#v28').val();
+
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10
+            && va11 && va12 && va13 && va14 && va15 && va16 && va17 && va18 && va19 && va20 && va21 &&
+            va22 && va23 && va24 && va25 && va26 && va27 && va28 != '') {
+            data.push({
+                'parameter': 'Jenis Optalmologist',
+                'jawaban': 'OD|OS',
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe':'pernyataan',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Visual Aquality',
+                'jawaban': va1 +', Sph: '+va2+', Cyl: '+va3+', X: '+va4+', Visual Akhir: '+va5+'|'+va15 +', Sph: '+va16+', Cyl: '+va17+', X: '+va18+', Visual Akhir: '+va19,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'KML',
+                'jawaban': 'Sph: '+va6+', Cyl: '+va7+', X: '+va8+', Visual Akhir: '+va9+'|'+'Sph: '+va20+', Cyl: '+va21+', X: '+va22+', Visual Akhir: '+va23,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Addisi',
+                'jawaban': va10+'|'+va24,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keratometri',
+                'jawaban': 'K1: '+va11+', K2: '+va12+'|'+'K1: '+va25+', K2: '+va26,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tonometri',
+                'jawaban': 'Non-Contact: '+va13+' mmHg, Schiotz: '+va14+' mmHg|'+'Non-Contact: '+va13+' mmHg, Schiotz: '+va14+' mmHg',
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if ("ophtal" == jenis) {
+        var va1 = $('.o-label');
+        var va2 = $('.od-isi');
+        var va3 = $('.os-isi');
+        var kete = $('#o1').val();
+        var nama = $('#nama_terang_ttd1').val();
+        var sip = $('#sip_ttd1').val();
+        var c3 = "";
+
+        var cekCanvas = "Y";
+        var canvasArea = document.getElementById('area_mata');
+        var canvasCek = document.getElementById('area_cek');
+        var tts = document.getElementById('ttd1');
+        var cektts = isCanvasBlank(tts);
+
+        if (canvasArea.toDataURL() == canvasCek.toDataURL()) {
+            cekCanvas = "N";
+        }
+        if(cekCanvas == "Y"){
+            var canv = canvasArea.toDataURL("image/png"),
+                canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
+            data.push({
+                'parameter': 'Pemeriksaan Optalmologist',
+                'jawaban': canv,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'gambar',
+                'id_detail_checkup': idDetailCheckup
+            });
+        }
+
+        $.each(va2, function (i, item) {
+            console.log(va1[i].text());
+            if(item.value != '' && va3[i].value != ''){
+                data.push({
+                    'parameter': va1[i].text,
+                    'jawaban': item.value+'|'+va3[i].value,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+                c3 = "Y";
+                console.log(va1[i].text);
+                console.log(va3[i].value);
+                console.log(item.value);
+            }
+        });
+
+        if (c3 == "Y" && cekCanvas == "Y" && !cektts) {
+            var tad = convertToDataURL(tts);
+            data.push({
+                'parameter': 'TTD Spesialis Mata',
+                'jawaban': tad,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe':'ttd',
+                'sip':sip,
+                'nama_terang': nama,
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
     if (cek) {
         var result = JSON.stringify(data);
         var pasienData = JSON.stringify(dataPasien);
@@ -2435,4 +2630,39 @@ function delSPS(jenis, ket) {
             }
         }
     });
+}
+
+function setSph(kelas){
+    var temp = 0;
+    var temp2 = "";
+    var setOption = '<option value="">Select</option>';
+    for (var j = 0; j < 2; j++){
+        for (var i = 0; i < 90; i++){
+            var option = "";
+            if(i == 0){
+                temp2 = temp + (0.25);
+            }else{
+                temp2 = temp2 + (0.25);
+            }
+            var sp = ""+temp2;
+            var repl = sp.split('.');
+            if(repl.length == 1){
+                option = temp2+".00";
+            }else{
+                if(repl[1].length == 1){
+                    option = ""+temp2+"0";
+                }else{
+                    option = ""+temp2;
+                }
+            }
+            if(j == 0){
+                setOption += '<option value="-'+option+'">-'+option+'</option>';
+            }else{
+                setOption += '<option value="+'+option+'">+'+option+'</option>';
+            }
+        }
+    }
+    if(setOption != ''){
+        $('.'+kelas).html(setOption);
+    }
 }
