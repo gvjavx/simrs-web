@@ -259,8 +259,12 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
         return dokterList;
     }
 
-    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup){
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailCheckup, String approve){
         List<Dokter> dokterList = new ArrayList<>();
+        String flag = "";
+        if("Y".equalsIgnoreCase(approve)){
+            flag = "AND a.flag_approve = 'Y' \n";
+        }
         if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
             String SQL = "SELECT \n" +
                     "b.id_dokter, \n" +
@@ -274,7 +278,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "FROM it_simrs_dokter_team a\n" +
                     "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
                     "INNER JOIN im_simrs_pelayanan c ON a.id_pelayanan = c.id_pelayanan\n" +
-                    "WHERE a.id_detail_checkup = :id \n" +
+                    "WHERE a.id_detail_checkup = :id \n" + flag +
                     "ORDER BY a.created_date ASC";
 
             List<Object[]> result = new ArrayList<>();

@@ -742,6 +742,11 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setNipLama(bean.getNipLama());
                                 imBiodataEntity.setShift(bean.getShift());
 
+                                //BARU
+                                imBiodataEntity.setPeralihanGapok(bean.getPeralihanGapok());
+                                imBiodataEntity.setPeralihanSankhus(bean.getPeralihanSankhus());
+                                imBiodataEntity.setPeralihanTunjangan(bean.getPeralihanTunjangan());
+
 //                            if(itPersonilPositionEntity != null){
 //                                for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
 //                                    itPerson.setBranchId(bean.getBranch());
@@ -1086,6 +1091,11 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setNipLama(bean.getNipLama());
                             imBiodataEntity.setShift(bean.getShift());
 
+                            //BARU
+                            imBiodataEntity.setPeralihanGapok(bean.getPeralihanGapok());
+                            imBiodataEntity.setPeralihanSankhus(bean.getPeralihanSankhus());
+                            imBiodataEntity.setPeralihanTunjangan(bean.getPeralihanTunjangan());
+
 //                        if(itPersonilPositionEntity != null){
 //                            for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
 //                                itPerson.setBranchId(bean.getBranch());
@@ -1297,10 +1307,10 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setJenisPegawai(bean.getJenisPegawai());
 
                 //Tanggal Pensiun Lama
-            /*DateTime tglLahir = new DateTime(bean.getTanggalLahir());
-            tglLahir = tglLahir.plusYears(55);
-            String strTglLahir[] = CommonUtil.convertDateToString(bean.getTanggalLahir()).split("-");
-            imBiodataEntity.setTanggalPensiun(CommonUtil.convertStringToDate((strTglLahir[0]) + "-" + strTglLahir[1] + "-" + strTglLahir[2]));*/
+                /*DateTime tglLahir = new DateTime(bean.getTanggalLahir());
+                tglLahir = tglLahir.plusYears(55);
+                String strTglLahir[] = CommonUtil.convertDateToString(bean.getTanggalLahir()).split("-");
+                imBiodataEntity.setTanggalPensiun(CommonUtil.convertStringToDate((strTglLahir[0]) + "-" + strTglLahir[1] + "-" + strTglLahir[2]));*/
 
                 imBiodataEntity.setGender(bean.getGender());
 
@@ -1352,6 +1362,11 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
                 imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
                 imBiodataEntity.setNipLama(bean.getNipLama());
+
+                //BARU
+                imBiodataEntity.setPeralihanGapok(bean.getPeralihanGapok());
+                imBiodataEntity.setPeralihanSankhus(bean.getPeralihanSankhus());
+                imBiodataEntity.setPeralihanTunjangan(bean.getPeralihanTunjangan());
 
                 imBiodataEntity.setFlag(bean.getFlag());
                 imBiodataEntity.setAction(bean.getAction());
@@ -2270,6 +2285,16 @@ public class BiodataBoImpl implements BiodataBo {
                                     + "women_employee.png");
                         }
                     }
+
+                    //BARU
+                    returnBiodata.setStPeralihanGapok(CommonUtil.numbericFormat(personalEntity.getPeralihanGapok(),"###,###"));
+                    returnBiodata.setStPeralihanSankhus(CommonUtil.numbericFormat(personalEntity.getPeralihanSankhus(),"###,###"));
+                    returnBiodata.setStPeralihanTunjangan(CommonUtil.numbericFormat(personalEntity.getPeralihanTunjangan(),"###,###"));
+
+                    //ganti , dengan .
+                    returnBiodata.setStPeralihanGapok(returnBiodata.getStPeralihanGapok().replace(",","."));
+                    returnBiodata.setStPeralihanSankhus(returnBiodata.getStPeralihanSankhus().replace(",","."));
+                    returnBiodata.setStPeralihanTunjangan(returnBiodata.getStPeralihanTunjangan().replace(",","."));
 
                     ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
                     if (personalEntity.getNip() != null){

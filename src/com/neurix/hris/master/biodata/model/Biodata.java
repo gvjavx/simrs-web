@@ -139,8 +139,64 @@ public class Biodata extends BaseModel {
     private String pendidikanTerakhir;
     private String strLastUpdate;
 
+    //BARU
+    private BigDecimal peralihanGapok;
+    private BigDecimal peralihanSankhus;
+    private BigDecimal peralihanTunjangan;
+    private String stPeralihanGapok;
+    private String stPeralihanSankhus;
+    private String stPeralihanTunjangan;
+
+    public String getStPeralihanGapok() {
+        return stPeralihanGapok;
+    }
+
+    public void setStPeralihanGapok(String stPeralihanGapok) {
+        this.stPeralihanGapok = stPeralihanGapok;
+    }
+
+    public String getStPeralihanSankhus() {
+        return stPeralihanSankhus;
+    }
+
+    public void setStPeralihanSankhus(String stPeralihanSankhus) {
+        this.stPeralihanSankhus = stPeralihanSankhus;
+    }
+
+    public String getStPeralihanTunjangan() {
+        return stPeralihanTunjangan;
+    }
+
+    public void setStPeralihanTunjangan(String stPeralihanTunjangan) {
+        this.stPeralihanTunjangan = stPeralihanTunjangan;
+    }
+
     public String getJenisPegawai() {
         return jenisPegawai;
+    }
+
+    public BigDecimal getPeralihanGapok() {
+        return peralihanGapok;
+    }
+
+    public void setPeralihanGapok(BigDecimal peralihanGapok) {
+        this.peralihanGapok = peralihanGapok;
+    }
+
+    public BigDecimal getPeralihanSankhus() {
+        return peralihanSankhus;
+    }
+
+    public void setPeralihanSankhus(BigDecimal peralihanSankhus) {
+        this.peralihanSankhus = peralihanSankhus;
+    }
+
+    public BigDecimal getPeralihanTunjangan() {
+        return peralihanTunjangan;
+    }
+
+    public void setPeralihanTunjangan(BigDecimal peralihanTunjangan) {
+        this.peralihanTunjangan = peralihanTunjangan;
     }
 
     public void setJenisPegawai(String jenisPegawai) {

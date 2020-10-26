@@ -16,9 +16,11 @@ public interface TeamDokterBo {
     public List<ItSimrsDokterTeamEntity> getListEntityTeamDokter(DokterTeam bean) throws GeneralBOException;
     public CrudResponse savaAdd(DokterTeam bean) throws GeneralBOException;
     public CrudResponse saveEdit(DokterTeam bean) throws GeneralBOException;
+    public CrudResponse doneDokter(DokterTeam bean) throws GeneralBOException;
 
     public DokterTeam getNamaDokter(String idDetailCheckup) throws GeneralBOException;
     public CrudResponse saveApproveDokter(DokterTeam bean) throws GeneralBOException;
     public CrudResponse saveDokterTeam(DokterTeam bean) throws GeneralBOException;
     public List<ItSimrsDokterTeamEntity> cekRequestDokter(String idDetailCheckup) throws GeneralBOException;
+    public List<DokterTeam> cekRequestDokterByIdDokter(String idDokter, String flagApprove) throws GeneralBOException;
 }

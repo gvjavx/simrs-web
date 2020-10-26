@@ -17,9 +17,7 @@ public class MonitorRuanganBoImpl implements MonitorRuanganBo {
     @Override
     public List<Ruangan> getListRuangan(Ruangan bean) throws GeneralBOException {
         List<Ruangan> ruanganList = new ArrayList<>();
-
         if(bean != null){
-
             try {
                 ruanganList = ruanganDao.getListRuangan(bean);
             }catch (HibernateException e){

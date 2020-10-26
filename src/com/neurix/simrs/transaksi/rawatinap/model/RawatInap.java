@@ -120,6 +120,25 @@ public class RawatInap {
     private String namaTempatTidur;
     private String idTempatTidur;
 
+    private String jenisDiet;
+    private String bentukGizi;
+
+    public String getBentukGizi() {
+        return bentukGizi;
+    }
+
+    public void setBentukGizi(String bentukGizi) {
+        this.bentukGizi = bentukGizi;
+    }
+
+    public String getJenisDiet() {
+        return jenisDiet;
+    }
+
+    public void setJenisDiet(String jenisDiet) {
+        this.jenisDiet = jenisDiet;
+    }
+
     public String getIdTempatTidur() {
         return idTempatTidur;
     }

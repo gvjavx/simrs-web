@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.permintaangizi.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao;
 import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
@@ -67,6 +68,40 @@ public class PermintaanGiziBoImpl implements PermintaanGiziBo {
                 logger.error("[PermintaanGiziBoImpl] Foun error when search order gizi by id "+e.getMessage());
             }
 
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse updateGizi(List<OrderGizi> orderGizi) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if(orderGizi.size() > 0){
+            for (OrderGizi bean: orderGizi){
+                ItSimrsOrderGiziEntity entity = new ItSimrsOrderGiziEntity();
+                try {
+                    entity = orderGiziDao.getById("idOrderGizi", bean.getIdOrderGizi());
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("");
+                    logger.error(e.getMessage());
+                }
+                if(entity != null){
+                    entity.setApproveFlag(bean.getApproveFlag());
+                    entity.setKeterangan(bean.getKeterangan());
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    try {
+                        orderGiziDao.updateAndSave(entity);
+                        response.setStatus("success");
+                        response.setMsg("berhasil");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
+                        logger.error(e.getMessage());
+                    }
+                }
+            }
         }
         return response;
     }

@@ -279,4 +279,6 @@
 
     <include file="sshconfig/com/neurix/simrs/master/parampemeriksaan/struts/ParameterPemeriksaanAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/ruangan/struts/TempatTidurAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/rawatinap/struts/RecoveryRoomAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/initdashboard/struts/InitDashboardAction.xml"/>
 </struts>

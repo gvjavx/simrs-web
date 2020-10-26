@@ -854,7 +854,15 @@
       <create creator="new">
         <param name="class" value="com.neurix.simrs.master.ruangan.action.TempatTidurAction"/>
       </create>
-      <convert converter="bean" match="com.neurix.simrs.master.ruangan.model.TempatTidur"/>
 
-  </allow>
+      <convert converter="bean" match="com.neurix.simrs.master.ruangan.model.TempatTidur"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity"/>
+      <convert converter="bean" match="com.neurix.simrs.master.dietgizi.model.JenisDiet"/>
+      <convert converter="bean" match="com.neurix.simrs.transaksi.ordergizi.model.DetailJenisDiet"/>
+
+      <create creator="new">
+        <param name="class" value="com.neurix.simrs.transaksi.initdashboard.action.InitDashboardAction"/>
+      </create>
+
+    </allow>
 </dwr>

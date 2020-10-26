@@ -384,6 +384,11 @@ public class RuanganBoImpl implements RuanganBo {
         return ruanganDao.getListRuanganKamar(bean);
     }
 
+    @Override
+    public List<Ruangan> getJustListRuangan(String idKelas, String branchId) throws GeneralBOException {
+        return ruanganDao.getListJustRuanganKamar(idKelas, branchId);
+    }
+
     public String getIdRuangan() {
         logger.info("[RuanganBoImpl.getIdRuangan] Start >>>>>>>");
         String id = "";

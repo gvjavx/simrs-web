@@ -707,9 +707,19 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setFlagDokterKso((String) row[91]);
             result.setJenisPegawai((String) row[92]);
 
-            result.setBagianId((String) row[93]);
-            result.setBagianName((String) row[94]);
-            result.setProfesiId((String)row[95]);
+            if(row[93] != null){
+                result.setPeralihanGapok(BigDecimal.valueOf(Double.parseDouble(row[93].toString())));
+            }
+            if(row[94] != null){
+                result.setPeralihanSankhus(BigDecimal.valueOf(Double.parseDouble(row[94].toString())));
+            }
+            if(row[95] != null){
+                result.setPeralihanTunjangan(BigDecimal.valueOf(Double.parseDouble(row[95].toString())));
+            }
+
+            result.setBagianId((String) row[96]);
+            result.setBagianName((String) row[97]);
+            result.setProfesiId((String)row[98]);
 
             result.setDivisiName((String)row[9]);
             listOfResult.add(result);

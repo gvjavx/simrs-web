@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.monitorruangan.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.lab.bo.LabBo;
 import com.neurix.simrs.master.lab.model.Lab;
@@ -31,7 +32,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MonitorRuanganAction extends BaseMasterAction {
+public class MonitorRuanganAction extends BaseTransactionAction {
     protected static transient Logger logger = Logger.getLogger(MonitorRuanganAction.class);
     private MonitorRuanganBo monitorRuanganBoProxy;
     private CheckupDetailBo checkupDetailBoProxy;
@@ -43,127 +44,95 @@ public class MonitorRuanganAction extends BaseMasterAction {
     private RawatInapBo rawatInapBoProxy;
     private OrderGiziBo orderGiziBoProxy;
     private Ruangan ruangan;
-
     public static Logger getLogger() {
         return logger;
     }
 
     @Override
-    public String add() {
-        return null;
-    }
-
-    @Override
-    public String edit() {
-        return null;
-    }
-
-    @Override
-    public String delete() {
-        return null;
-    }
-
-    @Override
-    public String view() {
-        return null;
-    }
-
-    @Override
-    public String save() {
-        return null;
-    }
-
-    @Override
     public String search() {
-
         List<Ruangan> ruanganList = new ArrayList<>();
         List<Ruangan> result = new ArrayList<>();
-
         Ruangan ruangan = getRuangan();
-
         try {
             ruanganList = monitorRuanganBoProxy.getListRuangan(ruangan);
         } catch (GeneralBOException e) {
             logger.error("Found Error" + e.getMessage());
         }
-
-        if (ruanganList.size() > 0) {
-
-            Ruangan ruangSisa;
-            Ruangan ruangDipakai;
-
-            for (Ruangan ruang : ruanganList) {
-
-                ruangSisa = new Ruangan();
-                ruangDipakai = new Ruangan();
-
-                Integer kuota = ruang.getSisaKuota();
-
-                if (result.size() > 0) {
-                    if (!result.get(result.size() - 1).getIdRuangan().equalsIgnoreCase(ruang.getIdRuangan())) {
-                        for (int i = 0; i < kuota; i++) {
-                            ruangSisa.setIdKelasRuangan(ruang.getIdKelasRuangan());
-                            ruangSisa.setIdRuangan(ruang.getIdRuangan());
-                            ruangSisa.setNamaRuangan(ruang.getNamaRuangan());
-                            ruangSisa.setNoRuangan(ruang.getNoRuangan());
-                            ruangSisa.setIdDetailCheckup(ruang.getIdDetailCheckup());
-                            ruangSisa.setStatusRuangan(ruang.getStatusRuangan());
-                            result.add(ruangSisa);
-                        }
-                    }
-                } else {
-                    for (int i = 0; i < kuota; i++) {
-                        ruangSisa.setIdKelasRuangan(ruang.getIdKelasRuangan());
-                        ruangSisa.setIdRuangan(ruang.getIdRuangan());
-                        ruangSisa.setNamaRuangan(ruang.getNamaRuangan());
-                        ruangSisa.setNoRuangan(ruang.getNoRuangan());
-                        ruangSisa.setIdDetailCheckup(ruang.getIdDetailCheckup());
-                        ruangSisa.setStatusRuangan(ruang.getStatusRuangan());
-                        result.add(ruangSisa);
-                    }
-                }
-
-                if (ruang.getIdDetailCheckup() != null && !"".equalsIgnoreCase(ruang.getIdDetailCheckup())) {
-
-                    HeaderDetailCheckup detailCheckup = getListBiayaForRawatInap(ruang.getIdDetailCheckup());
-
-                    BigDecimal hasilKali = new BigDecimal(String.valueOf(0));
-                    BigDecimal hasilBagi = new BigDecimal(String.valueOf(0));
-
-                    //=======START HITUNG TARIF TINDAKAN==========================
-
-                    ruangDipakai.setTarifBpjs(detailCheckup.getTarifBpjs());
-                    ruangDipakai.setTarifTindakan(detailCheckup.getTarifTindakan());
-
-                    if (detailCheckup.getTarifBpjs() != null && detailCheckup.getTarifTindakan() != null) {
-
-                        hasilKali = detailCheckup.getTarifTindakan().divide(detailCheckup.getTarifBpjs(), 2, RoundingMode.HALF_UP);
-                        hasilBagi = hasilKali.multiply(new BigDecimal(100));
-
-                        ruangDipakai.setNilaiPersen(hasilBagi);
-
-                    }
-
-                    //=======END HITUNG TARIF TINDAKAN==========================
-
-                    ruangDipakai.setIdKelasRuangan(ruang.getIdKelasRuangan());
-                    ruangDipakai.setIdRuangan(ruang.getIdRuangan());
-                    ruangDipakai.setNamaRuangan(ruang.getNamaRuangan());
-                    ruangDipakai.setNoRuangan(ruang.getNoRuangan());
-                    ruangDipakai.setIdDetailCheckup(ruang.getIdDetailCheckup());
-                    ruangDipakai.setStatusRuangan(ruang.getStatusRuangan());
-                    ruangDipakai.setTipeTransaksi(detailCheckup.getIdJenisPeriksaPasien());
-                    ruangDipakai.setNamaPasien(detailCheckup.getNamaPasien());
-                    result.add(ruangDipakai);
-                }
-            }
-        }
-
+//        if (ruanganList.size() > 0) {
+//
+//            Ruangan ruangSisa;
+//            Ruangan ruangDipakai;
+//
+//            for (Ruangan ruang : ruanganList) {
+//
+//                ruangSisa = new Ruangan();
+//                ruangDipakai = new Ruangan();
+//
+//                Integer kuota = ruang.getSisaKuota();
+//
+//                if (result.size() > 0) {
+//                    if (!result.get(result.size() - 1).getIdRuangan().equalsIgnoreCase(ruang.getIdRuangan())) {
+//                        for (int i = 0; i < kuota; i++) {
+//                            ruangSisa.setIdKelasRuangan(ruang.getIdKelasRuangan());
+//                            ruangSisa.setIdRuangan(ruang.getIdRuangan());
+//                            ruangSisa.setNamaRuangan(ruang.getNamaRuangan());
+//                            ruangSisa.setNoRuangan(ruang.getNoRuangan());
+//                            ruangSisa.setIdDetailCheckup(ruang.getIdDetailCheckup());
+//                            ruangSisa.setStatusRuangan(ruang.getStatusRuangan());
+//                            result.add(ruangSisa);
+//                        }
+//                    }
+//                } else {
+//                    for (int i = 0; i < kuota; i++) {
+//                        ruangSisa.setIdKelasRuangan(ruang.getIdKelasRuangan());
+//                        ruangSisa.setIdRuangan(ruang.getIdRuangan());
+//                        ruangSisa.setNamaRuangan(ruang.getNamaRuangan());
+//                        ruangSisa.setNoRuangan(ruang.getNoRuangan());
+//                        ruangSisa.setIdDetailCheckup(ruang.getIdDetailCheckup());
+//                        ruangSisa.setStatusRuangan(ruang.getStatusRuangan());
+//                        result.add(ruangSisa);
+//                    }
+//                }
+//
+//                if (ruang.getIdDetailCheckup() != null && !"".equalsIgnoreCase(ruang.getIdDetailCheckup())) {
+//
+//                    HeaderDetailCheckup detailCheckup = getListBiayaForRawatInap(ruang.getIdDetailCheckup());
+//
+//                    BigDecimal hasilKali = new BigDecimal(String.valueOf(0));
+//                    BigDecimal hasilBagi = new BigDecimal(String.valueOf(0));
+//
+//                    //=======START HITUNG TARIF TINDAKAN==========================
+//
+//                    ruangDipakai.setTarifBpjs(detailCheckup.getTarifBpjs());
+//                    ruangDipakai.setTarifTindakan(detailCheckup.getTarifTindakan());
+//
+//                    if (detailCheckup.getTarifBpjs() != null && detailCheckup.getTarifTindakan() != null) {
+//
+//                        hasilKali = detailCheckup.getTarifTindakan().divide(detailCheckup.getTarifBpjs(), 2, RoundingMode.HALF_UP);
+//                        hasilBagi = hasilKali.multiply(new BigDecimal(100));
+//
+//                        ruangDipakai.setNilaiPersen(hasilBagi);
+//
+//                    }
+//
+//                    //=======END HITUNG TARIF TINDAKAN==========================
+//
+//                    ruangDipakai.setIdKelasRuangan(ruang.getIdKelasRuangan());
+//                    ruangDipakai.setIdRuangan(ruang.getIdRuangan());
+//                    ruangDipakai.setNamaRuangan(ruang.getNamaRuangan());
+//                    ruangDipakai.setNoRuangan(ruang.getNoRuangan());
+//                    ruangDipakai.setIdDetailCheckup(ruang.getIdDetailCheckup());
+//                    ruangDipakai.setStatusRuangan(ruang.getStatusRuangan());
+//                    ruangDipakai.setTipeTransaksi(detailCheckup.getIdJenisPeriksaPasien());
+//                    ruangDipakai.setNamaPasien(detailCheckup.getNamaPasien());
+//                    result.add(ruangDipakai);
+//                }
+//            }
+//        }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult", result);
+        session.setAttribute("listOfResult", ruanganList);
 
         return "search";
     }
@@ -229,13 +198,11 @@ public class MonitorRuanganAction extends BaseMasterAction {
 
     @Override
     public String initForm() {
-
         Ruangan ruangan = new Ruangan();
         setRuangan(ruangan);
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         return "search";
-
     }
 
 
@@ -275,22 +242,11 @@ public class MonitorRuanganAction extends BaseMasterAction {
         this.orderGiziBoProxy = orderGiziBoProxy;
     }
 
-
     public Ruangan getRuangan() {
         return ruangan;
     }
 
     public void setRuangan(Ruangan ruangan) {
         this.ruangan = ruangan;
-    }
-
-    @Override
-    public String downloadPdf() {
-        return null;
-    }
-
-    @Override
-    public String downloadXls() {
-        return null;
     }
 }
