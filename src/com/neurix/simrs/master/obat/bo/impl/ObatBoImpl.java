@@ -9,6 +9,7 @@ import com.neurix.simrs.master.jenisobat.dao.JenisObatDao;
 import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
 import com.neurix.simrs.master.kategoripersediaan.dao.KategoriPersedianDao;
+import com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity;
 import com.neurix.simrs.master.marginobat.dao.MarginObatDao;
 import com.neurix.simrs.master.marginobat.model.ImSimrsMarginObatEntity;
 import com.neurix.simrs.master.obat.bo.ObatBo;
@@ -382,7 +383,11 @@ public class ObatBoImpl implements ObatBo {
         String idSeqObat = getIdNextSeqObat();
 
         // header obat
-        headerObatEntity.setIdObat("OBT" + id);
+        if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())){
+            headerObatEntity.setIdObat(bean.getIdPabrik());
+        } else {
+            headerObatEntity.setIdObat("OBT" + id);
+        }
         headerObatEntity.setNamaObat(bean.getNamaObat());
         headerObatEntity.setMerk(bean.getMerk());
         headerObatEntity.setIdPabrik(bean.getIdPabrik());
@@ -583,6 +588,28 @@ public class ObatBoImpl implements ObatBo {
                         response.setMessage("Found Error when update margin obat " + e.getMessage());
                         logger.error("[ObatBoImpl.saveEdit] error when update margin obat " + e.getMessage());
                         throw new GeneralBOException("[ObatBoImpl.saveEdit] error when update header obat " + e.getMessage());
+                    }
+                } else {
+                    marginObatEntity = new ImSimrsMarginObatEntity();
+                    marginObatEntity.setIdMarginObat("MRG"+headerObatEntity.getIdObat());
+                    marginObatEntity.setIdObat(headerObatEntity.getIdObat());
+                    marginObatEntity.setStandarMargin(bean.getStandarMargin());
+                    marginObatEntity.setCreatedDate(bean.getLastUpdate());
+                    marginObatEntity.setCreatedDateWho(bean.getLastUpdateWho());
+                    marginObatEntity.setLastUpdate(bean.getLastUpdate());
+                    marginObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    marginObatEntity.setStandarMargin(bean.getMargin());
+                    marginObatEntity.setFlag("Y");
+                    marginObatEntity.setAction("C");
+                    try {
+                        marginObatDao.addAndSave(marginObatEntity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMessage("Found Error when update margin obat " + e.getMessage());
+                        logger.error("[ObatBoImpl.saveEdit] error when add margin obat " + e.getMessage());
+                        throw new GeneralBOException("[ObatBoImpl.saveEdit] error when add header obat " + e.getMessage());
                     }
                 }
 
@@ -2332,5 +2359,10 @@ public class ObatBoImpl implements ObatBo {
 
     private TransaksiStok getSumKreditTransaksiStok(String idBarang, String periode, String branchId, String idPelayanan){
         return obatDao.getSumKreditByPeriodeTransaksiStok(branchId, idPelayanan, periode, idBarang);
+    }
+
+    @Override
+    public List<ImSimrsKategoriPersediaanEntity> getAllKategoriPersediaan() throws GeneralBOException {
+        return kategoriPersedianDao.getAll();
     }
 }

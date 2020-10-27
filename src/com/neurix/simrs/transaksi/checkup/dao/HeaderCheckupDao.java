@@ -965,7 +965,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "c.kategori\n" +
                 "FROM it_simrs_periksa_lab a\n" +
                 "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
-                "INNER JOIN im_simrs_kategori_lab c ON b.id_kategori_lab = c.id_kategori_lab\n" +
+                "INNER JOIN im_simrs_kategori_lab c ON a.id_kategori_lab = c.id_kategori_lab\n" +
                 "WHERE id_detail_checkup = :id \n"+ kat;
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

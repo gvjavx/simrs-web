@@ -98,7 +98,7 @@
 
 
 
-                <legend align="left">Edit Ijin</legend>
+                <legend align="left">Delete Ijin</legend>
 
 
                 <table>

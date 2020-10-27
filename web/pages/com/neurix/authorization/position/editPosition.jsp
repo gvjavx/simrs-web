@@ -23,11 +23,6 @@
             var bagian = document.getElementById("bagianId2").value;
             var kelompok = document.getElementById("kelompokId2").value;
 
-            console.log(namePosition);
-            console.log(department);
-            console.log(bagian);
-            console.log(kelompok);
-
             if (namePosition != '' && department!='' && bagian!='' && kelompok!='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
@@ -159,7 +154,8 @@
                             <table>
                                 <s:action id="comboMasaTanam1" namespace="/department" name="initDepartment_department"/>
                                 <s:select list="#session.listOfResultDepartment" id="departmentId2" name="position.departmentId" onchange="listPosisiHistory(); cekBidangLain()"
-                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="departmentId" listValue="departmentName" disabled="true" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:hidden name="position.departmentId" />
                             </table>
                         </td>
                     </tr>
@@ -177,8 +173,9 @@
                             <table>
                                 <s:action id="comboBagian" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
                                 <s:select list="#comboBagian.comboListOfPositionBagian" id="bagianId2" name="position.bagianId" onchange="cekPosisiLain()"
-                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]"
+                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" disabled="true"
                                           cssClass="form-control"/>
+                                <s:hidden name="position.bagianId" />
                             </table>
                         </td>
                     </tr>

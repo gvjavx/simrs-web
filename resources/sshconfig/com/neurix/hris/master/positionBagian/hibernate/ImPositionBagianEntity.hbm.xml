@@ -17,6 +17,9 @@
         <property name="branchId">
             <column name="branch_id" sql-type="varchar" length="10" />
         </property>
+        <property name="divisiId">
+            <column name="divisi_id" />
+        </property>
         <property name="kodering">
             <column name="kodering" sql-type="varchar" length="10" />
         </property>

@@ -132,6 +132,13 @@ public class UserBoImpl implements UserBo {
         userPK.setId(username);
 
         ImUsers loginUser = (ImUsers) userDao.getById(userPK,active);
+
+        // changed by Sigit, 2020-10-10
+        boolean checkForEmail = loginUser == null;
+        if (checkForEmail){
+            loginUser = userDao.getById("email", username);
+        }
+
         UserDetailsLogin userDetailsLogin = null;
         if (loginUser != null) {
 
@@ -714,7 +721,9 @@ public class UserBoImpl implements UserBo {
                             icon="<i class=\"fa fa-cogs\"></i>";
                         }else if (("Kas/Bank Masuk").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-money\"></i>";
-                        }else if (("Kas/Bank Keluar").equalsIgnoreCase(menuName)){
+                        }else if (("Kas/Bank Keluar").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-money\"></i>";
+                        }else if (("Koreksi/Penyesuaian").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-money\"></i>";
                         }else if (("Obat").equalsIgnoreCase(menuName)){
                             icon="<i class=\"fa fa-medkit\"></i>";
@@ -3172,12 +3181,16 @@ public class UserBoImpl implements UserBo {
         List<User> result = new ArrayList<>();
 
         try {
-            result = userDao.getUserByBranchAndRole(branchId,roleId);
-        } catch (GeneralBOException e){
+            result = userDao.getUserByBranchAndRole(branchId, roleId);
+        } catch (GeneralBOException e) {
             logger.info("[UserBoImpl.getUserByRoleAndBranch] error get user id device");
         }
 
         logger.info("[UserBoImpl.getUserByRoleAndBranch] end process <<<");
         return result;
+    }
+
+    public ImUsers getUserByEmailId(String email) throws GeneralBOException {
+        return userDao.getById("email", email);
     }
 }

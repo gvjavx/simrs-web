@@ -1015,7 +1015,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
 
                     ImPosition position = positionDao.getById("positionId",pengajuanBiayaDetailEntity.getDivisiId());
                     String[] koderingPosisi = position.getKodering().split("\\.");
-                    List<ImPosition> positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"."+koderingPosisi[1]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MADYA);
+                    List<ImPosition> positionList = positionDao.getListPositionKoderingNKelompokPosition(koderingPosisi[0]+"%",CommonConstant.KELOMPOK_ID_PEJABAT_MADYA);
 
                     for (ImPosition imPosition : positionList ){
                         userList=userDao.getUserPegawaiByBranchAndPositionAndRole(pengajuanBiayaDetailEntity.getBranchId(),imPosition.getPositionId());
@@ -2119,12 +2119,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
         List<ItAkunPengajuanBiayaRkEntity> pengajuanBiayaRkEntityList = new ArrayList<>();
         List<PengajuanBiayaRk> pengajuanBiayaRkList = new ArrayList<>();
         if (bean != null) {
-            if ("B".equalsIgnoreCase(bean.getStatus())){
-                pengajuanBiayaRkEntityList = pengajuanBiayaRkDao.getPembayaranDoBelumDibayar(bean);
-                for (ItAkunPengajuanBiayaRkEntity entity : pengajuanBiayaRkEntityList){
-                    pengajuanBiayaRkList.add(convertPengajuanBiayaRk(entity));
-                }
-            }else{
+            if ("".equalsIgnoreCase(bean.getStatus())){
                 Map hsCriteria = new HashMap();
                 hsCriteria.put("flag","Y");
                 if (bean.getPengajuanBiayaRkId() != null && !"".equalsIgnoreCase(bean.getPengajuanBiayaRkId())) {
@@ -2157,6 +2152,52 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 pengajuanBiayaRkEntityList = pengajuanBiayaRkDao.getByCriteria(hsCriteria);
                 for (ItAkunPengajuanBiayaRkEntity entity : pengajuanBiayaRkEntityList){
                     pengajuanBiayaRkList.add(convertPengajuanBiayaRk(entity));
+                }
+
+                pengajuanBiayaRkEntityList = pengajuanBiayaRkDao.getPembayaranDoBelumDibayar(bean);
+                for (ItAkunPengajuanBiayaRkEntity entity : pengajuanBiayaRkEntityList){
+                    pengajuanBiayaRkList.add(convertPengajuanBiayaRk(entity));
+                }
+            }else{
+                if ("B".equalsIgnoreCase(bean.getStatus())){
+                    pengajuanBiayaRkEntityList = pengajuanBiayaRkDao.getPembayaranDoBelumDibayar(bean);
+                    for (ItAkunPengajuanBiayaRkEntity entity : pengajuanBiayaRkEntityList){
+                        pengajuanBiayaRkList.add(convertPengajuanBiayaRk(entity));
+                    }
+                }else{
+                    Map hsCriteria = new HashMap();
+                    hsCriteria.put("flag","Y");
+                    if (bean.getPengajuanBiayaRkId() != null && !"".equalsIgnoreCase(bean.getPengajuanBiayaRkId())) {
+                        hsCriteria.put("pengajuan_biaya_rk_id", bean.getPengajuanBiayaRkId());
+                    }
+                    if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+                        hsCriteria.put("branch_id", bean.getBranchId());
+                    }
+                    if (bean.getMasterId() != null && !"".equalsIgnoreCase(bean.getMasterId())) {
+                        hsCriteria.put("master_id", bean.getMasterId());
+                    }
+                    if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())) {
+                        hsCriteria.put("status", bean.getStatus());
+                    }
+                    if (bean.getNoTransaksi() != null && !"".equalsIgnoreCase(bean.getNoTransaksi())) {
+                        hsCriteria.put("no_transaksi", bean.getNoTransaksi());
+                    }
+                    if (bean.getRkId() != null && !"".equalsIgnoreCase(bean.getRkId())) {
+                        hsCriteria.put("rk_id", bean.getRkId());
+                    }
+                    if (bean.getStTanggalDari() != null && !"".equalsIgnoreCase(bean.getStTanggalDari())) {
+                        Timestamp tanggalDari = CommonUtil.convertToTimestamp(bean.getStTanggalDari());
+                        hsCriteria.put("tanggal_dari", tanggalDari);
+                    }
+                    if (bean.getStTanggalSelesai() != null && !"".equalsIgnoreCase(bean.getStTanggalSelesai())) {
+                        Timestamp tanggalSelesai = CommonUtil.convertToTimestamp(bean.getStTanggalSelesai());
+                        hsCriteria.put("tanggal_selesai", tanggalSelesai);
+                    }
+
+                    pengajuanBiayaRkEntityList = pengajuanBiayaRkDao.getByCriteria(hsCriteria);
+                    for (ItAkunPengajuanBiayaRkEntity entity : pengajuanBiayaRkEntityList){
+                        pengajuanBiayaRkList.add(convertPengajuanBiayaRk(entity));
+                    }
                 }
             }
         }

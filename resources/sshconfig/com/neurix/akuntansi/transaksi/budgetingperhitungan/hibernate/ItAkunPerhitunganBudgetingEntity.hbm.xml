@@ -53,6 +53,9 @@
             <basic name="namaBiayaRutin">
                 <column name="nama_biaya_rutin"/>
             </basic>
+            <basic name="idTransNilaiDasar">
+                <column name="id_trans_nilai_dasar"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

@@ -9,7 +9,9 @@
           p:keluargaBoProxy-ref="keluargaBoProxy" />
 
     <bean id="keluargaBo" class="com.neurix.hris.master.keluarga.bo.impl.KeluargaBoImpl"
-          p:keluargaDao-ref="keluargaDao" />
+          p:keluargaDao-ref="keluargaDao"
+          p:biodataDao-ref="biodataDao"
+    />
 
     <bean id="keluargaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="keluargaBo">

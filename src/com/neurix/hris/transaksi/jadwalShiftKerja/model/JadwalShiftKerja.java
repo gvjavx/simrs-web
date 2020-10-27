@@ -50,6 +50,16 @@ public class JadwalShiftKerja extends BaseModel {
     private String flagLibur;
     private String flagDokterKso;
 
+    private boolean adaAbsen = false;
+
+    public boolean isAdaAbsen() {
+        return adaAbsen;
+    }
+
+    public void setAdaAbsen(boolean adaAbsen) {
+        this.adaAbsen = adaAbsen;
+    }
+
     public String getFlagDokterKso() {
         return flagDokterKso;
     }

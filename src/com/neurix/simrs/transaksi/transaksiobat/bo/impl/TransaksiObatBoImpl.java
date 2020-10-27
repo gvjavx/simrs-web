@@ -663,7 +663,13 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = new ArrayList<>();
 
         try {
-            obatDetailEntities = transaksiObatDetailDao.getListEntityTransObatDetails(bean);
+
+            if ("002".equalsIgnoreCase(bean.getTipePermintaan())){
+                obatDetailEntities = transaksiObatDetailDao.getListEntityTransObatDetailsReqUnit(bean);
+            } else {
+                obatDetailEntities = transaksiObatDetailDao.getListEntityTransObatDetails(bean);
+            }
+
         } catch (HibernateException e) {
             logger.error("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when get data list entity of trans obat detail. ", e);
             throw new GeneralBOException("[TransaksiObatBoImpl.getListEntityTransObatDetail] ERROR when get data list entity of trans obat detail. " + e.getMessage());
@@ -2547,11 +2553,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpdateHargaRataBarangMasukKarnaReture] ERROR." + e.getMessage());
         }
 
-//<<<<<<< HEAD
         permintaanVendorBo.updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji(), bean.getBranchId());
-//=======
-//        permintaanVendorBo.updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji(), obatEntity.getBranchId());
-//>>>>>>> sodiq/editor
         saveTransaksiStokObatMasukKarnaReture(bean);
     }
 

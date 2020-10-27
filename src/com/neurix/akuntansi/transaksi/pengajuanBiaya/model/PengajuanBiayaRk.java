@@ -39,6 +39,26 @@ public class PengajuanBiayaRk extends BaseModel {
     private String metodeBayar;
     private String metodeBayarName;
 
+    //tipe add / search
+    private String tipe;
+    private String tipeCetak;
+
+    public String getTipeCetak() {
+        return tipeCetak;
+    }
+
+    public void setTipeCetak(String tipeCetak) {
+        this.tipeCetak = tipeCetak;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
     public String getMetodeBayarName() {
         return metodeBayarName;
     }

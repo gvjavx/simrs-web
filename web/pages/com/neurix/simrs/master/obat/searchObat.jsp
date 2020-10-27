@@ -27,6 +27,15 @@
                 $("#sel_fin_kandungan_obat").html(str);
                 //console.log(list);
             });
+
+            ObatAction.getAllKategoriPersediaan(function (list) {
+                var str = "<option value=''>[Select One]</option>";
+                $.each(list, function (i, item) {
+                    str += "<option value='"+item.idKategoriPersediaan+"'>"+item.nama+"</option>";
+                });
+                $("#id_kategori").html(str);
+            });
+
         });
 
     </script>
@@ -295,13 +304,39 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_exits"></p>
                 </div>
+                <div class="row" id="row-check-id-pabrik">
+                    <label class="col-md-3" style="margin-top: 7px">Generate Id Obat</label>
+                    <label class="switch">
+                        <input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">
+                        <span class="slider round"></span>
+                    </label>
+                    <%--<input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">--%>
+
+
+                </div>
+
                 <div class="row">
+
+                    <div class="form-group" id="dis-id-pabrik">
+                        <label class="col-md-3" style="margin-top: 7px">ID Obat</label>
+                        <div class="col-md-7">
+                            <s:textfield type="text" min="1" cssClass="form-control"
+                                         cssStyle="margin-top: 7px" id="add_pabrik"
+                                         onkeypress="var warn =$('#war_pabrik').is(':visible'); if (warn){$('#cor_pabrik').show().fadeOut(3000);$('#war_pabrik').hide()}"></s:textfield>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_pabrik"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_pabrik"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
                     <input type="hidden" id="fin_id_obat">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
                             <s:textfield onkeypress="var warn =$('#war_nama').is(':visible'); if (warn){$('#cor_nama').show().fadeOut(3000);$('#war_nama').hide()}"
-                                         type="text" cssClass="form-control" id="add_nama_obat"></s:textfield>
+                                         type="text" cssClass="form-control" id="add_nama_obat" cssStyle="margin-top : 7px"></s:textfield>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_nama"><i
@@ -327,20 +362,6 @@
                                id="war_jenis"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_jenis"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">ID Pabrik</label>
-                        <div class="col-md-7">
-                            <s:textfield type="text" min="1" cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="add_pabrik"
-                                         onkeypress="var warn =$('#war_pabrik').is(':visible'); if (warn){$('#cor_pabrik').show().fadeOut(3000);$('#war_pabrik').hide()}"></s:textfield>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_pabrik"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_pabrik"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -528,9 +549,9 @@
                         </div>
                         <div class="col-md-3" style="margin-top: 7px;">
                             <select class="form-control" id="id_kategori">
-                                <option value="obat">Obat</option>
-                                <option value="alkses">Alkes</option>
-                                <option value="bhp">Barang Habis Pakai</option>
+                                <%--<option value="obat">Obat</option>--%>
+                                <%--<option value="alkses">Alkes</option>--%>
+                                <%--<option value="bhp">Barang Habis Pakai</option>--%>
                             </select>
                         </div>
                         <div class="col-md-6"></div>
@@ -801,8 +822,10 @@
             $('#load_obat').show();
 
             if (id != '') {
+                console.log(" edit --> KLIK");
                 dwr.engine.setAsync(true);
                 ObatAction.editObat(id, nama, jenis, merek, pabrik, lembarBox, bijiLembar, minStok, flagKronis, flagGeneric, flagBpjs, margin, idKategori,  function (response) {
+                    dwr.engine.setAsync(false);
                     if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         $('#save_obat').show();
@@ -886,7 +909,7 @@
         }
     }
 
-    function editObat(idObat, nama, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerBiji, idPbarik, mrek, minStok, flagKronis, flagGeneric, flagBpjs, idKategori) {
+    function editObat(idObat, nama, qtyBox, qtyLembar, qtyBiji, lembarPerBox, bijiPerBiji, idPbarik, mrek, minStok, flagKronis, flagGeneric, flagBpjs, margin, idKategori) {
         $('#load_obat, #war_nama, #war_jenis, #war_harga, #war_stok').hide();
         $('#save_obat').attr('onclick', 'saveObat(\'' + idObat + '\')').show();
         $('#add_nama_obat').val(nama);
@@ -906,7 +929,12 @@
         $('#flag-generic').val(flagGeneric);
         $('#flag-bpjs').val(flagBpjs);
         $('#id_kategori').val(idKategori);
+        $("#margin").val(margin);
         $('#modal-obat').modal({show:true, backdrop:'static'});
+        $("#row-check-id-pabrik").hide();
+
+        console.log( "kronis" + flagKronis);
+        console.log( "generic " + flagGeneric);
         showListKandunganObat(idObat);
     }
 
@@ -1092,6 +1120,16 @@
 
     function resetSessionKandunganObat() {
         ObatAction.resetSessionKandunganObat();
+    }
+
+    function hideIdPabrik() {
+        var checkIdPabrik = document.getElementById("check-id-pabrik");
+        console.log(checkIdPabrik);
+        if (checkIdPabrik.checked == true){
+            $("#dis-id-pabrik").hide();
+        } else {
+            $("#dis-id-pabrik").show();
+        }
     }
 
 

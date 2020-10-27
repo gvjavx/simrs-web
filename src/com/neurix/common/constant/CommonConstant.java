@@ -91,7 +91,7 @@ public class CommonConstant {
     public final static String URL_IMAGE_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/logo-nmu.png";
     public final static String URL_LOGO_REPORT = CommonUtil.getPropertyParams("base.dir")+"pages/images/";
     public final static String IMAGE_LOGO_KP = "KP.png";
-    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_PAYROLL;
+    public final static String RESOURCE_DOCUMENT_PAYROLL = CommonUtil.getPropertyParams("upload.folder2")+CommonConstant.RESOURCE_PATH_PAYROLL;
 
     public final static String REPORT_PAYROLL = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayroll3.jrxml";
     public final static String REPORT_PAYROLL_THR = CommonUtil.getPropertyParams("base.dir")+"pages/report/com/neurix/hris/reportPayrollThrBranch3.jrxml";
@@ -197,9 +197,9 @@ public class CommonConstant {
     public final static String JUNK_MASTER_PIUTANG_PPN = "JNK";
     public final static String KODE_REKENING_LABA_RUGI = "3.3.00.00.02";
 
+    public final static String KODERING_FARMASI_RJ = "05.00.00";
     public final static String KODERING_FARMASI_RI = "05.00.01";
     public final static String KODERING_INSTALASI_RI = "06.01.01";
-    public final static String KODERING_FARMASI_RJ = "05.00.00";
 
     public final static String CUTI_ID_DILUAR_TANGGUNJAWAB = CommonUtil.getPropertyParams("cuti.id.diluar.tanggungjawab");
 
@@ -249,9 +249,12 @@ public class CommonConstant {
     public final static String METODE_MESIN_ABSENSI = CommonUtil.getPropertyParams("metode.mesin.absensi");
     public final static String IJIN_GANTI_HARI = CommonUtil.getPropertyParams("ijin.ganti.hari");
     public final static String CUTI_TAHUNAN = CommonUtil.getPropertyParams("cuti.id.tahunan");
-//    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KOREKSI ="67";
-//    public final static String TRANSAKSI_ID_PROSES_PPN_KD_KAS_KELUAR ="68";
-//    public final static String TRANSAKSI_ID_PENYEWAAN_LAHAN ="69";
     public final static String TRANSAKSI_ID_KOREKSI_AKHIR_TAHUN ="99";
+    public final static String DEFAULT_RESET_CUTI_PANJANG =CommonUtil.getPropertyParams("default.cuti.panjang");
+    public final static String ROLE_ID_ADMIN_SUPER = CommonUtil.getPropertyParams("role.id.admin.super");
+    public final static String ID_IJIN_MELAHIRKAN = CommonUtil.getPropertyParams("id.ijin.melahirkan");
+    public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENGIRIM ="88";
+    public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENERIMA ="89";
+    public final static String ID_BG_KATEGORI_BIAYA_RUTIN = "KTB000005";
 
 }

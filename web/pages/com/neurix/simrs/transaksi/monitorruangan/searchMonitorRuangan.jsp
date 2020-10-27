@@ -15,7 +15,7 @@
     <style>
         .btn-trans {
             background-color: #404040;
-            width: 110px;
+            width: 150px;
             height: 153px;
             border-radius: 10px;
             opacity: 0.9;
@@ -286,7 +286,8 @@
                                         <div id="id_box" class="btn-trans">
                                             </s:else>
                                             <button class="btn btn-default" style="height: 20px; width: 100%; font-size: 10px; align-content: center">
-                                                <s:property value="namaRuangan"/></button>
+                                                <s:property value="namaRuangan"/>-[<s:property value="namaTempatTidur"/>]
+                                            </button>
                                             <div style="text-align:left; cursor:pointer; font-size:11px;">
                                                 <table align="center"
                                                        style="width:100%; border-radius:5px; margin-top:2px;">

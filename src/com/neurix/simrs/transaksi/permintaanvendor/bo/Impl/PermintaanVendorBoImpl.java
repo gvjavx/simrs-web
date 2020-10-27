@@ -946,26 +946,26 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             qtyBox = bean.getQtyApprove();
 
             ttlQtyPermintaan = bean.getQtyApprove().multiply(cons);
-            ttlAvgHargaPermintaan = (bean.getNetto().divide(new BigDecimal(cons), 2, RoundingMode.HALF_UP))
-                    .multiply(new BigDecimal(ttlQtyPermintaan));
-//            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
+//            ttlAvgHargaPermintaan = (bean.getNetto().divide(new BigDecimal(cons), 2, RoundingMode.HALF_UP))
+//                    .multiply(new BigDecimal(ttlQtyPermintaan));
+            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
             newObatEntity.setHargaTerakhir(bean.getNetto().divide(new BigDecimal(cons), 2, RoundingMode.HALF_UP));
         }
         if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())) {
             qtyLembar = bean.getQtyApprove();
 
             ttlQtyPermintaan = bean.getQtyApprove().multiply(obatEntity.getBijiPerLembar());
-            ttlAvgHargaPermintaan = (bean.getNetto().divide(new BigDecimal(obatEntity.getBijiPerLembar()), 2, RoundingMode.HALF_UP))
-                    .multiply(new BigDecimal(ttlQtyPermintaan));
-//            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
+//            ttlAvgHargaPermintaan = (bean.getNetto().divide(new BigDecimal(obatEntity.getBijiPerLembar()), 2, RoundingMode.HALF_UP))
+//                    .multiply(new BigDecimal(ttlQtyPermintaan));
+            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
             newObatEntity.setHargaTerakhir(bean.getNetto().divide(new BigDecimal(obatEntity.getBijiPerLembar()), 2, RoundingMode.HALF_UP));
         }
         if ("biji".equalsIgnoreCase(bean.getJenisSatuan())) {
             qtyBiji = bean.getQtyApprove();
 
             ttlQtyPermintaan = bean.getQtyApprove();
-            ttlAvgHargaPermintaan = bean.getNetto();
-//            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
+//            ttlAvgHargaPermintaan = bean.getNetto();
+            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
             newObatEntity.setHargaTerakhir(bean.getNetto());
         }
 

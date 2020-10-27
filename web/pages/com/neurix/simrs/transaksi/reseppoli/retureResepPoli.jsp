@@ -384,7 +384,7 @@
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             Silahkan lakukan konfirmasi qty untuk masing masing obat...!
                         </div>
-                        <table class="table table-bordered table-striped" id="tabel_list_obat">
+                        <table class="table table-bordered table-striped" id="tabel_list_obat" style="font-size: 13px;">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Nama Obat</td>
@@ -395,7 +395,7 @@
                                 <td width="21%">Scan ID Obat</td>
                                 <td width="21%">Qty Reture</td>
                                 <td>Jenis Satuan</td>
-                                <td>Direture</td>
+                                <td>Status</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -444,7 +444,7 @@
                                         $("#id-barang-"+idbarang).attr("class", 'id-barang-'+n);
                                         if (parseInt(qtyreture) > 0){
                                             $("#qty-reture-"+idbarang).attr("disabled", 'true');
-                                            $("#status-"+idbarang).html("Direture");
+                                            $("#status-"+idbarang).html("<label class='label label-primary'> reture </label>");
                                         }
                                         n++;
                                     </script>

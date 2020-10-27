@@ -220,8 +220,7 @@
                                                             <display:column property="liburId" sortable="true" title="Libur ID" />
                                                             <display:column property="tipeLiburName" sortable="true" title="Tipe Libur" />
                                                             <display:column property="liburTahun" sortable="true" title="Tahun"  />
-                                                            <display:column property="tanggal" sortable="true" title="Tanggal"
-                                                                            decorator="com.neurix.common.displaytag.LongDateWrapper"/>
+                                                            <display:column property="stTanggal" sortable="true" title="Tanggal"/>
                                                             <display:column property="liburKeterangan" sortable="true" title="Keterangan"  />
                                                             <display:column property="flag" sortable="true" title="Flag" />
                                                             <display:column property="action" sortable="true" title="Action" />

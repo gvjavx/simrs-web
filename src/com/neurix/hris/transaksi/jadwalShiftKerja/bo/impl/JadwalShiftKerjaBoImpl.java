@@ -22,6 +22,8 @@ import com.neurix.hris.master.profesi.dao.ProfesiDao;
 import com.neurix.hris.master.profesi.model.ImProfesiEntity;
 import com.neurix.hris.master.shift.dao.ShiftDao;
 import com.neurix.hris.master.shift.model.ImHrisShiftEntity;
+import com.neurix.hris.transaksi.absensi.dao.AbsensiPegawaiDao;
+import com.neurix.hris.transaksi.absensi.model.AbsensiPegawaiEntity;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.jadwalShiftKerja.dao.HistoryOnCallDao;
@@ -66,6 +68,15 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
     private LiburDao liburDao;
     private PositionBagianDao positionBagianDao;
     private HistoryOnCallDao historyOnCallDao;
+    private AbsensiPegawaiDao absensiPegawaiDao;
+
+    public AbsensiPegawaiDao getAbsensiPegawaiDao() {
+        return absensiPegawaiDao;
+    }
+
+    public void setAbsensiPegawaiDao(AbsensiPegawaiDao absensiPegawaiDao) {
+        this.absensiPegawaiDao = absensiPegawaiDao;
+    }
 
     public HistoryOnCallDao getHistoryOnCallDao() {
         return historyOnCallDao;
@@ -238,10 +249,8 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             itJadwalShiftKerjaDetailEntity.setProfesiId(jadwalShiftKerjaDetail.getProfesiid());
             itJadwalShiftKerjaDetailEntity.setProfesiName(jadwalShiftKerjaDetail.getProfesiName());
             itJadwalShiftKerjaDetailEntity.setOnCall(jadwalShiftKerjaDetail.getOnCall());
-            itJadwalShiftKerjaDetailEntity.setFlagLibur(jadwalShiftKerjaDetail.getFlagLibur());
-            itJadwalShiftKerjaDetailEntity.setFlagPanggil(jadwalShiftKerjaDetail.getFlagPanggil());
-            itJadwalShiftKerjaDetailEntity.setPanggilDate(jadwalShiftKerjaDetail.getPanggilDate());
-            itJadwalShiftKerjaDetailEntity.setPanggilWho(jadwalShiftKerjaDetail.getPanggilWho());
+            itJadwalShiftKerjaDetailEntity.setFlagLibur("N");
+            itJadwalShiftKerjaDetailEntity.setFlagPanggil("N");
 
             itJadwalShiftKerjaDetailEntity.setFlag(bean.getFlag());
             itJadwalShiftKerjaDetailEntity.setAction(bean.getAction());
@@ -357,6 +366,13 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
             String jadwalKerjaId = null;
             for (JadwalShiftKerja jadwalShiftKerja : listOfResult){
+
+                //cek di absensi
+                List<AbsensiPegawaiEntity> absensiPegawaiEntityList =  absensiPegawaiDao.getListAbsensiByTanggal(jadwalShiftKerja.getTanggal());
+                if (absensiPegawaiEntityList.size()>0){
+                    jadwalShiftKerja.setAdaAbsen(true);
+                }
+
                 java.util.Date tanggalSekarang = null;
                 try{
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -837,7 +853,6 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
             list.add(newData);
         }
-
         return list;
     }
 

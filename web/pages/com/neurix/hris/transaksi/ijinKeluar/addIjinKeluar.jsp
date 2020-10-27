@@ -209,7 +209,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>NIP :</small></label>
+                            <label class="control-label"><small>NIP *:</small></label>
                         </td>
 
                         <td>
@@ -327,7 +327,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Ijin :</small></label>
+                            <label class="control-label"><small>Ijin *:</small></label>
                         </td>
                         <td>
                             <table>
@@ -355,10 +355,10 @@
                                         });
 
                                         if (namaijin == "IJ013") {
-                                            $("#tgl2").attr("readonly", false);
+                                            // $("#tgl2").prop("readonly", 'true');
                                             $('#uploadSurat').show();
                                         } else {
-                                            $("#tgl2").attr("readonly", true);
+                                            // $("#tgl2").prop("readonly", 'false');
                                             $('#uploadSurat').hide();
                                         }
                                     })
@@ -379,7 +379,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label" style="text-align: left !important;"><small>Tanggal Awal :</small></label>
+                            <label class="control-label" style="text-align: left !important;"><small>Tanggal Awal *:</small></label>
                         </td>
                         <td>
                             <div class="input-group date">
@@ -394,7 +394,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label" style="text-align: left !important;"><small>Tanggal Akhir :</small></label>
+                            <label class="control-label" style="text-align: left !important;"><small>Tanggal Akhir *:</small></label>
                         </td>
                         <td>
                             <table>
@@ -422,7 +422,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label" style="text-align: left !important;"><small>Keterangan :</small></label>
+                            <label class="control-label" style="text-align: left !important;"><small>Keterangan *:</small></label>
                         </td>
                         <td>
                             <table>

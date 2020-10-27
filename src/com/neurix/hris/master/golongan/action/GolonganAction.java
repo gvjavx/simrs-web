@@ -504,16 +504,7 @@ public class GolonganAction extends BaseMasterAction{
 
             golonganBoProxy.saveEdit(editGolongan);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "GolonganBO.saveEdit");
-            } catch (GeneralBOException e1) {
-                logger.error("[GolonganAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[GolonganAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -571,16 +562,7 @@ public class GolonganAction extends BaseMasterAction{
 
             golonganBoProxy.saveDelete(deleteGolongan);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "LiburBO.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[AlatAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[AlatAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -640,15 +622,7 @@ public class GolonganAction extends BaseMasterAction{
 
             golonganBoProxy.saveAdd(golongan);
         }catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = golonganBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
-            } catch (GeneralBOException e1) {
-                throw new GeneralBOException(e1.getMessage());
-            }
-            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e.getMessage());
+           throw new GeneralBOException(e.getMessage());
         }
 
 

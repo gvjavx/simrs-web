@@ -20,42 +20,16 @@
             var department = document.getElementById("departmentId1").value;
             var bagian = document.getElementById("bagianId1").value;
             var kelompok = document.getElementById("kelompokId1").value;
-            var kodering = document.getElementById("kodering1").value;
 
-            console.log("name "+namePosition);
-            console.log("devisi "+department);
-            console.log("bagian "+bagian);
-            console.log("kelompok "+kelompok);
-            console.log("kodering "+kodering)
+            if (namePosition != '' && department!='' && bagian!='' && kelompok!='') {
+                if (confirm('Do you want to save this record?')) {
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
 
-            if (namePosition != '' && department!='' && bagian!='' && kelompok!='' && kodering != '') {
-                var karakterKodering = kodering.toString().length;
-                console.log("Tes "+karakterKodering);
-                if (karakterKodering < 11){
-                    console.log("tes 2")
-                    if (confirm('Do you want to save this record?')) {
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
-
-                    } else {
-                        // Cancel Submit comes with 1.8.0
-                        event.originalEvent.options.submit = false;
-                    }
-                }else {
-//                    alert("Panjang Kodering maksimal 10 Karakter.");
+                } else {
+                    // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
-
-                    var msg = "";
-                    if (karakterKodering > 10){
-                        msg += 'Field <strong>Panjang Kodering maksimal 10 Karakter.</strong>' + '<br/>';
-                    }
-                    console.log("tes 3 "+msg);
-                    document.getElementById('errorValidationMessage5').innerHTML = msg;
-                    $.publish('showErrorValidationDialog5');
-
                 }
-
-
             } else {
 
                 event.originalEvent.options.submit = false;
@@ -73,9 +47,6 @@
                 }
                 if (kelompok == '') {
                     msg += 'Field <strong>Kelompok Jabatan</strong> is required.' + '<br/>';
-                }
-                if (kodering == '') {
-                    msg += 'Field <strong>Kodering</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage5').innerHTML = msg;
@@ -138,16 +109,6 @@
                         <td>
                             <table>
                                 <s:textfield id="positionName1" name="position.positionName" required="false" readonly="false" cssClass="form-control" />
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Kodering :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="kodering1" name="position.kodering" required="false" readonly="false" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>
@@ -300,12 +261,10 @@
     window.listPosisiHistory = function (branch, divisi) {
 //        var branch = document.getElementById("branch1").value;
         var divisi = document.getElementById("departmentId1").value;
-        console.log("Test divisi "+divisi);
         $('#bagianId1').empty();
         $('#bagianId1').append($("<option></option>")
                 .attr("value", '')
                 .text(''));
-        console.log("Test");
         PositionBagianAction.searchPositionBagian(divisi, function (listdata) {
             $.each(listdata, function (i, item) {
                 $('#bagianId1').append($("<option></option>")
@@ -316,7 +275,6 @@
     };
     window.cekBidangLain = function(){
         var divisi = document.getElementById("departmentId1").value;
-        console.log("Test2");
         if (divisi=='0'){
             $('#bidangLain').val("");
             $('#namaBidangLain').show();

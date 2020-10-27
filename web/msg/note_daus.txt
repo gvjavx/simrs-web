@@ -503,7 +503,7 @@ ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN bukti_piutang_pajak_keluaran c
 ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN keterangan character varying(200);
 
 CREATE SEQUENCE IF NOT EXISTS seq_pengajuan_biaya_rk INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
-
+ppn_penyerahan_terutang
 
 --14-09-2020
 ALTER TABLE it_hris_payroll_jubileum ADD COLUMN gaji numeric(25,2);
@@ -614,6 +614,7 @@ ALTER TABLE it_hris_absensi_pegawai ADD COLUMN telat bigint;
 update it_hris_absensi_pegawai set telat=0;
 
 CREATE SEQUENCE IF NOT EXISTS seq_history_on_call INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+CREATE SEQUENCE IF NOT EXISTS seq_absensi_on_call INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
 
 
 CREATE TABLE public.it_hris_history_on_call
@@ -631,3 +632,104 @@ CREATE TABLE public.it_hris_history_on_call
     keterangan_panggil character varying(200) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT it_hris_history_on_call_pkey PRIMARY KEY (history_on_call_id)
 );
+
+CREATE TABLE public.it_hris_absensi_on_call
+(
+    absensi_on_call_id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    nip character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    tanggal date NOT NULL,
+    jam_masuk character varying(5) COLLATE pg_catalog."default",
+    jam_pulang character varying(5) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    lama_lembur numeric(10,2),
+    CONSTRAINT it_hris_absensi_on_call_pkey PRIMARY KEY (absensi_on_call_id)
+);
+-- tambahkan function /tipelibur/paging_displaytag_tipelibur.action
+
+update im_functions set func_name='Status Pegawai' WHERE func_id='601';
+update im_functions set func_name='Golongan PKWT' WHERE func_id='1776';
+
+CREATE SEQUENCE IF NOT EXISTS seq_kodering_department INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 16;
+update im_functions set func_name ='Sub Bidang/Divisi' where func_id=1378;
+
+
+-----------------------------------------
+insert into im_branches (branch_id,branch_name,branch_address,created_date,created_who,last_update,last_update_who,flag,action,max_jam_ijin_keluar,faktor_jubileum,area_id,min_bpjs_ks,max_bpjs_ks,percent_ks_kary,percent_ks_pers,percent_tk_kary,percent_tk_pers,min_bpjs_tk,max_bpjs_tk,alamat_surat,logo_name,kodering,max_pengajuan_biaya,coa_rk,lat,lon,umr) VALUES
+						( 'RS04','RS Medika Utama','Jl. Kusuma Bangsa No.1','2020-09-09 00:00:00','admin','2020-09-09 00:00:00','admin','Y','C',0,5,'0002',100000,100000,1,4,4,4,100000,100000,'Blitar','RS01.png','05',1000000,'2.1.11.01.04','-8.1681698','-8.1681698',3871052.00);
+
+insert into im_branches (branch_id,branch_name,branch_address,created_date,created_who,last_update,last_update_who,flag,action,max_jam_ijin_keluar,faktor_jubileum,area_id,min_bpjs_ks,max_bpjs_ks,percent_ks_kary,percent_ks_pers,percent_tk_kary,percent_tk_pers,min_bpjs_tk,max_bpjs_tk,alamat_surat,logo_name,kodering,max_pengajuan_biaya,coa_rk,lat,lon,umr) VALUES
+						( 'RS05','Estetika Meditama','Jl. Bratang Binangun No.33, Baratajaya','2020-09-09 00:00:00','admin','2020-09-09 00:00:00','admin','Y','C',0,5,'0002',100000,100000,1,4,4,4,100000,100000,'Surabaya','RS01.png','06',1000000,'2.1.11.01.98','-8.1681698','-8.1681698',3871052.00);
+
+insert into im_branches (branch_id,branch_name,branch_address,created_date,created_who,last_update,last_update_who,flag,action,max_jam_ijin_keluar,faktor_jubileum,area_id,min_bpjs_ks,max_bpjs_ks,percent_ks_kary,percent_ks_pers,percent_tk_kary,percent_tk_pers,min_bpjs_tk,max_bpjs_tk,alamat_surat,logo_name,kodering,max_pengajuan_biaya,coa_rk,lat,lon,umr) VALUES
+                        ( 'RS06','Unit Rawat Jalan','Jl. Hayam Wuruk No.88, Mergelo, Magersari','2020-09-09 00:00:00','admin','2020-09-09 00:00:00','admin','Y','C',0,5,'0002',100000,100000,1,4,4,4,100000,100000,'Mojokerto','RS01.png','07',1000000,'2.1.11.01.99','-8.1681698','-8.1681698',3871052.00);
+
+--======================================================
+
+delete from im_hris_cuti_panjang;
+update im_functions set flag='Y' where func_id =837;
+update im_functions set flag='Y' where func_id =14;
+update im_functions set flag='Y' where func_id =1182;
+update im_functions set func_name='Iuran Pegawai DPLK' where func_id =1182;
+update im_functions set func_name='Skala Gaji Pensiun' where func_id =1825;
+update im_functions set flag='N' where func_id =1835;
+ALTER TABLE im_hris_payroll_skala_gaji_dapenbun ADD COLUMN tipe_dapen_id character varying(20);
+update im_hris_payroll_skala_gaji_dapenbun set tipe_dapen_id='DP01';
+
+-- buatkan user super admin
+
+CREATE TABLE public.it_akun_pengajuan_biaya_rk
+(
+    pengajuan_biaya_rk_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    no_transaksi character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    master_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    jumlah numeric(25,2) NOT NULL,
+    status character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    jatuh_tempo date,
+    rk_id character varying(20) COLLATE pg_catalog."default",
+    approve_keu_flag character varying(1) COLLATE pg_catalog."default",
+    aprove_keu_id character varying(100) COLLATE pg_catalog."default",
+    approve_keu_date timestamp without time zone,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    branch_id character varying(5) COLLATE pg_catalog."default" NOT NULL,
+    tanggal_pengajuan date NOT NULL,
+    no_faktur character varying(30) COLLATE pg_catalog."default",
+    no_invoice character varying(30) COLLATE pg_catalog."default",
+    tgl_faktur date,
+    tgl_do date,
+    metode_bayar character varying(100) COLLATE pg_catalog."default",
+    no_jurnal character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_pengajuan_biaya_rk_pkey PRIMARY KEY (pengajuan_biaya_rk_id)
+);
+
+-- 23-10-2020
+update im_hris_payroll_skala_gaji_dapenbun set tipe_dapen_id='DP02';
+
+-------------------------------------------------------------------------------------------------------------
+ALTER TABLE public.im_company ADD COLUMN tanggal_awal_lembur integer;
+ALTER TABLE public.im_company ADD COLUMN tanggal_akhir_lembur integer;
+
+update im_company set tanggal_awal_lembur=21;
+update im_company set tanggal_akhir_lembur=21;
+
+ALTER TABLE im_hris_pegawai ADD COLUMN peralihan_sankhus numeric(25,0);
+ALTER TABLE im_hris_pegawai ADD COLUMN peralihan_gapok numeric(25,0);
+ALTER TABLE im_hris_pegawai ADD COLUMN peralihan_tunjangan numeric(25,0);
+
+update im_hris_pegawai set peralihan_sankhus=0;
+update im_hris_pegawai set peralihan_gapok=0;
+update im_hris_pegawai set peralihan_tunjangan=0;
+
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkk type numeric(5,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkm type numeric(5,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jpk_pers type numeric(10,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN iur_pers type numeric(10,4);

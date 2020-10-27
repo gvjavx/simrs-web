@@ -9,6 +9,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.mobileapi.model.FingerPrintResponse;
 import com.neurix.hris.mobileapi.model.simrs.Poli;
 import com.neurix.hris.transaksi.absensi.bo.AbsensiBo;
+import com.neurix.hris.transaksi.absensi.model.AbsensiOnCall;
 import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
 import com.neurix.hris.transaksi.absensi.model.MesinAbsensi;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
@@ -20,12 +21,14 @@ import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
 import com.neurix.simrs.bpjs.vclaim.model.*;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import com.neurix.simrs.bpjs.BpjsService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.GeneralSecurityException;
@@ -794,8 +797,10 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     }
 
     public void cronJobAbsensiPegawai (){
+        HttpSession session = ServletActionContext.getRequest().getSession();
 
         List<AbsensiPegawai> absensiPegawaiList= new ArrayList<>();
+        List<AbsensiOnCall> listOfResultOnCall = new ArrayList<>();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         String branchId="KP";
         Date date = new Date();
@@ -823,7 +828,11 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
 
         try {
             absensiPegawaiList = absensiBoProxy.cronInquiry(data);
-            absensiBoProxy.saveAddAbsensi(absensiPegawaiList,search);
+            listOfResultOnCall = (List<AbsensiOnCall>) session.getAttribute("listOfResultOnCall");
+            if (listOfResultOnCall==null){
+                listOfResultOnCall = new ArrayList<>();
+            }
+            absensiBoProxy.saveAddAbsensi(absensiPegawaiList,listOfResultOnCall,search);
         }catch (Exception e){
             String error = "ERROR WHEN GET ABSENSI PEGAWAI : " + "[" + e + "]";
             absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");

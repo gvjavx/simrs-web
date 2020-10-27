@@ -88,7 +88,7 @@
 
 <s:form id="deleteForm" method="post" theme="simple" namespace="/tipepegawai" action="saveDelete_tipepegawai" cssClass="well form-horizontal">
 
-    <legend align="left">Delete Tipe Pegawai</legend>
+    <legend align="left">Delete Status Pegawai</legend>
 
     <table>
         <tr>
@@ -99,7 +99,7 @@
     </table>
 
     <div class="form-group">
-        <label class="control-label col-sm-2">Tipe Pegawai Id :</label>
+        <label class="control-label col-sm-2">Status Pegawai ID :</label>
         <div class="col-sm-8">
             <s:textfield cssClass="form-control" id="tipePegawaiId" name="tipePegawai.tipePegawaiId" readonly="true" required="false"  />
             <s:hidden id="createdDate" name="tipePegawai.createdDate" />
@@ -108,7 +108,7 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-sm-2">Tipe Pegawai Name :</label>
+        <label class="control-label col-sm-2">Status Pegawai Name :</label>
         <div class="col-sm-8">
             <s:textfield id="tipePegawaiName" cssClass="form-control" name="tipePegawai.tipePegawaiName" required="false" readonly="true"/>
         </div>

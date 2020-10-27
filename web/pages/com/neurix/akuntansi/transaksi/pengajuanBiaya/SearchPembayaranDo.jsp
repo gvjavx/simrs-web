@@ -121,6 +121,7 @@
                             <tr>
                                 <td align="center">
                                     <s:form id="pengajuanBiayaRkForm" method="post"  theme="simple" namespace="/pengajuanBiaya" action="searchPembayaranDo_pengajuanBiaya.action" cssClass="form-horizontal">
+                                        <s:hidden name="pengajuanBiayaRk.tipe" value="search" />
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -128,7 +129,6 @@
                                                 </td>
                                             </tr>
                                         </table>
-
                                         <table >
                                             <tr>
                                                 <td>
@@ -228,14 +228,14 @@
                                                 <td>
                                                     <table>
                                                         <s:if test='pengajuanBiayaRk.branchIdUser == "KP"'>
-                                                            <s:select list="#{'R' : 'Sudah Di RK ( Belum Dibayar )','D' : 'Sudah Dibayar'}"
+                                                            <s:select list="#{'K' : 'Menunggu Kantor Pusat','R' : 'Sudah Di RK ( Belum Dibayar )','D' : 'Sudah Dibayar'}"
                                                                       id="statusPembayaran" name="pengajuanBiayaRk.status"
-                                                                      headerKey="K" headerValue="Menunggu Kantor Pusat" cssClass="form-control" />
+                                                                      headerKey="" headerValue="Semua Status" cssClass="form-control" />
                                                         </s:if>
                                                         <s:else>
-                                                            <s:select list="#{'K' : 'Menunggu Kantor Pusat', 'R' : 'Sudah Di RK ( Belum Dibayar )', 'D' : 'Sudah Dibayar'}"
+                                                            <s:select list="#{'B' : 'Belum Pengajuan','K' : 'Menunggu Kantor Pusat', 'R' : 'Sudah Di RK ( Belum Dibayar )', 'D' : 'Sudah Dibayar'}"
                                                                       id="statusPembayaran" name="pengajuanBiayaRk.status"
-                                                                      headerKey="B" headerValue="Belum Pengajuan" cssClass="form-control" />
+                                                                      headerKey="" headerValue="Semua Status" cssClass="form-control" />
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -246,26 +246,22 @@
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="pengajuanBiayaRkForm" id="search" name="search"
-                                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
+                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="pengajuanBiayaRkForm" id="search" name="pengajuanBiayaRk.tipeCetak" value="search"
+                                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog">
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "KP"'>
-                                                            <a class="btn btn-success" id="btn_create" style="display: none" onclick="createRk()"><i class="fa fa-plus"></i>
-                                                                Create RK</a>
-                                                            <a class="btn btn-success" id="btn_bayar" style="display: none" onclick="bayarRk()"><i class="fa fa-plus"></i>
-                                                                Bayar DO</a>
-                                                        </s:if>
-                                                        <s:else>
-                                                            <a class="btn btn-success" id="btn_create" style="display: none" onclick="createRk()"><i class="fa fa-plus"></i>
-                                                                Pengajuan Pembayaran DO</a>
-                                                        </s:else>
+                                                        <a href="addDo_pengajuanBiaya.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Pembayaran DO</a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initFormPengajuan_pengajuanBiaya"/>'">
+                                                        <button type="submit" class="btn btn-primary" value="csv" name="pengajuanBiayaRk.tipeCetak">
+                                                            <i class="fa fa-download"></i> Eksport CSV
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initFormPembayaranDo_pengajuanBiaya"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -283,12 +279,6 @@
                                                 <table id="tablePengajuanBiaya" class="tablePengajuanBiaya table table-bordered table-striped" style="font-size: 11px;">
                                                     <thead>
                                                     <tr bgcolor="#90ee90">
-                                                        <td align="center" width="7%">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" id="selectall">
-                                                                <label for="selectall"></label>
-                                                            </div>
-                                                        </td>
                                                         <td>ID</td>
                                                         <td>Unit</td>
                                                         <td>No DO</td>
@@ -298,36 +288,13 @@
                                                         <td>Jumlah (RP)</td>
                                                         <td>ID RK</td>
                                                         <td>No Jurnal</td>
+                                                        <td>Status</td>
                                                         <td align="center">View</td>
                                                         <td align="center">Dibayar</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     <s:iterator value="#session.listOfResult" var="row">
-                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "KP"'>
-                                                            <td align="center">
-                                                                <s:if test='#row.status == "D"'>
-                                                                </s:if>
-                                                                <s:else>
-                                                                    <div class="form-check">
-                                                                        <input type="checkbox" class="selectedId" name="selectedId" id="check_<s:property value="pengajuanBiayaRkId"/>">
-                                                                        <label for="check_<s:property value="pengajuanBiayaRkId"/>"></label>
-                                                                    </div>
-                                                                </s:else>
-                                                            </td>
-                                                        </s:if>
-                                                        <s:else>
-                                                            <td align="center">
-                                                                <s:if test='#row.pengajuanBiayaRkId != null||#row.rkId!= null'>
-                                                                </s:if>
-                                                                <s:else>
-                                                                    <div class="form-check">
-                                                                        <input type="checkbox" class="selectedId" name="selectedId" id="check_<s:property value="noTransaksi"/>">
-                                                                        <label for="check_<s:property value="noTransaksi"/>"></label>
-                                                                    </div>
-                                                                </s:else>
-                                                            </td>
-                                                        </s:else>
                                                         <td><s:property value="pengajuanBiayaRkId"/></td>
                                                         <td><s:property value="branchName"/></td>
                                                         <td><s:property value="noTransaksi"/></td>
@@ -337,6 +304,7 @@
                                                         <td style="text-align: right"><s:property value="stJumlah"/></td>
                                                         <td><s:property value="rkId"/></td>
                                                         <td><s:property value="noJurnal"/></td>
+                                                        <td><s:property value="statusName"/></td>
                                                         <td align="center">
                                                             <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaRkId}"/>" class="item-view">
                                                                 <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
@@ -749,7 +717,7 @@
         });
 
         $('#tablePengajuanBiaya').DataTable({
-            "order": [[4, "asc"]],
+            "order": [[3, "asc"]],
             "pageLength": 100,
             "columnDefs": [
                 { "orderable": false, "targets": 0 }

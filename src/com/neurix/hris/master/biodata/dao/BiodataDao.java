@@ -707,9 +707,19 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setFlagDokterKso((String) row[91]);
             result.setJenisPegawai((String) row[92]);
 
-            result.setBagianId((String) row[93]);
-            result.setBagianName((String) row[94]);
-            result.setProfesiId((String)row[95]);
+            if(row[93] != null){
+                result.setPeralihanGapok(BigDecimal.valueOf(Double.parseDouble(row[93].toString())));
+            }
+            if(row[94] != null){
+                result.setPeralihanSankhus(BigDecimal.valueOf(Double.parseDouble(row[94].toString())));
+            }
+            if(row[95] != null){
+                result.setPeralihanTunjangan(BigDecimal.valueOf(Double.parseDouble(row[95].toString())));
+            }
+
+            result.setBagianId((String) row[96]);
+            result.setBagianName((String) row[97]);
+            result.setProfesiId((String)row[98]);
 
             result.setDivisiName((String)row[9]);
             listOfResult.add(result);
@@ -1063,6 +1073,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tpegawai.nama_pegawai, \n" +
                 "\tposition.position_name, \n" +
                 "\tpegawai.tipe_pegawai, \n" +
+                "\tpegawai.tanggal_masuk, \n" +
                 "\tposisi.profesi_id\n" +
                 "\n" +
                 "\tFROM im_hris_pegawai pegawai\n" +
@@ -1089,7 +1100,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setNamaPegawai((String) row[1]);
             result.setPositionName((String) row[2]);
             result.setTipePegawai((String) row[3]);
-            result.setProfesiId((String)row[4]);
+            result.setTanggalMasuk((Date) row[4]);
+            result.setProfesiId((String)row[5]);
 
             listOfResult.add(result);
         }
@@ -1753,5 +1765,21 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             biodataList.add(result);
         }
         return biodataList;
+    }
+
+    public List<ImBiodataEntity> getBiodataByGolonganId(String id) throws HibernateException {
+        List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
+                .add(Restrictions.eq("golongan", id))
+                .addOrder(Order.asc("nip"))
+                .list();
+        return results;
+    }
+
+    public List<ImBiodataEntity> getBiodataByTipePegawai(String id) throws HibernateException {
+        List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
+                .add(Restrictions.eq("tipePegawai", id))
+                .addOrder(Order.asc("nip"))
+                .list();
+        return results;
     }
 }

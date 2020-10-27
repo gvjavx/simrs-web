@@ -12,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -114,12 +115,14 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     "tt.id_tempat_tidur, \n" +
                     "tt.nama_tempat_tidur,\n" +
                     "c.cover_biaya,\n" +
-                    "c.id_jenis_periksa_pasien\n" +
+                    "c.id_jenis_periksa_pasien,\n" +
+                    "c.nama,\n" +
+                    "c.id_pasien\n" +
                     "FROM im_simrs_kelas_ruangan a\n" +
                     "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
                     "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON b.id_ruangan = tt.id_ruangan\n" +
                     "LEFT JOIN (\n" +
-                    "SELECT a.id_detail_checkup, a.id_ruangan, a.tgl_masuk, c.cover_biaya, c.id_jenis_periksa_pasien\n" +
+                    "SELECT a.id_detail_checkup, a.id_ruangan, a.tgl_masuk, c.cover_biaya, c.id_jenis_periksa_pasien, b.nama, b.id_pasien\n" +
                     "FROM it_simrs_rawat_inap a\n" +
                     "INNER JOIN it_simrs_header_checkup b\n" +
                     "ON a.no_checkup = b.no_checkup\n" +
@@ -142,7 +145,7 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     .setParameter("branchId", CommonUtil.userBranchLogin())
                     .list();
 
-            if (results != null) {
+            if (results.size() > 0) {
                 for (Object[] obj : results) {
                     Ruangan ruangan = new Ruangan();
                     ruangan.setIdKelasRuangan(obj[0] == null ? "" : obj[0].toString());
@@ -158,14 +161,30 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     if(obj[8] != null){
                         ruangan.setNamaTempatTidur(obj[8].toString());
                     }
-                    ruangan.setCoverBiaya(obj[9] != null ? null : new BigInteger(obj[9].toString()));
-                    ruangan.setJenisPasien(obj[10] == null ? "" : obj[10].toString());
-                    ruangan.setTotalTarif(getSumAllTarifTindakan(obj[5].toString()));
+                    if(obj[5] != null && !"".equalsIgnoreCase(obj[5].toString())){
+                        ruangan.setTarifTindakan(getSumAllTarifTindakan(obj[5].toString()));
+                    }
+                    if(obj[9] != null && !"".equalsIgnoreCase(obj[9].toString())){
+                        ruangan.setTarifBpjs((BigDecimal) obj[9]);
+                    }
+                    if(obj[10] != null && !"".equalsIgnoreCase(obj[10].toString())){
+                        ruangan.setTipeTransaksi(obj[10].toString());
+                        if("bpjs".equalsIgnoreCase(ruangan.getTipeTransaksi())){
+                            if(ruangan.getTarifBpjs() != null && ruangan.getTarifTindakan() != null && ruangan.getTarifTindakan().intValue() > 0){
+                                BigDecimal hasilKali = new BigDecimal(0);
+                                BigDecimal hasilBagi = new BigDecimal(0);
+                                hasilKali = ruangan.getTarifTindakan().divide(ruangan.getTarifBpjs(), 2, RoundingMode.HALF_UP);
+                                hasilBagi = hasilKali.multiply(new BigDecimal(100));
+                                ruangan.setNilaiPersen(hasilBagi);
+                            }
+                        }
+                    }
+                    ruangan.setNamaPasien(obj[11] == null ? null : obj[11].toString());
+                    ruangan.setIdPasien(obj[12] == null ? "" : obj[12].toString());
                     ruanganList.add(ruangan);
                 }
             }
         }
-
         return ruanganList;
     }
 

@@ -70,7 +70,7 @@
 
             if (idPasien != '' && noKtp != '' && namaPasien != '' && jenisKelamin != '' && tempatLahir != ''
                 && tglLahir != '' && agama != '' && poli != '' && dokter != '' && penjamin != ''
-                && provinsi != '' && kota != '' && kecamatan != '' && desa != '') {
+                && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && tipe != '') {
 
 
                 if (tipe == "umum") {
@@ -408,6 +408,7 @@
             $('#tgl_antrian').val(null);
             $('#is_laka').val(null);
             $('#poli').attr('disabled', false);
+            $('#jenis_pasien').attr('disabled', false);
         }
 
         function formatRupiah2(angka) {
@@ -538,7 +539,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 10px">Jenis Pasien</label>
                                             <div class="col-md-8">
-                                                <select name="headerCheckup.idJenisPeriksaPasien" class="form-control select2" id="jenis_pasien" onchange="setJenisPasien(this.value)"></select>
+                                                <select class="form-control select2" id="jenis_pasien" onchange="setJenisPasien(this.value)"></select>
                                             </div>
                                         </div>
                                         <div class="form-group" id="form-no-bpjs" style="display: none">
@@ -579,7 +580,7 @@
                                             <div class="col-md-8">
                                                 <s:textfield id="nama_pasien" name="headerCheckup.nama"
                                                              onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                             cssClass="form-control" cssStyle="margin-top: 7px" readonly="true"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -793,7 +794,7 @@
                                                     <%--onchange="$(this).css('border',''); listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"--%>
                                                     <%--headerKey="" headerValue="[Select one]"--%>
                                                     <%--cssClass="form-control select2"/>--%>
-                                                <select name="headerCheckup.idPelayanan" class="form-control select2" id="poli" onchange="listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}">
+                                                <select class="form-control select2" id="poli" onchange="listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}">
                                                 </select>
                                                 <span style="color: red; display: none" id="war_poli"><i
                                                         class="fa fa-times"></i> required</span>
@@ -805,9 +806,8 @@
                                             <label class="col-md-4" style="margin-top: 10px">Unit Pemeriksaan</label>
                                             <div class="col-md-8">
                                                 <select id="id_lab" class="form-control select2"
-                                                        name="headerCheckup.idLab"
                                                         style="margin-top: 7px; width: 100%"
-                                                        onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#con_lab').show().fadeOut(3000);$('#war_lab').hide()}">
+                                                        onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#con_lab').show().fadeOut(3000);$('#war_lab').hide()}; setOrderLab(this.value)">
                                                     <option value=''>[Select One]</option>
                                                 </select>
                                                 <span style="color: red; display: none" id="war_lab"><i
@@ -1136,6 +1136,9 @@
                             <s:hidden name="headerCheckup.isOrderLab" id="is_order_lab"></s:hidden>
                             <s:hidden name="headerCheckup.lastIdDetailCheckup" id="last_id_detail_checkup"></s:hidden>
                             <s:hidden id="is_laka"></s:hidden>
+                            <s:hidden name="headerCheckup.idPelayanan" id="h_id_pelayanan"></s:hidden>
+                            <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="h_id_jenis_pasien"></s:hidden>
+                            <s:hidden name="headerCheckup.idLab" id="h_id_order_lab"></s:hidden>
 
                             <div id="form-uang-muka">
                                 <div class="box-header with-border"></div>
@@ -1725,7 +1728,7 @@
     }
 
     function listJenisPasien() {
-        var option = "";
+        var option = '<option value="">[Select One]</option>';
         CheckupAction.getComboJenisPeriksaPasienWithBpjs(function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
@@ -1890,6 +1893,7 @@
         if (idPelayanan != null && idPelayanan != '') {
             $('#nama_dokter').attr('onclick', 'showJadwalDokter(\'' + idPelayanan + '\')');
             $('#btn-dokter').attr('onclick', 'showJadwalDokter(\'' + idPelayanan + '\')');
+            $('#h_id_pelayanan').val(idPelayanan);
             PelayananAction.getDataPelayanan(idPelayanan, function (res) {
                 var option2 = "<option value=''>[Select One]</option>";
                 if (res.idPelayanan != null) {
@@ -2352,7 +2356,6 @@
     function searchNoRM(id, value) {
         var functions, mapped;
         var tipe = $('#jenis_pasien').val();
-        console.log(value);
         if(value != ''){
             $('#' + id).typeahead({
                 minLength: 1,
@@ -2368,9 +2371,9 @@
                         var labelItem = "";
 
                         if (item.noBpjs != '' && item.noBpjs != null) {
-                            labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama;
+                            labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama+"-"+item.desa;
                         } else {
-                            labelItem = item.idPasien + "-" + item.nama;
+                            labelItem = item.idPasien + "-" + item.nama+"-"+item.desa;
                         }
                         mapped[labelItem] = {
                             id: item.idPasien,
@@ -2585,6 +2588,7 @@
             setPelayanan();
         }
         $('#jenis_pasien').val(jenis);
+        $('#h_id_jenis_pasien').val(jenis);
         $('#btn-finger').hide();
     }
 
@@ -2852,6 +2856,8 @@
                                 $('#tgl_antrian').val(converterDateYmdHms(response.tglAntian));
                                 $('#id_checkup_online').val(response.noCheckupOnline);
                                 $('#jenis_pasien').val(response.idJenisPeriksaPasien).trigger('change').attr('disabled', true);
+                                $('#kunjungan').val(response.jenisKunjungan).attr('disabled', true);
+                                $('#kunjungan_val').val(response.jenisKunjungan);
                             }else{
                                 $('#warning_pasien').show().fadeOut(5000);
                                 $('#msg_pasien').text("Verifikasi sudah tidak bisa dilakukan, dikarenakan sudah lewat dari jam awal pelayanan...!, Silahkan lakukan pendaftaran manual.");
@@ -2931,6 +2937,10 @@
             $('#warning_pasien').show().fadeOut(5000);
             $('#msg_pasien').text("No Checkup Online tidak ditemukan...!");
         }
+    }
+
+    function setOrderLab(val){
+        $('#h_id_order_lab').val(val);
     }
 </script>
 

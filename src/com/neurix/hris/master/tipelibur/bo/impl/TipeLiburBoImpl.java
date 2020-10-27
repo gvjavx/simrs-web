@@ -64,8 +64,8 @@ public class TipeLiburBoImpl implements TipeLiburBo{
             }
 
             if (imHrisTipeLibur != null){
-                historyEntity.setId(imHrisTipeLibur.getTipeLiburId());
-                historyEntity.setTipeLiburId(tipelLiburIdHistory);
+                historyEntity.setTipeLiburHistoryId(tipelLiburIdHistory);
+                historyEntity.setTipeLiburId(imHrisTipeLibur.getTipeLiburId());
                 historyEntity.setTipeLiburName(imHrisTipeLibur.getTipeLiburName());
                 historyEntity.setFlag(imHrisTipeLibur.getFlag());
                 historyEntity.setAction(imHrisTipeLibur.getAction());

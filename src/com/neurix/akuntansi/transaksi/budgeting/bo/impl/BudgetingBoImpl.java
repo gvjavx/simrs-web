@@ -600,6 +600,8 @@ public class BudgetingBoImpl implements BudgetingBo {
                                                 pengadaanEntity.setCreatedWho(bean.getCreatedWho());
                                                 pengadaanEntity.setLastUpdate(bean.getLastUpdate());
                                                 pengadaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                                pengadaanEntity.setPembayaran(budgetingPengadaan.getPembayaran() == null || "".equalsIgnoreCase(budgetingPengadaan.getPembayaran()) ? "Termin 0" : budgetingPengadaan.getPembayaran());
+
                                                 if (budgetingPengadaan.getNoPengadaan() != null && !"".equalsIgnoreCase(budgetingPengadaan.getNoPengadaan())){
                                                     pengadaanEntity.setNoPengadaan(budgetingPengadaan.getNoPengadaan());
                                                 } else {
@@ -1290,6 +1292,7 @@ public class BudgetingBoImpl implements BudgetingBo {
                 budgetingPengadaan.setRealisasi(new BigDecimal(0));
                 budgetingPengadaan.setSelisih(budgetingPengadaan.getSubTotal().subtract(budgetingPengadaan.getRealisasi()));
                 budgetingPengadaan.setNoPengadaan(pengadaanEntity.getNoPengadaan());
+                budgetingPengadaan.setPembayaran(pengadaanEntity.getPembayaran());
                 budgetingPengadaans.add(budgetingPengadaan);
             }
 
@@ -1560,15 +1563,15 @@ public class BudgetingBoImpl implements BudgetingBo {
     }
 
     @Override
-    public List<ParameterBudgeting> getListBudgetingRealisasi(String idJenisBudgeting, String unit, String tahun) {
-        return budgetingDao.getListBudgeting(idJenisBudgeting, unit, tahun);
+    public List<ParameterBudgeting> getListBudgetingRealisasi(String idJenisBudgeting, String unit, String tahun, String status) {
+        return budgetingDao.getListBudgeting(idJenisBudgeting, unit, tahun, status);
     }
 
     @Override
-    public List<ParameterBudgeting> getListBudgetingRealisasiPerperiode(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String rekeningId) {
+    public List<ParameterBudgeting> getListBudgetingRealisasiPerperiode(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String rekeningId, String status) {
         int n = 12;
         List<ParameterBudgeting> listOfResults = new ArrayList<>();
-        List<ParameterBudgeting> listRealisasi = budgetingDao.getListBudgetingDetailPerPeriode(idJenisBudgeting, unit, tahun, divisiId, masterId, rekeningId);
+        List<ParameterBudgeting> listRealisasi = budgetingDao.getListBudgetingDetailPerPeriode(idJenisBudgeting, unit, tahun, divisiId, masterId, rekeningId, status);
         for (int i = 1; i<=n ; i++){
             ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
             String bulan = i <= 9 ? "0" + String.valueOf(i) : String.valueOf(i);
@@ -1601,8 +1604,8 @@ public class BudgetingBoImpl implements BudgetingBo {
     }
 
     @Override
-    public List<ParameterBudgeting> getListBudgetingRealisasiPerKodeRekening(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId) {
-        return budgetingDao.getListBudgetingPerRekening(idJenisBudgeting, unit, tahun, divisiId, masterId);
+    public List<ParameterBudgeting> getListBudgetingRealisasiPerKodeRekening(String idJenisBudgeting, String unit, String tahun, String divisiId, String masterId, String status) {
+        return budgetingDao.getListBudgetingPerRekening(idJenisBudgeting, unit, tahun, divisiId, masterId, status);
     }
 
     @Override

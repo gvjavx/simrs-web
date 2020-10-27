@@ -510,7 +510,14 @@ public class BgNominasiAction {
         return budgetingPerhitunganBo.getListPendapatanObat(branchId, intBulanLalu.toString(), tahun, tipe);
     }
 
-    public CrudResponse setPerhitunganToSession(String idParam, String stPerhitungan, String masterId, String divisiId, String tahun, String unit, String idKategori, String periode) throws JSONException{
+    public CrudResponse setPerhitunganToSession( String idParam,
+                                                 String stPerhitungan,
+                                                 String masterId,
+                                                 String divisiId,
+                                                 String tahun,
+                                                 String unit,
+                                                 String idKategori,
+                                                 String periode ) throws JSONException{
         logger.info("[BgNominasiAction.setPerhitunganToSession] START >>>");
 
         CrudResponse response = new CrudResponse();
@@ -591,6 +598,14 @@ public class BgNominasiAction {
             if (!"".equalsIgnoreCase(obj.get("nama_rutin").toString())){
                 perhitungan.setNamaBiayaRutin(obj.get("nama_rutin").toString());
             }
+            if (obj.has("id_trans_nilai_dasar")){
+                if (obj.get("id_trans_nilai_dasar") != null){
+                    if (!"".equalsIgnoreCase(obj.get("id_trans_nilai_dasar").toString())){
+                        perhitungan.setIdTransNilaiDasar(obj.get("id_trans_nilai_dasar").toString());
+                    }
+                }
+            }
+
             perhitungan.setUrutan(i);
             perhitungan.setIdParameterBudgeting(idParam);
             perhitungan.setIdNilaiParameter(idNilaiParam);
@@ -604,7 +619,7 @@ public class BgNominasiAction {
         String finalIdNilaiParam = idNilaiParam;
         List<ItAkunPerhitunganBudgetingEntity> listPerhitungan = sessionPerhitungan.stream().filter(p->p.getIdNilaiParameter().equalsIgnoreCase(finalIdNilaiParam)).collect(Collectors.toList());
         BigDecimal nilaiBudgeting = new BigDecimal(0);
-        if ("KTB000005".equalsIgnoreCase(idKategori)){
+        if (CommonConstant.ID_BG_KATEGORI_BIAYA_RUTIN.equalsIgnoreCase(idKategori)){
             nilaiBudgeting = budgetingPerhitunganBo.hitungNilaiBudgetingForRutin(listPerhitungan);
         } else {
             nilaiBudgeting = budgetingPerhitunganBo.hitungNilaiBudgeting(listPerhitungan);
@@ -676,8 +691,10 @@ public class BgNominasiAction {
         perhitunganBudgeting.setBranchId(unit);
         perhitunganBudgeting.setTipe(tipe);
 
+        List<ParameterBudgeting> filterListNilaiParam = sessionNilaiParam.stream().filter(p -> "BYA".equalsIgnoreCase(p.getMasterId())).collect(Collectors.toList());
+
         try {
-            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(convertNilaiParameterToEntity(sessionNilaiParam), generateIdItemRutinIfExist(sessionPerhitungan), new ArrayList<>(), perhitunganBudgeting);
+            budgetingPerhitunganBo.saveAddPerhitunganBudgeting(convertNilaiParameterToEntity(filterListNilaiParam), generateIdItemRutinIfExist(sessionPerhitungan), new ArrayList<>(), perhitunganBudgeting);
             response.setStatus("success");
         } catch (GeneralBOException e){
             logger.info("[BgNominasiAction.saveAdd] ERROR ", e);

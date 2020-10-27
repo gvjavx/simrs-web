@@ -119,7 +119,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="departmentId4" name="department.departmentId" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="departmentId4" name="department.departmentId" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -130,7 +130,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="departmentName1" name="department.departmentName" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="departmentName1" name="department.departmentName" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -141,7 +141,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="kodering1" name="department.kodering" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="kodering1" name="department.kodering" required="true" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

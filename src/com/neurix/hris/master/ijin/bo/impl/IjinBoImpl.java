@@ -8,6 +8,8 @@ import com.neurix.hris.master.ijin.dao.IjinDao;
 import com.neurix.hris.master.ijin.model.Ijin;
 import com.neurix.hris.master.ijin.model.ImIjinEntity;
 import com.neurix.hris.master.ijin.model.ImIjinHistoryEntity;
+import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao;
+import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -25,6 +27,15 @@ public class IjinBoImpl implements IjinBo {
     protected static transient Logger logger = Logger.getLogger(IjinBoImpl.class);
     private IjinDao ijinDao;
     private BiodataDao biodataDao;
+    private IjinKeluarDao ijinKeluarDao;
+
+    public IjinKeluarDao getIjinKeluarDao() {
+        return ijinKeluarDao;
+    }
+
+    public void setIjinKeluarDao(IjinKeluarDao ijinKeluarDao) {
+        this.ijinKeluarDao = ijinKeluarDao;
+    }
 
     public BiodataDao getBiodataDao() {
         return biodataDao;
@@ -59,6 +70,14 @@ public class IjinBoImpl implements IjinBo {
         if (bean!=null) {
 
             String ijinId = bean.getIjinId();
+
+            List<IjinKeluarEntity> ijinKeluarEntityList = ijinKeluarDao.getListIjinKeluarByIjinId(ijinId);
+
+            if (ijinKeluarEntityList.size()>0){
+                String status = "ERROR : tidak bisa menghapus data karena sudah dipakai di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
 
             ImIjinEntity imIjinEntity = null;
             ImIjinHistoryEntity imIjinHistoryEntity = new ImIjinHistoryEntity();

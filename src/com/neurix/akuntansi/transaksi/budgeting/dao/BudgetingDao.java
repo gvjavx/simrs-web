@@ -382,7 +382,7 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         }
     }
 
-    public List<ParameterBudgeting> getListBudgeting(String tipeBudgeting, String unit, String tahun){
+    public List<ParameterBudgeting> getListBudgeting(String tipeBudgeting, String unit, String tahun, String status){
 
         String idJenisBudgeting = tipeBudgeting;
         if ("PDT".equalsIgnoreCase(tipeBudgeting)){
@@ -414,7 +414,8 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
                 "AND kd.tipe_budgeting LIKE :tipeBudgeting \n" +
                 "AND bg.branch_id LIKE :unit \n" +
                 "AND bg.tahun = :tahun \n" +
-                "AND bg.nilai_total > 0\n" +
+                "AND bg.nilai_total > 0 \n" +
+                "AND bg.status = :status \n" +
                 "GROUP BY\n" +
                 "kd.rekening_id,\n" +
                 "kd.nama_kode_rekening,\n" +
@@ -429,6 +430,7 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
                 .setParameter("tipeBudgeting", tipeBudgeting)
                 .setParameter("tahun", tahun)
                 .setParameter("unit", unit)
+                .setParameter("status", status)
                 .list();
 
         List<ParameterBudgeting>  budgetingList = new ArrayList<>();
@@ -458,7 +460,7 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         return budgetingList;
     }
 
-    public List<ParameterBudgeting> getListBudgetingDetailPerPeriode(String tipeBudgeting, String unit, String tahun, String divisiId, String masterId, String rekeningId){
+    public List<ParameterBudgeting> getListBudgetingDetailPerPeriode(String tipeBudgeting, String unit, String tahun, String divisiId, String masterId, String rekeningId, String status){
 
         String idJenisBudgeting = tipeBudgeting;
         String whereMaster = "";
@@ -507,6 +509,7 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
                 "AND kd.rekening_id LIKE :rekening \n" +
                 "AND bg.branch_id LIKE :unit \n" +
                 "AND bg.tahun = :tahun \n" +
+                "AND bg.status = :status \n" +
                 "AND bg.nilai_total > 0\n" + whereDivisi + whereMaster +
                 "ORDER BY \n" +
                 "bgd.master_id, bgd.divisi_id, bg.rekening_id";
@@ -516,6 +519,7 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
                 .setParameter("tahun", tahun)
                 .setParameter("unit", unit)
                 .setParameter("rekening", rekeningId)
+                .setParameter("status", status)
                 .list();
 
         List<ParameterBudgeting>  budgetingList = new ArrayList<>();
@@ -546,7 +550,7 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         return budgetingList;
     }
 
-    public List<ParameterBudgeting> getListBudgetingPerRekening(String tipeBudgeting, String unit, String tahun, String divisiId, String masterId){
+    public List<ParameterBudgeting> getListBudgetingPerRekening(String tipeBudgeting, String unit, String tahun, String divisiId, String masterId, String status){
 
         String idJenisBudgeting = tipeBudgeting;
         String whereMaster = "";
@@ -593,6 +597,7 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
                 "AND kd.tipe_budgeting LIKE :tipeBudgeting \n" +
                 "AND bg.branch_id LIKE :unit \n" +
                 "AND bg.tahun = :tahun \n" +
+                "AND bg.status = :status \n" +
                 "AND bg.nilai_total > 0 \n" + whereDivisi + whereMaster +
                 "GROUP BY \n" +
                 "kd.rekening_id,\n" +
@@ -608,6 +613,7 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
                 .setParameter("tipeBudgeting", tipeBudgeting)
                 .setParameter("tahun", tahun)
                 .setParameter("unit", unit)
+                .setParameter("status", status)
                 .list();
 
         List<ParameterBudgeting>  budgetingList = new ArrayList<>();
@@ -641,7 +647,7 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         else
             divisiId = "LIKE '"+divisiId+"'";
 
-        if (masterId == null)
+        if (masterId == null || "".equalsIgnoreCase(masterId))
             masterId = "is NULL ";
         else
             masterId = "LIKE '"+masterId+"'";

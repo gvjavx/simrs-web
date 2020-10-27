@@ -89,7 +89,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tipe Pegawai
+            Status Pegawai
         </h1>
     </section>
 
@@ -118,7 +118,7 @@
                                         <table>
                                             <tr>
                                                 <td>
-                                                    <label>Tipe Pegawai Id </label>
+                                                    <label>Status Pegawai ID </label>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -128,7 +128,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label>Tipe Pegawai Name </label>
+                                                    <label>Status Pegawai Name </label>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -164,7 +164,7 @@
                                                     <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                         <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
                                                         <i class="fa fa-plus"></i>
-                                                        Add Tipe Pegawai
+                                                        Add Status Pegawai
                                                     </sj:a>
                                                 </td>
                                                 <td>
@@ -180,12 +180,12 @@
                             <br><br>
 
                             <center>
-                                <table id="showdata" width="40%">
+                                <table id="showdata" width="70%">
                                     <tr>
                                         <td align="center">
                                             <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                        height="500" width="950" autoOpen="false"
-                                                       title="Tipe Pegawai">
+                                                       title="Status Pegawai">
                                                 <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                             </sj:dialog>
 
@@ -215,8 +215,8 @@
                                                         </sj:a>
                                                     </s:if>
                                                 </display:column>
-                                                <display:column property="tipePegawaiId" sortable="true" title="Tipe Pegawai Id" />
-                                                <display:column property="tipePegawaiName" sortable="true" title="Tipe Pegawai Name"  />
+                                                <display:column property="tipePegawaiId" sortable="true" title="Status Pegawai ID" />
+                                                <display:column property="tipePegawaiName" sortable="true" title="Status Pegawai Name"  />
                                                 <display:column property="flag" sortable="true" title="flag"  />
                                                 <display:column property="action" sortable="true" title="action"  />
                                                 <display:column property="createdDate" sortable="true" title="Created date"  />
@@ -224,7 +224,9 @@
                                                 <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                                 <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                                 <%--<display:column property="action" sortable="true" title="CreatedWho"/>--%>
-
+                                                <display:setProperty name="export.excel.filename">StatusPegawai.xls</display:setProperty>
+                                                <display:setProperty name="export.csv.filename">StatusPegawai.csv</display:setProperty>
+                                                <display:setProperty name="export.pdf.filename">StatusPegawai.pdf</display:setProperty>
                                             </display:table>
                                         </td>
                                     </tr>

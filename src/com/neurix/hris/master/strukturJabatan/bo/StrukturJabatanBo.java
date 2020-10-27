@@ -14,7 +14,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface StrukturJabatanBo extends BaseMasterBo<StrukturJabatan>{
-    public void saveDelete(StrukturJabatan bean) throws GeneralBOException;
+    public String saveDeleteStruktur(StrukturJabatan bean) throws GeneralBOException;
 
     public List<StrukturJabatan> getComboStrukturJabatanWithCriteria(String query) throws GeneralBOException;
     public List<StrukturJabatan> getDataStrukturJab(String branchId, String positionId, String nip) throws GeneralBOException;

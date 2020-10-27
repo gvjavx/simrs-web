@@ -93,6 +93,15 @@ public class TransaksiObatDetail extends BaseModel {
     private BigDecimal hargaRata;
     private String branchAsal;
     private BigDecimal hargaJual;
+    private String tipePermintaan;
+
+    public String getTipePermintaan() {
+        return tipePermintaan;
+    }
+
+    public void setTipePermintaan(String tipePermintaan) {
+        this.tipePermintaan = tipePermintaan;
+    }
 
     public BigDecimal getHargaJual() {
         return hargaJual;

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -26,6 +27,9 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Properties;
 
+import static java.util.Calendar.DATE;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
 
 
 /**
@@ -432,12 +436,12 @@ public class  CommonUtil {
 
         Integer[] elapsed = new Integer[6];
         Calendar clone = (Calendar) start.clone(); // Otherwise changes are been reflected.
-        elapsed[0] = elapsed(clone, end, Calendar.YEAR);
-        clone.add(Calendar.YEAR, elapsed[0]);
-        elapsed[1] = elapsed(clone, end, Calendar.MONTH);
-        clone.add(Calendar.MONTH, elapsed[1]);
-        elapsed[2] = elapsed(clone, end, Calendar.DATE);
-        clone.add(Calendar.DATE, elapsed[2]);
+        elapsed[0] = elapsed(clone, end, YEAR);
+        clone.add(YEAR, elapsed[0]);
+        elapsed[1] = elapsed(clone, end, MONTH);
+        clone.add(MONTH, elapsed[1]);
+        elapsed[2] = elapsed(clone, end, DATE);
+        clone.add(DATE, elapsed[2]);
         elapsed[3] = (int) (end.getTimeInMillis() - clone.getTimeInMillis()) / 3600000;
         clone.add(Calendar.HOUR, elapsed[3]);
         elapsed[4] = (int) (end.getTimeInMillis() - clone.getTimeInMillis()) / 60000;
@@ -487,7 +491,7 @@ public class  CommonUtil {
             prop.load(input);
 
             // get the property value and print it out
-            value = prop.getProperty("upload.folder");
+            value = prop.getProperty("upload.folder2");
             input.close();
             logger.info("success to load simrs.properties");
         } catch (IOException ex) {
@@ -588,7 +592,7 @@ public class  CommonUtil {
 
     public static String getLastDayOfMonth() {
         Calendar cal = Calendar.getInstance();
-        int res = cal.getActualMaximum(Calendar.DATE);
+        int res = cal.getActualMaximum(DATE);
 
         return String.valueOf(res);
     }
@@ -687,7 +691,7 @@ public class  CommonUtil {
     public static String convertDateToMonth(Date tanggal){
         Calendar cal = Calendar.getInstance();
         cal.setTime(tanggal);
-        int month = cal.get(Calendar.MONTH);
+        int month = cal.get(MONTH);
         String stBulan = "";
         switch (month){
             case 0 :
@@ -732,7 +736,7 @@ public class  CommonUtil {
     public static String convertDateToYearTerbilang(Date tanggal){
         Calendar cal = Calendar.getInstance();
         cal.setTime(tanggal);
-        int year = cal.get(Calendar.YEAR);
+        int year = cal.get(YEAR);
 
         return angkaToTerbilang((long) year);
     }
@@ -960,6 +964,9 @@ public class  CommonUtil {
             case "15":
                 status="Masuk saat Libur";
                 break;
+            case "16":
+                status="On Call";
+                break;
         }
         return status;
     }
@@ -1048,7 +1055,7 @@ public class  CommonUtil {
                 workingDays++;
             }
             // increment start date, otherwise while will give infinite loop
-            startdate.add(Calendar.DATE, 1);
+            startdate.add(DATE, 1);
         }
         return workingDays;
     }
@@ -1065,7 +1072,7 @@ public class  CommonUtil {
         while (!startdate.after(enddate)) {
             days++;
             // increment start date, otherwise while will give infinite loop
-            startdate.add(Calendar.DATE, 1);
+            startdate.add(DATE, 1);
         }
         return days;
     }
@@ -1076,12 +1083,12 @@ public class  CommonUtil {
         if (birthDate.after(today)) {
             throw new IllegalArgumentException("You don't exist yet");
         }
-        int todayYear = today.get(Calendar.YEAR);
-        int birthDateYear = birthDate.get(Calendar.YEAR);
+        int todayYear = today.get(YEAR);
+        int birthDateYear = birthDate.get(YEAR);
         int todayDayOfYear = today.get(Calendar.DAY_OF_YEAR);
         int birthDateDayOfYear = birthDate.get(Calendar.DAY_OF_YEAR);
-        int todayMonth = today.get(Calendar.MONTH);
-        int birthDateMonth = birthDate.get(Calendar.MONTH);
+        int todayMonth = today.get(MONTH);
+        int birthDateMonth = birthDate.get(MONTH);
         int todayDayOfMonth = today.get(Calendar.DAY_OF_MONTH);
         int birthDateDayOfMonth = birthDate.get(Calendar.DAY_OF_MONTH);
         int age = todayYear - birthDateYear;
@@ -1118,19 +1125,20 @@ public class  CommonUtil {
     public static java.util.Date addMonth(java.util.Date date, int i) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.MONTH, i);
+        cal.add(MONTH, i);
         return cal.getTime();
     }
 
     public static java.util.Date addYear(java.util.Date date, int i) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.YEAR, i);
+        cal.add(YEAR, i);
         return cal.getTime();
     }
     public static BigDecimal percentage(BigDecimal base, BigDecimal pct){
-        return base.multiply(pct).divide(new BigDecimal(100));
+        return base.multiply(pct).divide(new BigDecimal(100),5, RoundingMode.HALF_UP);
     }
+
     public static String cekDateBeforeNow(String tglAwal){
         String status = "";
         //mengambil Tanggal Sekarang
@@ -1387,4 +1395,31 @@ public class  CommonUtil {
         }
     }
 
+    public static Calendar getCalendar(Date date) {
+        Calendar cal = Calendar.getInstance(Locale.US);
+        cal.setTime(date);
+        return cal;
+    }
+    public static int getDiffYears(Date first, Date last) {
+        Calendar a = getCalendar(first);
+        Calendar b = getCalendar(last);
+        int diff = b.get(YEAR) - a.get(YEAR);
+        if (a.get(MONTH) > b.get(MONTH) ||
+                (a.get(MONTH) == b.get(MONTH) && a.get(DATE) > b.get(DATE))) {
+            diff--;
+        }
+        return diff;
+    }
+
+    public static int getMonthsDifference(Date date1, Date date2) {
+        int m1 = date1.getYear() * 12 + date1.getMonth();
+        int m2 = date2.getYear() * 12 + date2.getMonth();
+        return m2 - m1 + 1;
+    }
+
+    public static BigDecimal StringDenganFormatToBigDecimal(String number){
+        number = number.replace(".","");
+
+        return BigDecimal.valueOf(Double.valueOf(number));
+    }
 }

@@ -1,5 +1,7 @@
 package com.neurix.hris.master.kelompokPosition.bo.impl;
 
+import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.golongan.model.ImGolonganHistoryEntity;
 import com.neurix.hris.master.kelompokPosition.bo.KelompokPositionBo;
@@ -26,6 +28,15 @@ public class KelompokPositionBoImpl implements KelompokPositionBo {
 
     protected static transient Logger logger = Logger.getLogger(KelompokPositionBoImpl.class);
     private KelompokPositionDao kelompokPositionDao;
+    private PositionDao positionDao;
+
+    public PositionDao getPositionDao() {
+        return positionDao;
+    }
+
+    public void setPositionDao(PositionDao positionDao) {
+        this.positionDao = positionDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -54,6 +65,15 @@ public class KelompokPositionBoImpl implements KelompokPositionBo {
 
             ImKelompokPositionEntity imKelompokPositionEntity = null;
             ImKelompokPositionHistoryEntity imKelompokPositionHistoryEntity = new ImKelompokPositionHistoryEntity();
+
+            //validasi
+            List<ImPosition> positionList = positionDao.getListByKelompokId(bean.getKelompokId());
+
+            if (positionList.size()>0){
+                String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
 
             try {
                 // Get data from database by ID

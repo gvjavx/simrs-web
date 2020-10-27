@@ -7,6 +7,7 @@ import java.sql.Timestamp;
  * Created by thinkpad on 20/03/2018.
  */
 public class ImHrisTipeLiburHistory implements Serializable {
+    private String tipeLiburHistoryId;
     private String tipeLiburId;
     private String tipeLiburName;
     private Timestamp createdDate;
@@ -16,6 +17,14 @@ public class ImHrisTipeLiburHistory implements Serializable {
     private String flag;
     private String action;
     private String id;
+
+    public String getTipeLiburHistoryId() {
+        return tipeLiburHistoryId;
+    }
+
+    public void setTipeLiburHistoryId(String tipeLiburHistoryId) {
+        this.tipeLiburHistoryId = tipeLiburHistoryId;
+    }
 
     public String getId() {
         return id;

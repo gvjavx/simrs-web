@@ -18,12 +18,18 @@ public class AkunSettingReportKeuanganKonsolDetail extends BaseModel {
     private BigDecimal saldoUnit2;
     private BigDecimal saldoUnit3;
     private BigDecimal saldoUnit4;
+    private BigDecimal saldoUnit5;
+    private BigDecimal saldoUnit6;
+    private BigDecimal saldoUnit7;
     private BigDecimal saldoUnitAll;
 
     private BigDecimal lastSaldoUnit1;
     private BigDecimal lastSaldoUnit2;
     private BigDecimal lastSaldoUnit3;
     private BigDecimal lastSaldoUnit4;
+    private BigDecimal lastSaldoUnit5;
+    private BigDecimal lastSaldoUnit6;
+    private BigDecimal lastSaldoUnit7;
     private BigDecimal lastSaldoUnitAll;
 
     private BigDecimal curSaldoUnit1;
@@ -31,98 +37,172 @@ public class AkunSettingReportKeuanganKonsolDetail extends BaseModel {
     private BigDecimal curSaldoUnit3;
     private BigDecimal curSaldoUnit4;
     private BigDecimal curSaldoUnit5;
+    private BigDecimal curSaldoUnit6;
+    private BigDecimal curSaldoUnit7;
     private BigDecimal curSaldoUnitAll;
 
     private BigDecimal saldoUnit11TahunLalu;
-    private BigDecimal saldoUnit21TahunLalu;
-    private BigDecimal saldoUnit31TahunLalu;
-    private BigDecimal saldoUnit41TahunLalu;
-    private BigDecimal saldoUnitAll1TahunLalu;
 
     private BigDecimal saldoUnit12TahunLalu;
-    private BigDecimal saldoUnit22TahunLalu;
-    private BigDecimal saldoUnit32TahunLalu;
-    private BigDecimal saldoUnit42TahunLalu;
-    private BigDecimal saldoUnitAll2TahunLalu;
 
-    public BigDecimal getSaldoUnit11TahunLalu() {
-        return saldoUnit11TahunLalu;
+    public BigDecimal getSaldoUnit5() {
+        return saldoUnit5;
     }
 
-    public void setSaldoUnit11TahunLalu(BigDecimal saldoUnit11TahunLalu) {
-        this.saldoUnit11TahunLalu = saldoUnit11TahunLalu;
+    public void setSaldoUnit5(BigDecimal saldoUnit5) {
+        this.saldoUnit5 = saldoUnit5;
     }
 
-    public BigDecimal getSaldoUnit21TahunLalu() {
-        return saldoUnit21TahunLalu;
+    public BigDecimal getSaldoUnit6() {
+        return saldoUnit6;
     }
 
-    public void setSaldoUnit21TahunLalu(BigDecimal saldoUnit21TahunLalu) {
-        this.saldoUnit21TahunLalu = saldoUnit21TahunLalu;
+    public void setSaldoUnit6(BigDecimal saldoUnit6) {
+        this.saldoUnit6 = saldoUnit6;
     }
 
-    public BigDecimal getSaldoUnit31TahunLalu() {
-        return saldoUnit31TahunLalu;
+    public BigDecimal getSaldoUnit7() {
+        return saldoUnit7;
     }
 
-    public void setSaldoUnit31TahunLalu(BigDecimal saldoUnit31TahunLalu) {
-        this.saldoUnit31TahunLalu = saldoUnit31TahunLalu;
+    public void setSaldoUnit7(BigDecimal saldoUnit7) {
+        this.saldoUnit7 = saldoUnit7;
     }
 
-    public BigDecimal getSaldoUnit41TahunLalu() {
-        return saldoUnit41TahunLalu;
+    public BigDecimal getLastSaldoUnit5() {
+        return lastSaldoUnit5;
     }
 
-    public void setSaldoUnit41TahunLalu(BigDecimal saldoUnit41TahunLalu) {
-        this.saldoUnit41TahunLalu = saldoUnit41TahunLalu;
+    public void setLastSaldoUnit5(BigDecimal lastSaldoUnit5) {
+        this.lastSaldoUnit5 = lastSaldoUnit5;
     }
 
-    public BigDecimal getSaldoUnitAll1TahunLalu() {
-        return saldoUnitAll1TahunLalu;
+    public BigDecimal getLastSaldoUnit6() {
+        return lastSaldoUnit6;
     }
 
-    public void setSaldoUnitAll1TahunLalu(BigDecimal saldoUnitAll1TahunLalu) {
-        this.saldoUnitAll1TahunLalu = saldoUnitAll1TahunLalu;
+    public void setLastSaldoUnit6(BigDecimal lastSaldoUnit6) {
+        this.lastSaldoUnit6 = lastSaldoUnit6;
     }
 
-    public BigDecimal getSaldoUnit12TahunLalu() {
-        return saldoUnit12TahunLalu;
+    public BigDecimal getLastSaldoUnit7() {
+        return lastSaldoUnit7;
     }
 
-    public void setSaldoUnit12TahunLalu(BigDecimal saldoUnit12TahunLalu) {
-        this.saldoUnit12TahunLalu = saldoUnit12TahunLalu;
+    public void setLastSaldoUnit7(BigDecimal lastSaldoUnit7) {
+        this.lastSaldoUnit7 = lastSaldoUnit7;
     }
 
-    public BigDecimal getSaldoUnit22TahunLalu() {
-        return saldoUnit22TahunLalu;
+    public BigDecimal getCurSaldoUnit6() {
+        return curSaldoUnit6;
     }
 
-    public void setSaldoUnit22TahunLalu(BigDecimal saldoUnit22TahunLalu) {
-        this.saldoUnit22TahunLalu = saldoUnit22TahunLalu;
+    public void setCurSaldoUnit6(BigDecimal curSaldoUnit6) {
+        this.curSaldoUnit6 = curSaldoUnit6;
     }
 
-    public BigDecimal getSaldoUnit32TahunLalu() {
-        return saldoUnit32TahunLalu;
+    public BigDecimal getCurSaldoUnit7() {
+        return curSaldoUnit7;
     }
 
-    public void setSaldoUnit32TahunLalu(BigDecimal saldoUnit32TahunLalu) {
-        this.saldoUnit32TahunLalu = saldoUnit32TahunLalu;
+    public void setCurSaldoUnit7(BigDecimal curSaldoUnit7) {
+        this.curSaldoUnit7 = curSaldoUnit7;
     }
 
-    public BigDecimal getSaldoUnit42TahunLalu() {
-        return saldoUnit42TahunLalu;
+    public String getSettingReportKonsolDetailId() {
+        return settingReportKonsolDetailId;
     }
 
-    public void setSaldoUnit42TahunLalu(BigDecimal saldoUnit42TahunLalu) {
-        this.saldoUnit42TahunLalu = saldoUnit42TahunLalu;
+    public void setSettingReportKonsolDetailId(String settingReportKonsolDetailId) {
+        this.settingReportKonsolDetailId = settingReportKonsolDetailId;
     }
 
-    public BigDecimal getSaldoUnitAll2TahunLalu() {
-        return saldoUnitAll2TahunLalu;
+    public String getSettingReportKonsolId() {
+        return settingReportKonsolId;
     }
 
-    public void setSaldoUnitAll2TahunLalu(BigDecimal saldoUnitAll2TahunLalu) {
-        this.saldoUnitAll2TahunLalu = saldoUnitAll2TahunLalu;
+    public void setSettingReportKonsolId(String settingReportKonsolId) {
+        this.settingReportKonsolId = settingReportKonsolId;
+    }
+
+    public String getRekeningId() {
+        return rekeningId;
+    }
+
+    public void setRekeningId(String rekeningId) {
+        this.rekeningId = rekeningId;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public String getSbOperator() {
+        return sbOperator;
+    }
+
+    public void setSbOperator(String sbOperator) {
+        this.sbOperator = sbOperator;
+    }
+
+    public String getKodeRekening() {
+        return kodeRekening;
+    }
+
+    public void setKodeRekening(String kodeRekening) {
+        this.kodeRekening = kodeRekening;
+    }
+
+    public String getNamaRekening() {
+        return namaRekening;
+    }
+
+    public void setNamaRekening(String namaRekening) {
+        this.namaRekening = namaRekening;
+    }
+
+    public BigDecimal getSaldoUnit1() {
+        return saldoUnit1;
+    }
+
+    public void setSaldoUnit1(BigDecimal saldoUnit1) {
+        this.saldoUnit1 = saldoUnit1;
+    }
+
+    public BigDecimal getSaldoUnit2() {
+        return saldoUnit2;
+    }
+
+    public void setSaldoUnit2(BigDecimal saldoUnit2) {
+        this.saldoUnit2 = saldoUnit2;
+    }
+
+    public BigDecimal getSaldoUnit3() {
+        return saldoUnit3;
+    }
+
+    public void setSaldoUnit3(BigDecimal saldoUnit3) {
+        this.saldoUnit3 = saldoUnit3;
+    }
+
+    public BigDecimal getSaldoUnit4() {
+        return saldoUnit4;
+    }
+
+    public void setSaldoUnit4(BigDecimal saldoUnit4) {
+        this.saldoUnit4 = saldoUnit4;
+    }
+
+    public BigDecimal getSaldoUnitAll() {
+        return saldoUnitAll;
+    }
+
+    public void setSaldoUnitAll(BigDecimal saldoUnitAll) {
+        this.saldoUnitAll = saldoUnitAll;
     }
 
     public BigDecimal getLastSaldoUnit1() {
@@ -213,99 +293,19 @@ public class AkunSettingReportKeuanganKonsolDetail extends BaseModel {
         this.curSaldoUnitAll = curSaldoUnitAll;
     }
 
-    public String getKodeRekening() {
-        return kodeRekening;
+    public BigDecimal getSaldoUnit11TahunLalu() {
+        return saldoUnit11TahunLalu;
     }
 
-    public void setKodeRekening(String kodeRekening) {
-        this.kodeRekening = kodeRekening;
+    public void setSaldoUnit11TahunLalu(BigDecimal saldoUnit11TahunLalu) {
+        this.saldoUnit11TahunLalu = saldoUnit11TahunLalu;
     }
 
-    public String getNamaRekening() {
-        return namaRekening;
+    public BigDecimal getSaldoUnit12TahunLalu() {
+        return saldoUnit12TahunLalu;
     }
 
-    public void setNamaRekening(String namaRekening) {
-        this.namaRekening = namaRekening;
-    }
-
-    public BigDecimal getSaldoUnit1() {
-        return saldoUnit1;
-    }
-
-    public void setSaldoUnit1(BigDecimal saldoUnit1) {
-        this.saldoUnit1 = saldoUnit1;
-    }
-
-    public BigDecimal getSaldoUnit2() {
-        return saldoUnit2;
-    }
-
-    public void setSaldoUnit2(BigDecimal saldoUnit2) {
-        this.saldoUnit2 = saldoUnit2;
-    }
-
-    public BigDecimal getSaldoUnit3() {
-        return saldoUnit3;
-    }
-
-    public void setSaldoUnit3(BigDecimal saldoUnit3) {
-        this.saldoUnit3 = saldoUnit3;
-    }
-
-    public BigDecimal getSaldoUnit4() {
-        return saldoUnit4;
-    }
-
-    public void setSaldoUnit4(BigDecimal saldoUnit4) {
-        this.saldoUnit4 = saldoUnit4;
-    }
-
-    public BigDecimal getSaldoUnitAll() {
-        return saldoUnitAll;
-    }
-
-    public void setSaldoUnitAll(BigDecimal saldoUnitAll) {
-        this.saldoUnitAll = saldoUnitAll;
-    }
-
-    public String getSettingReportKonsolDetailId() {
-        return settingReportKonsolDetailId;
-    }
-
-    public void setSettingReportKonsolDetailId(String settingReportKonsolDetailId) {
-        this.settingReportKonsolDetailId = settingReportKonsolDetailId;
-    }
-
-    public String getSettingReportKonsolId() {
-        return settingReportKonsolId;
-    }
-
-    public void setSettingReportKonsolId(String settingReportKonsolId) {
-        this.settingReportKonsolId = settingReportKonsolId;
-    }
-
-    public String getRekeningId() {
-        return rekeningId;
-    }
-
-    public void setRekeningId(String rekeningId) {
-        this.rekeningId = rekeningId;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
-    public String getSbOperator() {
-        return sbOperator;
-    }
-
-    public void setSbOperator(String sbOperator) {
-        this.sbOperator = sbOperator;
+    public void setSaldoUnit12TahunLalu(BigDecimal saldoUnit12TahunLalu) {
+        this.saldoUnit12TahunLalu = saldoUnit12TahunLalu;
     }
 }
