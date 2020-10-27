@@ -119,5 +119,11 @@
         <property name="jarakAbsenMobile">
             <column name="jarak_absen_mobile"/>
         </property>
+        <property name="tanggalAwalLembur">
+            <column name="tanggal_awal_lembur"/>
+        </property>
+        <property name="tanggalAkhirLembur">
+            <column name="tanggal_akhir_lembur"/>
+        </property>
     </class>
 </hibernate-mapping>

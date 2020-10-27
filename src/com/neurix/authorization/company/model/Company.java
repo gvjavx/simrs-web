@@ -43,6 +43,24 @@ public class Company extends BaseModel implements Serializable {
     private BigDecimal biayaJabatan;
 
     private BigInteger jarakAbsenMobile;
+    private Integer tanggalAwalLembur;
+    private Integer tanggalAkhirLembur;
+
+    public Integer getTanggalAkhirLembur() {
+        return tanggalAkhirLembur;
+    }
+
+    public void setTanggalAkhirLembur(Integer tanggalAkhirLembur) {
+        this.tanggalAkhirLembur = tanggalAkhirLembur;
+    }
+
+    public Integer getTanggalAwalLembur() {
+        return tanggalAwalLembur;
+    }
+
+    public void setTanggalAwalLembur(Integer tanggalAwalLembur) {
+        this.tanggalAwalLembur = tanggalAwalLembur;
+    }
 
     public BigInteger getJarakAbsenMobile() {
         return jarakAbsenMobile;

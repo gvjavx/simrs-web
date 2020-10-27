@@ -710,3 +710,28 @@ CREATE TABLE public.it_akun_pengajuan_biaya_rk
     no_jurnal character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT it_akun_pengajuan_biaya_rk_pkey PRIMARY KEY (pengajuan_biaya_rk_id)
 );
+
+-- 23-10-2020
+update im_hris_payroll_skala_gaji_dapenbun set tipe_dapen_id='DP02';
+
+-------------------------------------------------------------------------------------------------------------
+ALTER TABLE public.im_company ADD COLUMN tanggal_awal_lembur integer;
+ALTER TABLE public.im_company ADD COLUMN tanggal_akhir_lembur integer;
+
+update im_company set tanggal_awal_lembur=21;
+update im_company set tanggal_akhir_lembur=21;
+
+ALTER TABLE im_hris_pegawai ADD COLUMN peralihan_sankhus numeric(25,0);
+ALTER TABLE im_hris_pegawai ADD COLUMN peralihan_gapok numeric(25,0);
+ALTER TABLE im_hris_pegawai ADD COLUMN peralihan_tunjangan numeric(25,0);
+
+update im_hris_pegawai set peralihan_sankhus=0;
+update im_hris_pegawai set peralihan_gapok=0;
+update im_hris_pegawai set peralihan_tunjangan=0;
+
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkk type numeric(5,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkm type numeric(5,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jpk_pers type numeric(10,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN iur_pers type numeric(10,4);
+
+update im_hris_pegawai set jumlah_anak=0 where jumlah_anak is null;

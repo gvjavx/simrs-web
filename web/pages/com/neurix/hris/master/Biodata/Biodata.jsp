@@ -47,6 +47,8 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BiodataAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/StudyJurusanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
+
     <script type="text/javascript">
 
         function callSearch2() {
@@ -70,22 +72,37 @@
             var flag                = document.getElementById("flagAktif").value;
             var masaGolongan        = document.getElementById("poinLebih").value;
             var shift               = document.getElementById("shift").value;
+            var peralihanGapok      = document.getElementById("peralihanGapok").value;
+            var peralihanSankhus    = document.getElementById("peralihanSankhus").value;
+            var peralihanTunjangan  = document.getElementById("peralihanTunjangan").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '') {
-                if(flag == 'N'){
-                    alert("Non Aktifkan User");
-                }
-
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
-                } else {
-                    // Cancel Submit comes with 1.8.0
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != ''&& peralihanGapok != ''&& peralihanSankhus != ''&& peralihanTunjangan != '') {
+                if (peralihanGapok.includes(",")||peralihanGapok.includes(",")||peralihanGapok.includes(",")) {
                     event.originalEvent.options.submit = false;
+                    var msg = "";
+                    if (peralihanGapok.includes(",")) {
+                        msg += 'Field <strong>Peralihan Gapok</strong> tidak boleh ada tanda koma.' + '<br/>';
+                    }
+                    if (peralihanSankhus.includes(",")) {
+                        msg += 'Field <strong>Peralihan Sankhus</strong> tidak boleh ada tanda koma.' + '<br/>';
+                    }
+                    if (peralihanTunjangan.includes(",")) {
+                        msg += 'Field <strong>Peralihan Tunjangan</strong> tidak boleh ada tanda koma.' + '<br/>';
+                    }
+                    document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                    $.publish('showErrorValidationDialog');
+                }else{
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
+                    } else {
+                        // Cancel Submit comes with 1.8.0
+                        event.originalEvent.options.submit = false;
+                    }
                 }
 
             } else {
-
                 event.originalEvent.options.submit = false;
 
                 var msg = "";
@@ -120,7 +137,15 @@
                 if (masaGolongan == '') {
                     msg += 'Field <strong>Masa Kerja Golongan</strong> is required.' + '<br/>';
                 }
-
+                if (peralihanGapok == '') {
+                    msg += 'Field <strong>Peralihan Gapok</strong> is required.' + '<br/>';
+                }
+                if (peralihanSankhus == '') {
+                    msg += 'Field <strong>Peralihan Sankhus</strong> is required.' + '<br/>';
+                }
+                if (peralihanTunjangan == '') {
+                    msg += 'Field <strong>Peralihan Tunjangan</strong> is required.' + '<br/>';
+                }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
@@ -1075,6 +1100,55 @@
                                         </table>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Peralihan Gapok :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield cssStyle="text-align: right;" type="text" readonly="true" cssClass="form-control" id="peralihanGapok" name="biodata.stPeralihanGapok" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: right;" type="text" onkeyup="formatRupiah2(this)" cssClass="form-control" id="peralihanGapok" name="biodata.stPeralihanGapok" />
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Peralihan Sankhus :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield cssStyle="text-align: right;" type="text" readonly="true" cssClass="form-control" id="peralihanSankhus" name="biodata.stPeralihanSankhus" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: right;" type="text" onkeyup="formatRupiah2(this)" cssClass="form-control" id="peralihanSankhus" name="biodata.stPeralihanSankhus" />
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Peralihan Tunjangan :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield cssStyle="text-align: right;" type="text" readonly="true" cssClass="form-control" id="peralihanTunjangan" name="biodata.stPeralihanTunjangan" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: right;" type="text" onkeyup="formatRupiah2(this)" cssClass="form-control" id="peralihanTunjangan" name="biodata.stPeralihanTunjangan" />
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                </tr>
+
                                 <tr>
                                     <td>
                                         <label class="control-label label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
