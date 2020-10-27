@@ -137,7 +137,9 @@
                             <table width="100%" align="center">
                                 <tr>
                                     <td align="center">
-                                        <s:form id="payrollForm" method="post"  theme="simple" namespace="/payroll" action="save_payroll.action" cssClass="form-horizontal">
+                                        <s:form id="payrollForm" method="post"
+                                                theme="simple" namespace="/payroll"
+                                                action="save_payroll.action" cssClass="form-horizontal">
 
                                             <s:hidden name="addOrEdit"/>
                                             <s:hidden name="delete"/>

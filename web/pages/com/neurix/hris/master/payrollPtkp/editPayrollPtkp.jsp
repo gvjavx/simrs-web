@@ -119,7 +119,9 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="idPtkpEdit" readonly="true" name="payrollPtkp.idPtkp" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="idPtkpEdit" readonly="true"
+                                              name="payrollPtkp.idPtkp" required="true"
+                                              cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -146,7 +148,9 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="jumlahTanggunganEdit" readonly="true" name="payrollPtkp.jumlahTanggungan" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="jumlahTanggunganEdit"
+                                             readonly="true" name="payrollPtkp.jumlahTanggungan"
+                                             required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -157,8 +161,11 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="nilaiEdit" name="payrollPtkp.nilai" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="nilaiEdit"
+                                             name="payrollPtkp.nilai" required="true"
+                                             cssClass="form-control"/>
                             </table>
+
                         </td>
                     </tr>
 
@@ -170,7 +177,8 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formEdit" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formEdit"
+                                   id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>

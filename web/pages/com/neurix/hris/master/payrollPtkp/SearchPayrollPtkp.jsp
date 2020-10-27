@@ -66,7 +66,9 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="payrollPtkpForm" method="post"  theme="simple" namespace="/payrollPtkp" action="search_payrollPtkp.action" cssClass="form-horizontal">
+                    <s:form id="payrollPtkpForm" method="post"  theme="simple"
+                            namespace="/payrollPtkp" action="search_payrollPtkp.action"
+                            cssClass="form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
@@ -86,7 +88,8 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="idPtkpSearch" name="payrollPtkp.idPtkp" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:textfield  id="idPtkpSearch" name="payrollPtkp.idPtkp"
+                                                      required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -112,7 +115,9 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield type="number" min="0" id="jumlahTanggunganSearch" name="payrollPtkp.jumlahTanggungan" required="true" cssClass="form-control"/>
+                                        <s:textfield type="number" min="0" id="jumlahTanggunganSearch"
+                                                     name="payrollPtkp.jumlahTanggungan" required="true"
+                                                     cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -151,14 +156,16 @@
                             <table align="center">
                                 <tr>
                                     <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollPtkpForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollPtkpForm"
+                                                   id="search" name="search"
                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
                                     </td>
                                     <td>
-                                        <s:url var="urlAdd" namespace="/payrollPtkp" action="add_payrollPtkp" escapeAmp="false">
+                                        <s:url var="urlAdd" namespace="/payrollPtkp" action="add_payrollPtkp"
+                                               escapeAmp="false">
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
@@ -166,7 +173,8 @@
                                         </sj:a>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollPtkp"/>'">
+                                        <button type="button" class="btn btn-danger"
+                                                onclick="window.location.href='<s:url action="initForm_payrollPtkp"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
                                     </td>

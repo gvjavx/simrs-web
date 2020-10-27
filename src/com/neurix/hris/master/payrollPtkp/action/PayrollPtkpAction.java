@@ -202,7 +202,6 @@ public class PayrollPtkpAction extends BaseMasterAction{
     @Override
     public String view() {
         logger.info("[PayrollPtkpAction.view] start process >>>");
-
         String itemId = getId();
         String itemFlag = getFlag();
         PayrollPtkp deletePayrollPtkp = new PayrollPtkp();

@@ -113,7 +113,8 @@ public class PayrollPtkpBoImpl implements PayrollPtkpBo {
                 imPayrollPtkpHistoryEntity.setIdPtkp(imPayrollPtkpEntity.getIdPtkp());
                 imPayrollPtkpHistoryEntity.setStatusKeluarga(imPayrollPtkpEntity.getStatusKeluarga());
                 imPayrollPtkpHistoryEntity.setJumlahTanggungan(imPayrollPtkpEntity.getJumlahTanggungan());
-                imPayrollPtkpHistoryEntity.setNilai(java.lang.Integer.valueOf(imPayrollPtkpEntity.getNilai().toString()));
+//                imPayrollPtkpEntity.getNilai().toString();
+                imPayrollPtkpHistoryEntity.setNilai(imPayrollPtkpEntity.getNilai().intValue());
                 imPayrollPtkpHistoryEntity.setFlag(imPayrollPtkpEntity.getFlag());
                 imPayrollPtkpHistoryEntity.setAction(imPayrollPtkpEntity.getAction());
                 imPayrollPtkpHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -121,7 +122,6 @@ public class PayrollPtkpBoImpl implements PayrollPtkpBo {
                 imPayrollPtkpHistoryEntity.setCreatedWho(imPayrollPtkpEntity.getLastUpdateWho());
                 imPayrollPtkpHistoryEntity.setCreatedDate(imPayrollPtkpEntity.getLastUpdate());
 
-                imPayrollPtkpEntity.setIdPtkp(bean.getIdPtkp());
                 imPayrollPtkpEntity.setStatusKeluarga(bean.getStatusKeluarga());
                 imPayrollPtkpEntity.setJumlahTanggungan(bean.getJumlahTanggungan());
                 imPayrollPtkpEntity.setNilai(bean.getNilai());
@@ -176,11 +176,9 @@ public class PayrollPtkpBoImpl implements PayrollPtkpBo {
 
                 // creating object entity serializable
                 ImHrisPayrollPtkpEntity imPayrollPtkpEntity = new ImHrisPayrollPtkpEntity();
-
                 imPayrollPtkpEntity.setIdPtkp(payrollPtkp);
                 imPayrollPtkpEntity.setStatusKeluarga(bean.getStatusKeluarga());
                 imPayrollPtkpEntity.setJumlahTanggungan(bean.getJumlahTanggungan());
-
                 imPayrollPtkpEntity.setNilai(bean.getNilai());
                 imPayrollPtkpEntity.setFlag(bean.getFlag());
                 imPayrollPtkpEntity.setAction(bean.getAction());
