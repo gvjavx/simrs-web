@@ -41,4 +41,5 @@ public class PayrollPtkp extends BaseModel {
     public void setNilai(BigDecimal nilai) {
         this.nilai = nilai;
     }
+
 }

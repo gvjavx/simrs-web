@@ -1,12 +1,11 @@
-package com.neurix.hris.master.payrollPtkp.action;
+package com.neurix.hris.master.payrollParamBpjs.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
-import com.neurix.hris.master.payrollPtkp.model.PayrollPtkp;
+
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.hris.master.payrollPtkp.bo.PayrollPtkpBo;
-import com.neurix.hris.master.payrollPtkp.model.PayrollPtkp;
+import com.neurix.hris.master.payrollParamBpjs.bo.PayrollPtkpBo;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
