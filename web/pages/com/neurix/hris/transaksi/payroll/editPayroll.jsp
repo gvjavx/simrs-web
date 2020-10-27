@@ -3549,6 +3549,9 @@
             $("#modal-success-dialog").modal('show');
         }
     }
+    $('#ok_con').click(function () {
+        window.location.reload();
+    })
     $('#btnReproses').click(function(){
         if (confirm('Peringatan : Jika anda melakukan reproses data payroll ini , data yang sebelumnya akan hilang dan diganti dengan data baru , \n \n Apakah anda ingin melanjutkan ?')) {
             var branchId = document.getElementById("reprosesBranchId").value;

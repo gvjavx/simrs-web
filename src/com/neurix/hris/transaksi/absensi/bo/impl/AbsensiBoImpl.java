@@ -3699,12 +3699,37 @@ public class AbsensiBoImpl implements AbsensiBo {
         logger.info("[LemburBoImpl.refreshDataLembur] start process >>>");
         List<AbsensiPegawaiEntity> absensiPegawaiEntityList = new ArrayList<>();
         String status = "sukses";
+        String tahunGaji ="";
+        String branchId = "";
+
         try {
             absensiPegawaiEntityList = absensiPegawaiDao.searchExistingAbsensi(nip,tanggal);
         } catch (HibernateException e) {
-            logger.error("[LemburBoImpl.refreshDataLembur] Error, " + e.getMessage());
+            logger.error("[AbsensiBOImpl.refreshDataLembur] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem , please info to your admin..." + e.getMessage());
         }
+        ItPersonilPositionEntity personilPositionEntity = personilPositionDao.getById("nip",nip);
+        if (personilPositionEntity==null){
+            String statusError = "Error : tidak ditemukan posisi personil";
+            logger.error("[AbsensiBOImpl.refreshDataLembur] " + statusError);
+            throw new GeneralBOException(statusError);
+        }
+
+        ImCompany company;
+        try {
+            company = companyDao.getCompanyInfo("Y");
+            if (!("").equalsIgnoreCase(company.getPeriodeGaji())) {
+                tahunGaji = company.getPeriodeGaji();
+            } else {
+                String statusError = "Error : tidak ditemukan periode gaji pada Company";
+                logger.error("[AbsensiBOImpl.refreshDataLembur] " + statusError);
+                throw new GeneralBOException(statusError);
+            }
+        }catch (HibernateException e){
+            logger.error("[AbsensiBOImpl.refreshDataLembur] " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
+        }
+
         if (absensiPegawaiEntityList.size()!=0){
             for (AbsensiPegawaiEntity absensiPegawaiEntity:absensiPegawaiEntityList){
                 String libur="N";
@@ -3713,7 +3738,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 cal.setTime(tanggal);
                 int day = cal.get(Calendar.DAY_OF_WEEK);
                 Map hsCriteria2 = new HashMap();
-                hsCriteria2.put("branch_id","KP");
+                hsCriteria2.put("branch_id",personilPositionEntity.getBranchId());
                 hsCriteria2.put("hari",day);
                 hsCriteria2.put("flag","Y");
                 jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
@@ -3827,17 +3852,25 @@ public class AbsensiBoImpl implements AbsensiBo {
                         faktor = pengaliFaktorLemburEntity.getFaktor();
                     }
 
-                    hsCriteria4 = new HashMap();
-                    hsCriteria4.put("golongan_id", golongan);
-                    hsCriteria4.put("point", (int) Math.round(point));
-                    hsCriteria4.put("tahun", "2020");
-                    hsCriteria4.put("flag", "Y");
                     List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
-                    payrollSkalaGajiList = payrollSkalaGajiDao.getByCriteria(hsCriteria4);
-                    for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                        gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
-                        sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
+                    List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
+                    if (tipePegawai.equalsIgnoreCase("TP01")){
+                        payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(golongan,tahunGaji);
+                        for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
+                            gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                            sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
+                        }
+                    }else if (tipePegawai.equalsIgnoreCase("TP03")){
+                        payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(golongan,tahunGaji);
+                        for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop:payrollSkalaGajiPkwtEntityList){
+                            gapok = skalaGajiLoop.getGajiPokok().doubleValue();
+                            sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
+                        }
+                    }else{
+                        String statusError = "ERROR : tidak bisa menemukan tipe pegawai";
+                        throw new GeneralBOException(statusError);
                     }
+
                     String tipeHari="hari_kerja";
                     if (("Y").equalsIgnoreCase(libur)){
                         tipeHari="hari_libur";
@@ -3872,7 +3905,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                             j=j+1;
                         }while (lamaLembur>0);
                     }
-                    Double peralihan = 0d;
+                    double peralihan = 0d;
                     peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(),tanggal).doubleValue();
 
                     upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;

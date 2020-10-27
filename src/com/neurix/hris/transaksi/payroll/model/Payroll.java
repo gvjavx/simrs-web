@@ -159,6 +159,15 @@ public class Payroll extends BaseModel {
     private BigDecimal proporsiGaji;
 
     private String tipeName;
+    private boolean reproses=false;
+
+    public boolean isReproses() {
+        return reproses;
+    }
+
+    public void setReproses(boolean reproses) {
+        this.reproses = reproses;
+    }
 
     public String getTipeName() {
         return tipeName;

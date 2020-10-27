@@ -733,3 +733,5 @@ ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkk type numeric(5,4);
 ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkm type numeric(5,4);
 ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jpk_pers type numeric(10,4);
 ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN iur_pers type numeric(10,4);
+
+update im_hris_pegawai set jumlah_anak=0 where jumlah_anak is null;

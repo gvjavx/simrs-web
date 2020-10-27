@@ -2,7 +2,9 @@ package com.neurix.hris.transaksi.payroll.action;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.bo.CompanyBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.Company;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.download.excel.CellDetail;
@@ -1679,6 +1681,7 @@ public class PayrollAction extends BaseMasterAction{
         AbsensiPegawai searchAbsensi = new AbsensiPegawai();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
+        CompanyBo companyBo = (CompanyBo) ctx.getBean("companyBoProxy");
 
         int bulanBefore = Integer.valueOf(bulan);
         String strBulanBefore = bulan;
@@ -1694,19 +1697,19 @@ public class PayrollAction extends BaseMasterAction{
         }else{
             strBulanBefore = ""+ bulanBefore;
         }
+        Company company = companyBo.getById("12201300001");
+        String tanggalAwal = String.valueOf(company.getTanggalAwalLembur());
+        String tanggalAkhir = String.valueOf(company.getTanggalAkhirLembur());
 
-        String []jumlahTanggalTahunKabisat = {"","31","29","31","30","31","30","31","31","30","31","30","31"};
-        String []jumlahTanggalTahunBiasa = {"","31","28","31","30","31","30","31","31","30","31","30","31"};
-        String jumlahTanggalTemp="";
-
-        if(Integer.parseInt(tahun) % 4 == 0){
-            jumlahTanggalTemp=jumlahTanggalTahunKabisat[Integer.parseInt(bulan)];
-        }else{
-            jumlahTanggalTemp=jumlahTanggalTahunBiasa[Integer.parseInt(bulan)];
+        if (tanggalAwal.length()==1){
+            tanggalAwal ="0"+tanggalAwal;
+        }
+        if (tanggalAkhir.length()==1){
+            tanggalAkhir ="0"+tanggalAkhir;
         }
 
-        String awal = "01"+"-" + strBulanBefore + "-"+ tahunBefore;
-        String akhir = jumlahTanggalTemp+"-" + strBulanBefore + "-" + tahunBefore ;
+        String awal = tanggalAwal+"-" + strBulanBefore + "-"+ tahunBefore;
+        String akhir = tanggalAkhir+"-" + bulan + "-" + tahun ;
 
         searchAbsensi.setTanggal(CommonUtil.convertToDate(awal));
         searchAbsensi.setTanggalAkhir(CommonUtil.convertToDate(akhir));
@@ -2016,6 +2019,7 @@ public class PayrollAction extends BaseMasterAction{
         Payroll payroll = new Payroll();
         List<Payroll> listDataPayroll = new ArrayList();
 
+        payroll.setReproses(true);
         payroll.setBranchId(branchId);
         payroll.setBulan(bulan);
         payroll.setTahun(tahun);
@@ -2087,7 +2091,7 @@ public class PayrollAction extends BaseMasterAction{
         PayrollBo payrollBo = (PayrollBo) ctx.getBean("payrollBoProxy");
         Payroll payroll = new Payroll();
         List<Payroll> listDataPayroll = new ArrayList();
-
+        payroll.setReproses(true);
         payroll.setPayrollId(id);
         payroll.setNip(nip);
         payroll.setBranchId(branchId);
@@ -2635,12 +2639,11 @@ public class PayrollAction extends BaseMasterAction{
         //Rincian Potongan C
         newPayroll.setPphGaji(pphGaji);
         newPayroll.setPphGajiNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(pphGaji))));
-        newPayroll.setIuranSp(iuranSp);
         newPayroll.setKopkar(kopkar);
         newPayroll.setKopkarNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(kopkar))));
         newPayroll.setIuranSp(iuranSp);
-        newPayroll.setIuranSpNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(iuranPiikb))));
-        newPayroll.setIuranPiikb(iuranSp);
+        newPayroll.setIuranSpNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(iuranSp))));
+        newPayroll.setIuranPiikb(iuranPiikb);
         newPayroll.setIuranPiikbNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(iuranPiikb))));
         newPayroll.setBankBri(bankBri);
         newPayroll.setBankBriNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(bankBri))));

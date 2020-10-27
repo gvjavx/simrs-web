@@ -1692,7 +1692,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
 
-            if(bean.getNip()!=null&&!"".equalsIgnoreCase(bean.getNip())){
+            if(!bean.isReproses()){
                 //VALIDASI
                 //Validasi jika sudah ada payroll
                 List<ItPayrollEntity> validasiPayroll = new ArrayList<>();
@@ -6753,6 +6753,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 payroll.setTotalPendidikanNilai(itPayrollEntity.getTotalPendidikan());
                 payroll.setTotalJasProd(CommonUtil.numbericFormat(itPayrollEntity.getTotalJasProd(), "###,###"));
                 payroll.setTotalJasProdNilai(itPayrollEntity.getTotalJasProd());*/
+                payroll.setTipe(bean.getTipe());
                 payroll.setAction(itPayrollEntity.getAction());
                 payroll.setFlag(itPayrollEntity.getFlag());
                 payroll.setApprovalFlag(itPayrollEntity.getApprovalFlag());
