@@ -18,11 +18,11 @@
 <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/select2.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/plugins/morris/morris.css"/>">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-<%--<link type="text/css" href="<s:url value="/pages/bootstraplte/css/font-awesome.min.css"/>" rel="stylesheet"/>--%>
+<%--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">--%>
+<link rel="stylesheet"  href="<s:url value="/pages/bootstrap/css/font-awesome.min.css"/>"/>
 <!-- Ionicons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-<%--<link type="text/css" href="<s:url value="/pages/bootstraplte/css/ionicons.min.css"/>" rel="stylesheet"/>--%>
+<%--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">--%>
+<link rel="stylesheet" href="<s:url value="/pages/bootstrap/css/ionicons.min.css"/>"/>
 <!-- Theme style -->
 <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/AdminLTE.min.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/dist/css/timepicker.css"/>">

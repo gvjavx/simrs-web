@@ -14,7 +14,7 @@ public class ItSimrsHemodinamikaEntity {
     private Integer bp;
     private Integer hi;
     private Integer rr;
-    private Integer ekg;
+    private String ekg;
     private Integer icp;
     private Integer ibp;
     private Integer cvp;
@@ -26,6 +26,24 @@ public class ItSimrsHemodinamikaEntity {
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private Integer sistole;
+    private Integer diastole;
+
+    public Integer getSistole() {
+        return sistole;
+    }
+
+    public void setSistole(Integer sistole) {
+        this.sistole = sistole;
+    }
+
+    public Integer getDiastole() {
+        return diastole;
+    }
+
+    public void setDiastole(Integer diastole) {
+        this.diastole = diastole;
+    }
 
     public Date getTanggal() {
         return tanggal;
@@ -91,11 +109,11 @@ public class ItSimrsHemodinamikaEntity {
         this.rr = rr;
     }
 
-    public Integer getEkg() {
+    public String getEkg() {
         return ekg;
     }
 
-    public void setEkg(Integer ekg) {
+    public void setEkg(String ekg) {
         this.ekg = ekg;
     }
 

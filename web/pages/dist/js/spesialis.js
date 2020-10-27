@@ -2335,7 +2335,7 @@ function saveSPS(jenis, ket) {
                 'jawaban': 'OD|OS',
                 'keterangan': jenis,
                 'jenis': ket,
-                'tipe':'pernyataan',
+                'tipe':'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -2406,22 +2406,37 @@ function saveSPS(jenis, ket) {
                 'tipe': 'gambar',
                 'id_detail_checkup': idDetailCheckup
             });
+
+            var keteranganGambar = $('#o1').val();
+            if(keteranganGambar != ''){
+                data.push({
+                    'parameter': 'Keterangan Gambar',
+                    'jawaban': keteranganGambar,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
         }
 
+        data.push({
+            'parameter': '',
+            'jawaban': 'OD|OS',
+            'keterangan': jenis,
+            'jenis': ket,
+            'id_detail_checkup': idDetailCheckup
+        });
+
         $.each(va2, function (i, item) {
-            console.log(va1[i].text());
             if(item.value != '' && va3[i].value != ''){
                 data.push({
-                    'parameter': va1[i].text,
+                    'parameter': va1[i].innerHTML,
                     'jawaban': item.value+'|'+va3[i].value,
                     'keterangan': jenis,
                     'jenis': ket,
                     'id_detail_checkup': idDetailCheckup
                 });
                 c3 = "Y";
-                console.log(va1[i].text);
-                console.log(va3[i].value);
-                console.log(item.value);
             }
         });
 
@@ -2437,6 +2452,131 @@ function saveSPS(jenis, ket) {
                 'nama_terang': nama,
                 'id_detail_checkup': idDetailCheckup
             });
+            cek = true;
+        }
+    }
+
+    if ("pengkajian_mata_op" == jenis) {
+        var va1 = $('#pk1').val();
+        var va2 = $('#pk2').val();
+        var va3 = $('#pk3').val();
+        var va4 = $('#pk4').val();
+
+        if (va1 && va2 && va3 && va4 != '') {
+            data.push({
+                'parameter': 'Tanggal Jam',
+                'jawaban': va1+" "+va2,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Anamnese',
+                'jawaban': va3,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keluhan Utama',
+                'jawaban': va4,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if ("biometri" == jenis) {
+        var va1 = $('.bi-label');
+        var va2 = $('.bi-od');
+        var va3 = $('.bi-os');
+
+        var va4 = $('.bi-label-2');
+        var va5 = $('.bi-od-im');
+        var va6 = $('.bi-od-co');
+        var va7 = $('.bi-os-im');
+        var va8 = $('.bi-os-co');
+
+        var c1 = "";
+        var c2 = "";
+
+        $.each(va2, function (i, item) {
+            if(item.value != '' && va3[i].value != ''){
+                c1 = "Y";
+            }
+        });
+
+        $.each(va5, function (i, item) {
+            if(item.value != '' && va6[i].value != '' && va7[i].value != '' && va8[i].value != ''){
+                c2 = "Y";
+            }
+        });
+
+        if(c1 == "Y"){
+            data.push({
+                'parameter': 'Pemeriksaan',
+                'jawaban': 'OD|OS',
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': '2',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Keratometri',
+                'jawaban': '',
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'colspan',
+                'id_detail_checkup': idDetailCheckup
+            });
+            $.each(va2, function (i, item) {
+                if(item.value != '' && va3[i].value != ''){
+                    data.push({
+                        'parameter': va1[i].innerHTML,
+                        'jawaban': item.value+'|'+va3[i].value,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'tipe': '2',
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+            });
+        }
+        if(c2 == "Y"){
+            data.push({
+                'parameter': 'Kalkukasi "IOT POWER"',
+                'jawaban': '',
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'colspan',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '',
+                'jawaban': 'Immersion|Contact|Immersion|Contact|',
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': '4',
+                'id_detail_checkup': idDetailCheckup
+            });
+            $.each(va5, function (i, item) {
+                if(item.value != '' && va6[i].value != '' && va7[i].value != '' && va8[i].value != ''){
+                    data.push({
+                        'parameter': va4[i].innerHTML,
+                        'jawaban': item.value+'|'+va6[i].value+'|'+va7[i].value+'|'+va8[i].value,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'tipe': '4',
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+            });
+        }
+
+
+        if (c1 && c2 == "Y") {
             cek = true;
         }
     }
@@ -2492,13 +2632,23 @@ function detailSPS(jenis) {
                         jwb = item.jawaban;
                     }
                     if ("ttd" == item.tipe) {
-                        body += '<tr>' +
-                            '<td width="60%">' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + jwb + '" style="width: 100px">' +
-                            '<p style="margin-top: -3px">' + cekItemIsNull(item.namaTerang) + '</p>' +
-                            '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
-                            '</td>' +
-                            '</tr>';
+                        if("ophtal" == item.keterangan){
+                            body += '<tr>' +
+                                '<td width="60%">' + item.parameter + '</td>' +
+                                '<td colspan="2">' + '<img src="' + jwb + '" style="width: 100px">' +
+                                '<p style="margin-top: -3px">' + cekItemIsNull(item.namaTerang) + '</p>' +
+                                '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
+                                '</td>' +
+                                '</tr>';
+                        }else{
+                            body += '<tr>' +
+                                '<td width="60%">' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + jwb + '" style="width: 100px">' +
+                                '<p style="margin-top: -3px">' + cekItemIsNull(item.namaTerang) + '</p>' +
+                                '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
+                                '</td>' +
+                                '</tr>';
+                        }
                     } else if ("tht_tht" == item.keterangan) {
                         var tht = jwb.split("=");
                         var temp1 = "";
@@ -2527,10 +2677,60 @@ function detailSPS(jenis) {
                             '<td colspan="2">' + tabeleTcm + '</td>' +
                             '</tr>';
                     } else if ("gambar" == item.tipe) {
+                        if("ophtal" == item.keterangan){
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td colspan="2">' + '<img src="' + jwb + '" style="height: 200px">' + '</td>' +
+                                '</tr>';
+                        }else{
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + jwb + '" style="height: 300px">' + '</td>' +
+                                '</tr>';
+                        }
+                    } else if("visus" == item.keterangan){
                         body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + jwb + '" style="height: 300px">' + '</td>' +
+                            '<td width="20%">' + item.parameter + '</td>' +
+                            '<td>' + item.jawaban.split("|")[0] + '</td>' +
+                            '<td>' + item.jawaban.split("|")[1] + '</td>' +
                             '</tr>';
+                    }else if("ophtal" == item.keterangan){
+                        if("colspan" == item.tipe){
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td colspan="2">' + jwb + '</td>' +
+                                '</tr>';
+                        }else{
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + item.jawaban.split("|")[0] + '</td>' +
+                                '<td>' + item.jawaban.split("|")[1] + '</td>' +
+                                '</tr>';
+                        }
+                    }else if("biometri" == item.keterangan){
+                        if("colspan" == item.tipe) {
+                            body += '<tr>' +
+                                '<td colspan="5">' + item.parameter + '</td>' +
+                                '</tr>';
+                        }else if("2" == item.tipe){
+                            if(item.jawaban != null){
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td colspan="2">' + item.jawaban.split("|")[0] + '</td>' +
+                                    '<td colspan="2">' + item.jawaban.split("|")[1] + '</td>' +
+                                    '</tr>';
+                            }
+                        }else if("4" == item.tipe){
+                            if(item.jawaban != null){
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + item.jawaban.split("|")[0] + '</td>' +
+                                    '<td>' + item.jawaban.split("|")[1] + '</td>' +
+                                    '<td>' + item.jawaban.split("|")[2] + '</td>' +
+                                    '<td>' + item.jawaban.split("|")[3] + '</td>' +
+                                    '</tr>';
+                            }
+                        }
                     } else {
                         body += '<tr>' +
                             '<td width="40%">' + item.parameter + '</td>' +

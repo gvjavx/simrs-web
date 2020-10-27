@@ -487,7 +487,7 @@
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3 o-label" name="cek-label">Posisi</label>
+                            <label class="col-md-3 o-label">Posisi</label>
                             <div class="col-md-4">
                                 <input class="form-control od-isi">
                             </div>
@@ -738,7 +738,7 @@
                             <td>Pengkajian Awal</td>
                             <td width="20%" align="center">
                                 <img id="btn_sps_pengkajian_mata_op" class="hvr-grow"
-                                     onclick="detailSPS('sps_pengkajian_mata_op')"
+                                     onclick="detailSPS('pengkajian_mata_op')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                                 <img id="delete_pengkajian_mata_op" class="hvr-grow btn-hide" onclick="conSPS('pengkajian_mata_op', 'spesialis_mata_op')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
@@ -857,30 +857,30 @@
                         <label class="col-md-12">Keratometri</label>
                     </div>
                     <div class="row">
-                        <label class="col-md-3">K1</label>
+                        <label class="col-md-3 bi-label">K1</label>
                         <div class="col-md-4">
-                            <input class="form-control">
+                            <input class="form-control bi-od">
                         </div>
                         <div class="col-md-4">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-3">K2</label>
-                        <div class="col-md-4">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-4">
-                            <input class="form-control">
+                            <input class="form-control bi-os">
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-3">ACD</label>
+                        <label class="col-md-3 bi-label">K2</label>
                         <div class="col-md-4">
-                            <input class="form-control">
+                            <input class="form-control bi-od">
                         </div>
                         <div class="col-md-4">
-                            <input class="form-control">
+                            <input class="form-control bi-os">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-3 bi-label">ACD</label>
+                        <div class="col-md-4">
+                            <input class="form-control bi-od">
+                        </div>
+                        <div class="col-md-4">
+                            <input class="form-control bi-os">
                         </div>
                     </div>
                     <div class="row jarak">
@@ -893,283 +893,283 @@
                         <label class="col-md-2"><b>Contact</b></label>
                     </div>
                     <div class="row">
-                        <label class="col-md-3">Axial Length</label>
+                        <label class="col-md-3 bi-label-2">Axial Length</label>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-3">Nano Fold/OP Fold</label>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-co">
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-3">Oculentis (L 313)</label>
+                        <label class="col-md-3 bi-label-2">Nano Fold/OP Fold</label>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-3">Oculentis (LS 313 MP15)</label>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-co">
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-3">Oculentis (LS 313 MP30)</label>
+                        <label class="col-md-3 bi-label-2">Oculentis (L 313)</label>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-3">C Flex / Clare</label>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-co">
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-3">Cristalens Artis</label>
+                        <label class="col-md-3 bi-label-2">Oculentis (LS 313 MP15)</label>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-3">Lucidis 124 M</label>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-co">
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-3">SBL - 3</label>
+                        <label class="col-md-3 bi-label-2">Oculentis (LS 313 MP30)</label>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-3">Nanao Iris</label>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-co">
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-3">Ra 25</label>
+                        <label class="col-md-3 bi-label-2">C Flex / Clare</label>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-3">AT Lisa Tri 839 MP</label>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-co">
                         </div>
                     </div>
                     <div class="row jarak">
-                        <label class="col-md-3">CT Aspina 409 MP</label>
+                        <label class="col-md-3 bi-label-2">Cristalens Artis</label>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-co">
                         </div>
                     </div>
                     <div class="row jarak">
-                        <div class="col-md-3">
-                            <input class="form-control" placeholder="Lainnya">
+                        <label class="col-md-3 bi-label-2">Lucidis 124 M</label>
+                        <div class="col-md-2">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-co">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-3 bi-label-2">SBL - 3</label>
+                        <div class="col-md-2">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-os-im">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-os-co">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-3 bi-label-2">Nanao Iris</label>
+                        <div class="col-md-2">
+                            <input class="form-control bi-od-im">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-od-co">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-os-im">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-os-co">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-3 bi-label-2">Ra 25</label>
+                        <div class="col-md-2">
+                            <input class="form-control bi-od-im">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-od-co">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-os-im">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-os-co">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-3 bi-label-2">AT Lisa Tri 839 MP</label>
+                        <div class="col-md-2">
+                            <input class="form-control bi-od-co">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-od-co">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-os-im">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-os-co">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <label class="col-md-3 bi-label-2">CT Aspina 409 MP</label>
+                        <div class="col-md-2">
+                            <input class="form-control bi-od-im">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-od-co">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-os-im">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-os-co">
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="col-md-3">
-                            <input class="form-control" placeholder="Lainnya">
+                            <input class="form-control bi-label-2" placeholder="Lainnya">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-co">
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="col-md-3">
-                            <input class="form-control" placeholder="Lainnya">
+                            <input class="form-control bi-label-2" placeholder="Lainnya">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-co">
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="col-md-3">
-                            <input class="form-control" placeholder="Lainnya">
+                            <input class="form-control bi-label-2" placeholder="Lainnya">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-co">
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="col-md-3">
-                            <input class="form-control" placeholder="Lainnya">
+                            <input class="form-control bi-label-2" placeholder="Lainnya">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-od-co">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-im">
                         </div>
                         <div class="col-md-2">
-                            <input class="form-control">
+                            <input class="form-control bi-os-co">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="col-md-3">
+                            <input class="form-control bi-label-2" placeholder="Lainnya">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-od-im">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-od-co">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-os-im">
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control bi-os-co">
                         </div>
                     </div>
                 </div>

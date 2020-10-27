@@ -1571,6 +1571,7 @@ function saveHemodinamika(jenis, ket) {
     var va8 = $('#hemo8').val();
     var va9 = $('#hemo9').val();
     var va10 = $('#hemo10').val();
+    var va11 = $('#hemo11').val();
     var data = "";
 
     if (va1 != '') {
@@ -1578,14 +1579,15 @@ function saveHemodinamika(jenis, ket) {
             'id_detail_checkup': idDetailCheckup,
             'waktu': va1,
             'tensi': va2,
-            'bp': va3,
-            'hi': va4,
-            'rr': va5,
-            'ekg': va6,
-            'icp': va7,
-            'ibp': va8,
-            'cvp': va9,
-            'map': va10,
+            'st': va3,
+            'dt': va4,
+            'hi': va5,
+            'rr': va6,
+            'ekg': va7,
+            'icp': va8,
+            'ibp': va9,
+            'cvp': va10,
+            'map': va11,
             'keterangan': jenis
         };
         var result = JSON.stringify(data);
@@ -1633,48 +1635,51 @@ function showChartHemodinamika(jenis, tgl) {
             $.each(res, function (i, item) {
                 var ekg = 0;
                 if (item.ekg != null) {
-                    ekg = item.ekg;
+                    // ekg = item.ekg;
+                    thEkg.push({'jam': item.waktu});
+                    tdEkg.push({'ekg': item.ekg});
                 }
 
                 dataArray.push({
                     y: item.waktu,
                     a: item.tensi,
-                    b: item.bp,
-                    c: item.hi,
-                    d: item.rr,
-                    e: item.icp,
-                    f: item.ibp,
-                    g: item.cvp,
-                    h: item.map
+                    b: item.sistole,
+                    c: item.diastole,
+                    d: item.hi,
+                    e: item.rr,
+                    f: item.icp,
+                    g: item.ibp,
+                    h: item.cvp,
+                    i: item.map
                 });
 
-                var jam = item.waktu.split(":")[0];
+                // var jam = item.waktu.split(":")[0];
 
-                if (temJam != jam) {
-                    temJam = jam;
-                    thEkg.push({'jam': jam});
-                }
+                // if (temJam != jam) {
+                //     temJam = jam;
+                //     thEkg.push({'jam': jam});
+                // }
 
-                var tempTgl = "";
-                var btn = "";
+                // var tempTgl = "";
+                // var btn = "";
 
-                if (i == 0) {
-                    tempEkg = parseInt(tempEkg) + parseInt(ekg);
-                } else {
-                    var jm = res[i - 1]["waktu"];
-                    var jamB = jm.split(":")[0];
-
-                    if (jam == jamB) {
-                        tempEkg = parseInt(tempEkg) + parseInt(ekg);
-                    } else {
-                        tdEkg.push({'ekg': tempEkg});
-                        tempEkg = ekg;
-                    }
-                }
-
-                if (i == res.length - 1) {
-                    tdEkg.push({'ekg': tempEkg});
-                }
+                // if (i == 0) {
+                //     tempEkg = parseInt(tempEkg) + parseInt(ekg);
+                // } else {
+                //     var jm = res[i - 1]["waktu"];
+                //     var jamB = jm.split(":")[0];
+                //
+                //     if (jam == jamB) {
+                //         tempEkg = parseInt(tempEkg) + parseInt(ekg);
+                //     } else {
+                //         tdEkg.push({'ekg': tempEkg});
+                //         tempEkg = ekg;
+                //     }
+                // }
+                //
+                // if (i == res.length - 1) {
+                //     tdEkg.push({'ekg': tempEkg});
+                // }
 
             });
 
@@ -1685,9 +1690,9 @@ function showChartHemodinamika(jenis, tgl) {
                     resize: true,
                     data: dataArray,
                     xkey: 'y',
-                    ykeys: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
-                    labels: ['Tensi', 'BP', 'HI', 'RR', 'ICP', 'IBP', 'CVP', 'MAP'],
-                    lineColors: ['#ff0000', '#0000ff', '#00cc00', '#ff9933', '#cc6600', '#ffff66', '#cc6699', '#666633'],
+                    ykeys: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h','i'],
+                    labels: ['Temperature', 'Sistole', 'Diastole', 'HI', 'RR', 'ICP', 'IBP', 'CVP', 'MAP'],
+                    lineColors: ['#ff0000', '#0000ff', '#00cc00', '#ff9933', '#cc6600', '#ffff66', '#cc6699', '#666633', '#000066'],
                     hideHover: 'auto',
                     parseTime: false,
                     lineWidth: 1
@@ -1743,7 +1748,8 @@ function listHemodinamika(jenis) {
                     '<td>' + btn + "&nbsp;&nbsp;" + tempTgl + '</td>' +
                     '<td>' + cekItemIsNull(item.waktu) + '</td>' +
                     '<td>' + cekItemIsNull(item.tensi) + '</td>' +
-                    '<td>' + cekItemIsNull(item.bp) + '</td>' +
+                    '<td>' + cekItemIsNull(item.sistole) + '</td>' +
+                    '<td>' + cekItemIsNull(item.diastole) + '</td>' +
                     '<td>' + cekItemIsNull(item.hi) + '</td>' +
                     '<td>' + cekItemIsNull(item.rr) + '</td>' +
                     '<td>' + cekItemIsNull(item.ekg) + '</td>' +
@@ -1763,9 +1769,10 @@ function listHemodinamika(jenis) {
             head = '<tr style="font-weight: bold">\n' +
                 '<td>Tanggal</td>\n' +
                 '<td>Waktu</td>\n' +
-                '<td>Tensi</td>\n' +
-                '<td>BP</td>\n' +
-                '<td>HI</td>\n' +
+                '<td>Temperatur</td>\n' +
+                '<td>Sistole</td>\n' +
+                '<td>Diastole</td>\n' +
+                '<td>HR</td>\n' +
                 '<td>RR</td>\n' +
                 '<td>EKG</td>\n' +
                 '<td>ICP</td>\n' +

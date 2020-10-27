@@ -43,9 +43,9 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
             if (mapCriteria.get("is_ina") != null) {
                 criteria.add(Restrictions.eq("isIna", mapCriteria.get("is_ina").toString()));
             }
-            if (mapCriteria.get("kategori_ina_bpjs") != null) {
-                criteria.add(Restrictions.eq("kategoriInaBpjs", mapCriteria.get("kategori_ina_bpjs").toString()));
-            }
+//            if (mapCriteria.get("kategori_ina_bpjs") != null) {
+//                criteria.add(Restrictions.eq("kategoriInaBpjs", mapCriteria.get("kategori_ina_bpjs").toString()));
+//            }
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
             }
@@ -156,6 +156,9 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         }
         if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
             condition = condition + "AND b.branch_id = '"+bean.getBranchId()+"' \n";
+        }
+        if(bean.getKategoriInaBpjs() != null && !"".equalsIgnoreCase(bean.getKategoriInaBpjs())){
+            condition = condition + "AND a.kategori_ina_bpjs = '"+bean.getKategoriInaBpjs()+"' \n";
         }
         String SQL = "SELECT \n" +
                 "a.id_header_tindakan,\n" +
