@@ -1089,34 +1089,13 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Waktu</label>
-                            <div class="col-md-9">
-                                <select class="form-control select2" id="res1" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="07:00">07:00</option>
-                                    <option value="08:00">08:00</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                    <option value="19:00">19:00</option>
-                                    <option value="20:00">20:00</option>
-                                    <option value="21:00">21:00</option>
-                                    <option value="22:00">22:00</option>
-                                    <option value="23:00">23:00</option>
-                                    <option value="24:00">24:00</option>
-                                    <option value="01:00">01:00</option>
-                                    <option value="02:00">02:00</option>
-                                    <option value="03:00">03:00</option>
-                                    <option value="04:00">04:00</option>
-                                    <option value="05:00">05:00</option>
-                                    <option value="06:00">06:00</option>
-                                </select>
+                            <div class="col-md-4">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="res1">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1241,91 +1220,97 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">O2</label>
                             <div class="col-md-3">
                                 <select class="form-control select2" id="res13" style="width: 100%">
                                     <option value="">[Select]</option>
                                     <option value="NK">NK</option>
                                     <option value="RM">RM</option>
                                     <option value="NRM">NRM</option>
+                                    <option value="T-Piece">T-Piece</option>
+                                    <option value="J-Rise">J-Rise</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res014">
-                            </div>
+                            <label class="col-md-3" style="margin-top: 7px">Tipe Ventilasi</label>
                             <div class="col-md-3">
                                 <select class="form-control select2" id="res14" style="width: 100%">
                                     <option value="">[Select]</option>
-                                    <option value="TPiece">TPiece</option>
-                                    <option value="JRise">JRise</option>
+                                    <option value="Pressure Control">Pressure Control</option>
+                                    <option value="Volume Control">Volume Control</option>
+                                    <option value="SIMV">SIMV</option>
+                                    <option value="NIV">NIV</option>
+                                    <option value="CPAP">CPAP</option>
                                 </select>
-                            </div>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res15">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3 jarak">Tipe Ventilasi</label>
+                            <label class="col-md-3 jarak">PEEP</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res15">
+                            </div>
+                            <label class="col-md-3">Frekwensi/ Freweksi Total</label>
                             <div class="col-md-3">
                                 <input class="form-control jarak" type="number" id="res16">
-                            </div>
-                            <div class="col-md-3">
-                                <select class="form-control select2" id="res17" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="PEEP">PEEP</option>
-                                    <option value="CPAP">CPAP</option>
-                                    <option value="ET C02">ET C02</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res18">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Frekwensi/ Freweksi Total</label>
+                            <label class="col-md-3">TV (I) TV(E)</label>
                             <div class="col-md-3">
-                                <input class="form-control" type="number" id="res19">
+                                <input class="form-control" type="number" id="res17">
                             </div>
-                            <label class="col-md-3 jarak">TV (I) TV(E)</label>
+                            <label class="col-md-3 jarak">MV (I) MV (I)</label>
                             <div class="col-md-3">
-                                <input class="form-control" type="number" id="res20">
+                                <input class="form-control" type="number" id="res18">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3 jarak">MV (I) MV (I)</label>
+                            <label class="col-md-3 jarak">P-Support/P-ASB</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res19">
+                            </div>
+                            <label class="col-md-3 jarak">P-Inspirasi/P-Control</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res20">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">Triger</label>
                             <div class="col-md-3">
                                 <input class="form-control jarak" type="number" id="res21">
                             </div>
+                            <label class="col-md-3 jarak">Inspirasi Time</label>
                             <div class="col-md-3">
-                                <select class="form-control select2" id="res22" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="PSupport">PSupport</option>
-                                    <option value="PASB">PASB</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res23">
+                                <input class="form-control jarak" type="number" id="res22">
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
+                            <label class="col-md-3 jarak">Flow</label>
                             <div class="col-md-3">
-                                <select class="form-control select2" id="res24" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="PInspirasi">PInspirasi</option>
-                                    <option value="PControl">PControl</option>
-                                </select>
+                                <input class="form-control jarak" type="number" id="res23">
                             </div>
+                            <label class="col-md-3 jarak">FIO 2/Konsentrasi O2</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res24">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">Ukuran ETT</label>
                             <div class="col-md-3">
                                 <input class="form-control jarak" type="number" id="res25">
                             </div>
-                            <label class="col-md-3 jarak">Triger</label>
+                            <label class="col-md-3 jarak">Kedalaman ETT</label>
                             <div class="col-md-3">
                                 <input class="form-control jarak" type="number" id="res26">
                             </div>
@@ -1333,49 +1318,20 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3 jarak">Inspirasi Time</label>
+                            <label class="col-md-3 jarak"> SPO2</label>
                             <div class="col-md-3">
                                 <input class="form-control jarak" type="number" id="res27">
                             </div>
-                            <label class="col-md-3 jarak">Flow</label>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res28">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <select class="form-control select2" id="res29" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="FIO 2">FIO 2</option>
-                                    <option value="Konsentrasi O2">Konsentrasi O2</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res30">
-                            </div>
-                            <div class="col-md-3">
-                                <select class="form-control select2" id="res31" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="Ukuran ETT">Ukuran ETT</option>
-                                    <option value="Kedalaman ETT">Kedalaman ETT</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res32">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3 jarak"> SPO2</label>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res33">
-                            </div>
                             <label class="col-md-3 jarak"> Secret/ Sputum</label>
                             <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res34">
+                                <select class="form-control select2" id="res28" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="Putih">Putih</option>
+                                    <option value="Merah">Merah</option>
+                                    <option value="Encer">Encer</option>
+                                    <option value="Kuning">Kuning</option>
+                                    <option value="Kental">Kental</option>
+                                </select>
                             </div>
                         </div>
                     </div>

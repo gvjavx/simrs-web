@@ -1840,12 +1840,6 @@ function saveRespirasi(jenis, ket) {
     var va26 = $('#res26').val();
     var va27 = $('#res27').val();
     var va28 = $('#res28').val();
-    var va29 = $('#res29').val();
-    var va30 = $('#res30').val();
-    var va31 = $('#res31').val();
-    var va32 = $('#res32').val();
-    var va33 = $('#res33').val();
-    var va34 = $('#res34').val();
 
     var data = "";
 
@@ -1858,29 +1852,22 @@ function saveRespirasi(jenis, ket) {
             'reflek_cahaya': va7 + '|' + va8,
             'tk': va9 + '|' + va10,
             'kk': va11 + '|' + va12,
-            'jenis_nk_rm_nrm': va13,
-            'nk_rm_nrm': va014,
-            'jenis_t_piece_j_rise': va14,
-            't_piece_j_rise': va15,
-            'tipe_ventilasi': va16,
-            'jenis_peep_cpap_et': va17,
-            'peep_cpap_et': va18,
-            'frekwensi': va19,
-            'tv': va20,
-            'mv': va21,
-            'jenis_p_support_p_asb': va22,
-            'p_support_p_asb': va23,
-            'jenis_p_ins_p_con': va24,
-            'p_ins_p_con': va25,
-            'triger': va26,
-            'ins_time': va27,
-            'flow': va28,
-            'jenis_fio_kon': va29,
-            'fio_kon': va30,
-            'jenis_ukuran_kedalamaan_ett': va31,
-            'ukuran_kedalamaan_ett': va32,
-            'spo': va33,
-            'secret': va34,
+            'o2': va13,
+            'tipe_ventilasi': va14,
+            'peep': va15,
+            'frekwensi': va16,
+            'tv': va17,
+            'mv': va18,
+            'p_support_p_asb': va19,
+            'p_ins_p_con': va20,
+            'triger': va21,
+            'ins_time': va22,
+            'flow': va23,
+            'fio_kon': va24,
+            'ukuran_ett': va25,
+            'kedalaman_ett': va26,
+            'spo2': va27,
+            'secret': va28,
             'keterangan': jenis
         };
         var result = JSON.stringify(data);
