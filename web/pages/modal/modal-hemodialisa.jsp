@@ -95,7 +95,7 @@
                             <td>Catatan Terintegrasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_hd_terintegrasi" class="hvr-grow" onclick="detailCPPT('terintegrasi', 'monitoring_hd', 'hd')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         <tr id="row_hd_instruksi_medik">
@@ -110,7 +110,7 @@
                             <td>Observasi Tindakan</td>
                             <td width="20%" align="center">
                                 <img id="btn_hd_observasi_tindakan" class="hvr-grow" onclick="detailObservasi('observasi_tindakan')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         <tr id="row_hd_penyulit_hd">
@@ -325,7 +325,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Tekanan Darah</label>
                             <div class="col-md-3">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control tensi-pasien" id="pkj8">
+                                    <input class="form-control tensi-pasien" id="pkj8" data-inputmask="'mask': ['999/999']" data-mask="">
                                     <div class="input-group-addon" style="font-size: 10px; width: 50px">
                                         mmHg
                                     </div>
@@ -1307,7 +1307,8 @@
                             <label class="col-md-3" ><b>O</b>bjective</label>
                             <div class="col-md-4">
                                 <span>Tensi </span> <small>(mmHg)</small>
-                                <input class="form-control" id="cppt5_tensi">
+                                <input class="form-control" id="cppt5_tensi" data-inputmask="'mask': ['999/999']"
+                                       data-mask="">
                             </div>
                             <div class="col-md-4">
                                 <span>Suhu </span> <small>(&#8451)</small>
@@ -1470,19 +1471,19 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <span>HD<small> (jam)</small></span>
-                                <input class="form-control" id="im2">
+                                <input class="form-control" id="im2" type="number">
                             </div>
                             <div class="col-md-3">
                                 <span>QB<small> (ml/menit)</small></span>
-                                <input class="form-control" id="im3">
+                                <input class="form-control" id="im3" type="number">
                             </div>
                             <div class="col-md-3">
                                 <span>QD<small> (ml/menit)</small></span>
-                                <input class="form-control" id="im4">
+                                <input class="form-control" id="im4" type="number">
                             </div>
                             <div class="col-md-3">
                                 <span>UF Goal<small> (ml)</small></span>
-                                <input class="form-control" id="im5">
+                                <input class="form-control" id="im5" type="number">
                             </div>
                         </div>
                     </div>
@@ -1735,7 +1736,7 @@
                             </div>
                             <label class="col-md-3">Tek. Darah (mmHg)</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="obs5">
+                                <input class="form-control" id="obs5" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                         </div>
                     </div>
@@ -1970,7 +1971,7 @@
                             <label class="col-md-3" ><b>O</b>bjective</label>
                             <div class="col-md-4">
                                 <span>Tensi </span> <small>(mmHg)</small>
-                                <input class="form-control" id="phd2_tensi">
+                                <input class="form-control" id="phd2_tensi" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                             <div class="col-md-4">
                                 <span>Suhu </span> <small>(&#8451)</small>
@@ -2184,21 +2185,21 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Tensi</label>
                             <div class="col-md-3">
-                                <input class="form-control tensi-pasien" style="margin-top: 7px" id="asse3" placeholder="mmHg">
+                                <input class="form-control tensi-pasien" style="margin-top: 7px" id="asse3" placeholder="mmHg" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                             <label class="col-md-2" style="margin-top: 7px">Nadi</label>
                             <div class="col-md-3">
-                                <input class="form-control nadi-pasien" style="margin-top: 7px" id="asse4" placeholder="x/menit">
+                                <input class="form-control nadi-pasien" style="margin-top: 7px" id="asse4" placeholder="x/menit" type="number">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Pernafasan</label>
                             <div class="col-md-3">
-                                <input class="form-control rr-pasien" style="margin-top: 7px" id="asse5" placeholder="x/menit">
+                                <input class="form-control rr-pasien" style="margin-top: 7px" id="asse5" placeholder="x/menit" type="number">
                             </div>
                             <label class="col-md-2" style="margin-top: 7px">Suhu</label>
                             <div class="col-md-3">
-                                <input class="form-control suhu-pasien" style="margin-top: 7px" id="asse6" placeholder="C">
+                                <input class="form-control suhu-pasien" style="margin-top: 7px" id="asse6" placeholder="C" type="number">
                             </div>
                         </div>
                     </div>
@@ -2353,11 +2354,11 @@
                 <div class="box-body">
                     <table class="table" id="tabel_hd_tindakan_medis">
                         <tbody>
-                        <tr id="row_hd_tindakan_medis">
+                        <tr id="row_hd_tindakan_medis_hd">
                             <td>Persetujuan Tindakan Medis</td>
                             <td width="20%" align="center">
-                                <img id="btn_hd_tindakan_medis" class="hvr-grow"
-                                     onclick="detailMonHD('tindakan_medis')"
+                                <img id="btn_hd_tindakan_medis_hd" class="hvr-grow"
+                                     onclick="detailMonHD('tindakan_medis_hd')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
@@ -2393,13 +2394,14 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 10px">Pilih Tindakan Medis</label>
                             <div class="col-md-6">
-                                <select class="form-control select2" id="tindakan_medis_hd" style="width: 100%" onchange="pilihTindakanMedis(this.value, 'tindakan_medis_hd')">
+                                <select class="form-control select2" id="tindakan_medis_hd" style="width: 100%" onchange="pilihTindakanMedis(this.value, 'tindakan_medis_hd'); setTindakanMedisValue(this.value, 'hd', 'nama_tindakan_medis')">
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <hr class="garis">
+                <input type="hidden" id="nama_tindakan_medis">
                 <div class="box-body" style="display: none" id="form-tindakan_medis_hd">
                     <div class="row">
                         <div class="form-group">

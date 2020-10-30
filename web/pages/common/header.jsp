@@ -629,6 +629,17 @@ apply the skin class to the body tag so the changes take effect.
         }
     }
 
+    function replaceStrip(val, id){
+        var res = "";
+        if(val != ''){
+            res = val.replace(/[-]/g, '');
+            res.replace(/[_]/g, '');
+            $('#'+id).val(res);
+        }else{
+            $('#'+id).val(res);
+        }
+    }
+
     function convertRpAtas(id, val, idHidden) {
         $('#'+id).val(formatRupiahAtas2(val));
         if(idHidden != '' && idHidden != null){

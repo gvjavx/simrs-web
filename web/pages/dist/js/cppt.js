@@ -27,10 +27,10 @@ function saveCPPT(jenis, ket, tipe) {
     var dataPasien = "";
 
     dataPasien = {
-        'no_checkup' : noCheckup,
-        'id_detail_checkup' : idDetailCheckup,
-        'id_pasien' : idPasien,
-        'id_rm' : tempidRm
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
     }
 
     if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 &&
@@ -67,34 +67,34 @@ function saveCPPT(jenis, ket, tipe) {
         var result = JSON.stringify(data);
         var pasienData = JSON.stringify(dataPasien);
 
-        $('#save_'+tipe+'_' + jenis).hide();
-        $('#load_'+tipe+'_' + jenis).show();
+        $('#save_' + tipe + '_' + jenis).hide();
+        $('#load_' + tipe + '_' + jenis).show();
         dwr.engine.setAsync(true);
         CatatanTerintegrasiAction.saveCatatanTerintegrasi(result, pasienData, {
             callback: function (res) {
                 if (res.status == "success") {
-                    $('#save_'+tipe+'_' + jenis).show();
-                    $('#load_'+tipe+'_' + jenis).hide();
-                    $('#modal-'+tipe+'-' + jenis).modal('hide');
-                    $('#warning_'+tipe+'_' + ket).show().fadeOut(5000);
-                    $('#msg_'+tipe+'_' + ket).text("Berhasil menambahkan data ....");
-                    $('#modal-'+tipe+'-' + jenis).scrollTop(0);
+                    $('#save_' + tipe + '_' + jenis).show();
+                    $('#load_' + tipe + '_' + jenis).hide();
+                    $('#modal-' + tipe + '-' + jenis).modal('hide');
+                    $('#warning_' + tipe + '_' + ket).show().fadeOut(5000);
+                    $('#msg_' + tipe + '_' + ket).text("Berhasil menambahkan data ....");
+                    $('#modal-' + tipe + '-' + jenis).scrollTop(0);
 
                 } else {
-                    $('#save_'+tipe+'_' + jenis).show();
-                    $('#load_'+tipe+'_' + jenis).hide();
-                    $('#warning_'+tipe+'_' + jenis).show().fadeOut(5000);
-                    $('#msg_'+tipe+'_' + jenis).text(res.msg);
-                    $('#modal-'+tipe+'-' + jenis).scrollTop(0);
+                    $('#save_' + tipe + '_' + jenis).show();
+                    $('#load_' + tipe + '_' + jenis).hide();
+                    $('#warning_' + tipe + '_' + jenis).show().fadeOut(5000);
+                    $('#msg_' + tipe + '_' + jenis).text(res.msg);
+                    $('#modal-' + tipe + '-' + jenis).scrollTop(0);
                 }
             }
         });
     } else {
-        $('#save_'+tipe+'_' + jenis).show();
-        $('#load_'+tipe+'_' + jenis).hide();
-        $('#warning_'+tipe+'_' + jenis).show().fadeOut(5000);
-        $('#msg_'+tipe+'_' + jenis).text("Silahkan cek kembali data inputan anda...");
-        $('#modal-'+tipe+'-' + jenis).scrollTop(0);
+        $('#save_' + tipe + '_' + jenis).show();
+        $('#load_' + tipe + '_' + jenis).hide();
+        $('#warning_' + tipe + '_' + jenis).show().fadeOut(5000);
+        $('#msg_' + tipe + '_' + jenis).text("Silahkan cek kembali data inputan anda...");
+        $('#modal-' + tipe + '-' + jenis).scrollTop(0);
     }
 }
 
@@ -108,8 +108,8 @@ function detailCPPT(jenis, ket, tipe) {
     CatatanTerintegrasiAction.getListCatatanTerintegrasi(idDetailCheckup, ket, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
-                var object = subject = 'Tensi : '+item.tensi+' mmHg, Nadi : '+item.nadi+
-                    'x/menit, Suhu : '+item.suhu+' ˚C, RR : '+item.rr+' x/menit, Keterangan : '+cekNullCppt(item.objective);
+                var object = subject = 'Tensi : ' + item.tensi + ' mmHg, Nadi : ' + item.nadi +
+                    'x/menit, Suhu : ' + item.suhu + ' ˚C, RR : ' + item.rr + ' x/menit, Keterangan : ' + cekNullCppt(item.objective);
                 body += '<tr>' +
                     '<td>' + converterDateTime(item.waktu) + '</td>' +
                     '<td>' + cekNullCppt(item.ppa) + '</td>' +
@@ -119,18 +119,18 @@ function detailCPPT(jenis, ket, tipe) {
                     '<td>' + cekNullCppt(item.planning) + '</td>' +
                     '<td>' + cekNullCppt(item.intruksi) + '</td>' +
                     '<td>' + '<img style="width: 100%; height: 50px" src="' + item.ttdPetugas + '">' +
-                    '<p style="margin-top: -5px">'+cekNullCppt(item.namaDokter)+'</p>'+
-                    '<p style="margin-top: -10px">'+cekNullCppt(item.sipDokter)+'</p>'+
+                    '<p style="margin-top: -5px">' + cekNullCppt(item.namaDokter) + '</p>' +
+                    '<p style="margin-top: -10px">' + cekNullCppt(item.sipDokter) + '</p>' +
                     '</td>' +
                     '<td>' + '<img style="width: 100%; height: 50px" src="' + item.ttdDpjp + '">' +
-                    '<p style="margin-top: -5px">'+cekNullCppt(item.namaPetugas)+'</p>'+
-                    '<p style="margin-top: -10px">'+cekNullCppt(item.sipPetugas)+'</p>'+
+                    '<p style="margin-top: -5px">' + cekNullCppt(item.namaPetugas) + '</p>' +
+                    '<p style="margin-top: -10px">' + cekNullCppt(item.sipPetugas) + '</p>' +
                     '</td>' +
-                    '<td align="center">'+'<i id="delete_'+item.idCatatanTerintegrasi+'" onclick="conCPT(\''+jenis+'\', \''+ket+'\', \''+tipe+'\', \''+item.idCatatanTerintegrasi+'\')" style="color: red" class="fa fa-trash fa-1x hvr-grow"></i>'+'</td>'
-                    '</tr>';
+                    '<td align="center">' + '<i id="delete_' + item.idCatatanTerintegrasi + '" onclick="conCPT(\'' + jenis + '\', \'' + ket + '\', \'' + tipe + '\', \'' + item.idCatatanTerintegrasi + '\')" style="color: red" class="fa fa-trash fa-1x hvr-grow"></i>' + '</td>'
+                '</tr>';
                 cekData = true;
             });
-        }else{
+        } else {
             body = '<tr>' +
                 '<td>Data belum ada</td>' +
                 '</tr>';
@@ -155,19 +155,24 @@ function detailCPPT(jenis, ket, tipe) {
             '<tbody>' + first + body + last + '</tbody>' +
             '</table>';
 
-        var newRow = $('<tr id="del_'+tipe+'_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-        newRow.insertAfter($('table').find('#row_'+tipe+'_' + jenis));
+        var newRow = $('<tr id="del_' + tipe + '_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+        newRow.insertAfter($('table').find('#row_' + tipe + '_' + jenis));
         var url = contextPath + '/pages/images/minus-allnew.png';
-        $('#btn_'+tipe+'_' + jenis).attr('src', url);
-        $('#btn_'+tipe+'_' + jenis).attr('onclick', 'delRowCPPT(\'' + jenis + '\',\''+ket+'\', \''+tipe+'\')');
+        $('#btn_' + tipe + '_' + jenis).attr('src', url);
+        $('#btn_' + tipe + '_' + jenis).attr('onclick', 'delRowCPPT(\'' + jenis + '\',\'' + ket + '\', \'' + tipe + '\')');
     });
 }
 
 function delRowCPPT(jenis, ket, tipe) {
-    $('#del_'+tipe+'_' + jenis).remove();
-    var url = contextPath + '/pages/images/icons8-plus-25.png';
-    $('#btn_'+tipe+'_' + jenis).attr('src', url);
-    $('#btn_'+tipe+'_' + jenis).attr('onclick', 'detailCPPT(\'' + jenis + '\',\''+ket+'\',\''+tipe+'\')');
+    $('#del_' + tipe + '_' + jenis).remove();
+    var url = "";
+    if ("monitoring_hd" == ket) {
+        url = contextPath + '/pages/images/icons8-add-list-25.png';
+    } else {
+        url = contextPath + '/pages/images/icons8-plus-25.png';
+    }
+    $('#btn_' + tipe + '_' + jenis).attr('src', url);
+    $('#btn_' + tipe + '_' + jenis).attr('onclick', 'detailCPPT(\'' + jenis + '\',\'' + ket + '\',\'' + tipe + '\')');
 }
 
 function cekNullCppt(item) {
@@ -178,10 +183,10 @@ function cekNullCppt(item) {
     return res;
 }
 
-function conCPT(jenis, ket, tipe, id){
+function conCPT(jenis, ket, tipe, id) {
     $('#tanya').text("Yakin mengahapus data ini ?");
-    $('#modal-confirm-rm').modal({show:true, backdrop:'static'});
-    $('#save_con_rm').attr('onclick', 'delCPT(\''+jenis+'\', \''+ket+'\',\''+tipe+'\', \''+id+'\')');
+    $('#modal-confirm-rm').modal({show: true, backdrop: 'static'});
+    $('#save_con_rm').attr('onclick', 'delCPT(\'' + jenis + '\', \'' + ket + '\',\'' + tipe + '\', \'' + id + '\')');
 }
 
 function delCPT(jenis, ket, tipe, id) {
@@ -193,18 +198,18 @@ function delCPT(jenis, ket, tipe, id) {
         'id_rm': tempidRm
     }
     var result = JSON.stringify(dataPasien);
-    startIconSpin('delete_'+id);
+    startIconSpin('delete_' + id);
     dwr.engine.setAsync(true);
     CatatanTerintegrasiAction.saveDelete(id, result, {
         callback: function (res) {
             if (res.status == "success") {
-                stopIconSpin('delete_'+id);
-                $('#warning_'+tipe+'_' + ket).show().fadeOut(5000);
-                $('#msg_'+tipe+'_' + ket).text("Berhasil menghapus data...");
+                stopIconSpin('delete_' + id);
+                $('#warning_' + tipe + '_' + ket).show().fadeOut(5000);
+                $('#msg_' + tipe + '_' + ket).text("Berhasil menghapus data...");
             } else {
-                stopSpin('delete_'+id);
-                $('#warn_'+ket).show().fadeOut(5000);
-                $('#msg_'+ket).text(res.msg);
+                stopSpin('delete_' + id);
+                $('#warn_' + ket).show().fadeOut(5000);
+                $('#msg_' + ket).text(res.msg);
             }
         }
     });

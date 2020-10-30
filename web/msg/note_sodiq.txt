@@ -1128,6 +1128,57 @@ ADD COLUMN diastole int;
 ALTER TABLE it_simrs_hemodinamika
 ALTER COLUMN ekg TYPE VARCHAR(100);
 
+DROP TABLE it_simrs_respirasi;
+
+CREATE TABLE public.it_simrs_respirasi
+(
+  id_respirasi character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  waktu character varying(100),
+  tanggal date,
+  gcs character varying(100),
+  diameter_pupil character varying(100),
+  reflek_cahaya character varying(100),
+  tk character varying(100),
+  kk character varying(100),
+  O2 character varying(100),
+  tipe_ventilasi character varying(100),
+  peep character varying(100),
+  frekwensi character varying(100),
+  tv character varying(100),
+  mv character varying(100),
+  p_support_p_asb character varying(100),
+  p_ins_p_con character varying(100),
+  triger character varying(100),
+  ins_time character varying(100),
+  flow character varying(100),
+  fio_kon character varying(100),
+  ukuran_ett character varying(100),
+  kedalaman_ett character varying(100),
+  spo2 character varying(100),
+  secret character varying(100),
+  keterangan character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_respirasi PRIMARY KEY (id_respirasi)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_respirasi
+  OWNER TO postgres;
+
+--MALAM MALAM
+ALTER TABLE it_simrs_hemodialisa
+DROP is_ttd;
+
+ALTER TABLE it_simrs_hemodialisa
+ADD COLUMN tipe VARCHAR(100);
+
 
 
 

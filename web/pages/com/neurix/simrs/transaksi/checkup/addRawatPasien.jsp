@@ -353,7 +353,7 @@
             $('#poli').val(null).trigger('change');
             $('#nama_dokter').val(null);
             $('#asuransi').val(null);
-            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan, #kunjungan, #perujuk').val(null);
+            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan, #perujuk').val(null);
             var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
             $('#img-upload').attr('src', img);
             $('#imgInp').attr('value', null);
@@ -387,7 +387,7 @@
             $('#no_polisi').val(null);
             $('#no_kartu').val(null);
             $('#asuransi').val(null);
-            $('#kunjungan').val(null);
+            // $('#kunjungan').val(null);
             $('#paket_perusahaan').val(null);
             $('#paket').val(null);
             $('#dokter').val(null);
@@ -869,7 +869,7 @@
                                                         <%--onchange="$(this).css('border',''); listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"--%>
                                                         <%--headerKey="" headerValue="[Select one]"--%>
                                                         <%--cssClass="form-control select2"/>--%>
-                                                    <select style="width: 100%" class="form-control select2" id="poli" onchange="listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}">
+                                                    <select style="width: 100%" class="form-control select2" id="poli" onchange="listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}; cekKunjunganPoli(this.value)">
                                                     </select>
                                                     <span style="color: red; display: none" id="war_poli"><i
                                                             class="fa fa-times"></i> required</span>
@@ -948,14 +948,14 @@
                                             <div class="form-group">
                                                 <label class="col-md-4" style="margin-top: 10px">Kunjungan RS</label>
                                                 <div class="col-md-8">
-                                                    <s:select cssStyle="margin-top: 7px"
-                                                              list="#{'Lama':'Lama','Baru':'Baru'}"
-                                                              onchange="$(this).css('border','')"
-                                                              id="kunjungan"
-                                                              headerKey="" headerValue="[Select one]"
-                                                              cssClass="form-control"/>
-                                                    <s:hidden name="headerCheckup.jenisKunjungan"
-                                                              id="kunjungan_val"></s:hidden>
+                                                    <%--<s:select cssStyle="margin-top: 7px"--%>
+                                                              <%--list="#{'Lama':'Lama','Baru':'Baru'}"--%>
+                                                              <%--onchange="$(this).css('border','')"--%>
+                                                              <%--id="kunjungan"--%>
+                                                              <%--headerKey="" headerValue="[Select one]"--%>
+                                                              <%--cssClass="form-control"/>--%>
+                                                    <s:textfield name="headerCheckup.jenisKunjungan"
+                                                              id="kunjungan_val" cssClass="form-control" cssStyle="margin-top: 7px" readonly="true"></s:textfield>
                                                 </div>
                                             </div>
                                         </div>
@@ -963,7 +963,7 @@
                                             <div class="form-group">
                                                 <label class="col-md-4" style="margin-top: 10px">Kunjungan Poli</label>
                                                 <div class="col-md-8">
-                                                    <s:textfield readonly="true" cssStyle="margin-top: 7px" cssClass="form-control"></s:textfield>
+                                                    <s:textfield id="kunjungan_poli" name="headerCheckup.kunjunganPoli" readonly="true" cssStyle="margin-top: 7px" cssClass="form-control"></s:textfield>
                                                 </div>
                                             </div>
                                         </div>
@@ -1733,7 +1733,8 @@
     var contextPath = '<%= request.getContextPath() %>';
 
     $(document).ready(function () {
-        $('#pendaftaran').addClass('active');
+        $('#pendaftaran_active, #bayar_rawat_jalan').addClass('active');
+        $('#pendaftaran_open').addClass('menu-open');
         listJenisPasien();
         setPelayanan();
 
@@ -2050,6 +2051,19 @@
 
         } else {
             $('#form-lab').hide();
+        }
+    }
+
+    function cekKunjunganPoli(idPelayanan){
+        var idPasien = $('#id_pasien').val();
+        if(idPasien && idPelayanan != ''){
+            CheckupAction.cekKunjunganPoliPasien(idPasien, idPelayanan, function (res) {
+                if(res.length > 0){
+                    $('#kunjungan_poli').val("Lama");
+                }else{
+                    $('#kunjungan_poli').val("Baru");
+                }
+            });
         }
     }
 
@@ -2467,10 +2481,10 @@
                 $('#desa11').val(selectedObj.idDesa);
                 $('#no_telp').val(selectedObj.notelp);
                 if (selectedObj.isLama) {
-                    $('#kunjungan').val("Lama").attr('disabled', true);
+                    // $('#kunjungan').val("Lama").attr('disabled', true);
                     $('#kunjungan_val').val("Lama");
                 } else {
-                    $('#kunjungan').val("Baru").attr('disabled', true);
+                    // $('#kunjungan').val("Baru").attr('disabled', true);
                     $('#kunjungan_val').val("Baru");
                 }
                 $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
@@ -2568,10 +2582,10 @@
                     $('#desa11').val(selectedObj.idDesa);
                     $('#no_telp').val(selectedObj.notelp);
                     if (selectedObj.isLama) {
-                        $('#kunjungan').val("Lama").attr('disabled', true);
+                        // $('#kunjungan').val("Lama").attr('disabled', true);
                         $('#kunjungan_val').val("Lama");
                     } else {
-                        $('#kunjungan').val("Baru").attr('disabled', true);
+                        // $('#kunjungan').val("Baru").attr('disabled', true);
                         $('#kunjungan_val').val("Baru");
                     }
 
@@ -2893,7 +2907,7 @@
                     $('#desa11').val(response.desaId);
                     $('#no_telp').val(response.noTelp);
                     $('#close_pos').val(1);
-                    $('#kunjungan').val("Baru").attr('disabled', true);
+                    // $('#kunjungan').val("Baru").attr('disabled', true);
                     $('#kunjungan_val').val("Baru");
                     $('#modal-daftar-pasien').modal('hide');
                     $('body').scrollTop(0);
@@ -2994,7 +3008,7 @@
                                 $('#tgl_antrian').val(converterDateYmdHms(response.tglAntian));
                                 $('#id_checkup_online').val(response.noCheckupOnline);
                                 $('#jenis_pasien').val(response.idJenisPeriksaPasien).trigger('change').attr('disabled', true);
-                                $('#kunjungan').val(response.jenisKunjungan).attr('disabled', true);
+                                // $('#kunjungan').val(response.jenisKunjungan).attr('disabled', true);
                                 $('#kunjungan_val').val(response.jenisKunjungan);
                             }else{
                                 $('#warning_pasien').show().fadeOut(5000);

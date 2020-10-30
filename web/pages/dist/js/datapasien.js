@@ -225,4 +225,6 @@ function setDataPasien() {
     if (rr > 0) {
         $('.rr-pasien').val(tempRr);
     }
+
+    $('[data-mask]').inputmask();
 }

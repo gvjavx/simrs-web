@@ -47,42 +47,43 @@ public class HemodialisaAction {
                 hemodialisa.setParameter(obj.getString("parameter"));
                 hemodialisa.setIdDetailCheckup(obj.getString("id_detail_checkup"));
                 hemodialisa.setKeterangan(obj.getString("keterangan"));
-                if(obj.has("is_ttd")){
-                    if("Y".equalsIgnoreCase(obj.getString("is_ttd"))){
+                if(obj.has("tipe")){
+                    if("ttd".equalsIgnoreCase(obj.getString("tipe")) || "gambar".equalsIgnoreCase(obj.getString("tipe"))){
                         try {
                             BASE64Decoder decoder = new BASE64Decoder();
                             byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
-                            logger.info("Decoded upload data : " + decodedBytes.length);
                             String wkt = time.toString();
                             String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                            logger.info("PATTERN :" + patten);
                             String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("jenis")+i+ "-" + patten + ".png";
                             String uploadFile = "";
-                            if("Scala Nyeri Paint".equalsIgnoreCase(obj.getString("parameter"))){
+                            if("gambar".equalsIgnoreCase(obj.getString("tipe"))){
                                 uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
-                                hemodialisa.setIsTtd("G");
-                            }else{
-                                uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
-                                hemodialisa.setIsTtd("Y");
                             }
-                            logger.info("File save path : " + uploadFile);
-                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                            if("ttd".equalsIgnoreCase(obj.getString("tipe"))){
+                                uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                            }
+                            if(!"".equalsIgnoreCase(uploadFile)){
+                                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-                            if (image == null) {
-                                logger.error("Buffered Image is null");
-                                response.setStatus("error");
-                                response.setMsg("Buffered Image is null");
-                            } else {
-                                File f = new File(uploadFile);
-                                // write the image
-                                ImageIO.write(image, "png", f);
-                                hemodialisa.setJawaban1(fileName);
+                                if (image == null) {
+                                    logger.error("Buffered Image is null");
+                                    response.setStatus("error");
+                                    response.setMsg("Buffered Image is null");
+                                } else {
+                                    File f = new File(uploadFile);
+                                    // write the image
+                                    ImageIO.write(image, "png", f);
+                                    hemodialisa.setJawaban1(fileName);
+                                }
                             }
                         }catch (IOException e){
                             response.setStatus("error");
                             response.setMsg("Found Error, "+e.getMessage());
                         }
+                    }else{
+                        hemodialisa.setJawaban1(obj.getString("jawaban1"));
                     }
+                    hemodialisa.setTipe(obj.getString("tipe"));
                 }else{
                     hemodialisa.setJawaban1(obj.getString("jawaban1"));
                 }

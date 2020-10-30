@@ -114,5 +114,6 @@ public interface CheckupBo {
     public CrudResponse nextItemPaketToPeriksa(PelayananPaket bean, HeaderDetailCheckup detail) throws GeneralBOException;
 
     public CrudResponse saveAddWithResponse(HeaderCheckup checkup) throws GeneralBOException;
+    public List<HeaderCheckup> cekKunjunganPoliPasien(String idPasien, String idPelayanan) throws GeneralBOException;
 
 }

@@ -1027,3 +1027,11 @@ function selectOptionTM(tipe, id) {
     });
     $('#' + id).html(option);
 }
+
+function setTindakanMedisValue(id, tipe, idHidden){
+    $.each(kategoriTindakanMedis(tipe), function (i, item) {
+        if(id == item.id_tindakan){
+            $('#'+idHidden).val(item.nama_tindakan);
+        }
+    });
+}

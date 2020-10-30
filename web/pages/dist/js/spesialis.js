@@ -286,7 +286,7 @@ function saveSPS(jenis, ket) {
         "edukasi_paru" == jenis || "edukasi_anak" == jenis || "edukasi_neurologi" == jenis ||
         "edukasi_obstetri" == jenis || "edukasi_ortopedi" == jenis || "edukasi_ginjal" == jenis ||
         "edukasi_ginjal" == jenis || "edukasi_jantung" == jenis || "edukasi_umum" == jenis ||
-        "edukasi_onkologi" == jenis || "edukasi_ginekologi" == jenis) {
+        "edukasi_onkologi" == jenis || "edukasi_ginekologi" == jenis || "edukasi_kk" == jenis) {
 
         var va1 = $('[name=et]:checked').val();
         var va2 = $('#ket_nama').val();
@@ -353,10 +353,8 @@ function saveSPS(jenis, ket) {
         }
     }
 
-    if ("anamnesa_pd" == jenis || "anamnesa_umum" == jenis) {
-        console.log(jenis)
+    if ("anamnesa_pd" == jenis || "anamnesa_umum" == jenis || "anamnesa_kk" == jenis) {
         var va1 = $('#kut1').val();
-        var va2 = "";
         var va3 = $('#kut3').val();
         var va4 = $('#kut4').val();
         var va5 = $('#kut5').val();
@@ -372,6 +370,14 @@ function saveSPS(jenis, ket) {
                 'jawaban': va1,
                 'keterangan': jenis,
                 'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Anamnesa',
+                'jawaban': '',
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -393,6 +399,14 @@ function saveSPS(jenis, ket) {
                 'jawaban': va5,
                 'keterangan': jenis,
                 'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Riwayat Pribadi',
+                'jawaban': '',
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -434,7 +448,7 @@ function saveSPS(jenis, ket) {
         }
     }
 
-    if ("pemeriksaan_pd" == jenis || "pemeriksaan_anak" == jenis || "pemeriksaan_umum" == jenis) {
+    if ("pemeriksaan_pd" == jenis || "pemeriksaan_anak" == jenis || "pemeriksaan_umum" == jenis || "pemeriksaan_kk" == jenis) {
         var va1 = $('#pt1').val();
         var va2 = $('#pt2').val();
         var va3 = $('#pt3').val();
@@ -448,7 +462,7 @@ function saveSPS(jenis, ket) {
         var va11 = $('#pt11').val();
         var va12 = $('#pt12').val();
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va11 && va12 != '') {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va12 != '') {
             data.push({
                 'parameter': 'Kondisi Umum',
                 'jawaban': va1,
@@ -484,6 +498,36 @@ function saveSPS(jenis, ket) {
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
+
+            var kulit = "Y";
+            if("pemeriksaan_kk" == jenis){
+                var ketGambar = $('#ket_gambar').val();
+                var canvasArea = document.getElementById('area_kulit_kelamin');
+                var canvasCek = document.getElementById('area_cek');
+                if (canvasArea.toDataURL() == canvasCek.toDataURL()) {
+                    kulit = "N";
+                }
+                if(kulit == "Y"){
+                    data.push({
+                        'parameter': 'Pemeriksaan Kulit Kelamin',
+                        'jawaban': convertToDataURL(canvasArea),
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'tipe': 'gambar',
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+                if(ketGambar != ''){
+                    data.push({
+                        'parameter': 'Keterangan Gambar',
+                        'jawaban': ketGambar,
+                        'keterangan': jenis,
+                        'jenis': ket,
+                        'id_detail_checkup': idDetailCheckup
+                    });
+                }
+            }
+
             data.push({
                 'parameter': 'Pemeriksaan Penunjang',
                 'jawaban': va6,
@@ -533,7 +577,14 @@ function saveSPS(jenis, ket) {
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
-            cek = true;
+
+            if("pemeriksaan_kk" == jenis){
+                if(kulit == "Y"){
+                    cek = true;
+                }
+            }else{
+                cek = true;
+            }
         }
     }
 
@@ -2575,7 +2626,6 @@ function saveSPS(jenis, ket) {
             });
         }
 
-
         if (c1 && c2 == "Y") {
             cek = true;
         }
@@ -2682,6 +2732,11 @@ function detailSPS(jenis) {
                                 '<td width="40%">' + item.parameter + '</td>' +
                                 '<td colspan="2">' + '<img src="' + jwb + '" style="height: 200px">' + '</td>' +
                                 '</tr>';
+                        }else if("pemeriksaan_kk" == item.keterangan){
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + jwb + '" style="height: 200px">' + '</td>' +
+                                '</tr>';
                         }else{
                             body += '<tr>' +
                                 '<td width="40%">' + item.parameter + '</td>' +
@@ -2731,6 +2786,10 @@ function detailSPS(jenis) {
                                     '</tr>';
                             }
                         }
+                    }else if("colspan" == item.tipe){
+                        body += '<tr>' +
+                            '<td colspan="2">' + item.parameter + '</td>' +
+                            '</tr>';
                     } else {
                         body += '<tr>' +
                             '<td width="40%">' + item.parameter + '</td>' +

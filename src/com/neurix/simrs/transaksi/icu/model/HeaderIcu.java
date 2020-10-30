@@ -19,6 +19,15 @@ public class HeaderIcu extends BaseModel {
     private String nilai;
     private String idDetailIcu;
     private String waktu;
+    private Boolean isNew;
+
+    public Boolean getNew() {
+        return isNew;
+    }
+
+    public void setNew(Boolean aNew) {
+        isNew = aNew;
+    }
 
     public String getWaktu() {
         return waktu;

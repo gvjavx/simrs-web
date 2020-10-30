@@ -247,7 +247,7 @@
                             <canvas style="display: none" id="area_cek"></canvas>
                             <button type="button" class="btn btn-danger" onclick="removePaint('area_kulit_kelamin')"><i class="fa fa-trash"></i> Clear
                             </button>
-                            <textarea class="form-control jarak" placeholder="Keterangan Gambar"></textarea>
+                            <textarea class="form-control jarak" id="ket_gambar" placeholder="Keterangan Gambar"></textarea>
                         </div>
                     </div>
                     <hr class="garis">
@@ -288,7 +288,7 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input class="form-control tgl" id="pt11">
+                                <input class="form-control ptr-tgl" id="pt11">
                             </div>
                         </div>
                     </div>

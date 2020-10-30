@@ -28,7 +28,7 @@ public class IcuAction {
 
     public static transient Logger logger = Logger.getLogger(IcuAction.class);
 
-    public CrudResponse save(String data, String cek, String dataPasien){
+    public CrudResponse save(String data, String dataPasien){
 
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
@@ -37,33 +37,43 @@ public class IcuAction {
         HeaderIcuBo headerIcuBo = (HeaderIcuBo) ctx.getBean("headerIcuBoProxy");
         try {
             JSONArray json = new JSONArray(data);
-            Boolean isNew = Boolean.valueOf(cek);
             List<HeaderIcu> headerIcuList = new ArrayList<>();
+            if(json != null){
+                for (int i = 0; i < json.length(); i++) {
 
-            for (int i = 0; i < json.length(); i++) {
+                    JSONObject obj = json.getJSONObject(i);
+                    HeaderIcu headerIcu = new HeaderIcu();
 
-                JSONObject obj = json.getJSONObject(i);
-                HeaderIcu headerIcu = new HeaderIcu();
+                    if(obj.has("id_header_icu")){
+                        headerIcu.setIdHeaderIcu(obj.getString("id_header_icu"));
+                    }
+                    if(obj.has("jenis")){
+                        headerIcu.setJenis(obj.getString("jenis"));
+                    }
+                    if(obj.has("id_detail_icu")){
+                        headerIcu.setIdDetailIcu(obj.getString("id_detail_icu"));
+                    }
+                    if(obj.has("is_new")){
+                        headerIcu.setNew(Boolean.valueOf(obj.getString("is_new")));
+                    }
 
-                if(obj.has("id_header_icu")){
-                    headerIcu.setIdHeaderIcu(obj.getString("id_header_icu"));
+                    headerIcu.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                    headerIcu.setKategori(obj.getString("kategori"));
+                    if(obj.has("nilai")){
+                        headerIcu.setNilai(obj.getString("nilai"));
+                    }
+                    headerIcu.setWaktu(obj.getString("waktu"));
+                    headerIcu.setAction("C");
+                    headerIcu.setFlag("Y");
+                    headerIcu.setCreatedWho(userLogin);
+                    headerIcu.setCreatedDate(time);
+                    headerIcu.setLastUpdateWho(userLogin);
+                    headerIcu.setLastUpdate(time);
+                    headerIcuList.add(headerIcu);
                 }
-
-                if(obj.has("jenis")){
-                    headerIcu.setJenis(obj.getString("jenis"));
-                }
-
-                headerIcu.setIdDetailCheckup(obj.getString("id_detail_checkup"));
-                headerIcu.setKategori(obj.getString("kategori"));
-                headerIcu.setNilai(obj.getString("nilai"));
-                headerIcu.setWaktu(obj.getString("waktu"));
-                headerIcu.setAction("C");
-                headerIcu.setFlag("Y");
-                headerIcu.setCreatedWho(userLogin);
-                headerIcu.setCreatedDate(time);
-                headerIcu.setLastUpdateWho(userLogin);
-                headerIcu.setLastUpdate(time);
-                headerIcuList.add(headerIcu);
+            }else{
+                response.setStatus("error");
+                response.setMsg("[Found Error], Data JSON tidak ada...!");
             }
 
             if(headerIcuList.size() > 0){
@@ -75,7 +85,7 @@ public class IcuAction {
                     response.setMsg("[Found Error], Data pada jam "+headIcu.getWaktu()+" Sudah ada dalam database...!");
                 }else {
                     try {
-                        response = headerIcuBo.saveAdd(headerIcuList, isNew);
+                        response = headerIcuBo.saveAdd(headerIcuList);
                         if("success".equalsIgnoreCase(response.getStatus())){
                             RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
                             JSONObject objt = new JSONObject(dataPasien);
@@ -101,6 +111,9 @@ public class IcuAction {
                         return response;
                     }
                 }
+            }else{
+                response.setStatus("error");
+                response.setMsg("Tidak ada JSON data yang dikirim...!");
             }
         }catch (JSONException e){
             response.setStatus("error");
@@ -114,7 +127,7 @@ public class IcuAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         HeaderIcuBo headerIcuBo = (HeaderIcuBo) ctx.getBean("headerIcuBoProxy");
 
-        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(kategori)) {
+        if (!"".equalsIgnoreCase(idDetailCheckup)) {
             try {
                 HeaderIcu headerIcu = new HeaderIcu();
                 headerIcu.setIdDetailCheckup(idDetailCheckup);
@@ -133,7 +146,7 @@ public class IcuAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         HeaderIcuBo headerIcuBo = (HeaderIcuBo) ctx.getBean("headerIcuBoProxy");
 
-        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(kategori)) {
+        if (!"".equalsIgnoreCase(idDetailCheckup)) {
             try {
                 list = headerIcuBo.getListDetail(idDetailCheckup, kategori);
             } catch (GeneralBOException e) {
@@ -141,6 +154,21 @@ public class IcuAction {
             }
         }
 
+        return list;
+    }
+
+    public List<HeaderIcu> getListHead(String idDetailCheckup, String kategori, String tgl) {
+        List<HeaderIcu> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        HeaderIcuBo headerIcuBo = (HeaderIcuBo) ctx.getBean("headerIcuBoProxy");
+
+        if (!"".equalsIgnoreCase(idDetailCheckup)) {
+            try {
+                list = headerIcuBo.getListHeadIcu(idDetailCheckup, kategori, tgl);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
         return list;
     }
 
@@ -180,6 +208,32 @@ public class IcuAction {
             }
         }
 
+        return response;
+    }
+
+    public CrudResponse editObat(String idHead, String idDetail, String nilai) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        HeaderIcuBo headerIcuBo = (HeaderIcuBo) ctx.getBean("headerIcuBoProxy");
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        if (!"".equalsIgnoreCase(idDetail) && !"".equalsIgnoreCase(idDetail) && !"".equalsIgnoreCase(nilai)) {
+            HeaderIcu headerIcu = new HeaderIcu();
+            headerIcu.setIdHeaderIcu(idHead);
+            headerIcu.setIdDetailIcu(idDetail);
+            headerIcu.setNilai(nilai);
+            headerIcu.setLastUpdate(time);
+            headerIcu.setLastUpdateWho(userLogin);
+
+            try {
+                response = headerIcuBo.editObat(headerIcu);
+            } catch (GeneralBOException e) {
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
         return response;
     }
 
