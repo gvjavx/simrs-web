@@ -26,6 +26,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/historypenunjang.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -193,11 +194,16 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Permeriksaan</b></td>
+                                        <td><b>Radiologi</b></td>
                                         <td>
-                                            <table><s:label name="periksaLab.kategoriLabName"
+                                            <table><s:label name="periksaLab.labName"
                                                             class="label label-success"></s:label></table>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History Radiologi
+                                        </button></td>
                                     </tr>
                                 </table>
                             </div>
@@ -254,10 +260,6 @@
 
                             </div>
                         </div>
-                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rad">
-                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            <p id="msg_rad"></p>
-                        </div>
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-4">
@@ -274,6 +276,10 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rad">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_rad"></p>
+                        </div>
                     </div>
                     <div class="box-header with-border" id="pos_lab">
                     </div>
@@ -289,9 +295,9 @@
                         <table class="table table-bordered table-striped" id="tabel_radiologi">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Pemeriksaan</td>
+                                <td width="40%">Pemeriksaan</td>
                                 <td>Hasil</td>
-                                <td align="center" width="10%">Action</td>
+                                <td>Kesan</td>
                             </tr>
                             </thead>
                             <tbody id="body_parameter">
@@ -532,6 +538,40 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-history">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> All History Radiologi
+                </h4>
+            </div>
+            <div class="modal-body" style="height: 450px;overflow-y: scroll;">
+                <div class="box-body">
+                    <table class="table table-bordered" style="font-size: 12px;">
+                        <thead>
+                        <tr style="font-weight: bold">
+                            <td width="30%">Pelayanan</td>
+                            <td width="15%">Waktu</td>
+                            <td>Keterangan</td>
+                            <td width="16%">Catatan</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_history">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -545,6 +585,7 @@
     var jenisPasien = '<s:property value="periksaLab.idJenisPeriksa"/>';
     var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
     var keterangan = '<s:property value="periksaLab.keterangan"/>';
+    var tipeLab = 'radiologi';
 
     $(document).ready(function () {
         $('#penunjang_active, #periksa_radiologi').addClass('active');
@@ -741,13 +782,19 @@
                 var table = "";
                 $.each(response, function (i, item) {
                     var hasil = "";
+                    var kesan = "";
                     if (item.hasil != null && item.hasil != '') {
                         hasil = item.hasil;
                     }
+                    if (item.keteranganPeriksa != null && item.keteranganPeriksa != '') {
+                        kesan = item.keteranganPeriksa;
+                    }
                     table += '<tr>' +
-                        '<td>' + item.namaDetailPeriksa + '</td>' +
-                        '<td>' + hasil + '</td>' +
-                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editParameter(\'' + item.idPeriksaLabDetail + '\',\'' + hasil + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
+                        '<td>' + item.namaDetailPeriksa +
+                        '<input id="id_periksa_lab_'+i+'" type="hidden" value="'+item.idPeriksaLabDetail+'">' +
+                        '</td>' +
+                        '<td>' + '<textarea id="hasil_'+i+'" class="form-control" value="'+hasil+'"/>' + '</td>' +
+                        '<td>' + '<textarea id="kesan_'+i+'" class="form-control" value="'+kesan+'"/>' + '</td>' +
                         '</tr>';
                 });
                 $('#body_parameter').html(table);
@@ -774,7 +821,7 @@
 
         var cek = false;
         $.each(data, function (i, item) {
-            var hasil = data[i]["Hasil"];
+            var hasil = $('#hasil_'+i).val();
             if (hasil == "") {
                 cek = true;
             }
@@ -802,6 +849,20 @@
         var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
         var jenisPasien = '<s:property value="periksaLab.idJenisPeriksa"/>';
         var idDetailCheckup = '<s:property value="periksaLab.idDetailCheckup"/>';
+        var isiParam = $('#tabel_radiologi').tableToJSON();
+        var jsonData = [];
+        $.each(isiParam, function (i, item) {
+            var idLab = $('#id_periksa_lab_'+i).val();
+            var hasil = $('#hasil_'+i).val();
+            var kesan = $('#kesan_'+i).val();
+            if(hasil != ''){
+                jsonData.push({
+                    'id_periksa_lab':idLab,
+                    'hasil':hasil,
+                    'kesan':kesan,
+                })
+            }
+        });
 
         var data = {
             'id_pasien': idPasien,
@@ -820,9 +881,10 @@
             finalImg = hasil;
         }
         var result = JSON.stringify(data);
+        var jsonResult = JSON.stringify(jsonData);
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
-        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, result, finalDokter, finalPetugas, {
+        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, result, finalDokter, finalPetugas, jsonResult, {
             callback: function (response) {
                 if (response.status == "success") {
                     $('#waiting_dialog').dialog('close');

@@ -874,7 +874,7 @@ apply the skin class to the body tag so the changes take effect.
         });
     }
 
-    function cekDatePicker(id, val){
+    function cekDatePicker(val){
         var tgl = val.split("-");
         var cek = false;
         $.each(tgl, function (i, item) {
@@ -883,6 +883,7 @@ apply the skin class to the body tag so the changes take effect.
                 cek = true;
             }
         });
+        return cek;
     }
 
 </script>

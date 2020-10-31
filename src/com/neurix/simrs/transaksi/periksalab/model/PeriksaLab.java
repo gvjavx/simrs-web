@@ -84,6 +84,16 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String idPengirim;
     private String dokterPengirim;
 
+    private String isPending;
+
+    public String getIsPending() {
+        return isPending;
+    }
+
+    public void setIsPending(String isPending) {
+        this.isPending = isPending;
+    }
+
     public String getDokterPengirim() {
         return dokterPengirim;
     }

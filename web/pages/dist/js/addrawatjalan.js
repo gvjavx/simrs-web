@@ -899,6 +899,12 @@ function showModal(select) {
         $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
 
     } else if (select == 4) {
+        $('.jam').timepicker();
+        $('.jam').inputmask('hh:mm', {'placeholder': 'hh:mm'});
+        $('.tgl').datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
+        $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
         $('#form_ttd').show();
         $('#lab_kategori, #lab_lab').attr('disabled', false);
         $('#lab_kategori, #lab_lab').val('').trigger('change');
@@ -962,7 +968,6 @@ function showModal(select) {
         $('#save_icd9').attr('onclick', 'saveICD9(\'' + id + '\')').show();
         $('#modal-icd9').modal({show: true, backdrop: 'static'});
     }
-
 }
 
 
@@ -1389,6 +1394,10 @@ function saveLab(id) {
     var idParameter = $('#lab_parameter').val();
     var pengirim = document.getElementById('ttd_pengirim');
     var cekTtd = isCanvasBlank(pengirim);
+    var cekPending = $('#is_pending_lab').is(':checked');
+    var tglPending = $('#tgl_pending').val();
+    var jamPending = $('#jam_pending').val();
+    var waktu = "";
     if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter != null) {
         if (id != '') {
             $('#save_lab').hide();
@@ -1410,24 +1419,41 @@ function saveLab(id) {
             });
         } else {
             if(!cekTtd){
-                $('#save_lab').hide();
-                $('#load_lab').show();
-                dwr.engine.setAsync(true);
-                var ttd = convertToDataURL(pengirim);
-                PeriksaLabAction.saveOrderLab(idDetailCheckup, idLab, idParameter, ttd, idDokter, idKategori, {
-                    callback: function (response) {
-                        if (response.status == "success") {
-                            dwr.engine.setAsync(false);
-                            listLab();
-                            $('#modal-lab').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#close_pos').val(4);
-                        } else {
-                            $('#warning_lab').show().fadeOut(5000);
-                            $('#msg_lab').text(response.msg);
-                        }
+                var saveCek = false;
+                if(cekPending){
+                    if(tglPending && jamPending != ''){
+                        saveCek = true;
+                        waktu = tglPending.split("-").reverse().join("-")+" "+jamPending+":00";
                     }
-                })
+                }else{
+                    saveCek = true;
+                }
+                if(saveCek){
+                    $('#save_lab').hide();
+                    $('#load_lab').show();
+                    dwr.engine.setAsync(true);
+                    var ttd = convertToDataURL(pengirim);
+                    PeriksaLabAction.saveOrderLab(idDetailCheckup, idLab, idParameter, ttd, idDokter, idKategori, waktu, {
+                        callback: function (response) {
+                            if (response.status == "success") {
+                                dwr.engine.setAsync(false);
+                                listLab();
+                                $('#modal-lab').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#close_pos').val(4);
+                            } else {
+                                $('#warning_lab').show().fadeOut(5000);
+                                $('#msg_lab').text(response.msg);
+                            }
+                        }
+                    })
+                }else{
+                    $('#warning_lab').show().fadeOut(5000);
+                    $('#msg_lab').text("Silhakan cek kembali tanggal dan jam inputan...!");
+                    if(tglPending == '' || jamPending == ''){
+                        $('#war_pending').show();
+                    }
+                }
             }else{
                 $('#warning_lab').show().fadeOut(5000);
                 $('#msg_lab').text("Silhakan lakukan TTD dulu...!");
@@ -2770,12 +2796,12 @@ function getDokterDpjp() {
     });
 }
 
-function isPemeriksaan(id) {
+function isPemeriksaan(id, idTujuan) {
     var cek = $('#' + id).is(':checked');
     if (cek) {
-        $('#form-pemeriksaan').show();
+        $('#'+idTujuan).show();
     } else {
-        $('#form-pemeriksaan').hide();
+        $('#'+idTujuan).hide();
     }
 }
 

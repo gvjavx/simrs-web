@@ -199,6 +199,15 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String flagKunjungan;
     private String berkas;
+    private String idx;
+
+    public String getIdx() {
+        return idx;
+    }
+
+    public void setIdx(String idx) {
+        this.idx = idx;
+    }
 
     public String getFlagKunjungan() {
         return flagKunjungan;

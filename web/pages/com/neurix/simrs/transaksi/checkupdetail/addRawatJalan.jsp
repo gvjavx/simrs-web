@@ -532,6 +532,8 @@
                                     <ul class="dropdown-menu" role="menu" id="asesmen_rj">
                                     </ul>
                                 </div>
+                                <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1090,7 +1092,7 @@
                                     <div class="form-group">
                                         <div class="col-md-offset-4 col-md-8">
                                             <div class="form-check jarak">
-                                                <input onclick="isPemeriksaan(this.id)" type="checkbox" name="pemeriksaan_lab" id="pemeriksaan_lab" value="yes">
+                                                <input onclick="isPemeriksaan(this.id, 'form-pemeriksaan')" type="checkbox" name="pemeriksaan_lab" id="pemeriksaan_lab" value="yes">
                                                 <label for="pemeriksaan_lab"></label> Pemeriksaan Lab/Radiologi?
                                             </div>
                                         </div>
@@ -1554,6 +1556,41 @@
                                id="war_parameter"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_parameter"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-7">
+                            <div class="form-check jarak">
+                                <input onclick="isPemeriksaan(this.id, 'form_pending')" type="checkbox" id="is_pending_lab" value="yes">
+                                <label for="is_pending_lab"></label> Is Pending?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: none" id="form_pending">
+                        <label class="col-md-3">Tanggal Jam</label>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="form-control tgl" id="tgl_pending" readonly style="cursor: pointer"
+                                       onchange="var warn =$('#war_pending').is(':visible'); if (warn){$('#cor_pending').show().fadeOut(3000);$('#war_pending').hide()};">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control jam" id="jam_pending"
+                                       onchange="var warn =$('#war_pending').is(':visible'); if (warn){$('#cor_pending').show().fadeOut(3000);$('#war_pending').hide()};">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_pending"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_pending"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>
@@ -2170,6 +2207,41 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-history">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> All History
+                </h4>
+            </div>
+            <div class="modal-body" style="height: 450px;overflow-y: scroll;">
+                <div class="box-body">
+                    <table class="table table-bordered" style="font-size: 12px;">
+                        <thead>
+                        <tr style="font-weight: bold">
+                            <td width="30%">Pelayanan</td>
+                            <%--<td>No Transaksi</td>--%>
+                            <td width="15%">Waktu</td>
+                            <td>Keterangan</td>
+                            <td width="16%">Catatan</td>
+                            <td width="8%">Telemedic</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_history">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-lab_luar">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -2185,6 +2257,28 @@
                             <img id="img_lab_luar" style="width: 100%">
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-telemedic">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Telemedic Pasien Pada Tanggal <span id="tanggal_tele"></span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <video controls width="100%" height="420px" id="body-video-rm"></video>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -2268,6 +2362,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/tindakan_medis.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/allhistory.js"/>'></script>
 
 <script type='text/javascript'>
 
