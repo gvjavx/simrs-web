@@ -54,11 +54,16 @@ function saveAsesmenRawatInap(jenis, ket) {
     var cek = false;
     var dataPasien = "";
 
+    var tir = tempidRm;
+    if("data_ruangan" == jenis || "catatan_klinis" == jenis || "kondisi_serah_terima" == jenis){
+        tir = "RMM00000089";
+    }
+
     dataPasien = {
         'no_checkup': noCheckup,
         'id_detail_checkup': idDetailCheckup,
         'id_pasien': idPasien,
-        'id_rm': tempidRm
+        'id_rm': tir
     }
     if ("riwayat_kesehatan" == jenis) {
         var va1 = $('#rk1').val();
@@ -2063,14 +2068,14 @@ function saveAsesmenRawatInap(jenis, ket) {
             });
             data.push({
                 'parameter': 'Tekanan Darah',
-                'jawaban': va5 + ' mmHg|' + va6 + ' mmHg',
+                'jawaban': replaceUnderLine(va5) + ' mmHg|' + replaceUnderLine(va6) + ' mmHg',
                 'keterangan': jenis,
                 'jenis': 'transfer_pasien',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Suhu',
-                'jawaban': va7 + ' C|' + va8 + ' C',
+                'jawaban': va7 + ' ˚C|' + va8 + ' ˚C',
                 'keterangan': jenis,
                 'jenis': 'transfer_pasien',
                 'id_detail_checkup': idDetailCheckup
@@ -3289,11 +3294,37 @@ function detailAsesmenRawatInap(jenis) {
                     } else if ("kondisi_serah_terima" == item.keterangan) {
                         var isi = jwb.split("|");
                         var sebelum = isi[0];
-                        var sesudah = isi[1];
+                        var saat = isi[1];
+                        var sesudah = '';
+                        if(isi[2] != undefined){
+                            sesudah = isi[2];
+                        }else{
+                            if("Kesadaran Umum" == item.parameter){
+                                sesudah = '<select class="form-control">\n' +
+                                    '<option value="">[Select One]</option>\n' +
+                                    '<option value="Baik">Baik</option>\n' +
+                                    '<option value="Cukup">Cukup</option>\n' +
+                                    '<option value="Lemah">Lemah</option>\n' +
+                                    '<option value="Jelek">Jelek</option>\n' +
+                                    '</select>';
+                            }else if("Resiko Jatuh" == item.parameter){
+                                sesudah = '<select class="form-control" style="margin-top: 7px">\n' +
+                                    '<option value="">[Select One]</option>\n' +
+                                    '<option value="Ringan">Ringan</option>\n' +
+                                    '<option value="Sedang">Sedang</option>\n' +
+                                    '<option value="Berat">Berat</option>\n' +
+                                    '</select>';
+                            }else if("Tekanan Darah" == item.parameter){
+                                sesudah = '<input class="form-control" data-inputmask="\'mask\': [\'999/999\']" data-mask="">';
+                            }else{
+                                sesudah = '<input class="form-control" type="number">';
+                            }
+                        }
                         if (li != '') {
                             body += '<tr>' +
                                 '<td>' + item.parameter + '</td>' +
                                 '<td>' + sebelum + '</td>' +
+                                '<td>' + saat + '</td>' +
                                 '<td>' + sesudah + '</td>' +
                                 '</tr>';
                         }
@@ -3497,7 +3528,8 @@ function detailAsesmenRawatInap(jenis) {
                     head = '<tr>' +
                         '<td><b>Pemeriksaan</b></td>' +
                         '<td><b>Sebelum ditransfer</b></td>' +
-                        '<td><b>Saat diterima</b></td>' +
+                        '<td><b>Saat perjalanan</b></td>' +
+                        '<td width="25%"><b>Saat diterima</b></td>' +
                         '</tr>';
                 }
             }
@@ -3512,6 +3544,7 @@ function detailAsesmenRawatInap(jenis) {
             var url = contextPath + '/pages/images/minus-allnew.png';
             $('#btn_ina_' + jenis).attr('src', url);
             $('#btn_ina_' + jenis).attr('onclick', 'delRowAsesmenRawatInap(\'' + jenis + '\')');
+            $('[data-mask]').inputmask();
         });
     }
 }
@@ -5802,4 +5835,12 @@ function delRI(jenis, ket) {
             }
         }
     });
+}
+
+function setSideValue(id, value){
+    if(value == '' || value == '___/___'){
+        $('#'+id).val('');
+    }else{
+        $('#'+id).val(value);
+    }
 }

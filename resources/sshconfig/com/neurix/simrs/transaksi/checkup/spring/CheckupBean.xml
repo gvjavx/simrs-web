@@ -86,6 +86,7 @@
           p:pelayananPaketDao-ref="pelayananPaketDao"
           p:tempatTidurDao-ref="tempatTidurDao"
           p:rawatInapDao-ref="rawatInapDao"
+          p:pasienDao-ref="pasienDao"
 
     />
 

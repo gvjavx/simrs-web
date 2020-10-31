@@ -2267,7 +2267,7 @@ function saveMonTransfusiDarah(jenis) {
         data = {
             'id_detail_checkup': idDetailCheckup,
             'waktu': va1,
-            'tekanan_darah': va2,
+            'tekanan_darah': replaceUnderLine(va2),
             'nadi': va3,
             'suhu': va4,
             'rr': va5,

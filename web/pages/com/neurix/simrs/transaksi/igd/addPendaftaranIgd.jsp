@@ -353,7 +353,7 @@
             $('#cek_is_bpjs').val(null);
             $('#nama_dokter').val(null);
             $('#asuransi').val(null);
-            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan, #kunjungan, #perujuk').val(null);
+            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan, #kunjungan_val, #perujuk').val(null);
             var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
             $('#img-upload').attr('src', img);
             $('#imgInp').attr('value', null);
@@ -387,7 +387,7 @@
             $('#no_polisi').val(null);
             $('#no_kartu').val(null);
             $('#asuransi').val(null);
-            $('#kunjungan').val(null);
+            $('#kunjungan_val').val(null);
             $('#paket_perusahaan').val(null);
             $('#paket').val(null);
             $('#dokter').val(null);
@@ -406,6 +406,13 @@
             $('#is_online').val(null);
             $('#tgl_antrian').val(null);
             $('#is_laka').val(null);
+
+            $('#ket_hubungan').hide();
+            $('#form_jawa').hide();
+            $('#form_profesi').hide();
+
+            $('#profes, #pendidikan, #status_perkawinan, #hubungan').val(null).trigger('change');
+            $('#hub_keluarga, #ket_suku, #ket_profesi').val(null);
         }
 
         function formatRupiah2(angka) {
@@ -686,16 +693,40 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 7px">Alamat</label>
+                                                <label class="col-md-4" style="margin-top: 7px">Status Perkawinan</label>
                                                 <div class="col-md-8">
-                                                    <s:textarea id="jalan" rows="3" cssStyle="margin-top: 7px"
-                                                                onkeypress="$(this).css('border','')"
-                                                                name="headerCheckup.jalan" cssClass="form-control"/>
+                                                    <s:select id="status_perkawinan" name="headerCheckup.statusPerkawinan"
+                                                              list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin'}"
+                                                              onchange="$(this).css('border','')"
+                                                              headerKey="" headerValue="[Select One]"
+                                                              cssStyle="width: 100%" cssClass="form-control select2"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Pendidikan</label>
+                                                <div class="col-md-8">
+                                                    <s:select id="pendidikan" name="headerCheckup.pendidikan"
+                                                              list="#{'SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S3','S3':'S3'}"
+                                                              onchange="$(this).css('border','')"
+                                                              headerKey="" headerValue="[Select One]"
+                                                              cssStyle="width: 100%" cssClass="form-control select2"/>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4">Alamat</label>
+                                                <div class="col-md-8">
+                                                    <s:textarea id="jalan" rows="3"
+                                                                onkeypress="$(this).css('border','')"
+                                                                name="headerCheckup.jalan" cssClass="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="form-group">
                                                 <label class="col-md-4">Provinsi</label>
@@ -866,7 +897,7 @@
                                                         <%--onchange="$(this).css('border',''); listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"--%>
                                                         <%--headerKey="" headerValue="[Select one]"--%>
                                                         <%--cssClass="form-control select2"/>--%>
-                                                    <select style="width: 100%" class="form-control select2" id="poli" onchange="listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}">
+                                                    <select style="width: 100%" class="form-control select2" id="poli" onchange="listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}; cekKunjunganPoli(this.value)">
                                                     </select>
                                                     <span style="color: red; display: none" id="war_poli"><i
                                                             class="fa fa-times"></i> required</span>
@@ -945,14 +976,14 @@
                                             <div class="form-group">
                                                 <label class="col-md-4" style="margin-top: 10px">Kunjungan RS</label>
                                                 <div class="col-md-8">
-                                                    <s:select cssStyle="margin-top: 7px"
-                                                              list="#{'Lama':'Lama','Baru':'Baru'}"
-                                                              onchange="$(this).css('border','')"
-                                                              id="kunjungan"
-                                                              headerKey="" headerValue="[Select one]"
-                                                              cssClass="form-control"/>
-                                                    <s:hidden name="headerCheckup.jenisKunjungan"
-                                                              id="kunjungan_val"></s:hidden>
+                                                        <%--<s:select cssStyle="margin-top: 7px"--%>
+                                                        <%--list="#{'Lama':'Lama','Baru':'Baru'}"--%>
+                                                        <%--onchange="$(this).css('border','')"--%>
+                                                        <%--id="kunjungan"--%>
+                                                        <%--headerKey="" headerValue="[Select one]"--%>
+                                                        <%--cssClass="form-control"/>--%>
+                                                    <s:textfield name="headerCheckup.jenisKunjungan"
+                                                                 id="kunjungan_val" cssClass="form-control" cssStyle="margin-top: 7px" readonly="true"></s:textfield>
                                                 </div>
                                             </div>
                                         </div>
@@ -960,7 +991,7 @@
                                             <div class="form-group">
                                                 <label class="col-md-4" style="margin-top: 10px">Kunjungan Poli</label>
                                                 <div class="col-md-8">
-                                                    <s:textfield readonly="true" cssStyle="margin-top: 7px" cssClass="form-control"></s:textfield>
+                                                    <s:textfield id="kunjungan_poli" name="headerCheckup.kunjunganPoli" readonly="true" cssStyle="margin-top: 7px" cssClass="form-control"></s:textfield>
                                                 </div>
                                             </div>
                                         </div>
@@ -2024,6 +2055,19 @@
         }
     }
 
+    function cekKunjunganPoli(idPelayanan){
+        var idPasien = $('#id_pasien').val();
+        if(idPasien && idPelayanan != ''){
+            CheckupAction.cekKunjunganPoliPasien(idPasien, idPelayanan, function (res) {
+                if(res.length > 0){
+                    $('#kunjungan_poli').val("Lama");
+                }else{
+                    $('#kunjungan_poli').val("Baru");
+                }
+            });
+        }
+    }
+
     function alertPasien(noPasien) {
         var namapasien = "";
         var diagnosa = "";
@@ -2438,10 +2482,10 @@
                 $('#desa11').val(selectedObj.idDesa);
                 $('#no_telp').val(selectedObj.notelp);
                 if (selectedObj.isLama) {
-                    $('#kunjungan').val("Lama").attr('disabled', true);
+                    // $('#kunjungan').val("Lama").attr('disabled', true);
                     $('#kunjungan_val').val("Lama");
                 } else {
-                    $('#kunjungan').val("Baru").attr('disabled', true);
+                    // $('#kunjungan').val("Baru").attr('disabled', true);
                     $('#kunjungan_val').val("Baru");
                 }
                 $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
@@ -2539,10 +2583,10 @@
                     $('#desa11').val(selectedObj.idDesa);
                     $('#no_telp').val(selectedObj.notelp);
                     if (selectedObj.isLama) {
-                        $('#kunjungan').val("Lama").attr('disabled', true);
+                        // $('#kunjungan').val("Lama").attr('disabled', true);
                         $('#kunjungan_val').val("Lama");
                     } else {
-                        $('#kunjungan').val("Baru").attr('disabled', true);
+                        // $('#kunjungan').val("Baru").attr('disabled', true);
                         $('#kunjungan_val').val("Baru");
                     }
 

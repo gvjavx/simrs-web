@@ -1109,7 +1109,17 @@ ADD COLUMN sip VARCHAR(100);
 INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000239','RMM00000098','rawat_inap','17','Y','C','migrasi',now(),now(),'migrasi');
 
+---------- SUDAH DI PROD -----------
+====================================
 
+            /\   /\   /\
+           |__| |__| |__|
+            ||   ||   ||
+            ||   ||   ||
+            ||   ||   ||
+----------- ||   ||   || -----------
+---------- SUDAH DI PROD -----------
+----------- +++++++++++ ------------
 
 --BARU BARU INI BELUM DI PROD
 --FRIDAY 23-10-2020
@@ -1178,6 +1188,12 @@ DROP is_ttd;
 
 ALTER TABLE it_simrs_hemodialisa
 ADD COLUMN tipe VARCHAR(100);
+
+--ABIS JUMATAN
+ALTER TABLE it_simrs_header_checkup
+ADD COLUMN pendidikan VARCHAR(100),
+ADD COLUMN status_perkawinan VARCHAR(100),
+ADD COLUMN kunjungan_poli VARCHAR(100);
 
 
 

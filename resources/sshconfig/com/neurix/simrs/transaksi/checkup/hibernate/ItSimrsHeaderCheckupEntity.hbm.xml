@@ -114,6 +114,15 @@
         <property name="heteroanamnesis">
             <column name="heteroanamnesis" />
         </property>
+        <property name="pendidikan">
+            <column name="pendidikan" />
+        </property>
+        <property name="statusPerkawinan">
+            <column name="status_perkawinan" />
+        </property>
+        <property name="kunjunganPoli">
+            <column name="kunjungan_poli" />
+        </property>
 
     </class>
 </hibernate-mapping>

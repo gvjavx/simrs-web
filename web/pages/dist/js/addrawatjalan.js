@@ -274,6 +274,8 @@ function selectKeterangan(idKtg) {
             $('#form-rs-rujukan').hide();
             $('#form-tgl-kontrol').hide();
             $('#form-pindah_poli').hide();
+            $('#form-metode_pembayaran').hide();
+            $('#form-asesmen').hide();
 
         } else if (idKtg == "pindah_poli") {
             $('#poli_lain').attr('disabled', false);
@@ -289,6 +291,8 @@ function selectKeterangan(idKtg) {
             $('#form-ket-rawat_inap').hide();
             $('#form-rs-rujukan').hide();
             $('#form-tgl-kontrol').hide();
+            $('#form-asesmen').hide();
+
         } else if (idKtg == "rawat_inap") {
             $('#form-ket-rawat_inap').show();
             $('#form-catatan').show();
@@ -296,6 +300,8 @@ function selectKeterangan(idKtg) {
             $('#form-tgl-kontrol').hide();
             $('#form-rs-rujukan').hide();
             $('#form-pindah_poli').hide();
+            $('#form-metode_pembayaran').hide();
+            $('#form-asesmen').show();
 
         } else if (idKtg == "rujuk_rs_lain") {
             $('#form-rs-rujukan').show();
@@ -305,6 +311,8 @@ function selectKeterangan(idKtg) {
             $('#form-ket-rawat_inap').hide();
             $('#form-tgl-kontrol').hide();
             $('#form-pindah_poli').hide();
+            $('#form-metode_pembayaran').hide();
+            $('#form-asesmen').hide();
 
         } else if (idKtg == "kontrol_ulang") {
             $('#form-tgl-kontrol').show();
@@ -314,6 +322,8 @@ function selectKeterangan(idKtg) {
             $('#form-selesai').hide();
             $('#form-ket-rawat_inap').hide();
             $('#form-pindah_poli').hide();
+            $('#form-metode_pembayaran').hide();
+            $('#form-asesmen').hide();
 
         } else if(idKtg == "lanjut_paket"){
             var idpel = $('#h_id_pelayanan_paket_pilih').val();
@@ -327,6 +337,8 @@ function selectKeterangan(idKtg) {
             $('#form-ket-rawat_inap').hide();
             $('#form-rs-rujukan').hide();
             $('#form-tgl-kontrol').hide();
+            $('#form-asesmen').hide();
+
         } else {
             $('#form-selesai').hide();
             $('#form-catatan').show();
@@ -334,6 +346,8 @@ function selectKeterangan(idKtg) {
             $('#form-rs-rujukan').hide();
             $('#form-tgl-kontrol').hide();
             $('#form-pindah_poli').hide();
+            $('#form-metode_pembayaran').hide();
+            $('#form-asesmen').show();
         }
     } else {
         $('#form-selesai').hide();
@@ -342,6 +356,8 @@ function selectKeterangan(idKtg) {
         $('#form-rs-rujukan').hide();
         $('#form-tgl-kontrol').hide();
         $('#form-pindah_poli').hide();
+        $('#form-metode_pembayaran').hide();
+        $('#form-asesmen').hide();
     }
 }
 
@@ -3100,4 +3116,23 @@ function setKeteranganPeriksa() {
         }
     }
     $('#keterangan').html(option);
+}
+
+function setDiskonHarga(id){
+    if(id != ''){
+        TindakanAction.initTindakan(id, function (res) {
+            if(res.idTindakan != ''){
+                var disk = 0;
+                if(res.diskon != '' && res.diskon != null){
+                    disk = res.diskon;
+                }
+                if(jenisPeriksaPasien == "bpjs"){
+                    $('#h_harga').val("Rp. "+formatRupiahAtas(res.tarifBpjs));
+                }else{
+                    $('#h_harga').val("Rp. "+formatRupiahAtas(res.tarif));
+                }
+                $('#h_diskon').val(disk);
+            }
+        });
+    }
 }

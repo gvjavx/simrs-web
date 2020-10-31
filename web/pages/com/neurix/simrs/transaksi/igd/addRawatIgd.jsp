@@ -1281,7 +1281,18 @@
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_kategori"><i class="fa fa-check"></i> correct</p>
                         </div>
-
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Diskon</label>
+                        <div class="col-md-7">
+                            <input style="margin-top: 7px" class="form-control" readonly id="h_diskon">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Harga</label>
+                        <div class="col-md-7">
+                            <input style="margin-top: 7px" class="form-control" readonly id="h_harga">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>

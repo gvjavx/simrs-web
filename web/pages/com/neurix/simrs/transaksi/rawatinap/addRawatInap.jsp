@@ -482,6 +482,8 @@
                                    <ul class="dropdown-menu" role="menu" id="asesmen_ri">
                                    </ul>
                                </div>
+                               <button type="button" onmouseenter="loadModalRM('transfer_pasien')" class="btn btn-info" onclick="showModalAsesmenRawatInap('transfer_pasien')"><i class="fa fa-file-o"></i> Serah Terima Pasien
+                               </button>
                            </div>
                        </div>
                     </div>
@@ -1251,6 +1253,18 @@
                                id="war_tindakan"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_tindakan"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Diskon</label>
+                        <div class="col-md-7">
+                            <input style="margin-top: 7px" class="form-control" readonly id="h_diskon">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Harga</label>
+                        <div class="col-md-7">
+                            <input style="margin-top: 7px" class="form-control" readonly id="h_harga">
                         </div>
                     </div>
                     <div class="form-group">
@@ -3924,6 +3938,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/IcuAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>

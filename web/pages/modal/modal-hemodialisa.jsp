@@ -2735,25 +2735,25 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Tekanan Darah</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="ct2" style="margin-top: 7px">
+                                <input class="form-control" id="ct2" style="margin-top: 7px" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Nadi</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="ct3" style="margin-top: 7px">
+                                <input class="form-control" id="ct3" style="margin-top: 7px" type="number">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Suhu</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="ct4" style="margin-top: 7px">
+                                <input class="form-control" id="ct4" style="margin-top: 7px" type="number">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">RR</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="ct5" style="margin-top: 7px">
+                                <input class="form-control" id="ct5" style="margin-top: 7px" type="number">
                             </div>
                         </div>
                         <div class="form-group">

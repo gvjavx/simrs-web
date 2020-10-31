@@ -3451,3 +3451,22 @@ function getListComboJenisDiet(){
         }
     });
 }
+
+function setDiskonHarga(id){
+    if(id != ''){
+        TindakanAction.initTindakan(id, function (res) {
+            if(res.idTindakan != ''){
+                var disk = 0;
+                if(res.diskon != '' && res.diskon != null){
+                    disk = res.diskon;
+                }
+                if(jenisPeriksaPasien == "bpjs"){
+                    $('#h_harga').val("Rp. "+formatRupiahAtas(res.tarifBpjs));
+                }else{
+                    $('#h_harga').val("Rp. "+formatRupiahAtas(res.tarif));
+                }
+                $('#h_diskon').val(disk);
+            }
+        });
+    }
+}
