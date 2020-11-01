@@ -30,7 +30,7 @@ function viewHistory() {
                     }
                 }
                 if (item.idDetailCheckup != null && item.idDetailCheckup != '') {
-                    icon = '<a href="' + contextPath + '/rekammedis/detail_rekammedis.action?idPasien=' + idPasien + '&id=' + item.idDetailCheckup + '&idx='+idDetailCheckup+'"><i class="fa fa-search hvr-grow"></i></a>';
+                    icon = '<a href="' + contextPath + '/rekammedis/detail_rekammedis.action?idPasien=' + idPasien + '&id=' + item.idDetailCheckup + '&idx='+idDetailCheckup+'&url='+urlPage+'"><i class="fa fa-search hvr-grow"></i></a>';
                     if (item.videoRm != null) {
                         tele = '<img style="cursor: pointer" src=' + contextPath + '"/pages/images/icons8-movie-beginning-30.png" onclick="viewTelemedic(\'' + item.videoRm + '\', \'' + item.tglTindakan + '\')">';
                     }

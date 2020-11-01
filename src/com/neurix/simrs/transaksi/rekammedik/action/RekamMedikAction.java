@@ -37,6 +37,7 @@ public class RekamMedikAction extends BaseTransactionAction {
     private String imgKtp;
     private String tipe;
     private String idx;
+    private String url;
 
     @Override
     public String search() {
@@ -159,6 +160,7 @@ public class RekamMedikAction extends BaseTransactionAction {
             detailCheckup.setKategoriPelayanan(checkup.getKategoriPelayanan());
             detailCheckup.setTipePelayanan(checkup.getTipePelayanan());
             detailCheckup.setIdx(getIdx());
+            detailCheckup.setUrl(getUrl());
             setDetailCheckup(detailCheckup);
         }
         logger.info("[CheckupDetailAction.add] end process <<<");
@@ -307,5 +309,13 @@ public class RekamMedikAction extends BaseTransactionAction {
 
     public void setIdx(String idx) {
         this.idx = idx;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

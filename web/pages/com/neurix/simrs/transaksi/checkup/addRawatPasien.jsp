@@ -416,6 +416,7 @@
 
             $('#suku, #profesi, #pendidikan, #status_perkawinan, #hubungan, #asuransi').val(null).trigger('change');
             $('#hub_keluarga, #ket_suku, #ket_profesi, kunjungan_poli').val(null);
+            $('#alert-pasien').hide();
 
         }
 

@@ -104,6 +104,9 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
                 condition = condition + "AND e.branch_id = '" + bean.getBranchId() + "' \n";
             }
+            if (bean.getIdPeriksaLab() != null && !"".equalsIgnoreCase(bean.getIdPeriksaLab())) {
+                condition = condition + "AND a.id_periksa_lab = '" + bean.getIdPeriksaLab() + "' \n";
+            }
 
             String SQL = "SELECT\n" +
                     "a.id_periksa_lab,\n" +

@@ -2337,7 +2337,6 @@
 <%@ include file="/pages/modal/modalRingkasanRawatJalan.jsp" %>
 
 <div class="mask"></div>
-<!-- /.content-wrapper -->
 
 <script type='text/javascript' src='<s:url value="/dwr/interface/FisioterapiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/HemodialisaAction.js"/>'></script>

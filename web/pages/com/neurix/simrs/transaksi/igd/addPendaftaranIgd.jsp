@@ -411,8 +411,13 @@
             $('#form_jawa').hide();
             $('#form_profesi').hide();
 
-            $('#profes, #pendidikan, #status_perkawinan, #hubungan').val(null).trigger('change');
-            $('#hub_keluarga, #ket_suku, #ket_profesi').val(null);
+            $('#ket_hubungan').hide();
+            $('#form_jawa').hide();
+            $('#form_profesi').hide();
+
+            $('#suku, #profesi, #pendidikan, #status_perkawinan, #hubungan, #asuransi').val(null).trigger('change');
+            $('#hub_keluarga, #ket_suku, #ket_profesi, kunjungan_poli').val(null);
+            $('#alert-pasien').hide();
         }
 
         function formatRupiah2(angka) {
@@ -573,6 +578,7 @@
                                                 <div class="col-md-8">
                                                     <s:textfield id="id_pasien" name="headerCheckup.idPasien"
                                                                  oninput="searchNoRM(this.id, this.value)"
+                                                                 onchange="cekKunjunganPoli(this.value)"
                                                                  onkeypress="$(this).css('border','');"
                                                                  cssClass="form-control" cssStyle="margin-top: 7px"/>
                                                 </div>
@@ -664,7 +670,7 @@
                                         <div class="row" style="display: none" id="form_profesi">
                                             <div class="form-group">
                                                 <div class="col-md-offset-4 col-md-8">
-                                                    <s:textfield cssClass="form-control" cssStyle="margin-top: 7px" oninput="$('#ket_profesi').val(this.value);"></s:textfield>
+                                                    <s:textfield placeholder="Keterangan Profesi" cssClass="form-control" cssStyle="margin-top: 7px" oninput="$('#ket_profesi').val(this.value);"></s:textfield>
                                                 </div>
                                             </div>
                                         </div>
@@ -687,7 +693,7 @@
                                         <div class="row" style="display: none" id="form_jawa">
                                             <div class="form-group">
                                                 <div class="col-md-offset-4 col-md-8">
-                                                    <s:textfield cssClass="form-control" cssStyle="margin-top: 7px" oninput="$('#ket_suku').val(this.value);"></s:textfield>
+                                                    <s:textfield placeholder="Keterangan Suku" cssClass="form-control" cssStyle="margin-top: 7px" oninput="$('#ket_suku').val(this.value);"></s:textfield>
                                                 </div>
                                             </div>
                                         </div>
@@ -1424,7 +1430,7 @@
                                                         onclick="window.location.reload(true)">
                                                     <i class="fa fa-refresh"></i> Reset
                                                 </button>
-                                                <a type="button" class="btn btn-warning" href="initForm_checkup.action">
+                                                <a type="button" class="btn btn-warning" href="initForm_igd.action">
                                                     <i class="fa fa-arrow-left"></i> Back
                                                 </a>
                                             </div>
@@ -2055,8 +2061,8 @@
         }
     }
 
-    function cekKunjunganPoli(idPelayanan){
-        var idPasien = $('#id_pasien').val();
+    function cekKunjunganPoli(idPasien){
+        var idPelayanan = '<s:property value="headerCheckup.idPelayanan"/>';
         if(idPasien && idPelayanan != ''){
             CheckupAction.cekKunjunganPoliPasien(idPasien, idPelayanan, function (res) {
                 if(res.length > 0){
@@ -2550,7 +2556,9 @@
                             lastIdDetail: item.idLastDetailCheckup,
                             isOrder: item.isOrderLab,
                             isCkp: item.isCheckupUlang,
-                            isPeriksa: item.isDaftar
+                            isPeriksa: item.isDaftar,
+                            pendidikan: item.pendidikan,
+                            statusPerkawinan: item.statusPerkawinan
                         };
                         functions.push(labelItem);
                     });
@@ -2568,9 +2576,9 @@
                     $('#tempat_lahir').val(selectedObj.tempatlahir);
                     $('#tanggal_lahir').val(selectedObj.tgllahir);
                     $('#agama').val(selectedObj.agama);
-                    $('#profesi').val(selectedObj.profesi);
+                    $('#profesi').val(selectedObj.profesi).trigger('change');
                     $('#jalan').val(selectedObj.alamat);
-                    $('#suku').val(selectedObj.suku);
+                    $('#suku').val(selectedObj.suku).trigger('change');
                     $('#img_ktp').val(selectedObj.imgKtp);
                     $('#img-upload').attr('src', selectedObj.urlktp);
                     $('#provinsi').val(selectedObj.prov);
@@ -2582,6 +2590,8 @@
                     $('#kecamatan11').val(selectedObj.idKec);
                     $('#desa11').val(selectedObj.idDesa);
                     $('#no_telp').val(selectedObj.notelp);
+                    $('#pendidikan').val(selectedObj.pendidikan).trigger('change');
+                    $('#status_perkawinan').val(selectedObj.statusPerkawinan).trigger('change');
                     if (selectedObj.isLama) {
                         // $('#kunjungan').val("Lama").attr('disabled', true);
                         $('#kunjungan_val').val("Lama");

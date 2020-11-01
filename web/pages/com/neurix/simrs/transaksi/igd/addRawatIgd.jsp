@@ -503,6 +503,8 @@
                                     <ul class="dropdown-menu" role="menu" id="asesmen_rj">
                                     </ul>
                                 </div>
+                                <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1089,6 +1091,15 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row" id="form-asesmen" style="display: none">
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-8">
+                                            <button onmouseenter="loadModalRM('transfer_pasien')" class="btn btn-primary" onclick="showModalAsesmenRawatInap('transfer_pasien')">
+                                                <i class="fa fa-file-o"></i> Asesmen Transfer Pasien
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="row" id="form-catatan" style="display: none">
@@ -1283,6 +1294,22 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
+                                    id="tin_id_tindakan"
+                                    onchange="var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide()}; setDiskonHarga(this.value)">
+                                <option value=''>[Select One]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_tindakan"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_tindakan"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Diskon</label>
                         <div class="col-md-7">
                             <input style="margin-top: 7px" class="form-control" readonly id="h_diskon">
@@ -1292,22 +1319,6 @@
                         <label class="col-md-3" style="margin-top: 7px">Harga</label>
                         <div class="col-md-7">
                             <input style="margin-top: 7px" class="form-control" readonly id="h_harga">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Nama Tindakan</label>
-                        <div class="col-md-7">
-                            <select class="form-control select2" style="margin-top: 7px; width: 100%"
-                                    id="tin_id_tindakan"
-                                    onchange="var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide()}">
-                                <option value=''>[Select One]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_tindakan"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_tindakan"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -2289,6 +2300,8 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/CatatanTerintegrasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
@@ -2297,6 +2310,8 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/mpp.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/allhistory.js"/>'></script>
 
 <script type='text/javascript'>
 

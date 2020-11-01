@@ -1246,7 +1246,7 @@
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="tin_id_tindakan"
-                                    onchange="var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide()}">
+                                    onchange="var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide()}; setDiskonHarga(this.value)">
                                 <option value=''>[Select One]</option>
                             </select>
                         </div>
@@ -4013,7 +4013,6 @@
     </div>
 </div>
 
-
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MonitoringTransfusiDarahAction.js"/>'></script>
@@ -4101,7 +4100,7 @@
     var kategoriRuangan = '<s:property value="rawatInap.kategoriRuangan"/>';
     var kelasPasienBpjs = '<s:property value="rawatInap.idKelas"/>';
     var tempidRm = "";
-    var urlPages = "";
+    var urlPage = "";
     var idRuangan = '<s:property value="rawatInap.idRuangan"/>';
     var namaRuangan = '<s:property value="rawatInap.namaRangan"/>';
     var stayRuangan = '<s:property value="rawatInap.isStay"/>';
@@ -4145,46 +4144,47 @@
         hitungCoverBiaya();
         getJenisResep();
         listICD9();
+        cekTranfersPasien('transfer_pasien');
 
         if(kategoriRuangan == 'rawat_inap'){
             $('#title-pages').text("Rawat Inap Pasien");
             $('#rawat_inap').addClass('active');
-            urlPages = 'rawatinap';
+            urlPage = 'rawatinap';
             $('#pel_ri_active, #bayar_rawat_inap').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'rawat_intensif'){
             $('#title-pages').text("Rawat Intensif Pasien");
             $('#rawat_intensif').addClass('active');
-            urlPages = 'rawatintensif';
+            urlPage = 'rawatintensif';
             $('#pel_ri_active, #rawat_intensif').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'rawat_isolasi'){
             $('#title-pages').text("Rawat Isolasi Pasien");
             $('#rawat_isolasi').addClass('active');
-            urlPages = 'rawatisolasi';
+            urlPage = 'rawatisolasi';
             $('#pel_ri_active, #rawat_isolasi').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'kamar_operasi'){
             $('#title-pages').text("Rawat Operasi Pasien");
             $('#rawat_operasi').addClass('active');
-            urlPages = 'rawatoperasi';
+            urlPage = 'rawatoperasi';
             $('#pel_ri_active, #rawat_operasi').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'ruang_bersalin'){
             $('#title-pages').text("Rawat Bersalin Pasien");
             $('#rawat_bersalin').addClass('active');
-            urlPages = 'rawatbersalin';
+            urlPage = 'rawatbersalin';
             $('#pel_ri_active, #rawat_bersalin').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'rr'){
             $('#title-pages').text("Recovery Room");
             $('#rr').addClass('active');
-            urlPages = 'recoveryroom';
+            urlPage = 'recoveryroom';
             $('#pel_ri_active, #rr').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }

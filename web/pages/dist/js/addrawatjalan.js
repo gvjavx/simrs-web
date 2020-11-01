@@ -1507,11 +1507,16 @@ function listLab() {
                 if (item.labName != null) {
                     lab = item.labName;
                 }
-                if (item.approveFlag == "Y") {
-                    if (item.urlImg != null) {
-                        btn = '<img onclick="labLuar(\'' + lab + '\', \'' + item.urlImg + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
-                    } else {
-                        btn = '<a target="_blank" href="printLabRadiologi_checkupdetail.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+
+                if("Pending" == item.statusPeriksaName){
+                    btn = '<a target="_blank" href="printLabRadiologi_checkupdetail.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+                }else{
+                    if (item.approveFlag == "Y") {
+                        if (item.urlImg != null) {
+                            btn = '<img onclick="labLuar(\'' + lab + '\', \'' + item.urlImg + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                        } else {
+                            btn = '<a target="_blank" href="printLabRadiologi_checkupdetail.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+                        }
                     }
                 }
 
@@ -1521,7 +1526,7 @@ function listLab() {
                         "<td>" + item.kategoriLabName + "</td>" +
                         "<td>" + lab + "</td>" +
                         "<td>" + status + "</td>" +
-                        "<td align='center'></td>" +
+                        "<td align='center'>"+btn+"</td>" +
                         "</tr>";
                 } else {
                     table += "<tr>" +

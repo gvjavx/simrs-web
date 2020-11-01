@@ -71,8 +71,12 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     PeriksaLab periksaLab = new PeriksaLab();
                     if (periksaLabEntity.getStatusPeriksa() != null && !"".equalsIgnoreCase(periksaLabEntity.getStatusPeriksa())) {
                         ImSimrsStatusPasienEntity status = getMasterStatusPasienByIdStatus(periksaLabEntity.getStatusPeriksa());
-                        periksaLab.setStatusPeriksa(status.getIdStatusPasien());
-                        periksaLab.setStatusPeriksaName(status.getKeterangan());
+                        if ("0".equalsIgnoreCase(status.getIdStatusPasien()) && "Y".equalsIgnoreCase(periksaLabEntity.getIsPending())) {
+                            periksaLab.setStatusPeriksaName("Pending");
+                        } else {
+                            periksaLab.setStatusPeriksa(status.getIdStatusPasien());
+                            periksaLab.setStatusPeriksaName(status.getKeterangan());
+                        }
                     }
                     ImSimrsLabEntity labEntity = labDao.getById("idLab", periksaLabEntity.getIdLab());
                     if (labEntity != null) {
@@ -261,7 +265,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             entity.setTtdPengirim(periksaLab.getTtdPengirim());
             entity.setIdKategoriLab(periksaLab.getIdKategoriLab());
             entity.setIsPending(periksaLab.getIsPending());
-            if("Y".equalsIgnoreCase(entity.getIsPending())){
+            if ("Y".equalsIgnoreCase(entity.getIsPending())) {
                 entity.setApproveFlag("Y");
             }
 
@@ -400,10 +404,10 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
         logger.info("[PeriksaLabBoImpl.saveDokterLab] start <<<<<<<<<");
         CheckResponse response = new CheckResponse();
         if (bean != null) {
-            if(list.size() > 0){
-                for (PeriksaLabDetail detail: list){
+            if (list.size() > 0) {
+                for (PeriksaLabDetail detail : list) {
                     ItSimrsPeriksaLabDetailEntity labDetailEntity = periksaLabDetailDao.getById("idPeriksaLabDetail", detail.getIdPeriksaLabDetail());
-                    if(labDetailEntity != null){
+                    if (labDetailEntity != null) {
                         labDetailEntity.setHasil(detail.getHasil());
                         labDetailEntity.setKeteranganPeriksa(detail.getKeteranganPeriksa());
                         labDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -413,7 +417,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                             periksaLabDetailDao.updateAndSave(labDetailEntity);
                             response.setStatus("success");
                             response.setMessage("Berhasil");
-                        }catch (HibernateException e){
+                        } catch (HibernateException e) {
                             logger.error(e.getMessage());
                             response.setStatus("error");
                             response.setMessage("Error " + e.getMessage());

@@ -385,7 +385,7 @@
                         <div class="row" style="padding: 5px">
                             <div class="col-md-12 text-center">
                                 <s:if test='detailCheckup.idx != null'>
-                                    <a class="btn btn-warning" href="<%= request.getContextPath() %>/checkupdetail/add_checkupdetail.action?id=<s:property value="detailCheckup.idx"/>"><i class="fa fa-times"></i>
+                                    <a class="btn btn-warning" href="<%= request.getContextPath() %>/<s:property value="detailCheckup.url"/>/add_<s:property value="detailCheckup.url"/>.action?id=<s:property value="detailCheckup.idx"/>"><i class="fa fa-times"></i>
                                         Back</a>
                                 </s:if>
                                 <s:else>
