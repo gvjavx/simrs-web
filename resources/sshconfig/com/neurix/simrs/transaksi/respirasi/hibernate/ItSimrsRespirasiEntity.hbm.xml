@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.simrs.transaksi.respirasi.model.ItSimrsRespirasiEntity">
-        <table name="it_simrs_respirasi" schema="public" catalog="gomedsys"/>
+        <table name="it_simrs_respirasi" schema="public"/>
         <attributes>
             <id name="idRespirasi">
                 <column name="id_respirasi"/>

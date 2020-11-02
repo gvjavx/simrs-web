@@ -1126,9 +1126,28 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 SELECT * FROM im_simrs_pelayanan
 WHERE id_pelayanan = 'PYN00000010';
 
+SELECT * FROM im_simrs_pelayanan
+WHERE id_pelayanan = 'PYN00000011';
+
 UPDATE im_simrs_pelayanan
 SET kategori_pelayanan = 'spesialis_mata'
 WHERE id_pelayanan = 'PYN00000010';
+
+UPDATE im_simrs_pelayanan
+SET kategori_pelayanan = 'spesialis_kulit_kelamin'
+WHERE id_pelayanan = 'PYN00000011';
+
+SELECT * FROM im_simrs_rekam_medis_pasien ORDER BY id_rekam_medis_pasien DESC;
+INSERT INTO im_simrs_rekam_medis_pasien VALUES
+('RMM00000102','RJ 013','Asesmen Spesialis Mata','form','spesialis_mata','spesialis_mata','showModalSPS','Y','C','migrasi',now(),now(),'migrasi','2'),
+('RMM00000103','RJ 014','Asesmen Spesialis Mata Operasi','form','spesialis_mata','spesialis_mata_op','showModalSPS','Y','C','migrasi',now(),now(),'migrasi','2'),
+('RMM00000104','RJ 015','Asesmen Spesialis Kulit Kelamin','form','spesialis_kulit_kelamin','spesialis_kulit_kelamin','showModalSPS','Y','C','migrasi',now(),now(),'migrasi','3');
+
+SELECT * FROM im_simrs_rekam_medis_pelayanan ORDER BY id_rekam_medis_pelayanan DESC;
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000239','RMM00000102','rawat_jalan','1','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000240','RMM00000103','rawat_jalan','2','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000241','RMM00000104','rawat_jalan','1','Y','C','migrasi',now(),now(),'migrasi');
 
 --SELOSO
 ALTER TABLE it_simrs_hemodinamika
@@ -1207,6 +1226,14 @@ ALTER TABLE it_simrs_monitoring_anestesi
 ADD COLUMN sistole VARCHAR(100),
 ADD COLUMN diastole VARCHAR(100),
 ADD COLUMN inhalasi VARCHAR(100);
+
+ALTER TABLE im_simrs_pasien
+ADD COLUMN pendidikan VARCHAR(100),
+ADD COLUMN status_perkawinan VARCHAR(100);
+
+ALTER TABLE im_simrs_pasien
+ADD COLUMN pendidikan VARCHAR(100),
+ADD COLUMN status_perkawinan VARCHAR(100);
 
 
 
