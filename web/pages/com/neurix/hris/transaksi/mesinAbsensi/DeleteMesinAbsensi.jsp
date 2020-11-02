@@ -119,7 +119,18 @@
                             </table>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Unit :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:hidden name="mesinAbsensi.branchId" />
+                                <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" disabled="true" id="branchIdDelete" name="mesinAbsensi.branchId" required="true" listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                            </table>
+                        </td>
+                    </tr>
                 </table>
 
 
@@ -194,7 +205,7 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close');} //window.location.reload(true)
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">

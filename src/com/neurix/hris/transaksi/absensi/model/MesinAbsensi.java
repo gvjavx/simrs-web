@@ -42,6 +42,16 @@ public class MesinAbsensi extends BaseModel {
     private String stCreatedDate;
     private String stLastUpdate;
 
+    private String branchName;
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
     public String getLembur() {
         return lembur;
     }

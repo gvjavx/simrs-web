@@ -90,6 +90,35 @@ public class ImBiodataEntity implements Serializable {
     private String divisiName;
     private String jenisPegawai;
 
+    //BARU
+    private BigDecimal peralihanGapok;
+    private BigDecimal peralihanSankhus;
+    private BigDecimal peralihanTunjangan;
+
+    public BigDecimal getPeralihanGapok() {
+        return peralihanGapok;
+    }
+
+    public void setPeralihanGapok(BigDecimal peralihanGapok) {
+        this.peralihanGapok = peralihanGapok;
+    }
+
+    public BigDecimal getPeralihanSankhus() {
+        return peralihanSankhus;
+    }
+
+    public void setPeralihanSankhus(BigDecimal peralihanSankhus) {
+        this.peralihanSankhus = peralihanSankhus;
+    }
+
+    public BigDecimal getPeralihanTunjangan() {
+        return peralihanTunjangan;
+    }
+
+    public void setPeralihanTunjangan(BigDecimal peralihanTunjangan) {
+        this.peralihanTunjangan = peralihanTunjangan;
+    }
+
     public String getJenisPegawai() {
         return jenisPegawai;
     }

@@ -523,9 +523,9 @@
                                                         <td>Masuk 1</td>
                                                         <td>Pulang 1</td>
                                                         <td>Status </td>
-                                                        <td>Masuk 2</td>
-                                                        <td>Pulang 2</td>
-                                                        <td>Status 2</td>
+                                                        <%--<td>Masuk 2</td>--%>
+                                                        <%--<td>Pulang 2</td>--%>
+                                                        <%--<td>Status 2</td>--%>
                                                         <td>Lembur </td>
                                                         <td align="center">Refresh</td>
                                                         <td align="center">View</td>
@@ -543,9 +543,9 @@
                                                             <td style="text-align: center"><s:property value="jamMasuk"/></td>
                                                             <td style="text-align: center"><s:property value="jamPulang"/></td>
                                                             <td style="text-align: center"><s:property value="statusName"/></td>
-                                                            <td style="text-align: center"><s:property value="jamMasuk2"/></td>
-                                                            <td style="text-align: center"><s:property value="jamPulang2"/></td>
-                                                            <td style="text-align: center"><s:property value="statusName2"/></td>
+                                                            <%--<td style="text-align: center"><s:property value="jamMasuk2"/></td>--%>
+                                                            <%--<td style="text-align: center"><s:property value="jamPulang2"/></td>--%>
+                                                            <%--<td style="text-align: center"><s:property value="statusName2"/></td>--%>
                                                             <td style="text-align: center"><s:property value="lembur"/></td>
                                                             <td align="center">
                                                                 <s:if test="#attr.row.cekAdmin">

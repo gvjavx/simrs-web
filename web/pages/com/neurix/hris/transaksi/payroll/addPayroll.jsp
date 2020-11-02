@@ -177,18 +177,23 @@
                                                         <table>
                                                             <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
                                 '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
-                                                                      id="bulanPayroll" name="payroll.bulan" onchange="changeBulan(this)"
+                                                                      id="bulanPayroll" name="payroll.bulan"
                                                                       headerKey="0" headerValue="Bulan" cssClass="form-control" />
                                                         </table>
                                                     </td>
                                                     <td>
                                                         <table>
                                                             <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
-                                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll" onchange="changeTahun(this)"
+                                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll"
                                                                       name="payroll.tahun" required="true" headerKey=""
                                                                       headerValue="[Select one]"/>
                                                         </table>
                                                     </td>
+                                                    <script>
+                                                        var dt = new Date();
+                                                        $('#bulanPayroll').val(("0" + (dt.getMonth() + 1)).slice(-2));
+                                                        $('#tahunPayroll').val(dt.getFullYear());
+                                                    </script>
                                                 </tr>
                                                 <td>
                                                     <label class="control-label"><small>Tipe Penggajian :</small></label>
@@ -210,23 +215,17 @@
                                                                        onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog"
                                                                        onSuccessTopics="gantiHalaman" onErrorTopics="errorDialogSearch" >
                                                                 <i class="fa fa-search"></i>
-                                                                Search
+                                                                Proses
                                                             </sj:submit>
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="add_payroll.action"/>'">
-                                                                <i class="fa fa-refresh"></i> Reset
-                                                            </button>
-                                                        </td>
-                                                        <td>
-                                                            <button type="button" class="btn btn-default" onclick="window.location.href='<s:url action="initForm_payroll.action"/>'">
-                                                                <i class="fa fa-close"></i> Cancel
+                                                            <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payroll.action"/>'">
+                                                                <i class="fa fa-arrow-left"></i> Cancel
                                                             </button>
                                                         </td>
                                                     </tr>
                                                 </table>
                                             </div>
-
                                             <br>
                                             <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
                                                        resizable="false"

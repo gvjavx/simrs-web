@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -1135,8 +1136,9 @@ public class  CommonUtil {
         return cal.getTime();
     }
     public static BigDecimal percentage(BigDecimal base, BigDecimal pct){
-        return base.multiply(pct).divide(new BigDecimal(100));
+        return base.multiply(pct).divide(new BigDecimal(100),5, RoundingMode.HALF_UP);
     }
+
     public static String cekDateBeforeNow(String tglAwal){
         String status = "";
         //mengambil Tanggal Sekarang
@@ -1409,4 +1411,15 @@ public class  CommonUtil {
         return diff;
     }
 
+    public static int getMonthsDifference(Date date1, Date date2) {
+        int m1 = date1.getYear() * 12 + date1.getMonth();
+        int m2 = date2.getYear() * 12 + date2.getMonth();
+        return m2 - m1 + 1;
+    }
+
+    public static BigDecimal StringDenganFormatToBigDecimal(String number){
+        number = number.replace(".","");
+
+        return BigDecimal.valueOf(Double.valueOf(number));
+    }
 }

@@ -47,6 +47,9 @@ public class MesinDao extends GenericDao<ImMesinAbsensiEntity, String> {
             if (mapCriteria.get("mesin_sn") != null) {
                 criteria.add(Restrictions.eq("mesinSn", (String) mapCriteria.get("mesin_sn")));
             }
+            if (mapCriteria.get("branch_id") != null) {
+                criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
+            }
         }
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
