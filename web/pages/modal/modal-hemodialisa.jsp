@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-hd-monitoring_hd">
+Tind<div class="modal fade" id="modal-hd-monitoring_hd">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -3139,7 +3139,7 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Tekanan Darah</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="td6" style="margin-top: 7px">
+                                <input class="form-control" id="td6" style="margin-top: 7px" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                         </div>
                         <div class="form-group">
@@ -3224,8 +3224,8 @@
                             <label class="col-md-4" style="margin-top: 7px">Tanda Tangan</label>
                             <div class="col-md-6">
                                 <canvas style="margin-left: -1px;" onmouseover="paintTtd('hd_ttd_dokter')" class="paint-canvas-ttd" id="hd_ttd_dokter"></canvas>
-                                <input class="form-control nama_dokter" id="nama_terang_hd_ttd_dokter" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_hd_ttd_dokter" placeholder="SIP">
+                                <input class="form-control nama_dokter_ri" id="nama_terang_hd_ttd_dokter" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_hd_ttd_dokter" placeholder="SIP">
                                 <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('hd_ttd_dokter')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
@@ -3400,7 +3400,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">BD</label>
+                            <label class="col-md-4" style="margin-top: 7px">QD</label>
                             <div class="col-md-3">
                                 <input type="number" class="form-control" id="ph11" style="margin-top: 7px">
                             </div>

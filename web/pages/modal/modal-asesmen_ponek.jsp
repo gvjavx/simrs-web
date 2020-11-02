@@ -142,7 +142,7 @@
                                 <input class="form-control" id="po5" type="number" placeholder="GCS">
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control" id="po6" type="number" placeholder="TD">
+                                <input class="form-control" id="po6" placeholder="TD" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                             <div class="col-md-3">
                                 <input class="form-control" id="po7" type="number" placeholder="Nadi">
@@ -382,7 +382,7 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <label style="margin-left: 8px">TTD Bidang jaga</label>
+                                <label style="margin-left: 8px">TTD Bidan jaga</label>
                                 <canvas class="paint-canvas-ttd" id="ttd1_asesmen_ponek_rb" width="220"
                                         onmouseover="paintTtd('ttd1_asesmen_ponek_rb')"></canvas>
                                 <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd1" placeholder="Nama Terang">

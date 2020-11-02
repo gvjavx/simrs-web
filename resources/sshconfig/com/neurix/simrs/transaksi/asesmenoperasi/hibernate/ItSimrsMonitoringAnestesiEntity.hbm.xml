@@ -20,11 +20,11 @@
             <basic name="nadi">
                 <column name="nadi"/>
             </basic>
-            <basic name="tensi">
-                <column name="tensi"/>
+            <basic name="sistole">
+                <column name="sistole"/>
             </basic>
-            <basic name="anest">
-                <column name="anest"/>
+            <basic name="diastole">
+                <column name="diastole"/>
             </basic>
             <basic name="o2">
                 <column name="o2"/>
@@ -32,17 +32,8 @@
             <basic name="n2O">
                 <column name="n2o"/>
             </basic>
-            <basic name="ethran">
-                <column name="ethran"/>
-            </basic>
-            <basic name="iso">
-                <column name="iso"/>
-            </basic>
-            <basic name="sevo">
-                <column name="sevo"/>
-            </basic>
-            <basic name="infus">
-                <column name="infus"/>
+            <basic name="inhalasi">
+                <column name="inhalasi"/>
             </basic>
             <basic name="keterangan">
                 <column name="keterangan"/>

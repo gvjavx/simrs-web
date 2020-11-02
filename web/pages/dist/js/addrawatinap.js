@@ -212,6 +212,7 @@ function selectKeterangan(idKtg) {
             $('#form-kamar').hide();
             $('#form-stay').hide();
             $('#form-kelas_kamar').hide();
+            $('#form-asesmen').hide();
 
         } else if (idKtg == "rawat_inap") {
             $('#form-ket-rawat_inap').show();
@@ -234,6 +235,7 @@ function selectKeterangan(idKtg) {
             $('#form-rs-rujukan').hide();
             $('#form-pemeriksaan').hide();
             $('#form-stay').hide();
+            $('#form-asesmen').show();
 
         } else if (idKtg == "rujuk_rs_lain") {
             $('#form-rs-rujukan').show();
@@ -246,6 +248,7 @@ function selectKeterangan(idKtg) {
             $('#form-kamar').hide();
             $('#form-stay').hide();
             $('#form-kelas_kamar').hide();
+            $('#form-asesmen').hide();
 
         } else if (idKtg == "kontrol_ulang") {
             $('#form-tgl-kontrol').show();
@@ -257,6 +260,7 @@ function selectKeterangan(idKtg) {
             $('#form-pemeriksaan').hide();
             $('#form-stay').hide();
             $('#form-kelas_kamar').hide();
+            $('#form-asesmen').hide();
 
         } else if (idKtg == "rawat_intensif") {
             getKamar(null, 'rawat_intensif');
@@ -273,6 +277,7 @@ function selectKeterangan(idKtg) {
             $('#form-tgl-kontrol').hide();
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
+            $('#form-asesmen').show();
 
         } else if (idKtg == "rawat_isolasi") {
             getKamar(null, 'rawat_isolasi');
@@ -289,6 +294,7 @@ function selectKeterangan(idKtg) {
             $('#form-tgl-kontrol').hide();
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
+            $('#form-asesmen').show();
 
         } else if (idKtg == "kamar_operasi") {
             getKamar(null, 'kamar_operasi');
@@ -305,6 +311,8 @@ function selectKeterangan(idKtg) {
             $('#form-tgl-kontrol').hide();
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
+            $('#form-asesmen').show();
+
         } else if (idKtg == "ruang_bersalin") {
             getKamar(null, 'ruang_bersalin');
             $('#label_kamar').text('Ruang Bersalin');
@@ -320,6 +328,8 @@ function selectKeterangan(idKtg) {
             $('#form-tgl-kontrol').hide();
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
+            $('#form-asesmen').show();
+
         } else if (idKtg == "rr") {
             getKamar(null, 'rr');
             $('#label_kamar').text('Ruangan');
@@ -335,6 +345,8 @@ function selectKeterangan(idKtg) {
             $('#form-tgl-kontrol').hide();
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
+            $('#form-asesmen').show();
+
         } else {
             $('#form-selesai').hide();
             $('#form-catatan').hide();
@@ -345,6 +357,7 @@ function selectKeterangan(idKtg) {
             $('#form-kamar').hide();
             $('#form-stay').hide();
             $('#form-kelas_kamar').hide();
+            $('#form-asesmen').hide();
         }
     } else {
         $('#form-selesai').hide();
@@ -356,6 +369,7 @@ function selectKeterangan(idKtg) {
         $('#form-kamar').hide();
         $('#form-stay').hide();
         $('#form-kelas_kamar').hide();
+        $('#form-asesmen').hide();
     }
 }
 
@@ -553,20 +567,23 @@ function listSelectTindakanKategori(val) {
     var option = "<option value=''>[Select One]</option>";
     var idDokter = "";
     var idPelayanan = "";
-
+    var def = "";
     if (val != null && val != '') {
-
         var dataDokter = val.split("|");
-
         idDokter = dataDokter[0];
         idPelayanan = dataDokter[1];
-
         CheckupDetailAction.getListComboTindakanKategori(idPelayanan, kategoriRuangan, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
+                    if(i == 0){
+                        def = item.idKategoriTindakan;
+                    }
                     option += "<option value='" + item.idKategoriTindakan + "'>" + item.kategoriTindakan + "</option>";
                 });
                 $('#tin_id_ketgori_tindakan').html(option);
+                setTimeout(function () {
+                    $('#tin_id_ketgori_tindakan').val(def).trigger('change');
+                },100);
             } else {
                 $('#tin_id_ketgori_tindakan').html(option);
             }
@@ -2934,12 +2951,17 @@ function searchICD9(id) {
 
 function getListNamaDokter() {
     var option = '<option value="">[Select One]</option>';
+    var def = '';
     CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, "Y", function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
+                if(i == 0){
+                    def = item.idDokter+'|'+item.idPelayanan;
+                }
                 option += '<option value="' + item.idDokter + '|' + item.idPelayanan + '">' + item.namaDokter + ' - ' + item.namaPelayanan + '</option>';
             });
             $('#tin_id_dokter_dpjp').html(option);
+            $('#tin_id_dokter_dpjp').val(def).trigger('change');
         } else {
             $('#tin_id_dokter_dpjp').html(option);
         }
@@ -3499,7 +3521,15 @@ function setDiskonHarga(id) {
 function cekTranfersPasien(jenis) {
     AsesmenRawatInapAction.getListAsesmenRI(noCheckup, jenis, function (res) {
         if(res.length > 0){
-            console.log(res);
+            $.each(res, function (i, item) {
+                if("kondisi_serah_terima" == item.keterangan){
+                    var isi = item.jawaban.split("|");
+                    var cek = isi[2];
+                    if(cek == undefined){
+                        $('#btn_tranfer_pasien').attr('onclick', 'showModalAsesmenRawatInap(\'transfer_pasien\', \'\', \'\', \''+item.idDetailCheckup+'\')');
+                    }
+                }
+            });
         }
     });
 }

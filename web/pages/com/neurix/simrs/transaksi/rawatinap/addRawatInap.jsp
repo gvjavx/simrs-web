@@ -449,7 +449,7 @@
                                    <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
                                        <i class="fa fa-calendar"></i> Schedule Rawat
                                    </button>
-                                   <div class="btn-group btn-hide dropdown">
+                                   <div class="btn-group dropdown">
                                        <button type="button" class="btn btn-info"><i class="fa fa-edit"></i> Observasi dan Pemberian
                                        </button>
                                        <button type="button" class="btn btn-info dropdown-toggle"
@@ -471,7 +471,7 @@
                                </div>
                            </s:if>
                            <div class="col-md-6">
-                               <div class="btn-group btn-hide dropdown">
+                               <div class="btn-group dropdown">
                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary hvr-icon-down"><i class="fa fa-edit"></i> Asesmen
                                    </button>
                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
@@ -482,7 +482,7 @@
                                    <ul class="dropdown-menu" role="menu" id="asesmen_ri">
                                    </ul>
                                </div>
-                               <button type="button" onmouseenter="loadModalRM('transfer_pasien')" class="btn btn-info" onclick="showModalAsesmenRawatInap('transfer_pasien')"><i class="fa fa-file-o"></i> Serah Terima Pasien
+                               <button type="button" id="btn_tranfer_pasien" onmouseenter="loadModalRM('transfer_pasien')" class="btn btn-info" onclick="showModalAsesmenRawatInap('transfer_pasien')"><i class="fa fa-file-o"></i> Serah Terima Pasien
                                </button>
                                <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History
                                </button>
@@ -1031,6 +1031,15 @@
                                             <select class="form-control select2" multiple style="margin-top: 7px; width: 100%" id="ckp_parameter">
                                                 <option value=''>[Select One]</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="form-asesmen" style="display: none">
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-8">
+                                            <button onmouseenter="loadModalRM('transfer_pasien')" class="btn btn-primary" onclick="showModalAsesmenRawatInap('transfer_pasien')">
+                                                <i class="fa fa-file-o"></i> Asesmen Transfer Pasien
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

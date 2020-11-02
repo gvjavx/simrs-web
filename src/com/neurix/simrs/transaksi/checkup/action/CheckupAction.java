@@ -3987,4 +3987,9 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.cekPelayananPaket] END process >>>");
         return headerCheckupList;
     }
+
+    public String cekLogin() {
+        String res = CommonUtil.userLogin();
+        return res;
+    }
 }

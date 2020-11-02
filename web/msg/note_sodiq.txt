@@ -1195,6 +1195,18 @@ ADD COLUMN pendidikan VARCHAR(100),
 ADD COLUMN status_perkawinan VARCHAR(100),
 ADD COLUMN kunjungan_poli VARCHAR(100);
 
+--HARI MINGGU MALAM SENIN
+ALTER TABLE it_simrs_monitoring_anestesi
+DROP COLUMN tensi,
+DROP COLUMN anest,
+DROP COLUMN ethran,
+DROP COLUMN sevo,
+DROP COLUMN infus;
+
+ALTER TABLE it_simrs_monitoring_anestesi
+ADD COLUMN sistole VARCHAR(100),
+ADD COLUMN diastole VARCHAR(100),
+ADD COLUMN inhalasi VARCHAR(100);
 
 
 

@@ -1681,7 +1681,7 @@ function showChartHemodinamika(jenis, tgl) {
                     data: dataArray,
                     xkey: 'y',
                     ykeys: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
-                    labels: ['Temperature', 'Sistole', 'Diastole', 'HI', 'RR', 'ICP', 'IBP', 'CVP', 'MAP'],
+                    labels: ['Temperature', 'Sistole', 'Diastole', 'HR', 'RR', 'ICP', 'IBP', 'CVP', 'MAP'],
                     lineColors: ['#ff0000', '#0000ff', '#00cc00', '#ff9933', '#cc6600', '#ffff66', '#cc6699', '#666633', '#000066'],
                     hideHover: 'auto',
                     parseTime: false,

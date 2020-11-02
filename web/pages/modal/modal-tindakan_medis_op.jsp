@@ -22,7 +22,7 @@
                 <div class="box-body">
                     <table class="table" id="tabel_op_tindakan_medis_op">
                         <tbody>
-                        <tr id="row_op_tindakan_medis">
+                        <tr id="row_op_tindakan_medis_op">
                             <td>Persetujuan Tindakan Medis</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_tindakan_medis_op" class="hvr-grow"
@@ -62,12 +62,13 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 10px">Pilih Tindakan Medis</label>
                             <div class="col-md-6">
-                                <select class="form-control select2" id="tindakan_medis_op" style="width: 100%" onchange="pilihTindakanMedis(this.value, 'tindakan_medis_op')">
+                                <select class="form-control select2" id="tindakan_medis_op" style="width: 100%" onchange="pilihTindakanMedis(this.value, 'tindakan_medis_op'); setTindakanMedisValue(this.value, 'op', 'nama_tindakan_medis')">
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
+                <input type="hidden" id="nama_tindakan_medis">
                 <hr class="garis">
                 <div class="box-body" style="display: none" id="form-tindakan_medis_op">
                     <div class="row">

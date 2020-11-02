@@ -214,14 +214,11 @@ public class AsesmenOperasiAction {
             monitoringAnestesi.setWaktu(jam);
             monitoringAnestesi.setRr(obj.getString("rr"));
             monitoringAnestesi.setNadi(obj.getString("nadi"));
-            monitoringAnestesi.setTensi(obj.getString("tensi"));
-            monitoringAnestesi.setAnest(obj.getString("anest"));
+            monitoringAnestesi.setSistole(obj.getString("sistole"));
+            monitoringAnestesi.setDiastole(obj.getString("diastole"));
             monitoringAnestesi.setO2(obj.getString("o2"));
             monitoringAnestesi.setN2O(obj.getString("n2o"));
-            monitoringAnestesi.setEthran(obj.getString("ethran"));
-            monitoringAnestesi.setIso(obj.getString("iso"));
-            monitoringAnestesi.setSevo(obj.getString("sevo"));
-            monitoringAnestesi.setInfus(obj.getString("infus"));
+            monitoringAnestesi.setInhalasi(obj.getString("inhalasi"));
             monitoringAnestesi.setKeterangan(ket);
             monitoringAnestesi.setJenis(obj.getString("jenis"));
             monitoringAnestesi.setAction("C");

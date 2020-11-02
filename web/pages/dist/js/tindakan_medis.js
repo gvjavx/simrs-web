@@ -930,6 +930,139 @@ function tindakanMedis(id) {
         'informasi': '',
         'keterangan': 'i'
     });
+    data.push({
+        'id': '10',
+        'parameter': 'Teknik Anestesi',
+        'informasi': 'General Anestesi|Sedasi Moderat/Dalam',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Kondisi yang diharapkan',
+        'informasi': 'Rasa Cemas berkurang, mengantuk s/d kesadaran hilang, tidak merasa nyeri',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Tata cara',
+        'informasi': 'Obat yang diinjeksikan ke pembuluh darah, obat dihirupkan keseluruh nafas',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Resiko',
+        'informasi': 'Aspirasi, udema pasru, cedera mulut (gigi, lidah, bibir), suara serak dan nteri tenggorokan',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Tujuan',
+        'informasi': 'Mengurangi rasa cemas, menghilangkan nyeri menjaga fungsi organ selama pembedahan',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Komplikasi',
+        'informasi': 'Reaksi alergi obat, stroke, serangan jantung kematian',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Tranfusi',
+        'informasi': 'Tidak|Ya',
+        'keterangan': 'r'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Komplikasi',
+        'informasi': 'Reaksi tranfusi, penularan penyakit lewat darah',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Rencana Pemberian obat nyeri',
+        'informasi': 'Injeksi|Patch|Peridural|Injeksi kontinyu|Lainnya',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Prognosa',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Alternatif',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+
+    data.push({
+        'id': '11',
+        'parameter': 'Teknik Anestesi',
+        'informasi': 'Sub Arachnoid Blok (SAB)|Epidural|CSE/Block Syarat Mayor',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '11',
+        'parameter': 'Kondisi yang diharapkan',
+        'informasi': 'Akan terjadi mati rasa pada bagian tubuh tertentu',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '11',
+        'parameter': 'Tata cara',
+        'informasi': 'Obat diinjeksikan pada kanal tulang belakang posisi pasien tidur miring atau duduk',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '11',
+        'parameter': 'Resiko',
+        'informasi': 'Sakit kepala, sakit panggung, infeksi ditempat injeksi total spinal',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '11',
+        'parameter': 'Tujuan',
+        'informasi': 'Mengurangi rasa cemas, menghilangkan nyeri menjaga fungsi organ selama pembedahan',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '11',
+        'parameter': 'Komplikasi',
+        'informasi': 'Reaksi alergi obat, stroke, serangan jantung kematian',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '11',
+        'parameter': 'Tranfusi',
+        'informasi': 'Tidak|Ya',
+        'keterangan': 'r'
+    });
+    data.push({
+        'id': '11',
+        'parameter': 'Komplikasi',
+        'informasi': 'Reaksi tranfusi, penularan penyakit lewat darah',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '11',
+        'parameter': 'Rencana Pemberian obat nyeri',
+        'informasi': 'Injeksi|Patch|Peridural|Injeksi kontinyu|Lainnya',
+        'keterangan': 'c'
+    });
+    data.push({
+        'id': '11',
+        'parameter': 'Prognosa',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+    data.push({
+        'id': '11',
+        'parameter': 'Alternatif',
+        'informasi': '',
+        'keterangan': 'i'
+    });
 
     if (id != '') {
         $.each(data, function (i, item) {
@@ -1003,6 +1136,16 @@ function kategoriTindakanMedis(tipe) {
         'tipe': 'hd',
         'id_tindakan': '10',
         'nama_tindakan': 'Hemodialisa'
+    });
+    data.push({
+        'tipe': 'op',
+        'id_tindakan': '11',
+        'nama_tindakan': 'General Anestesi'
+    });
+    data.push({
+        'tipe': 'op',
+        'id_tindakan': '12',
+        'nama_tindakan': 'Regional Anestesi'
     });
     if (tipe != '') {
         $.each(data, function (i, item) {

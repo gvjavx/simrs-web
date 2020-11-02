@@ -13,19 +13,23 @@ function viewHistory() {
                 var btn = "";
                 var icon = "";
                 var tele = "";
+                var keteranganTindakan = item.keterangan;
+                if("lab" == item.keterangan){
+                    keteranganTindakan = "laboratorium";
+                }
 
-                if ("resep" == item.keterangan || "laboratorium" == item.keterangan || "radiologi" == item.keterangan) {
-                    if ("laboratorium" == item.keterangan || "radiologi" == item.keterangan) {
+                if ("resep" == keteranganTindakan || "laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
+                    if ("laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
                         if (item.urlLab != null && item.urlLab != '') {
-                            btn = '<img onclick="labLuar(\'' + item.namaTindakan + '\', \'' + item.urlLab + '\')" border="0" class="hvr-grow" src=' + contextPath + '"/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                            btn = '<img onclick="labLuar(\'' + item.namaTindakan + '\', \'' + item.urlLab + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                         } else {
                             btn = '<img class="hvr-grow" id="btn_' + item.idRiwayatTindakan + '" \n' +
-                                'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + item.keterangan + '\')"\n' +
+                                'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + keteranganTindakan + '\')"\n' +
                                 'src="' + contextPath + '/pages/images/icons8-plus-25.png">';
                         }
                     } else {
                         btn = '<img class="hvr-grow" id="btn_' + item.idRiwayatTindakan + '" \n' +
-                            'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + item.keterangan + '\')"\n' +
+                            'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + keteranganTindakan + '\')"\n' +
                             'src="' + contextPath + '/pages/images/icons8-plus-25.png">';
                     }
                 }
@@ -60,9 +64,10 @@ function detailTindakan(id, idTindakan, keterangan) {
                     if (keterangan == "radiologi") {
                         body += '<tr>' +
                             '<td>' + cekDataNull(item.namaDetailLab) + '</td>' +
-                            '<td>' + cekDataNull(item.satuan) + '</td>' +
-                            '<td>' + cekDataNull(item.acuan) + '</td>' +
+                            // '<td>' + cekDataNull(item.satuan) + '</td>' +
+                            // '<td>' + cekDataNull(item.acuan) + '</td>' +
                             '<td>' + cekDataNull(item.kesimpulan) + '</td>' +
+                            '<td>' + cekDataNull(item.keterangan) + '</td>' +
                             '</tr>';
                     }
                     if (keterangan == "laboratorium") {
@@ -87,9 +92,10 @@ function detailTindakan(id, idTindakan, keterangan) {
             if (keterangan == "radiologi") {
                 head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
                     '<td>Pemeriksaan</td>' +
-                    '<td>Satuan</td>' +
-                    '<td>Keterangan Acuan</td>' +
+                    // '<td>Satuan</td>' +
+                    // '<td>Keterangan Acuan</td>' +
                     '<td>Hasil</td>' +
+                    '<td>Kesan</td>' +
                     '</tr>';
             }
             if (keterangan == "laboratorium") {

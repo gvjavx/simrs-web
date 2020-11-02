@@ -38,12 +38,12 @@ function showModalSPS(jenis, idRM, isSetIdRM) {
         loadImgToCanvas(url, 'area_jantung');
     }
     if ("asesmen_gigi" == jenis) {
-        var url = contextPath + '/pages/images/gigi.png';
+        var url = contextPath + '/pages/images/scala-gigi.png';
         loadImgToCanvas(url, 'area_gigi1');
     }
 
     if ("rencana_gigi_pasien" == jenis) {
-        var url = contextPath + '/pages/images/gigi.png';
+        var url = contextPath + '/pages/images/scala-gigi.png';
         loadImgToCanvas(url, 'area_gigi2');
     }
 
@@ -57,7 +57,6 @@ function showModalSPS(jenis, idRM, isSetIdRM) {
         loadImgToCanvas(url, 'area_kulit_kelamin');
     }
     if("ophtal" == jenis){
-        console.log('jenssss');
         var url = contextPath + '/pages/images/mata.png';
         loadImgToCanvas(url, 'area_mata');
     }
@@ -2740,7 +2739,7 @@ function detailSPS(jenis) {
                         }else{
                             body += '<tr>' +
                                 '<td width="40%">' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + jwb + '" style="height: 300px">' + '</td>' +
+                                '<td>' + '<img src="' + jwb + '" style="width: 100%">' + '</td>' +
                                 '</tr>';
                         }
                     } else if("visus" == item.keterangan){

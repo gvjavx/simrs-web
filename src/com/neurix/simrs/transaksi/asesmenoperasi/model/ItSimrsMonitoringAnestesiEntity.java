@@ -9,14 +9,11 @@ public class ItSimrsMonitoringAnestesiEntity {
     private String waktu;
     private String rr;
     private String nadi;
-    private String tensi;
-    private String anest;
+    private String sistole;
+    private String diastole;
+    private String inhalasi;
     private String o2;
     private String n2O;
-    private String ethran;
-    private String iso;
-    private String sevo;
-    private String infus;
     private String keterangan;
     private String jenis;
     private String flag;
@@ -25,6 +22,30 @@ public class ItSimrsMonitoringAnestesiEntity {
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+
+    public String getSistole() {
+        return sistole;
+    }
+
+    public void setSistole(String sistole) {
+        this.sistole = sistole;
+    }
+
+    public String getDiastole() {
+        return diastole;
+    }
+
+    public void setDiastole(String diastole) {
+        this.diastole = diastole;
+    }
+
+    public String getInhalasi() {
+        return inhalasi;
+    }
+
+    public void setInhalasi(String inhalasi) {
+        this.inhalasi = inhalasi;
+    }
 
     public String getFlag() {
         return flag;
@@ -74,22 +95,6 @@ public class ItSimrsMonitoringAnestesiEntity {
         this.nadi = nadi;
     }
 
-    public String getTensi() {
-        return tensi;
-    }
-
-    public void setTensi(String tensi) {
-        this.tensi = tensi;
-    }
-
-    public String getAnest() {
-        return anest;
-    }
-
-    public void setAnest(String anest) {
-        this.anest = anest;
-    }
-
     public String getO2() {
         return o2;
     }
@@ -104,38 +109,6 @@ public class ItSimrsMonitoringAnestesiEntity {
 
     public void setN2O(String n2O) {
         this.n2O = n2O;
-    }
-
-    public String getEthran() {
-        return ethran;
-    }
-
-    public void setEthran(String ethran) {
-        this.ethran = ethran;
-    }
-
-    public String getIso() {
-        return iso;
-    }
-
-    public void setIso(String iso) {
-        this.iso = iso;
-    }
-
-    public String getSevo() {
-        return sevo;
-    }
-
-    public void setSevo(String sevo) {
-        this.sevo = sevo;
-    }
-
-    public String getInfus() {
-        return infus;
-    }
-
-    public void setInfus(String infus) {
-        this.infus = infus;
     }
 
     public String getKeterangan() {
@@ -192,37 +165,5 @@ public class ItSimrsMonitoringAnestesiEntity {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ItSimrsMonitoringAnestesiEntity that = (ItSimrsMonitoringAnestesiEntity) o;
-        return Objects.equals(idMonitoringAnestesi, that.idMonitoringAnestesi) &&
-                Objects.equals(idDetailCheckup, that.idDetailCheckup) &&
-                Objects.equals(waktu, that.waktu) &&
-                Objects.equals(rr, that.rr) &&
-                Objects.equals(nadi, that.nadi) &&
-                Objects.equals(tensi, that.tensi) &&
-                Objects.equals(anest, that.anest) &&
-                Objects.equals(o2, that.o2) &&
-                Objects.equals(n2O, that.n2O) &&
-                Objects.equals(ethran, that.ethran) &&
-                Objects.equals(iso, that.iso) &&
-                Objects.equals(sevo, that.sevo) &&
-                Objects.equals(infus, that.infus) &&
-                Objects.equals(keterangan, that.keterangan) &&
-                Objects.equals(jenis, that.jenis) &&
-                Objects.equals(action, that.action) &&
-                Objects.equals(createdWho, that.createdWho) &&
-                Objects.equals(createdDate, that.createdDate) &&
-                Objects.equals(lastUpdate, that.lastUpdate) &&
-                Objects.equals(lastUpdateWho, that.lastUpdateWho);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(idMonitoringAnestesi, idDetailCheckup, waktu, rr, nadi, tensi, anest, o2, n2O, ethran, iso, sevo, infus, keterangan, jenis, action, createdWho, createdDate, lastUpdate, lastUpdateWho);
     }
 }
