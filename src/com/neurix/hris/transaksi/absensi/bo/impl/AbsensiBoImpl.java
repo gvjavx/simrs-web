@@ -2427,7 +2427,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         List<ImMesinAbsensiEntity> imMesinAbsensiEntityList = new ArrayList<>();
         imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
         for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
-            String urlParameters = mesin.getMesinSn();
+            String urlParameters = "sn="+mesin.getMesinSn();
             String url = "http://"+mesin.getMesinName()+"/scanlog/all/paging";
 
             // CODING ASLI //
@@ -2503,6 +2503,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
                     mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
                     mesinAbsensiDetailEntity.setWorkCode(mesinAbsensiDetail.getWorkCode());
+                    mesinAbsensiDetailEntity.setBranchId(mesin.getBranchId());
                     mesinAbsensiDetailEntity.setAction("C");
                     mesinAbsensiDetailEntity.setFlag("Y");
                     mesinAbsensiDetailEntity.setLastUpdate(updateTime);
@@ -2569,360 +2570,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
     // untuk absensi Dashboard
     private List<MesinAbsensi> inquiryForDashboard(String tanggal){
-        List<ImBiodataEntity> pegawaiList = new ArrayList<>();
-        List<MesinAbsensi> absensiFinal = new ArrayList<>();
-        List<ImHrisJamKerja> jamKerjaList = new ArrayList<>();
-        String jamMasukDB = null,jamPulangDB=null,jamIstirahatAwalDB,jamIstirahatAkhirDB,libur ="N",liburShift="N",daftarTidakInquiry="N",ijinKeluar = null,ijinKembali=null;
-        int iJamMasukDB= 0,iJamPulangDB = 0,iJamIstirahatAwalDB= 0,iJamIstirahatAkhirDB= 0;
-
-        try {
-            pegawaiList = biodataDao.getAbsensiPerson();
-        } catch (HibernateException e) {
-            logger.error("[biodataDao.getAbsensiPerson] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data, please info to your admin..." + e.getMessage());
-        }
-
-        java.sql.Date tanggalAwal = CommonUtil.convertToDate(tanggal);
-        Calendar cal = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        cal.setTime(tanggalAwal);
-        cal2.setTime(tanggalAwal);
-
-        cal.add(Calendar.DAY_OF_YEAR,1);
-        cal.set(Calendar.HOUR_OF_DAY, 3);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-
-        cal2.set(Calendar.HOUR_OF_DAY, 3);
-        cal2.set(Calendar.MINUTE, 0);
-        cal2.set(Calendar.SECOND, 0);
-        cal2.set(Calendar.MILLISECOND, 0);
-
-        java.sql.Date tanggalBesok = new java.sql.Date(cal.getTimeInMillis());
-        tanggalAwal = new java.sql.Date(cal2.getTimeInMillis());
-        java.sql.Timestamp tsTanggalAwal = new java.sql.Timestamp(tanggalAwal.getTime());
-        java.sql.Timestamp tsTanggalBesok = new java.sql.Timestamp(tanggalBesok.getTime());
-        cal = Calendar.getInstance();
-        String branch = "KD01";
-        cal.setTime(tanggalAwal);
-        int day = cal.get(Calendar.DAY_OF_WEEK);
-        Map hsCriteria2 = new HashMap();
-        hsCriteria2.put("branch_id",branch);
-        hsCriteria2.put("hari",day);
-        hsCriteria2.put("flag","Y");
-        jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
-        for (ImHrisJamKerja jamKerja : jamKerjaList){
-            jamMasukDB=jamKerja.getJamAwalKerja();
-            jamPulangDB=jamKerja.getJamAkhirKerja();
-            jamIstirahatAwalDB=jamKerja.getIstirahatAwal();
-            jamIstirahatAkhirDB=jamKerja.getIstirahatAkhir();
-            iJamMasukDB=Integer.parseInt(jamMasukDB.replace(":",""));
-            iJamPulangDB=Integer.parseInt(jamPulangDB.replace(":",""));
-            iJamIstirahatAwalDB=Integer.parseInt(jamIstirahatAwalDB.replace(":",""));
-            iJamIstirahatAkhirDB=Integer.parseInt(jamIstirahatAkhirDB.replace(":",""));
-        }
-
-
-
-        Date tanggalLibur = CommonUtil.convertToDate(tanggal);
-        List<ImLiburEntity> liburEntityList = liburDao.getListLibur(tanggalLibur);
-        //cari hari libur
-        if ( liburEntityList.size()!=0||jamKerjaList.size()==0||day==1||day==7) {
-            libur = "Y";
-        }
-
-        for (ImBiodataEntity pegawai : pegawaiList){
-            //cek apakah sudah masuk ke tabel absensi
-            List<AbsensiPegawaiEntity> absensiPegawaiEntityList = new ArrayList<>();
-            try {
-                absensiPegawaiEntityList = absensiPegawaiDao.searchExistingAbsensi(pegawai.getNip(),tanggalAwal);
-            } catch (HibernateException e) {
-                logger.error("[AbsensiBoImpl.getByCriteriaMesin] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-            }
-            if (absensiPegawaiEntityList.size()==0){
-                if (!("Y").equalsIgnoreCase(daftarTidakInquiry)){
-                    MesinAbsensi hasilInquiry = new MesinAbsensi();
-                    hasilInquiry.setNip(pegawai.getNip());
-                    hasilInquiry.setTanggal(tanggalAwal);
-                    hasilInquiry.setStTanggal(CommonUtil.convertDateToString(tanggalAwal));
-                    hasilInquiry.setPin(pegawai.getPin());
-                    hasilInquiry.setNama(pegawai.getNamaPegawai());
-                    hasilInquiry.setJamMasukDb(jamMasukDB);
-                    hasilInquiry.setJamPulangDb(jamPulangDB);
-                    if (!("Y").equalsIgnoreCase(pegawai.getShift())){
-                        // get list from database detail
-                        List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                        mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwal,tsTanggalBesok);
-                        if (mesinAbsensiDetailEntityList.size()!=0){
-                            int iJamMasukTmp=9999,iJamKeluarTmp=0,i=1,iJamLibur=0;
-                            for (MesinAbsensiDetailEntity mesin : mesinAbsensiDetailEntityList){
-                                if (!("Y").equalsIgnoreCase(libur)){
-                                    //Jika hari kerja
-                                    String jam = String.valueOf(mesin.getScanDate()).substring(11,16);
-                                    int jamAsli =Integer.parseInt(jam.replace(":",""));
-                                    if (jamAsli<iJamPulangDB-400&&jamAsli>300){
-                                        if (jamAsli<iJamMasukTmp){
-                                            hasilInquiry.setJamMasuk(jam);
-                                            iJamMasukTmp=jamAsli;
-                                        }
-                                    }else if (jamAsli>iJamPulangDB-400||jamAsli<300&&jamAsli>0){
-                                        if (jamAsli>iJamKeluarTmp){
-                                            hasilInquiry.setJamKeluar(jam);
-                                            iJamMasukTmp=jamAsli;
-                                        }
-                                    }
-                                }else{
-                                    //jika hari libur
-                                    String jam = String.valueOf(mesin.getScanDate()).substring(11,16);
-                                    int jamAsli =Integer.parseInt(jam.replace(":",""));
-                                    if (i==1){
-                                        hasilInquiry.setJamMasuk(jam);
-                                        i++;
-                                    }else{
-                                        if (iJamLibur<jamAsli){
-                                            hasilInquiry.setJamKeluar(jam);
-                                            i++;
-                                        }
-                                    }
-                                }
-                            }
-                            ijinKeluar = null;
-                            ijinKembali=null;
-                            List<IjinKeluarEntity> ijinKeluarEntityList = ijinKeluarDao.getListPersonalFromNip(hasilInquiry.getNip(),tanggalAwal);
-                            for (IjinKeluarEntity ijinKeluarEntity:ijinKeluarEntityList){
-                                ijinKeluar = ijinKeluarEntity.getJamKeluar();
-                                ijinKembali = ijinKeluarEntity.getJamKembali();
-                            }
-                            List<ItIndisiplinerEntity> indisiplinerEntityList = indisiplinerDao.getListIndisiplinerFromBlokir(hasilInquiry.getNip(), tanggalAwal);
-                            String statusAbsensi;
-                            if(indisiplinerEntityList.size()!=0){
-                                statusAbsensi="10";
-                            }else{
-                                //cari status absensi
-                                statusAbsensi = cariStatusAbsensi(hasilInquiry.getJamMasuk(), jamPulangDB, jamMasukDB, jamPulangDB, ijinKeluar, ijinKembali, libur);
-                            }
-                            hasilInquiry.setStatus(statusAbsensi);
-                            hasilInquiry.setStatusName(CommonUtil.statusName(statusAbsensi));
-
-                            if (("03").equalsIgnoreCase(hasilInquiry.getStatus())){
-                                String statusTidakMasuk = cariStatusTidakMasuk(hasilInquiry.getNip(),tanggalAwal);
-                                if (!("00").equalsIgnoreCase(statusTidakMasuk)&&!("08").equalsIgnoreCase(statusTidakMasuk)){
-                                    hasilInquiry.setStatus(statusTidakMasuk);
-                                    hasilInquiry.setStatusName(CommonUtil.statusName(statusTidakMasuk));
-                                }
-                            }
-                        }else{
-                            //cari status tidak masuk
-                            String statusTidakMasuk = cariStatusTidakMasuk(hasilInquiry.getNip(),tanggalAwal);
-                            hasilInquiry.setStatus(statusTidakMasuk);
-                            hasilInquiry.setStatusName(CommonUtil.statusName(statusTidakMasuk));
-                        }
-                        if ("KNS".equalsIgnoreCase(pegawai.getStatusPegawai())){
-                            //mencari lembur
-                            String sJamMasukLembur=null,sJamPulangLembur = null;
-                            int jamMasukLemburAsli=0,jamPulangLemburAsli=0;
-                            int iJamMasukLembur = 0,iJamPulangLembur=0,i=1;
-                            if (hasilInquiry.getJamMasuk()!=null){
-                                if (!("").equalsIgnoreCase(hasilInquiry.getJamMasuk())){
-                                    jamMasukLemburAsli=Integer.parseInt(hasilInquiry.getJamMasuk().replace(":",""));
-                                }
-                            }
-                            if (hasilInquiry.getJamKeluar()!=null){
-                                if (!("").equalsIgnoreCase(hasilInquiry.getJamKeluar())){
-                                    jamPulangLemburAsli = Integer.parseInt(hasilInquiry.getJamKeluar().replace(":",""));
-                                }
-                            }
-                            List<LemburEntity> lemburEntityList = lemburDao.getListLemburByNipAndTanggal(hasilInquiry.getNip(),tanggalAwal);
-                            if (lemburEntityList.size()!=0){
-                                for (LemburEntity lemburEntity : lemburEntityList){
-                                    int jamMasukLemburTmp = Integer.parseInt(lemburEntity.getJamAwal().replace(":",""));
-                                    int jamPulangLemburTmp = Integer.parseInt(lemburEntity.getJamAkhir().replace(":",""));
-                                    if (i==1){
-                                        sJamMasukLembur=lemburEntity.getJamAwal();
-                                        sJamPulangLembur=lemburEntity.getJamAkhir();
-                                        iJamMasukLembur=jamMasukLemburTmp;
-                                        iJamPulangLembur=jamPulangLemburTmp;
-                                        i++;
-                                    }else{
-                                        if (jamMasukLemburTmp<=iJamMasukLembur){
-                                            sJamMasukLembur=lemburEntity.getJamAwal();
-                                            iJamMasukLembur=jamMasukLemburTmp;
-                                        }
-                                        if (jamPulangLemburTmp>=iJamPulangLembur){
-                                            sJamPulangLembur=lemburEntity.getJamAkhir();
-                                            iJamPulangLembur=jamPulangLemburTmp;
-                                        }
-                                    }
-                                }
-                                if (hasilInquiry.getJamMasuk()==null){
-                                    hasilInquiry.setJamMasuk(sJamPulangLembur);
-                                }
-                                if (hasilInquiry.getJamKeluar()==null){
-                                    hasilInquiry.setJamKeluar(sJamMasukLembur);
-                                }
-
-                                if (jamMasukLemburAsli>=iJamMasukLembur){
-                                    sJamMasukLembur=hasilInquiry.getJamMasuk();
-                                }else if (jamPulangLemburAsli<=iJamPulangLembur){
-                                    sJamPulangLembur=hasilInquiry.getJamKeluar();
-                                }
-
-                                if (("Y").equalsIgnoreCase(libur)){
-                                    hasilInquiry.setJamPulangDb(hasilInquiry.getJamMasuk());
-                                }
-
-                                hasilInquiry.setLembur("Y");
-                            }
-                        }
-                    }else{
-                        //untuk pegawai SHIFT
-                        liburShift="N";
-                        AbsensiPegawai jamKerjaShift = new AbsensiPegawai();
-                        Date tanggalInquiry = CommonUtil.convertToDate(tanggal);
-
-                        List<ImHrisShiftEntity> shiftList = shiftDao.getJadwalShift();
-                        for (ImHrisShiftEntity hrisShiftEntity : shiftList){
-                            String jamMasukDBShift=hrisShiftEntity.getJamAwal();
-                            String jamPulangDBShift=hrisShiftEntity.getJamAkhir();
-                            hasilInquiry.setJamMasukDb(hrisShiftEntity.getJamAwal());
-                            hasilInquiry.setJamPulangDb(hrisShiftEntity.getJamAkhir());
-
-                            // jika ada di jam masuk Shift
-
-                            int iJamMasukShift = Integer.parseInt(jamMasukDBShift.replace(":",""));
-                            int iJamPulangShift = Integer.parseInt(jamPulangDBShift.replace(":",""));
-                            int iJamMasukDBShift = Integer.parseInt(jamMasukDBShift.substring(0,2));
-                            int iJamPulangDBShift = Integer.parseInt(jamPulangDBShift.substring(0,2));
-
-                            int iMenitMasukDBShift = Integer.parseInt(jamMasukDBShift.substring(3));
-                            int iMenitPulangDBShift = Integer.parseInt(jamPulangDBShift.substring(3));
-
-                            int jamMasukInquiry=iJamMasukDBShift-2;
-                            int jamPulangInquiry=iJamPulangDBShift+2;
-
-                            int hari=0;
-
-                            if (jamPulangInquiry<jamMasukInquiry){
-                                hari=hari+1;
-                            }
-                            // get list from database detail
-                            Calendar cal3 = Calendar.getInstance();
-                            Calendar cal4 = Calendar.getInstance();
-                            cal3.setTime(tanggalInquiry);
-                            cal4.setTime(tanggalInquiry);
-
-                            cal3.add(Calendar.DAY_OF_YEAR,hari);
-                            cal3.set(Calendar.HOUR_OF_DAY, jamPulangInquiry);
-                            cal3.set(Calendar.MINUTE, 0);
-                            cal3.set(Calendar.SECOND, 0);
-                            cal3.set(Calendar.MILLISECOND, 0);
-
-                            cal4.set(Calendar.HOUR_OF_DAY, jamMasukInquiry);
-                            cal4.set(Calendar.MINUTE, 0);
-                            cal4.set(Calendar.SECOND, 0);
-                            cal4.set(Calendar.MILLISECOND, 0);
-
-
-                            Date tanggalBesokShift = new java.sql.Date(cal3.getTimeInMillis());
-                            Date tanggalAwalShift = new java.sql.Date(cal4.getTimeInMillis());
-                            Timestamp tsTanggalAwalShift = new java.sql.Timestamp(tanggalAwalShift.getTime());
-                            Timestamp tsTanggalBesokShift = new java.sql.Timestamp(tanggalBesokShift.getTime());
-
-                            List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwalShift,tsTanggalBesokShift);
-                            if (mesinAbsensiDetailEntityList.size()!=0){
-                                int iJamMasukTmp,iJamKeluarTmp,i,iJamLibur;
-                                if (hari==1){
-                                    iJamMasukTmp=0;
-                                    iJamKeluarTmp=0;
-                                    i=1;
-                                    iJamLibur=0;
-                                }
-                                else{
-                                    iJamMasukTmp=9999;
-                                    iJamKeluarTmp=0;
-                                    i=1;
-                                    iJamLibur=0;
-                                }
-                                for (MesinAbsensiDetailEntity mesin : mesinAbsensiDetailEntityList){
-                                    String jam = String.valueOf(mesin.getScanDate()).substring(11,16);
-                                    int jamAsli =Integer.parseInt(jam.replace(":",""));
-                                    if (hari==1){
-                                        if (jamAsli>iJamPulangShift+400){
-                                            hasilInquiry.setJamMasuk(jam);
-                                            iJamMasukTmp=jamAsli;
-                                        }
-                                        else if (jamAsli>iJamPulangShift-400){
-                                            hasilInquiry.setJamKeluar(jam);
-                                            iJamMasukTmp=jamAsli;
-                                        }
-                                    }else{
-                                        if (jamAsli<iJamPulangShift-400&&jamAsli>300){
-                                            if (jamAsli<iJamMasukTmp){
-                                                hasilInquiry.setJamMasuk(jam);
-                                                iJamMasukTmp=jamAsli;
-                                            }
-                                        }else if (jamAsli>iJamPulangShift-400){
-                                            if (jamAsli>iJamKeluarTmp){
-                                                hasilInquiry.setJamKeluar(jam);
-                                                iJamMasukTmp=jamAsli;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                List<IjinKeluarEntity> ijinKeluarEntityList = ijinKeluarDao.getListPersonalFromNip(hasilInquiry.getNip(),tanggalAwal);
-                                for (IjinKeluarEntity ijinKeluarEntity:ijinKeluarEntityList){
-                                    ijinKeluar = ijinKeluarEntity.getJamKeluar();
-                                    ijinKembali = ijinKeluarEntity.getJamKembali();
-                                }
-                                List<ItIndisiplinerEntity> indisiplinerEntityList = indisiplinerDao.getListIndisiplinerFromBlokir(hasilInquiry.getNip(), tanggalAwal);
-                                String statusAbsensi;
-                                if(indisiplinerEntityList.size()!=0){
-                                    statusAbsensi="10";
-                                }else{
-                                    //cari status absensi
-                                    statusAbsensi = cariStatusAbsensi(hasilInquiry.getJamMasuk(),hasilInquiry.getJamKeluar(),jamMasukDBShift,jamPulangDBShift,ijinKeluar,ijinKembali,liburShift);
-                                }
-                                hasilInquiry.setStatus(statusAbsensi);
-                                hasilInquiry.setStatusName(CommonUtil.statusName(statusAbsensi));
-
-                                if (("03").equalsIgnoreCase(hasilInquiry.getStatus())){
-                                    String statusTidakMasuk = cariStatusTidakMasuk(hasilInquiry.getNip(),tanggalAwal);
-                                    if (!("00").equalsIgnoreCase(statusTidakMasuk)||!("08").equalsIgnoreCase(statusTidakMasuk)){
-                                        hasilInquiry.setStatus(statusTidakMasuk);
-                                        hasilInquiry.setStatusName(CommonUtil.statusName(statusTidakMasuk));
-                                    }
-                                }
-                            }
-                            else{
-                                //cari status tidak masuk
-                                String statusTidakMasuk = cariStatusTidakMasuk(hasilInquiry.getNip(),tanggalAwal);
-                                hasilInquiry.setStatus(statusTidakMasuk);
-                                hasilInquiry.setStatusName(CommonUtil.statusName(statusTidakMasuk));
-                            }
-                            if (mesinAbsensiDetailEntityList.size()>=2){
-                                break;
-                            }
-                        }
-                        hasilInquiry.setRealisasiJamLembur(Double.valueOf(0));
-                    }
-
-                    if (hasilInquiry.getStatus()!=null){
-                        if(("Y").equalsIgnoreCase(pegawai.getShift())){
-                            if (!("00").equalsIgnoreCase(hasilInquiry.getStatus())){
-                                absensiFinal.add(hasilInquiry);
-                            }
-                        }else{
-                            absensiFinal.add(hasilInquiry);
-                        }
-                    }
-                }
-            }
-        }
-        return absensiFinal;
+        return null;
     }
 
     @Override
@@ -3015,7 +2663,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         }
                         // get list from database detail
                         List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                        mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwal,tsTanggalBesok);
+                        mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwal,tsTanggalBesok,branchId);
                         if (mesinAbsensiDetailEntityList.size()!=0){
                             int iJamMasukTmp=9999,iJamKeluarTmp=0,i=1,iJamLibur=0;
                             for (MesinAbsensiDetailEntity mesin : mesinAbsensiDetailEntityList){
@@ -3192,7 +2840,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                             Timestamp tsTanggalBesokShift = new java.sql.Timestamp(tanggalBesokShift.getTime());
 
                             List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwalShift,tsTanggalBesokShift);
+                            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwalShift,tsTanggalBesokShift,branchId);
                             if (mesinAbsensiDetailEntityList.size()!=0){
                                 int iJamMasukTmp,iJamKeluarTmp,i,iJamLibur;
                                 if (hari==1){
@@ -3301,7 +2949,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         tsTanggalBesokShift = new java.sql.Timestamp(tanggalBesokShift.getTime());
 
                                         mesinAbsensiDetailEntityList = new ArrayList<>();
-                                        mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(), tsTanggalAwalShift, tsTanggalBesokShift);
+                                        mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(), tsTanggalAwalShift, tsTanggalBesokShift,branchId);
                                         if (mesinAbsensiDetailEntityList.size() != 0) {
                                             int iJamMasukTmp = iJamMasukDbShiftAsli, iJamKeluarTmp = iJamPulangDbShiftAsli, i = 1, iJamLibur = 0;
                                             if (hari==0){
@@ -3448,7 +3096,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 Timestamp tsTanggalBesokShift = new java.sql.Timestamp(tanggalBesokShift.getTime());
 
                                 List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                                mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwalShift,tsTanggalBesokShift);
+                                mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwalShift,tsTanggalBesokShift,branchId);
                                 if (mesinAbsensiDetailEntityList.size()!=0){
                                     int iJamMasukTmp,iJamKeluarTmp,i,iJamLibur;
                                     if (hari==1){
@@ -3553,139 +3201,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
     @Override
     public List<PegawaiTambahanAbsensi> inquiryTambahan(String tanggal, Boolean awalTanggal) throws Exception {
-        List<PegawaiTambahanEntity> pegawaiList = new ArrayList<>();
-        List<PegawaiTambahanAbsensi> absensiFinal = new ArrayList<>();
-        List<ImHrisJamKerja> jamKerjaList = new ArrayList<>();
-        String jamMasukDB = null,jamPulangDB=null,jamIstirahatAwalDB,jamIstirahatAkhirDB,libur ="N",liburShift="N",daftarTidakInquiry="N",ijinKeluar = null,ijinKembali=null;
-        int iJamMasukDB= 0,iJamPulangDB = 0,iJamIstirahatAwalDB= 0,iJamIstirahatAkhirDB= 0;
-
-        try {
-            pegawaiList = pegawaiTambahanDao.getPegawaiTambahanList();
-        } catch (HibernateException e) {
-            logger.error("[biodataDao.getAbsensiPerson] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data, please info to your admin..." + e.getMessage());
-        }
-
-        java.sql.Date tanggalAwal = CommonUtil.convertToDate(tanggal);
-        Calendar cal = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        cal.setTime(tanggalAwal);
-        cal2.setTime(tanggalAwal);
-
-        cal.add(Calendar.DAY_OF_YEAR,1);
-        cal.set(Calendar.HOUR_OF_DAY, 3);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-
-        cal2.set(Calendar.HOUR_OF_DAY, 3);
-        cal2.set(Calendar.MINUTE, 0);
-        cal2.set(Calendar.SECOND, 0);
-        cal2.set(Calendar.MILLISECOND, 0);
-
-        java.sql.Date tanggalBesok = new java.sql.Date(cal.getTimeInMillis());
-        tanggalAwal = new java.sql.Date(cal2.getTimeInMillis());
-        java.sql.Timestamp tsTanggalAwal = new java.sql.Timestamp(tanggalAwal.getTime());
-        java.sql.Timestamp tsTanggalBesok = new java.sql.Timestamp(tanggalBesok.getTime());
-        cal = Calendar.getInstance();
-        String branch = "KD01";
-        cal.setTime(tanggalAwal);
-        int day = cal.get(Calendar.DAY_OF_WEEK);
-        Map hsCriteria2 = new HashMap();
-        hsCriteria2.put("branch_id",branch);
-        hsCriteria2.put("hari",day);
-        hsCriteria2.put("flag","Y");
-        jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
-        for (ImHrisJamKerja jamKerja : jamKerjaList){
-            jamMasukDB=jamKerja.getJamAwalKerja();
-            jamPulangDB=jamKerja.getJamAkhirKerja();
-            jamIstirahatAwalDB=jamKerja.getIstirahatAwal();
-            jamIstirahatAkhirDB=jamKerja.getIstirahatAkhir();
-            iJamMasukDB=Integer.parseInt(jamMasukDB.replace(":",""));
-            iJamPulangDB=Integer.parseInt(jamPulangDB.replace(":",""));
-            iJamIstirahatAwalDB=Integer.parseInt(jamIstirahatAwalDB.replace(":",""));
-            iJamIstirahatAkhirDB=Integer.parseInt(jamIstirahatAkhirDB.replace(":",""));
-        }
-        Date tanggalLibur = CommonUtil.convertToDate(tanggal);
-        List<ImLiburEntity> liburEntityList = liburDao.getListLibur(tanggalLibur);
-        //cari hari libur
-        if ( liburEntityList.size()!=0||jamKerjaList.size()==0||day==1||day==7) {
-            libur = "Y";
-        }
-
-        for (PegawaiTambahanEntity pegawaiTambahanEntity : pegawaiList){
-            //cek apakah sudah masuk ke tabel absensi
-            List<PegawaiTambahanAbsensiEntity> pegawaiTambahanAbsensiEntityList = new ArrayList<>();
-            try {
-                pegawaiTambahanAbsensiEntityList = pegawaiTambahanAbsensiDao.searchExistingAbsensi(pegawaiTambahanEntity.getPin(),tanggalAwal);
-            } catch (HibernateException e) {
-                logger.error("[AbsensiBoImpl.getByCriteriaMesin] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-            }
-            if (pegawaiTambahanAbsensiEntityList.size()==0){
-                PegawaiTambahanAbsensi hasilInquiry = new PegawaiTambahanAbsensi();
-                hasilInquiry.setPin(pegawaiTambahanEntity.getPin());
-                hasilInquiry.setTanggal(tanggalAwal);
-                hasilInquiry.setStTanggal(CommonUtil.convertDateToString(tanggalAwal));
-                hasilInquiry.setNama(pegawaiTambahanEntity.getNama());
-                hasilInquiry.setJamMasukDb(jamMasukDB);
-                hasilInquiry.setJamPulangDb(jamPulangDB);
-
-                // get list from database detail
-                List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawaiTambahanEntity.getPin(),tsTanggalAwal,tsTanggalBesok);
-                if (mesinAbsensiDetailEntityList.size()!=0){
-                    int iJamMasukTmp=9999,iJamKeluarTmp=0,i=1,iJamLibur=0;
-                    for (MesinAbsensiDetailEntity mesin : mesinAbsensiDetailEntityList){
-                        if (!("Y").equalsIgnoreCase(libur)){
-                            //Jika hari kerja
-                            String jam = String.valueOf(mesin.getScanDate()).substring(11,16);
-                            int jamAsli =Integer.parseInt(jam.replace(":",""));
-                            if (jamAsli<iJamPulangDB-400&&jamAsli>300){
-                                if (jamAsli<iJamMasukTmp){
-                                    hasilInquiry.setJamMasuk(jam);
-                                    iJamMasukTmp=jamAsli;
-                                }
-                            }else if (jamAsli>iJamPulangDB-400||jamAsli<300&&jamAsli>0){
-                                if (jamAsli>iJamKeluarTmp){
-                                    hasilInquiry.setJamPulang(jam);
-                                    iJamMasukTmp=jamAsli;
-                                }
-                            }
-                        }else{
-                            //jika hari libur
-                            String jam = String.valueOf(mesin.getScanDate()).substring(11,16);
-                            int jamAsli =Integer.parseInt(jam.replace(":",""));
-                            if (i==1){
-                                hasilInquiry.setJamMasuk(jam);
-                                i++;
-                            }else{
-                                if (iJamLibur<jamAsli){
-                                    hasilInquiry.setJamPulang(jam);
-                                    i++;
-                                }
-                            }
-                        }
-                    }
-
-                    //cari status absensi
-                    String statusAbsensi;
-                    statusAbsensi = cariStatusAbsensi(hasilInquiry.getJamMasuk(),hasilInquiry.getJamPulang(),jamMasukDB,jamPulangDB,ijinKeluar,ijinKembali,libur);
-                    hasilInquiry.setStatusAbsensi(statusAbsensi);
-                    hasilInquiry.setStatusAbsensiName(CommonUtil.statusName(statusAbsensi));
-
-                }else{
-                    //cari status tidak masuk
-                    String statusTidakMasuk = cariStatusTidakMasuk(hasilInquiry.getPin(),tanggalAwal);
-                    hasilInquiry.setStatusAbsensi(statusTidakMasuk);
-                    hasilInquiry.setStatusAbsensiName(CommonUtil.statusName(statusTidakMasuk));
-                }
-                if (hasilInquiry.getStatusAbsensi()!=null){
-                    absensiFinal.add(hasilInquiry);
-                }
-            }
-        }
-        return absensiFinal;
+        return null;
     }
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
@@ -5413,7 +4929,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
 
                         try {
-                            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(biodata.getPin(),tsTanggalAwal,tsTanggalBesok);
+                            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(biodata.getPin(),tsTanggalAwal,tsTanggalBesok,data.getBranchId());
                         } catch (HibernateException e){
                             String status ="[AbsensiBoImpl.cronInquiry] ERROR : saat data mesin absensi";
                             logger.error(status);
@@ -6001,7 +5517,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     Timestamp tsBatasAwalShift = new Timestamp(calendar.getTimeInMillis());
 
                                     List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                                    mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(biodata.getPin(),tsTanggalAwal,tsTanggalBesok);
+                                    mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(biodata.getPin(),tsTanggalAwal,tsTanggalBesok,data.getBranchId());
 
                                     if (mesinAbsensiDetailEntityList.size()==0){
                                         String statusAbsensi =cariStatusTidakMasuk(biodata.getNip(), CommonUtil.dateUtiltoDateSql(data.getTanggalUtil()));
@@ -6336,10 +5852,10 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                     if ("Y".equalsIgnoreCase(jamKerja.getFlagPanggil())){
                                         List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                                        mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(biodata.getPin(),tsTanggalAwal,tsTanggalBesok);
+                                        mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(biodata.getPin(),tsTanggalAwal,tsTanggalBesok,data.getBranchId());
                                         if (mesinAbsensiDetailEntityList.size() == 0) {
                                         } else {
-                                            // UNTUK ONCALL LEBIH DARI 1
+                                            // UNTUK ONCALL LEBIH DARI 1a
                                             int i =1;
                                             int jmlFinger =0;
                                             List<AbsensiOnCall> absensiOnCallList = new ArrayList<>();

@@ -676,7 +676,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         String metode = CommonConstant.METODE_MESIN_ABSENSI;
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         Date tanggalSekarang = new Date();
-        String branchId="KP";
+        String branchId=CommonConstant.ID_KANPUS;
         MesinAbsensi mesinAbsensi = new MesinAbsensi();
         mesinAbsensi.setCreatedWho("cron");
         mesinAbsensi.setLastUpdate(updateTime);
@@ -802,7 +802,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         List<AbsensiPegawai> absensiPegawaiList= new ArrayList<>();
         List<AbsensiOnCall> listOfResultOnCall = new ArrayList<>();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-        String branchId="KP";
+        String branchId=CommonConstant.ID_KANPUS;
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

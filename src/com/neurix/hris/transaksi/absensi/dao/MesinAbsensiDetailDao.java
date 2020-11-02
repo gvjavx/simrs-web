@@ -87,10 +87,11 @@ public class MesinAbsensiDetailDao extends GenericDao<MesinAbsensiDetailEntity, 
                 .list();
         return results;
     }
-    public List<MesinAbsensiDetailEntity> getAllDetailWithDateAndPin(String pin,Timestamp tanggalAwal, Timestamp tanggalAkhir) throws HibernateException {
+    public List<MesinAbsensiDetailEntity> getAllDetailWithDateAndPin(String pin,Timestamp tanggalAwal, Timestamp tanggalAkhir,String branchId) throws HibernateException {
         List<MesinAbsensiDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(MesinAbsensiDetailEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
                 .add(Restrictions.eq("pin", pin))
+                .add(Restrictions.eq("branchId", branchId))
                 .add(Restrictions.ge("scanDate", tanggalAwal))
                 .add(Restrictions.lt("scanDate", tanggalAkhir))
                 .addOrder(Order.asc("scanDate"))
