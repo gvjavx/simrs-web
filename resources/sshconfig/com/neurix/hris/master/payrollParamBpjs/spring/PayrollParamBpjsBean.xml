@@ -5,14 +5,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <bean id="payrollPtkpAction" class="com.neurix.hris.master.payrollPtkp.action.PayrollPtkpAction"
-          p:payrollPtkpBoProxy-ref="payrollPtkpBoProxy" />
+    <bean id="payrollParamBpjsAction" class="com.neurix.hris.master.payrollParamBpjs.action.PayrollParamBpjsAction"
+          p:payrollParamBpjsBoProxy-ref="payrollParamBpjsBoProxy" />
 
-    <bean id="payrollPtkpBo" class="com.neurix.hris.master.payrollPtkp.bo.impl.PayrollPtkpBoImpl"
-          p:payrollPtkpDao-ref="payrollPtkpDao2" />
+    <bean id="payrollParamBpjsBo" class="com.neurix.hris.master.payrollParamBpjs.bo.impl.PayrollParamBpjsBoImpl"
+          p:payrollParamBpjsDao-ref="paramBpjsDao" />
 
-    <bean id="payrollPtkpBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="payrollPtkpBo">
+    <bean id="payrollParamBpjsBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="payrollParamBpjsBo">
         <property name="interceptorNames">
             <list>
                 <value>transactionUserInterceptor</value>
@@ -31,7 +31,7 @@
         </property>
     </bean>
 
-    <bean id="payrollPtkpDao2" class="com.neurix.hris.master.payrollPtkp.dao.PayrollPtkpDao"
+    <bean id="paramBpjsDao" class="com.neurix.hris.master.payrollParamBpjs.dao.PayrollParamBpjsDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

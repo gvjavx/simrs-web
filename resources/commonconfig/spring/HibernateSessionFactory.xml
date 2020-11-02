@@ -571,6 +571,8 @@
                 <value>sshconfig/com/neurix/simrs/master/ruangan/hibernate/MtSimrsRuanganTempatTidurEntity.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/dietgizi/hibernate/ImSimrsJenisDietEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/ordergizi/hibernate/ItSimrsDetailJenisDietEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/hris/master/payrollParamBpjs/hibernate/ImHrisPayrollParamBpjsEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

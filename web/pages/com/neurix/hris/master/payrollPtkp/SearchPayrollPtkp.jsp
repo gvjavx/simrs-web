@@ -103,7 +103,8 @@
                                         <%--<s:action id="initComboTipe" namespace="/statusKeluarga" name="initComboStatusKeluarga_statusKeluarga"/>--%>
                                         <%--<s:select list="" id="statusKeluargaAdd" name="payrollPtkp.statusKeluarga"--%>
                                                   <%--listKey="statusKeluarga" listValue="statusKeluargaName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                            <s:select list="#{'B':'Bujang', 'K':'Keluarga'}" id="statusKeluargaSearch" name="payrollPtkp.statusKeluarga"
+                                            <s:select list="#{'B':'Bujang', 'K':'Keluarga'}" id="statusKeluargaSearch"
+                                                      name="payrollPtkp.statusKeluarga"
                                                       headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </table>
                                 </td>
@@ -196,7 +197,8 @@
 
                                         <s:set name="listOfsearchPayrollPtkp" value="#session.listOfResult" scope="request" />
                                         <display:table name="listOfsearchPayrollPtkp" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_payrollPtkp.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                       requestURI="paging_displaytag_payrollPtkp.action" export="true" id="row"
+                                                       pagesize="14" style="font-size:10">
                                             <display:column media="html" title="View">
                                                 <s:url var="urlView" namespace="/payrollPtkp" action="view_payrollPtkp" escapeAmp="false">
                                                     <s:param name="id"><s:property value="#attr.row.idPtkp"/></s:param>
@@ -229,7 +231,7 @@
 
                                             <%--</display:column>--%>
                                             <display:column property="idPtkp" sortable="true" title="ID PTKP" />
-                                            <display:column property="statusKeluarga" sortable="true" title="Status Keluarga"  />
+                                            <display:column property="statusKeluargaName" sortable="true" title="Status Keluarga"  />
                                             <display:column property="jumlahTanggungan" sortable="true" title="Jumlah Tanggungan"  />
                                             <%--<display:column property="nilai" sortable="true" title="Nilai"  />--%>
                                             <display:column title="Nilai">

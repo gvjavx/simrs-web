@@ -134,7 +134,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="jumlahTanggunganAdd" name="payrollPtkp.jumlahTanggungan" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="jumlahTanggunganAdd"
+                                             name="payrollPtkp.jumlahTanggungan" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

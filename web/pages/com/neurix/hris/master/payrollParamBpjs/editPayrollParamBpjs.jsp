@@ -94,14 +94,16 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollParamBpjs" action="saveEdit_payrollParamBpjs.action" cssClass="well form-horizontal">
+            <s:form id="formEdit" method="post" theme="simple"
+                    namespace="/payrollParamBpjs" action="saveEdit_payrollParamBpjs.action"
+                    cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Edit Payroll PTKP</legend>
+                <legend align="left">Edit Payroll Param Bpjs</legend>
 
 
                 <table>
@@ -115,59 +117,18 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>ID PTKP :</small></label>
+                            <label class="control-label"><small>ID payroll param Bpjs :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="idPtkpEdit" readonly="true"
-                                              name="payrollParamBpjs.idPtkp" required="true"
+                                <s:textfield  id="payrolledit" readonly="true"
+                                              name="payrollParamBpjs.payrollParamBpjsId" required="true"
                                               cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Status Keluarga :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <%--<s:action id="initComboTipe" namespace="/statusKeluarga" name="initComboStatusKeluarga_statusKeluarga"/>--%>
-                                <%--<s:select list="#initComboTipe.listComboStatusKeluarga" id="statusKeluargaEdit" name="payrollParamBpjs.statusKeluarga"--%>
-                                          <%--listKey="statusKeluarga" listValue="statusKeluargaName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                    <s:select list="#{'B':'Bujang', 'K':'Keluarga'}" id="statusKeluargaEdit" disabled="true" name="payrollParamBpjs.statusKeluarga"
-                                              headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                    <s:hidden name="payrollParamBpjs.statusKeluarga" />
-                            </table>
-                        </td>
-                    </tr>
 
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Jumlah Tanggungan :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield type="number" min="0" id="jumlahTanggunganEdit"
-                                             readonly="true" name="payrollParamBpjs.jumlahTanggungan"
-                                             required="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Nilai :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield type="number" min="0" id="nilaiEdit"
-                                             name="payrollParamBpjs.nilai" required="true"
-                                             cssClass="form-control"/>
-                            </table>
-
-                        </td>
-                    </tr>
 
                 </table>
 

@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="payrollPtkp" namespace="/payrollPtkp" extends="struts-default, jasperreports-default, json-default">
+    <package name="payrollParamBpjs" namespace="/payrollParamBpjs" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,22 +69,22 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_payrollPtkp"
-                class="com.neurix.hris.master.payrollPtkp.action.PayrollPtkpAction" method="{1}">
+        <action name="*_payrollParamBpjs"
+                class="com.neurix.hris.master.payrollParamBpjs.action.PayrollParamBpjsAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="input">/pages/com/neurix/hris/master/payrollPtkp/SearchPayrollPtkp.jsp</result>
-            <result name="success">/pages/com/neurix/hris/master/payrollPtkp/SearchPayrollPtkp.jsp</result>
+            <result name="input">/pages/com/neurix/hris/master/payrollParamBpjs/SearchPayrollParamBpjs.jsp</result>
+            <result name="success">/pages/com/neurix/hris/master/payrollParamBpjs/SearchPayrollParamBpjs.jsp</result>
 
-            <result name="error">/pages/com/neurix/hris/master/payrollPtkp/addPayrollPtkp.jsp</result>
-            <result name="init_add">/pages/com/neurix/hris/master/payrollPtkp/addPayrollPtkp.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/hris/master/payrollPtkp/addPayrollPtkp.jsp</result>
+            <result name="error">/pages/com/neurix/hris/master/payrollParamBpjs/addPayrollParamBpjs.jsp</result>
+            <result name="init_add">/pages/com/neurix/hris/master/payrollParamBpjs/addPayrollParamBpjs.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/hris/master/payrollParamBpjs/addPayrollParamBpjs.jsp</result>
 
-            <result name="success_save_delete">/pages/com/neurix/hris/master/payrollPtkp/deletePayrollPtkp.jsp</result>
-            <result name="init_view">/pages/com/neurix/hris/master/payrollPtkp/viewPayrollPtkp.jsp</result>
-            <result name="init_delete">/pages/com/neurix/hris/master/payrollPtkp/deletePayrollPtkp.jsp</result>
-            <result name="init_edit">/pages/com/neurix/hris/master/payrollPtkp/editPayrollPtkp.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/hris/master/payrollPtkp/editPayrollPtkp.jsp</result>
-            <result name="failure">/pages/com/neurix/hris/master/payrollPtkp/editPayrollPtkp.jsp</result>
+            <result name="success_save_delete">/pages/com/neurix/hris/master/payrollParamBpjs/deletePayrollParamBpjs.jsp</result>
+            <result name="init_view">/pages/com/neurix/hris/master/payrollParamBpjs/viewPayrollParamBpjs.jsp</result>
+            <result name="init_delete">/pages/com/neurix/hris/master/payrollParamBpjs/deletePayrollParamBpjs.jsp</result>
+            <result name="init_edit">/pages/com/neurix/hris/master/payrollParamBpjs/editPayrollParamBpjs.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/hris/master/payrollParamBpjs/editPayrollParamBpjs.jsp</result>
+            <result name="failure">/pages/com/neurix/hris/master/payrollParamBpjs/editPayrollParamBpjs.jsp</result>
 
 
 
@@ -97,10 +97,10 @@
         </action>
 
 
-        <action name="paging_displaytag_payrollPtkp"
-                class="com.neurix.hris.master.payrollPtkp.action.PayrollPtkpAction" method="paging">
+        <action name="paging_displaytag_payrollParamBpjs"
+                class="com.neurix.hris.master.payrollParamBpjs.action.PayrollParamBpjsAction" method="paging">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/master/payrollPtkp/SearchPayrollPtkp.jsp</result>
+            <result name="success">/pages/com/neurix/hris/master/payrollParamBpjs/SearchPayrollParamBpjs.jsp</result>
         </action>
 
     </package>

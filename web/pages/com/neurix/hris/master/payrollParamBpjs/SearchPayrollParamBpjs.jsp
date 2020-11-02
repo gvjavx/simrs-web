@@ -88,39 +88,86 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="idPtkpSearch" name="payrollParamBpjs.idPtkp"
+                                        <s:textfield  id="idsearch" name="payrollParamBpjs.payrollParamBpjsId"
                                                       required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Gaji Pokok :</small></label>
-                                </td>
-                                <td>
-                                    <table>
 
-                                            <s:select list="#{'Y':'Yes', 'N':'No'}"
-                                                      id="statusKeluargaSearch" name="payrollParamBpjs.statusKeluarga"
-                                                      headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
+                            <%--<tr>--%>
+                                <%--<td>--%>
+                                    <%--<label class="control-label"><small>Flag Gajipokok  :</small></label>--%>
+                                <%--</td>--%>
+                                <%--<td>--%>
+                                    <%--<table>--%>
+                                        <%--<s:select list="#{'N':'Non-Active'}" id="gapoksearch"--%>
+                                                  <%--name="payrollParamBpjs.flagGapok"--%>
+                                                  <%--headerKey="Y" headerValue="Active"--%>
+                                                  <%--cssClass="form-control" />--%>
+                                    <%--</table>--%>
 
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Jumlah Tanggungan :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:textfield type="number" min="0" id="jumlahTanggunganSearch"
-                                                     name="payrollParamBpjs.jumlahTanggungan" required="true"
-                                                     cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
+                                <%--</td>--%>
+                            <%--</tr>--%>
 
+                            <%--<tr>--%>
+                                <%--<td>--%>
+                                    <%--<label class="control-label"><small>Flag sankhus :</small></label>--%>
+                                <%--</td>--%>
+                                <%--<td>--%>
+                                    <%--<table>--%>
+                                        <%--<s:select list="#{'N':'Non-Active'}" id="flagsankhus"--%>
+                                                  <%--name="payrollParamBpjs.flagSankhus"--%>
+                                                  <%--headerKey="Y" headerValue="Active" cssClass="form-control" />--%>
+                                    <%--</table>--%>
+
+                                <%--</td>--%>
+                            <%--</tr>--%>
+
+                            <%--<tr>--%>
+                                <%--<td>--%>
+                                    <%--<label class="control-label"><small>Flag Peralihan Gajipokok  :</small></label>--%>
+                                <%--</td>--%>
+                                <%--<td>--%>
+                                    <%--<table>--%>
+                                        <%--<s:select list="#{'N':'Non-Active'}" id="pgapoksearch"--%>
+                                                  <%--name="payrollParamBpjs.flagPeralihanGapok"--%>
+                                                  <%--headerKey="Y" headerValue="Active"--%>
+                                                  <%--cssClass="form-control" />--%>
+                                    <%--</table>--%>
+
+                                <%--</td>--%>
+                            <%--</tr>--%>
+
+                            <%--<tr>--%>
+                                <%--<td>--%>
+                                    <%--<label class="control-label"><small>Flag Peralihan Sankhus  :</small></label>--%>
+                                <%--</td>--%>
+                                <%--<td>--%>
+                                    <%--<table>--%>
+                                        <%--<s:select list="#{'N':'Non-Active'}" id="psankussearch"--%>
+                                                  <%--name="payrollParamBpjs.flagPeralihanSankhus"--%>
+                                                  <%--headerKey="Y" headerValue="Active"--%>
+                                                  <%--cssClass="form-control" />--%>
+                                    <%--</table>--%>
+
+                                <%--</td>--%>
+                            <%--</tr>--%>
+
+                            <%--<tr>--%>
+                                <%--<td>--%>
+                                    <%--<label class="control-label"><small>Flag Peralihan Tunjangan  :</small></label>--%>
+                                <%--</td>--%>
+                                <%--<td>--%>
+                                    <%--<table>--%>
+                                        <%--<s:select list="#{'N':'Non-Active'}" id="ptunjangansearch"--%>
+                                                  <%--name="payrollParamBpjs.flagPeralihanTunjangan"--%>
+                                                  <%--headerKey="Y" headerValue="Active"--%>
+                                                  <%--cssClass="form-control" />--%>
+                                    <%--</table>--%>
+
+                                <%--</td>--%>
+                            <%--</tr>--%>
 
                             <tr>
                                 <td>
@@ -135,6 +182,7 @@
                                 </td>
                             </tr>
 
+
                         </table>
 
 
@@ -145,25 +193,19 @@
                             <table align="center">
                                 <tr>
                                     <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollParamBpjsForm"
+                                        <sj:submit type="button" cssClass="btn btn-primary"
+                                                   formIds="payrollParamBpjsForm"
                                                    id="search" name="search"
                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
                                     </td>
-                                    <td>
-                                        <s:url var="urlAdd" namespace="/payrollParamBpjs" action="add_payrollParamBpjs"
-                                               escapeAmp="false">
-                                        </s:url>
-                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
-                                            <i class="fa fa-plus"></i>
-                                            Add Payroll PTKP
-                                        </sj:a>
-                                    </td>
+
                                     <td>
                                         <button type="button" class="btn btn-danger"
-                                                onclick="window.location.href='<s:url action="initForm_payrollParamBpjs"/>'">
+                                                onclick="window.location.href='<s:url
+                                                        action="initForm_payrollParamBpjs"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
                                     </td>
@@ -180,7 +222,8 @@
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                    height="400" width="550" autoOpen="false"
                                                    title="Payroll PTKP ">
-                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                            <center><img border="0" src="<s:url
+                                            value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
                                         <s:set name="listOfsearchPayrollParamBpjs" value="#session.listOfResult" scope="request" />
@@ -188,7 +231,8 @@
                                                        requestURI="paging_displaytag_payrollParamBpjs.action" export="true"
                                                        id="row" pagesize="14" style="font-size:10">
                                             <display:column media="html" title="View">
-                                                <s:url var="urlView" namespace="/payrollParamBpjs" action="view_payrollParamBpjs" escapeAmp="false">
+                                                <s:url var="urlView" namespace="/payrollParamBpjs" action="view_payrollParamBpjs"
+                                                       escapeAmp="false">
                                                     <s:param name="id"><s:property value="#attr.row.idPtkp"/></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                 </s:url>
@@ -198,8 +242,9 @@
                                             </display:column>
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlEdit" namespace="/payrollParamBpjs" action="edit_payrollParamBpjs" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="#attr.row.idPtkp"/></s:param>
+                                                    <s:url var="urlEdit" namespace="/payrollParamBpjs" action="edit_payrollParamBpjs"
+                                                           escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.payrollParamBpjsId"/></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                     </s:url>
                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -208,26 +253,14 @@
                                                 </s:if>
                                             </display:column>
 
-                                            <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
-                                                <%--<s:url var="urlViewDelete" namespace="/payrollParamBpjs" action="delete_payrollParamBpjs" escapeAmp="false">--%>
-                                                    <%--<s:param name="id"><s:property value="#attr.row.idPtkp" /></s:param>--%>
-                                                    <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
-                                                <%--</s:url>--%>
-                                                <%--<sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">--%>
-                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
-                                                <%--</sj:a>--%>
 
-                                            <%--</display:column>--%>
-                                            <display:column property="idPtkp" sortable="true" title="ID PTKP" />
-                                            <display:column property="statusKeluarga" sortable="true" title="Status Keluarga"  />
-                                            <display:column property="jumlahTanggungan" sortable="true" title="Jumlah Tanggungan"  />
-                                            <%--<display:column property="nilai" sortable="true" title="Nilai"  />--%>
-                                            <display:column title="Nilai">
-                                                <script>
-                                                    var nilai = '<s:property value="#attr.row.nilai" />';
-                                                    document.write(formatRupiahAtas(nilai));
-                                                </script>
-                                            </display:column>
+                                            <display:column property="payrollParamBpjsId" sortable="true" title="ID Param Bpjs" />
+                                            <display:column property="flagGapok" sortable="true" title="Gaji Pokok" />
+                                            <display:column property="flagSankhus" sortable="true" title="Sankus" />
+                                            <display:column property="flagPeralihanGapok" sortable="true" title="Peralihan Gaji Pokok" />
+                                            <display:column property="flagPeralihanSankhus" sortable="true" title="Peralihan Sankus" />
+                                            <display:column property="flagPeralihanTunjangan" sortable="true" title="Peralihan Tunjangan" />
+
                                             <display:column property="createdWho" sortable="true" title="Created Who"/>
                                             <display:column property="lastUpdate" sortable="true" title="Last Update"/>
                                         </display:table>
