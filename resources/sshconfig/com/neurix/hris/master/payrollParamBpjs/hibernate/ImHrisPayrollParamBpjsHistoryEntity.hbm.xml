@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.hris.master.payrollParamBpjs.model.ImHrisPayrollParamBpjsHistoryEntity">
-        <table name="im_hris_payroll_param_bpjs_history" schema="public"/>
+        <table name="im_hris_payroll_param_bpjs_history"/>
         <attributes>
             <id name="id">
                 <column name="id"/>

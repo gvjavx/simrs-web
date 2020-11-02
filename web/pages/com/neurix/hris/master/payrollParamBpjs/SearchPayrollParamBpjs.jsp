@@ -221,7 +221,7 @@
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                    height="400" width="550" autoOpen="false"
-                                                   title="Payroll PTKP ">
+                                                   title="Payroll Param Bpjs ">
                                             <center><img border="0" src="<s:url
                                             value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
@@ -230,16 +230,18 @@
                                         <display:table name="listOfsearchPayrollParamBpjs" class="table table-condensed table-striped table-hover"
                                                        requestURI="paging_displaytag_payrollParamBpjs.action" export="true"
                                                        id="row" pagesize="14" style="font-size:10">
-                                            <display:column media="html" title="View">
-                                                <s:url var="urlView" namespace="/payrollParamBpjs" action="view_payrollParamBpjs"
-                                                       escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.idPtkp"/></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
-                                                    <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
-                                                </sj:a>
-                                            </display:column>
+
+                                            <%--<display:column media="html" title="View">--%>
+                                                <%--<s:url var="urlView" namespace="/payrollParamBpjs" action="view_payrollParamBpjs"--%>
+                                                       <%--escapeAmp="false">--%>
+                                                    <%--<s:param name="id"><s:property value="#attr.row.idPtkp"/></s:param>--%>
+                                                    <%--<s:param name="flag"><s:property value="#attr.row.flag"/></s:param>--%>
+                                                <%--</s:url>--%>
+                                                <%--<sj:a onClickTopics="showDialogMenu" href="%{urlView}">--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">--%>
+                                                <%--</sj:a>--%>
+                                            <%--</display:column>--%>
+
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
                                                     <s:url var="urlEdit" namespace="/payrollParamBpjs" action="edit_payrollParamBpjs"

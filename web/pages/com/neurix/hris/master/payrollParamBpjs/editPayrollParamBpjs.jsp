@@ -16,48 +16,37 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var idPtkp = document.getElementById("idPtkpEdit").value;
-            var statusKeluarga = document.getElementById("statusKeluargaEdit").value;
-            var jumlahTanggungan = document.getElementById("jumlahTanggunganEdit").value;
-            var nilai = document.getElementById("nilaiEdit").value;
+            var payrollParamBpjsId = document.getElementById("payrolledit").value;
+            var flagGapok = document.getElementById("gapokEdit").value;
+            // var jumlahTanggungan = document.getElementById("jumlahTanggunganEdit").value;
+            var flagSankhus = document.getElementById("psankusEdit").value;
 
-            if (idPtkp != '' && statusKeluarga != '' && jumlahTanggungan != '' && nilai != '' ) {
-                if(isNaN(nilai) == false){
-                    if (confirm('Do you want to save this record?')) {
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
-                    } else {
-                        // Cancel Submit comes with 1.8.0
-                        event.originalEvent.options.submit = false;
-                    }
-                }else{
+            if (payrollParamBpjsId != '' && flagGapok != '' ) {
+
+                if (confirm('Do you want to save this record?')) {
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
+                } else {
+                    // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
-                    var msg = "";
-
-                    if (isNaN(nilai)) {
-                        msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
-                    }
-
-                    document.getElementById('errorValidationMessage').innerHTML = msg;
-
-                    $.publish('showErrorValidationDialog');
                 }
-            } else {
+            }
+             else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (idPtkp == '') {
+                if (payrollParamBpjsId == '') {
                     msg += 'Field <strong>ID PTKP </strong> is required.' + '<br/>';
                 }
-                if (statusKeluarga == '') {
-                    msg += 'Field <strong>Status Keluarga </strong> is required.' + '<br/>';
-                }
-                if (jumlahTanggungan == '') {
-                    msg += 'Field <strong>Jumlah Tanggungan </strong> is required.' + '<br/>';
-                }
-
-                if (nilai == '') {
-                    msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
-                }
+                // if (statusKeluarga == '') {
+                //     msg += 'Field <strong>Status Keluarga </strong> is required.' + '<br/>';
+                // }
+                // if (jumlahTanggungan == '') {
+                //     msg += 'Field <strong>Jumlah Tanggungan </strong> is required.' + '<br/>';
+                // }
+                //
+                // if (nilai == '') {
+                //     msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
+                // }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -76,7 +65,8 @@
         $.subscribe('errorDialog', function (event, data) {
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", " +
+                "\n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
         });
 
@@ -128,7 +118,80 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Flag Gajipokok  :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'No'}" id="gapokEdit"
+                                          name="payrollParamBpjs.flagGapok"
+                                          headerKey="Y" headerValue="Yes" required="true"
+                                          cssClass="form-control" />
+                            </table>
 
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Flag Sankus  :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'No'}" id="sankusEdit"
+                                          name="payrollParamBpjs.flagSankhus"
+                                          headerKey="Y" headerValue="Yes" required="true"
+                                          cssClass="form-control" />
+                            </table>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Flag Peralihan Gajipokok  :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'No'}" id="pgapokEdit"
+                                          name="payrollParamBpjs.flagPeralihanGapok"
+                                          headerKey="Y" headerValue="Yes" required="true"
+                                          cssClass="form-control" />
+                            </table>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Flag Peralihan Sankhus  :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'No'}" id="psankusEdit"
+                                          name="payrollParamBpjs.flagPeralihanSankhus"
+                                          headerKey="Y" headerValue="Yes" required="true"
+                                          cssClass="form-control" />
+                            </table>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Flag Peralihan Tunjangan  :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'No'}" id="ptunjanganEdit"
+                                          name="payrollParamBpjs.flagPeralihanTunjangan"
+                                          headerKey="Y" headerValue="Yes" required="true"
+                                          cssClass="form-control" />
+                            </table>
+
+                        </td>
+                    </tr>
 
                 </table>
 
@@ -195,7 +258,8 @@
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> System Found : <p id="errorMessage"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>

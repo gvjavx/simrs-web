@@ -120,7 +120,8 @@ public class PayrollParamBpjsAction extends BaseMasterAction{
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
-                    logId = payrollParamBpjsBoProxy.saveErrorMessage(e.getMessage(), "PayrollParamBpjsBO.getPayrollParamBpjsByCriteria");
+                    logId = payrollParamBpjsBoProxy.saveErrorMessage(e.getMessage(),
+                            "PayrollParamBpjsBO.getPayrollParamBpjsByCriteria");
                 } catch (GeneralBOException e1) {
                     logger.error("[PayrollParamBpjsAction.edit] Error when retrieving edit data,", e1);
                 }
@@ -145,7 +146,6 @@ public class PayrollParamBpjsAction extends BaseMasterAction{
             addActionError("Error, Unable to edit again with flag = N.");
             return "failure";
         }
-
         setAddOrEdit(true);
         logger.info("[PayrollParamBpjsAction.edit] end process >>>");
         return "init_edit";

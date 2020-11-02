@@ -124,11 +124,11 @@ public class PayrollParamBpjsBoImpl implements PayrollParamBpjsBo {
                 imPayrollParamBpjsHistoryEntity.setCreatedWho(imPayrollParamBpjsEntity.getLastUpdateWho());
                 imPayrollParamBpjsHistoryEntity.setCreatedDate(imPayrollParamBpjsEntity.getLastUpdate());
 
+
                 imPayrollParamBpjsEntity.setFlagGapok(bean.getFlagGapok());
                 imPayrollParamBpjsEntity.setFlagSankhus(bean.getFlagSankhus());
                 imPayrollParamBpjsEntity.setFlagPeralihanGapok(bean.getFlagPeralihanGapok());
                 imPayrollParamBpjsEntity.setFlagPeralihanSankhus(bean.getFlagPeralihanSankhus());
-
                 imPayrollParamBpjsEntity.setFlagPeralihanTunjangan(bean.getFlagPeralihanTunjangan());
 
 

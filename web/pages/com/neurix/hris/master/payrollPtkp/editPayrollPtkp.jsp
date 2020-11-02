@@ -234,12 +234,14 @@
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> System Found : <p id="errorMessage"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog"
+                                                   modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
                                                                         'OK':function() { $('#error_validation_dialog').dialog('close'); }
