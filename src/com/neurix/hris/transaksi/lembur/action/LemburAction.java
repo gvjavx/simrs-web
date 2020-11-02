@@ -506,9 +506,6 @@ public class LemburAction extends BaseMasterAction {
         if (!("").equalsIgnoreCase(keterangan)){
             editLembur.setNotApprovalNote(keterangan);
         }
-        if (lama == null){
-            lama= String.valueOf(0);
-        }
         editLembur.setTmpApprove(who);
         editLembur.setNip(nip);
         editLembur.setTanggalAwalSetuju(dateStart);
@@ -517,7 +514,11 @@ public class LemburAction extends BaseMasterAction {
         editLembur.setStTanggalAkhir(tglAkhir);
         editLembur.setJamAwal(jamAwal);
         editLembur.setJamAkhir(jamAkhir);
-        editLembur.setLamaJam(Double.valueOf(lama));
+        try {
+            editLembur.setLamaJam(calcJamLembur(nip,tglAwal,tglAkhir,jamAwal,jamAkhir));
+        } catch (ParseException e) {
+            throw new GeneralBOException("Error parsing");
+        }
         editLembur.setApprovalName(userLogin);
         editLembur.setLastUpdateWho(userLogin);
         editLembur.setApprovalId(userId);
@@ -741,7 +742,7 @@ public class LemburAction extends BaseMasterAction {
                 hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
             }
 
-            if (iJamAwalKerja>=iJamAwalDb&&iJamAwalKerja<=iJamAkhirDb){
+            if (iJamAwalKerja>iJamAwalDb&&iJamAwalKerja<iJamAkhirDb){
                 hasil = hasil+CommonUtil.SubtractJamAwalDanJamAkhir(sJamKerjaAkhirDb,jamAkhir,"positif");
             }
         }else{

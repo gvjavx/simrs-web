@@ -729,8 +729,8 @@ update im_hris_pegawai set peralihan_sankhus=0;
 update im_hris_pegawai set peralihan_gapok=0;
 update im_hris_pegawai set peralihan_tunjangan=0;
 
-ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkk type numeric(5,4);
-ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkm type numeric(5,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkk type numeric(10,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkm type numeric(10,4);
 ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jpk_pers type numeric(10,4);
 ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN iur_pers type numeric(10,4);
 

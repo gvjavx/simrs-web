@@ -20673,7 +20673,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                                BigDecimal iuranPensiun, BigDecimal iuranBpjsTk, BigDecimal iuranBpjsKs, String statusKeluarga, Integer jumAnak, String npwp, java.sql.Date tanggalMasuk){
         java.sql.Date tanggal = CommonUtil.convertStringToDate2(tahun+"-"+bulan+"-01");
 
-        Integer jmlMulaiBekerja = CommonUtil.getMonthsDifference(tanggalMasuk,tanggal);
+        //BARU
+        //rumus jika ada orang yang baru masuk di pertengahan bulan
+//        int jmlMulaiBekerja = CommonUtil.getMonthsDifference(tanggalMasuk,tanggal);
+        int jmlMulaiBekerja = 12;
 
         if(jmlMulaiBekerja>12){
             jmlMulaiBekerja=12;
@@ -23092,15 +23095,15 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         PayrollModalDTO result = new PayrollModalDTO();
         ImBiodataEntity biodataEntity = biodataDao.getById("nip",nip);
         BigDecimal pphSeharusnya ,pphGaji,tunjPph = BigDecimal.ZERO;
-        Integer selisih ;
-        BigDecimal totalANilai = new BigDecimal(totalA.replace(".",""));
-        BigDecimal totalRlabNilai = new BigDecimal(totalRlab.replace(".",""));
-        BigDecimal iuranDapenNilai = new BigDecimal(iuranDapen.replace(".",""));
-        BigDecimal iuranBpjsKsNilai = new BigDecimal(iuranBpjsKs.replace(".",""));
-        BigDecimal iuranBpjsTkNilai = new BigDecimal(iuranBpjsTk.replace(".",""));
-        BigDecimal tunjDapenNilai = new BigDecimal(tunjDapen.replace(".",""));
-        BigDecimal tunjBpjsKsNilai = new BigDecimal(tunjBpjsKs.replace(".",""));
-        BigDecimal tunjBpjsTkNilai = new BigDecimal(tunjBpjsTk.replace(".",""));
+        int selisih ;
+        BigDecimal totalANilai = new BigDecimal(totalA.replace(".","").replace(",",""));
+        BigDecimal totalRlabNilai = new BigDecimal(totalRlab.replace(".","").replace(",",""));
+        BigDecimal iuranDapenNilai = new BigDecimal(iuranDapen.replace(".","").replace(",",""));
+        BigDecimal iuranBpjsKsNilai = new BigDecimal(iuranBpjsKs.replace(".","").replace(",",""));
+        BigDecimal iuranBpjsTkNilai = new BigDecimal(iuranBpjsTk.replace(".","").replace(",",""));
+        BigDecimal tunjDapenNilai = new BigDecimal(tunjDapen.replace(".","").replace(",",""));
+        BigDecimal tunjBpjsKsNilai = new BigDecimal(tunjBpjsKs.replace(".","").replace(",",""));
+        BigDecimal tunjBpjsTkNilai = new BigDecimal(tunjBpjsTk.replace(".","").replace(",",""));
         BigDecimal iuranPegawai = iuranDapenNilai.add(iuranBpjsKsNilai.add(iuranBpjsTkNilai));
         BigDecimal tunjLain = totalRlabNilai.add(tunjDapenNilai).add(tunjBpjsTkNilai).add(tunjBpjsKsNilai);
 
@@ -23133,6 +23136,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
         BigDecimal finalTotalBruto;
         BigDecimal finalBijab;
+
+        //untuk yang belum bekerja total 12 bulan penuh
+//        Integer selisihBulan = payrollDao.getSelisihBulanPayroll(tahun,nip);
+//        BigDecimal brutoSelisih = payrollDao.getLastBruto(tahun, nip).multiply(BigDecimal.valueOf(selisihBulan));
+
         do {
             //menghiitung bruto
             BigDecimal totalBrutoLoop =totalBruto.add(tunjPph);
