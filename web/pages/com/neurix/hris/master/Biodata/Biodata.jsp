@@ -47,6 +47,8 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BiodataAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/StudyJurusanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
+
     <script type="text/javascript">
 
         function callSearch2() {
@@ -72,10 +74,6 @@
             var shift               = document.getElementById("shift").value;
 
             if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '') {
-                if(flag == 'N'){
-                    alert("Non Aktifkan User");
-                }
-
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -83,9 +81,7 @@
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
                 }
-
             } else {
-
                 event.originalEvent.options.submit = false;
 
                 var msg = "";
@@ -120,7 +116,6 @@
                 if (masaGolongan == '') {
                     msg += 'Field <strong>Masa Kerja Golongan</strong> is required.' + '<br/>';
                 }
-
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');

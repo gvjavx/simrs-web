@@ -266,7 +266,6 @@
                                                 </td>
                                             </tr>
                                         </table>
-
                                         <table >
                                             <tr>
                                                 <td>
@@ -303,234 +302,99 @@
                                                     </table>
                                                 </td>
                                             </tr>
-
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Tipe :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'PR':'Payroll', 'T':'THR', 'PD':'Pendidikan', 'R':'Rapel', 'IN':'Insentif',
-                                        'JP':'Jasprod', 'JB':'Jubileum', 'PN':'Pensiun'}" id="tipe" name="payroll.tipe"
+                                                        <s:select list="#{'PR':'Payroll', 'T':'THR', 'CT':'Cuti Tahunan', 'CP':'Cuti Panjang', 'IN':'Insentif',
+                                        'JP':'Jasa Operasional', 'JB':'Penghargaan Masa Kerja', 'PN':'Santunan Hari Tua'}" id="tipe" name="payroll.tipe"
                                                                   cssClass="form-control" disabled="true" />
                                                     </table>
-
                                                 </td>
                                             </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Nama :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield cssStyle="display: none" id="txtTipeId" name="payroll.tipe" required="false" readonly="false" cssClass="form-control"/>
-                                                        <s:textfield cssStyle="display: none" id="txtBranchId" name="payroll.branchId" required="false" readonly="false" cssClass="form-control"/>
-                                                        <s:textfield cssStyle="display: none" id="txtBulanPayroll" name="payroll.bulan" required="false" readonly="false" cssClass="form-control"/>
-                                                        <s:textfield cssStyle="display: none" id="txtTahunPayroll" name="payroll.tahun" required="false" readonly="false" cssClass="form-control"/>
-                                                        <s:textfield cssStyle="display: none" id="personName1" name="payroll.nip" required="false" readonly="false" cssClass="form-control"/>
-                                                        <s:textfield id="personName2" name="payroll.nama" required="false" readonly="false" cssClass="form-control"/>
-                                                        <s:textfield cssStyle="display: none" id="personName" name="payroll.name" required="false" readonly="false" cssClass="form-control"/>
-                                                    </table>
-                                                </td>
-                                                <script type='text/javascript'>
-                                                    var functions, mapped;
-                                                    // var prov = document.getElementById("provinsi1").value;
-                                                    $('#personName2').typeahead({
-                                                        minLength: 1,
-                                                        source: function (query, process) {
-                                                            functions = [];
-                                                            mapped = {};
-
-                                                            var data = [];
-                                                            dwr.engine.setAsync(false);
-                                                            MedicalRecordAction.initComboPersonil(query,'', function (listdata) {
-                                                                data = listdata;
-                                                                //alert('aa');
-                                                            });
-                                                            //alert(prov);
-                                                            $.each(data, function (i, item) {
-                                                                var labelItem =item.nip+ " || "+ item.namaPegawai;
-                                                                var labelNip = item.nip;
-                                                                mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem, branchId : item.branch, divisiId: item.divisi, positionId : item.positionId };
-                                                                functions.push(labelItem);
-                                                            });
-
-
-                                                            process(functions);
-                                                        },
-
-                                                        updater: function (item) {
-                                                            var selectedObj = mapped[item];
-                                                            var namaAlat = selectedObj.label;
-                                                            document.getElementById("personName1").value = selectedObj.id;
-                                                            document.getElementById("personName").value = selectedObj.pegawai;
-
-                                                            branc = selectedObj.branchId;
-                                                            dev = selectedObj.divisiId ;
-                                                            return namaAlat;
-                                                        }
-                                                    });
-
-                                                </script>
-                                            </tr>
-
                                         </table>
-
-
-
                                         <br>
-
                                         <div id="actions" class="form-actions">
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="sppdForm" id="save" name="search"
-                                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
-                                                            <i class="fa fa-search"></i>
-                                                            Search
-                                                        </sj:submit>
-
+                                                        <button type="button" class="btn btn-primary" onclick="window.location.reload()">
+                                                            <i class="fa fa-refresh"></i> Reload
+                                                        </button>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="menujuLink('cancelPage_payroll.action', 'Payroll');">
-                                                            <i class="fa fa-close"></i> Cancel
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payroll.action"/>'">
+                                                            <i class="fa fa-arrow-left"></i> back
                                                         </button>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </div>
-
                                         <br>
-
-                                        <center>
-                                            <table id="showdata" width="100%">
-                                                <tr>
-                                                    <td align="center">
-                                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="500" width="500" autoOpen="false"
-                                                                   title="Payroll ">
-                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                                        </sj:dialog>
-
-                                                        <s:set name="listDataPayroll" value="#session.listDataPayroll" scope="request" />
-                                                        <display:table name="listDataPayroll" class="tablePayroll table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_edit_payroll.action" export="true" id="row" pagesize="1000" style="font-size:10">
-
-                                                            <display:column media="html" title="Edit">
+                                        <div style="text-align: left !important;">
+                                            <div class="box-header with-border"></div>
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Payroll</h3>
+                                            </div>
+                                            <div class="box-body">
+                                                <table id="tablePayroll" class="tablePayroll table table-bordered table-striped" style="font-size: 11px">
+                                                    <thead>
+                                                    <tr bgcolor="#90ee90" style="text-align: center">
+                                                        <td>NIP</td>
+                                                        <td>Nama</td>
+                                                        <td>Bidang/Divisi</td>
+                                                        <td>Posisi/Jabatan</td>
+                                                        <td>Level</td>
+                                                        <td>Gaji Kotor (RP)</td>
+                                                        <td>Potongan (RP)</td>
+                                                        <td>Gaji Bersih(RP)</td>
+                                                        <td>Prop. Gaji</td>
+                                                        <td align="center">Edit</td>
+                                                        <td align="center">Reproses</td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <s:iterator value="#session.listDataPayroll" var="row">
+                                                        <tr>
+                                                            <td style="text-align: center"><s:property value="nip"/></td>
+                                                            <td style="text-align: center"><s:property value="nama"/></td>
+                                                            <td style="text-align: center"><s:property value="departmentName"/></td>
+                                                            <td style="text-align: center"><s:property value="positionName"/></td>
+                                                            <td style="text-align: center"><s:property value="golonganName"/></td>
+                                                            <td style="text-align: center"><s:property value="gajiKotor"/></td>
+                                                            <td style="text-align: center"><s:property value="totalC"/></td>
+                                                            <td style="text-align: center"><s:property value="totalGajiBersih"/></td>
+                                                            <td style="text-align: center"><s:property value="proporsiGaji"/></td>
+                                                            <td align="center">
                                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.payrollId}"/>" class="item-edit">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                    <img border="0" src="<s:url value="/pages/images/icons8-create-25.png"/>" >
                                                                 </a>
-                                                            </display:column>
-
-                                                            <display:column property="nip" sortable="true" title="NIP"  />
-                                                            <display:column property="nama" sortable="true" title="Nama" />
-                                                            <display:column property="departmentName" sortable="true" title="Bidang" />
-                                                            <display:column property="positionName" sortable="true" title="Jabatan" />
-                                                            <display:column property="golonganName" sortable="true" title="Golongan" />
-                                                            <display:column style="text-align:right;" property="totalA" sortable="true" title="Gaji Kotor" />
-                                                            <display:column style="text-align:right;" property="totalB" sortable="true" title="RLAB & Sansos" />
-                                                            <display:column style="text-align:right;" property="totalC" sortable="true" title="Pot. Tnp. PPh" />
-                                                            <display:column style="text-align:right;" property="pphGaji" sortable="true" title="PPh" />
-                                                            <display:column style="text-align:right;" property="totalGajiBersih" sortable="true" title="Gaji Bersih" />
-                                                            <display:column style="text-align:center;" property="proporsiGaji" sortable="true" title="Proporsi Gaji" />
-                                                            <display:column style="text-align:right;" property="totalRapel" sortable="true" title="Rapel" />
-                                                            <display:column style="text-align:right;" property="totalThr" sortable="true" title="Thr" />
-                                                            <display:column style="text-align:right;" property="totalPendidikan" sortable="true" title="Pendidikan" />
-                                                            <display:column style="text-align:right;" property="totalJasProd" sortable="true" title="Jasprod" />
-                                                            <display:column style="color: #00cc00;" property="tanggalJubileum" sortable="true" title="Jubileum" />
-                                                            <display:column style="color: red;" property="stTanggalPensiun" sortable="true" title="Pensiun" />
-                                                            <%--<display:column media="html" title="Reproses">
+                                                            </td>
+                                                            <td align="center">
                                                                 <a href="javascript:;"
-                                                                   nip="<s:property value="%{#attr.row.nip}"/>"
-                                                                   branchId="<s:property value="%{#attr.row.branchId}"/>"
                                                                    bulan="<s:property value="%{#attr.row.bulan}"/>"
                                                                    tahun="<s:property value="%{#attr.row.tahun}"/>"
-                                                                   nama="<s:property value="%{#attr.row.nama}"/>"
-                                                                   payrollId="<s:property value="%{#attr.row.payrollId}"/>"
+                                                                   branchId="<s:property value="%{#attr.row.branchId}"/>"
+                                                                   tipe="<s:property value="%{#attr.row.tipe}"/>"
+                                                                   id="<s:property value="%{#attr.row.payrollId}"/>"
+                                                                   nip="<s:property value="%{#attr.row.nip}"/>"
                                                                    class="item-reproses">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_reset.png"/>" name="icon_reset">
+                                                                    <img border="0" src="<s:url value="/pages/images/icons8-transaction-25.png"/>" >
                                                                 </a>
-                                                            </display:column>--%>
-                                                            <%--<display:column style="text-align:center;" media="html" title="Promosi">
-                                                                <s:if test="#attr.row.flagPromosiOn">
-                                                                    <a href="javascript:;" payrollId="<s:property value="%{#attr.row.payrollId}"/>"
-                                                                       nip="<s:property value="%{#attr.row.nip}"/>" class="item-promosi">
-                                                                        <span style="font-size: 17px" class="glyphicon glyphicon-user"></span>
-                                                                    </a>
-                                                                </s:if>
-                                                            </display:column>--%>
-
-
-
-                                                        </display:table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </center>
-
-                                        <div id="actions" class="form-actions">
-                                            <table>
-                                                <tr>
-                                                    <div id="crud">
-                                                        <td>
-                                                            <table>
-                                                                <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                                                           resizable="false"
-                                                                           height="350" width="600" autoOpen="false" title="Searching ...">
-                                                                    Please don't close this window, server is processing your request ...
-                                                                    </br>
-                                                                    </br>
-                                                                    </br>
-                                                                    <center>
-                                                                        <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_write">
-                                                                    </center>
-                                                                </sj:dialog>
-
-                                                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                                                           buttons="{
-                                                              'OK':function() {
-                                                                      clos();
-                                                                   }
-                                                            }"
-                                                                >
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                                                    Record has been saved successfully.
-                                                                </sj:dialog>
-
-                                                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
-                                                                           height="250" width="600" autoOpen="false" title="Error Dialog"
-                                                                           buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
-                                                                    }"
-                                                                >
-                                                                    <div class="alert alert-error fade in">
-                                                                        <label class="control-label" align="left">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
-                                                                        </label>
-                                                                    </div>
-                                                                </sj:dialog>
-
-                                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
-                                                                           height="280" width="500" autoOpen="false" title="Warning"
-                                                                           buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
-                                                                    }"
-                                                                >
-                                                                    <div class="alert alert-error fade in">
-                                                                        <label class="control-label" align="left">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
-                                                                            <br/>
-                                                                            <center><div id="errorValidationMessage"></div></center>
-                                                                        </label>
-                                                                    </div>
-                                                                </sj:dialog>
-                                                            </table>
-                                                        </td>
-                                                    </div>
-                                                </tr>
-                                            </table>
+                                                            </td>
+                                                        </tr>
+                                                    </s:iterator>
+                                                    </tbody>
+                                                </table>
+                                                <script>
+                                                    $('#tablePayroll').DataTable({
+                                                        "pageLength": 100,
+                                                        "order": [[2, "asc"],[3, "asc"]]
+                                                    });
+                                                </script>
+                                            </div>
                                         </div>
                                     </s:form>
                                 </td>
@@ -546,17 +410,16 @@
 <!-- /.content-wrapper -->
 
 <%@ include file="/pages/common/footer.jsp" %>
-
-
 <%@ include file="/pages/common/lastScript.jsp" %>
 
 <div id="modal-edit" class="modal fade" role="dialog">
-    <div class="modal-dialog " style="width:100%">
+    <div class="modal-dialog modal-flat" style="width:100%">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Approve SPPD</h4>
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-tasks"></i></h4>
             </div>
             <div class="modal-body" align="left">
                 <form class="form-horizontal" id="formEdit">
@@ -736,7 +599,7 @@
                                     <input style="text-align: right" type="text" class="form-control nip" id="tunjPeralihan" readonly onfocusout="updateNilai(this.id, this.value)" name="nip">
                                 </div>
                                 <div class="col-sm-1 pull-right nopadding">
-                                    <button type="button" id="detailPeralihan" class="btn btn-primary">View</button>
+                                    <button type="button" id="detailPeralihan" class="btn btn-success">View</button>
                                 </div>
                                 <script>
                                     $('#detailPeralihan').click(function(){
@@ -751,7 +614,7 @@
                                     <input readonly style="text-align: right" readonly type="text" class="form-control nip" id="tunjLain" name="nip">
                                 </div>
                                 <div class="col-sm-1 nopadding">
-                                    <button type="button" id="detailTunjlain" class="btn btn-primary detailTunjlain">View</button>
+                                    <button type="button" id="detailTunjlain" class="btn btn-success detailTunjlain">View</button>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -766,7 +629,7 @@
                                     <input style="text-align: right" readonly type="text" class="form-control nip" id="tunjLembur" name="nip">
                                 </div>
                                 <div class="col-sm-1 pull-right nopadding">
-                                    <button type="button" id="detailLembur" class="btn btn-primary">View</button>
+                                    <button type="button" id="detailLembur" class="btn btn-success">View</button>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -794,7 +657,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-sm-5" ><b>Gaji Bersih (A+B)- C</b></label>
+                                <label class="control-label col-sm-5" ><b>Gaji Bersih (A+B+D)- C</b></label>
                                 <div class="col-sm-6">
                                     <input style="text-align: right" align="right" readonly type="text" class="form-control nip" id="gajiBersih" name="nip">
                                 </div>
@@ -875,7 +738,7 @@
                                     <input style="text-align: right" type="text" readonly class="form-control nip" id="nilaiPtt" onfocusout="updateNilai(this.id, this.value)" name="nip">
                                 </div>
                                 <div class="col-sm-1 pull-right nopadding">
-                                    <button type="button" id="btnDetailPtt" class="btn btn-primary">View</button>
+                                    <button type="button" id="btnDetailPtt" class="btn btn-success">View</button>
                                 </div>
                                 <script>
                                     function loadPtt() {
@@ -888,10 +751,10 @@
 
                                         PayrollAction.getDetailPtt( function(listdata){
                                             tmp_table = "<thead style='font-size: 13px; color: white; white-space: nowrap' ><tr class='active'>" +
-                                                "<th style='text-align: center; background-color:  #3c8dbc''>No </th>" +
-                                                "<th style='text-align: center; background-color:  #3c8dbc''>Nama PTT</th>" +
-                                                "<th style='text-align: center; background-color:  #3c8dbc''>Nilai</th>" +
-                                                "<th style='text-align: center; background-color:  #3c8dbc''>Delete</th>" +
+                                                "<th style='text-align: center; background-color:  #00a65a''>No </th>" +
+                                                "<th style='text-align: center; background-color:  #00a65a''>Nama PTT</th>" +
+                                                "<th style='text-align: center; background-color:  #00a65a''>Nilai</th>" +
+                                                "<th style='text-align: center; background-color:  #00a65a''>Delete</th>" +
                                                 "</tr></thead><tbody>";
                                             $.each(listdata, function (i, item) {
                                                 tmp_table += '<tr style="font-size: 12px; white-space: nowrap">' +
@@ -942,7 +805,7 @@
                                             <input style="text-align: right" readonly type="text" class="form-control nip" id="totalPtt" name="nip">
                                         </div>
                                         <div class="col-sm-1 pull-right nopadding">
-                                            <button type="button" class="btn btn-primary" id="btnViewTotalPtt11">View</button>
+                                            <button type="button" class="btn btn-success" id="btnViewTotalPtt11">View</button>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -951,7 +814,7 @@
                                             <input style="text-align: right" type="text" readonly class="form-control nip" id="pphSeharusnya" name="nip">
                                         </div>
                                         <div class="col-sm-1 pull-right nopadding">
-                                            <button type="button" class="btn btn-primary" id="btnViewPPhSeharusnya">View</button>
+                                            <button type="button" class="btn btn-success" id="btnViewPPhSeharusnya">View</button>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -960,7 +823,7 @@
                                             <input style="text-align: right" readonly type="text" class="form-control nip" id="pph11Bulan" name="nip">
                                         </div>
                                         <div class="col-sm-1 pull-right nopadding">
-                                            <button type="button" class="btn btn-primary" id="btnViewTotalPPh11">View</button>
+                                            <button type="button" class="btn btn-success" id="btnViewTotalPPh11">View</button>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -1098,23 +961,23 @@
                         </div>
                     </div>
                 </form>
-
             </div>
-            <div class="modal-footer">
-                <a id="btnSave" type="btn btn-success" class="btn btn-default btn-success"><i class="fa fa-save"></i> Save</a>
-                <a type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Close</a>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <a id="btnSave" type="btn btn-success" class="btn btn-default btn-success"><i class="fa fa-save"></i> Save & Reload</a>
+                <a type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</a>
             </div>
         </div>
     </div>
 </div>
 
 <div id="modal-ptt" class="modal fade modal2" role="dialog">
-    <div class="modal-dialog " style="width:500px;">
+    <div class="modal-dialog modal-flat" style="width:500px;">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> </h4>
             </div>
             <div class="modal-body" >
                 <form class="form-horizontal">
@@ -1172,7 +1035,7 @@
                     </table>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="background-color: #cacaca">
                 <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
         </div>
@@ -1180,12 +1043,13 @@
 </div>
 
 <div id="modal-peralihan" class="modal fade" role="dialog">
-    <div class="modal-dialog " style="width:500px;">
+    <div class="modal-dialog modal-flat" style="width:500px;">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> </h4>
             </div>
             <div class="modal-body" >
                 <form class="form-horizontal">
@@ -1210,8 +1074,13 @@
                 </form>
                 <br>
             </div>
-            <div class="modal-footer">
-                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <a type="button" id="btnCloseModalPeralihan" class="btn btn-success" data-dismiss="modal">Close & Save</a>
+                <script>
+                    $('#btnCloseModalPeralihan').click(function () {
+                        updateNilai("",0);
+                    })
+                </script>
             </div>
         </div>
     </div>
@@ -1219,13 +1088,14 @@
 
 <%--Modal detail tunjangan Lain Irfan--%>
 <div id="modal-detailTunjLain" class="modal fade modal2" role="dialog">
-    <div class="modal-dialog " style="width:500px;">
+    <div class="modal-dialog modal-flat" style="width:500px;">
 
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> </h4>
             </div>
             <div class="modal-body" >
                 <form class="form-horizontal">
@@ -1235,7 +1105,7 @@
                     </table>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="background-color: #cacaca">
                 <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
         </div>
@@ -1243,13 +1113,14 @@
 </div>
 
 <div id="modal-lembur" class="modal fade modal2" role="dialog">
-    <div class="modal-dialog " style="width:800px;">
+    <div class="modal-dialog modal-flat" style="width:800px;">
 
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> </h4>
             </div>
             <div class="modal-body" >
                 <%--<font size="1" face="Courier New" >--%>
@@ -1258,7 +1129,7 @@
                     </table>
                 </center>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="background-color: #cacaca">
                 <%--<a type="button" class="btn btn-success" id="btnRefreshLembur" >Refresh</a>--%>
                 <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
@@ -1267,12 +1138,13 @@
 </div>
 
 <div id="modal-ptt-setahun" class="modal fade modal2" role="dialog">
-    <div class="modal-dialog " style="width:500px;">
+    <div class="modal-dialog modal-flat" style="width:500px;">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> </h4>
             </div>
             <div class="modal-body" >
                 <center>
@@ -1280,7 +1152,7 @@
                     </table>
                 </center>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="background-color: #cacaca">
                 <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
         </div>
@@ -1288,12 +1160,13 @@
 </div>
 
 <div id="modal-pph-11bulan" class="modal fade modal2" role="dialog">
-    <div class="modal-dialog " style="width:500px;">
+    <div class="modal-dialog modal-flat" style="width:500px;">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> </h4>
             </div>
             <div class="modal-body" >
                 <center>
@@ -1301,7 +1174,7 @@
                     </table>
                 </center>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="background-color: #cacaca">
                 <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
         </div>
@@ -1309,12 +1182,13 @@
 </div>
 
 <div id="modal-pph-seharusnya" class="modal fade modal-md" role="dialog">
-    <div class="modal-dialog ">
+    <div class="modal-dialog modal-flat">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> </h4>
             </div>
             <div class="modal-body">
                 <div class="container">
@@ -1409,7 +1283,7 @@
                 </div>
             </div>
             <br>
-            <div class="modal-footer">
+            <div class="modal-footer" style="background-color: #cacaca">
                 <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
         </div>
@@ -3544,11 +3418,162 @@
         </div>
     </div>
 </div>
+
+<div id="modal-reproses" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-flat" style="width:400px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-tasks"></i></h4>
+            </div>
+            <div class="modal-body" >
+                <form class="form-horizontal" id="formReproses">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >ID</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control" id="reprosesId">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >NIP</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="reprosesNip">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Bulan</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="reprosesBulan">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Tahun</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip" id="reprosesTahun">
+                        </div>
+                    </div>
+                    <input readonly type="text" class="form-control nip" id="reprosesBranchId" style="display: none">
+                    <div class="form-group" style="display: none">
+                        <label class="control-label col-sm-4" >Tipe</label>
+                        <div class="col-sm-8">
+                            <input readonly type="text" class="form-control nip"  id="reprosestipeId" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <a type="button" id="btnReproses" class="btn btn-danger"><i class="fa fa-refresh"></i> Reproses</a>
+                <a type="button" class="btn btn-default" data-dismiss="modal"> Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-loading-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Saving ...
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="waiting-content" style="text-align: center">
+                    <h4>Please don't close this window, server is processing your request ...</h4>
+                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                         name="image_indicator_write">
+                    <br>
+                    <img class="spin" border="0"
+                         style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                         name="image_indicator_write">
+                </div>
+
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_fin_error_waiting"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <%--<button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes--%>
+                <%--</button>--%>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-success-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Success
+                </h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                     name="icon_success">
+                Record has been saved successfully.
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <button type="button" class="btn btn-sm btn-success" id="ok_con"><i class="fa fa-check"></i> Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 
 </html>
 
 <script>
+    function showDialog(tipe) {
+        if (tipe == "loading"){
+            $("#modal-loading-dialog").modal('show');
+        }
+        if (tipe == "error"){
+            $("#modal-loading-dialog").modal('show');
+            $("#waiting-content").hide();
+            $("#warning_fin_waiting").show();
+//            $("#msg_fin_error_waiting").text("Error. perbaikan");
+        }
+        if (tipe == "success"){
+            $("#modal-loading-dialog").modal('hide');
+            $("#modal-success-dialog").modal('show');
+        }
+    }
+    $('#ok_con').click(function () {
+        window.location.reload();
+    })
+    $('#btnReproses').click(function(){
+        if (confirm('Peringatan : Jika anda melakukan reproses data payroll ini , data yang sebelumnya akan hilang dan diganti dengan data baru , \n \n Apakah anda ingin melanjutkan ?')) {
+            var branchId = document.getElementById("reprosesBranchId").value;
+            var bulan = document.getElementById("reprosesBulan").value;
+            var tahun = document.getElementById("reprosesTahun").value;
+            var tipe = document.getElementById("reprosestipeId").value;
+            var id = document.getElementById("reprosesId").value;
+            var nip = document.getElementById("reprosesNip").value;
+
+            showDialog("loading");
+            dwr.engine.setAsync(true);
+            PayrollAction.reprosesPayrollById(branchId, bulan, tahun, tipe,id,nip, function(listdata){
+                dwr.engine.setAsync(false);
+                showDialog("success");
+                $('#modal-reproses').modal('hide');
+            });
+        }
+    });
     $('#btnSave').click(function(){
         var payrollId = document.getElementById("payrollId2").value;
         var nip = document.getElementById("nip").value;
@@ -3615,13 +3640,15 @@
                             alert('Data Berhasil Dirubah');
                             $('#modal-edit').modal('hide');
                             $('#formEdit')[0].reset();
+                            window.location.reload();
                         });
             }else if(tipe == "JP"){
                 PayrollAction.saveEditDataJasprod(payrollId, koperasi, dansos, lainLain, flagKalkulasiPph, pphGaji, function(listdata) {
                             alert('Data Berhasil Dirubah');
                             $('#modal-edit').modal('hide');
                             $('#formEdit')[0].reset();
-                        });
+                            window.location.reload();
+                });
             }
         } else {
             // Do nothing!
@@ -4215,9 +4242,9 @@
 
             PayrollAction.payrollDetailTunjLain(bulan,tahun, nip, function(listdata){
                 tmp_table = "<thead style='font-size: 13px; color: white; white-space: nowrap' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>No </th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Nama Tunjangan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Nilai</th>" +
+                        "<th style='text-align: center; background-color:  #00a65a''>No </th>" +
+                        "<th style='text-align: center; background-color:  #00a65a''>Nama Tunjangan</th>" +
+                        "<th style='text-align: center; background-color:  #00a65a''>Nilai</th>" +
                         "</tr></thead><tbody>";
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px; white-space: nowrap">' +
@@ -4569,12 +4596,12 @@
 
             PayrollAction.searchDetailLembur(nip, branchId, bulan, tahun, function(listdata) {
                 tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal</th>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Jam Masuk</th>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Jam Keluar</th>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Lama Lembur</th>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Jam Lembur</th>"+
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Biaya Lembur</th>"+
+                        "<th style='text-align: center; background-color:  #00a65a'>Tanggal</th>"+
+                        "<th style='text-align: center; background-color:  #00a65a''>Jam Masuk</th>"+
+                        "<th style='text-align: center; background-color:  #00a65a''>Jam Keluar</th>"+
+                        "<th style='text-align: center; background-color:  #00a65a''>Lama Lembur</th>"+
+                        "<th style='text-align: center; background-color:  #00a65a''>Jam Lembur</th>"+
+                        "<th style='text-align: center; background-color:  #00a65a''>Biaya Lembur</th>"+
                         "</tr></thead>";
                 var i = i ;
                 $.each(listdata, function (i, item) {
@@ -5197,9 +5224,9 @@
         var tmp_table = "";
         PayrollAction.searchTotalPtt11Bulan(nip, tahun, function(listdata) {
             tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                "<th style='text-align: center; background-color:  #3c8dbc'>Bulan</th>"+
-                "<th style='text-align: center; background-color:  #3c8dbc''>Jenis PTT</th>"+
-                "<th style='text-align: center; background-color:  #3c8dbc''>Nilai</th>"+
+                "<th style='text-align: center; background-color:  #00a65a'>Bulan</th>"+
+                "<th style='text-align: center; background-color:  #00a65a''>Jenis PTT</th>"+
+                "<th style='text-align: center; background-color:  #00a65a''>Nilai</th>"+
                 "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
@@ -5221,6 +5248,26 @@
         $('#modal-ptt-setahun').find('.modal-title').text('PTT 11 Bulan');
         $('#modal-ptt-setahun').modal('show');
     });
+
+    $('.tablePayroll').on('click', '.item-reproses', function(){
+        var tipe = $(this).attr('tipe');
+        var bulan = $(this).attr('bulan');
+        var tahun = $(this).attr('tahun');
+        var branchId = $(this).attr('branchId');
+        var id = $(this).attr('id');
+        var nip = $(this).attr('nip');
+
+        $('#reprosesId').val(id);
+        $('#reprosesNip').val(nip);
+        $('#reprosesBulan').val(bulan);
+        $('#reprosesTahun').val(tahun);
+        $('#reprosesBranchId').val(branchId);
+        $('#reprosestipeId').val(tipe);
+
+        $('#modal-reproses').find('.modal-title').text('Reproses');
+        $('#modal-reproses').modal('show');
+    });
+
     $('#btnViewTotalPPh11').on('click', function(){
         var nip = document.getElementById("nip").value;
         var tahun = document.getElementById("tahun").value;
@@ -5234,9 +5281,9 @@
 
         PayrollAction.searchTotalPPh11Bulan(nip,tahun, function(listdata) {
             tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                "<th style='text-align: center; background-color:  #3c8dbc'>Bulan</th>"+
-                "<th style='text-align: center; background-color:  #3c8dbc'>Tipe</th>"+
-                "<th style='text-align: center; background-color:  #3c8dbc''>PPH</th>"+
+                "<th style='text-align: center; background-color:  #00a65a'>Bulan</th>"+
+                "<th style='text-align: center; background-color:  #00a65a'>Tipe</th>"+
+                "<th style='text-align: center; background-color:  #00a65a''>PPH</th>"+
                 "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {

@@ -90,5 +90,13 @@
             <column name="last_update" sql-type="timestamp" not-null="false" />
         </property>
 
+        <property name="pendidikan">
+            <column name="pendidikan"/>
+        </property>
+        <property name="statusPerkawinan">
+            <column name="status_perkawinan"/>
+        </property>
+
+
     </class>
 </hibernate-mapping>

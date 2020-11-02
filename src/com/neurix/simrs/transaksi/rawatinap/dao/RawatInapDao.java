@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.rawatinap.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
@@ -10,10 +11,8 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Toshiba on 08/11/2019.
@@ -733,7 +732,8 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "c.keterangan,\n" +
                     "b.metode_pembayaran, \n" +
                     "b.id_jenis_periksa_pasien,\n" +
-                    "b.created_date\n" +
+                    "b.created_date,\n" +
+                    "b.flag_tppri\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien c ON b.id_jenis_periksa_pasien = c.id_jenis_periksa_pasien\n" +
@@ -761,6 +761,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setMetodePembayaran(obj[9] == null ? null : obj[9].toString());
                     rawatInap.setIdJenisPeriksa(obj[10] == null ? null : obj[10].toString());
                     rawatInap.setCreatedDate(obj[11] == null ? null : (Timestamp) obj[11]);
+                    rawatInap.setFlagTppri(obj[12] == null ? null : (String) obj[12]);
                     response.add(rawatInap);
                 }
             }
@@ -916,5 +917,37 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
             }
         }
         return uangMukaArrayList;
+    }
+
+    public HeaderCheckup getDetailGelang(String noCheckup) {
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        if(noCheckup != null){
+            String SQL = "SELECT\n" +
+                    "a.no_checkup,\n" +
+                    "a.id_pasien,\n" +
+                    "b.id_detail_checkup,\n" +
+                    "a.nama,\n" +
+                    "a.tgl_lahir\n" +
+                    "FROM it_simrs_header_checkup a \n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN it_simrs_rawat_inap c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                    "WHERE a.no_checkup = :id \n";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", noCheckup)
+                    .list();
+            if (result.size() > 0) {
+                Object[] obj = result.get(0);
+                headerCheckup.setNoCheckup(obj[0] != null ? obj[0].toString() : null);
+                headerCheckup.setIdPasien(obj[1] != null ? obj[1].toString() : null);
+                headerCheckup.setIdDetailCheckup(obj[2] != null ? obj[2].toString() : null);
+                headerCheckup.setNama(obj[3] != null ? obj[3].toString() : null);
+                if(obj[4] != null){
+                    String formatDate = new SimpleDateFormat("dd-MM-yyyy").format((Date) obj[4]);
+                    headerCheckup.setStTglLahir(formatDate);
+                }
+            }
+        }
+        return headerCheckup;
     }
 }

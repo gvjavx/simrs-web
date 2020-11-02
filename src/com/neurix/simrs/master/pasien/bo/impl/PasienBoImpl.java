@@ -156,6 +156,8 @@ public class PasienBoImpl implements PasienBo {
             pasien.setLastUpdateWho(data.getLastUpdateWho());
             pasien.setEmail(data.getEmail());
             pasien.setPassword(data.getPassword());
+            pasien.setPendidikan(data.getPendidikan());
+            pasien.setStatusPerkawinan(data.getStatusPerkawinan());
 
             if (pasien.getDesaId() != null) {
                 List<Object[]> objs = provinsiDao.getListAlamatByDesaId(pasien.getDesaId().toString());
@@ -216,7 +218,6 @@ public class PasienBoImpl implements PasienBo {
 
             try {
                 date = formater.parse(pasien.getTglLahir());
-//                tglLahir = formater.format(date);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -239,6 +240,9 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setProfesi(pasien.getProfesi());
             pasienEntity.setNoTelp(pasien.getNoTelp());
             pasienEntity.setUrlKtp(pasien.getUrlKtp());
+            pasienEntity.setPendidikan(pasien.getPendidikan());
+            pasienEntity.setStatusPerkawinan(pasien.getStatusPerkawinan());
+
             pasienEntity.setFlag("Y");
             pasienEntity.setAction("C");
             pasienEntity.setCreatedDate(pasien.getCreatedDate());
@@ -283,6 +287,9 @@ public class PasienBoImpl implements PasienBo {
                 pasienEntity.setAgama(pasien.getAgama());
                 pasienEntity.setProfesi(pasien.getProfesi());
                 pasienEntity.setNoTelp(pasien.getNoTelp());
+                pasienEntity.setPendidikan(pasien.getPendidikan());
+                pasienEntity.setStatusPerkawinan(pasien.getStatusPerkawinan());
+
                 if (pasien.getUrlKtp() != null && !"".equalsIgnoreCase(pasien.getUrlKtp())) {
                     pasienEntity.setUrlKtp(pasien.getUrlKtp());
                 }

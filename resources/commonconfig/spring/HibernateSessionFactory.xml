@@ -590,6 +590,8 @@
                 <value>sshconfig/com/neurix/simrs/master/ruangan/hibernate/MtSimrsRuanganTempatTidurEntity.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/dietgizi/hibernate/ImSimrsJenisDietEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/ordergizi/hibernate/ItSimrsDetailJenisDietEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/reportKeuanganArusKas/hibernate/ImAkunSettingReportArusKasEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/reportKeuanganArusKas/hibernate/ImAkunSettingReportArusKasDetailEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

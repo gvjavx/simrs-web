@@ -18,11 +18,11 @@
 <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/select2.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/plugins/morris/morris.css"/>">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-<%--<link type="text/css" href="<s:url value="/pages/bootstraplte/css/font-awesome.min.css"/>" rel="stylesheet"/>--%>
+<%--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">--%>
+<link rel="stylesheet"  href="<s:url value="/pages/bootstrap/css/font-awesome.min.css"/>"/>
 <!-- Ionicons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-<%--<link type="text/css" href="<s:url value="/pages/bootstraplte/css/ionicons.min.css"/>" rel="stylesheet"/>--%>
+<%--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">--%>
+<link rel="stylesheet" href="<s:url value="/pages/bootstrap/css/ionicons.min.css"/>"/>
 <!-- Theme style -->
 <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/AdminLTE.min.css"/>">
 <link rel="stylesheet" href="<s:url value="/pages/dist/css/timepicker.css"/>">
@@ -127,10 +127,20 @@ apply the skin class to the body tag so the changes take effect.
         top: 113px !important;
         /*left: 424px !important;*/
         z-index: 1030;
+        position: fixed;
     }
     .ui-datepicker{
         z-index: 1100 !important;
     }
+
+    .ui-tooltip{
+        display: none !important;
+    }
+
+    .ui-button .ui-corner-all .ui-widget .ui-button-icon-only .ui-dialog .ui-dialog-titlebar-close .ui-icon-closethick{
+        display: none !important;
+    }
+
     .ui-dialog-titlebar{
         background-color: #367fa9;
     }
@@ -138,6 +148,11 @@ apply the skin class to the body tag so the changes take effect.
     .ui-widget-header {
         border : 1px solid #367fa9;
         background: #367fa9
+    }
+
+    .ui-widget-overlay {
+        background: black !important;
+        opacity: .5 !important;
     }
 
     .form-group {
@@ -385,6 +400,9 @@ apply the skin class to the body tag so the changes take effect.
             "order": [[ 0, "desc" ]]
         });
 
+        $('#myTable').attr('style','width: 100%');
+        $('#sortTable').attr('style','width: 100%');
+
         $("#tanggal_lahir").datepicker({
             autoclose: true,
             changeMonth: true,
@@ -426,14 +444,13 @@ apply the skin class to the body tag so the changes take effect.
         });
 
         $('#myTable').css('width', '100%');
-
     });
 
     $(function () {
         $('.select2').select2({});
-        $('.datemask').inputmask('yyyy-mm-dd', { 'placeholder': 'yyyy-mm-dd' })
-        $('.datemask2').inputmask('dd-mm-yyyy', { 'placeholder': 'dd-mm-yyyy' })
-        $('[data-mask]').inputmask()
+        $('.datemask').inputmask('yyyy-mm-dd', { 'placeholder': 'yyyy-mm-dd' });
+        $('.datemask2').inputmask('dd-mm-yyyy', { 'placeholder': 'dd-mm-yyyy' });
+        $('[data-mask]').inputmask();
     });
 
     window.checkDec = function(el){
@@ -612,6 +629,25 @@ apply the skin class to the body tag so the changes take effect.
         }
     }
 
+    function replaceStrip(val, id){
+        var res = "";
+        if(val != ''){
+            res = val.replace(/[-]/g, '');
+            res.replace(/[_]/g, '');
+            $('#'+id).val(res);
+        }else{
+            $('#'+id).val(res);
+        }
+    }
+
+    function replaceUnderLine(val){
+        var res = '';
+        if(val != ''){
+            res = val.replace(/[_]/g, '');
+        }
+        return res;
+    }
+
     function convertRpAtas(id, val, idHidden) {
         $('#'+id).val(formatRupiahAtas2(val));
         if(idHidden != '' && idHidden != null){
@@ -624,6 +660,15 @@ apply the skin class to the body tag so the changes take effect.
             }else{
                 $('#' + idHidden).val('');
             }
+        }
+    }
+
+    function cekNumber(id, val){
+        var numbers = /^[0-9]+$/;
+        if(val.match(numbers)) {
+            $('#' + id).val(val);
+        }else{
+            $('#' + id).val('');
         }
     }
 
@@ -797,6 +842,48 @@ apply the skin class to the body tag so the changes take effect.
                 return namaAlat;
             }
         });
+    }
+
+    function setKotaKab(id){
+        $('#'+id).typeahead({
+            minLength: 3,
+            source: function (query, process) {
+                functions = [];
+                mapped = {};
+                var data = [];
+                dwr.engine.setAsync(false);
+                ProvinsiAction.initComboKota(query, "", function (listdata) {
+                    data = listdata;
+                });
+                $.each(data, function (i, item) {
+                    var labelItem = item.kotaName;
+                    mapped[labelItem] = {
+                        id: item.kotaId,
+                        label: labelItem
+                    };
+                    functions.push(labelItem);
+                });
+                process(functions);
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                var remove = selectedObj.label.substring(5);
+                var namaKota = remove;
+                return namaKota;
+            }
+        });
+    }
+
+    function cekDatePicker(val){
+        var tgl = val.split("-");
+        var cek = false;
+        $.each(tgl, function (i, item) {
+            var numbers = /^[0-9]+$/;
+            if(!item.match(numbers)){
+                cek = true;
+            }
+        });
+        return cek;
     }
 
 </script>

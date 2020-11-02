@@ -71,8 +71,12 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     PeriksaLab periksaLab = new PeriksaLab();
                     if (periksaLabEntity.getStatusPeriksa() != null && !"".equalsIgnoreCase(periksaLabEntity.getStatusPeriksa())) {
                         ImSimrsStatusPasienEntity status = getMasterStatusPasienByIdStatus(periksaLabEntity.getStatusPeriksa());
-                        periksaLab.setStatusPeriksa(status.getIdStatusPasien());
-                        periksaLab.setStatusPeriksaName(status.getKeterangan());
+                        if ("0".equalsIgnoreCase(status.getIdStatusPasien()) && "Y".equalsIgnoreCase(periksaLabEntity.getIsPending())) {
+                            periksaLab.setStatusPeriksaName("Pending");
+                        } else {
+                            periksaLab.setStatusPeriksa(status.getIdStatusPasien());
+                            periksaLab.setStatusPeriksaName(status.getKeterangan());
+                        }
                     }
                     ImSimrsLabEntity labEntity = labDao.getById("idLab", periksaLabEntity.getIdLab());
                     if (labEntity != null) {
@@ -100,6 +104,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     if (periksaLabEntity.getTtdPengirim() != null && !"".equalsIgnoreCase(periksaLabEntity.getTtdPengirim())) {
                         periksaLab.setTtdPengirim(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_DOKTER + periksaLabEntity.getTtdPengirim());
                     }
+                    periksaLab.setIsPending(periksaLabEntity.getIsPending());
 
                     periksaLabList.add(periksaLab);
                 }
@@ -259,6 +264,10 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             entity.setLastUpdateWho(periksaLab.getLastUpdateWho());
             entity.setTtdPengirim(periksaLab.getTtdPengirim());
             entity.setIdKategoriLab(periksaLab.getIdKategoriLab());
+            entity.setIsPending(periksaLab.getIsPending());
+            if ("Y".equalsIgnoreCase(entity.getIsPending())) {
+                entity.setApproveFlag("Y");
+            }
 
             try {
                 periksaLabDao.addAndSave(entity);
@@ -391,16 +400,32 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     }
 
     @Override
-    public CheckResponse saveDokterLab(PeriksaLab bean) throws GeneralBOException {
-
+    public CheckResponse saveDokterLab(PeriksaLab bean, List<PeriksaLabDetail> list) throws GeneralBOException {
         logger.info("[PeriksaLabBoImpl.saveDokterLab] start <<<<<<<<<");
-
         CheckResponse response = new CheckResponse();
-
         if (bean != null) {
-
+            if (list.size() > 0) {
+                for (PeriksaLabDetail detail : list) {
+                    ItSimrsPeriksaLabDetailEntity labDetailEntity = periksaLabDetailDao.getById("idPeriksaLabDetail", detail.getIdPeriksaLabDetail());
+                    if (labDetailEntity != null) {
+                        labDetailEntity.setHasil(detail.getHasil());
+                        labDetailEntity.setKeteranganPeriksa(detail.getKeteranganPeriksa());
+                        labDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        labDetailEntity.setLastUpdate(bean.getLastUpdate());
+                        labDetailEntity.setAction("U");
+                        try {
+                            periksaLabDetailDao.updateAndSave(labDetailEntity);
+                            response.setStatus("success");
+                            response.setMessage("Berhasil");
+                        } catch (HibernateException e) {
+                            logger.error(e.getMessage());
+                            response.setStatus("error");
+                            response.setMessage("Error " + e.getMessage());
+                        }
+                    }
+                }
+            }
             ItSimrsPeriksaLabEntity entity = null;
-
             try {
                 entity = periksaLabDao.getById("idPeriksaLab", bean.getIdPeriksaLab());
                 response.setStatus("success");

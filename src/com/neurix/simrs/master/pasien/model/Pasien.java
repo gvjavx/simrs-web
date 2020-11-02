@@ -64,6 +64,25 @@ public class Pasien {
 
     private String isDaftar;
 
+    private String pendidikan;
+    private String statusPerkawinan;
+
+    public String getPendidikan() {
+        return pendidikan;
+    }
+
+    public void setPendidikan(String pendidikan) {
+        this.pendidikan = pendidikan;
+    }
+
+    public String getStatusPerkawinan() {
+        return statusPerkawinan;
+    }
+
+    public void setStatusPerkawinan(String statusPerkawinan) {
+        this.statusPerkawinan = statusPerkawinan;
+    }
+
     public String getIsDaftar() {
         return isDaftar;
     }

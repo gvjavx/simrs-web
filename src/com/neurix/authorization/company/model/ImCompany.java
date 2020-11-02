@@ -146,6 +146,24 @@ public class ImCompany implements Serializable {
 
     private Integer jamBatasAbsen;
     private BigInteger jarakAbsenMobile;
+    private Integer tanggalAwalLembur;
+    private Integer tanggalAkhirLembur;
+
+    public Integer getTanggalAwalLembur() {
+        return tanggalAwalLembur;
+    }
+
+    public void setTanggalAwalLembur(Integer tanggalAwalLembur) {
+        this.tanggalAwalLembur = tanggalAwalLembur;
+    }
+
+    public Integer getTanggalAkhirLembur() {
+        return tanggalAkhirLembur;
+    }
+
+    public void setTanggalAkhirLembur(Integer tanggalAkhirLembur) {
+        this.tanggalAkhirLembur = tanggalAkhirLembur;
+    }
 
     public BigInteger getJarakAbsenMobile() {
         return jarakAbsenMobile;

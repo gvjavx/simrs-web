@@ -48,6 +48,14 @@
                         <div class="form-group">
                             <s:form id="radiologiForm" method="post" namespace="/radiologi" action="search_radiologi.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Periksa Lab</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_periksa_lab" cssStyle="margin-top: 7px"
+                                                     name="periksaLab.idPeriksaLab" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">ID Detail Checkup</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_checkup_detail" cssStyle="margin-top: 7px"

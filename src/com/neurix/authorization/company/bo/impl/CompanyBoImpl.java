@@ -158,6 +158,10 @@ public class CompanyBoImpl implements CompanyBo {
                 imCompanyOld.setLastUpdateWho(companyNew.getLastUpdateWho());
                 imCompanyOld.setLastUpdate(companyNew.getLastUpdate());
 
+                //BARU
+                imCompanyOld.setTanggalAwalLembur(companyNew.getTanggalAwalLembur());
+                imCompanyOld.setTanggalAkhirLembur(companyNew.getTanggalAkhirLembur());
+
                 try {
                     companyDao.updateAndSave(imCompanyOld);
                 } catch (HibernateException e) {
@@ -209,6 +213,8 @@ public class CompanyBoImpl implements CompanyBo {
             resultCompany.setParamDapenPegawai(imCompany.getParamDapenPegawai());
             resultCompany.setBiayaJabatan(imCompany.getBiayaJabatan());
             resultCompany.setJarakAbsenMobile(imCompany.getJarakAbsenMobile());
+            resultCompany.setTanggalAwalLembur(imCompany.getTanggalAwalLembur());
+            resultCompany.setTanggalAkhirLembur(imCompany.getTanggalAkhirLembur());
         }
 
         logger.info("[CompanyBoImpl.getBranchById] end process <<<");

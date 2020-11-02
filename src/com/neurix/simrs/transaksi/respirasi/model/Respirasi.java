@@ -6,7 +6,6 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 public class Respirasi extends BaseModel {
-
     private String idRespirasi;
     private String idDetailCheckup;
     private String waktu;
@@ -16,28 +15,21 @@ public class Respirasi extends BaseModel {
     private String reflekCahaya;
     private String tk;
     private String kk;
-    private String jenisNkRmNrm;
-    private String nkRmNrm;
-    private String jenisTPieceJRise;
-    private String tPieceJRise;
+    private String o2;
     private String tipeVentilasi;
-    private String jenisPeepCpapEt;
-    private String peepCpapEt;
+    private String peep;
     private String frekwensi;
     private String tv;
     private String mv;
-    private String jenisPSupportPAsb;
     private String pSupportPAsb;
-    private String jenisPInsPCon;
     private String pInsPCon;
     private String triger;
     private String insTime;
     private String flow;
-    private String jenisFioKon;
     private String fioKon;
-    private String jenisUkuranKedalamaanEtt;
-    private String ukuranKedalamaanEtt;
-    private String spo;
+    private String ukuranEtt;
+    private String kedalamanEtt;
+    private String spo2;
     private String secret;
     private String keterangan;
     private String flag;
@@ -46,22 +38,6 @@ public class Respirasi extends BaseModel {
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-
-    public String getDiameterPupil() {
-        return diameterPupil;
-    }
-
-    public void setDiameterPupil(String diameterPupil) {
-        this.diameterPupil = diameterPupil;
-    }
-
-    public String getReflekCahaya() {
-        return reflekCahaya;
-    }
-
-    public void setReflekCahaya(String reflekCahaya) {
-        this.reflekCahaya = reflekCahaya;
-    }
 
     public String getIdRespirasi() {
         return idRespirasi;
@@ -103,6 +79,22 @@ public class Respirasi extends BaseModel {
         this.gcs = gcs;
     }
 
+    public String getDiameterPupil() {
+        return diameterPupil;
+    }
+
+    public void setDiameterPupil(String diameterPupil) {
+        this.diameterPupil = diameterPupil;
+    }
+
+    public String getReflekCahaya() {
+        return reflekCahaya;
+    }
+
+    public void setReflekCahaya(String reflekCahaya) {
+        this.reflekCahaya = reflekCahaya;
+    }
+
     public String getTk() {
         return tk;
     }
@@ -119,36 +111,12 @@ public class Respirasi extends BaseModel {
         this.kk = kk;
     }
 
-    public String getJenisNkRmNrm() {
-        return jenisNkRmNrm;
+    public String getO2() {
+        return o2;
     }
 
-    public void setJenisNkRmNrm(String jenisNkRmNrm) {
-        this.jenisNkRmNrm = jenisNkRmNrm;
-    }
-
-    public String getNkRmNrm() {
-        return nkRmNrm;
-    }
-
-    public void setNkRmNrm(String nkRmNrm) {
-        this.nkRmNrm = nkRmNrm;
-    }
-
-    public String getJenisTPieceJRise() {
-        return jenisTPieceJRise;
-    }
-
-    public void setJenisTPieceJRise(String jenisTPieceJRise) {
-        this.jenisTPieceJRise = jenisTPieceJRise;
-    }
-
-    public String gettPieceJRise() {
-        return tPieceJRise;
-    }
-
-    public void settPieceJRise(String tPieceJRise) {
-        this.tPieceJRise = tPieceJRise;
+    public void setO2(String o2) {
+        this.o2 = o2;
     }
 
     public String getTipeVentilasi() {
@@ -159,20 +127,12 @@ public class Respirasi extends BaseModel {
         this.tipeVentilasi = tipeVentilasi;
     }
 
-    public String getJenisPeepCpapEt() {
-        return jenisPeepCpapEt;
+    public String getPeep() {
+        return peep;
     }
 
-    public void setJenisPeepCpapEt(String jenisPeepCpapEt) {
-        this.jenisPeepCpapEt = jenisPeepCpapEt;
-    }
-
-    public String getPeepCpapEt() {
-        return peepCpapEt;
-    }
-
-    public void setPeepCpapEt(String peepCpapEt) {
-        this.peepCpapEt = peepCpapEt;
+    public void setPeep(String peep) {
+        this.peep = peep;
     }
 
     public String getFrekwensi() {
@@ -199,28 +159,12 @@ public class Respirasi extends BaseModel {
         this.mv = mv;
     }
 
-    public String getJenisPSupportPAsb() {
-        return jenisPSupportPAsb;
-    }
-
-    public void setJenisPSupportPAsb(String jenisPSupportPAsb) {
-        this.jenisPSupportPAsb = jenisPSupportPAsb;
-    }
-
     public String getpSupportPAsb() {
         return pSupportPAsb;
     }
 
     public void setpSupportPAsb(String pSupportPAsb) {
         this.pSupportPAsb = pSupportPAsb;
-    }
-
-    public String getJenisPInsPCon() {
-        return jenisPInsPCon;
-    }
-
-    public void setJenisPInsPCon(String jenisPInsPCon) {
-        this.jenisPInsPCon = jenisPInsPCon;
     }
 
     public String getpInsPCon() {
@@ -255,14 +199,6 @@ public class Respirasi extends BaseModel {
         this.flow = flow;
     }
 
-    public String getJenisFioKon() {
-        return jenisFioKon;
-    }
-
-    public void setJenisFioKon(String jenisFioKon) {
-        this.jenisFioKon = jenisFioKon;
-    }
-
     public String getFioKon() {
         return fioKon;
     }
@@ -271,28 +207,28 @@ public class Respirasi extends BaseModel {
         this.fioKon = fioKon;
     }
 
-    public String getJenisUkuranKedalamaanEtt() {
-        return jenisUkuranKedalamaanEtt;
+    public String getUkuranEtt() {
+        return ukuranEtt;
     }
 
-    public void setJenisUkuranKedalamaanEtt(String jenisUkuranKedalamaanEtt) {
-        this.jenisUkuranKedalamaanEtt = jenisUkuranKedalamaanEtt;
+    public void setUkuranEtt(String ukuranEtt) {
+        this.ukuranEtt = ukuranEtt;
     }
 
-    public String getUkuranKedalamaanEtt() {
-        return ukuranKedalamaanEtt;
+    public String getKedalamanEtt() {
+        return kedalamanEtt;
     }
 
-    public void setUkuranKedalamaanEtt(String ukuranKedalamaanEtt) {
-        this.ukuranKedalamaanEtt = ukuranKedalamaanEtt;
+    public void setKedalamanEtt(String kedalamanEtt) {
+        this.kedalamanEtt = kedalamanEtt;
     }
 
-    public String getSpo() {
-        return spo;
+    public String getSpo2() {
+        return spo2;
     }
 
-    public void setSpo(String spo) {
-        this.spo = spo;
+    public void setSpo2(String spo2) {
+        this.spo2 = spo2;
     }
 
     public String getSecret() {
@@ -311,62 +247,50 @@ public class Respirasi extends BaseModel {
         this.keterangan = keterangan;
     }
 
-    @Override
     public String getFlag() {
         return flag;
     }
 
-    @Override
     public void setFlag(String flag) {
         this.flag = flag;
     }
 
-    @Override
     public String getAction() {
         return action;
     }
 
-    @Override
     public void setAction(String action) {
         this.action = action;
     }
 
-    @Override
     public String getCreatedWho() {
         return createdWho;
     }
 
-    @Override
     public void setCreatedWho(String createdWho) {
         this.createdWho = createdWho;
     }
 
-    @Override
     public Timestamp getCreatedDate() {
         return createdDate;
     }
 
-    @Override
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
-    @Override
     public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    @Override
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
-    @Override
     public String getLastUpdateWho() {
         return lastUpdateWho;
     }
 
-    @Override
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
     }

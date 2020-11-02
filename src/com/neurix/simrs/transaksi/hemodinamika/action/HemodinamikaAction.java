@@ -43,8 +43,11 @@ public class HemodinamikaAction {
             if(!"".equalsIgnoreCase(obj.getString("tensi"))){
                 hemodinamika.setTensi(new Integer(String.valueOf(obj.getString("tensi"))));
             }
-            if(!"".equalsIgnoreCase(obj.getString("bp"))){
-                hemodinamika.setBp(new Integer(String.valueOf(obj.getString("bp"))));
+            if(!"".equalsIgnoreCase(obj.getString("st"))){
+                hemodinamika.setSistole(new Integer(String.valueOf(obj.getString("st"))));
+            }
+            if(!"".equalsIgnoreCase(obj.getString("dt"))){
+                hemodinamika.setDiastole(new Integer(String.valueOf(obj.getString("dt"))));
             }
             if(!"".equalsIgnoreCase(obj.getString("hi"))){
                 hemodinamika.setHi(new Integer(String.valueOf(obj.getString("hi"))));
@@ -53,7 +56,7 @@ public class HemodinamikaAction {
                 hemodinamika.setRr(new Integer(String.valueOf(obj.getString("rr"))));
             }
             if(!"".equalsIgnoreCase(obj.getString("ekg"))){
-                hemodinamika.setEkg(new Integer(String.valueOf(obj.getString("ekg"))));
+                hemodinamika.setEkg(obj.getString("ekg"));
             }
             if(!"".equalsIgnoreCase(obj.getString("icp"))){
                 hemodinamika.setIcp(new Integer(String.valueOf(obj.getString("icp"))));

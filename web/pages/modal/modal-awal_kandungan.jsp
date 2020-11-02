@@ -112,8 +112,13 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-5">Haid Manarche</label>
-                            <div class="col-md-3">
-                                <input class="form-control" id="rb6" type="number" placeholder="tahun">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input onchange="setHPL('rb11', this.id, 'rb9')" class="form-control ptr-tgl" id="rb6" placeholder="HTPH" readonly style="cursor: pointer">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -139,7 +144,7 @@
                         <div class="form-group">
                             <label class="col-md-5">Lama</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="rb9" type="number" placeholder="hari">
+                                <input onchange="setHPL('rb11', 'rb6', this.id)" class="form-control" id="rb9" type="number" placeholder="hari">
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
@@ -159,9 +164,18 @@
                             <div class="col-md-3">
                                 <input class="form-control" id="rb10" type="number">
                             </div>
-                            <label class="col-md-1">HPL</label>
-                            <div class="col-md-3">
-                                <input class="form-control" id="rb11" type="number">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-5">HPL</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control" id="rb11" readonly style="cursor: pointer">
+                                </div>
                             </div>
                         </div>
                     </div>

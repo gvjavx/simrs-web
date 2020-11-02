@@ -33,6 +33,7 @@ function setDataPasien() {
     var radioPas = $('.radiologi-pasien').length;
     var sipRi = $('.sip_dokter_ri').length;
     var namaDokRi = $('.nama_dokter_ri').length;
+    var namaPetugas = $('.nama_petugas').length;
 
     if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
         dwr.engine.setAsync(true);
@@ -191,6 +192,16 @@ function setDataPasien() {
             }
         });
     }
+    if(namaPetugas > 0){
+        dwr.engine.setAsync(true);
+        CheckupAction.cekLogin({
+            callback: function (res) {
+                if (res != '') {
+                    $('.nama_petugas').val(res);
+                }
+            }
+        });
+    }
     if (bb > 0) {
         $('.berat-pasien').val(tempBerat);
     }
@@ -199,6 +210,7 @@ function setDataPasien() {
     }
     if (sel > 0) {
         $('.select2').select2();
+        $('.select2').attr('style', 'width: 100%');
     }
     if (idP > 0) {
         $('.norm-pasien').val(idPasien);
@@ -224,4 +236,6 @@ function setDataPasien() {
     if (rr > 0) {
         $('.rr-pasien').val(tempRr);
     }
+
+    $('[data-mask]').inputmask();
 }
