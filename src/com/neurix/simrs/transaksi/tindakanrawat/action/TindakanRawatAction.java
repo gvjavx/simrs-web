@@ -185,26 +185,36 @@ public class TindakanRawatAction extends BaseMasterAction {
                 }
             }
 
+            BigInteger tarifBpjs = tindakanResult.getTarifBpjs();
+            BigInteger tarifNormal = tindakanResult.getTarif();
+            if(tindakanResult.getDiskon() != null && !"".equalsIgnoreCase(tindakanResult.getDiskon().toString()) && tindakanResult.getDiskon().intValue() > 0){
+                BigDecimal diskonTarif = (new BigDecimal(100).subtract(tindakanResult.getDiskon())).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP);
+                BigDecimal hasilTarifBpjs = new BigDecimal(tindakanResult.getTarifBpjs()).multiply(diskonTarif);
+                BigDecimal hasilTarifNormal = new BigDecimal(tindakanResult.getTarif()).multiply(diskonTarif);
+                tarifBpjs = hasilTarifBpjs.toBigInteger();
+                tarifNormal = hasilTarifNormal.toBigInteger();
+            }
+
             if ("bpjs".equalsIgnoreCase(jenisTransaksi)){
-                tindakanRawat.setTarif(tindakanResult.getTarifBpjs());
+                tindakanRawat.setTarif(tarifBpjs);
             }else if("rekanan".equalsIgnoreCase(jenisTransaksi)){
                 if("Y".equalsIgnoreCase(ops.getIsBpjs())){
                     if(ops.getDiskon() != null){
-                        BigDecimal hasil = new BigDecimal(tindakanResult.getTarif()).multiply(ops.getDiskon());
+                        BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
                         tindakanRawat.setTarif(hasil.toBigInteger());
                     }else{
-                        tindakanRawat.setTarif(tindakanResult.getTarifBpjs());
+                        tindakanRawat.setTarif(tarifBpjs);
                     }
                 }else{
                     if(ops.getDiskon() != null){
-                        BigDecimal hasil = new BigDecimal(tindakanResult.getTarif()).multiply(ops.getDiskon());
+                        BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
                         tindakanRawat.setTarif(hasil.toBigInteger());
                     }else{
-                        tindakanRawat.setTarif(tindakanResult.getTarif());
+                        tindakanRawat.setTarif(tarifNormal);
                     }
                 }
             }else {
-                tindakanRawat.setTarif(tindakanResult.getTarif());
+                tindakanRawat.setTarif(tarifNormal);
             }
 
             tindakanRawat.setNamaTindakan(tindakanResult.getTindakan());
@@ -296,26 +306,36 @@ public class TindakanRawatAction extends BaseMasterAction {
                 }
             }
 
+            BigInteger tarifBpjs = tindakanResult.getTarifBpjs();
+            BigInteger tarifNormal = tindakanResult.getTarif();
+            if(tindakanResult.getDiskon() != null && !"".equalsIgnoreCase(tindakanResult.getDiskon().toString()) && tindakanResult.getDiskon().intValue() > 0){
+                BigDecimal diskonTarif = (new BigDecimal(100).subtract(tindakanResult.getDiskon())).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP);
+                BigDecimal hasilTarifBpjs = new BigDecimal(tindakanResult.getTarifBpjs()).multiply(diskonTarif);
+                BigDecimal hasilTarifNormal = new BigDecimal(tindakanResult.getTarif()).multiply(diskonTarif);
+                tarifBpjs = hasilTarifBpjs.toBigInteger();
+                tarifNormal = hasilTarifNormal.toBigInteger();
+            }
+
             if ("bpjs".equalsIgnoreCase(jenisTransaksi)){
-                tindakanRawat.setTarif(tindakanResult.getTarifBpjs());
+                tindakanRawat.setTarif(tarifBpjs);
             }else if("rekanan".equalsIgnoreCase(jenisTransaksi)){
                 if("Y".equalsIgnoreCase(ops.getIsBpjs())){
                     if(ops.getDiskon() != null){
-                        BigDecimal hasil = new BigDecimal(tindakanResult.getTarif()).multiply(ops.getDiskon());
+                        BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
                         tindakanRawat.setTarif(hasil.toBigInteger());
                     }else{
-                        tindakanRawat.setTarif(tindakanResult.getTarifBpjs());
+                        tindakanRawat.setTarif(tarifBpjs);
                     }
                 }else{
                     if(ops.getDiskon() != null){
-                        BigDecimal hasil = new BigDecimal(tindakanResult.getTarif()).multiply(ops.getDiskon());
+                        BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
                         tindakanRawat.setTarif(hasil.toBigInteger());
                     }else{
-                        tindakanRawat.setTarif(tindakanResult.getTarif());
+                        tindakanRawat.setTarif(tarifNormal);
                     }
                 }
             }else {
-                tindakanRawat.setTarif(tindakanResult.getTarif());
+                tindakanRawat.setTarif(tarifNormal);
             }
 
             tindakanRawat.setNamaTindakan(tindakanResult.getTindakan());

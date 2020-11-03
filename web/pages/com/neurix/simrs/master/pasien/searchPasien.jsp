@@ -543,24 +543,24 @@
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Provinsi</label>
-                                <input class="form-control" id="add_provinsi" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_provinsi" oninput="$(this).css('border',''); setProvAtas(this.id, 'add_id_provinsi')">
                                 <input type="hidden" id="add_id_provinsi">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Kota</label>
-                                <input class="form-control" id="add_kota" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_kota" oninput="$(this).css('border',''); setKabAtas(this.id, 'add_id_kota', 'add_id_provinsi')">
                                 <input type="hidden" id="add_id_kota">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Kecamatan</label>
-                                <input class="form-control" id="add_kecamatan" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_kecamatan" oninput="$(this).css('border',''); setKecAtas(this.id, 'add_id_kecamatan', 'add_id_kota')">
                                 <input type="hidden" id="add_id_kecamatan">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Kelurahan/Desa</label>
-                                <input class="form-control" id="add_desa" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_desa" oninput="$(this).css('border',''); setDesAtas(this.id, 'add_id_desa', 'add_id_kecamatan')">
                                 <input type="hidden" id="add_id_desa">
                             </div>
                             <div class="form-group">
@@ -1024,129 +1024,6 @@
         }
 
     }
-
-    var functions, mapped;
-    $('#add_provinsi').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboProvinsi(query, function (listdata) {
-                data = listdata;
-            });
-
-            $.each(data, function (i, item) {
-                var labelItem = item.provinsiName;
-                mapped[labelItem] = {id: item.provinsiId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("add_id_provinsi").value = selectedObj.id;
-            prov = selectedObj.id;
-            return namaAlat;
-        }
-    });
-
-    $('#add_kota').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboKota(query, prov, function (listdata) {
-                data = listdata;
-            });
-            //alert(prov);
-            $.each(data, function (i, item) {
-                //alert(item.kotaName);
-                var labelItem = item.kotaName;
-                mapped[labelItem] = {id: item.kotaId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("add_id_kota").value = selectedObj.id;
-
-            kab = selectedObj.id;
-            return namaAlat;
-        }
-    });
-
-    $('#add_kecamatan').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboKecamatan(query, kab, function (listdata) {
-                data = listdata;
-            });
-            //alert(prov);
-            $.each(data, function (i, item) {
-                //alert(item.kotaName);
-                var labelItem = item.kecamatanName;
-                mapped[labelItem] = {id: item.kecamatanId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("add_id_kecamatan").value = selectedObj.id;
-
-            kec = selectedObj.id;
-            return namaAlat;
-        }
-    });
-
-    $('#add_desa').typeahead({
-        minLength: 1,
-        source: function (query, process) {
-            functions = [];
-            mapped = {};
-
-            var data = [];
-            dwr.engine.setAsync(false);
-            ProvinsiAction.initComboDesa(query, kec, function (listdata) {
-                data = listdata;
-            });
-            //alert(prov);
-            $.each(data, function (i, item) {
-                //alert(item.kotaName);
-                var labelItem = item.desaName;
-                mapped[labelItem] = {id: item.desaId, label: labelItem};
-                functions.push(labelItem);
-            });
-
-            process(functions);
-        },
-        updater: function (item) {
-            var selectedObj = mapped[item];
-            var namaAlat = selectedObj.label;
-            document.getElementById("add_id_desa").value = selectedObj.id;
-
-            desa = selectedObj.id;
-            return namaAlat;
-        }
-    });
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

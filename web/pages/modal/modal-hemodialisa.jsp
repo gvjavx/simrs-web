@@ -84,7 +84,7 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                             </td>
                         </tr>
                         <tr id="row_hd_intervensi">
-                            <td>Intervensi Keperawatan (Rekapitulasi pre-intra dalam post-HD)</td>
+                            <td>Intervensi Keperawatan</td>
                             <td width="20%" align="center">
                                 <img id="btn_hd_intervensi" class="hvr-grow" onclick="detailMonHD('intervensi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
@@ -533,24 +533,48 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                                            name="pkj21"/><label for="pkj211">AV Vistula</label>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-2">
                                 <div class="custom02">
                                     <input type="radio" value="Femoral" id="pkj212"
                                            name="pkj21"/><label for="pkj212">Femoral</label>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3">Punctie Arteri</label>
-                            <label class="col-md-2">HD Kateter</label>
-                            <div class="col-md-4">
-                                <input class="form-control" id="pkj23">
+                            <div class="col-md-2">
+                                <div class="custom02">
+                                    <input type="radio" value="AV Shunt" id="pkj213"
+                                           name="pkj21"/><label for="pkj213">AV Shunt</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="custom02">
+                                    <input type="radio" value="Puntie Arteri" id="pkj214"
+                                           name="pkj21"/><label for="pkj214">Puntie Arteri</label>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-3 col-md-3">
+                                <div class="custom02">
+                                    <input type="radio" value="HD Kateter" id="pkj215"
+                                           name="pkj21"/><label for="pkj215">HD Kateter</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="custom02">
+                                    <input type="radio" value="Double Lumen" id="pkj216"
+                                           name="pkj21"/><label for="pkj216">Double Lumen</label>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <hr class="garis">
+                    <%--<div class="row">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3">Punctie Arteri</label>--%>
+                            <%--<label class="col-md-2">HD Kateter</label>--%>
+                            <%--<div class="col-md-4">--%>
+                                <%--<input class="form-control" id="pkj23">--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
@@ -1005,8 +1029,7 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Intervensi Keperawatan (Rekapitulasi pre-intra
-                    dalam post-HD)
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Intervensi Keperawatan
                 </h4>
             </div>
             <div class="modal-body">
@@ -1016,12 +1039,15 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                         <p id="msg_hd_intervensi"></p>
                     </div>
                     <div class="row">
+                        <div class="col-md-12"><b>Mandiri</b></div>
+                    </div>
+                    <div class="row">
                         <div class="form-group">
                             <div class="col-md-12">
                                 <div class="form-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="inter1" id="inter1"
                                            value="Monitor barat badan, Intake out put">
-                                    <label for="inter1"></label> Monitor barat badan, Intake out put
+                                    <label for="inter1"></label> Monitor berat badan, Intake output
                                 </div>
                             </div>
                         </div>
@@ -1071,11 +1097,14 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-12">
+                            <div class="col-md-3">
                                 <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="inter1" id="inter17" value="PENKES">
+                                    <input type="checkbox" name="inter1" id="inter17">
                                     <label for="inter17"></label> PENKES
                                 </div>
+                            </div>
+                            <div class="col-md-9">
+                                <input class="form-control" style="margin-top: 4px; margin-left: -11px" onchange="$('#inter17').val('PENKES, '+this.value)">
                             </div>
                         </div>
                         <div class="form-group">
@@ -1134,80 +1163,140 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                             </div>
                         </div>
                         <div class="form-group">
+                            <div class="col-md-1">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="inter1" id="inter114">
+                                    <label for="inter114"></label>
+                                </div>
+                            </div>
+                            <div class="col-md-11">
+                                <input class="form-control" style="margin-top: 4px; margin-left: -11px" oninput="$('#inter114').val(this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-1">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="inter1" id="inter115">
+                                    <label for="inter115"></label>
+                                </div>
+                            </div>
+                            <div class="col-md-11">
+                                <input class="form-control" style="margin-top: 4px; margin-left: -11px" oninput="$('#inter115').val(this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-1">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="inter1" id="inter116">
+                                    <label for="inter116"></label>
+                                </div>
+                            </div>
+                            <div class="col-md-11">
+                                <input class="form-control" style="margin-top: 4px; margin-left: -11px" oninput="$('#inter116').val(this.value)">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="garis"></hr>
+                    <div class="row">
+                        <div class="col-md-12"><b>Kolaborasi</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
                             <div class="col-md-12">
                                 <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="inter1" id="inter114" value="Program HD">
-                                    <label for="inter114"></label> Program HD
+                                    <input type="checkbox" name="inter2" id="inter214" value="Program HD">
+                                    <label for="inter214"></label> Program HD
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
                                 <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="inter1" id="inter116" value="Pemeberian Oa Glukonas">
-                                    <label for="inter116"></label> Pemeberian Oa Glukonas
+                                    <input type="checkbox" name="inter2" id="inter216" value="Pemeberian Oa Glukonas">
+                                    <label for="inter216"></label> Pemeberian Oa Glukonas
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
                                 <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="inter1" id="inter117" value="Transfusi Darah">
-                                    <label for="inter117"></label> Transfusi Darah
+                                    <input type="checkbox" name="inter2" id="inter217" value="Transfusi Darah">
+                                    <label for="inter217"></label> Transfusi Darah
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
                                 <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="inter1" id="inter118" value="Kaloborasi Dllt">
-                                    <label for="inter118"></label> Kaloborasi Dllt
+                                    <input type="checkbox" name="inter2" id="inter218" value="Kaloborasi Dllt">
+                                    <label for="inter218"></label> Kaloborasi Dllt
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
                                 <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="inter1" id="inter119" value="Pemberian Preparat Besi">
-                                    <label for="inter119"></label> Pemberian Preparat Besi
+                                    <input type="checkbox" name="inter2" id="inter219" value="Pemberian Preparat Besi">
+                                    <label for="inter219"></label> Pemberian Preparat Besi
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
                                 <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="inter1" id="inter120" value="Pemberian Erytropostin">
-                                    <label for="inter120"></label> Pemberian Erytropostin
+                                    <input type="checkbox" name="inter2" id="inter220" value="Pemberian Erytropostin">
+                                    <label for="inter220"></label> Pemberian Erytropostin
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
                                 <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="inter1" id="inter121" value="Obat-obat Emergensi">
-                                    <label for="inter121"></label> Obat-obat Emergensi
+                                    <input type="checkbox" name="inter2" id="inter221" value="Obat-obat Emergensi">
+                                    <label for="inter221"></label> Obat-obat Emergensi
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
                                 <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="inter1" id="inter122"
+                                    <input type="checkbox" name="inter2" id="inter222"
                                            value="Pemberian antipiretik/Analgetik">
-                                    <label for="inter122"></label> Pemberian antipiretik/Analgetik
+                                    <label for="inter222"></label> Pemberian antipiretik/Analgetik
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-1">
                                 <div class="form-check" style="margin-top: 7px;">
-                                    <input type="checkbox" name="inter1" id="inter123">
-                                    <label for="inter123"></label>
+                                    <input type="checkbox" name="inter2" id="inter223">
+                                    <label for="inter223"></label>
                                 </div>
                             </div>
-                            <div class="col-md-10">
-                                <input class="form-control" style="margin-top: 4px; margin-left: -11px"
-                                       id="lain-lain_inter1" oninput="$('#inter123').val(this.value)">
+                            <div class="col-md-11">
+                                <input class="form-control" style="margin-top: 4px; margin-left: -11px" oninput="$('#inter223').val(this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-1">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="inter2" id="inter224">
+                                    <label for="inter223"></label>
+                                </div>
+                            </div>
+                            <div class="col-md-11">
+                                <input class="form-control" style="margin-top: 4px; margin-left: -11px" oninput="$('#inter224').val(this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-1">
+                                <div class="form-check" style="margin-top: 7px;">
+                                    <input type="checkbox" name="inter2" id="inter225">
+                                    <label for="inter223"></label>
+                                </div>
+                            </div>
+                            <div class="col-md-11">
+                                <input class="form-control" style="margin-top: 4px; margin-left: -11px" oninput="$('#inter225').val(this.value)">
                             </div>
                         </div>
                     </div>
@@ -1449,7 +1538,7 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" onclick="showKetHD(this.value, 'im1')" value="Bled" id="im15" name="im1" /><label for="im15">Bled</label>
+                                    <input type="radio" onclick="showKetHD(this.value, 'im1')" value="Sled" id="im15" name="im1" /><label for="im15">Sled</label>
                                 </div>
                             </div>
                             <div class="col-md-5">
@@ -1491,9 +1580,10 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Prog Profilling</label>
-                            <div class="col-md-1">
-                                <div class="custom02">
-                                    <input type="radio" value="Na" id="im61" name="im6" /><label for="im61">Na</label>
+                            <div class="col-md-2">
+                                <div class="form-check">
+                                    <input type="checkbox" value="Na" id="im61" name="im6">
+                                    <label for="im61"></label> Na
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -1507,12 +1597,13 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <div class="col-md-offset-3 col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Bicarbonat" id="im62" name="im6" /><label for="im62">Bicarbonat</label>
+                            <div class="col-md-offset-3 col-md-3">
+                                <div class="form-check">
+                                    <input type="checkbox" value="Bicarbonat" id="im62" name="im6">
+                                    <label for="im62"></label> Bicarbonat
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <input class="form-control" id="ket_im621">
                             </div>
                         </div>
@@ -1521,9 +1612,10 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3">Dialisat</label>
-                            <div class="col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Bicarbonat" id="im71" name="im7" /><label for="im71">Bicarbonat</label>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input type="checkbox" id="im71" name="im7">
+                                    <label for="im71"></label> Bicarbonat
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -1533,9 +1625,10 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <div class="col-md-offset-3 col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Conductivity" id="im72" name="im7" /><label for="im72">Conductivity</label>
+                            <div class="col-md-offset-3 col-md-3">
+                                <div class="form-check">
+                                    <input type="checkbox" id="im72" name="im7">
+                                    <label for="im72"></label> Conductivity
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -1545,9 +1638,10 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <div class="col-md-offset-3 col-md-2">
-                                <div class="custom02">
-                                    <input type="radio" value="Temperatur" id="im73" name="im7" /><label for="im73">Temperatur</label>
+                            <div class="col-md-offset-3 col-md-3">
+                                <div class="form-check">
+                                    <input type="checkbox" id="im73" name="im7">
+                                    <label for="im73"></label> Temperatur
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -1650,8 +1744,8 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                                 <label>TTD Dokter</label>
                                 <canvas class="paint-canvas-ttd" id="im016" width="220"
                                         onmouseover="paintTtd('im016')"></canvas>
-                                <input class="form-control" id="im_nama_petugas" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="im_sip_petugas" placeholder="SIP">
+                                <input class="form-control nama_dokter_ri" id="im_nama_petugas" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="im_sip_petugas" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('im016')"><i
                                         class="fa fa-trash"></i> Clear
@@ -1768,11 +1862,11 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                         <div class="form-group">
                             <label class="col-md-3">Makan Minum</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="obs10" type="number">
+                                <input class="form-control" id="obs10">
                             </div>
                             <label class="col-md-3">Muntah</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="obs11" type="number">
+                                <input class="form-control" id="obs11">
                             </div>
                         </div>
                     </div>
@@ -1784,7 +1878,7 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                             </div>
                             <label class="col-md-3">Keterangan</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="obs13" type="number">
+                                <input class="form-control" id="obs13">
                             </div>
                         </div>
                     </div>
@@ -1847,8 +1941,8 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                             </div>
                             <div class="col-md-4">
                                 <div class="form-check">
-                                    <input type="checkbox" name="phd1" id="phd12" value="Hipotebel">
-                                    <label for="phd12"></label> Hipotebel
+                                    <input type="checkbox" name="phd1" id="phd12" value="Hipotebsl">
+                                    <label for="phd12"></label> Hipotebsl
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -1864,7 +1958,7 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                             <div class="col-md-4">
                                 <div class="form-check">
                                     <input type="checkbox" name="phd1" id="phd14" value="Firat Use">
-                                    <label for="phd14"></label> Firat Use
+                                    <label for="phd14"></label> First Use
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -3161,7 +3255,7 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Pungsi</label>
+                            <label class="col-md-4" style="margin-top: 7px">Akses Vaskuler</label>
                             <div class="col-md-6">
                                 <input class="form-control" id="td10" style="margin-top: 7px">
                             </div>
@@ -3211,7 +3305,7 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Berat Badan Kering</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="td18" style="margin-top: 7px">
+                                <input class="form-control" id="td18" style="margin-top: 7px" type="number">
                             </div>
                         </div>
                         <div class="form-group">

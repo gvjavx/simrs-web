@@ -1369,6 +1369,15 @@
                                    oninput="$(this).css('border','')" onchange="$(this).css('border','')" value="1">
                         </div>
                     </div>
+                    <input type="hidden" id="is_edit">
+                    <input type="hidden" id="is_elektif">
+                    <div class="form-group" style="display: none" id="form_elektif">
+                        <label class="col-md-3" style="margin-top: 7px">Jumlah Jam</label>
+                        <div class="col-md-7">
+                            <input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty_elektif"
+                                   oninput="$(this).css('border','')" onchange="$(this).css('border','')">
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">

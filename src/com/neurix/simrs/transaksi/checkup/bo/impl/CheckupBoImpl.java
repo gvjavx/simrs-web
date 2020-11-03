@@ -723,6 +723,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     periksaLab.setCreatedDate(bean.getCreatedDate());
                     periksaLab.setLastUpdateWho(bean.getLastUpdateWho());
                     periksaLab.setLastUpdate(bean.getLastUpdate());
+                    periksaLab.setIdKategoriLab(headerCheckupDao.getIdKategoriLab(bean.getIdLab()));
                     periksaLab.setKeterangan("just_lab");
                     saveOrderLab(periksaLab);
                 }

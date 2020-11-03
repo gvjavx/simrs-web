@@ -618,11 +618,9 @@
     function checkBpjs(){
         var noBpjs = $('#no_bpjs').val();
         $('#btn-cek').html('<i class="fa fa-spinner fa-spin"></i> Loading...');
-
         dwr.engine.setAsync(true);
         CheckupAction.completeBpjs(noBpjs, {
             callback: function (response) {
-                console.log(response);
                     if(response.statusBpjs == "AKTIF"){
                         if (response.nama != null) {
                             $('#btn-cek').html('<i class="fa fa-search"></i> Search');
