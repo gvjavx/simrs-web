@@ -17,12 +17,11 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var namaPelayanan = document.getElementById("namaPelayanan1").value;
-            var branchId = document.getElementById("branchId1").value;
-            var positionId = document.getElementById("positionId1").value;
-            var tipePelayanan = document.getElementById("tipePelayanan1").value;
-            console.log(namaPelayanan);
+            // var branchId = document.getElementById("branchId1").value;
+            // var positionId = document.getElementById("positionId1").value;
+            // var tipePelayanan = document.getElementById("tipePelayanan1").value;
 
-            if (namaPelayanan != ''&& branchId != '' && positionId != '' && tipePelayanan != '') {
+            if (namaPelayanan != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -30,24 +29,34 @@
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
                 }
-            } else {
+
+                // if (brancelse {
+                //     event.originalEvent.options.submit = false;
+                //     var msg = "";
+                //     if (namaPelayanan == '') {
+                //         msg += 'Field <strong>Nama Pelayanan </strong> is required.' + '<br/>';
+                //     }
+                        // hId == '') {
+                //     msg += 'Field <strong>Unit </strong> is required.' + '<br/>';
+                // }
+                // if (positionId == '') {
+                //     msg += 'Field <strong>Divisi </strong> is required.' + '<br/>';
+                // }
+                //
+                // if (tipePelayanan == '') {
+                //     msg += 'Field <strong>Tipe Pelayanan </strong> is required.' + '<br/>';
+                // }
+                //
+                // document.getElementById('errorValidationMessage1').innerHTML = msg;
+                //
+                // $.publish('showErrorValidationDialog');
+            }else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
                 if (namaPelayanan == '') {
-                    msg += 'Field <strong>Nama Pelayanan </strong> is required.' + '<br/>';
+                    msg += 'Field <strong>namaPelayanan </strong> is required.' + '<br/>';
                 }
-                if (branchId == '') {
-                    msg += 'Field <strong>Unit </strong> is required.' + '<br/>';
-                }
-                if (positionId == '') {
-                    msg += 'Field <strong>Divisi </strong> is required.' + '<br/>';
-                }
-
-                if (tipePelayanan == '') {
-                    msg += 'Field <strong>Tipe Pelayanan </strong> is required.' + '<br/>';
-                }
-
-                document.getElementById('errorValidationMessage1').innerHTML = msg;
+                document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
             }
@@ -81,7 +90,8 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addPelayananForm" method="post" theme="simple" namespace="/pelayanan" action="saveAdd_pelayanan" cssClass="well form-horizontal">
+            <s:form id="addPelayananForm" method="post" theme="simple"
+                    namespace="/pelayanan" action="saveAdd_pelayanan" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -106,7 +116,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaPelayanan1" name="pelayanan.namaPelayanan" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="namaPelayanan1" name="pelayanan.namaPelayanan"
+                                             required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -118,7 +129,8 @@
                             <table>
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                 <s:select list="#initComboBranch.listOfComboBranch" id="branchId1" name="pelayanan.branchId"
-                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -131,7 +143,8 @@
                             <table>
                                 <s:action id="initComboPosition" namespace="/pelayanan" name="initComboPosition_pelayanan"/>
                                 <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="pelayanan.positionId"
-                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -142,8 +155,11 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Instalasi Farmasi RJ', 'apotek_ri' : 'Instalasi Farmasi RI',
-                                                                'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
+                                <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan',
+                                                                'apotek' : 'Instalasi Farmasi RJ',
+                                                                 'apotek_ri' : 'Instalasi Farmasi RI',
+                                                                'rawat_inap' : 'Rawat Inap',
+                                                                 'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
                                           id="tipePelayanan" name="pelayanan.tipePelayanan"
                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>

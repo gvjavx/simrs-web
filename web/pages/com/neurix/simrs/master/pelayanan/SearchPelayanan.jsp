@@ -56,7 +56,8 @@
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="pelayananForm" method="post"  theme="simple" namespace="/pelayanan" action="search_pelayanan.action" cssClass="form-horizontal">
+                                    <s:form id="pelayananForm" method="post"  theme="simple"
+                                            namespace="/pelayanan" action="search_pelayanan.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -71,20 +72,26 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="idPelayanan" name="pelayanan.idPelayanan" required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:textfield id="idPelayanan"
+                                                                     name="pelayanan.idPelayanan"
+                                                                     required="true" disabled="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
+
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Nama Pelayanan :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="namaPelayanan" name="pelayanan.namaPelayanan" required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:textfield id="namaPelayanan"
+                                                                     name="pelayanan.namaPelayanan"
+                                                                     required="true" disabled="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
+
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Unit :</small></label>
@@ -97,12 +104,14 @@
                                                         <s:if test='pelayanan.branchUser == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pelayanan.branchId"
-                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                                                      cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="pelayanan.branchId" disabled="true"
-                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                                                      cssClass="form-control"/>
                                                             <s:hidden id="branchId" name="pelayanan.branchId" />
                                                         </s:else>
                                                     </table>
@@ -220,7 +229,9 @@
 
                                                         <s:set name="listOfsearchPelayanan" value="#session.listOfResultPelayanan" scope="request" />
                                                         <display:table name="listOfsearchPelayanan" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_pelayanan.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                                       requestURI="paging_displaytag_pelayanan.action" export="true" id="row"
+                                                                       pagesize="14" style="font-size:10">
+
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
                                                                     <s:url var="urlEdit" namespace="/pelayanan" action="edit_pelayanan" escapeAmp="false">
@@ -268,7 +279,8 @@
                                                     <div id="crud">
                                                         <td>
                                                             <table>
-                                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog"
+                                                                           modal="true" resizable="false"
                                                                            height="280" width="500" autoOpen="false" title="Warning"
                                                                            buttons="{
                                                                         'OK':function() { $('#error_validation_dialog').dialog('close'); }
@@ -276,7 +288,8 @@
                                                                 >
                                                                     <div class="alert alert-error fade in">
                                                                         <label class="control-label" align="left">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                                                 name="icon_error"> Please check this field :
                                                                             <br/>
                                                                             <center><div id="errorValidationMessage"></div></center>
                                                                         </label>

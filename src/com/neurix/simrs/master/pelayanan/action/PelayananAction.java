@@ -389,7 +389,7 @@ public class PelayananAction extends BaseMasterAction {
 
         Position position = new Position();
         position.setFlag("Y");
-        position.setKategori("pelayanan");
+//        position.setKategori("pelayanan");
         List<Position> listOfPosition = new ArrayList<Position>();
         try {
             listOfPosition = positionBoProxy.getByCriteria(position);

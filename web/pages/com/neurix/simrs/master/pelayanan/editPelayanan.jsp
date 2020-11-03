@@ -122,16 +122,19 @@
                             </table>
                         </td>
                     </tr>
+
                     <tr>
                         <td>
                             <label class="control-label"><small>Nama Pelayanan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaPelayanan1" name="pelayanan.namaPelayanan" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="namaPelayanan1" name="pelayanan.namaPelayanan"
+                                             required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
+
                     <tr>
                         <td>
                             <label class="control-label"><small>Unit :</small></label>
@@ -145,7 +148,7 @@
                         </td>
                     </tr>
 
-                    <tr>az
+                    <tr>
                         <td>
                             <label class="control-label"><small>Divisi :</small></label>
                         </td>
@@ -166,7 +169,7 @@
                             <table>
                                 <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Instalasi Farmasi RJ', 'apotek_ri' : 'Instalasi Farmasi RI',
                                                                 'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
-                                          id="tipePelayanan" name="pelayanan.tipePelayanan"
+                                          id="tipePelayanan1" name="pelayanan.tipePelayanan"
                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
