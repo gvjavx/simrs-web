@@ -37,6 +37,10 @@
                 -webkit-transform: rotate(359deg);
             }
         }
+        .ui-widget-overlay {
+            background: black !important;
+            opacity: .5 !important;
+        }
     </style>
 </head>
 <script type="text/javascript">

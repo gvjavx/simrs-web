@@ -33,6 +33,7 @@ import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.mobileapi.antrian.model.Antrian;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
@@ -765,10 +766,13 @@ public class TelemedicBoImpl implements TelemedicBo {
             Map hsCriteria = new HashMap();
             hsCriteria.put("branch_id", branchId);
             hsCriteria.put("kategori_ina_bpjs", "konsultasi");
-            List<ImSimrsTindakanEntity> tindakanEntities = tindakanDao.getByCriteria(hsCriteria);
-            ImSimrsTindakanEntity tindakanEntity = null;
+            Tindakan tindakan = new Tindakan();
+            tindakan.setBranchId(branchId);
+            tindakan.setKategoriInaBpjs("konsultasi");
+            List<Tindakan> tindakanEntities = tindakanDao.getListDataTindakan(tindakan);
+            Tindakan tindakanEntity = null;
             if (tindakanEntities.size() > 0){
-                tindakanEntity = new ImSimrsTindakanEntity();
+                tindakanEntity = new Tindakan();
                 tindakanEntity = tindakanEntities.get(0);
             }
 

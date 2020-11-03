@@ -306,12 +306,16 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     detailCheckup.setStatusBayar(obj[12] == null ? "" : obj[12].toString());
 
                     HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
-                    if ("umum".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
-                        if ("Y".equalsIgnoreCase(detailCheckup.getStatusBayar())) {
-                            headerDetailCheckup.setIsBayar("Y");
-                        } else {
-                            headerDetailCheckup.setIsBayar("N");
+                    if(obj[14] != null){
+                        if ("umum".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
+                            if ("Y".equalsIgnoreCase(detailCheckup.getStatusBayar())) {
+                                headerDetailCheckup.setIsBayar("Y");
+                            } else {
+                                headerDetailCheckup.setIsBayar("N");
+                            }
                         }
+                    }else{
+                        headerDetailCheckup.setIsBayar("Y");
                     }
 
                     headerDetailCheckup.setIdDetailCheckup(obj[0].toString());

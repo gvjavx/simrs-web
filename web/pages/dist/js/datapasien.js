@@ -199,6 +199,7 @@ function setDataPasien() {
     }
     if (sel > 0) {
         $('.select2').select2();
+        $('.select2').attr('style', 'width: 100%');
     }
     if (idP > 0) {
         $('.norm-pasien').val(idPasien);
