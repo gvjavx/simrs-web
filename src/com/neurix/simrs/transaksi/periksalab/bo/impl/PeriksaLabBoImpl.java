@@ -798,28 +798,32 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     @Override
     public CrudResponse saveUpdateParameter(PeriksaLab bean, List<String> listParams) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if (bean.getIdPeriksaLab() != null && !"".equalsIgnoreCase(bean.getIdPeriksaLab()) && !listParams.isEmpty() && listParams.size() > 0 && listParams != null) {
+        if (bean != null && listParams.size() > 0) {
             for (String labDetailId : listParams) {
-                if ("lab".equalsIgnoreCase(bean.getKeterangan())) {
+                LabDetail detail = new LabDetail();
+                List<LabDetail> labDetailList = new ArrayList<>();
+                if (labDetailId != null && !"".equalsIgnoreCase(labDetailId)) {
+                    LabDetail lab = new LabDetail();
+                    lab.setIdLabDetail(labDetailId);
+                    try {
+                        labDetailList = labDetailDao.getDataParameterPemeriksaan(lab);
+                    } catch (GeneralBOException e) {
+                        logger.error(e.getMessage());
+                    }
+                }
+                if (labDetailList.size() > 0) {
+                    detail = labDetailList.get(0);
                     ItSimrsPeriksaLabDetailEntity detailEntity = new ItSimrsPeriksaLabDetailEntity();
-                    String id = getNextDetailLapId();
-                    detailEntity.setIdPeriksaLabDetail("DPL" + id);
+                    detailEntity.setIdPeriksaLabDetail("DPL" + getNextDetailLapId());
                     detailEntity.setIdPeriksaLab(bean.getIdPeriksaLab());
                     detailEntity.setIdLabDetail(labDetailId);
-
-                    // get data from master lab detail
-                    ImSimrsLabDetailEntity labDetailEntity = new ImSimrsLabDetailEntity();
-                    if (labDetailId != null && !"".equalsIgnoreCase(labDetailId)) {
-                        labDetailEntity = getDataMasterLabDetailByIdLab(labDetailId);
-//                        if (labDetailEntity != null) {
-//                            detailEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-//                            detailEntity.setKeteranganAcuan(labDetailEntity.getKetentuanAcuan());
-//                            detailEntity.setSatuan(labDetailEntity.getSatuan());
-//                        }
-                    }
-
-                    detailEntity.setFlag(bean.getFlag());
-                    detailEntity.setAction(bean.getAction());
+                    detailEntity.setNamaDetailPeriksa(detail.getNamaDetailPeriksa());
+                    detailEntity.setKeteranganAcuanL(detail.getKeteranganAcuanL());
+                    detailEntity.setKeteranganAcuanP(detail.getKeteranganAcuanP());
+                    detailEntity.setSatuan(detail.getSatuan());
+                    detailEntity.setTarif(detail.getTarif());
+                    detailEntity.setFlag("Y");
+                    detailEntity.setAction("C");
                     detailEntity.setCreatedDate(bean.getCreatedDate());
                     detailEntity.setCreatedWho(bean.getCreatedWho());
                     detailEntity.setLastUpdate(bean.getLastUpdate());
@@ -828,61 +832,18 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     try {
                         periksaLabDetailDao.addAndSave(detailEntity);
                         response.setStatus("success");
-                        response.setMsg("Berhasil");
+                        response.setMsg("Oke");
                     } catch (HibernateException e) {
                         response.setStatus("error");
-                        response.setMsg("Error when " + e.getMessage());
+                        response.setMsg(e.getMessage());
                         logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
                         throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
-                    }
-                }
-                if ("radiologi".equalsIgnoreCase(bean.getKeterangan())) {
-                    ItSimrsPeriksaRadiologiEntity radiologiEntity = new ItSimrsPeriksaRadiologiEntity();
-                    radiologiEntity.setIdPeriksaRadiologi("RLG" + periksaRadiologiDao.getNextId());
-                    radiologiEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-                    radiologiEntity.setIdLab(bean.getIdLab());
-                    radiologiEntity.setStatusPeriksa("0");
-                    radiologiEntity.setIdPeriksaLab(bean.getIdPeriksaLab());
-                    radiologiEntity.setIdLabDetail(labDetailId);
-
-                    ImSimrsLabDetailEntity labDetailEntity = new ImSimrsLabDetailEntity();
-                    try {
-                        labDetailEntity = labDetailDao.getById("idLabDetail", labDetailId);
-                        response.setStatus("success");
-                        response.setMsg("Berhasil");
-                    } catch (HibernateException e) {
-                        response.setStatus("error");
-                        response.setMsg("Error when " + e.getMessage());
-                        logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
-                        throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data detail periksa lab " + e.getMessage());
-                    }
-
-//                    if (labDetailEntity != null) {
-//                        radiologiEntity.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-//                    }
-
-                    radiologiEntity.setFlag("Y");
-                    radiologiEntity.setAction("C");
-                    radiologiEntity.setCreatedDate(bean.getCreatedDate());
-                    radiologiEntity.setCreatedWho(bean.getCreatedWho());
-                    radiologiEntity.setLastUpdate(bean.getLastUpdate());
-                    radiologiEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-                    try {
-                        periksaRadiologiDao.addAndSave(radiologiEntity);
-                        response.setStatus("success");
-                        response.setMsg("Berhasil");
-                    } catch (HibernateException e) {
-                        response.setStatus("error");
-                        response.setMsg("Error when " + e.getMessage());
-                        logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa radiology " + e.getMessage());
-                        throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa radiology " + e.getMessage());
                     }
                 }
             }
         } else {
             response.setStatus("error");
-            response.setMsg("Data tidak ada...");
+            response.setMsg("Data yang dikirim tidak ditemukan...!");
         }
         return response;
     }

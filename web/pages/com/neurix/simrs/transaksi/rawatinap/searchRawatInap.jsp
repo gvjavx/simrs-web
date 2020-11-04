@@ -213,8 +213,23 @@
                                                 </span>
                                     </td>
                                     <td align="center" style="vertical-align: middle">
-                                        <s:if test='#row.idJenisPeriksa == "umum"'>
-                                            <s:if test='#row.isBayar == "Y"'>
+                                        <s:if test='#row.statusPeriksa != "3"'>
+                                            <s:if test='#row.idJenisPeriksa == "umum"'>
+                                                <s:if test='#row.isBayar == "Y"'>
+                                                    <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                        <s:param name="idx"><s:property value="idRawatInap"/></s:param>
+                                                    </s:url>
+                                                    <s:a href="%{add_rawat_inap}">
+                                                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                                    </s:a>
+                                                    <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning">Uang muka belum bayar</label>
+                                                </s:else>
+                                            </s:if>
+                                            <s:else>
                                                 <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
                                                     <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                                     <s:param name="idx"><s:property value="idRawatInap"/></s:param>
@@ -223,21 +238,8 @@
                                                     <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                                 </s:a>
                                                 <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
-                                            </s:if>
-                                            <s:else>
-                                                <label class="label label-warning">Uang muka belum bayar</label>
                                             </s:else>
                                         </s:if>
-                                        <s:else>
-                                            <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
-                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                <s:param name="idx"><s:property value="idRawatInap"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{add_rawat_inap}">
-                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                            </s:a>
-                                            <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
-                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>

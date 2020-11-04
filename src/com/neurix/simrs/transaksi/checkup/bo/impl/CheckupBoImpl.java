@@ -792,6 +792,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
             entity.setKeterangan(bean.getKeterangan());
+            entity.setIdKategoriLab(bean.getIdKategoriLab());
 
             try {
                 periksaLabDao.addAndSave(entity);

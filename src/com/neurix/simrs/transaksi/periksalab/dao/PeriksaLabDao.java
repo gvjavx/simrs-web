@@ -120,12 +120,17 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     "d.no_checkup,\n" +
                     "e.nama,\n" +
                     "e.id_pasien,\n" +
-                    "a.approve_flag\n" +
+                    "a.approve_flag, \n" +
+                    "a.keterangan,\n" +
+                    "d.id_jenis_periksa_pasien,\n"+
+                    "um.id, \n"+
+                    "um.status_bayar \n"+
                     "FROM it_simrs_periksa_lab a\n" +
                     "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
                     "INNER JOIN im_simrs_kategori_lab c ON a.id_kategori_lab = c.id_kategori_lab\n" +
                     "INNER JOIN it_simrs_header_detail_checkup d ON a.id_detail_checkup = d.id_detail_checkup\n" +
                     "INNER JOIN it_simrs_header_checkup e ON d.no_checkup = e.no_checkup\n" +
+                    "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = a.id_detail_checkup\n" +
                     "WHERE a.flag = :flag \n" + condition +
                     "ORDER BY a.created_date ASC";
 
@@ -153,6 +158,20 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     dataLab.setNamaPasien(obj[9] != null ? obj[9].toString() : null);
                     dataLab.setIdPasien(obj[10] != null ? obj[10].toString() : null);
                     dataLab.setApproveFlag(obj[11] != null ? obj[11].toString() : null);
+                    dataLab.setKeterangan(obj[12] != null ? obj[12].toString() : null);
+                    dataLab.setIdJenisPeriksa(obj[13] != null ? obj[13].toString() : "");
+                    if(obj[14] != null){
+                        if("umum".equalsIgnoreCase(dataLab.getIdJenisPeriksa())){
+                            String bayar = (obj[15] != null ? obj[15].toString() : "");
+                            if ("Y".equalsIgnoreCase(bayar)) {
+                                dataLab.setStatusBayar("Y");
+                            } else {
+                                dataLab.setStatusBayar("N");
+                            }
+                        }
+                    }else{
+                        dataLab.setStatusBayar("Y");
+                    }
                     checkupList.add(dataLab);
                 }
             }
@@ -298,7 +317,8 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     "e.sip as sip_pengirim,\n" +
                     "a.id_dokter_pengirim,\n" +
                     "e.nama_dokter as pengirim,\n" +
-                    "a.ttd_pengirim\n" +
+                    "a.ttd_pengirim, \n" +
+                    "a.created_date\n" +
                     "FROM it_simrs_periksa_lab a\n" +
                     "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
                     "LEFT JOIN im_simrs_dokter c ON a.id_dokter = c.id_dokter\n" +
@@ -325,6 +345,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 lab.setIdPengirim(objects[11] == null ? "" : objects[11].toString());
                 lab.setDokterPengirim(objects[12] == null ? "" : objects[12].toString());
                 lab.setTtdPengirim(objects[13] == null ? "" : CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + objects[13].toString());
+                lab.setCreatedDate(objects[14] == null ? null : (Timestamp) objects[14]);
             }
         }
         return lab;

@@ -146,6 +146,12 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Diagnosa</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.diagnosa"></s:label></table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -270,6 +276,8 @@
                     </div>
                     <div class="box-body">
                         <button id="btn-add-parameter" class="btn btn-success btn-outline" onclick="showModal(1)" style="margin-bottom: 10px; display: none"><i class="fa fa-plus"></i> Tambah Parameter
+                        </button>
+                        <button class="btn btn-primary" onclick="printPeriksaLab()" style="margin-bottom: 10px;"><i class="fa fa-print"></i> Print Label
                         </button>
                         <table class="table table-bordered table-striped" id="tabel_lab">
                             <thead>
@@ -654,7 +662,7 @@
             }
         });
         var idDokter = $('#list_dokter').val();
-        if (idPeriksaLab != '' && !cekPetugas && !cekDokter && idDokter != '' && !cek || img != '' && idDokter != '' && !cekPetugas && !cekDokter) {
+        if (idPeriksaLab != '' && !cekPetugas && !cekDokter && idDokter != '' && !cek || img != '' && data.length > 0) {
             $('#modal-confirm-dialog').modal('show');
             $('#save_con').attr('onclick', 'saveDokterLab(\''+idDokter+'\')');
         } else {
@@ -675,6 +683,7 @@
         var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
         var jenisPasien = '<s:property value="periksaLab.idJenisPeriksa"/>';
         var idDetailCheckup = '<s:property value="periksaLab.idDetailCheckup"/>';
+        var noCheckup = '<s:property value="periksaLab.noCheckup"/>';
         var isiParam = $('#tabel_lab').tableToJSON();
         var jsonData = [];
         $.each(isiParam, function (i, item) {
@@ -691,11 +700,13 @@
         });
 
         var data = {
+            'no_checkup':noCheckup,
             'id_pasien':idPasien,
             'id_detail_checkup': idDetailCheckup,
             'jenis_pasien': jenisPasien,
             'id_pelayanan': idPelayanan,
             'metode_bayar': metodePembayaran,
+            'is_resep':'N',
             'just_lab': "Y"
         }
 
@@ -914,24 +925,21 @@
     function listSelectParameter(idLab) {
         var option = "";
         if (idLab != '') {
-            LabDetailAction.listLabDetail(idLab, function (response) {
-                if (response != null) {
+            LabDetailAction.getListComboParameter(idLab, function (response) {
+                if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
                     });
+                    $('#lab_parameter').html(option);
                 } else {
-                    option = option;
+                    $('#lab_parameter').html(option);
                 }
             });
-        } else {
-            option = option;
         }
-
-        $('#lab_parameter').html(option);
     }
 
     function printPeriksaLab(){
-        window.open('printPeriksaLab_periksalab.action?id='+idDetailCheckup, "_blank");
+        window.open('printLab_periksalab.action?id='+idDetailCheckup+'&lab='+idPeriksaLab+'&ket=label', "_blank");
     }
 
 

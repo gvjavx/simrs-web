@@ -2323,7 +2323,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return response;
     }
 
-    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup) {
+    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup, String status) {
+        String statusPeriksa = "";
+        if(status != null && !"".equalsIgnoreCase(status)){
+            statusPeriksa = "AND b.status_periksa = '"+status+"'\n";
+        }
         List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
         String SQL = "SELECT \n" +
                 "a.no_checkup,\n" +
@@ -2331,8 +2335,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "b.id_pelayanan\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                "WHERE b.status_periksa = '3'\n" +
-                "AND a.no_checkup = :id";
+                "WHERE a.no_checkup = :id \n"+ statusPeriksa;
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", noCheckup)

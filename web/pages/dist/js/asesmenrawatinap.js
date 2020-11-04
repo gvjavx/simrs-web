@@ -3312,7 +3312,8 @@ function detailAsesmenRawatInap(jenis, idKhusus) {
                             sesudah = isi[2];
                         } else {
                             if ("Kesadaran Umum" == item.parameter) {
-                                sesudah = '<div class="input-group" style="width: 100%">' +
+                                sesudah = '<div id="set_serah_'+i+'">' +
+                                    '<div class="input-group" style="width: 100%">' +
                                     '<select id="serah_'+i+'" class="form-control">\n' +
                                     '<option value="">[Select One]</option>\n' +
                                     '<option value="Baik">Baik</option>\n' +
@@ -3323,9 +3324,10 @@ function detailAsesmenRawatInap(jenis, idKhusus) {
                                     '<div onclick="saveTransferPasien(\''+item.idAsesmenKeperawatanRawatInap+'\', \''+i+'\',\''+item.parameter+'\')" class="input-group-addon" style="cursor: pointer; background-color: #449d44">' +
                                     '<i class="fa fa-check" style="color: white"></i>' +
                                     '</div>' +
-                                    '</div>';
+                                    '</div></div>';
                             } else if ("Resiko Jatuh" == item.parameter) {
-                                sesudah = '<div class="input-group" style="width: 100%">' +
+                                sesudah = '<div id="set_serah_'+i+'">' +
+                                    '<div class="input-group" style="width: 100%">' +
                                     '<select id="serah_'+i+'" class="form-control">\n' +
                                     '<option value="">[Select One]</option>\n' +
                                     '<option value="Ringan">Ringan</option>\n' +
@@ -3335,21 +3337,23 @@ function detailAsesmenRawatInap(jenis, idKhusus) {
                                     '<div onclick="saveTransferPasien(\''+item.idAsesmenKeperawatanRawatInap+'\', \''+i+'\',\''+item.parameter+'\')" class="input-group-addon" style="cursor: pointer; background-color: #449d44">' +
                                     '<i class="fa fa-check" style="color: white"></i>' +
                                     '</div>' +
-                                    '</div>';
+                                    '</div></div>';
                             } else if ("Tekanan Darah" == item.parameter) {
-                                sesudah = '<div class="input-group">' +
+                                sesudah = '<div id="set_serah_'+i+'">' +
+                                    '<div class="input-group">' +
                                     '<input id="serah_'+i+'" class="form-control" data-inputmask="\'mask\': [\'999/999\']" data-mask="">' +
                                     '<div onclick="saveTransferPasien(\''+item.idAsesmenKeperawatanRawatInap+'\', \''+i+'\', \''+item.parameter+'\')" class="input-group-addon" style="cursor: pointer; background-color: #449d44">' +
                                     '<i class="fa fa-check" style="color: white"></i>' +
                                     '</div>' +
-                                    '</div>';
+                                    '</div></div>';
                             } else {
-                                sesudah = '<div class="input-group">' +
+                                sesudah = '<div id="set_serah_'+i+'">' +
+                                    '<div class="input-group">' +
                                     '<input id="serah_'+i+'" class="form-control" type="number">' +
                                     '<div onclick="saveTransferPasien(\''+item.idAsesmenKeperawatanRawatInap+'\', \''+i+'\', \''+item.parameter+'\')" class="input-group-addon" style="cursor: pointer; background-color: #449d44">' +
                                     '<i class="fa fa-check" style="color: white"></i>' +
                                     '</div>' +
-                                    '</div>';
+                                    '</div></div>';
                             }
                         }
                         if (li != '') {
@@ -5906,6 +5910,7 @@ function saveTransferPasien(id, i, parameter) {
         AsesmenRawatInapAction.saveAsesmenRI(id, jawaban, {
             callback: function (res) {
                 if (res.status == "success") {
+                    $('#set_serah_'+i).html('<span>'+jawaban+'</span>');
                     $('#warning_ina_transfer_pasien').show().fadeOut(5000);
                     $('#msg_ina_transfer_pasien').text("Data berhasil disimpan...!");
                 } else {

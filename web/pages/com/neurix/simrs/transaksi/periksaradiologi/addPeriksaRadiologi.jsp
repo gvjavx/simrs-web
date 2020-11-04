@@ -147,6 +147,12 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Diagnosa</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.diagnosa"></s:label></table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -286,12 +292,12 @@
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Catatan Pemeriksaan</h3>
                     </div>
-                    <div class="box-body" id="btn-add-parameter" style="display: none">
-                        <button class="btn btn-success btn-outline" onclick="showModal(1)"><i class="fa fa-plus"></i>
+                    <div class="box-body">
+                        <button id="btn-add-parameter" class="btn btn-success" style="margin-bottom: 10px; display: none" onclick="showModal(1)"><i class="fa fa-plus"></i>
                             Tambah Parameter
                         </button>
-                    </div>
-                    <div class="box-body">
+                        <button class="btn btn-primary" onclick="printPeriksaLab()" style="margin-bottom: 10px;"><i class="fa fa-print"></i> Print Label
+                        </button>
                         <table class="table table-bordered table-striped" id="tabel_radiologi">
                             <thead>
                             <tr bgcolor="#90ee90">
@@ -704,20 +710,17 @@
     function listSelectParameter(idLab) {
         var option = "";
         if (idLab != '') {
-            LabDetailAction.listLabDetail(idLab, function (response) {
-                if (response != null) {
+            LabDetailAction.getListComboParameter(idLab, function (response) {
+                if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
                     });
+                    $('#lab_parameter').html(option);
                 } else {
-                    option = option;
+                    $('#lab_parameter').html(option);
                 }
             });
-        } else {
-            option = option;
         }
-
-        $('#lab_parameter').html(option);
     }
 
     function listSelectDokter() {
@@ -851,7 +854,7 @@
                 cek = true;
             }
         });
-        if (!cek && idDokter != '' && !cekPetugas && !cekDokter || img != '' && idDokter != '' && !cekPetugas && !cekDokter) {
+        if (!cek && idDokter != '' && !cekPetugas && !cekDokter || img != '' && data.length > 0) {
             $('#modal-confirm-dialog').modal('show');
             $('#save_con').attr('onclick', 'savePeriksaLab(\'' + idDokter + '\')');
         } else {
@@ -874,6 +877,7 @@
         var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
         var jenisPasien = '<s:property value="periksaLab.idJenisPeriksa"/>';
         var idDetailCheckup = '<s:property value="periksaLab.idDetailCheckup"/>';
+        var noCheckup = '<s:property value="periksaLab.noCheckup"/>';
         var isiParam = $('#tabel_radiologi').tableToJSON();
         var jsonData = [];
         $.each(isiParam, function (i, item) {
@@ -890,13 +894,16 @@
         });
 
         var data = {
+            'no_checkup':noCheckup,
             'id_pasien': idPasien,
             'id_detail_checkup': idDetailCheckup,
             'jenis_pasien': jenisPasien,
             'id_pelayanan': idPelayanan,
             'metode_bayar': metodePembayaran,
+            'is_resep':'N',
             'just_lab': "Y"
         }
+
         var img = $("#url_img").val();
         var finalImg = "";
         var finalPetugas = convertToDataURL(petugas);
@@ -925,6 +932,10 @@
                 }
             }
         });
+    }
+
+    function printPeriksaLab(){
+        window.open('printRadiologi_radiologi.action?id='+idDetailCheckup+'&lab='+idPeriksaLab+'&ket=label', "_blank");
     }
 
 </script>

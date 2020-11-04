@@ -601,7 +601,7 @@
                                                 <div class="col-md-8">
                                                     <s:textfield id="nama_pasien" name="headerCheckup.nama"
                                                                  onkeypress="$(this).css('border','')"
-                                                                 cssClass="form-control" cssStyle="margin-top: 7px" readonly="true"/>
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -2953,6 +2953,7 @@
                     $('#btn-finger').show();
                     $('#modal-daftar-pasien').modal('hide');
                     $('body').scrollTop(0);
+                    $('#kunjungan_val').val("Baru");
                 } else {
                     $('#save_add').show();
                     $('#load_add').hide();

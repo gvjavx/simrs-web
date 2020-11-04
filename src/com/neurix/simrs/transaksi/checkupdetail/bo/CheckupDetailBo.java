@@ -68,5 +68,5 @@ public interface CheckupDetailBo {
     public CrudResponse updateDetailCheckup(List<HeaderDetailCheckup> list) throws GeneralBOException;
     public CrudResponse updatePindahRuangan(String idRawatInapNew, String idRawatInapPindah) throws GeneralBOException;
 
-    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup) throws GeneralBOException;
+    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup, String status) throws GeneralBOException;
 }
