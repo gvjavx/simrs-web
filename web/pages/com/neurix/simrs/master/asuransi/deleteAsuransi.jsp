@@ -106,19 +106,19 @@
                             </table>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>No. Master :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:action id="initComboMaster" namespace="/admin/user" name="initComboMaster_user"/>
-                                <s:select list="#initComboMaster.listOfComboMaster" id="noMaster" name="asuransi.noMaster" disabled="true"
-                                          listKey="noMaster" listValue="noMaster" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>No. Master :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:action id="initComboMaster" namespace="/admin/user" name="initComboMaster_user"/>--%>
+                                <%--<s:select list="#initComboMaster.listOfComboMaster" id="noMaster" name="asuransi.noMaster" disabled="true"--%>
+                                          <%--listKey="noMaster" listValue="noMaster" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
 
-                            </table>
-                        </td>
-                    </tr>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
 
                 </table>
 

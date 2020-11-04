@@ -1,5 +1,7 @@
 package com.neurix.simrs.master.jenisperiksapasien.bo.impl;
 
+import com.neurix.akuntansi.master.master.dao.MasterDao;
+import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
 import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
@@ -17,6 +19,12 @@ public class AsuransiBoImpl implements AsuransiBo  {
 
     protected static transient Logger logger = Logger.getLogger(AsuransiBoImpl.class);
     private AsuransiDao asuransiDao;
+    private MasterDao masterDao;
+
+    //seter geter dari masterDao
+    public void setMasterDao(MasterDao masterDao) {
+        this.masterDao = masterDao;
+    }
 
     @Override
     public void saveDelete(Asuransi bean) throws GeneralBOException {
@@ -87,6 +95,7 @@ public class AsuransiBoImpl implements AsuransiBo  {
                     imSimrsAsuransiEntity.setNamaAsuransi(bean.getNamaAsuransi());
                     imSimrsAsuransiEntity.setNoMaster(bean.getNoMaster());
                     imSimrsAsuransiEntity.setFlag(bean.getFlag());
+                    imSimrsAsuransiEntity.setIsLaka(bean.getIsLaka());
                     imSimrsAsuransiEntity.setAction(bean.getAction());
                     imSimrsAsuransiEntity.setLastUpdateWho(bean.getLastUpdateWho());
                     imSimrsAsuransiEntity.setLastUpdate(bean.getLastUpdate());
@@ -106,6 +115,7 @@ public class AsuransiBoImpl implements AsuransiBo  {
                         imSimrsAsuransiEntity.setNamaAsuransi(bean.getNamaAsuransi());
                         imSimrsAsuransiEntity.setNoMaster(bean.getNoMaster());
                         imSimrsAsuransiEntity.setFlag(bean.getFlag());
+                        imSimrsAsuransiEntity.setIsLaka(bean.getIsLaka());
                         imSimrsAsuransiEntity.setAction(bean.getAction());
                         imSimrsAsuransiEntity.setLastUpdateWho(bean.getLastUpdateWho());
                         imSimrsAsuransiEntity.setLastUpdate(bean.getLastUpdate());
@@ -144,18 +154,34 @@ public class AsuransiBoImpl implements AsuransiBo  {
                     logger.error("[AsuransiBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when getting sequence Asuransi id, please info to your admin..." + e.getMessage());
                 }
+
+                // mengambil nama master / nama asuransi dari masterdao berdasarkan no master;
+                ImMasterEntity masterEntity = new ImMasterEntity();
+                try {
+                    masterEntity = masterDao.getById("primaryKey.nomorMaster", bean.getNoMaster());
+                }catch (HibernateException e){
+                    logger.error("Found Error when search asuransi "+e.getMessage());
+                }
+
                 // creating object entity serializable
                 ImSimrsAsuransiEntity imSimrsAsuransiEntity = new ImSimrsAsuransiEntity();
 
                 imSimrsAsuransiEntity.setIdAsuransi(asuransiId);
-                imSimrsAsuransiEntity.setNamaAsuransi(bean.getNamaAsuransi());
+                //cari ke dao akun Master berdasarkan no master
+
+                //
                 imSimrsAsuransiEntity.setNoMaster(bean.getNoMaster());
                 imSimrsAsuransiEntity.setFlag(bean.getFlag());
+                imSimrsAsuransiEntity.setIsLaka(bean.getIsLaka());
                 imSimrsAsuransiEntity.setAction(bean.getAction());
                 imSimrsAsuransiEntity.setCreatedWho(bean.getCreatedWho());
                 imSimrsAsuransiEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 imSimrsAsuransiEntity.setCreatedDate(bean.getCreatedDate());
                 imSimrsAsuransiEntity.setLastUpdate(bean.getLastUpdate());
+                if (masterEntity != null){
+                    imSimrsAsuransiEntity.setNamaAsuransi(masterEntity.getNama());
+                    //set berdasarkan kebutuhan fild yang di ambil dari tabel lain
+                }
 
                 try {
                     // insert into database
@@ -189,6 +215,9 @@ public class AsuransiBoImpl implements AsuransiBo  {
             if(bean.getNoMaster() != null && !"".equalsIgnoreCase(bean.getNoMaster())){
                 hsCriteria.put("no_master", bean.getNoMaster());
             }
+            if(bean.getIsLaka() != null && !"".equalsIgnoreCase(bean.getIsLaka())){
+                hsCriteria.put("is_laka", bean.getIsLaka());
+            }
 
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 if ("N".equalsIgnoreCase(bean.getFlag())) {
@@ -214,6 +243,7 @@ public class AsuransiBoImpl implements AsuransiBo  {
                     asuransi.setNamaAsuransi(entity.getNamaAsuransi());
                     asuransi.setNoMaster(entity.getNoMaster());
                     asuransi.setFlag(entity.getFlag());
+                    asuransi.setIsLaka(entity.getIsLaka());
                     asuransi.setAction(entity.getAction());
                     asuransi.setCreatedWho(entity.getCreatedWho());
                     asuransi.setStCreatedDate(entity.getCreatedDate().toString());

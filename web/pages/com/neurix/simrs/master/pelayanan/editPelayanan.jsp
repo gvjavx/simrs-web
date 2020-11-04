@@ -91,7 +91,8 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="editPelayananForm" method="post" theme="simple" namespace="/pelayanan" action="saveEdit_pelayanan" cssClass="well form-horizontal">
+            <s:form id="editPelayananForm" method="post" theme="simple"
+                    namespace="/pelayanan" action="saveEdit_pelayanan" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -111,7 +112,7 @@
 
                 <table >
                     <tr>
-                        <td>
+                        <td width="30%">
                             <label class="control-label"><small>ID Pelayanan :</small></label>
                         </td>
                         <td>
@@ -124,10 +125,10 @@
                     </tr>
 
                     <tr>
-                        <td>
+                        <td >
                             <label class="control-label"><small>Nama Pelayanan :</small></label>
                         </td>
-                        <td>
+                        <td width="80">
                             <table>
                                 <s:textfield id="namaPelayanan1" name="pelayanan.namaPelayanan"
                                              required="true" disabled="false" cssClass="form-control"/>

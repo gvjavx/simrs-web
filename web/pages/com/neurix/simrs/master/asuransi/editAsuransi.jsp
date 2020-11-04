@@ -19,10 +19,10 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var namaAsuransi = document.getElementById("namaAsuransi1").value;
-            var noMaster = document.getElementById("noMaster").value;
+            // var noMaster = document.getElementById("noMaster").value;
             console.log(namaAsuransi);
 
-            if (namaAsuransi != '' && noMaster != '') {
+            if (namaAsuransi != '' ) {
                 if (confirm('Do you want to update this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -35,9 +35,6 @@
                 var msg = "";
                 if (namaAsuransi == '') {
                     msg += 'Field <strong>Nama Asuransi </strong> is required.' + '<br/>';
-                }
-                if (noMaster == '') {
-                    msg += 'Field <strong>No Master </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage2').innerHTML = msg;
@@ -104,29 +101,46 @@
                             </table>
                         </td>
                     </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Nama Asuransi :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:textfield id="namaAsuransi1" name="asuransi.namaAsuransi" required="true" disabled="false" cssClass="form-control"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
+
                     <tr>
-                        <td>
+                        <td width="30%">
                             <label class="control-label"><small>Nama Asuransi :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaAsuransi1" name="asuransi.namaAsuransi" required="true" disabled="false" cssClass="form-control"/>
+                                <s:action id="initComboAsuransi" namespace="/masterVendor" name="getComboAsuransi_masterVendor"/>
+                                <s:select list="#initComboAsuransi.listOfComboVendor" id="namaAsuransi1"
+                                          name="asuransi.noMaster"
+                                          listKey="nomorMaster" listValue="nama" headerKey=""
+                                          headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>No. Master :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:action id="initComboMaster" namespace="/admin/user" name="initComboMaster_user"/>
-                                <s:select list="#initComboMaster.listOfComboMaster" id="noMaster" name="asuransi.noMaster"
-                                          listKey="noMaster" listValue="noMaster" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
 
-                            </table>
-                        </td>
-                    </tr>
+
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>No. Master :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:action id="initComboMaster" namespace="/admin/user" name="initComboMaster_user"/>--%>
+                                <%--<s:select list="#initComboMaster.listOfComboMaster" id="noMaster" name="asuransi.noMaster"--%>
+                                          <%--listKey="noMaster" listValue="noMaster" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
 
                 </table>
 

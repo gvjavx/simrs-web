@@ -80,12 +80,13 @@ To change this template use File | Settings | File Templates.
                                     </table>
                                     <table>
                                         <tr >
-                                            <td>
+                                            <td >
                                                 <label class="control-label"><small>ID Kelas Ruangan</small></label>
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="id_kelasruangan" name="kelasRuangan.idKelasRuangan" required="false" readonly="false" cssClass="form-control"/>
+                                                    <s:textfield cssStyle="margin-top: 7px"
+                                                                 id="id_kelasruangan" name="kelasRuangan.idKelasRuangan"  readonly="false" cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
@@ -95,7 +96,7 @@ To change this template use File | Settings | File Templates.
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:textfield cssStyle="margin-top: 7px"  id="nama_kelasruangan" name="kelasRuangan.namaKelasRuangan" required="false" readonly="false" cssClass="form-control"/>
+                                                    <s:textfield cssStyle="margin-top: 7px"  id="nama_kelasruangan" name="kelasRuangan.namaKelasRuangan"  readonly="false" cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
@@ -138,10 +139,22 @@ To change this template use File | Settings | File Templates.
                                                 <td>
                                                     <s:url var="urlAdd" namespace="/kelasruangan" action="add_kelasruangan" escapeAmp="false">
                                                     </s:url>
-                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlAdd}">
-                                                        <button class="btn btn-success" ><i class="fa fa-plus"></i> Add Kelas Ruangan</button>
+                                                    <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                        <i class="fa fa-plus"></i>
+                                                    Add Kelas ruangan
                                                     </sj:a>
                                                 </td>
+
+                                                <%--<td>--%>
+                                                    <%--<s:url var="urlAdd" namespace="/payrollPtkp" action="add_payrollPtkp"--%>
+                                                           <%--escapeAmp="false">--%>
+                                                    <%--</s:url>--%>
+                                                    <%--<sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">--%>
+                                                        <%--<i class="fa fa-plus"></i>--%>
+                                                        <%--Add Payroll PTKP--%>
+                                                    <%--</sj:a>--%>
+                                                <%--</td>--%>
+
                                                 <td>
                                                     <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_kelasruangan"/>'">
                                                         <i class="fa fa-refresh"></i> Reset

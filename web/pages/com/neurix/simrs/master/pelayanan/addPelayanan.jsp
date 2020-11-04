@@ -89,7 +89,7 @@
 
 <table width="100%" align="center">
     <tr>
-        <td align="center">
+        <td align="center" >
             <s:form id="addPelayananForm" method="post" theme="simple"
                     namespace="/pelayanan" action="saveAdd_pelayanan" cssClass="well form-horizontal">
 
@@ -111,7 +111,7 @@
 
                 <table >
                     <tr>
-                        <td>
+                        <td width="30%">
                             <label class="control-label"><small>Nama Pelayanan :</small></label>
                         </td>
                         <td>

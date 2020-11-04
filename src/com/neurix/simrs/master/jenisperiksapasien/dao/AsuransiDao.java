@@ -36,6 +36,10 @@ public class AsuransiDao extends GenericDao<ImSimrsAsuransiEntity, String> {
             if(mapCriteria.get("flag") != null){
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
             }
+
+            if(mapCriteria.get("is_laka") != null){
+                criteria.add(Restrictions.eq("isLaka", mapCriteria.get("is_laka")));
+            }
         }
         List<ImSimrsAsuransiEntity> result = criteria.list();
         return result;

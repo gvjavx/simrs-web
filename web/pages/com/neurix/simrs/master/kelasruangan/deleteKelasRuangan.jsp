@@ -117,8 +117,8 @@
 
                 <table >
                     <tr >
-                        <td>
-                            <label class="control-label"><small>ID Kelas Ruangan</small></label>
+                        <td width="30%">
+                            <label class="control-label"><small>ID Kelas Ruangan :</small></label>
                         </td>
                         <td>
                             <table>
@@ -131,7 +131,7 @@
                     <tr>
                         <td>
                             <label class="control-label">
-                                <small>Nama Ruangan</small>
+                                <small>Nama Ruangan :</small>
                             </label>
                         </td>
                         <td>
