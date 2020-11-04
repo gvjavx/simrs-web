@@ -886,6 +886,8 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setLastUpdate(pasien.getLastUpdate());
             pasienEntity.setCreatedWho(pasien.getCreatedWho());
             pasienEntity.setLastUpdateWho(pasien.getLastUpdateWho());
+            pasienEntity.setStatusPerkawinan(pasien.getStatusPerkawinan());
+            pasienEntity.setPendidikan(pasien.getPendidikan());
 
             try {
 
@@ -920,6 +922,8 @@ public class PasienBoImpl implements PasienBo {
                 response.setProfesi(pasienEntity.getProfesi());
                 response.setUrlKtp(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_KTP_PASIEN + pasienEntity.getUrlKtp());
                 response.setImgKtp(pasienEntity.getUrlKtp());
+                response.setStatusPerkawinan(pasienEntity.getStatusPerkawinan());
+                response.setPendidikan(pasienEntity.getPendidikan());
                 response.setStatus("success");
                 response.setMsg("Berhasil");
 

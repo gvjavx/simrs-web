@@ -50,7 +50,7 @@ function saveCPPT(jenis, ket, tipe) {
             'nadi': nadi,
             'suhu': suhu,
             'rr': rr,
-            'tensi': tensi,
+            'tensi': replaceUnderLine(tensi),
             'objective': va5,
             'assesment': va6,
             'planning': va7,

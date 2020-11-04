@@ -723,6 +723,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     periksaLab.setCreatedDate(bean.getCreatedDate());
                     periksaLab.setLastUpdateWho(bean.getLastUpdateWho());
                     periksaLab.setLastUpdate(bean.getLastUpdate());
+                    periksaLab.setIdKategoriLab(headerCheckupDao.getIdKategoriLab(bean.getIdLab()));
                     periksaLab.setKeterangan("just_lab");
                     saveOrderLab(periksaLab);
                 }
@@ -791,6 +792,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
             entity.setKeterangan(bean.getKeterangan());
+            entity.setIdKategoriLab(bean.getIdKategoriLab());
 
             try {
                 periksaLabDao.addAndSave(entity);

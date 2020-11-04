@@ -277,6 +277,12 @@ public class HemodialisaAction {
                 if(obj.has("uf")){
                     observasiTindakanHd.setUf(obj.getString("uf"));
                 }
+                if(obj.has("nama_terang")){
+                    observasiTindakanHd.setNamaTerang(obj.getString("nama_terang"));
+                }
+                if(obj.has("sip")){
+                    observasiTindakanHd.setSip(obj.getString("sip"));
+                }
 
                 observasiTindakanHd.setAction("C");
                 observasiTindakanHd.setFlag("Y");

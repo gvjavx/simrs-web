@@ -1789,6 +1789,29 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return response;
     }
 
+    public String getIdKategoriLab(String idLab){
+        String res = "";
+        if(idLab != null && !"".equalsIgnoreCase(idLab)){
+            String SQL = "SELECT \n" +
+                    "a.id_lab,\n" +
+                    "c.id_kategori_lab\n" +
+                    "FROM im_simrs_lab_detail a\n" +
+                    "INNER JOIN im_simrs_parameter_pemeriksaan b ON a.id_parameter_pemeriksaan = b.id_parameter_pemeriksaan\n" +
+                    "INNER JOIN im_simrs_kategori_lab c ON b.id_kategori_lab = c.id_kategori_lab\n" +
+                    "WHERE a.id_lab = :id\n" +
+                    "LIMIT 1";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idLab)
+                    .list();
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                res = obj[1].toString();
+            }
+        }
+        return res;
+    }
+
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pembayaran_online')");
         Iterator<BigInteger> iter = query.list().iterator();

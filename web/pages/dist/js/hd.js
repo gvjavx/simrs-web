@@ -207,13 +207,13 @@ function saveMonHD(jenis, ket) {
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
             });
-            data.push({
-                'parameter': 'Punctie Arteri',
-                'jawaban1': 'HD Kateter: ' + va23,
-                'keterangan': jenis,
-                'jenis': 'monitoring_hd',
-                'id_detail_checkup': idDetailCheckup
-            });
+            // data.push({
+            //     'parameter': 'Punctie Arteri',
+            //     'jawaban1': 'HD Kateter: ' + va23,
+            //     'keterangan': jenis,
+            //     'jenis': 'monitoring_hd',
+            //     'id_detail_checkup': idDetailCheckup
+            // });
             data.push({
                 'parameter': 'Lokasi',
                 'jawaban1': va22,
@@ -393,8 +393,10 @@ function saveMonHD(jenis, ket) {
 
     if ("intervensi" == jenis) {
         var va1 = $('[name=inter1]:checked');
+        var va2 = $('[name=inter2]:checked');
         var tVa1 = "";
-        if (va1 != undefined) {
+        var tVa2 = "";
+        if (va1 && va2 != undefined) {
             $.each(va1, function (i, item) {
                 if (va1[i].checked) {
                     if (tVa1 != '') {
@@ -404,9 +406,27 @@ function saveMonHD(jenis, ket) {
                     }
                 }
             });
+            $.each(va2, function (i, item) {
+                if (va2[i].checked) {
+                    if (tVa2 != '') {
+                        tVa2 = tVa2 + '|' + va2[i].value;
+                    } else {
+                        tVa2 = va2[i].value;
+                    }
+                }
+            });
             data.push({
                 'parameter': 'Intervensi Keperawatan',
-                'jawaban1': tVa1,
+                'jawaban1': 'Mandiri',
+                'jawaban2': tVa1,
+                'keterangan': jenis,
+                'jenis': 'monitoring_hd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '',
+                'jawaban1': 'Kolaborasi',
+                'jawaban2': tVa2,
                 'keterangan': jenis,
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
@@ -422,7 +442,7 @@ function saveMonHD(jenis, ket) {
         var va4 = $('#im4').val();
         var va5 = $('#im5').val();
         var va6 = "";
-        var va7 = $('[name=im7]:checked').val();
+        var va7 = "";
         var va8 = $('#im8').val();
         var va9 = $('#im9').val();
         var va10 = "";
@@ -451,18 +471,33 @@ function saveMonHD(jenis, ket) {
             }
         }
 
-        var tVa6 = $('[name=im6]:checked').val();
-        if(tVa6 != undefined){
-            if(tVa6 == "Na"){
-                if(ket611 && ket612 != ''){
-                    va6 = tVa6+ket611+', '+ket621;
+        var tVa6 = $('[name=im6]');
+        $.each(tVa6, function (i, item) {
+            if(item.checked){
+                var isi = "";
+                if(item.value == 'Na'){
+                    isi += item.value+ket611+', '+ket621;
+                }else{
+                    isi += item.value+', '+ket621;
                 }
-            }else{
-                if(ket621 != ''){
-                    va6 = tVa6+', '+ket621;
+                if(va6 != ''){
+                    va6 = va6 +', '+isi;
+                }else{
+                    va6 = isi;
                 }
             }
-        }
+        });
+
+        var tVa7 = $('[name=im7]');
+        $.each(tVa7, function (i, item) {
+            if(item.checked){
+                if(va7 != ''){
+                    va7 = va7 +', '+item.value;
+                }else{
+                    va7 = item.value;
+                }
+            }
+        });
 
         var tV10 = $('[name=im10]');
         $.each(tV10, function (i, item) {
@@ -475,8 +510,8 @@ function saveMonHD(jenis, ket) {
             }
         });
 
-        if(va1 && va2 && va3 && va4 && va5 && va6 && va8 && va9
-            && va10 && va15 && namaTerang != '' && !cekTtd && va7 != undefined){
+        if(va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9
+            && va10 && va15 && namaTerang != '' && !cekTtd){
             data.push({
                 'parameter': 'Resep HD',
                 'jawaban1': va1+', HD : '+va2+' jam, QB : '+va3+' ml/menit, QD : '+va4+' ml/menit, UF Gaol: '+va5+' ml',
@@ -507,7 +542,7 @@ function saveMonHD(jenis, ket) {
             });
             data.push({
                 'parameter': 'Dosis Awal',
-                'jawaban1': va9+ 'lu',
+                'jawaban1': va9+ ' lu',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -590,7 +625,7 @@ function saveMonHD(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             var s = 'Subjective : '+va2;
-            var o = 'Objective : Tensi :'+tensi+' mmHg, Nadi : '+nadi+' x/menit, RR : '+rr+' x/menit, Suhu : '+suhu+' C, Keterangan' +object+'. ';
+            var o = 'Objective : Tensi :'+replaceUnderLine(tensi)+' mmHg, Nadi : '+nadi+' x/menit, RR : '+rr+' x/menit, Suhu : '+suhu+' C, Keterangan' +object+'. ';
             var a = 'Assement : '+va3+'. ';
             var p = 'Planning : '+va4+'. ';
             data.push({
@@ -709,7 +744,7 @@ function saveMonHD(jenis, ket) {
             });
             data.push({
                 'parameter': 'Tensi',
-                'jawaban1': va3 +' mmHg',
+                'jawaban1': replaceUnderLine(va3) +' mmHg',
                 'keterangan': jenis,
                 'jenis': 'asesmen_hd',
                 'id_detail_checkup': idDetailCheckup
@@ -2005,16 +2040,28 @@ function detailMonHD(jenis) {
                                 '</td>' +
                                 '</tr>';
                         }
-                    } else if ("intervensi" == item.keterangan || "diagnosa" == item.keterangan) {
+                    } else if ("intervensi" == item.keterangan || "diagnosa" == item.keterangan || "Dosis Maintenance" == item.parameter) {
                         var li = "";
                         var isi = jwb.split("|");
-                        $.each(isi, function (i, item) {
-                            li += '<li>' + item + '</li>';
-                        });
-                        body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
-                            '</tr>';
+                        if("intervensi" == item.keterangan){
+                            var jaw2 = jwb2.split("|");
+                            $.each(jaw2, function (i, item) {
+                                li += '<li>' + item + '</li>';
+                            });
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + jwb + '</td>' +
+                                '<td>' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
+                                '</tr>';
+                        }else{
+                            $.each(isi, function (i, item) {
+                                li += '<li>' + item + '</li>';
+                            });
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
+                                '</tr>';
+                        }
                     } else if ("resiko_jatuh" == item.keterangan) {
                         if (item.skor != null) {
                             totalSkor = parseInt(totalSkor) + parseInt(item.skor);
@@ -2354,7 +2401,7 @@ function saveObservasi(jenis, ket){
                 'waktu': va1+' '+va2,
                 'observasi': va3,
                 'qb': va4,
-                'tensi': va5,
+                'tensi': replaceUnderLine(va5),
                 'nadi': va6,
                 'suhu': va7,
                 'rr': va8,
@@ -2434,7 +2481,7 @@ function detailObservasi(jenis){
                             '<p>'+cekItemIsNull(item.namaTerang)+'</p>'+
                             '<p>'+cekItemIsNull(item.sip)+'</p>'+
                             '</td>' +
-                            '<td align="center">'+'<i onclick="conObs(\''+jenis+'\', \''+item.idObservasiTindakanHd+'\')" class="fa fa-trash fa-2x hvr-grow" style="color: red"></i>'+'</td>'+
+                            '<td align="center">'+'<i onclick="conObs(\''+jenis+'\', \''+item.idObservasiTindakanHd+'\')" class="fa fa-trash hvr-grow" style="color: red; font-size: 18px"></i>'+'</td>'+
                             '</tr>';
                     cekData = true;
                     tgl = item.createdDate;

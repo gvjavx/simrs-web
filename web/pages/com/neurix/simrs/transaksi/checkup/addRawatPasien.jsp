@@ -587,7 +587,7 @@
                                             <div class="form-group">
                                                 <label class="col-md-4" style="margin-top: 7px">NIK Pasien</label>
                                                 <div class="col-md-8">
-                                                    <s:textfield id="no_ktp" name="headerCheckup.noKtp"
+                                                    <s:textfield id="no_ktp" name="headerCheckup.noKtp" type="number"
                                                                  onkeypress="$(this).css('border',''); searchNo"
                                                                  cssClass="form-control" cssStyle="margin-top: 7px"
                                                     />
@@ -600,7 +600,7 @@
                                                 <div class="col-md-8">
                                                     <s:textfield id="nama_pasien" name="headerCheckup.nama"
                                                                  onkeypress="$(this).css('border','')"
-                                                                 cssClass="form-control" cssStyle="margin-top: 7px" readonly="true"/>
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -1607,17 +1607,18 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>No BPJS</label>
-                                <div class="input-group">
-                                    <input class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')">
-                                    <div class="input-group-addon"
-                                         onclick="cekBpjs(this.value)">
-                                        <i class="fa fa-search"></i> Check
-                                    </div>
-                                </div>
+                                <input class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')" type="number">
+                                <%--<div class="input-group">--%>
+
+                                    <%--<div class="input-group-addon"--%>
+                                         <%--onclick="cekBpjs(this.value)" style="cursor:pointer;">--%>
+                                        <%--<i class="fa fa-search"></i> Check--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">NIK</label>
-                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')" type="number">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Nama</label>
@@ -1633,7 +1634,7 @@
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Tempat Lahir</label>
-                                <input class="form-control" id="add_tempat_lahir" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_tempat_lahir" oninput="$(this).css('border',''); setKotaKab(this.id)">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Tanggal Lahir</label>
@@ -1645,10 +1646,26 @@
                                            onchange="$(this).css('border','')" oninput="$(this).css('border','')">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Status Perkawinan</label>
+                                <s:select id="add_status_perkawinan" name="headerCheckup.statusPerkawinan"
+                                          list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin'}"
+                                          onchange="$(this).css('border','')"
+                                          headerKey="" headerValue="[Select One]"
+                                          cssStyle="width: 100%" cssClass="form-control"/>
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label >Agama</label>
+                                <label>Pendidikan</label>
+                                <s:select id="add_pendidikan" name="headerCheckup.pendidikan"
+                                          list="#{'SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S3','S3':'S3'}"
+                                          onchange="$(this).css('border','')"
+                                          headerKey="" headerValue="[Select One]"
+                                          cssStyle="width: 100%" cssClass="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Agama</label>
                                 <select class="form-control" id="add_agama" onchange="$(this).css('border','')">
                                     <option value="">[Select One]</option>
                                     <option value="Islam">Islam</option>
@@ -1660,11 +1677,27 @@
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Profesi</label>
-                                <input class="form-control" id="add_profesi">
+                                <s:select id="ket_add_profesi"
+                                          list="#{'Guru':'Guru','Dokter':'Dokter','Swasta':'Swasta','PNS':'PNS','Lainnya':'Lainnya'}"
+                                          onchange="$('#add_profesi').val(this.value); $(this).css('border',''); if(this.value == 'Lainnya'){$('#form_add_profesi').show()}else{$('#form_add_profesi').hide()} "
+                                          headerKey="" headerValue="[Select One]"
+                                          cssStyle="width: 100%" cssClass="form-control"/>
+                                <s:hidden id="add_profesi"></s:hidden>
+                            </div>
+                            <div class="form-group" style="display: none" id="form_add_profesi">
+                                <s:textfield placeholder="Keterangan Profesi" cssClass="form-control" cssStyle="margin-top: 7px" oninput="$('#add_profesi').val(this.value);"></s:textfield>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Suku</label>
-                                <input class="form-control" id="add_suku">
+                                <s:select id="add_ket_suku"
+                                          list="#{'Jawa':'Jawa','Batak':'Batak','Dayak':'Dayak','Asmat':'Asmat','Minahasa':'Minahasa','Melayu':'Melayu','Sunda':'Sunda','Madura':'Madura','Betawi':'Betawi','Bugis':'Bugis','Lainnya':'Lainnya'}"
+                                          onchange="$('#add_suku').val(this.value); $(this).css('border',''); if(this.value == 'Lainnya'){$('#form_add_suku').show()}else{$('#form_add_suku').hide()} "
+                                          headerKey="" headerValue="[Select One]"
+                                          cssStyle="width: 100%" cssClass="form-control"/>
+                                <s:hidden id="add_suku"></s:hidden>
+                            </div>
+                            <div class="form-group" style="display: none" id="form_add_suku">
+                                <s:textfield placeholder="Keterangan Suku" cssClass="form-control" cssStyle="margin-top: 7px" oninput="$('#add_suku').val(this.value);"></s:textfield>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Alamat</label>
@@ -2815,6 +2848,8 @@
         var kota = $('#add_id_kota').val();
         var kecamatan = $('#add_id_kecamatan').val();
         var desa = $('#add_id_desa').val();
+        var statusPerkawinan = $('#add_status_perkawinan').val();
+        var pendidikan = $('#add_pendidikan').val();
         var cekCondTgl = false;
 
         var ktp = document.getElementById('img_ktp_canvas');
@@ -2829,7 +2864,7 @@
         });
 
         if (nik != '' && nama != '' && jk != '' && tempatLahir != '' && tanggalLahir != '' &&
-            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && noTelp != '' && !cekCondTgl) {
+            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && noTelp != '' && !cekCondTgl && statusPerkawinan && pendidikan != '') {
             cek = true;
         } else {
             $('#warning_add').show().fadeOut(5000);
@@ -2867,6 +2902,12 @@
             if (noTelp == '') {
                 $('#add_no_telp').css('border', 'solid 1px red');
             }
+            if (statusPerkawinan == '') {
+                $('#add_status_perkawinan').css('border', 'solid 1px red');
+            }
+            if (pendidikan == '') {
+                $('#add_pendidikan').css('border', 'solid 1px red');
+            }
         }
 
         if (cek) {
@@ -2894,6 +2935,8 @@
         var kota = $('#add_id_kota').val();
         var kecamatan = $('#add_id_kecamatan').val();
         var desa = $('#add_id_desa').val();
+        var statusPerkawinan = $('#add_status_perkawinan').val();
+        var pendidikan = $('#add_pendidikan').val();
 
         var ktp = document.getElementById('img_ktp_canvas');
         var ktpFinal = "";
@@ -2913,6 +2956,8 @@
             'suku': suku,
             'alamat': alamat,
             'desa_id': desa,
+            'status': statusPerkawinan,
+            'pendidikan': pendidikan,
             'img_ktp': ktpFinal
         };
         var objectString = JSON.stringify(data);
@@ -2933,9 +2978,9 @@
                     $('#tempat_lahir').val(response.tempatLahir);
                     $('#tanggal_lahir').val(response.tglLahir);
                     $('#agama').val(response.agama);
-                    $('#profesi').val(response.profesi);
+                    $('#profesi').val(response.profesi).trigger('change');
                     $('#jalan').val(response.jalan);
-                    $('#suku').val(response.suku);
+                    $('#suku').val(response.suku).trigger('change');
                     $('#img_ktp').val(response.imgKtp);
                     $('#img-upload').attr('src', response.urlKtp);
                     $('#provinsi').val(response.provinsi);
@@ -2947,6 +2992,8 @@
                     $('#kecamatan11').val(response.kecamatanId);
                     $('#desa11').val(response.desaId);
                     $('#no_telp').val(response.noTelp);
+                    $('#status_perkawinan').val(response.statusPerkawinan).trigger('change');
+                    $('#pendidikan').val(response.pendidikan).trigger('change');
                     $('#close_pos').val(1);
                     // $('#kunjungan').val("Baru").attr('disabled', true);
                     $('#kunjungan_val').val("Baru");
@@ -3135,6 +3182,7 @@
     function setOrderLab(val){
         $('#h_id_order_lab').val(val);
     }
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>
