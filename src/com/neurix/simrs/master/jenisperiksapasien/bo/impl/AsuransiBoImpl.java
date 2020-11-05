@@ -21,6 +21,10 @@ public class AsuransiBoImpl implements AsuransiBo  {
     private AsuransiDao asuransiDao;
     private MasterDao masterDao;
 
+    public static void setLogger(Logger logger) {
+        AsuransiBoImpl.logger = logger;
+    }
+
     //seter geter dari masterDao
     public void setMasterDao(MasterDao masterDao) {
         this.masterDao = masterDao;
@@ -77,22 +81,38 @@ public class AsuransiBoImpl implements AsuransiBo  {
     public void saveEdit(Asuransi bean) throws GeneralBOException {
         logger.info("[PayrollSkalaGajiBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
-            String asurnasinId = bean.getIdAsuransi();
+            String asuransiId = bean.getIdAsuransi();
 
             ImSimrsAsuransiEntity imSimrsAsuransiEntity = null;
             try {
                 // Get data from database by ID
-                imSimrsAsuransiEntity = asuransiDao.getById("idAsuransi", asurnasinId);
+                imSimrsAsuransiEntity = asuransiDao.getById("idAsuransi", asuransiId);
                 //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
             } catch (HibernateException e) {
                 logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data PayrollSkalaGaji by Kode PayrollSkalaGaji, please inform to your admin...," + e.getMessage());
             }
 
+//             mengambil nama master / nama asuransi dari masterdao berdasarkan no master;
+            ImMasterEntity masterEntity = new ImMasterEntity();
+            try {
+                masterEntity = masterDao.getById("primaryKey.nomorMaster", bean.getNoMaster());
+            }catch (HibernateException e){
+                logger.error("Found Error when search asuransi "+e.getMessage());
+            }
+
+//            imSimrsAsuransiEntity.setIdAsuransi(asuransiId);
+            //cari ke dao akun Master berdasarkan no master
+
+
             if (imSimrsAsuransiEntity != null) {
                 if (imSimrsAsuransiEntity.getNamaAsuransi().equalsIgnoreCase(bean.getNamaAsuransi())){
-                    imSimrsAsuransiEntity.setIdAsuransi(bean.getIdAsuransi());
-                    imSimrsAsuransiEntity.setNamaAsuransi(bean.getNamaAsuransi());
+                    imSimrsAsuransiEntity.setIdAsuransi(asuransiId);
+//                      imSimrsAsuransiEntity.setNamaAsuransi(masterEntity.getNama());
+                    if (masterEntity != null){
+                        imSimrsAsuransiEntity.setNamaAsuransi(masterEntity.getNama());
+                        //set berdasarkan kebutuhan fild yang di ambil dari tabel lain
+                    }
                     imSimrsAsuransiEntity.setNoMaster(bean.getNoMaster());
                     imSimrsAsuransiEntity.setFlag(bean.getFlag());
                     imSimrsAsuransiEntity.setIsLaka(bean.getIsLaka());
@@ -109,10 +129,16 @@ public class AsuransiBoImpl implements AsuransiBo  {
                         throw new GeneralBOException("Found problem when saving update data Asuransi, please info to your admin..." + e.getMessage());
                     }
                 }else {
-                    String status = cekStatus(bean.getNamaAsuransi());
+                    String status = cekStatus(bean.getNoMaster());
                     if (!status.equalsIgnoreCase("exist")){
                         imSimrsAsuransiEntity.setIdAsuransi(bean.getIdAsuransi());
-                        imSimrsAsuransiEntity.setNamaAsuransi(bean.getNamaAsuransi());
+//                        imSimrsAsuransiEntity.setNamaAsuransi(masterEntity.getNama());
+
+                        if (masterEntity != null){
+                            imSimrsAsuransiEntity.setNamaAsuransi(masterEntity.getNama());
+                            //set berdasarkan kebutuhan fild yang di ambil dari tabel lain
+                        }
+
                         imSimrsAsuransiEntity.setNoMaster(bean.getNoMaster());
                         imSimrsAsuransiEntity.setFlag(bean.getFlag());
                         imSimrsAsuransiEntity.setIsLaka(bean.getIsLaka());
@@ -144,7 +170,7 @@ public class AsuransiBoImpl implements AsuransiBo  {
     public Asuransi saveAdd(Asuransi bean) throws GeneralBOException {
         logger.info("[AsurnasiBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
-            String status = cekStatus(bean.getNamaAsuransi());
+            String status = cekStatus(bean.getNoMaster());
             String asuransiId;
             if (!status.equalsIgnoreCase("exist")){
                 try {
@@ -169,7 +195,6 @@ public class AsuransiBoImpl implements AsuransiBo  {
                 imSimrsAsuransiEntity.setIdAsuransi(asuransiId);
                 //cari ke dao akun Master berdasarkan no master
 
-                //
                 imSimrsAsuransiEntity.setNoMaster(bean.getNoMaster());
                 imSimrsAsuransiEntity.setFlag(bean.getFlag());
                 imSimrsAsuransiEntity.setIsLaka(bean.getIsLaka());
@@ -182,7 +207,6 @@ public class AsuransiBoImpl implements AsuransiBo  {
                     imSimrsAsuransiEntity.setNamaAsuransi(masterEntity.getNama());
                     //set berdasarkan kebutuhan fild yang di ambil dari tabel lain
                 }
-
                 try {
                     // insert into database
                     asuransiDao.addAndSave(imSimrsAsuransiEntity);
@@ -285,11 +309,11 @@ public class AsuransiBoImpl implements AsuransiBo  {
         return null;
     }
 
-    public String cekStatus(String namaAsuransi)throws GeneralBOException{
+    public String cekStatus(String noMaster)throws GeneralBOException{
         String status ="";
         List<ImSimrsAsuransiEntity> entities = new ArrayList<>();
         try {
-            entities = asuransiDao.getDataAsuransi(namaAsuransi);
+            entities = asuransiDao.getDataAsuransi(noMaster);
         } catch (HibernateException e) {
             logger.error("[AsuransiBoImpl.cekStatus] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

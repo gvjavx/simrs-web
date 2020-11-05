@@ -72,8 +72,11 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="idAsuransi" name="asuransi.idAsuransi"
-                                                                     required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:textfield id="idAsuransi"
+                                                                     name="asuransi.idAsuransi"
+                                                                     required="true"
+                                                                     disabled="false"
+                                                                     cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -84,10 +87,6 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <%--<s:textfield id="namaAsuransi" name="asuransi.namaAsuransi"--%>
-                                                                     <%--required="true" disabled="false" cssClass="form-control"/>--%>
-
-
                                                             <s:action id="initComboAsuransi" namespace="/masterVendor"
                                                                       name="getComboAsuransi_masterVendor"/>
                                                             <s:select cssStyle="margin-top: 7px; width: 100%"
@@ -96,40 +95,10 @@
                                                                       listValue="nama"
                                                                       headerKey="" headerValue="[Select one]"
                                                                       cssClass="form-control select2"/>
-
-
                                                     </table>
                                                 </td>
                                             </tr>
 
-                                            <%--<div class="form-group">--%>
-                                                <%--<label class="control-label col-sm-4">Poli</label>--%>
-                                                <%--<div class="col-sm-4">--%>
-                                                    <%--<s:action id="initComboPoli" namespace="/checkup"--%>
-                                                              <%--name="getComboPelayanan_checkup"/>--%>
-                                                    <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                              <%--list="#initComboPoli.listOfPelayanan" id="poli"--%>
-                                                              <%--name="headerCheckup.idPelayanan" listKey="idPelayanan"--%>
-                                                              <%--listValue="namaPelayanan"--%>
-                                                              <%--headerKey="" headerValue="[Select one]"--%>
-                                                              <%--cssClass="form-control select2"/>--%>
-                                                <%--</div>--%>
-                                            <%--</div>--%>
-
-
-                                            <%--<tr>--%>
-                                                <%--<td>--%>
-                                                    <%--<label class="control-label"><small>No. Master :</small></label>--%>
-                                                <%--</td>--%>
-                                                <%--<td>--%>
-                                                    <%--<table>--%>
-                                                        <%--<s:action id="initComboMaster" namespace="/admin/user" name="initComboMaster_user"/>--%>
-                                                        <%--<s:select list="#initComboMaster.listOfComboMaster" id="idMaster" name="asuransi.noMaster"--%>
-                                                                  <%--listKey="noMaster" listValue="noMaster" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-
-                                                    <%--</table>--%>
-                                                <%--</td>--%>
-                                            <%--</tr>--%>
 
 
                                             <tr>
@@ -138,8 +107,10 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="isLaka" name="asuransi.isLaka"
-                                                                     required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:select list="#{'N':'Tidak Aktif'}" id="isLaka"
+                                                                  name="asuransi.isLaka"
+                                                                  headerKey="Y" headerValue="Aktif"
+                                                                  cssClass="form-control select2" />
                                                     </table>
                                                 </td>
                                             </tr>
@@ -151,8 +122,10 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="asuransi.flag"
-                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" />
+                                                        <s:select list="#{'N':'Tidak Aktif'}" id="flag"
+                                                                  name="asuransi.flag"
+                                                                  headerKey="Y" headerValue="Aktif"
+                                                                  cssClass="form-control select2" />
                                                     </table>
 
                                                 </td>
@@ -160,12 +133,16 @@
 
                                         </table>
                                         <br>
+
                                         <div id="actions" class="form-actions">
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="asuransiForm" id="search" name="search"
-                                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
+                                                        <sj:submit type="button" cssClass="btn btn-primary"
+                                                                   formIds="asuransiForm" id="search"
+                                                                   name="search"
+                                                                   onClickTopics="showDialog"
+                                                                   onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>

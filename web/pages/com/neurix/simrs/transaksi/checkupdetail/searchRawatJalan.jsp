@@ -63,7 +63,9 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
+
                                 <s:if test="isEnabledPoli()">
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
@@ -78,6 +80,7 @@
                                     </div>
                                 </div>
                                 </s:if>
+
                                 <s:else>
                                     <div class="form-group">
                                         <label class="control-label col-sm-4">Poli</label>

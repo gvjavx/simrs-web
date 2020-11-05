@@ -24,7 +24,8 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var namaAsuransi = document.getElementById("asuransiAdd").value;
+            var namaAsuransi = document.getElementById("asuransiAdd1").value;
+            // var islaka = document.getElementById("isLakaAdd").value;
             // var noMaster = document.getElementById("idMaster1").value;
             console.log(namaAsuransi);
 
@@ -110,7 +111,7 @@
                                 <s:action id="initComboAsuransi" namespace="/masterVendor"
                                           name="getComboAsuransi_masterVendor"/>
                                 <s:select cssStyle="margin-top: 7px; width: 100%" list="#initComboAsuransi.listOfComboVendor"
-                                          id="asuransiAdd" name="asuransi.nomMaster"
+                                          id="asuransiAdd1" name="asuransi.noMaster"
                                           listKey="nomorMaster" listValue="nama" headerKey="" headerValue="[Select one]"
                                           cssClass="form-control select2"/>
                             </table>
@@ -123,7 +124,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'N':'Non-Active'}" id="flag" name="asuransi.isLaka"
+                                <s:select list="#{'N':'Non-Active'}" id="isLakaAdd" name="asuransi.isLaka"
                                           headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                             </table>
 

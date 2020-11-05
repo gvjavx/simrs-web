@@ -19,6 +19,7 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var namaAsuransi = document.getElementById("namaAsuransi1").value;
+            // var isLaka = document.getElementById("idIslaka").value;
             // var noMaster = document.getElementById("noMaster").value;
             console.log(namaAsuransi);
 
@@ -36,6 +37,7 @@
                 if (namaAsuransi == '') {
                     msg += 'Field <strong>Nama Asuransi </strong> is required.' + '<br/>';
                 }
+
 
                 document.getElementById('errorValidationMessage2').innerHTML = msg;
 
@@ -96,11 +98,14 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idAsuransi1" name="asuransi.idAsuransi" required="true" disabled="true" cssClass="form-control"/>
+                                <s:textfield id="idAsuransi1" name="asuransi.idAsuransi" required="true"
+                                             disabled="true" cssClass="form-control"/>
                                 <s:hidden id="idAsuransi1" name="asuransi.idAsuransi" />
                             </table>
                         </td>
                     </tr>
+
+
                     <%--<tr>--%>
                         <%--<td>--%>
                             <%--<label class="control-label"><small>Nama Asuransi :</small></label>--%>
@@ -127,6 +132,21 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td >
+                            <label class="control-label"><small>isLaka :</small></label>
+                        </td>
+                        <td width="80">
+                            <%--<table>--%>
+                                <%--<s:textfield id="idIslaka" name="asuransi.isLaka"--%>
+                                             <%--required="true" disabled="false" cssClass="form-control"/>--%>
+                            <%--</table>--%>
+                            <table>
+                                <s:select list="#{'N':'Tidak Aktif'}" id="idIslaka" name="asuransi.isLaka"
+                                          headerKey="Y" headerValue="Aktif" cssClass="form-control select2" />
+                            </table>
+                        </td>
+                    </tr>
 
                     <%--<tr>--%>
                         <%--<td>--%>
@@ -144,13 +164,12 @@
 
                 </table>
 
-
-
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="editAsuransiForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="editAsuransiForm"
+                                   id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
