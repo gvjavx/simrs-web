@@ -181,6 +181,16 @@ public class HeaderCheckup {
     private String statusPerkawinan;
     private String kunjunganPoli;
 
+    private String kodePoliVclaim;
+
+    public String getKodePoliVclaim() {
+        return kodePoliVclaim;
+    }
+
+    public void setKodePoliVclaim(String kodePoliVclaim) {
+        this.kodePoliVclaim = kodePoliVclaim;
+    }
+
     public String getPendidikan() {
         return pendidikan;
     }

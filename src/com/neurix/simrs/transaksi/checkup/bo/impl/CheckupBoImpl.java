@@ -3227,6 +3227,11 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return headerCheckupDao.cekKunjunganPoliPasien(idPasien, idPelayanan);
     }
 
+    @Override
+    public List<HeaderCheckup> daftarPasienOnline(String branchId, String idPelayanan) throws GeneralBOException {
+        return headerCheckupDao.getDaftarPasienOnline(branchId, idPelayanan);
+    }
+
     private CrudResponse saveRawatInap(RawatInap bean) {
         logger.info("[CheckupDetailBoImpl.saveRawatInap] Start >>>>>>>>");
         CrudResponse response = new CrudResponse();

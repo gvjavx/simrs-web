@@ -1858,6 +1858,8 @@
                         $('#ppk_rujukan').val(response.kdProviderProvUmum);
                         $('#intansi_perujuk').val(response.namaProvPerujuk);
                         $('#tgl_rujukan').val(response.tglCetakKartu);
+                        $('#diagnosa_awal').val(response.kodeDiagnosa);
+                        $('#diagnosa_ket').val(response.namaDiagnosa);
                     } else {
                         val = "tidak ditemukan";
                         icon = "fa-warning";

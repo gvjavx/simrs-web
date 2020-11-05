@@ -3988,6 +3988,20 @@ public class CheckupAction extends BaseMasterAction {
         return headerCheckupList;
     }
 
+    public List<HeaderCheckup> daftarPasienOnline(String idPelayanan) {
+        logger.info("[CheckupAction.cekPelayananPaket] START process >>>");
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        try {
+            headerCheckupList = checkupBo.daftarPasienOnline(CommonUtil.userBranchLogin(), idPelayanan);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error, " + e.getMessage());
+        }
+        logger.info("[CheckupAction.cekPelayananPaket] END process >>>");
+        return headerCheckupList;
+    }
+
     public String cekLogin() {
         String res = CommonUtil.userLogin();
         return res;

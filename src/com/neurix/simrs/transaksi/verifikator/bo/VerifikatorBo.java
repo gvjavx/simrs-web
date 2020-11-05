@@ -28,4 +28,5 @@ public interface VerifikatorBo {
     public CrudResponse updateInvoice(HeaderDetailCheckup bean) throws GeneralBOException;
 
     public CheckResponse updateRiwayatTindakan(List<RiwayatTindakan> list) throws GeneralBOException;
+    public CheckResponse updateFlagSendKlaim(HeaderDetailCheckup bean) throws GeneralBOException;
 }

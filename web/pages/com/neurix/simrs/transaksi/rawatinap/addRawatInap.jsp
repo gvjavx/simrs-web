@@ -277,23 +277,9 @@
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:if test='rawatInap.idJenisPeriksa == "asuransi"'>
-                                                <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:if>
-                                                <s:elseif test='rawatInap.idJenisPeriksa == "umum"'>
-                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='rawatInap.idJenisPeriksa == "bpjs"'>
-                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='rawatInap.idJenisPeriksa == "rekanan"'>
-                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:else>
-                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:else>
-                                                    <s:property value="rawatInap.jenisPeriksaPasien"></s:property>
-                                                </span>
+                                                <script>
+                                                    document.write(changeJenisPasien('<s:property value="rawatInap.idJenisPeriksa"/>', '<s:property value="rawatInap.jenisPeriksaPasien"/>'));
+                                                </script>
                                             </table>
                                         </td>
                                     </tr>

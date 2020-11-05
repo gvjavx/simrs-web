@@ -1236,6 +1236,16 @@ ADD COLUMN pendidikan VARCHAR(100),
 ADD COLUMN status_perkawinan VARCHAR(100);
 
 
+--INI BELOM DI PROD
+--KEMMIS MALAM JUMAT
+ALTER TABLE im_simrs_pelayanan
+ADD COLUMN kode_poli_vclaim VARCHAR(100);
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_send_klaim VARCHAR(1);
+
+
+
 
 
 

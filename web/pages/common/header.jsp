@@ -377,6 +377,38 @@ apply the skin class to the body tag so the changes take effect.
         border-radius: 5px;
         box-shadow: 1px 3px 8px grey
     }
+    .span-biru{
+        font-size: 13px;
+        padding: 5px;
+        color: white;
+        background-color: #4d4dff;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
+    .span-hijau-muda{
+        font-size: 13px;
+        padding: 5px;
+        color: black;
+        background-color: #66ff33;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
+    .span-ungu{
+        font-size: 13px;
+        padding: 5px;
+        color: white;
+        background-color: #cc3399;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
+    .span-kuning{
+        font-size: 13px;
+        padding: 5px;
+        color: black;
+        background-color: #ffff00;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
 
 </style>
 <script>
@@ -884,6 +916,22 @@ apply the skin class to the body tag so the changes take effect.
             }
         });
         return cek;
+    }
+
+    function changeJenisPasien(jenis, value){
+        var res = "";
+        if(jenis == 'umum'){
+            res = '<span class="span-biru">'+value+'</span>';
+        }else if (jenis == 'bpjs'){
+            res = '<span class="span-success">'+value+'</span>';
+        }else if(jenis == 'rekanan'){
+            res = '<span class="span-hijau-muda">'+value+'</span>';
+        }else if(jenis == 'asuransi'){
+            res = '<span class="span-kuning">'+value+'</span>';
+        }else{
+            res = '<span class="span-ungu">'+value+'</span>';
+        }
+        return res;
     }
 
 </script>

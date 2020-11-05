@@ -1812,6 +1812,55 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return res;
     }
 
+    public List<HeaderCheckup> getDaftarPasienOnline(String branchId, String idPelayanan){
+        List<HeaderCheckup> res = new ArrayList<>();
+        String pelayanan = "";
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+            pelayanan = "AND a.id_pelayanan = '"+idPelayanan+"' \n";
+        }
+        if(branchId != null && !"".equalsIgnoreCase(branchId)){
+            String SQL = "SELECT\n" +
+                    "a.id_antrian_online,\n" +
+                    "a.no_checkup_online,\n" +
+                    "a.flag_periksa,\n" +
+                    "b.id_pasien,\n" +
+                    "b.nama,\n" +
+                    "b.jenis_kelamin,\n" +
+                    "b.branch_id,\n" +
+                    "c.nama_pelayanan\n" +
+                    "FROM it_simrs_antian_online a\n" +
+                    "INNER JOIN it_simrs_registrasi_online b ON a.no_checkup_online = b.no_checkup_online\n" +
+                    "INNER JOIN im_simrs_pelayanan c ON a.id_pelayanan = c.id_pelayanan\n" +
+                    "WHERE a.tgl_checkup = CURRENT_DATE\n" +
+                    "AND b.branch_id = :id\n" + pelayanan +
+                    "ORDER BY a.no_checkup_online ASC";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", branchId)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj : result){
+                    HeaderCheckup checkup = new HeaderCheckup();
+                    checkup.setIdAntrianOnline(obj[0] != null ? obj[0].toString() : null);
+                    checkup.setNoCheckupOnline(obj[1] != null ? obj[1].toString() : null);
+                    checkup.setFlag(obj[2] != null ? obj[2].toString() : null);
+                    checkup.setIdPasien(obj[3] != null ? obj[3].toString() : null);
+                    checkup.setNama(obj[4] != null ? obj[4].toString() : null);
+                    if(obj[5] != null){
+                        String jk = "Perempuan";
+                        if("L".equalsIgnoreCase(obj[5].toString())){
+                            jk = "Laki-Laki";
+                        }
+                        checkup.setJenisKelamin(jk);
+                    }
+                    checkup.setNamaPelayanan(obj[7] != null ? obj[7].toString() : null);
+                    res.add(checkup);
+                }
+            }
+        }
+        return res;
+    }
+
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pembayaran_online')");
         Iterator<BigInteger> iter = query.list().iterator();
