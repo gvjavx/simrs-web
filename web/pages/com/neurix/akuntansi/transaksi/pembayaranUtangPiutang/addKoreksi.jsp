@@ -1029,31 +1029,26 @@
         });
 
         $('.detailPembayaranTable').on('click', '.item-delete-data', function () {
-            var id = $(this).attr('data');
+            var rekeningId = $(this).attr('rekening');
+            var nonota = $(this).attr('data');
+            var vendor = $(this).attr('vendor');
+            var divisi = $(this).attr('divisi');
             var biaya = $(this).attr('biaya');
-            if (id!=''){
-                PembayaranUtangPiutangAction.deleteDetailPembayaran(id,function (result) {
-                    alert("data berhasil dihapus");
-                    loadDetailPembayaran();
-                    var totalBayar = $('#bayar').val();
-                    totalBayar=totalBayar.replace(/[.]/g,"");
-                    var strBayar=biaya.replace(/[.]/g,"");
-                    var intTotalBayar=0;
-                    if (totalBayar!=''){
-                        intTotalBayar = parseInt(totalBayar);
-                    }
-                    var intBayar = parseInt(strBayar);
-                    totalBayar = intTotalBayar-intBayar;
-                    var strTotalBayar = String(totalBayar);
-                    $('#bayar').val(formatRupiahAngka(strTotalBayar));
-                });
-            } else{
-                var msg="";
-                if (id==""){
-                    msg+="Kode vendor tidak ditemukan \n";
+            PembayaranUtangPiutangAction.deleteDetailPembayaran(rekeningId,divisi,vendor,nonota,biaya,function () {
+                alert("data berhasil dihapus");
+                loadDetailPembayaran();
+                var totalBayar = $('#bayar').val();
+                totalBayar=totalBayar.replace(/[.]/g,"");
+                var strBayar=biaya.replace(/[.]/g,"");
+                var intTotalBayar=0;
+                if (totalBayar!=''){
+                    intTotalBayar = parseInt(totalBayar);
                 }
-                alert(msg);
-            }
+                var intBayar = parseInt(strBayar);
+                totalBayar = intTotalBayar-intBayar;
+                var strTotalBayar = String(totalBayar);
+                $('#bayar').val(formatRupiahAngka(strTotalBayar));
+            });
         });
         window.loadDetailPembayaran = function () {
             $('.detailPembayaranTable').find('tbody').remove();
@@ -1098,7 +1093,7 @@
                         '<td align="center">' + stDebit+ '</td>' +
                         '<td align="center">' + stKredit+ '</td>' +
                         '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' biaya ='" + item.stJumlahPembayaran + "'>" +
+                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' rekening ='" + item.rekeningId + "' vendor ='" + item.masterId + "' biaya ='" + item.stJumlahPembayaran + "' divisi ='" + item.divisiId + "'>" +
                         "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>' name='icon_delete'>" +
                         '</a>' +
                         '</td>' +

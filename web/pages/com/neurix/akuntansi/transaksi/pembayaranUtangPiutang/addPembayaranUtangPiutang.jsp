@@ -1082,60 +1082,12 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group" id="kode_lain">
-                                <label class="col-md-4" style="margin-top: 7px">ID Divisi</label>
-                                <div class="col-md-3">
-                                    <s:textfield id="mod_id_lain" onkeypress="$(this).css('border','')" wajib="Y"
-                                                 cssClass="form-control modal_lain" cssStyle="margin-top: 7px" />
-                                    <script>
-                                        $(document).ready(function() {
-                                            var functions, mapped;
-                                            $('#mod_id_lain').typeahead({
-                                                minLength: 1,
-                                                source: function (query, process) {
-                                                    functions = [];
-                                                    mapped = {};
-                                                    var data = [];
-                                                    dwr.engine.setAsync(false);
-                                                    PositionAction.typeAheadPosition(query,function (listdata) {
-                                                        data = listdata;
-                                                    });
-                                                    $.each(data, function (i, item) {
-                                                        var labelItem = item.kodering + " | " + item.positionName;
-                                                        mapped[labelItem] = {
-                                                            id: item.kodering,
-                                                            nama: item.positionName
-                                                        };
-                                                        functions.push(labelItem);
-                                                    });
-                                                    process(functions);
-                                                },
-                                                updater: function (item) {
-                                                    var selectedObj = mapped[item];
-                                                    $('#mod_nama_divisi_lain').val(selectedObj.nama);
-                                                    return selectedObj.id;
-                                                }
-                                            });
-                                        });
-                                    </script>
-                                </div>
-                                <div class="col-md-5">
-                                    <s:textfield id="mod_nama_divisi_lain" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control modal_lain" cssStyle="margin-top: 7px" />
-                                </div>
-                            </div>
                             <div class="form-group" id="no_nota_view_lain">
                                 <label class="col-md-4" style="margin-top: 7px">No. Nota/Pengajuan</label>
-                                <div class="col-md-7">
-                                    <s:textfield id="mod_no_nota_lain" wajib="Y"
-                                                 cssClass="form-control modal_lain" readonly="true" cssStyle="margin-top: 7px"/>
+                                <div class="col-md-8">
+                                    <s:textfield id="mod_no_nota_lain" wajib="Y" cssClass="form-control modal_lain" readonly="true" cssStyle="margin-top: 7px"/>
                                 </div>
                                 <s:hidden id="mod_rekening_id_lain"/>
-                                <div class="col-md-1">
-                                    <a href="javascript:void(0)">
-                                        <img  style="margin-top: 10px" id="modBtnSearchNotaLain" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
-                                    </a>
-                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4" style="margin-top: 7px">Jumlah Pembayaran (RP)</label>
@@ -1318,9 +1270,9 @@
                         canvas.height = img.height;
                         ctx.clearRect(0,0,canvas.width,canvas.height);
                         ctx.drawImage(img,0,0);
-                    }
+                    };
                     img.src = event.target.result;
-                }
+                };
                 reader.readAsDataURL(event.target.files[0]);
             } else {
                 if (log) alert(log);
@@ -1621,31 +1573,26 @@
             }
         });
         $('.detailPembayaranTable').on('click', '.item-delete-data', function () {
-            var id = $(this).attr('data');
+            var rekeningId = $(this).attr('rekening');
+            var nonota = $(this).attr('data');
+            var vendor = $(this).attr('vendor');
+            var divisi = $(this).attr('divisi');
             var biaya = $(this).attr('biaya');
-            if (id!=''){
-                PembayaranUtangPiutangAction.deleteDetailPembayaran(id,function (result) {
-                    alert("data berhasil dihapus");
-                    loadDetailPembayaran();
-                    var totalBayar = $('#bayar').val();
-                    totalBayar=totalBayar.replace(/[.]/g,"");
-                    var strBayar=biaya.replace(/[.]/g,"");
-                    var intTotalBayar=0;
-                    if (totalBayar!=''){
-                        intTotalBayar = parseInt(totalBayar);
-                    }
-                    var intBayar = parseInt(strBayar);
-                    totalBayar = intTotalBayar-intBayar;
-                    var strTotalBayar = String(totalBayar);
-                    $('#bayar').val(formatRupiahAngka(strTotalBayar));
-                });
-            } else{
-                var msg="";
-                if (id==""){
-                    msg+="Kode vendor tidak ditemukan \n";
+            PembayaranUtangPiutangAction.deleteDetailPembayaran(rekeningId,divisi,vendor,nonota,biaya,function () {
+                alert("data berhasil dihapus");
+                loadDetailPembayaran();
+                var totalBayar = $('#bayar').val();
+                totalBayar=totalBayar.replace(/[.]/g,"");
+                var strBayar=biaya.replace(/[.]/g,"");
+                var intTotalBayar=0;
+                if (totalBayar!=''){
+                    intTotalBayar = parseInt(totalBayar);
                 }
-                alert(msg);
-            }
+                var intBayar = parseInt(strBayar);
+                totalBayar = intTotalBayar-intBayar;
+                var strTotalBayar = String(totalBayar);
+                $('#bayar').val(formatRupiahAngka(strTotalBayar));
+            });
         });
 
         window.loadDetailPembayaran = function () {
@@ -1677,7 +1624,7 @@
                         '<td align="center">' + item.noNota + '</td>' +
                         '<td align="center">' + item.stJumlahPembayaran+ '</td>' +
                         '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' biaya ='" + item.stJumlahPembayaran + "'>" +
+                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' rekening ='" + item.rekeningId + "' vendor ='" + item.masterId + "' biaya ='" + item.stJumlahPembayaran + "' divisi ='" + item.divisiId + "'>" +
                         "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>' name='icon_delete'>" +
                         '</a>' +
                         '</td>' +
@@ -2090,15 +2037,12 @@
     });
 
     $('#mod_btnSaveDetailLain').click(function () {
-        var idDivisi=$('#mod_id_lain').val();
-        var namaDivisi=$('#mod_nama_divisi_lain').val();
         var noNota=$('#mod_no_nota_lain').val();
         var rekeningId=$('#mod_coa_lawan_lain').val();
         var jumlahPembayaran=$('#mod_jumlah_pembayaran_lain').val();
 
         var tipePengajuanBiaya =$('#tipePengajuan').val();
-        //jika pengajuan biasa
-        PembayaranUtangPiutangAction.saveDetailPembayaran('','',noNota,jumlahPembayaran,rekeningId,idDivisi,namaDivisi,tipePengajuanBiaya,'','',function (result) {
+        PembayaranUtangPiutangAction.saveDetailPembayaran('','',noNota,jumlahPembayaran,rekeningId,'','',tipePengajuanBiaya,'','',function (result) {
             if (result==""){
                 loadDetailPembayaran();
                 //dihitung totalbayarnya

@@ -2250,7 +2250,9 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             data.setBranchName(branchDao.getById(pk,"Y").getBranchName());
         }
         if (entity.getMasterId()!=null){
-            data.setMasterName(masterVendorDao.getById("nomorMaster",entity.getMasterId()).getNama());
+            ImMasterVendorEntity masterVendor = masterVendorDao.getById("nomorMaster",entity.getMasterId());
+            data.setMasterName(masterVendor.getNama());
+            data.setNoRekening(masterVendor.getNoRekening());
         }
 
         switch (entity.getStatus()){

@@ -257,6 +257,9 @@
                                         <td align="center">
                                             <s:if test='#row.approvalKeuanganFlag == "Y"'>
                                                 <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>">
+                                                <a href="javascript:;" data="<s:property value="%{#attr.row.pembayaranUtangPiutangId}"/>" who="keu" class="item-view-approval">
+                                                    <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" >
+                                                </a>
                                             </s:if>
                                             <s:elseif test='#row.approvalKasubKeuanganFlag == "Y"'>
                                                 <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>">
@@ -276,6 +279,9 @@
                                         <td align="center">
                                             <s:if test='#row.approvalKasubKeuanganFlag == "Y"'>
                                                 <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>">
+                                                <a href="javascript:;" data="<s:property value="%{#attr.row.pembayaranUtangPiutangId}"/>" who="kasubkeu" class="item-view-approval">
+                                                    <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" >
+                                                </a>
                                             </s:if>
                                             <s:elseif test='#row.registeredFlag == "Y"'>
                                                 <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>">
@@ -291,7 +297,10 @@
                                         </td>
                                         <td align="center">
                                             <s:if test='#row.registeredFlag == "Y"'>
-                                                <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>">
+                                                <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>"  >
+                                                <a href="javascript:;" data="<s:property value="%{#attr.row.pembayaranUtangPiutangId}"/>" who="kakeu" class="item-view-approval">
+                                                    <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" >
+                                                </a>
                                             </s:if>
                                             <s:elseif test='#row.jabatan == "ka" && #row.approvalKasubKeuanganFlag == "Y" '>
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.pembayaranUtangPiutangId}"/>" class="item-posting">
@@ -523,11 +532,68 @@
         </div>
     </div>
 </div>
+<div id="modal-view-approval" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-flat modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Approve By</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_approve_by" readonly="true" cssStyle="margin-top: 7px" cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Approve Date</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_approve_date" readonly="true" cssStyle="margin-top: 7px" cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     $(document).ready(function () {
-        $('#tablePembayaranUtangPiutang').DataTable({
-            "order": [[0, "desc"]]
+
+        $('.tablePembayaranUtangPiutang').on('click', '.item-view-approval', function() {
+            var pembayaranId = $(this).attr('data');
+            var who = $(this).attr('who');
+            var title ="View Keterangan Approval";
+
+            PembayaranUtangPiutangAction.getViewApproval(pembayaranId,who,function (data) {
+                if (who=="keu"){
+                    title += " Keuangan";
+                    $('#mod_approve_by').val(data.approvalKeuanganName);
+                    $('#mod_approve_date').val(data.stApprovalKeuanganDate);
+                } else if (who=="kasubkeu"){
+                    title += " Kasubdiv/Kasubid Keuangan";
+                    $('#mod_approve_by').val(data.approvalKasubKeuanganName);
+                    $('#mod_approve_date').val(data.stApprovalKasubKeuanganDate);
+                } else{
+                    title += " Kadiv/Kabid Keuangan";
+                    $('#mod_approve_by').val(data.registeredWho);
+                    $('#mod_approve_date').val(data.stRegisteredDate);
+                }
+            });
+            $("#modal-view-approval").find('.modal-title').text(title);
+            $("#modal-view-approval").modal('show');
         });
 
         $('.tablePembayaranUtangPiutang').on('click', '.item-view', function() {
@@ -761,6 +827,11 @@
             $('.tabelLampiran').append(tmp_table);
         });
     };
+
+    $('#tablePembayaranUtangPiutang').DataTable({
+        "pageLength": 50,
+        "order": [[0, "desc"]]
+    });
 
     $('.tabelLampiran').on('click', '.item-view-lampiran', function(){
         var judul = $(this).attr('nama');

@@ -2166,7 +2166,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "          kode.nama_kode_rekening \n" +
                 "        from \n" +
                 "          im_akun_kode_rekening kode \n" +
-                "          INNER JOIN im_akun_setting_report_keuangan_arus_kas_detail rd ON rd.rekening_id = kode.rekening_id \n" +
+                "          INNER JOIN im_akun_setting_report_arus_kas_detail rd ON rd.rekening_id = kode.rekening_id \n" +
                 "        where \n" +
                 "          rd.flag = 'Y' \n" +
                 "        group by \n" +

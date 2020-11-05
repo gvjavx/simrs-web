@@ -142,7 +142,7 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <s:textfield id="tanggal" name="pembayaranUtangPiutang.stTanggal"
+                                                    <s:textfield id="tanggal" name="pembayaranUtangPiutang.stTanggal" cssStyle="background-color: #fff" readonly="true"
                                                                  cssClass="form-control datemask" onchange="$('#st_tgl').css('border','')"/>
                                                     <script>
                                                         $("#tanggal").datepicker({
@@ -322,7 +322,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Jumlah Pembayaran</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="jumlah_pembayaran" onkeypress="$(this).css('border','')" readonly="true"
+                                                <s:textfield id="jumlah_pembayaran" onkeypress="$(this).css('border','')" readonly="true" wajib="Y"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" onkeyup="formatRupiah2(this)" />
                                             </div>
                                         </div>
@@ -569,6 +569,7 @@
         $('#divisi_id').attr('wajib', "N");
         $('#kode_vendor').attr('wajib', "N");
         $('#no_nota').attr('wajib', "N");
+        $('#jumlah_pembayaran').attr('wajib', "N");
 
         selectPembayaran();
         $('#btnSearchNota').click(function () {
@@ -723,6 +724,7 @@
             var statusDivisi=$('#divisi_id').attr('wajib');
             var statusVendor=$('#kode_vendor').attr('wajib');
             var statusNota=$('#no_nota').attr('wajib');
+            var statusJumlahPembayaran=$('#jumlah_pembayaran').attr('wajib');
 
             if (statusDivisi=='Y'&& divisiId==""){
                 alert("belum memilih Divisi");
@@ -730,6 +732,8 @@
                 alert("belum memilih Vendor");
             }else if (statusNota=='Y'&& noNota==""){
                 alert("belum memilih No. Nota");
+            }else if (statusJumlahPembayaran=='Y'&& jumlahPembayaran==""){
+                alert("jumlah pembayaran belum dimasukkan");
             }else{
                 PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,divisiId,divisiName,function (result) {
                     if (result==""){
@@ -759,8 +763,9 @@
             var rekeningId = $(this).attr('rekening');
             var nonota = $(this).attr('data');
             var vendor = $(this).attr('vendor');
+            var divisi = $(this).attr('divisi');
             var biaya = $(this).attr('biaya');
-            PembayaranUtangPiutangAction.deleteDetailPembayaran(rekeningId,nonota,vendor,biaya,function (result) {
+            PembayaranUtangPiutangAction.deleteDetailPembayaran(rekeningId,divisi,vendor,nonota,biaya,function () {
                 alert("data berhasil dihapus");
                 loadDetailPembayaran();
                 var totalBayar = $('#bayar').val();
@@ -811,7 +816,7 @@
                         '<td align="center">' + item.noNota + '</td>' +
                         '<td align="center">' + item.stJumlahPembayaran+ '</td>' +
                         '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' rekening ='" + item.rekeningId + "' vendor ='" + item.masterId + "' biaya ='" + item.stJumlahPembayaran + "'>" +
+                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' rekening ='" + item.rekeningId + "' vendor ='" + item.masterId + "' biaya ='" + item.stJumlahPembayaran + "' divisi ='" + item.divisiId + "'>" +
                         "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>' name='icon_delete'>" +
                         '</a>' +
                         '</td>' +
@@ -886,6 +891,7 @@
         $('#divisi_id').attr('wajib', "N");
         $('#kode_vendor').attr('wajib', "N");
         $('#no_nota').attr('wajib', "N");
+        $('#jumlah_pembayaran').attr('wajib', "N");
 
         var tipeTransaksi = $('#tipe_transaksi option:selected').val();
         var coaLawan = $('#coa_lawan option:selected').val();
@@ -908,6 +914,9 @@
 
                 if (res.biaya=="Y"){
                     $('#jumlah_pembayaran').attr('readonly', false);
+                    $('#jumlah_pembayaran').attr('wajib', "Y");
+                }else{
+                    $('#jumlah_pembayaran').attr('wajib', "N");
                 }
             });
         }else{

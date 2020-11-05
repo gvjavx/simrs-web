@@ -18,6 +18,7 @@
           p:kodeRekeningDao-ref="kodeRekeningDao"
           p:budgetingDao-ref="budgetingDao"
           p:settingReportKeuanganKonsolDao-ref="settingReportKeuanganKonsolDao"
+          p:settingReportKeuanganArusKasDao-ref="settingReportKeuanganArusKasDao"
     />
 
     <bean id="laporanAkuntansiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

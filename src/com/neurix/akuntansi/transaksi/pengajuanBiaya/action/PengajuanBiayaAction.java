@@ -1652,9 +1652,29 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         logger.info("[PengajuanBiayaAction.getForModalPopUpDetail] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PengajuanBiayaBo pengajuanBiayaBo = (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
-        PengajuanBiayaDetail modalPopUpDetail = pengajuanBiayaBo.modalPopUpDetail(pengajuanBiayaDetailId);
 
-        return modalPopUpDetail;
+        return pengajuanBiayaBo.modalPopUpDetail(pengajuanBiayaDetailId);
+    }
+
+    public PengajuanBiayaRk getForModalPopUpDo(String pengajuanBiayaRkId) {
+        logger.info("[PengajuanBiayaAction.getForModalPopUpDetail] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PengajuanBiayaBo pengajuanBiayaBo = (PengajuanBiayaBo) ctx.getBean("pengajuanBiayaBoProxy");
+        PengajuanBiayaRk result = new PengajuanBiayaRk();
+        PengajuanBiayaRk search = new PengajuanBiayaRk();
+        search.setPengajuanBiayaRkId(pengajuanBiayaRkId);
+        List<PengajuanBiayaRk> pengajuanBiayaRkList;
+        try {
+            pengajuanBiayaRkList = pengajuanBiayaBo.getDaftarPembayaranDo(search);
+        }
+        catch (GeneralBOException e){
+            throw new GeneralBOException(e.getMessage());
+        }
+        for (PengajuanBiayaRk data : pengajuanBiayaRkList){
+            result=data;
+        }
+
+        return result;
     }
 
     private String dateFormater(String type) {
@@ -1706,12 +1726,13 @@ public class PengajuanBiayaAction extends BaseMasterAction {
                 doStream = new DataOutputStream(new FileOutputStream("tarikan_pembayaran_do.csv"));
 
                 doStream.writeBytes("\n");
-                doStream.writeBytes("Nama Report : Tarikan Pembayaran DO p");
+                doStream.writeBytes("Nama Report : Tarikan Pembayaran DO");
                 doStream.writeBytes("\n");
                 doStream.writeBytes("Tanggal Penarikan : "+CommonUtil.convertDateToString(new java.util.Date()));
                 doStream.writeBytes("\n");
-                String[] headers = "ID,Unit,No. DO,Jatuh Tempo,ID Vendor,Vendor,Jumlah(RP),ID RK,No. Jurnal, Status".split(",");
+                String[] headers = "ID,Unit,No. DO,Jatuh Tempo,ID Vendor,Vendor,No. Rekening,Jumlah(RP),ID RK,No. Jurnal, Status".split(",");
 
+                BigDecimal total = BigDecimal.ZERO;
                 for(int i=0; i < headers.length; i++)
                 {
                     if(i != headers.length-1)
@@ -1728,12 +1749,25 @@ public class PengajuanBiayaAction extends BaseMasterAction {
                     doStream.writeBytes("\""+a.getStTanggalInvoice()+"\""+",");
                     doStream.writeBytes("\""+a.getMasterId()+"\""+",");
                     doStream.writeBytes("\""+a.getMasterName()+"\""+",");
+                    doStream.writeBytes("\""+a.getNoRekening()+"\""+",");
                     doStream.writeBytes("\""+a.getStJumlah()+"\""+",");
                     doStream.writeBytes("\""+a.getRkId()+"\""+",");
                     doStream.writeBytes("\""+a.getNoJurnal()+"\""+",");
                     doStream.writeBytes("\""+a.getStatusName()+"\"");
                     doStream.writeBytes("\n");
+                    total =total.add(a.getJumlah());
                 }
+
+                String stFoot = ";;;;;;Total;"+CommonUtil.numbericFormat(total,"###,###")+";;;";
+                String[] footer = stFoot.split(";");
+                for(int i=0; i < footer.length; i++)
+                {
+                    if(i != footer.length-1)
+                        doStream.writeBytes("\""+footer[i]+"\", ");
+                    else
+                        doStream.writeBytes("\""+footer[i]+"\"");
+                }
+                doStream.writeBytes("\n");
 
                 doStream.flush();
                 doStream.close();
