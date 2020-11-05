@@ -30,6 +30,9 @@
             font-size: 14px;
             margin-bottom: 30px;
         }
+        .not-allowed {
+            cursor: not-allowed !important;
+        }
     </style>
     <script type='text/javascript'>
 
@@ -253,6 +256,9 @@
                                                                             <img border="0" src="<s:url value="/pages/images/icons8-create-25.png"/>" name="icon_edit">
                                                                         </s:a>
                                                                     </s:if>
+                                                                    <s:else>
+                                                                        <img border="0" class="not-allowed" src="<s:url value="/pages/images/icons8-create-orange-25.png"/>" >
+                                                                    </s:else>
                                                                 </s:if>
                                                                 <s:elseif test='#row.statusApprove=="S"'>
                                                                     <s:if test='%{payroll.kantorPusat}'>
@@ -261,10 +267,20 @@
                                                                                 <img border="0" src="<s:url value="/pages/images/icons8-create-25.png"/>" name="icon_edit">
                                                                             </s:a>
                                                                         </s:if>
+                                                                        <s:else>
+                                                                            <img border="0" class="not-allowed" src="<s:url value="/pages/images/icons8-create-orange-25.png"/>" >
+                                                                        </s:else>
                                                                     </s:if>
+                                                                    <s:else>
+                                                                        <img border="0" class="not-allowed" src="<s:url value="/pages/images/icons8-create-orange-25.png"/>" >
+                                                                    </s:else>
                                                                 </s:elseif>
+                                                                <s:else>
+                                                                    <img border="0" class="not-allowed" src="<s:url value="/pages/images/icons8-create-orange-25.png"/>" >
+                                                                </s:else>
                                                                 <%--PRINT SLIP--%>
                                                                 <s:if test="#row.flagEdit">
+                                                                    <img border="0" class="not-allowed" src="<s:url value="/pages/images/icons8-print-25-yellow.png"/>" >
                                                                 </s:if>
                                                                 <s:else>
                                                                     <s:if test="#row.flagSlip">
@@ -277,6 +293,9 @@
                                                                             <img border="0" src="<s:url value="/pages/images/icons8-print-25.png"/>" name="icon_edit">
                                                                         </a>
                                                                     </s:if>
+                                                                    <s:else>
+                                                                        <img border="0" class="not-allowed" src="<s:url value="/pages/images/icons8-print-25-yellow.png"/>" >
+                                                                    </s:else>
                                                                 </s:else>
                                                                 <%--Reproses--%>
                                                                     <s:if test='#row.statusApprove == "U"'>
@@ -291,6 +310,9 @@
                                                                                 <img border="0" src="<s:url value="/pages/images/icons8-transaction-25.png"/>" >
                                                                             </a>
                                                                         </s:if>
+                                                                        <s:else>
+                                                                            <img border="0" class="not-allowed" src="<s:url value="/pages/images/icons8-transaction-25-yellow.png"/>" >
+                                                                        </s:else>
                                                                     </s:if>
                                                                     <s:elseif test='#row.statusApprove=="S"'>
                                                                         <s:if test='%{payroll.kantorPusat}'>
@@ -305,8 +327,17 @@
                                                                                     <img border="0" src="<s:url value="/pages/images/icons8-transaction-25.png"/>" >
                                                                                 </a>
                                                                             </s:if>
+                                                                            <s:else>
+                                                                                <img border="0" class="not-allowed" src="<s:url value="/pages/images/icons8-transaction-25-yellow.png"/>" >
+                                                                            </s:else>
                                                                         </s:if>
+                                                                        <s:else>
+                                                                            <img border="0" class="not-allowed" src="<s:url value="/pages/images/icons8-transaction-25-yellow.png"/>" >
+                                                                        </s:else>
                                                                     </s:elseif>
+                                                                    <s:else>
+                                                                        <img border="0" class="not-allowed" src="<s:url value="/pages/images/icons8-transaction-25-yellow.png"/>" >
+                                                                    </s:else>
                                                             </td>
                                                             <td align="center">
                                                                 <s:if test="%{payroll.kantorPusat}">

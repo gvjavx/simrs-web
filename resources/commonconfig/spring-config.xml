@@ -298,4 +298,5 @@
     <import resource="sshconfig/com/neurix/simrs/master/ruangan/spring/TempatTidurBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/tindakanBpjs/spring/TindakanBpjsBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/initdashboard/spring/InitDashboardBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganArusKas/spring/ReportKeuanganArusKasBean.xml"/>
 </beans>
