@@ -48,6 +48,7 @@ public class AsuransiDao extends GenericDao<ImSimrsAsuransiEntity, String> {
     public List<ImSimrsAsuransiEntity> getDataAsuransi(String noMaster) throws HibernateException {
         List<ImSimrsAsuransiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsAsuransiEntity.class)
                 .add(Restrictions.eq("noMaster", noMaster))
+                .add(Restrictions.eq("isLaka", "Y"))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 

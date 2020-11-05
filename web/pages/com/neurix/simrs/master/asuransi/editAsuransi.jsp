@@ -19,11 +19,11 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var namaAsuransi = document.getElementById("namaAsuransi1").value;
-            // var isLaka = document.getElementById("idIslaka").value;
+            var isLaka = document.getElementById("idIslaka").value;
             // var noMaster = document.getElementById("noMaster").value;
             console.log(namaAsuransi);
 
-            if (namaAsuransi != '' ) {
+            if (namaAsuransi != '' && isLaka != ''  ) {
                 if (confirm('Do you want to update this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -37,7 +37,9 @@
                 if (namaAsuransi == '') {
                     msg += 'Field <strong>Nama Asuransi </strong> is required.' + '<br/>';
                 }
-
+                if (isLaka == '') {
+                    msg += 'Field <strong>isLaka </strong> is required.' + '<br/>';
+                }
 
                 document.getElementById('errorValidationMessage2').innerHTML = msg;
 
@@ -55,7 +57,8 @@
         $.subscribe('errorDialog', function (event, data) {
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            document.getElementById('errorMessage').innerHTML = "Status = "
+                + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
         });
 
@@ -73,7 +76,8 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="editAsuransiForm" method="post" theme="simple" namespace="/asuransi" action="saveEdit_asuransi" cssClass="well form-horizontal">
+            <s:form id="editAsuransiForm" method="post" theme="simple"
+                    namespace="/asuransi" action="saveEdit_asuransi" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -106,17 +110,6 @@
                     </tr>
 
 
-                    <%--<tr>--%>
-                        <%--<td>--%>
-                            <%--<label class="control-label"><small>Nama Asuransi :</small></label>--%>
-                        <%--</td>--%>
-                        <%--<td>--%>
-                            <%--<table>--%>
-                                <%--<s:textfield id="namaAsuransi1" name="asuransi.namaAsuransi" required="true" disabled="false" cssClass="form-control"/>--%>
-                            <%--</table>--%>
-                        <%--</td>--%>
-                    <%--</tr>--%>
-
                     <tr>
                         <td width="30%">
                             <label class="control-label"><small>Nama Asuransi :</small></label>
@@ -137,10 +130,7 @@
                             <label class="control-label"><small>isLaka :</small></label>
                         </td>
                         <td width="80">
-                            <%--<table>--%>
-                                <%--<s:textfield id="idIslaka" name="asuransi.isLaka"--%>
-                                             <%--required="true" disabled="false" cssClass="form-control"/>--%>
-                            <%--</table>--%>
+
                             <table>
                                 <s:select list="#{'N':'Tidak Aktif'}" id="idIslaka" name="asuransi.isLaka"
                                           headerKey="Y" headerValue="Aktif" cssClass="form-control select2" />
