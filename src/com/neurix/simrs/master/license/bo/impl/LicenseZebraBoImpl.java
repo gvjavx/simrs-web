@@ -9,6 +9,7 @@ import com.neurix.simrs.master.license.model.ImLicenseZebraEntity;
 import com.neurix.simrs.master.license.model.LicenseZebra;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.springframework.security.access.method.P;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,5 +149,29 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         entity.setLastUpdateWho("admin");
 
         logger.info("[LicenseZebraBoImpl.saveEdit] End >>>>>>>");
+    }
+
+    public void saveAdd(LicenseZebra bean) throws GeneralBOException {
+
+        if (bean != null) {
+            ImLicenseZebraEntity imLicenseZebraEntity = new ImLicenseZebraEntity();
+            imLicenseZebraEntity.setLicenseId("LCZ" + licenseZebraDao.getNextLicenseId());
+            imLicenseZebraEntity.setDeviceId(bean.getDeviceId());
+            imLicenseZebraEntity.setLicenseKey(bean.getLicenseKey());
+            imLicenseZebraEntity.setAction(bean.getAction());
+            imLicenseZebraEntity.setFlag(bean.getFlag());
+            imLicenseZebraEntity.setCreatedDate(bean.getCreatedDate());
+            imLicenseZebraEntity.setCreatedWho(bean.getCreatedWho());
+            imLicenseZebraEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            imLicenseZebraEntity.setLastUpdate(bean.getLastUpdate());
+
+            try {
+                licenseZebraDao.updateAndSave(imLicenseZebraEntity);
+            } catch (GeneralBOException e){
+                logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria " + e.getMessage());
+            }
+        }
+
+
     }
 }

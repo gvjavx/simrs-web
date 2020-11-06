@@ -8,6 +8,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -100,9 +101,11 @@ public class LicenseController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("getZebraKey")) {
             List<LicenseZebra> result = new ArrayList();
             listOfLicenseMZebraobile = new ArrayList<>();
+            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
+            String encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
 
             LicenseZebra bean = new LicenseZebra();
-            bean.setLicenseKey(licenseKey);
+            bean.setLicenseKey(encodedLicenseKey);
             bean.setDeviceId(deviceId);
 
             try {
@@ -127,8 +130,11 @@ public class LicenseController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("isKeyAvailable")) {
             boolean isAvailable = false;
 
+            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
+            String encodedlicenseKey = passwordEncoder.encodePassword(licenseKey, null);
+
             try {
-               isAvailable = licenseZebraBoProxy.isKeyAvailable(licenseKey, deviceId);
+               isAvailable = licenseZebraBoProxy.isKeyAvailable(encodedlicenseKey, deviceId);
             } catch (GeneralBOException e) {
                 logger.error("LicenseController.create] Error, " + e.getMessage());
             }
@@ -151,6 +157,25 @@ public class LicenseController implements ModelDriven<Object> {
                 licenseZebraBoProxy.updateFlag(bean);
                 model.setMessage("success");
             } catch (GeneralBOException e) {
+                logger.error("LicenseController.create] Error, " + e.getMessage());
+            }
+        }
+
+        if (action.equalsIgnoreCase("saveAdd")) {
+
+            LicenseZebra bean = new LicenseZebra();
+            bean.setLicenseKey(licenseKey);
+            bean.setDeviceId(deviceId);
+            bean.setCreatedWho("admin");
+            bean.setCreatedDate(now);
+            bean.setLastUpdate(now);
+            bean.setLastUpdateWho("admin");
+            bean.setFlag("C");
+            bean.setAction("Y");
+
+            try {
+
+            } catch (GeneralBOException e){
                 logger.error("LicenseController.create] Error, " + e.getMessage());
             }
         }
