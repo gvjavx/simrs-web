@@ -129,7 +129,7 @@ public class AsuransiBoImpl implements AsuransiBo  {
                         throw new GeneralBOException("Found problem when saving update data Asuransi, please info to your admin..." + e.getMessage());
                     }
                 }else {
-                    String status = cekStatus(bean.getNoMaster());
+                    String status = cekStatus(bean.getNoMaster(),bean.getIdAsuransi());
                     if (!status.equalsIgnoreCase("exist")){
                         imSimrsAsuransiEntity.setIdAsuransi(bean.getIdAsuransi());
 //                        imSimrsAsuransiEntity.setNamaAsuransi(masterEntity.getNama());
@@ -170,7 +170,7 @@ public class AsuransiBoImpl implements AsuransiBo  {
     public Asuransi saveAdd(Asuransi bean) throws GeneralBOException {
         logger.info("[AsurnasiBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
-            String status = cekStatus(bean.getNoMaster());
+            String status = cekStatus(bean.getNoMaster(), bean.getIdAsuransi());
             String asuransiId;
             if (!status.equalsIgnoreCase("exist")){
                 try {
@@ -309,11 +309,11 @@ public class AsuransiBoImpl implements AsuransiBo  {
         return null;
     }
 
-    public String cekStatus(String noMaster)throws GeneralBOException{
+    public String cekStatus(String noMaster, String idAsuransi)throws GeneralBOException{
         String status ="";
         List<ImSimrsAsuransiEntity> entities = new ArrayList<>();
         try {
-            entities = asuransiDao.getDataAsuransi(noMaster);
+            entities = asuransiDao.getDataAsuransi(noMaster,idAsuransi);
         } catch (HibernateException e) {
             logger.error("[AsuransiBoImpl.cekStatus] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

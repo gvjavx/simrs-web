@@ -45,12 +45,15 @@ public class AsuransiDao extends GenericDao<ImSimrsAsuransiEntity, String> {
         return result;
     }
 
-    public List<ImSimrsAsuransiEntity> getDataAsuransi(String noMaster) throws HibernateException {
+    public List<ImSimrsAsuransiEntity> getDataAsuransi(String noMaster,String idAsuransi) throws HibernateException {
         List<ImSimrsAsuransiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsAsuransiEntity.class)
                 .add(Restrictions.eq("noMaster", noMaster))
+
+                .add(Restrictions.ne("idAsuransi", idAsuransi))
                 .add(Restrictions.eq("isLaka", "Y"))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
+//        ne (not equal / tidak samadengan)
 
         return results;
     }
