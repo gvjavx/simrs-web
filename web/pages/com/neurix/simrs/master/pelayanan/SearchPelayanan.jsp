@@ -73,7 +73,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="idPelayanan"
+                                                        <s:textfield cssStyle="margin-top: 7px" id="idPelayanan"
                                                                      name="pelayanan.idPelayanan"
                                                                      required="true" disabled="false" cssClass="form-control"/>
                                                     </table>
@@ -86,7 +86,8 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="namaPelayanan"
+                                                        <s:textfield cssStyle="margin-top: 7px"
+                                                                     id="namaPelayanan"
                                                                      name="pelayanan.namaPelayanan"
                                                                      required="true" disabled="false" cssClass="form-control"/>
                                                     </table>
@@ -112,7 +113,7 @@
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="pelayanan.branchId" disabled="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
-                                                                      cssClass="form-control"/>
+                                                                      cssClass="form-control select2"/>
                                                             <s:hidden id="branchId" name="pelayanan.branchId" />
                                                         </s:else>
                                                     </table>
@@ -125,9 +126,12 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                            <s:action id="initComboPosition" namespace="/pelayanan" name="initComboPosition_pelayanan"/>
-                                                            <s:select list="#initComboPosition.listOfComboPositions" id="positionId" name="pelayanan.positionId"
-                                                            listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            <s:action id="initComboPosition" namespace="/pelayanan"
+                                                                      name="initComboPosition_pelayanan"/>
+                                                            <s:select list="#initComboPosition.listOfComboPositions"
+                                                                      id="positionId" name="pelayanan.positionId"
+                                                            listKey="positionId" listValue="positionName" headerKey=""
+                                                                      headerValue="[Select one]" cssClass="form-control select2"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -144,7 +148,7 @@
                                                         <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Instalasi Farmasi RJ', 'apotek_ri' : 'Instalasi Farmasi RI',
                                                                 'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
                                                                   id="tipePelayanan" name="pelayanan.tipePelayanan"
-                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -156,7 +160,7 @@
                                                 <td>
                                                     <table>
                                                         <s:select list="#{'N':'Non-Active'}" id="flag" name="pelayanan.flag"
-                                                                  headerKey="Y" headerValue="Active" cssClass="form-control" />
+                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
 
                                                 </td>

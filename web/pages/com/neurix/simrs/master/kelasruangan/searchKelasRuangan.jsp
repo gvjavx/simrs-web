@@ -81,22 +81,24 @@ To change this template use File | Settings | File Templates.
                                     <table>
                                         <tr >
                                             <td >
-                                                <label class="control-label"><small>ID Kelas Ruangan</small></label>
+                                                <label class="control-label"><small>ID Kelas Ruangan :</small></label>
                                             </td>
                                             <td>
                                                 <table>
                                                     <s:textfield cssStyle="margin-top: 7px"
-                                                                 id="id_kelasruangan" name="kelasRuangan.idKelasRuangan"  readonly="false" cssClass="form-control"/>
+                                                                 id="id_kelasruangan" name="kelasRuangan.idKelasRuangan"
+                                                                 readonly="false" cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Nama Kelas Ruangan</small></label>
+                                                <label class="control-label"><small>Nama Kelas Ruangan :</small></label>
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:textfield cssStyle="margin-top: 7px"  id="nama_kelasruangan" name="kelasRuangan.namaKelasRuangan"  readonly="false" cssClass="form-control"/>
+                                                    <s:textfield cssStyle="margin-top: 7px" id="nama_kelasruangan"
+                                                                 name="kelasRuangan.namaKelasRuangan"  readonly="false" cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
@@ -106,9 +108,12 @@ To change this template use File | Settings | File Templates.
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:action id="initComboPosition" namespace="/kelasruangan" name="initComboPosition_kelasruangan"/>
-                                                    <s:select list="#initComboPosition.listOfComboPositions" id="positionId" name="kelasRuangan.positionId"
-                                                              listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                    <s:action id="initComboPosition" namespace="/kelasruangan"
+                                                              name="initComboPosition_kelasruangan"/>
+                                                    <s:select list="#initComboPosition.listOfComboPositions"
+                                                              id="positionId" name="kelasRuangan.positionId"
+                                                              listKey="positionId" listValue="positionName"
+                                                              headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
                                                 </table>
                                             </td>
                                         </tr>
@@ -119,7 +124,7 @@ To change this template use File | Settings | File Templates.
                                             <td>
                                                 <table>
                                                     <s:select list="#{'N':'Non-Active'}" id="flag" name="kelasRuangan.flag"
-                                                              headerKey="Y" headerValue="Active" cssClass="form-control" />
+                                                              headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                 </table>
 
                                             </td>
