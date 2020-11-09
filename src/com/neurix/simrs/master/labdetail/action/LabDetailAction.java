@@ -137,6 +137,7 @@ public class LabDetailAction extends BaseTransactionAction {
                 LabDetail detail = new LabDetail();
                 detail.setIdLabDetail(object.getString("id_lab_detail"));
                 detail.setIdLab(object.getString("id_lab"));
+                detail.setNamaLab(object.getString("nama_lab"));
                 detail.setIdParameterPemeriksaan(object.getString("id_parameter_pemeriksaan"));
                 detail.setTarif(new BigDecimal(object.getString("tarif")));
                 detail.setLastUpdate(updateTime);

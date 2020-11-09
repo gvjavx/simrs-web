@@ -39,4 +39,5 @@ public interface PeriksaLabBo {
     public ItSimrsPeriksaLabEntity getPeriksaLabEntityById(String id) throws GeneralBOException;
 
     public List<PeriksaLab> getListLab(String noChekcup) throws GeneralBOException;
+    public List<PeriksaLab> pushListLab(String kategori, String branchId) throws GeneralBOException;
 }

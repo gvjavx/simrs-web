@@ -934,6 +934,15 @@ apply the skin class to the body tag so the changes take effect.
         return res;
     }
 
+    function convertToDataURLAtas(id){
+        var ttd = "";
+        if(id != ''){
+            ttd = id.toDataURL("image/png"),
+                ttd = ttd.replace(/^data:image\/(png|jpg);base64,/, "");
+        }
+        return ttd;
+    }
+
 </script>
 
 

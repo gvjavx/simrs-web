@@ -398,4 +398,43 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         }
         return labList;
     }
+
+    public List<PeriksaLab> pushNotifLab(String kategori, String branchId) {
+        List<PeriksaLab> labList = new ArrayList<>();
+        String SQL = "SELECT \n" +
+                "a.no_checkup,\n" +
+                "b.id_detail_checkup,\n" +
+                "c.id_periksa_lab,\n" +
+                "c.is_read,\n" +
+                "d.kategori,\n" +
+                "a.nama\n" +
+                "FROM it_simrs_header_checkup a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "INNER JOIN it_simrs_periksa_lab c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                "INNER JOIN im_simrs_kategori_lab d ON c.id_kategori_lab = d.id_kategori_lab\n" +
+                "WHERE a.branch_id = :branchId\n" +
+                "AND c.is_read IS NULL\n" +
+                "AND c.status_periksa = '0'\n" +
+                "AND d.kategori = :kategori\n" +
+                "ORDER BY c.created_date ASC;";
+
+        List<Objects[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", branchId)
+                .setParameter("kategori", kategori)
+                .list();
+        if (result.size() > 0) {
+            for (Object[] obj : result) {
+                PeriksaLab lab = new PeriksaLab();
+                lab.setNoCheckup(obj[0] == null ? "" : obj[0].toString());
+                lab.setIdDetailCheckup(obj[1] == null ? "" : obj[1].toString());
+                lab.setIdPeriksaLab(obj[2] == null ? "" : obj[2].toString());
+                lab.setIsRead(obj[3] == null ? "" : obj[3].toString());
+                lab.setKategori(obj[4] == null ? "" : obj[4].toString());
+                lab.setNamaPasien(obj[5] == null ? "" : obj[5].toString());
+                labList.add(lab);
+            }
+        }
+        return labList;
+    }
 }

@@ -152,7 +152,7 @@ public class CommonConstant {
     public final static String IMAGE_TYPE = ".png";
 
     public final static String URL_IMG = "/images/";
-    public final static String URL_IMG_RM = "rekam_medic";
+    public final static String URL_IMG_RM = "/rekam_medic/";
 
     public static final String AGORA_LIB = "/opt/tomcat/webapps/simrs/WEB-INF/lib";
 
