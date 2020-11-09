@@ -118,7 +118,7 @@
                         <td>
                             <table>
                                 <s:textfield id="idPelayanan1" name="pelayanan.idPelayanan" required="true" disabled="true" cssClass="form-control"/>
-                                <s:hidden id="idPelayanan1" name="pelayanan.idPelayanan" />
+                                <%--<s:hidden id="idPelayanan1" name="pelayanan.idPelayanan" />--%>
                                 <s:hidden id="kodering" name="pelayanan.kodering" />
                             </table>
                         </td>
@@ -262,7 +262,7 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close');}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">

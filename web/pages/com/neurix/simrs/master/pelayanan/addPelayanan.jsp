@@ -15,66 +15,62 @@
             window.location.reload(true);
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
-            var namaPelayanan = document.getElementById("namaPelayanan1").value;
-            // var branchId = document.getElementById("branchId1").value;
-            // var positionId = document.getElementById("positionId1").value;
-            // var tipePelayanan = document.getElementById("tipePelayanan1").value;
+    $.subscribe('beforeProcessSave', function (event, data) {
+        var namapelayanan = document.getElementById("namaPelayananAdd").value;
+        var unit = document.getElementById("unitAdd").value;
+        var devisi = document.getElementById("devisiAdd").value;
+        var tipepelayanan = document.getElementById("tipePelayananAdd").value;
 
-            if (namaPelayanan != '') {
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
-                } else {
-                    // Cancel Submit comes with 1.8.0
-                    event.originalEvent.options.submit = false;
-                }
-
-                // if (brancelse {
-                //     event.originalEvent.options.submit = false;
-                //     var msg = "";
-                //     if (namaPelayanan == '') {
-                //         msg += 'Field <strong>Nama Pelayanan </strong> is required.' + '<br/>';
-                //     }
-                        // hId == '') {
-                //     msg += 'Field <strong>Unit </strong> is required.' + '<br/>';
-                // }
-                // if (positionId == '') {
-                //     msg += 'Field <strong>Divisi </strong> is required.' + '<br/>';
-                // }
-                //
-                // if (tipePelayanan == '') {
-                //     msg += 'Field <strong>Tipe Pelayanan </strong> is required.' + '<br/>';
-                // }
-                //
-                // document.getElementById('errorValidationMessage1').innerHTML = msg;
-                //
-                // $.publish('showErrorValidationDialog');
-            }else {
+        if (namapelayanan != '' && unit != '' && devisi != '' && tipepelayanan != '') {
+            if (confirm('Do you want to save this record?')) {
+                event.originalEvent.options.submit = true;
+                $.publish('showDialog');
+            } else {
+                // Cancel Submit comes with 1.8.0
                 event.originalEvent.options.submit = false;
-                var msg = "";
-                if (namaPelayanan == '') {
-                    msg += 'Field <strong>namaPelayanan </strong> is required.' + '<br/>';
-                }
-                document.getElementById('errorValidationMessage').innerHTML = msg;
-
-                $.publish('showErrorValidationDialog');
             }
-        });
+        } else {
+            event.originalEvent.options.submit = false;
+            var msg = "";
+            if (namapelayanan == '') {
+                msg += 'Field <strong>Nama pelayanan </strong> is required.' + '<br/>';
+            }
+            if (unit == ''){
+                msg += 'Field <strong>unit </strong> is required.' + '<br/>';
+            }
+            if (devisi == ''){
+                msg += 'Field <strong>Nama devisi </strong> is required.' + '<br/>';
+            }
+            if (tipepelayanan == ''){
+                msg += 'Field <strong>unit </strong> is required.' + '<br/>';
+            }
+
+            document.getElementById('errorValidationMessage1').innerHTML = msg;
+
+            $.publish('showErrorValidationDialog');
+        }
+    });
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
                 $.publish('showInfoDialog');
             }
-        });
+            }
+        )
+
+
+        ;
 
         $.subscribe('errorDialog', function (event, data) {
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            document.getElementById('errorMessage').innerHTML = "Status = "
+                + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
-        });
+        }
+
+        );
 
         function cancelBtn() {
             $('#view_dialog_menu').dialog('close');
@@ -116,7 +112,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaPelayanan1" name="pelayanan.namaPelayanan"
+                                <s:textfield id="namaPelayananAdd" name="pelayanan.namaPelayanan"
                                              required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
@@ -128,7 +124,7 @@
                         <td>
                             <table>
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                <s:select list="#initComboBranch.listOfComboBranch" id="branchId1" name="pelayanan.branchId"
+                                <s:select list="#initComboBranch.listOfComboBranch" id="unitAdd" name="pelayanan.branchId"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
                                           cssClass="form-control"/>
                             </table>
@@ -142,7 +138,7 @@
                         <td>
                             <table>
                                 <s:action id="initComboPosition" namespace="/pelayanan" name="initComboPosition_pelayanan"/>
-                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="pelayanan.positionId"
+                                <s:select list="#initComboPosition.listOfComboPositions" id="devisiAdd" name="pelayanan.positionId"
                                           listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]"
                                           cssClass="form-control"/>
                             </table>
@@ -160,7 +156,7 @@
                                                                  'apotek_ri' : 'Instalasi Farmasi RI',
                                                                 'rawat_inap' : 'Rawat Inap',
                                                                  'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
-                                          id="tipePelayanan" name="pelayanan.tipePelayanan"
+                                          id="tipePelayananAdd" name="pelayanan.tipePelayanan"
                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
@@ -172,7 +168,7 @@
                         </td>
                         <td>
                             <table>
-                                <input type="checkbox" id="isEksekutif" class="checkEksekutif" onchange="cekEksekutif()"  />
+                                <input type="checkbox" id="isEksekutifAdd" class="checkEksekutif" onchange="cekEksekutif()"  />
                                 <s:hidden id="eksekutif" name="pelayanan.isEksekutif"  />
                             </table>
                         </td>
@@ -251,7 +247,7 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.close(true) }
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">

@@ -148,15 +148,19 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:url var="urlAdd" namespace="/asuransi" action="add_asuransi" escapeAmp="false">
+                                                        <s:url var="urlAdd" namespace="/asuransi"
+                                                               action="add_asuransi" escapeAmp="false">
                                                         </s:url>
-                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu"
+                                                              href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
                                                             Add Asuransi
                                                         </sj:a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_asuransi"/>'">
+                                                        <button type="button" class="btn btn-danger"
+                                                                onclick="window.location.href='<s:url
+                                                                        action="initForm_asuransi"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -231,13 +235,9 @@
                                                             </display:column>
 
                                                             <display:column property="idAsuransi" sortable="true" title="ID Asuransi" />
-                                                            <%--<display:column property="namaAsuransi" sortable="true" title="Nama Asuransi"  />--%>
                                                             <display:column property="namaAsuransi" sortable="true" title="Nama Asuransi"  />
-                                                            <%--<display:column property="noMaster" sortable="true" title="No. Master"  />--%>
                                                             <display:column property="flag" sortable="true" title="flag"  />
-
                                                             <display:column property="isLaka" sortable="true" title="is laka"  />
-
                                                             <display:column property="action" sortable="true" title="action"  />
                                                             <display:column property="stCreatedDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
@@ -254,7 +254,8 @@
                                                     <div id="crud">
                                                         <td>
                                                             <table>
-                                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog"
+                                                                           modal="true" resizable="false"
                                                                            height="280" width="500" autoOpen="false" title="Warning"
                                                                            buttons="{
                                                                         'OK':function() { $('#error_validation_dialog').dialog('close'); }
@@ -262,7 +263,8 @@
                                                                 >
                                                                     <div class="alert alert-error fade in">
                                                                         <label class="control-label" align="left">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                                                 name="icon_error"> Please check this field :
                                                                             <br/>
                                                                             <center><div id="errorValidationMessage"></div></center>
                                                                         </label>
