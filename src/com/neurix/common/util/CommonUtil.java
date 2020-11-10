@@ -18,6 +18,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -1446,6 +1447,8 @@ public class  CommonUtil {
                 writer.setOutput(out);
                 writer.write(null, new IIOImage(image, null, null), param);
             }
+            File f = new File(url);
+            ImageIO.write(image, "png", f);
             response.setStatus("success");
             response.setMsg("Berhasil");
         } catch (IOException e) {

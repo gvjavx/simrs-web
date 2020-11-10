@@ -288,6 +288,13 @@
         }, 60000);
     }
 
+    function pushNotifLab(kategori){
+        cekNotifLab(kategori);
+        setInterval(function () {
+            cekNotifLab(kategori);
+        }, 60000);
+    }
+
     function cekNotifResep(){
         TransaksiObatAction.pushNotifResep(function (res) {
             var listResep = "";
@@ -402,10 +409,10 @@
                 pushNotifTele();
             }
             if(res == "ADMIN LAB"){
-                cekNotifLab('lab');
+                pushNotifLab('lab');
             }
             if(res == "ADMIN RADIOLOGI"){
-                cekNotifLab('radiologi');
+                pushNotifLab('radiologi');
             }
         })
     }

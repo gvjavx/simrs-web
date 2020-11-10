@@ -373,6 +373,7 @@ public class PaketPeriksaAction extends BaseTransactionAction {
                         String fileName = dataPasien.getNoKtp() + "-" + dateFormater("MM") + dateFormater("yy") + ".jpg";
                         String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN + fileName;
                         BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
                         if (image == null) {
                             logger.error("Buffered Image is null");
                         } else {

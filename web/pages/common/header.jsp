@@ -743,6 +743,8 @@ apply the skin class to the body tag so the changes take effect.
     }
 
     function setCanvasAtasWithText(id, tujuan) {
+        console.log(id);
+        console.log(tujuan);
         var canvas = document.getElementById(id);
         var ctx = canvas.getContext('2d');
         var reader = new FileReader();

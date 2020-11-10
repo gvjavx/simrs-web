@@ -3819,17 +3819,15 @@ public class CheckupAction extends BaseMasterAction {
         return listRM;
     }
 
-    public List<RekamMedisPasien> getRiwayatListRekammedisPasien(String id, String tipePelayanan, String jenis) {
-
+    public List<RekamMedisPasien> geRekamMedisLama(String id) {
         logger.info("[CheckupAction.getListRekammedisPasien] START process >>>");
-
         List<RekamMedisPasien> listRM = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
 
-        if (tipePelayanan != null && !"".equalsIgnoreCase(tipePelayanan) && id != null && !"".equalsIgnoreCase(id)) {
+        if (id != null && !"".equalsIgnoreCase(id)) {
             try {
-                listRM = rekamMedisPasienBo.getRiwayatListRekamMedis(id, tipePelayanan, jenis);
+                listRM = rekamMedisPasienBo.getListRekamMedisLama(id, CommonUtil.userBranchLogin());
             } catch (GeneralBOException e) {
                 logger.error("Found Error, " + e.getMessage());
             }
@@ -4005,5 +4003,25 @@ public class CheckupAction extends BaseMasterAction {
     public String cekLogin() {
         String res = CommonUtil.userLogin();
         return res;
+    }
+
+    public List<RekamMedisPasien> getRiwayatListRekammedisPasien(String id, String tipePelayanan, String jenis) {
+
+        logger.info("[CheckupAction.getListRekammedisPasien] START process >>>");
+
+        List<RekamMedisPasien> listRM = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
+
+        if (tipePelayanan != null && !"".equalsIgnoreCase(tipePelayanan) && id != null && !"".equalsIgnoreCase(id)) {
+            try {
+                listRM = rekamMedisPasienBo.getRiwayatListRekamMedis(id, tipePelayanan, jenis);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error, " + e.getMessage());
+            }
+        }
+
+        logger.info("[CheckupAction.getListRekammedisPasien] END process >>>");
+        return listRM;
     }
 }

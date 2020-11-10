@@ -416,7 +416,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "AND c.is_read IS NULL\n" +
                 "AND c.status_periksa = '0'\n" +
                 "AND d.kategori = :kategori\n" +
-                "ORDER BY c.created_date ASC;";
+                "ORDER BY c.created_date ASC";
 
         List<Objects[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

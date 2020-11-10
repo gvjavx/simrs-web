@@ -2968,6 +2968,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setHubunganKeluarga(bean.getHubunganKeluarga() != null && !"".equalsIgnoreCase(bean.getHubunganKeluarga()) ? bean.getHubunganKeluarga() : null);
             headerEntity.setBerat(bean.getBerat());
             headerEntity.setTinggi(bean.getTinggi());
+            headerEntity.setKunjunganPoli(bean.getKunjunganPoli());
 
             try {
                 headerCheckupDao.addAndSave(headerEntity);
@@ -3007,6 +3008,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setCreatedWho(bean.getCreatedWho());
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                detailCheckupEntity.setFlagTppri("Y");
 
                 if ("paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     detailCheckupEntity.setStatusPeriksa("1");

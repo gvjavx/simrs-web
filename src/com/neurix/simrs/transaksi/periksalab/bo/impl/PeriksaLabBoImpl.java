@@ -768,6 +768,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     periksaLabEntity.setStatusPeriksa("1");
                     periksaLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
                     periksaLabEntity.setLastUpdate(bean.getLastUpdate());
+                    periksaLabEntity.setIsReading("Y");
 
                     if (periksaLabEntity.getTanggalMasukLab() == null || "".equalsIgnoreCase(periksaLabEntity.getTanggalMasukLab().toString())) {
                         periksaLabEntity.setTanggalMasukLab(bean.getTanggalMasukLab());

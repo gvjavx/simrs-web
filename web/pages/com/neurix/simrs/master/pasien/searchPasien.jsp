@@ -943,7 +943,7 @@
             '<label class="col-md-3" style="margin-top: 8px">Upload Foto Rekam Medik ' + number + '</label>' +
             '<div class="col-md-7">' +
             '<canvas id="cav_' + i + '" style="display: none"></canvas>' +
-            '<input id="text_' + i + '" onchage="setCanvasAtasWithText(\'cav_' + i + '\', \'text_' + i + '\')" type="file" name="fileUploadImage" class="form-control form-img-rm" style="margin-top: 7px">' +
+            '<input id="text_' + i + '" onchange="setCanvasAtasWithText(\'cav_' + i + '\', \'text_' + i + '\')" type="file" name="fileUploadImage" class="form-control form-img-rm" style="margin-top: 7px">' +
             <%--'<s:file id="upload-img" name="fileUploadImage" cssClass="form form-control"/>'+--%>
             '</div>' +
             '<div class="col-md-1" style="margin-left: -20px; margin-top: 10px">' +

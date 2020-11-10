@@ -3201,8 +3201,8 @@ public class RawatInapAction extends BaseMasterAction {
                     checkup.setIdRuangan(kamar);
                     checkup.setIdPelayanan(pelayanan.getIdPelayanan());
                     checkup.setMetodePembayaran(metodeBayar);
-                    checkup.setDiagnosa("diagnosa");
-                    checkup.setNamaDiagnosa("ket_diagnosa");
+                    checkup.setDiagnosa(obj.getString("diagnosa"));
+                    checkup.setNamaDiagnosa(obj.getString("ket_diagnosa"));
                     if (uangMuka != null && !"".equalsIgnoreCase(uangMuka)) {
                         checkup.setUangMuka(new BigInteger(uangMuka));
                     }
@@ -3211,6 +3211,8 @@ public class RawatInapAction extends BaseMasterAction {
                     checkup.setIdPasien(responsePasien.getIdPasien());
                     checkup.setStatusPeriksa("1");
                     checkup.setJenisKunjungan("Baru");
+                    checkup.setKunjunganPoli("Baru");
+                    checkup.setUrlKtp(responsePasien.getImgKtp());
                     checkup.setRawatInap(true);
                     response = checkupBo.saveAddWithResponse(checkup);
                 }
