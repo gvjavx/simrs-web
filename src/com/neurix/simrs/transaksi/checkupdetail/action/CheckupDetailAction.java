@@ -5037,6 +5037,9 @@ public class CheckupDetailAction extends BaseMasterAction {
             if ("SP17".equalsIgnoreCase(tipe)) {
                 return "print_gawat_darurat";
             }
+            if ("SP18".equalsIgnoreCase(tipe)) {
+                return "print_surat_cuti";
+            }
             if ("SK01".equalsIgnoreCase(tipe)) {
                 return "print_keterangan_dokter";
             }

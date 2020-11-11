@@ -1861,6 +1861,159 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return res;
     }
 
+    public List<HeaderCheckup> getKunjunganRJ(String bulan, String tahun, String branch){
+        List<HeaderCheckup> response = new ArrayList<>();
+        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun)){
+            String branchId = "AND a.branch_id NOT LIKE 'KP'";
+            if(branch != null && !"".equalsIgnoreCase(branch)){
+                branchId = "AND a.branch_id IN "+branch+" \n";
+            }
+            String SQL = "SELECT\n" +
+                    "a.branch_id,\n" +
+                    "a.branch_name,\n" +
+                    "b.tanggal,\n" +
+                    "b.total\n" +
+                    "FROM (\n" +
+                    "\tSELECT \n" +
+                    "\ta.branch_id,\n" +
+                    "\ta.branch_name \n" +
+                    "\tFROM im_branches a\n" +
+                    "\tWHERE a.flag = 'Y' \n" + branchId+
+                    ")a \n" +
+                    "LEFT JOIN (\n" +
+                    "\tSELECT\n" +
+                    "\tCOUNT(b.id_detail_checkup) as total,\n" +
+                    "\tCAST(b.created_date AS DATE) as tanggal,\n" +
+                    "\ta.branch_id\n" +
+                    "\tFROM it_simrs_header_checkup a\n" +
+                    "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "\tINNER JOIN im_simrs_pelayanan e ON b.id_pelayanan = e.id_pelayanan\n" +
+                    "\tLEFT JOIN it_simrs_rawat_inap c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                    "\tWHERE c.id_detail_checkup IS NULL\n" +
+                    "\tAND CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun\n" +
+                    "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan\n" + branchId +
+                    "\tAND b.status_periksa = '3'\n" +
+                    "\tGROUP BY a.branch_id, CAST(b.created_date AS DATE)\n" +
+                    ")b\n" +
+                    "ON a.branch_id = b.branch_id\n" +
+                    "ORDER BY a.branch_id ASC";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("bulan", bulan)
+                    .setParameter("tahun", tahun)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    HeaderCheckup checkup = new HeaderCheckup();
+                    checkup.setBranchId(obj[0] == null ? null : obj[0].toString());
+                    checkup.setBranchName(obj[1] == null ? "" : obj[1].toString());
+                    checkup.setTanggal(obj[2] == null ? null : (Date)obj[2]);
+                    checkup.setTotal(obj[3] == null ? null : obj[3].toString());
+                    response.add(checkup);
+                }
+            }
+        }
+        return response;
+    }
+
+    public List<HeaderCheckup> getDetailKunjunganRJ(String bulan, String tahun, String branch){
+        List<HeaderCheckup> response = new ArrayList<>();
+        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun)){
+            String branchId = "AND a.branch_id NOT LIKE 'KP'";
+            if(branch != null && !"".equalsIgnoreCase(branch)){
+                branchId = "AND a.branch_id IN "+branch+" \n";
+            }
+            String SQL = "SELECT\n" +
+                    "a.branch_id,\n" +
+                    "a.branch_name,\n" +
+                    "a.id_jenis_periksa_pasien,\n" +
+                    "a.keterangan,\n" +
+                    "b.total\n" +
+                    "FROM (\n" +
+                    "\tSELECT\n" +
+                    "\ta.branch_id,\n" +
+                    "\ta.branch_name,\n" +
+                    "\tb.id_jenis_periksa_pasien,\n" +
+                    "\tb.keterangan\n" +
+                    "\tFROM (\n" +
+                    "\tSELECT \n" +
+                    "\ta.branch_id,\n" +
+                    "\ta.branch_name \n" +
+                    "\tFROM im_branches a\n" +
+                    "\tWHERE a.flag = 'Y' \n" + branchId+
+                    "\t) a, im_simrs_jenis_periksa_pasien b\n" +
+                    ")a \n" +
+                    "LEFT JOIN (\n" +
+                    "\tSELECT \n" +
+                    "\ta.id_jenis_periksa_pasien,\n" +
+                    "\ta.keterangan,\n" +
+                    "\tb.total,\n" +
+                    "\tb.branch_id\n" +
+                    "\tFROM im_simrs_jenis_periksa_pasien a\n" +
+                    "\tLEFT JOIN(\n" +
+                    "\t\tSELECT\n" +
+                    "\t\tCOUNT(b.id_detail_checkup) as total,\n" +
+                    "\t\tpk.id_jenis_periksa_pasien,\n" +
+                    "\t\ta.branch_id\n" +
+                    "\t\tFROM it_simrs_header_checkup a\n" +
+                    "\t\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "\t\tINNER JOIN im_simrs_pelayanan e ON b.id_pelayanan = e.id_pelayanan\n" +
+                    "\t\tINNER JOIN im_simrs_jenis_periksa_pasien pk ON b.id_jenis_periksa_pasien = pk.id_jenis_periksa_pasien\n" +
+                    "\t\tLEFT JOIN it_simrs_rawat_inap c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                    "\t\tWHERE c.id_detail_checkup IS NULL\n" +
+                    "\tAND CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun\n" +
+                    "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan\n" + branchId +
+                    "\t\tAND b.status_periksa = '3'\n" +
+                    "\t\tGROUP BY a.branch_id, pk.id_jenis_periksa_pasien \n" +
+                    "\t)b ON a.id_jenis_periksa_pasien = b.id_jenis_periksa_pasien\n" +
+                    ") b\n" +
+                    "ON a.branch_id = b.branch_id \n" +
+                    "AND a.id_jenis_periksa_pasien = b.id_jenis_periksa_pasien\n" +
+                    "ORDER BY a.branch_id ASC";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("bulan", bulan)
+                    .setParameter("tahun", tahun)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    HeaderCheckup checkup = new HeaderCheckup();
+                    checkup.setBranchId(obj[0] == null ? null : obj[0].toString());
+                    checkup.setBranchName(obj[1] == null ? "" : obj[1].toString());
+                    checkup.setIdJenisPeriksaPasien(obj[2] == null ? null : obj[2].toString());
+                    checkup.setStatusPeriksaName(obj[3] == null ? null : obj[3].toString());
+                    checkup.setTotal(obj[4] == null ? null : obj[4].toString());
+                    response.add(checkup);
+                }
+            }
+        }
+        return response;
+    }
+
+    public List<HeaderCheckup> getTahunPeriksa(){
+        List<HeaderCheckup> response = new ArrayList<>();
+        String SQL = "SELECT\n" +
+                "CAST('tahun' AS VARCHAR) as tahun,\n" +
+                "CAST(DATE_PART('year', created_date) AS VARCHAR) as keterangan\n" +
+                "FROM it_simrs_header_checkup\n" +
+                "GROUP BY DATE_PART('year', created_date)\n" +
+                "ORDER BY DATE_PART('year', created_date) ASC";
+
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .list();
+        if(result.size() > 0){
+            for (Object[] obj: result){
+                HeaderCheckup checkup = new HeaderCheckup();
+                checkup.setTahun(obj[1] == null ? null : obj[1].toString());
+                response.add(checkup);
+            }
+        }
+        return response;
+    }
+
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pembayaran_online')");
         Iterator<BigInteger> iter = query.list().iterator();

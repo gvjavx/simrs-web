@@ -1247,6 +1247,14 @@ ADD COLUMN flag_send_klaim VARCHAR(1);
 ALTER TABLE it_simrs_periksa_lab
 ADD COLUMN is_read VARCHAR(1);
 
+INSERT INTO im_simrs_rekam_medis_pasien VALUES
+('RMM00000105','SP 026','Surat Keterangan Cuti','surat','SP18','SP18','printPernyataan','Y','C','migrasi',now(),now(),'migrasi','1');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000243','RMM00000105','rawat_jalan','10','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000244','RMM00000105','igd','10','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000245','RMM00000105','rawat_inap','10','Y','C','migrasi',now(),now(),'migrasi');
+
 
 
 

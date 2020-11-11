@@ -182,6 +182,42 @@ public class HeaderCheckup {
     private String kunjunganPoli;
 
     private String kodePoliVclaim;
+    private String branchName;
+    private String total;
+    private Date tanggal;
+    private String tahun;
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public Date getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(Date tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
 
     public String getKodePoliVclaim() {
         return kodePoliVclaim;
