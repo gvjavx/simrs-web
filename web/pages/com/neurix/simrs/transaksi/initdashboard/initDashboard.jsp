@@ -166,49 +166,8 @@
                             </div>
                         </div>
                         <hr class="garis">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="box-body chart-responsive">
-                                    <div class="chart" id="sales-chart-0"
-                                         style="height: 300px; position: relative;"></div>
-                                    <p class="text-center" style="margin-top: -85px"><b>RS Gatoel</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="box-body chart-responsive">
-                                    <div class="chart" id="sales-chart-1"
-                                         style="height: 300px; position: relative;"></div>
-                                    <p class="text-center" style="margin-top: -85px"><b>RS Gatoel</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="box-body chart-responsive">
-                                    <div class="chart" id="sales-chart-2"
-                                         style="height: 300px; position: relative;"></div>
-                                    <p class="text-center" style="margin-top: -85px"><b>RS Gatoel</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="box-body chart-responsive">
-                                    <div class="chart" id="sales-chart-3"
-                                         style="height: 300px; position: relative;"></div>
-                                    <p class="text-center" style="margin-top: -85px"><b>RS Gatoel</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="box-body chart-responsive">
-                                    <div class="chart" id="sales-chart-4"
-                                         style="height: 300px; position: relative;"></div>
-                                    <p class="text-center" style="margin-top: -85px"><b>RS Gatoel</b></p>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="box-body chart-responsive">
-                                    <div class="chart" id="sales-chart-5"
-                                         style="height: 300px; position: relative;"></div>
-                                    <p class="text-center" style="margin-top: -85px"><b>RS Medika Utama</b></p>
-                                </div>
-                            </div>
+                        <div class="row" id="donut_rs">
+
                         </div>
                     </div>
                 </div>
@@ -221,8 +180,8 @@
 
     $(document).ready(function () {
         $('#dashboard').addClass("active");
-        setTahun();
         setBranch();
+        setTahun();
     });
 
     function setTahun() {
@@ -247,6 +206,7 @@
 
     function setBranch() {
         var namaRS = "";
+        var donutRS = "";
         dwr.engine.setAsync(true);
         InitDashboardAction.getComboBranch({
             callback: function (res) {
@@ -255,13 +215,21 @@
                         var color = getRandomColor();
                         namaRS += '<div class="col-md-2 text-center">\n' +
                             '<div class="form-check">\n' +
-                            '<input checked="true" type="checkbox" name="cek_nama_rs" id="id_nama_rs_' + i + '" value="'+item.branchId+'">\n' +
-                            '<label for="id_nama_rs_' + i + '"></label> <span style="color:' + color + '">'+item.branchName+'</span>\n' +
+                            '<input onclick="cekBranch(this.id)" checked="true" type="checkbox" name="cek_nama_rs" id="id_nama_rs_' + i + '" value="' + item.branchId + '|' + color + '">\n' +
+                            '<label for="id_nama_rs_' + i + '"></label> <b style="border-bottom:' + color + ' solid 2px">' + item.branchName + '</b>\n' +
+                            '</div>\n' +
+                            '</div>';
+
+                        donutRS += '<div class="col-md-2">\n' +
+                            '<div class="box-body chart-responsive">\n' +
+                            '<div class="chart" id="donut-chart-' + item.branchId + '" style="height: 300px; position: relative;"></div>\n' +
+                            '<p class="text-center" style="margin-top: -85px; border-bottom:' + color + ' solid 2px"><b>' + item.branchName + '</b></p>\n' +
                             '</div>\n' +
                             '</div>';
                     });
+                    $('#nama_rs').html(namaRS);
+                    $('#donut_rs').html(donutRS);
                 }
-                $('#nama_rs').html(namaRS);
             }
         });
     }
@@ -269,120 +237,331 @@
     function setAllCount() {
         var bulan = $('#set_bulan').val();
         var tahun = $('#set_tahun').val();
-        if(bulan && tahun != ''){
+        var month = parseInt(bulan) + 1;
+        if (bulan && tahun != '') {
             dwr.engine.setAsync(true);
-            InitDashboardAction.getCountAll({
+            InitDashboardAction.getCountAll(month, tahun, {
                 callback: function (response) {
-                    $('#sum_rj').text(response.jmlRJ);
-                    $('#sum_ri').text(response.jmlRI);
-                    $('#sum_igd').text(response.jmlIGD);
-                    $('#sum_telemedic').text(response.jmlTelemedic);
-                }
-            });
+                    if (parseInt(response.jmlRJ) > 0) {
+                        var i = 0;
+                        var interval = setInterval(function () {
+                            if (i <= response.jmlRJ) {
+                                $('#sum_rj').text(i);
+                                i++;
+                            } else {
+                                clearInterval(interval);
+                            }
+                        }, 5000 / response.jmlRJ);
+                    } else {
+                        $('#sum_rj').text(response.jmlRJ);
+                    }
 
-            var branchId = $('[name=cek_nama_rs]');
-            var awal = "(";
-            var akhir = ")";
-            var isi = "";
-            var branch = "";
-            $.each(branchId, function (i, item) {
-                if(item.checked){
-                    if(isi != ""){
-                        isi = isi+", '"+item.value+"'";
-                    }else{
-                        isi ="'"+item.value+"'";
+                    if (parseInt(response.jmlRI) > 0) {
+                        var i = 0;
+                        var interval = setInterval(function () {
+                            if (i <= response.jmlRJ) {
+                                $('#sum_ri').text(i);
+                                i++;
+                            } else {
+                                clearInterval(interval);
+                            }
+                        }, 5000 / response.jmlRJ);
+                    } else {
+                        $('#sum_ri').text(response.jmlRI);
+                    }
+
+                    if (parseInt(response.jmlIGD) > 0) {
+                        var i = 0;
+                        var interval = setInterval(function () {
+                            if (i <= response.jmlRJ) {
+                                $('#sum_igd').text(i);
+                                i++;
+                            } else {
+                                clearInterval(interval);
+                            }
+                        }, 5000 / response.jmlRJ);
+                    } else {
+                        $('#sum_igd').text(response.jmlIGD);
+                    }
+
+                    if (parseInt(response.jmlTelemedic) > 0) {
+                        var i = 0;
+                        var interval = setInterval(function () {
+                            if (i <= response.jmlRJ) {
+                                $('#sum_telemedic').text(i);
+                                i++;
+                            } else {
+                                clearInterval(interval);
+                            }
+                        }, 5000 / response.jmlRJ);
+                    } else {
+                        $('#sum_telemedic').text(response.jmlTelemedic);
                     }
                 }
             });
-            if(isi != ""){
-                branch = awal+isi+akhir;
-                var tempBranch = "";
-                var tempTgl = "";
-                var tempTotal = "";
-                var dataBranch = [];
-                var dataChart = [];
+            setTimeout(function () {
+                setChart();
+            },1000);
+        }
+    }
 
-                dwr.engine.setAsync(true);
-                InitDashboardAction.getKunjuganRJ(bulan, tahun, branch, {
-                    callback: function (response) {
-                        $.each(response, function (i, item) {
-                            var tanggal = "";
-                            if(item.tanggal != null && item.tanggal != ''){
-                                tanggal = converterDate(item.tanggal);
-                            }
-                            if(tempBranch != item.branchId){
-                                tempBranch = item.branchId;
-                                dataBranch.push({
-                                    'branch_id':item.branchId,
-                                    'branch_name':item.branchName,
-                                    'tanggal':item.tanggal,
-                                    'total':item.total
-                                });
-                            }
-                            dataChart.push({
-                                'id_branch':item.branchId,
-                                'nama_branch':item.branchName,
-                                'tanggal':item.tanggal,
-                                'total':item.total
-                            })
-                        });
-                        var a = "{";
-                        var b = "}";
-                        if(dataBranch.length > 0 && dataChart.length > 0){
-                            var temp = "";
-                            $.each(dataBranch, function (i, item) {
-                                var count = i+1;
-                                if(temp != ""){
-                                    temp = temp+', '+'item'+count;
-                                }else{
-                                    temp = 'item'+count;
-                                }
-                                // $.each(dataChart, function (ix, itemx) {
-                                //     var tem = 'item'+i+1;
-                                //     if(item.branch_id == itemx.id_branch){
-                                //         console.log(itemx.tanggal);
-                                //         console.log(itemx.total);
-                                //     }
-                                // });
-                            });
-                            console.log(a+temp+b);
+    function setChart(){
+        var bulan = $('#set_bulan').val();
+        var tahun = $('#set_tahun').val();
+        var branchId = $('[name=cek_nama_rs]');
+        var awal = "(";
+        var akhir = ")";
+        var isi = "";
+        var branch = "";
+        var colorBranch = [];
+        $.each(branchId, function (i, item) {
+            if (item.checked) {
+                if (isi != "") {
+                    isi = isi + ", '" + item.value.split("|")[0] + "'";
+                } else {
+                    isi = "'" + item.value.split("|")[0] + "'";
+                }
+                colorBranch.push({
+                    'branch_id': item.value.split("|")[0],
+                    'color': item.value.split("|")[1]
+                })
+            }
+        });
+        if (isi != "") {
+            branch = awal + isi + akhir;
+            var tempBranch = "";
+            var tempTgl = "";
+            var tempTotal = "";
+            var dataBranch = [];
+            var month = parseInt(bulan) + 1;
+            dwr.engine.setAsync(true);
+            InitDashboardAction.getKunjuganRJ(month, tahun, branch, {
+                callback: function (response) {
+                    var tempTotal = "";
+                    var tempBranch = "";
+                    var tempTgl = "";
+                    var tempDate = "";
+                    $.each(response, function (i, item) {
+                        var tanggal = "";
+                        if (item.tanggal != null && item.tanggal != '') {
+                            tanggal = converterDate(item.tanggal);
                         }
+                        if (tempBranch != item.branchId) {
+                            tempBranch = item.branchId;
+                            dataBranch.push({
+                                'branch_id': item.branchId,
+                                'branch_name': item.branchName,
+                                'tanggal': item.tanggal,
+                                'total': item.total
+                            });
+                        }
+                        if (tanggal != "") {
+                            var tgl = converterDate(item.tanggal);
+                            if (tempDate != tgl) {
+                                tempDate = tgl;
+                                if (tempTgl != "") {
+                                    tempTgl = tempTgl + '|' + tgl;
+                                } else {
+                                    tempTgl = tgl;
+                                }
+                                if (tempTotal != "") {
+                                    tempTotal = tempTotal + '|' + item.branchId + '#' + item.total;
+                                } else {
+                                    tempTotal = item.branchId + '#' + item.total;
+                                }
+                            } else {
+                                if (tempTotal != "") {
+                                    tempTotal = tempTotal + '=' + item.branchId + '#' + item.total;
+                                } else {
+                                    tempTotal = item.branchId + '#' + item.total;
+                                }
+                            }
+                        }
+                    });
+                    dataBranch.sort(function (a, b) {
+                        var keyA = a.branch_id,
+                            keyB = b.branch_id;
+                        if (keyA < keyB) return -1;
+                        if (keyA > keyB) return 1;
+                        return 0;
+                    });
+                    var tt = "";
+                    var tempUnit = [];
+                    $.each(dataBranch, function (i, item) {
+                        if (tt != item.branch_id) {
+                            tt = item.branch_id;
+                            tempUnit.push({
+                                'branch_id': item.branch_id,
+                                'branch_name': item.branch_name,
+                            });
+                        }
+                    });
+                    if (tempUnit.length > 0, tempTgl != "" && tempTotal != "") {
+                        var tTgl = tempTgl.split("|");
+                        var tTotal = tempTotal.split("|");
+                        var temp = "";
+                        var tempY = "";
+                        var tempL = "";
+                        var tempCo = "";
+
+                        $.each(tTgl, function (i, item) {
+                            var a = '{' + '"' + 'y' + '"' + ':' + '"' + item + '"' + ',';
+                            var b = "}";
+                            var tp = tTotal[i].split("=");
+                            var isi = "";
+
+                            $.each(tempUnit, function (it, itemt) {
+                                var tot = 0;
+                                $.each(tp, function (ix, itemx) {
+                                    var id = itemx.split("#")[0];
+                                    var nilai = itemx.split("#")[1];
+                                    if (id == itemt.branch_id) {
+                                        tot = nilai;
+                                    }
+                                });
+                                var it = it + 1;
+                                if (isi != "") {
+                                    isi = isi + ',' + '"' + 'item' + it + '"' + ':' + '"' + tot + '"';
+                                } else {
+                                    isi = '"' + 'item' + it + '"' + ':' + '"' + tot + '"';
+                                }
+                            });
+
+                            if (temp != "") {
+                                temp = temp + ', ' + a + isi + b;
+                            } else {
+                                temp = a + isi + b;
+                            }
+                        });
+                        $.each(tempUnit, function (it, itemt) {
+                            var it = it + 1;
+                            if (tempY != "") {
+                                tempY = tempY + ', ' + '"' + 'item' + it + '"';
+                                tempL = tempL + ', ' + '"' + itemt.branch_name + '"';
+                            } else {
+                                tempY = '"' + 'item' + it + '"';
+                                tempL = '"' + itemt.branch_name + '"';
+                            }
+                            $.each(colorBranch, function (ic, itemc) {
+                                if (itemt.branch_id == itemc.branch_id) {
+                                    if (tempCo != "") {
+                                        tempCo = tempCo + ', "' + itemc.color + '"';
+                                    } else {
+                                        tempCo = '"' + itemc.color + '"';
+                                    }
+                                }
+                            });
+                        });
+
+                        var dataC = "[" + temp + "]";
+                        var dataY = "[" + tempY + "]";
+                        var dataL = "[" + tempL + "]";
+                        var dataCo = "[" + tempCo + "]";
+
+                        var dataPar = JSON.parse(dataC);
+                        var dataParY = JSON.parse(dataY);
+                        var dataParL = JSON.parse(dataL);
+                        var dataParCo = JSON.parse(dataCo);
+
+                        $('#line-chart').empty();
                         var line = new Morris.Line({
                             element: 'line-chart',
                             resize: true,
-                            data: [
-                                {y: '2011 Q1', item1: 2666, item2: 12},
-                                {y: '2011 Q2', item1: 2778, item2: 3423},
-                                {y: '2011 Q3', item1: 4912, item2: 12},
-                                {y: '2011 Q4', item1: 3767, item2: 31},
-                            ],
+                            data: dataPar,
                             xkey: 'y',
-                            ykeys: ['item1','item2'],
-                            labels: ['Item 1','item2'],
-                            lineColors: ['#3c8dbc'],
-                            hideHover: 'auto'
+                            ykeys: dataParY,
+                            labels: dataParL,
+                            lineColors: dataParCo,
+                            hideHover: 'auto',
+                            parseTime: false,
+                            lineWidth: 1
                         });
+                    } else {
+                        $('#line-chart').empty();
                     }
+                }
+            });
+
+            var colorJenis = [];
+            colorJenis.push(
+                {
+                    'id': 'umum',
+                    'color': '#4d4dff'
+                },
+                {
+                    'id': 'bpjs',
+                    'color': '#0F9E5E'
+                },
+                {
+                    'id': 'asuransi',
+                    'color': '#ffff00'
+                },
+                {
+                    'id': 'rekanan',
+                    'color': '#66ff33'
+                },
+                {
+                    'id': 'paket_perusahaan',
+                    'color': '#cc3399'
+                },
+                {
+                    'id': 'paket_individu',
+                    'color': '#f56954'
                 });
 
-            }
-            // for (var i = 0; i < 6; i++) {
-            //     var donut = new Morris.Donut({
-            //         element: 'sales-chart-' + i,
-            //         resize: true,
-            //         colors: ["#4d4dff", "#0F9E5E", "#ffff00", "#66ff33", "#cc3399", "#f56954"],
-            //         data: [
-            //             {label: "Umum", value: 12},
-            //             {label: "BPJS", value: 30},
-            //             {label: "Asuransi", value: 20},
-            //             {label: "Rekanan", value: 20},
-            //             {label: "Medichal Checkup", value: 20},
-            //             {label: "Promo", value: 20}
-            //         ],
-            //         hideHover: 'auto'
-            //     });
-            // }
+            var tempU = "";
+            var tempClr = "";
+            dwr.engine.setAsync(true);
+            InitDashboardAction.getDetailKunjuganRJ(month, tahun, branch, {
+                callback: function (response) {
+                    if (response.length > 0) {
+                        $.each(colorBranch, function (ic, itemc) {
+                            var isi = "";
+                            $.each(response, function (i, item) {
+                                if(itemc.branch_id == item.branchId){
+                                    var tot = 0;
+                                    if(item.total != null){
+                                        tot = item.total;
+                                    }
+                                    if(isi != ""){
+                                        isi = isi+',{"'+'label'+'":'+'"'+item.statusPeriksaName+'"'+',"'+'value'+'":'+'"'+tot+'"}';
+                                    }else{
+                                        isi = '{"'+'label'+'":'+'"'+item.statusPeriksaName+'"'+',"'+'value'+'":'+'"'+tot+'"}';
+                                    }
+                                    if(ic == 0){
+                                        $.each(colorJenis, function (ii, itemi) {
+                                            if(item.idJenisPeriksaPasien == itemi.id){
+                                                if(tempClr != ""){
+                                                    tempClr = tempClr+',"'+itemi.color+'"';
+                                                }else{
+                                                    tempClr = '"'+itemi.color+'"';
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+                            var dat = "["+isi+"]";
+                            var col = "["+tempClr+"]";
+                            var parseData = JSON.parse(dat);
+                            var parseCol = JSON.parse(col);
+                            var donut = new Morris.Donut({
+                                element: 'donut-chart-' + itemc.branch_id,
+                                resize: true,
+                                colors: parseCol,
+                                data: parseData,
+                                hideHover: 'auto'
+                            });
+                        });
+                    }
+                }
+            });
         }
+    }
+
+    function cekBranch(id){
+        setChart();
     }
 
     function getRandomColor() {

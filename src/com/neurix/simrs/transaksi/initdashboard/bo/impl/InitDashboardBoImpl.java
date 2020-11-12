@@ -14,10 +14,10 @@ public class InitDashboardBoImpl implements InitDashboardBo {
     private HeaderCheckupDao headerCheckupDao;
 
     @Override
-    public HeaderCheckup getCountAll(String branch) {
+    public HeaderCheckup getCountAll(String bulan, String tahun, String branch) {
         HeaderCheckup headerCheckup = new HeaderCheckup();
         try {
-            headerCheckup = headerCheckupDao.getCountAll(branch);
+            headerCheckup = headerCheckupDao.getCountAll(bulan, tahun, branch);
         }catch (HibernateException e){
             logger.error(e.getMessage());
         }

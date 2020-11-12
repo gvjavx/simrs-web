@@ -1667,7 +1667,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return response;
     }
 
-    public HeaderCheckup getCountAll(String branchId){
+    public HeaderCheckup getCountAll(String bulan, String tahun, String branchId){
         String branch = "%";
         if(branchId != null && !"".equalsIgnoreCase(branchId)){
             branch = branchId;
@@ -1681,76 +1681,78 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         String SQL = "SELECT * FROM (\n" +
                 "\tSELECT\n" +
                 "\tCAST('rawat_jalan' AS VARCHAR) AS jenis,\n" +
-                "\ta.no_checkup,\n" +
-                "\tCOUNT (a.no_checkup) as total\n" +
+                "\tCAST(COUNT (a.no_checkup) AS VARCHAR) as total\n"+
                 "\tFROM it_simrs_header_checkup a\n" +
                 "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
-                "\tWHERE a.branch_id LIKE :branchId \n" +
-                "\tAND c.tipe_pelayanan = 'rawat_jalan'\n" +
+                "\tWHERE c.tipe_pelayanan = 'rawat_jalan'\n" +
                 "\tAND b.id_transaksi_online IS NULL\n" +
-                "\tGROUP BY a.no_checkup\n" +
+                "\tAND a.branch_id LIKE :branchId\n" +
+                "\tAND CAST(DATE_PART('year', a.created_date) AS VARCHAR) = :tahun\n" +
+                "\tAND CAST(DATE_PART('month', a.created_date) AS VARCHAR) = :bulan"+
                 ") a \n" +
                 "UNION ALL\n" +
                 "SELECT * FROM (\n" +
                 "\tSELECT\n" +
                 "\tCAST('rawat_inap' AS VARCHAR) AS jenis,\n" +
-                "\ta.no_checkup,\n" +
-                "\tCOUNT (a.no_checkup) as total\n" +
+                "\tCAST(COUNT (a.no_checkup) AS VARCHAR) as total\n"+
                 "\tFROM it_simrs_header_checkup a\n" +
                 "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
-                "\tWHERE a.branch_id LIKE :branchId \n" +
-                "\tAND c.tipe_pelayanan = 'rawat_inap'\n" +
+                "\tWHERE c.tipe_pelayanan = 'rawat_inap'\n" +
                 "\tAND b.id_transaksi_online IS NULL\n" +
-                "\tGROUP BY a.no_checkup\n" +
+                "\tAND a.branch_id LIKE :branchId \n" +
+                "\tAND CAST(DATE_PART('year', a.created_date) AS VARCHAR) = :tahun\n" +
+                "\tAND CAST(DATE_PART('month', a.created_date) AS VARCHAR) = :bulan"+
                 ") a \n" +
                 "UNION ALL\n" +
                 "SELECT * FROM (\n" +
                 "\tSELECT\n" +
                 "\tCAST('igd' AS VARCHAR) AS jenis,\n" +
-                "\ta.no_checkup,\n" +
-                "\tCOUNT (a.no_checkup) as total\n" +
+                "\tCAST(COUNT (a.no_checkup) AS VARCHAR) as total\n"+
                 "\tFROM it_simrs_header_checkup a\n" +
                 "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
-                "\tWHERE a.branch_id LIKE :branchId \n" +
-                "\tAND c.tipe_pelayanan = 'igd'\n" +
+                "\tWHERE c.tipe_pelayanan = 'igd'\n" +
                 "\tAND b.id_transaksi_online IS NULL\n" +
-                "\tGROUP BY a.no_checkup\n" +
+                "\tAND a.branch_id LIKE :branchId \n" +
+                "\tAND CAST(DATE_PART('year', a.created_date) AS VARCHAR) = :tahun\n" +
+                "\tAND CAST(DATE_PART('month', a.created_date) AS VARCHAR) = :bulan"+
                 ") a \n" +
                 "UNION ALL\n" +
                 "SELECT * FROM (\n" +
                 "\tSELECT\n" +
                 "\tCAST('telemedic' AS VARCHAR) AS jenis,\n" +
-                "\ta.no_checkup,\n" +
-                "\tCOUNT (a.no_checkup) as total\n" +
+                "\tCAST(COUNT (a.no_checkup) AS VARCHAR) as total\n"+
                 "\tFROM it_simrs_header_checkup a\n" +
                 "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
-                "\tWHERE a.branch_id LIKE :branchId \n" +
-                "\tAND b.id_transaksi_online IS NOT NULL\n" +
-                "\tGROUP BY a.no_checkup\n" +
+                "\tWHERE b.id_transaksi_online IS NOT NULL\n" +
+                "\tAND a.branch_id LIKE :branchId \n" +
+                "\tAND CAST(DATE_PART('year', a.created_date) AS VARCHAR) = :tahun\n" +
+                "\tAND CAST(DATE_PART('month', a.created_date) AS VARCHAR) = :bulan"+
                 ") a \n";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("branchId", branch)
+                .setParameter("tahun", tahun)
+                .setParameter("bulan", bulan)
                 .list();
         if(result.size() > 0){
             for (Object[] obj: result){
                 if(obj[0] != null){
                     if("rawat_jalan".equalsIgnoreCase(obj[0].toString())){
-                        headerCheckup.setJmlRJ(obj[2].toString());
+                        headerCheckup.setJmlRJ(obj[1].toString());
                     }
                     if("rawat_inap".equalsIgnoreCase(obj[0].toString())){
-                        headerCheckup.setJmlRI(obj[2].toString());
+                        headerCheckup.setJmlRI(obj[1].toString());
                     }
                     if("igd".equalsIgnoreCase(obj[0].toString())){
-                        headerCheckup.setJmlIGD(obj[2].toString());
+                        headerCheckup.setJmlIGD(obj[1].toString());
                     }
                     if("telemedic".equalsIgnoreCase(obj[0].toString())){
-                        headerCheckup.setJmlTelemedic(obj[2].toString());
+                        headerCheckup.setJmlTelemedic(obj[1].toString());
                     }
                 }
             }
@@ -1896,7 +1898,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "\tGROUP BY a.branch_id, CAST(b.created_date AS DATE)\n" +
                     ")b\n" +
                     "ON a.branch_id = b.branch_id\n" +
-                    "ORDER BY a.branch_id ASC";
+                    "ORDER BY b.tanggal, a.branch_id ASC";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

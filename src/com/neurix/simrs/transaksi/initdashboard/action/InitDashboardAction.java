@@ -17,14 +17,14 @@ import java.util.List;
 
 public class InitDashboardAction {
     public static transient Logger logger = Logger.getLogger(InitDashboardAction.class);
-    public HeaderCheckup getCountAll(){
+    public HeaderCheckup getCountAll(String bulan, String tahun){
         String branchId = CommonUtil.userBranchLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         InitDashboardBo initDashboardBo = (InitDashboardBo) ctx.getBean("initDashboardBoProxy");
         HeaderCheckup headerCheckupList = new HeaderCheckup();
         try {
-            headerCheckupList = initDashboardBo.getCountAll(branchId);
+            headerCheckupList = initDashboardBo.getCountAll(bulan, tahun, null);
         }catch (GeneralBOException e){
             logger.error(e.getMessage());
         }
