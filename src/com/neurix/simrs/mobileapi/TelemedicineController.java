@@ -523,6 +523,25 @@ public class TelemedicineController implements ModelDriven<Object> {
                     FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(), "Telemedic", "Dokter Memanggil ...", "PD", result.get(0).getOs(), sendData);
                 }
 
+                if (this.status.equalsIgnoreCase("SL")) {
+
+                    //KIRIM PUSH NOTIF JIKA STATUS MENJADI PD
+                    List<NotifikasiFcm> result = new ArrayList<>();
+                    NotifikasiFcm beanNotif = new NotifikasiFcm();
+                    beanNotif.setUserId(idPasien);
+
+                    org.json.JSONObject sendData = new JSONObject();
+                    sendData.put("namaDokter", namaDokter);
+                    sendData.put("idDokter", idDokter);
+                    sendData.put("idPasien", idPasien);
+                    sendData.put("noCheckup", noCheckup);
+                    sendData.put("branchId", branchId);
+                    sendData.put("isStruk", isStruk);
+
+                    result = notifikasiFcmBoProxy.getByCriteria(beanNotif);
+                    FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(), "Telemedic", "Dokter Menutup Panggilan", "SL", result.get(0).getOs(), sendData);
+                }
+
                 if (jenisStruk != null) {
                     List<ItSimrsAntrianTelemedicEntity> result = new ArrayList<>();
                     AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
