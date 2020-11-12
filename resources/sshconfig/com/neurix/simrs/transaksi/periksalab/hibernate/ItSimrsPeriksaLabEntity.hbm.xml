@@ -75,5 +75,11 @@
         <property name="ttdPetugas">
             <column name="ttd_petugas"/>
         </property>
+        <property name="isPending">
+            <column name="is_pending"/>
+        </property>
+        <property name="isReading">
+            <column name="is_read"/>
+        </property>
     </class>
 </hibernate-mapping>

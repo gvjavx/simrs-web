@@ -194,6 +194,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 periksaLab.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
                 periksaLab.setIdPeriksaLab(lab);
                 periksaLab.setKeterangan(ket);
+                periksaLab.setDiagnosa(checkup.getDiagnosa()+"-"+checkup.getNamaDiagnosa());
                 periksaLab.setMetodePembayaran(checkup.getMetodePembayaran());
 
                 PeriksaLab periksalb = new PeriksaLab();
@@ -468,18 +469,25 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             }
 
             if (periksalb.getIdPeriksaLab() != null) {
-                reportParams.put("title", "Hasil Periksa Lab " + periksalb.getKategoriLabName());
+                reportParams.put("title", "Hasil Periksa Radiologi " + periksalb.getLabName());
             }
 
             reportParams.put("area", CommonUtil.userAreaName());
             reportParams.put("unit", CommonUtil.userBranchNameLogin());
             reportParams.put("idPasien", checkup.getIdPasien());
             reportParams.put("idPeriksaLab", lab);
+            reportParams.put("id", lab);
             reportParams.put("logo", logo);
             reportParams.put("nik", checkup.getNoKtp());
             reportParams.put("nama", checkup.getNama());
-            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            if(checkup.getTglLahir() != null){
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            }
+            if(periksalb.getCreatedDate() != null){
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(periksalb.getCreatedDate());
+                reportParams.put("tglFoto", formatDate);
+            }
             if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
                 jk = "Laki-Laki";
             } else {
@@ -508,8 +516,11 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 return "search";
             }
         }
-
-        return "print_radiologi";
+        if("label".equalsIgnoreCase(getKet())){
+            return "print_label";
+        }else{
+            return "print_radiologi";
+        }
     }
 
     private String calculateAge(Date birthDate, boolean justTahun) {

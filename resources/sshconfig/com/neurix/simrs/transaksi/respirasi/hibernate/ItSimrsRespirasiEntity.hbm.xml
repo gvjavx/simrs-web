@@ -6,10 +6,10 @@
         <table name="it_simrs_respirasi" schema="public"/>
         <attributes>
             <id name="idRespirasi">
-                <column name="id_respirasi" />
+                <column name="id_respirasi"/>
             </id>
             <basic name="idDetailCheckup">
-                <column name="id_detail_checkup" />
+                <column name="id_detail_checkup"/>
             </basic>
             <basic name="waktu">
                 <column name="waktu"/>
@@ -32,26 +32,14 @@
             <basic name="kk">
                 <column name="kk"/>
             </basic>
-            <basic name="jenisNkRmNrm">
-                <column name="jenis_nk_rm_nrm"/>
-            </basic>
-            <basic name="nkRmNrm">
-                <column name="nk_rm_nrm"/>
-            </basic>
-            <basic name="jenisTPieceJRise">
-                <column name="jenis_t_piece_j_rise"/>
-            </basic>
-            <basic name="tPieceJRise">
-                <column name="t_piece_j_rise"/>
+            <basic name="o2">
+                <column name="o2"/>
             </basic>
             <basic name="tipeVentilasi">
                 <column name="tipe_ventilasi"/>
             </basic>
-            <basic name="jenisPeepCpapEt">
-                <column name="jenis_peep_cpap_et"/>
-            </basic>
-            <basic name="peepCpapEt">
-                <column name="peep_cpap_et"/>
+            <basic name="peep">
+                <column name="peep"/>
             </basic>
             <basic name="frekwensi">
                 <column name="frekwensi"/>
@@ -62,14 +50,8 @@
             <basic name="mv">
                 <column name="mv"/>
             </basic>
-            <basic name="jenisPSupportPAsb">
-                <column name="jenis_p_support_p_asb"/>
-            </basic>
             <basic name="pSupportPAsb">
                 <column name="p_support_p_asb"/>
-            </basic>
-            <basic name="jenisPInsPCon">
-                <column name="jenis_p_ins_p_con"/>
             </basic>
             <basic name="pInsPCon">
                 <column name="p_ins_p_con"/>
@@ -83,20 +65,17 @@
             <basic name="flow">
                 <column name="flow"/>
             </basic>
-            <basic name="jenisFioKon">
-                <column name="jenis_fio_kon"/>
-            </basic>
             <basic name="fioKon">
                 <column name="fio_kon"/>
             </basic>
-            <basic name="jenisUkuranKedalamaanEtt">
-                <column name="jenis_ukuran_kedalamaan_ett"/>
+            <basic name="ukuranEtt">
+                <column name="ukuran_ett"/>
             </basic>
-            <basic name="ukuranKedalamaanEtt">
-                <column name="ukuran_kedalamaan_ett"/>
+            <basic name="kedalamanEtt">
+                <column name="kedalaman_ett"/>
             </basic>
-            <basic name="spo">
-                <column name="spo"/>
+            <basic name="spo2">
+                <column name="spo2"/>
             </basic>
             <basic name="secret">
                 <column name="secret"/>

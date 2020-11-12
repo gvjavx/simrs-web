@@ -19,7 +19,10 @@ import com.neurix.simrs.transaksi.paketperiksa.model.*;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
-import javax.imageio.ImageIO;
+import javax.imageio.*;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.http.HttpSession;
 
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
@@ -32,16 +35,21 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -338,6 +346,12 @@ public class PaketPeriksaAction extends BaseTransactionAction {
                 if (obj.has("no_telp")) {
                     dataPasien.setNoTelp(obj.getString("no_telp"));
                 }
+                if (obj.has("status")) {
+                    dataPasien.setStatusPerkawinan(obj.getString("status"));
+                }
+                if (obj.has("pendidikan")) {
+                    dataPasien.setPendidikan(obj.getString("pendidikan"));
+                }
                 dataPasien.setNoKtp(obj.getString("nik"));
                 dataPasien.setNama(obj.getString("nama"));
                 dataPasien.setJenisKelamin(obj.getString("jk"));
@@ -356,15 +370,25 @@ public class PaketPeriksaAction extends BaseTransactionAction {
                     try {
                         BASE64Decoder decoder = new BASE64Decoder();
                         byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img_ktp"));
-                        String fileName = dataPasien.getNoKtp() + "-" + dateFormater("MM") + dateFormater("yy") + ".png";
+                        String fileName = dataPasien.getNoKtp() + "-" + dateFormater("MM") + dateFormater("yy") + ".jpg";
                         String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN + fileName;
                         BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
                         if (image == null) {
                             logger.error("Buffered Image is null");
                         } else {
-                            File f = new File(uploadFile);
-                            ImageIO.write(image, "png", f);
-                            dataPasien.setUrlKtp(fileName);
+                            CrudResponse response = CommonUtil.compresing(image, uploadFile);
+                            if("success".equalsIgnoreCase(response.getStatus())){
+                                dataPasien.setUrlKtp(fileName);
+                            }else{
+                                Pasien pasien1 = new Pasien();
+                                pasien1.setStatus(response.getStatus());
+                                pasien1.setMsg(response.getMsg());
+                                return pasien1;
+                            }
+//                            File f = new File(uploadFile);
+//                            ImageIO.write(image, "png", f);
+
                         }
                     } catch (IOException e) {
                         pasien.setStatus("error");
@@ -372,7 +396,13 @@ public class PaketPeriksaAction extends BaseTransactionAction {
                     }
                 }
                 try {
-                    pasien = pasienBo.saveAddWithResponse(dataPasien);
+                    Boolean cekNik = pasienBo.cekNikPasien(dataPasien.getNoKtp());
+                    if (cekNik) {
+                        pasien.setStatus("error");
+                        pasien.setMsg("NIK " + dataPasien.getNoKtp() + " sudah ada...!");
+                    } else {
+                        pasien = pasienBo.saveAddWithResponse(dataPasien);
+                    }
                 } catch (GeneralBOException e) {
                     pasien.setStatus("error");
                     pasien.setMsg("Error " + e.getMessage());

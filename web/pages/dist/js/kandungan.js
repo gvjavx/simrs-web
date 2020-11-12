@@ -375,7 +375,7 @@ function saveRB(jenis, ket) {
             });
             data.push({
                 'parameter': 'Pemeriksaan Fisik',
-                'jawaban': 'GCS ' + va5 + ', TD ' + va6 + ', Nadi ' + va7 + ', RR ' + va8 + ', Suhu ' + va9 + ', TB ' + va10 + ', BB ' + va11 + ', GDA ' + va12 + ', SPO2 ' + va13,
+                'jawaban': 'GCS ' + va5 + ', TD ' + replaceUnderLine(va6) + ', Nadi ' + va7 + ', RR ' + va8 + ', Suhu ' + va9 + ', TB ' + va10 + ', BB ' + va11 + ', GDA ' + va12 + ', SPO2 ' + va13,
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1997,7 +1997,7 @@ function saveRB(jenis, ket) {
             });
             data.push({
                 'parameter': 'Vital Sign',
-                'jawaban': 'Tensi ' + va44 + ' mmHg, Nadi ' + va45 + ' x/menit, Suhu ' + va46 + ' C, RR ' + va47 + ' x/menit, TFU ' + va48 + ' cm, DJJ ' + va49 + ' x/menit',
+                'jawaban': 'Tensi ' + replaceUnderLine(va44) + ' mmHg, Nadi ' + va45 + ' x/menit, Suhu ' + va46 + ' C, RR ' + va47 + ' x/menit, TFU ' + va48 + ' cm, DJJ ' + va49 + ' x/menit',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -2551,7 +2551,7 @@ function detailRB(jenis) {
                                 var tempTr = '';
                                 $.each(jml, function (ix, itemx) {
                                     var td = itemx.split("|");
-                                    var tempTd = "";
+                                    var tempTd = "<td>"+(ix+1)+"</td>";
                                     $.each(td, function (ir, itemr) {
                                         tempTd += '<td>' + itemr + '</td>';
                                     });
@@ -2562,7 +2562,8 @@ function detailRB(jenis) {
                                         '<td colspan="2">' +
                                         '<table style="font-size: 12px" class="table table-bordered">' +
                                         '<thead>' +
-                                        '<tr>' +
+                                        '<tr style="font-weight: bold">' +
+                                        '<td>No</td>' +
                                         '<td>Tahun</td>' +
                                         '<td>Kehamilan</td>' +
                                         '<td>Persalinan</td>' +
@@ -2583,7 +2584,7 @@ function detailRB(jenis) {
 
                                 $.each(jml, function (ix, itemx) {
                                     var td = itemx.split("|");
-                                    var tempTd = "";
+                                    var tempTd = "<td>"+(ix+1)+"</td>";
                                     $.each(td, function (ir, itemr) {
                                         tempTd += '<td>' + itemr + '</td>';
                                     });
@@ -2595,7 +2596,8 @@ function detailRB(jenis) {
                                         '<td colspan="2">' +
                                         '<table style="font-size: 12px" class="table table-bordered">' +
                                         '<thead>' +
-                                        '<tr>' +
+                                        '<tr style="font-weight: bold">' +
+                                        '<td>No</td>' +
                                         '<td>Tahun</td>' +
                                         '<td>Tempat</td>' +
                                         '<td>Umur Hamil</td>' +
@@ -3554,4 +3556,21 @@ function delRB(jenis, ket) {
             }
         }
     });
+}
+
+function setHPL(idTujuan, idHPHT, idLama){
+    var hpht = $('#'+idHPHT).val();
+    var lama = $('#'+idLama).val();
+    if(hpht != '' && lama != ''){
+        var tanggal = hpht.split("-").reverse().join("-");
+        var newDate = new Date(tanggal);
+        newDate.setMonth(newDate.getMonth()+9);
+        var jml = 21;
+        if(parseInt(lama) > 21){
+            jml = lama;
+        }
+        newDate.setDate(newDate.getDate()+(jml - 21));
+        var hpl = converterDate(newDate);
+        $('#'+idTujuan).val(hpl);
+    }
 }

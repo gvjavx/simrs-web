@@ -42,6 +42,25 @@ public class ImSimrsPasienEntity implements Serializable{
     private String email;
     private String password;
 
+    private String pendidikan;
+    private String statusPerkawinan;
+
+    public String getPendidikan() {
+        return pendidikan;
+    }
+
+    public void setPendidikan(String pendidikan) {
+        this.pendidikan = pendidikan;
+    }
+
+    public String getStatusPerkawinan() {
+        return statusPerkawinan;
+    }
+
+    public void setStatusPerkawinan(String statusPerkawinan) {
+        this.statusPerkawinan = statusPerkawinan;
+    }
+
     public String getEmail() {
         return email;
     }

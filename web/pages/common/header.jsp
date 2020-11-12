@@ -377,6 +377,38 @@ apply the skin class to the body tag so the changes take effect.
         border-radius: 5px;
         box-shadow: 1px 3px 8px grey
     }
+    .span-biru{
+        font-size: 13px;
+        padding: 5px;
+        color: white;
+        background-color: #4d4dff;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
+    .span-hijau-muda{
+        font-size: 13px;
+        padding: 5px;
+        color: black;
+        background-color: #66ff33;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
+    .span-ungu{
+        font-size: 13px;
+        padding: 5px;
+        color: white;
+        background-color: #cc3399;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
+    .span-kuning{
+        font-size: 13px;
+        padding: 5px;
+        color: black;
+        background-color: #ffff00;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
 
 </style>
 <script>
@@ -629,6 +661,25 @@ apply the skin class to the body tag so the changes take effect.
         }
     }
 
+    function replaceStrip(val, id){
+        var res = "";
+        if(val != ''){
+            res = val.replace(/[-]/g, '');
+            res.replace(/[_]/g, '');
+            $('#'+id).val(res);
+        }else{
+            $('#'+id).val(res);
+        }
+    }
+
+    function replaceUnderLine(val){
+        var res = '';
+        if(val != ''){
+            res = val.replace(/[_]/g, '');
+        }
+        return res;
+    }
+
     function convertRpAtas(id, val, idHidden) {
         $('#'+id).val(formatRupiahAtas2(val));
         if(idHidden != '' && idHidden != null){
@@ -823,6 +874,73 @@ apply the skin class to the body tag so the changes take effect.
                 return namaAlat;
             }
         });
+    }
+
+    function setKotaKab(id){
+        $('#'+id).typeahead({
+            minLength: 3,
+            source: function (query, process) {
+                functions = [];
+                mapped = {};
+                var data = [];
+                dwr.engine.setAsync(false);
+                ProvinsiAction.initComboKota(query, "", function (listdata) {
+                    data = listdata;
+                });
+                $.each(data, function (i, item) {
+                    var labelItem = item.kotaName;
+                    mapped[labelItem] = {
+                        id: item.kotaId,
+                        label: labelItem
+                    };
+                    functions.push(labelItem);
+                });
+                process(functions);
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                var remove = selectedObj.label.substring(5);
+                var namaKota = remove;
+                return namaKota;
+            }
+        });
+    }
+
+    function cekDatePicker(val){
+        var tgl = val.split("-");
+        var cek = false;
+        $.each(tgl, function (i, item) {
+            var numbers = /^[0-9]+$/;
+            if(!item.match(numbers)){
+                cek = true;
+            }
+        });
+        return cek;
+    }
+
+    function changeJenisPasien(jenis, value){
+        var res = "";
+        if(jenis == 'umum'){
+            res = '<span class="span-biru">'+value+'</span>';
+        }else if (jenis == 'bpjs'){
+            res = '<span class="span-success">'+value+'</span>';
+        }else if(jenis == 'rekanan'){
+            res = '<span class="span-hijau-muda">'+value+'</span>';
+        }else if(jenis == 'asuransi'){
+            res = '<span class="span-kuning">'+value+'</span>';
+        }else{
+            res = '<span class="span-ungu">'+value+'</span>';
+        }
+        return res;
+    }
+
+    function convertToDataURLAtas(id){
+        var ttd = "";
+        if(id != ''){
+            ttd = id.toDataURL("image/png"),
+                ttd = ttd.replace(/^data:image\/(png|jpg);base64,/, "");
+        }
+        return ttd;
     }
 
 </script>

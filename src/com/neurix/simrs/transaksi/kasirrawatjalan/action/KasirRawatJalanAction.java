@@ -401,7 +401,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 }
 
                 List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
-                detailCheckupList = checkupDetailBoProxy.getIDDetailCheckup(checkup.getNoCheckup());
+                detailCheckupList = checkupDetailBoProxy.getIDDetailCheckup(checkup.getNoCheckup(),"3");
                 List<UangMuka> mukaList = new ArrayList<>();
                 for (HeaderDetailCheckup detailCheckup: detailCheckupList){
                     UangMuka uangMuka = new UangMuka();
@@ -693,7 +693,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         List<UangMuka> obatDetailListFinal = new ArrayList<>();
 
         if (noCheckup != null && !"".equalsIgnoreCase(noCheckup)) {
-            List<HeaderDetailCheckup> detailCheckup = checkupDetailBo.getIDDetailCheckup(noCheckup);
+            List<HeaderDetailCheckup> detailCheckup = checkupDetailBo.getIDDetailCheckup(noCheckup, "3");
             if(statusBayar != null && !"".equalsIgnoreCase(statusBayar)){
                 if(detailCheckup.size() > 0){
                     for (HeaderDetailCheckup detail: detailCheckup){
@@ -1691,7 +1691,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 //** creat Jurnal **//
                 Jurnal jurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
 
-                List<HeaderDetailCheckup> detailCheckupList = checkupDetailBo.getIDDetailCheckup(noCheckup);
+                List<HeaderDetailCheckup> detailCheckupList = checkupDetailBo.getIDDetailCheckup(noCheckup, "3");
                 List<HeaderDetailCheckup> list = new ArrayList<>();
                 if(detailCheckupList.size() > 0){
                     for (HeaderDetailCheckup dtl: detailCheckupList){

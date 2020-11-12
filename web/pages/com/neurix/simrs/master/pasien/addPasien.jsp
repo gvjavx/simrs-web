@@ -148,7 +148,6 @@
     <section class="content-header">
         <h1>
             Tambah Pasien
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -178,175 +177,257 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-4">No BPJS</label>
-                                            <div class="col-md-8">
-                                                <div class="input-group">
-                                                    <s:textfield id="no_bpjs" name="pasien.noBpjs"
-                                                                 cssClass="form-control" onchange="checkBpjs()"/>
-                                                    <div class="input-group-btn" onclick="checkBpjs()">
-                                                        <a class="btn btn-success">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4">No BPJS</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group">
+                                                        <s:textfield id="no_bpjs" name="pasien.noBpjs"
+                                                                     cssClass="form-control" onchange="checkBpjs()"/>
+                                                        <div class="input-group-btn" onclick="checkBpjs()">
+                                                            <a class="btn btn-success">
                                                                 <span id="btn-cek"><i
                                                                         class="fa fa-search"></i> Check</span></a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">NIK Pasien</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="no_ktp" name="pasien.noKtp"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"
-                                                             data-inputmask="'mask': ['9999999999999999']"
-                                                             data-mask=""/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">NIK Pasien</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield id="no_ktp" name="pasien.noKtp"
+                                                                 onkeypress="$(this).css('border','')"
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"
+                                                                 data-inputmask="'mask': ['9999999999999999']"
+                                                                 data-mask=""/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Nama Pasien</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="nama_pasien" name="pasien.nama"
-                                                             onkeypress="$(this).css('border','')"
-                                                             onchange="changeNamaPasien()"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Nama Pasien</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield id="nama_pasien" name="pasien.nama"
+                                                                 onkeypress="$(this).css('border','')"
+                                                                 onchange="changeNamaPasien()"
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
-                                            <div class="col-md-8">
-                                                <s:select list="#{'L':'Laki-Laki','P':'Perempuan'}"
-                                                          cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
-                                                          id="jenis_kelamin" name="pasien.jenisKelamin"
-                                                          headerKey="" headerValue="[Select one]"
-                                                          cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Jenis Kelamin</label>
+                                                <div class="col-md-8">
+                                                    <s:select list="#{'L':'Laki-Laki','P':'Perempuan'}"
+                                                              cssStyle="margin-top: 7px" onchange="$(this).css('border','')"
+                                                              id="jenis_kelamin" name="pasien.jenisKelamin"
+                                                              headerKey="" headerValue="[Select one]"
+                                                              cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Tempat Lahir</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="tempat_lahir" name="pasien.tempatLahir"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Tempat Lahir</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield id="tempat_lahir" name="pasien.tempatLahir"
+                                                                 onkeypress="$(this).css('border','')"
+                                                                 cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <s:hidden name="headerCheckup.isOnline" id="tes_online"/>
                                         <s:hidden name="headerCheckup.tglAntian"/>
 
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Tanggal Lahir</label>
-                                            <div class="col-md-8">
-                                                <div class="input-group date" style="margin-top: 7px" id="st_tgl_lahir">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-calendar"></i>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Tanggal Lahir</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group date" style="margin-top: 7px" id="st_tgl_lahir">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <s:textfield id="tanggal_lahir" name="pasien.tglLahir" placeholder="yyyy-mm-dd"
+                                                                     cssClass="form-control datemask" cssStyle="cursor: pointer"
+                                                                     onchange="$('#st_tgl_lahir').css('border','')" readonly="true"/>
                                                     </div>
-                                                    <s:textfield id="tanggal_lahir" name="pasien.tglLahir"
-                                                                 cssClass="form-control datemask"
-                                                                 onchange="$('#st_tgl_lahir').css('border','')"/>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Agama</label>
-                                            <div class="col-md-8">
-                                                <s:select id="agama" name="pasien.agama"
-                                                          list="#{'Islam':'Islam','Kristen':'Kristen','Katolik':'Katolik','Hindu':'Hindu','Buddha':'Buddha','Konghucu':'Konghucu'}"
-                                                          onchange="$(this).css('border','')"
-                                                          headerKey="" headerValue="[Select One]"
-                                                          cssStyle="margin-top: 7px" cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Agama</label>
+                                                <div class="col-md-8">
+                                                    <s:select id="agama" name="pasien.agama"
+                                                              list="#{'Islam':'Islam','Kristen':'Kristen','Katolik':'Katolik','Hindu':'Hindu','Buddha':'Buddha','Konghucu':'Konghucu'}"
+                                                              onchange="$(this).css('border','')"
+                                                              headerKey="" headerValue="[Select One]"
+                                                              cssStyle="width: 100%" cssClass="form-control select2"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Profesi</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="profesi" name="pasien.profesi"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Profesi</label>
+                                                <div class="col-md-8">
+                                                    <s:select id="profesi"
+                                                              list="#{'Guru':'Guru','Dokter':'Dokter','Swasta':'Swasta','PNS':'PNS','Lainnya':'Lainnya'}"
+                                                              onchange="$('#ket_profesi').val(this.value); $(this).css('border',''); if(this.value == 'Lainnya'){$('#form_profesi').show()}else{$('#form_profesi').hide()} "
+                                                              headerKey="" headerValue="[Select One]"
+                                                              cssStyle="width: 100%" cssClass="form-control select2"/>
+                                                    <s:hidden name="pasien.profesi" id="ket_profesi"></s:hidden>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Suku</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="suku" name="pasien.suku"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                        <div class="row" style="display: none" id="form_profesi">
+                                            <div class="form-group">
+                                                <div class="col-md-offset-4 col-md-8">
+                                                    <s:textfield placeholder="Keterangan Profesi" cssClass="form-control" cssStyle="margin-top: 7px" oninput="$('#ket_profesi').val(this.value);"></s:textfield>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Alamat</label>
-                                            <div class="col-md-8">
-                                                <s:textarea id="jalan" rows="3" cssStyle="margin-top: 7px"
-                                                            onkeypress="$(this).css('border','')"
-                                                            name="pasien.jalan" cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Suku</label>
+                                                <div class="col-md-8">
+                                                    <s:select id="suku"
+                                                              list="#{'Jawa':'Jawa','Batak':'Batak','Dayak':'Dayak','Asmat':'Asmat','Minahasa':'Minahasa','Melayu':'Melayu','Sunda':'Sunda','Madura':'Madura','Betawi':'Betawi','Bugis':'Bugis','Lainnya':'Lainnya'}"
+                                                              onchange="$('#ket_suku').val(this.value); $(this).css('border',''); if(this.value == 'Lainnya'){$('#form_jawa').show()}else{$('#form_jawa').hide()} "
+                                                              headerKey="" headerValue="[Select One]"
+                                                              cssStyle="width: 100%" cssClass="form-control select2"/>
+                                                    <s:hidden name="pasien.suku" id="ket_suku"></s:hidden>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="display: none" id="form_jawa">
+                                            <div class="form-group">
+                                                <div class="col-md-offset-4 col-md-8">
+                                                    <s:textfield placeholder="Keterangan Suku" cssClass="form-control" cssStyle="margin-top: 7px" oninput="$('#ket_suku').val(this.value);"></s:textfield>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Status Perkawinan</label>
+                                                <div class="col-md-8">
+                                                    <s:select id="status_perkawinan" name="pasien.statusPerkawinan"
+                                                              list="#{'Kawin':'Kawin','Belum Kawin':'Belum Kawin'}"
+                                                              onchange="$(this).css('border','')"
+                                                              headerKey="" headerValue="[Select One]"
+                                                              cssStyle="width: 100%" cssClass="form-control select2"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Pendidikan</label>
+                                                <div class="col-md-8">
+                                                    <s:select id="pendidikan" name="pasien.pendidikan"
+                                                              list="#{'SD/Sederajat':'SD/Sederajat','SMP/Sederajat':'SMP/Sederajat','SMA/Sederajat':'SMA/Sederajat','S1':'S1','S2':'S3','S3':'S3'}"
+                                                              onchange="$(this).css('border','')"
+                                                              headerKey="" headerValue="[Select One]"
+                                                              cssStyle="width: 100%" cssClass="form-control select2"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4">No Telp</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group" style="margin-top: 7px" >
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-phone"></i>
+                                                        </div>
+                                                        <s:textfield id="no_telp" data-inputmask="'mask': ['9999-9999-9999']"
+                                                                     data-mask=""
+                                                                     onkeypress="$(this).css('border','')"
+                                                                     cssClass="form-control" oninput="replaceStrip(this.value, 'h_no_hp')"/>
+                                                    </div>
+                                                    <s:hidden id="h_no_hp" name="pasien.noTelp" ></s:hidden>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-4">No Telp</label>
-                                            <div class="col-md-8">
-                                                <s:textfield id="no_telp" name="pasien.noTelp" type="number"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Alamat</label>
+                                                <div class="col-md-8">
+                                                    <s:textarea id="jalan" rows="4" cssStyle="margin-top: 7px"
+                                                                onkeypress="$(this).css('border','')"
+                                                                name="pasien.jalan" cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4">Provinsi</label>
-                                            <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="provinsi"
-                                                             name="pasien.namaProvinsi"
-                                                             required="true" disabled="false"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control"/>
-                                                <s:textfield cssStyle="display: none; margin-top: 7px" id="provinsi11"
-                                                             name="pasien.provinsiId" required="true"
-                                                             disabled="false" cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4">Provinsi</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield cssStyle="margin-top: 7px" id="provinsi"
+                                                                 name="pasien.namaProvinsi"
+                                                                 required="true" disabled="false"
+                                                                 onkeypress="$(this).css('border','')"
+                                                                 cssClass="form-control"/>
+                                                    <s:textfield cssStyle="display: none; margin-top: 7px" id="provinsi11"
+                                                                 name="pasien.provinsiId" required="true"
+                                                                 disabled="false" cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Kota</label>
-                                            <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="kabupaten"
-                                                             name="pasien.namaKota"
-                                                             required="true" disabled="false"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control"/>
-                                                <s:textfield cssStyle="display: none; margin-top: 7px" id="kabupaten11"
-                                                             name="headerCheckup.kotaId" required="true"
-                                                             disabled="false" cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Kota</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield cssStyle="margin-top: 7px" id="kabupaten"
+                                                                 name="pasien.namaKota"
+                                                                 required="true" disabled="false"
+                                                                 onkeypress="$(this).css('border','')"
+                                                                 cssClass="form-control"/>
+                                                    <s:textfield cssStyle="display: none; margin-top: 7px" id="kabupaten11"
+                                                                 name="headerCheckup.kotaId" required="true"
+                                                                 disabled="false" cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Kecamatan</label>
-                                            <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="kecamatan"
-                                                             name="pasien.namaKecamatan"
-                                                             required="true" disabled="false"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control"/>
-                                                <s:textfield cssStyle="display: none; margin-top: 7px" id="kecamatan11"
-                                                             name="pasien.kecamatanId" required="true"
-                                                             disabled="false" cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Kecamatan</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield cssStyle="margin-top: 7px" id="kecamatan"
+                                                                 name="pasien.namaKecamatan"
+                                                                 required="true" disabled="false"
+                                                                 onkeypress="$(this).css('border','')"
+                                                                 cssClass="form-control"/>
+                                                    <s:textfield cssStyle="display: none; margin-top: 7px" id="kecamatan11"
+                                                                 name="pasien.kecamatanId" required="true"
+                                                                 disabled="false" cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Kelurahan/Desa</label>
-                                            <div class="col-md-8">
-                                                <s:textfield cssStyle="margin-top: 7px" id="desa"
-                                                             name="pasien.namaDesa"
-                                                             required="true" disabled="false"
-                                                             onkeypress="$(this).css('border','')"
-                                                             cssClass="form-control"/>
-                                                <s:textfield cssStyle="display: none; margin-top: 7px" id="desa11"
-                                                             name="pasien.desaId" required="true"
-                                                             disabled="false" cssClass="form-control"/>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Kelurahan/Desa</label>
+                                                <div class="col-md-8">
+                                                    <s:textfield cssStyle="margin-top: 7px" id="desa"
+                                                                 name="pasien.namaDesa"
+                                                                 required="true" disabled="false"
+                                                                 onkeypress="$(this).css('border','')"
+                                                                 cssClass="form-control"/>
+                                                    <s:textfield cssStyle="display: none; margin-top: 7px" id="desa11"
+                                                                 name="pasien.desaId" required="true"
+                                                                 disabled="false" cssClass="form-control"/>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Foto Identitas</label>
-                                            <div class="col-md-8">
-                                                <div class="input-group" style="margin-top: 7px" id="img_file">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 7px">Foto Identitas</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group" style="margin-top: 7px" id="img_file">
                                                     <span class="input-group-btn">
                                                     <span class="btn btn-default btn-file">
                                                     <%--<input type="file" id="imgInp" accept=".jpg" name="fileUploadKtpPasien" onchange="$('#img_file').css('border','')">--%>
@@ -354,12 +435,13 @@
                                                                     onchange="$('#img_file').css('border','')"></s:file>
                                                     </span>
                                                     </span>
-                                                    <input type="text" class="form-control" readonly>
+                                                        <input type="text" class="form-control" readonly>
+                                                    </div>
+                                                    <img id="img-upload" width="100%"
+                                                         src="<s:url value="/pages/images/ktp-default.jpg"/>"
+                                                         style="border: darkgray solid 1px; height: 170px; margin-top: 7px"/>
+                                                        <%--<s:hidden name="headerCheckup.urlKtp" id="img_ktp"></s:hidden>--%>
                                                 </div>
-                                                <img id="img-upload" width="100%"
-                                                     src="<s:url value="/pages/images/ktp-default.jpg"/>"
-                                                     style="border: darkgray solid 1px; height: 170px; margin-top: 7px"/>
-                                                <%--<s:hidden name="headerCheckup.urlKtp" id="img_ktp"></s:hidden>--%>
                                             </div>
                                         </div>
                                     </div>
@@ -536,11 +618,9 @@
     function checkBpjs(){
         var noBpjs = $('#no_bpjs').val();
         $('#btn-cek').html('<i class="fa fa-spinner fa-spin"></i> Loading...');
-
         dwr.engine.setAsync(true);
         CheckupAction.completeBpjs(noBpjs, {
             callback: function (response) {
-                console.log(response);
                     if(response.statusBpjs == "AKTIF"){
                         if (response.nama != null) {
                             $('#btn-cek').html('<i class="fa fa-search"></i> Search');

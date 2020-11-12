@@ -961,11 +961,10 @@
                         </div>
                     </div>
                 </form>
-
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <a id="btnSave" type="btn btn-success" class="btn btn-default btn-success"><i class="fa fa-save"></i> Save</a>
-                <a type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Close</a>
+                <a id="btnSave" type="btn btn-success" class="btn btn-default btn-success"><i class="fa fa-save"></i> Save & Reload</a>
+                <a type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</a>
             </div>
         </div>
     </div>
@@ -1057,26 +1056,31 @@
                     <div class="form-group">
                         <label class="control-label col-sm-5" >Peralihan Gapok</label>
                         <div class="col-sm-6">
-                            <input style="text-align: right"  type="text" class="form-control" readonly id="nilaiModPeralihanGapok">
+                            <input style="text-align: right"  type="text" class="form-control" onfocusout="updateNilai(this.id, this.value)" id="nilaiModPeralihanGapok">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-5" >Peralihan Sankhus</label>
                         <div class="col-sm-6">
-                            <input style="text-align: right"  type="text" class="form-control" readonly id="nilaiModPeralihanSankhus">
+                            <input style="text-align: right"  type="text" class="form-control" onfocusout="updateNilai(this.id, this.value)" id="nilaiModPeralihanSankhus">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-5" >Peralihan Tunjangan</label>
                         <div class="col-sm-6">
-                            <input style="text-align: right"  type="text" class="form-control" readonly id="nilaiModPeralihanTunjangan">
+                            <input style="text-align: right"  type="text" class="form-control" onfocusout="updateNilai(this.id, this.value)" id="nilaiModPeralihanTunjangan">
                         </div>
                     </div>
                 </form>
                 <br>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+                <a type="button" id="btnCloseModalPeralihan" class="btn btn-success" data-dismiss="modal">Close & Save</a>
+                <script>
+                    $('#btnCloseModalPeralihan').click(function () {
+                        updateNilai("",0);
+                    })
+                </script>
             </div>
         </div>
     </div>
@@ -3549,6 +3553,9 @@
             $("#modal-success-dialog").modal('show');
         }
     }
+    $('#ok_con').click(function () {
+        window.location.reload();
+    })
     $('#btnReproses').click(function(){
         if (confirm('Peringatan : Jika anda melakukan reproses data payroll ini , data yang sebelumnya akan hilang dan diganti dengan data baru , \n \n Apakah anda ingin melanjutkan ?')) {
             var branchId = document.getElementById("reprosesBranchId").value;
@@ -3633,13 +3640,15 @@
                             alert('Data Berhasil Dirubah');
                             $('#modal-edit').modal('hide');
                             $('#formEdit')[0].reset();
+                            window.location.reload();
                         });
             }else if(tipe == "JP"){
                 PayrollAction.saveEditDataJasprod(payrollId, koperasi, dansos, lainLain, flagKalkulasiPph, pphGaji, function(listdata) {
                             alert('Data Berhasil Dirubah');
                             $('#modal-edit').modal('hide');
                             $('#formEdit')[0].reset();
-                        });
+                            window.location.reload();
+                });
             }
         } else {
             // Do nothing!

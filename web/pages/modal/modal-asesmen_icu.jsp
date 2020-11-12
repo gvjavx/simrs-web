@@ -35,16 +35,16 @@
                             <li><a onclick="showModalICU('hemodinamika_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Hemodinamika</a></li>
                             <li><a onclick="showModalICU('respirasi_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Respirasi</a></li>
                             <li><a onclick="showModalICU('keseimbangan_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Keseimbangan</a></li>
-                            <li><a onclick="showModalICU('injeksi_icu')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Ijeksi</a></li>
-                            <li><a onclick="showModalICU('oral_icu')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Oral</a></li>
-                            <li><a onclick="showModalICU('lain_icu')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Lain-Lain</a></li>
-                            <li><a onclick="showModalICU('intakea_icu')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Intakea</a></li>
-                            <li><a onclick="showModalICU('output_icu')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> Output</a></li>
+                            <%--<li><a onclick="showModalICU('injeksi_icu')" style="cursor: pointer"><i--%>
+                                    <%--class="fa fa-plus"></i> Ijeksi</a></li>--%>
+                            <%--<li><a onclick="showModalICU('oral_icu')" style="cursor: pointer"><i--%>
+                                    <%--class="fa fa-plus"></i> Oral</a></li>--%>
+                            <%--<li><a onclick="showModalICU('lain_icu')" style="cursor: pointer"><i--%>
+                                    <%--class="fa fa-plus"></i> Lain-Lain</a></li>--%>
+                            <%--<li><a onclick="showModalICU('intakea_icu')" style="cursor: pointer"><i--%>
+                                    <%--class="fa fa-plus"></i> Intakea</a></li>--%>
+                            <%--<li><a onclick="showModalICU('output_icu')" style="cursor: pointer"><i--%>
+                                    <%--class="fa fa-plus"></i> Output</a></li>--%>
                             <li><a onclick="showModalICU('asuhan_keperawatan_icu')" style="cursor: pointer"><i class="fa fa-plus"></i> Rencana Asuhan Keperawatan</a></li>
                         </ul>
                     </div>
@@ -112,36 +112,36 @@
                                 <img id="btn_icu_keseimbangan_icu" class="hvr-grow" onclick="listInputan('keseimbangan_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
-                        <tr id="row_icu_injeksi_icu">
-                            <td>Injeksi ICU</td>
-                            <td width="20%" align="center">
-                                <img id="btn_icu_injeksi_icu" class="hvr-grow" onclick="listInputan('injeksi_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
-                            </td>
-                        </tr>
-                        <tr id="row_icu_oral_icu">
-                            <td>Oral</td>
-                            <td width="20%" align="center">
-                                <img id="btn_icu_oral_icu" class="hvr-grow" onclick="listInputan('oral_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
-                            </td>
-                        </tr>
-                        <tr id="row_icu_lain_icu">
-                            <td>Lain-Lain</td>
-                            <td width="20%" align="center">
-                                <img id="btn_icu_lain_icu" class="hvr-grow" onclick="listInputan('lain_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
-                            </td>
-                        </tr>
-                        <tr id="row_icu_intakea_icu">
-                            <td>Intakea ICU</td>
-                            <td width="20%" align="center">
-                                <img id="btn_icu_intakea_icu" class="hvr-grow" onclick="listInputan('intakea_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
-                            </td>
-                        </tr>
-                        <tr id="row_icu_output_icu">
-                            <td>Output ICU</td>
-                            <td width="20%" align="center">
-                                <img id="btn_icu_output_icu" class="hvr-grow" onclick="listInputan('output_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
-                            </td>
-                        </tr>
+                        <%--<tr id="row_icu_injeksi_icu">--%>
+                            <%--<td>Injeksi ICU</td>--%>
+                            <%--<td width="20%" align="center">--%>
+                                <%--<img id="btn_icu_injeksi_icu" class="hvr-grow" onclick="listInputan('injeksi_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">--%>
+                            <%--</td>--%>
+                        <%--</tr>--%>
+                        <%--<tr id="row_icu_oral_icu">--%>
+                            <%--<td>Oral</td>--%>
+                            <%--<td width="20%" align="center">--%>
+                                <%--<img id="btn_icu_oral_icu" class="hvr-grow" onclick="listInputan('oral_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">--%>
+                            <%--</td>--%>
+                        <%--</tr>--%>
+                        <%--<tr id="row_icu_lain_icu">--%>
+                            <%--<td>Lain-Lain</td>--%>
+                            <%--<td width="20%" align="center">--%>
+                                <%--<img id="btn_icu_lain_icu" class="hvr-grow" onclick="listInputan('lain_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">--%>
+                            <%--</td>--%>
+                        <%--</tr>--%>
+                        <%--<tr id="row_icu_intakea_icu">--%>
+                            <%--<td>Intakea ICU</td>--%>
+                            <%--<td width="20%" align="center">--%>
+                                <%--<img id="btn_icu_intakea_icu" class="hvr-grow" onclick="listInputan('intakea_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">--%>
+                            <%--</td>--%>
+                        <%--</tr>--%>
+                        <%--<tr id="row_icu_output_icu">--%>
+                            <%--<td>Output ICU</td>--%>
+                            <%--<td width="20%" align="center">--%>
+                                <%--<img id="btn_icu_output_icu" class="hvr-grow" onclick="listInputan('output_icu')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">--%>
+                            <%--</td>--%>
+                        <%--</tr>--%>
                         <tr id="row_icu_asuhan_keperawatan_icu">
                             <td>Rencana Asuhan Keperawatan</td>
                             <td width="20%" align="center">
@@ -823,7 +823,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-2 jarak">Systole</label>
+                            <label class="col-md-2 jarak">Sistole</label>
                             <div class="col-md-4">
                                 <select class="form-control select2" id="hemo3" style="width: 100%">
                                     <option value="">[Select One]</option>
@@ -907,15 +907,25 @@
                                 <select class="form-control select2" id="hemo6" style="width: 100%">
                                     <option value="">[Select One]</option>
                                     <option value="100">100</option>
+                                    <option value="95">95</option>
                                     <option value="90">90</option>
+                                    <option value="85">85</option>
                                     <option value="80">80</option>
+                                    <option value="75">75</option>
                                     <option value="70">70</option>
+                                    <option value="65">65</option>
                                     <option value="60">60</option>
+                                    <option value="55">55</option>
                                     <option value="50">50</option>
+                                    <option value="45">45</option>
                                     <option value="40">40</option>
+                                    <option value="35">35</option>
                                     <option value="30">30</option>
+                                    <option value="25">25</option>
                                     <option value="20">20</option>
+                                    <option value="15">15</option>
                                     <option value="10">10</option>
+                                    <option value="5">5</option>
                                     <option value="0">0</option>
                                 </select>
                             </div>
@@ -1089,34 +1099,13 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Waktu</label>
-                            <div class="col-md-9">
-                                <select class="form-control select2" id="res1" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="07:00">07:00</option>
-                                    <option value="08:00">08:00</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                    <option value="19:00">19:00</option>
-                                    <option value="20:00">20:00</option>
-                                    <option value="21:00">21:00</option>
-                                    <option value="22:00">22:00</option>
-                                    <option value="23:00">23:00</option>
-                                    <option value="24:00">24:00</option>
-                                    <option value="01:00">01:00</option>
-                                    <option value="02:00">02:00</option>
-                                    <option value="03:00">03:00</option>
-                                    <option value="04:00">04:00</option>
-                                    <option value="05:00">05:00</option>
-                                    <option value="06:00">06:00</option>
-                                </select>
+                            <div class="col-md-4">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="res1">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1241,91 +1230,97 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">O2</label>
                             <div class="col-md-3">
                                 <select class="form-control select2" id="res13" style="width: 100%">
                                     <option value="">[Select]</option>
                                     <option value="NK">NK</option>
                                     <option value="RM">RM</option>
                                     <option value="NRM">NRM</option>
+                                    <option value="T-Piece">T-Piece</option>
+                                    <option value="J-Rise">J-Rise</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res014">
-                            </div>
+                            <label class="col-md-3" style="margin-top: 7px">Tipe Ventilasi</label>
                             <div class="col-md-3">
                                 <select class="form-control select2" id="res14" style="width: 100%">
                                     <option value="">[Select]</option>
-                                    <option value="TPiece">TPiece</option>
-                                    <option value="JRise">JRise</option>
+                                    <option value="Pressure Control">Pressure Control</option>
+                                    <option value="Volume Control">Volume Control</option>
+                                    <option value="SIMV">SIMV</option>
+                                    <option value="NIV">NIV</option>
+                                    <option value="CPAP">CPAP</option>
                                 </select>
-                            </div>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res15">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3 jarak">Tipe Ventilasi</label>
+                            <label class="col-md-3 jarak">PEEP</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res15">
+                            </div>
+                            <label class="col-md-3">Frekwensi/ Freweksi Total</label>
                             <div class="col-md-3">
                                 <input class="form-control jarak" type="number" id="res16">
-                            </div>
-                            <div class="col-md-3">
-                                <select class="form-control select2" id="res17" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="PEEP">PEEP</option>
-                                    <option value="CPAP">CPAP</option>
-                                    <option value="ET C02">ET C02</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res18">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3">Frekwensi/ Freweksi Total</label>
+                            <label class="col-md-3">TV (I) TV(E)</label>
                             <div class="col-md-3">
-                                <input class="form-control" type="number" id="res19">
+                                <input class="form-control" type="number" id="res17">
                             </div>
-                            <label class="col-md-3 jarak">TV (I) TV(E)</label>
+                            <label class="col-md-3 jarak">MV (I) MV (I)</label>
                             <div class="col-md-3">
-                                <input class="form-control" type="number" id="res20">
+                                <input class="form-control" type="number" id="res18">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3 jarak">MV (I) MV (I)</label>
+                            <label class="col-md-3 jarak">P-Support/P-ASB</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res19">
+                            </div>
+                            <label class="col-md-3 jarak">P-Inspirasi/P-Control</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res20">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">Triger</label>
                             <div class="col-md-3">
                                 <input class="form-control jarak" type="number" id="res21">
                             </div>
+                            <label class="col-md-3 jarak">Inspirasi Time</label>
                             <div class="col-md-3">
-                                <select class="form-control select2" id="res22" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="PSupport">PSupport</option>
-                                    <option value="PASB">PASB</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res23">
+                                <input class="form-control jarak" type="number" id="res22">
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
+                            <label class="col-md-3 jarak">Flow</label>
                             <div class="col-md-3">
-                                <select class="form-control select2" id="res24" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="PInspirasi">PInspirasi</option>
-                                    <option value="PControl">PControl</option>
-                                </select>
+                                <input class="form-control jarak" type="number" id="res23">
                             </div>
+                            <label class="col-md-3 jarak">FIO 2/Konsentrasi O2</label>
+                            <div class="col-md-3">
+                                <input class="form-control jarak" type="number" id="res24">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak">Ukuran ETT</label>
                             <div class="col-md-3">
                                 <input class="form-control jarak" type="number" id="res25">
                             </div>
-                            <label class="col-md-3 jarak">Triger</label>
+                            <label class="col-md-3 jarak">Kedalaman ETT</label>
                             <div class="col-md-3">
                                 <input class="form-control jarak" type="number" id="res26">
                             </div>
@@ -1333,49 +1328,20 @@
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-3 jarak">Inspirasi Time</label>
+                            <label class="col-md-3 jarak"> SPO2</label>
                             <div class="col-md-3">
                                 <input class="form-control jarak" type="number" id="res27">
                             </div>
-                            <label class="col-md-3 jarak">Flow</label>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res28">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <select class="form-control select2" id="res29" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="FIO 2">FIO 2</option>
-                                    <option value="Konsentrasi O2">Konsentrasi O2</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res30">
-                            </div>
-                            <div class="col-md-3">
-                                <select class="form-control select2" id="res31" style="width: 100%">
-                                    <option value="">[Select]</option>
-                                    <option value="Ukuran ETT">Ukuran ETT</option>
-                                    <option value="Kedalaman ETT">Kedalaman ETT</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res32">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <div class="form-group">
-                            <label class="col-md-3 jarak"> SPO2</label>
-                            <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res33">
-                            </div>
                             <label class="col-md-3 jarak"> Secret/ Sputum</label>
                             <div class="col-md-3">
-                                <input class="form-control jarak" type="number" id="res34">
+                                <select class="form-control select2" id="res28" style="width: 100%">
+                                    <option value="">[Select]</option>
+                                    <option value="Putih">Putih</option>
+                                    <option value="Merah">Merah</option>
+                                    <option value="Encer">Encer</option>
+                                    <option value="Kuning">Kuning</option>
+                                    <option value="Kental">Kental</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -1412,33 +1378,12 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Waktu</label>
                             <div class="col-md-5">
-                                <select class="form-control select2 " id="waktu_keseimbangan_icu" style="width: 100%">
-                                    <option value="">[Select One]</option>
-                                    <option value="07:00">07:00</option>
-                                    <option value="08:00">08:00</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                    <option value="19:00">19:00</option>
-                                    <option value="20:00">20:00</option>
-                                    <option value="21:00">21:00</option>
-                                    <option value="22:00">22:00</option>
-                                    <option value="23:00">23:00</option>
-                                    <option value="24:00">24:00</option>
-                                    <option value="01:00">01:00</option>
-                                    <option value="02:00">02:00</option>
-                                    <option value="03:00">03:00</option>
-                                    <option value="04:00">04:00</option>
-                                    <option value="05:00">05:00</option>
-                                    <option value="06:00">06:00</option>
-                                </select>
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input class="form-control jam" id="waktu_keseimbangan_icu">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1447,168 +1392,176 @@
                             <label><b>I. Parenteral</b></label>
                         </div>
                     </div>
-                    <div class="row">
-                        <label class="col-md-3">Loading</label>
-                        <div class="col-md-5">
-                            <input class="form-control jenis_loading" placeholder="Jenis Loading">
+                    <input type="hidden" id="is_new_parenteral">
+                    <input type="hidden" id="is_new_obat">
+                    <input type="hidden" id="is_new_enteral">
+                    <input type="hidden" id="is_new_output">
+                    <div id="form-parenteral">
+                        <div class="row">
+                            <label class="col-md-3">Loading</label>
+                            <div class="col-md-5">
+                                <input class="form-control jenis_loading" placeholder="Jenis Loading">
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control nilai_loading" placeholder="Nilai Loading" type="number">
+                            </div>
+                            <div class="col-md-1">
+                                <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_loading', 'loading')" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <input class="form-control nilai_loading" placeholder="Nilai Loading" type="number">
+                        <div id="set_loading"></div>
+                        <div class="row jarak">
+                            <label class="col-md-3">Darah</label>
+                            <div class="col-md-5">
+                                <input class="form-control jenis_darah" placeholder="Jenis Darah">
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control nilai_darah" placeholder="Nilai Darah" type="number">
+                            </div>
+                            <div class="col-md-1">
+                                <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_darah', 'darah')" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                            </div>
                         </div>
-                        <div class="col-md-1">
-                            <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_loading', 'loading')" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                        <div id="set_darah"></div>
+                        <div class="row jarak" >
+                            <label class="col-md-3">Cairan</label>
+                            <div class="col-md-5">
+                                <input class="form-control jenis_cairan" placeholder="Jenis Cairan">
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control nilai_cairan" placeholder="Nilai Cairan" type="number">
+                            </div>
+                            <div class="col-md-1">
+                                <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_cairan', 'cairan')" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                            </div>
                         </div>
+                        <div id="set_cairan"></div>
                     </div>
-                    <div id="set_loading"></div>
-                    <div class="row jarak">
-                        <label class="col-md-3">Darah</label>
-                        <div class="col-md-5">
-                            <input class="form-control jenis_darah" placeholder="Jenis Darah">
-                        </div>
-                        <div class="col-md-3">
-                            <input class="form-control nilai_darah" placeholder="Nilai Darah" type="number">
-                        </div>
-                        <div class="col-md-1">
-                            <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_darah', 'darah')" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <div id="set_darah"></div>
-                    <div class="row jarak" >
-                        <label class="col-md-3">Cairan</label>
-                        <div class="col-md-5">
-                            <input class="form-control jenis_cairan" placeholder="Jenis Cairan">
-                        </div>
-                        <div class="col-md-3">
-                            <input class="form-control nilai_cairan" placeholder="Nilai Cairan" type="number">
-                        </div>
-                        <div class="col-md-1">
-                            <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_cairan', 'cairan')" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <div id="set_cairan"></div>
+                    <div id="h_parenteral"></div>
                     <hr class="garis">
                     <div class="row">
                         <div class="col-md-12">
                             <label><b>II. Obat-Obatan</b></label>
                         </div>
                     </div>
-                    <div class="row">
-                        <label class="col-md-3">Injeksi</label>
-                        <div class="col-md-5">
-                            <input class="form-control" placeholder="Jenis Injeksi">
-                        </div>
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <input class="form-control" id="nilai_injek_1" placeholder="N" style="font-size: 12px" oninput="cekNumber(this.id, this.value)">
-                                <div class="input-group-addon" style="font-size: 12px">x</div>
-                                <input class="form-control" placeholder="N" style="font-size: 12px">
+                    <div id="form-obat">
+                        <div class="row">
+                            <label class="col-md-3">Injeksi</label>
+                            <div class="col-md-4">
+                                <input class="form-control jenis_injeksi" placeholder="Jenis Injeksi">
+                            </div>
+                            <div class="col-md-2">
+                                <input class="form-control kali_injeksi" data-inputmask="'mask': ['9x9']"
+                                       data-mask="">
+                            </div>
+                            <div class="col-md-2">
+                                <input class="form-control nilai_injeksi" type="number" placeholder="Nilai">
+                            </div>
+                            <div class="col-md-1">
+                                <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_injeksi', 'injeksi')" class="btn btn-success"><i class="fa fa-plus"></i></button>
                             </div>
                         </div>
-                        <div class="col-md-1">
-                            <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_injeksi', 'injeksi')" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <div id="set_injeksi"></div>
-                    <div class="row jarak">
-                        <label class="col-md-3">Oral</label>
-                        <div class="col-md-5">
-                            <input class="form-control" placeholder="Jenis Oral">
-                        </div>
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <input class="form-control" placeholder="N" style="font-size: 12px">
-                                <div class="input-group-addon" style="font-size: 12px">x</div>
-                                <input class="form-control" placeholder="N" style="font-size: 12px">
+                        <div id="set_injeksi"></div>
+                        <div class="row jarak">
+                            <label class="col-md-3">Oral</label>
+                            <div class="col-md-4">
+                                <input class="form-control jenis_oral" placeholder="Jenis Oral">
+                            </div>
+                            <div class="col-md-2">
+                                <input class="form-control kali_oral" data-inputmask="'mask': ['9x9']"
+                                       data-mask="">
+                            </div>
+                            <div class="col-md-2">
+                                <input class="form-control nilai_oral" type="number" placeholder="Nilai">
+                            </div>
+                            <div class="col-md-1">
+                                <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_oral', 'oral')" class="btn btn-success"><i class="fa fa-plus"></i></button>
                             </div>
                         </div>
-                        <div class="col-md-1">
-                            <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_oral', 'oral')" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <div id="set_oral"></div>
-                    <div class="row jarak">
-                        <label class="col-md-3">Lainnya</label>
-                        <div class="col-md-5">
-                            <input class="form-control" placeholder="Jenis Lainnya">
-                        </div>
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <input class="form-control" placeholder="N" style="font-size: 12px">
-                                <div class="input-group-addon" style="font-size: 12px">x</div>
-                                <input class="form-control" placeholder="N" style="font-size: 12px">
+                        <div id="set_oral"></div>
+                        <div class="row jarak">
+                            <label class="col-md-3">Lainnya</label>
+                            <div class="col-md-4">
+                                <input class="form-control jenis_lainnya" placeholder="Jenis Lainnya">
+                            </div>
+                            <div class="col-md-2">
+                                <input class="form-control kali_lainnya" data-inputmask="'mask': ['9x9']"
+                                       data-mask="">
+                            </div>
+                            <div class="col-md-2">
+                                <input class="form-control nilai_lainnya" type="number" placeholder="Nilai">
+                            </div>
+                            <div class="col-md-1">
+                                <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_lainnya', 'lainnya')" class="btn btn-success"><i class="fa fa-plus"></i></button>
                             </div>
                         </div>
-                        <div class="col-md-1">
-                            <button style="margin-top:2px; margin-left: -20px" onclick="setCustomeJenis('set_lainnya', 'lainnya')" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                        </div>
+                        <div id="set_lainnya"></div>
                     </div>
-                    <div id="set_lainnya"></div>
+                    <div id="h_obat"></div>
                     <hr class="garis">
                     <div class="row">
                         <div class="col-md-12">
                             <label><b>III. Enteral</b></label>
                         </div>
                     </div>
-                    <div class="row">
-                        <label class="col-md-3">NGT/Oral</label>
-                        <div class="col-md-5">
-                            <input class="form-control" placeholder="jam/hari">
-                        </div>
-                        <div class="col-md-1">
-                            <button style="margin-top:2px; margin-left: -20px" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-3">Minum</label>
-                        <div class="col-md-5">
-                            <input class="form-control" placeholder="jam/hari">
-                        </div>
-                        <div class="col-md-1">
-                            <button style="margin-top:2px; margin-left: -20px" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                    <div id="form-enteral">
+                        <div class="row">
+                            <label class="col-md-3">NGT/Oral</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="ngt" type="number">
+                            </div>
+                            <label class="col-md-2">Minum</label>
+                            <div class="col-md-3">
+                                <input class="form-control" id="minum" type="number">
+                            </div>
                         </div>
                     </div>
+                    <div id="h_enteral"></div>
                     <hr class="garis">
                     <div class="row">
                         <div class="col-md-12">
                             <label><b>IV. Output</b></label>
                         </div>
                     </div>
-                    <div class="row">
-                        <label class="col-md-3">Drain 1</label>
-                        <div class="col-md-3">
-                            <input class="form-control" type="number">
+                    <div id="form-output">
+                        <div class="row">
+                            <label class="col-md-3">Drain 1</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="drain1">
+                            </div>
+                            <label class="col-md-2">Drain 2</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="drain2">
+                            </div>
                         </div>
-                        <label class="col-md-2">Drain 2</label>
-                        <div class="col-md-3">
-                            <input class="form-control" type="number">
+                        <div class="row jarak">
+                            <label class="col-md-3">Urin</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="urin">
+                            </div>
+                            <label class="col-md-2">Muntah</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="muntah">
+                            </div>
+                        </div>
+                        <div class="row jarak">
+                            <label class="col-md-3">BAB</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="bab">
+                            </div>
+                            <label class="col-md-2">IWL</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="iwl">
+                            </div>
+                        </div>
+                        <div class="row jarak">
+                            <label class="col-md-3">Stoma</label>
+                            <div class="col-md-3">
+                                <input class="form-control" type="number" id="stoma">
+                            </div>
                         </div>
                     </div>
-                    <div class="row jarak">
-                        <label class="col-md-3">Urin</label>
-                        <div class="col-md-3">
-                            <input class="form-control" type="number">
-                        </div>
-                        <label class="col-md-2">Muntah</label>
-                        <div class="col-md-3">
-                            <input class="form-control" type="number">
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-3">BAB</label>
-                        <div class="col-md-3">
-                            <input class="form-control" type="number">
-                        </div>
-                        <label class="col-md-2">IWL</label>
-                        <div class="col-md-3">
-                            <input class="form-control" type="number">
-                        </div>
-                    </div>
-                    <div class="row jarak">
-                        <label class="col-md-3">Stoma</label>
-                        <div class="col-md-3">
-                            <input class="form-control" type="number">
-                        </div>
-                    </div>
+                    <div id="h_output"></div>
                     <%--<div id="select_isi"></div>--%>
                     <%--<div id="resus"></div>--%>
                     <%--<div id="darah"></div>--%>
@@ -2066,6 +2019,46 @@
                     Save
                 </button>
                 <button id="load_icu_asuhan_keperawatan_icu" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-icu-edit-obat">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Edit Obat-obatan
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_icu_edit_obat">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_icu_edit_obat"></p>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <label class="col-md-offset-2 col-md-2">Nilai</label>
+                        <div class="col-md-6">
+                            <input class="form-control" id="obat_nilai" type="number">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_icu_edit_obat" class="btn btn-success pull-right"
+                        onclick="saveEditObat()"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_icu_edit_obat" style="display: none; cursor: no-drop" type="button"
                         class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>

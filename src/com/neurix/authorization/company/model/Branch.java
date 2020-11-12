@@ -52,6 +52,15 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
 
     private String lat;
     private String lon;
+    private String notLike;
+
+    public String getNotLike() {
+        return notLike;
+    }
+
+    public void setNotLike(String notLike) {
+        this.notLike = notLike;
+    }
 
     public String getLat() {
         return lat;

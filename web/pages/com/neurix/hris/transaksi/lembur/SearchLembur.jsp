@@ -240,7 +240,7 @@
                                                         </sj:dialog>
 
                                                         <sj:dialog id="dialog_menu_lembur" openTopics="showDialogMenu" modal="true"
-                                                                   height="670" width="700" autoOpen="false"
+                                                                   height="670" width="900" autoOpen="false"
                                                                    title="Lembur">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>

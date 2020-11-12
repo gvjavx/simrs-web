@@ -729,7 +729,46 @@ update im_hris_pegawai set peralihan_sankhus=0;
 update im_hris_pegawai set peralihan_gapok=0;
 update im_hris_pegawai set peralihan_tunjangan=0;
 
-ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkk type numeric(5,4);
-ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkm type numeric(5,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkk type numeric(10,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkm type numeric(10,4);
 ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jpk_pers type numeric(10,4);
 ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN iur_pers type numeric(10,4);
+
+update im_hris_pegawai set jumlah_anak=0 where jumlah_anak is null;
+
+
+-- =====================================================================================================================
+
+ALTER TABLE it_hris_mesin_absensi_detail ADD COLUMN branch_id character varying(5);
+update it_hris_mesin_absensi_detail set branch_id='KP';
+update im_mesin_absensi set mesin_sn='66686019380589',branch_id='KP';
+
+CREATE TABLE public.im_akun_setting_report_arus_kas
+(
+    setting_report_arus_kas_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    kode_rekening_alias character varying(15) COLLATE pg_catalog."default",
+    nama_kode_rekening_alias character varying(100) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    flag_label character varying(1) COLLATE pg_catalog."default",
+    CONSTRAINT im_akun_setting_report_arus_kas_pkey PRIMARY KEY (setting_report_arus_kas_id)
+);
+
+CREATE TABLE public.im_akun_setting_report_arus_kas_detail
+(
+    setting_report_arus_kas_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    setting_report_arus_kas_id character varying(20) COLLATE pg_catalog."default",
+    rekening_id character varying(15) COLLATE pg_catalog."default",
+    operator character varying(1) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    CONSTRAINT im_akun_setting_report_arus_kas_detail_pkey PRIMARY KEY (setting_report_arus_kas_detail_id)
+);

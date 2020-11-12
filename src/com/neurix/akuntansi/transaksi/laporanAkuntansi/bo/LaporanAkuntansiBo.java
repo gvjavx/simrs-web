@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.transaksi.laporanAkuntansi.bo;
 
+import com.neurix.akuntansi.master.settingReportArusKas.model.AkunSettingReportKeuanganArusKas;
 import com.neurix.akuntansi.transaksi.budgeting.model.BudgettingDTO;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.*;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol;
@@ -18,7 +19,7 @@ public interface LaporanAkuntansiBo extends BaseMasterBo<LaporanAkuntansi>{
 
     List<PendapatanDTO> getPendapatan(String reportId, String unit, String periode, String tipeLaporan) throws GeneralBOException;
 
-    List<ArusKasDTO> getArusKas(String reportId, String unit, String periode, String tipeLaporan) throws GeneralBOException;
+    List<AkunSettingReportKeuanganArusKas> getArusKas(String reportId, String unit, String periode) throws GeneralBOException;
 
     List<AkunSettingReportKeuanganKonsol> getLaporanAkuntansiKonsol(String periode, String branchId1, String branchId2, String branchId3, String branchId4, String branchId5, String branchId6, String branchId7, String branchIdAll);
 

@@ -111,7 +111,7 @@ function dataForm(jenis){
     data.push({
         'jenis':'kala2',
         'parameter': '16. Gawat Janin',
-        'jawaban':'Ya|i|Tidak|Pemantauan DJJ setiap 5-10 menit selama kala II',
+        'jawaban':'Ya|Tidak|Pemantauan DJJ setiap 5-10 menit selama kala II',
         'class':'',
         'keterangan':'r'
     });

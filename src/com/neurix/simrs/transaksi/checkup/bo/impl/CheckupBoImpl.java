@@ -16,9 +16,11 @@ import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.labdetail.dao.LabDetailDao;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
 import com.neurix.simrs.master.labdetail.model.LabDetail;
+import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.dao.RekamMedicLamaDao;
 import com.neurix.simrs.master.pasien.dao.UploadRekamMedicLamaDao;
 import com.neurix.simrs.master.pasien.model.ImSImrsRekamMedicLamaEntity;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.ImSimrsUploadRekamMedicLamaEntity;
 import com.neurix.simrs.master.pasien.model.RekamMedicLama;
 import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;
@@ -169,6 +171,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private PelayananPaketDao pelayananPaketDao;
     private TempatTidurDao tempatTidurDao;
     private RawatInapDao rawatInapDao;
+    private PasienDao pasienDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -393,10 +396,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     public void saveAdd(HeaderCheckup bean) throws GeneralBOException {
         logger.info("[CheckupBoImpl.saveAdd] Start >>>>>>>");
         if (bean != null) {
-
             String id = "";
-            //id = getNextHeaderId();
-
             ItSimrsHeaderChekupEntity headerEntity = new ItSimrsHeaderChekupEntity();
             headerEntity.setNoCheckup(bean.getNoCheckup());
             headerEntity.setIdPasien(bean.getIdPasien());
@@ -427,9 +427,13 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setHubunganKeluarga(bean.getHubunganKeluarga() != null && !"".equalsIgnoreCase(bean.getHubunganKeluarga()) ? bean.getHubunganKeluarga() : null);
             headerEntity.setBerat(bean.getBerat());
             headerEntity.setTinggi(bean.getTinggi());
+            headerEntity.setPendidikan(bean.getPendidikan());
+            headerEntity.setStatusPerkawinan(bean.getStatusPerkawinan());
+            headerEntity.setKunjunganPoli(bean.getKunjunganPoli());
 
             try {
                 headerCheckupDao.addAndSave(headerEntity);
+                updateDataPasien(headerEntity);
             } catch (HibernateException e) {
                 logger.error("[CheckupBoImpl.saveAdd] Error When Saving data header checkup" + e.getMessage());
                 throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When Saving data header checkup");
@@ -719,6 +723,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     periksaLab.setCreatedDate(bean.getCreatedDate());
                     periksaLab.setLastUpdateWho(bean.getLastUpdateWho());
                     periksaLab.setLastUpdate(bean.getLastUpdate());
+                    periksaLab.setIdKategoriLab(headerCheckupDao.getIdKategoriLab(bean.getIdLab()));
                     periksaLab.setKeterangan("just_lab");
                     saveOrderLab(periksaLab);
                 }
@@ -734,6 +739,40 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 throw new GeneralBOException("[CheckupBoImpl.saveAdd] ID Pelayanan tidak ditemukan...!");
             }
             logger.info("[CheckupBoImpl.saveAdd] End <<<<<<<");
+        }
+    }
+
+    public void updateDataPasien(ItSimrsHeaderChekupEntity bean){
+        ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
+        try {
+            pasienEntity = pasienDao.getById("idPasien", bean.getIdPasien());
+        }catch (HibernateException e){
+            logger.error("[CheckupBoImpl.updateDataPasien] Error when searching data pasien", e);
+            throw new GeneralBOException(" Error when searching data pasien " + e.getMessage());
+        }
+        if(pasienEntity != null){
+            pasienEntity.setNama(bean.getNama());
+            pasienEntity.setJenisKelamin(bean.getJenisKelamin());
+            pasienEntity.setNoKtp(bean.getNoKtp());
+            pasienEntity.setTempatLahir(bean.getTempatLahir());
+            pasienEntity.setTglLahir(bean.getTglLahir());
+            pasienEntity.setDesaId(bean.getDesaId());
+            pasienEntity.setJalan(bean.getJalan());
+            pasienEntity.setSuku(bean.getSuku());
+            pasienEntity.setAgama(bean.getAgama());
+            pasienEntity.setProfesi(bean.getProfesi());
+            pasienEntity.setNoTelp(bean.getNoTelp());
+            pasienEntity.setPendidikan(bean.getPendidikan());
+            pasienEntity.setStatusPerkawinan(bean.getStatusPerkawinan());
+            pasienEntity.setAction("U");
+            pasienEntity.setLastUpdate(bean.getLastUpdate());
+            pasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            try {
+                pasienDao.updateAndSave(pasienEntity);
+            } catch (HibernateException e) {
+                logger.error("[CheckupBoImpl.updateDataPasien] Error when update data pasien", e);
+                throw new GeneralBOException(" Error when update data pasien " + e.getMessage());
+            }
         }
     }
 
@@ -753,6 +792,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
             entity.setKeterangan(bean.getKeterangan());
+            entity.setIdKategoriLab(bean.getIdKategoriLab());
 
             try {
                 periksaLabDao.addAndSave(entity);
@@ -2928,6 +2968,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerEntity.setHubunganKeluarga(bean.getHubunganKeluarga() != null && !"".equalsIgnoreCase(bean.getHubunganKeluarga()) ? bean.getHubunganKeluarga() : null);
             headerEntity.setBerat(bean.getBerat());
             headerEntity.setTinggi(bean.getTinggi());
+            headerEntity.setKunjunganPoli(bean.getKunjunganPoli());
 
             try {
                 headerCheckupDao.addAndSave(headerEntity);
@@ -2967,6 +3008,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setCreatedWho(bean.getCreatedWho());
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                detailCheckupEntity.setFlagTppri("Y");
 
                 if ("paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     detailCheckupEntity.setStatusPeriksa("1");
@@ -3180,6 +3222,16 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             logger.info("[CheckupBoImpl.saveAdd] End <<<<<<<");
         }
         return response;
+    }
+
+    @Override
+    public List<HeaderCheckup> cekKunjunganPoliPasien(String idPasien, String idPelayanan) throws GeneralBOException {
+        return headerCheckupDao.cekKunjunganPoliPasien(idPasien, idPelayanan);
+    }
+
+    @Override
+    public List<HeaderCheckup> daftarPasienOnline(String branchId, String idPelayanan) throws GeneralBOException {
+        return headerCheckupDao.getDaftarPasienOnline(branchId, idPelayanan);
     }
 
     private CrudResponse saveRawatInap(RawatInap bean) {
@@ -3633,5 +3685,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setRawatInapDao(RawatInapDao rawatInapDao) {
         this.rawatInapDao = rawatInapDao;
+    }
+
+    public void setPasienDao(PasienDao pasienDao) {
+        this.pasienDao = pasienDao;
     }
 }

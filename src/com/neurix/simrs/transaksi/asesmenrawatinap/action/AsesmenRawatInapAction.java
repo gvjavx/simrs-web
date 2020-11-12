@@ -329,6 +329,39 @@ public class AsesmenRawatInapAction {
         return response;
     }
 
+    public List<AsesmenRawatInap> getListAsesmenRI(String noCheckup, String jenis) {
+        List<AsesmenRawatInap> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenRawatInapBo asesmenRawatInapBo = (AsesmenRawatInapBo) ctx.getBean("asesmenRawatInapBoProxy");
+        if (!"".equalsIgnoreCase(noCheckup) && !"".equalsIgnoreCase(jenis)) {
+            try {
+                list = asesmenRawatInapBo.getListRI(noCheckup, jenis);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return list;
+    }
+
+    public CrudResponse saveAsesmenRI(String id, String jawaban) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenRawatInapBo asesmenRawatInapBo = (AsesmenRawatInapBo) ctx.getBean("asesmenRawatInapBoProxy");
+        if (!"".equalsIgnoreCase(id) && !"".equalsIgnoreCase(jawaban)) {
+            try {
+                AsesmenRawatInap asesmenRawatInap = new AsesmenRawatInap();
+                asesmenRawatInap.setIdAsesmenKeperawatanRawatInap(id);
+                asesmenRawatInap.setJawaban(jawaban);
+                asesmenRawatInap.setLastUpdate(time);
+                asesmenRawatInap.setLastUpdateWho(userLogin);
+                response = asesmenRawatInapBo.saveEdit(asesmenRawatInap);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

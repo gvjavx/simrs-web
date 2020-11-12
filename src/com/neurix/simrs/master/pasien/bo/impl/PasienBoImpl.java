@@ -156,6 +156,8 @@ public class PasienBoImpl implements PasienBo {
             pasien.setLastUpdateWho(data.getLastUpdateWho());
             pasien.setEmail(data.getEmail());
             pasien.setPassword(data.getPassword());
+            pasien.setPendidikan(data.getPendidikan());
+            pasien.setStatusPerkawinan(data.getStatusPerkawinan());
 
             if (pasien.getDesaId() != null) {
                 List<Object[]> objs = provinsiDao.getListAlamatByDesaId(pasien.getDesaId().toString());
@@ -216,7 +218,6 @@ public class PasienBoImpl implements PasienBo {
 
             try {
                 date = formater.parse(pasien.getTglLahir());
-//                tglLahir = formater.format(date);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -239,6 +240,9 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setProfesi(pasien.getProfesi());
             pasienEntity.setNoTelp(pasien.getNoTelp());
             pasienEntity.setUrlKtp(pasien.getUrlKtp());
+            pasienEntity.setPendidikan(pasien.getPendidikan());
+            pasienEntity.setStatusPerkawinan(pasien.getStatusPerkawinan());
+
             pasienEntity.setFlag("Y");
             pasienEntity.setAction("C");
             pasienEntity.setCreatedDate(pasien.getCreatedDate());
@@ -283,6 +287,9 @@ public class PasienBoImpl implements PasienBo {
                 pasienEntity.setAgama(pasien.getAgama());
                 pasienEntity.setProfesi(pasien.getProfesi());
                 pasienEntity.setNoTelp(pasien.getNoTelp());
+                pasienEntity.setPendidikan(pasien.getPendidikan());
+                pasienEntity.setStatusPerkawinan(pasien.getStatusPerkawinan());
+
                 if (pasien.getUrlKtp() != null && !"".equalsIgnoreCase(pasien.getUrlKtp())) {
                     pasienEntity.setUrlKtp(pasien.getUrlKtp());
                 }
@@ -777,8 +784,8 @@ public class PasienBoImpl implements PasienBo {
     }
 
     @Override
-    public void saveUploadRekamMedicLama(ImSImrsRekamMedicLamaEntity rekamMedicLama, List<ImSimrsUploadRekamMedicLamaEntity> uploads) throws GeneralBOException {
-
+    public CrudResponse saveUploadRekamMedicLama(ImSImrsRekamMedicLamaEntity rekamMedicLama, List<ImSimrsUploadRekamMedicLamaEntity> uploads) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
         if (rekamMedicLama.getIdPasien() != null && !"".equalsIgnoreCase(rekamMedicLama.getIdPasien())) {
 
             ImSImrsRekamMedicLamaEntity rekamMedicLamaEntity = new ImSImrsRekamMedicLamaEntity();
@@ -794,13 +801,19 @@ public class PasienBoImpl implements PasienBo {
 
             try {
                 rekamMedicLamaDao.addAndSave(rekamMedicLamaEntity);
+                response.setStatus("success");
+                response.setMsg("Oke");
             } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
                 logger.error("[PasienBoImpl.saveUploadRekamMedicLama] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving data, please info to your admin..." + e.getMessage());
+
             }
 
             if (uploads.size() > 0) {
                 for (ImSimrsUploadRekamMedicLamaEntity uploadEntity : uploads) {
+                    uploadEntity.setId("URM"+uploadRekamMedicLamaDao.getNextSeq());
                     uploadEntity.setHeadId(rekamMedicLamaEntity.getId());
                     uploadEntity.setFlag(rekamMedicLama.getFlag());
                     uploadEntity.setAction(rekamMedicLama.getAction());
@@ -811,13 +824,18 @@ public class PasienBoImpl implements PasienBo {
 
                     try {
                         uploadRekamMedicLamaDao.addAndSave(uploadEntity);
+                        response.setStatus("success");
+                        response.setMsg("Oke");
                     } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
                         logger.error("[PasienBoImpl.saveUploadRekamMedicLama] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving data, please info to your admin..." + e.getMessage());
                     }
                 }
             }
         }
+        return response;
     }
 
     private String dateFormater(String type) {
@@ -879,6 +897,8 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setLastUpdate(pasien.getLastUpdate());
             pasienEntity.setCreatedWho(pasien.getCreatedWho());
             pasienEntity.setLastUpdateWho(pasien.getLastUpdateWho());
+            pasienEntity.setStatusPerkawinan(pasien.getStatusPerkawinan());
+            pasienEntity.setPendidikan(pasien.getPendidikan());
 
             try {
 
@@ -913,6 +933,8 @@ public class PasienBoImpl implements PasienBo {
                 response.setProfesi(pasienEntity.getProfesi());
                 response.setUrlKtp(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_KTP_PASIEN + pasienEntity.getUrlKtp());
                 response.setImgKtp(pasienEntity.getUrlKtp());
+                response.setStatusPerkawinan(pasienEntity.getStatusPerkawinan());
+                response.setPendidikan(pasienEntity.getPendidikan());
                 response.setStatus("success");
                 response.setMsg("Berhasil");
 

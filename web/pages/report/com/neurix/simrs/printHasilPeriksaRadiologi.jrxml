@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printHasilPeriksaLab" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.7715610000000104"/>
-	<property name="ireport.x" value="24"/>
-	<property name="ireport.y" value="431"/>
+	<property name="ireport.zoom" value="1.771561000000011"/>
+	<property name="ireport.x" value="50"/>
+	<property name="ireport.y" value="177"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -99,7 +99,7 @@ AND b.flag = 'Y']]>
 			<componentElement>
 				<reportElement x="285" y="6" width="96" height="32" uuid="ce8fd79f-0e9e-48ba-a31d-1b3ede905f08"/>
 				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
-					<jr:codeExpression><![CDATA[$P{reportParams.idPasien}]]></jr:codeExpression>
+					<jr:codeExpression><![CDATA[$P{reportParams.idPeriksaLab}]]></jr:codeExpression>
 				</jr:Code128>
 			</componentElement>
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
@@ -312,7 +312,7 @@ AND b.flag = 'Y']]>
 	<columnHeader>
 		<band height="20">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="145" height="20" backcolor="#FFFFFF" uuid="ae83128e-b4a4-40b7-a796-75db35b7ac3d"/>
+				<reportElement mode="Opaque" x="0" y="0" width="118" height="20" backcolor="#FFFFFF" uuid="ae83128e-b4a4-40b7-a796-75db35b7ac3d"/>
 				<box leftPadding="3">
 					<topPen lineStyle="Dashed"/>
 					<bottomPen lineStyle="Dashed"/>
@@ -323,7 +323,7 @@ AND b.flag = 'Y']]>
 				<text><![CDATA[Pemeriksaan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="145" y="0" width="236" height="20" backcolor="#FFFFFF" uuid="abdf2507-5adb-42ff-8771-15b4277ad4cd"/>
+				<reportElement mode="Opaque" x="118" y="0" width="188" height="20" backcolor="#FFFFFF" uuid="abdf2507-5adb-42ff-8771-15b4277ad4cd"/>
 				<box leftPadding="3">
 					<topPen lineStyle="Dashed"/>
 					<bottomPen lineStyle="Dashed"/>
@@ -333,12 +333,23 @@ AND b.flag = 'Y']]>
 				</textElement>
 				<text><![CDATA[Hasil]]></text>
 			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="306" y="0" width="75" height="20" backcolor="#FFFFFF" uuid="d199a9b5-2640-4139-9b2c-f8ad4034d9d3"/>
+				<box leftPadding="3">
+					<topPen lineStyle="Dashed"/>
+					<bottomPen lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kesan]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="145" height="15" uuid="5022a2b4-27b9-48f0-a8ca-4193ebebf49c"/>
+				<reportElement x="0" y="0" width="118" height="15" uuid="5022a2b4-27b9-48f0-a8ca-4193ebebf49c"/>
 				<box leftPadding="2">
 					<pen lineStyle="Dashed"/>
 					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -352,7 +363,7 @@ AND b.flag = 'Y']]>
 				<textFieldExpression><![CDATA[$F{nama_detail_periksa} == null ? '' : $F{nama_detail_periksa}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="145" y="0" width="236" height="15" uuid="685eaf89-a89d-41b7-aad3-8914812411dd"/>
+				<reportElement x="118" y="0" width="188" height="15" uuid="685eaf89-a89d-41b7-aad3-8914812411dd"/>
 				<box leftPadding="2">
 					<pen lineStyle="Dashed"/>
 					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
@@ -364,6 +375,20 @@ AND b.flag = 'Y']]>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{hasil} == null ? "" : $F{hasil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="306" y="0" width="75" height="15" uuid="97e55e9b-dfa0-4157-904a-810fb2c46ba5"/>
+				<box leftPadding="2">
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{keterangan_periksa} == null ? "" : $F{keterangan_periksa}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

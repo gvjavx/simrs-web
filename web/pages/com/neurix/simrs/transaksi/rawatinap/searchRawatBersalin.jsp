@@ -173,23 +173,9 @@
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
-                                        <s:if test='#row.idJenisPeriksa == "asuransi"'>
-                                        <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:if>
-                                                <s:elseif test='#row.idJenisPeriksa == "umum"'>
-                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='#row.idJenisPeriksa == "bpjs"'>
-                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='#row.idJenisPeriksa == "ptpn"'>
-                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:else>
-                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:else>
-                                                    <s:property value="jenisPeriksaPasien"></s:property>
-                                                </span>
+                                        <script>
+                                            document.write(changeJenisPasien('<s:property value="idJenisPeriksa"/>', '<s:property value="jenisPeriksaPasien"/>'));
+                                        </script>
                                     </td>
                                     <td align="center">
                                         <s:if test='#row.idJenisPeriksa == "umum"'>
@@ -203,7 +189,7 @@
                                                 </s:a>
                                             </s:if>
                                             <s:else>
-                                                <label class="label label-warning">Uang muka belum bayar</label>
+                                                <span class="span-warning">Uang muka belum bayar</span>
                                             </s:else>
                                         </s:if>
                                         <s:else>

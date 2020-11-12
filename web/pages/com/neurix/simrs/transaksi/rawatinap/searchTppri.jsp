@@ -251,11 +251,19 @@
                                     <td><s:property value="jenisPeriksaPasien"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <img id="t_<s:property value="idDetailCheckup"/>"
-                                             onclick="detail('<s:property value="noCheckup"/>','<s:property
-                                                     value="idDetailCheckup"/>','<s:property value="tindakLanjut"/>','<s:property value="keteranganSelesai"/>')" class="hvr-grow"
-                                             src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>"
-                                             style="cursor: pointer;">
+                                        <s:if test='#row.flagTppri == "Y"'>
+                                            <img id="t_<s:property value="idDetailCheckup"/>"
+                                                 onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow"
+                                                 src="<s:url value="/pages/images/icons8-print-25.png"/>"
+                                                 style="cursor: pointer;">
+                                        </s:if>
+                                        <s:else>
+                                            <img id="t_<s:property value="idDetailCheckup"/>"
+                                                 onclick="detail('<s:property value="noCheckup"/>','<s:property
+                                                         value="idDetailCheckup"/>','<s:property value="tindakLanjut"/>','<s:property value="keteranganSelesai"/>')" class="hvr-grow"
+                                                 src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>"
+                                                 style="cursor: pointer;">
+                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -546,17 +554,18 @@
                             </div>
                             <div class="form-group" style="display: none" id="form_no_bpjs">
                                 <label style="margin-top: 7px">No BPJS</label>
-                                <div class="input-group">
-                                    <input class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')">
-                                    <div class="input-group-addon" style="cursor: pointer"
-                                         onclick="cekBpjs(this.value)">
-                                        <i class="fa fa-search"></i> Check
-                                    </div>
-                                </div>
+                                <input type="number" class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')">
+                                <%--<div class="input-group">--%>
+                                    <%----%>
+                                    <%--<div class="input-group-addon" style="cursor: pointer"--%>
+                                         <%--onclick="cekBpjs(this.value)">--%>
+                                        <%--<i class="fa fa-search"></i> Check--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">NIK</label>
-                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')" type="number">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Nama</label>
@@ -572,7 +581,7 @@
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Tempat Lahir</label>
-                                <input class="form-control" id="add_tempat_lahir" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_tempat_lahir" oninput="$(this).css('border',''); setKotaKab(this.id)">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Tanggal Lahir</label>
@@ -580,8 +589,8 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control datepicker datemask" id="add_tanggal_lahir"
-                                           onchange="$(this).css('border','')">
+                                    <input class="form-control datepicker datemask" id="add_tanggal_lahir" readonly
+                                           onchange="$(this).css('border','')" style="cursor: pointer" placeholder="yyyy-mm-dd">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -658,7 +667,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Diagnosa</label>
                                 <input class="form-control" id="add_id_diagnosa"
-                                       oninput="showDiagnosa(this.id); $(this.id).css('border','')">
+                                       oninput="showDiagnosa(this.value, this.id); $(this.id).css('border','')">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Keterangan Diagnosa</label>
@@ -915,6 +924,10 @@
     var diagnosa = "";
     var idPasien = "";
     var tglLahir = "";
+
+    function printGelangPasien(noCheckup) {
+        window.open('printGelangPasien_rawatinap.action?id=' + noCheckup, '_blank');
+    }
 
     function convertRp(id, val) {
         $('#' + id).val(formatRupiahAtas2(val));
@@ -1328,6 +1341,7 @@
                         $('#info_dialog').dialog('open');
                         $('#modal-detail').modal('hide');
                         $('body').scrollTop(0);
+                        console.log(response);
                     } else {
                         $('#save_fin').show();
                         $('#load_fin').hide();
@@ -1671,7 +1685,6 @@
             'kamar': kamar,
             'id_diganosa': idDignosa,
             'ket_diagnosa': ketDiagnosa,
-            'img_rujukan': kelasKamar,
             'perujuk': perujuk,
             'no_rujukan': noRujukan,
             'ket_perujuk': ketRujukan,
@@ -1704,39 +1717,43 @@
         });
     }
 
-    function showDiagnosa(id) {
-        var menus, mapped;
-        $('#' + id).typeahead({
-            minLength: 3,
-            source: function (query, process) {
-                menus = [];
-                mapped = {};
+    function showDiagnosa(value, id) {
+        if(value != ''){
+            var menus, mapped;
+            $('#' + id).typeahead({
+                minLength: 3,
+                source: function (query, process) {
+                    menus = [];
+                    mapped = {};
 
-                var data = [];
-                dwr.engine.setAsync(false);
-                CheckupAction.getICD10(query, function (listdata) {
-                    data = listdata;
-                });
+                    var data = [];
+                    dwr.engine.setAsync(false);
+                    CheckupAction.getICD10(query, function (listdata) {
+                        data = listdata;
+                    });
 
-                $.each(data, function (i, item) {
-                    var labelItem = item.idDiagnosa + '-' + item.descOfDiagnosa;
-                    mapped[labelItem] = {
-                        id: item.idDiagnosa,
-                        label: labelItem,
-                        name: item.descOfDiagnosa
-                    };
-                    menus.push(labelItem);
-                });
+                    $.each(data, function (i, item) {
+                        var labelItem = item.idDiagnosa + '-' + item.descOfDiagnosa;
+                        mapped[labelItem] = {
+                            id: item.idDiagnosa,
+                            label: labelItem,
+                            name: item.descOfDiagnosa
+                        };
+                        menus.push(labelItem);
+                    });
 
-                process(menus);
-            },
-            updater: function (item) {
-                var selectedObj = mapped[item];
-                // insert to textarea diagnosa_ket
-                $("#add_keterangan_diagnosa").val(selectedObj.name);
-                return selectedObj.id;
-            }
-        });
+                    process(menus);
+                },
+                updater: function (item) {
+                    var selectedObj = mapped[item];
+                    // insert to textarea diagnosa_ket
+                    $("#add_keterangan_diagnosa").val(selectedObj.name);
+                    return selectedObj.id;
+                }
+            });
+        }else{
+            $('#add_keterangan_diagnosa').val('');
+        }
     }
 </script>
 

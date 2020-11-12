@@ -111,7 +111,7 @@ function saveMonHD(jenis, ket) {
             data.push({
                 'parameter': 'Scala Nyeri Paint',
                 'jawaban1': canv,
-                'is_ttd': 'Y',
+                'tipe': 'gambar',
                 'keterangan': jenis,
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
@@ -207,13 +207,13 @@ function saveMonHD(jenis, ket) {
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
             });
-            data.push({
-                'parameter': 'Punctie Arteri',
-                'jawaban1': 'HD Kateter: ' + va23,
-                'keterangan': jenis,
-                'jenis': 'monitoring_hd',
-                'id_detail_checkup': idDetailCheckup
-            });
+            // data.push({
+            //     'parameter': 'Punctie Arteri',
+            //     'jawaban1': 'HD Kateter: ' + va23,
+            //     'keterangan': jenis,
+            //     'jenis': 'monitoring_hd',
+            //     'id_detail_checkup': idDetailCheckup
+            // });
             data.push({
                 'parameter': 'Lokasi',
                 'jawaban1': va22,
@@ -393,8 +393,10 @@ function saveMonHD(jenis, ket) {
 
     if ("intervensi" == jenis) {
         var va1 = $('[name=inter1]:checked');
+        var va2 = $('[name=inter2]:checked');
         var tVa1 = "";
-        if (va1 != undefined) {
+        var tVa2 = "";
+        if (va1 && va2 != undefined) {
             $.each(va1, function (i, item) {
                 if (va1[i].checked) {
                     if (tVa1 != '') {
@@ -404,9 +406,27 @@ function saveMonHD(jenis, ket) {
                     }
                 }
             });
+            $.each(va2, function (i, item) {
+                if (va2[i].checked) {
+                    if (tVa2 != '') {
+                        tVa2 = tVa2 + '|' + va2[i].value;
+                    } else {
+                        tVa2 = va2[i].value;
+                    }
+                }
+            });
             data.push({
                 'parameter': 'Intervensi Keperawatan',
-                'jawaban1': tVa1,
+                'jawaban1': 'Mandiri',
+                'jawaban2': tVa1,
+                'keterangan': jenis,
+                'jenis': 'monitoring_hd',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': '',
+                'jawaban1': 'Kolaborasi',
+                'jawaban2': tVa2,
                 'keterangan': jenis,
                 'jenis': 'monitoring_hd',
                 'id_detail_checkup': idDetailCheckup
@@ -422,7 +442,7 @@ function saveMonHD(jenis, ket) {
         var va4 = $('#im4').val();
         var va5 = $('#im5').val();
         var va6 = "";
-        var va7 = $('[name=im7]:checked').val();
+        var va7 = "";
         var va8 = $('#im8').val();
         var va9 = $('#im9').val();
         var va10 = "";
@@ -451,18 +471,33 @@ function saveMonHD(jenis, ket) {
             }
         }
 
-        var tVa6 = $('[name=im6]:checked').val();
-        if(tVa6 != undefined){
-            if(tVa6 == "Na"){
-                if(ket611 && ket612 != ''){
-                    va6 = tVa6+ket611+', '+ket621;
+        var tVa6 = $('[name=im6]');
+        $.each(tVa6, function (i, item) {
+            if(item.checked){
+                var isi = "";
+                if(item.value == 'Na'){
+                    isi += item.value+ket611+', '+ket621;
+                }else{
+                    isi += item.value+', '+ket621;
                 }
-            }else{
-                if(ket621 != ''){
-                    va6 = tVa6+', '+ket621;
+                if(va6 != ''){
+                    va6 = va6 +', '+isi;
+                }else{
+                    va6 = isi;
                 }
             }
-        }
+        });
+
+        var tVa7 = $('[name=im7]');
+        $.each(tVa7, function (i, item) {
+            if(item.checked){
+                if(va7 != ''){
+                    va7 = va7 +', '+item.value;
+                }else{
+                    va7 = item.value;
+                }
+            }
+        });
 
         var tV10 = $('[name=im10]');
         $.each(tV10, function (i, item) {
@@ -475,8 +510,8 @@ function saveMonHD(jenis, ket) {
             }
         });
 
-        if(va1 && va2 && va3 && va4 && va5 && va6 && va8 && va9
-            && va10 && va15 && namaTerang != '' && !cekTtd && va7 != undefined){
+        if(va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9
+            && va10 && va15 && namaTerang != '' && !cekTtd){
             data.push({
                 'parameter': 'Resep HD',
                 'jawaban1': va1+', HD : '+va2+' jam, QB : '+va3+' ml/menit, QD : '+va4+' ml/menit, UF Gaol: '+va5+' ml',
@@ -507,7 +542,7 @@ function saveMonHD(jenis, ket) {
             });
             data.push({
                 'parameter': 'Dosis Awal',
-                'jawaban1': va9+ 'lu',
+                'jawaban1': va9+ ' lu',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -535,7 +570,7 @@ function saveMonHD(jenis, ket) {
                 'jenis': ket,
                 'nama_terang': namaTerang,
                 'sip': sip,
-                'is_ttd': 'Y',
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -590,7 +625,7 @@ function saveMonHD(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             var s = 'Subjective : '+va2;
-            var o = 'Objective : Tensi :'+tensi+' mmHg, Nadi : '+nadi+' x/menit, RR : '+rr+' x/menit, Suhu : '+suhu+' C, Keterangan' +object+'. ';
+            var o = 'Objective : Tensi :'+replaceUnderLine(tensi)+' mmHg, Nadi : '+nadi+' x/menit, RR : '+rr+' x/menit, Suhu : '+suhu+' C, Keterangan' +object+'. ';
             var a = 'Assement : '+va3+'. ';
             var p = 'Planning : '+va4+'. ';
             data.push({
@@ -638,7 +673,7 @@ function saveMonHD(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'nama_terang': nama1,
-                'is_ttd': 'Y',
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -648,7 +683,7 @@ function saveMonHD(jenis, ket) {
                 'jenis': ket,
                 'nama_terang': nama2,
                 'sip': sip2,
-                'is_ttd': 'Y',
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -658,7 +693,7 @@ function saveMonHD(jenis, ket) {
                 'jenis': ket,
                 'nama_terang': nama3,
                 'sip': sip3,
-                'is_ttd': 'Y',
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -709,7 +744,7 @@ function saveMonHD(jenis, ket) {
             });
             data.push({
                 'parameter': 'Tensi',
-                'jawaban1': va3 +' mmHg',
+                'jawaban1': replaceUnderLine(va3) +' mmHg',
                 'keterangan': jenis,
                 'jenis': 'asesmen_hd',
                 'id_detail_checkup': idDetailCheckup
@@ -845,7 +880,7 @@ function saveMonHD(jenis, ket) {
             data.push({
                 'parameter': 'TTD Dokter',
                 'jawaban1': ttdA,
-                'is_ttd': 'Y',
+                'tipe': 'ttd',
                 'keterangan': jenis,
                 'jenis': 'asesmen_hd',
                 'nama_terang': nama,
@@ -983,7 +1018,7 @@ function saveMonHD(jenis, ket) {
             data.push({
                 'parameter': 'Dengan ini menyatakan bahwa saya ' + nm1 + ' telah menerangkan hal-hal di atas secara benar dan jelas dan memberikan kesempatan untuk bertanya dan/atau berdiskusi',
                 'jawaban1': ttd1,
-                'is_ttd': 'Y',
+                'tipe': 'ttd',
                 'keterangan': jenis,
                 'jenis': 'tranfusi_hd',
                 'id_detail_checkup': idDetailCheckup
@@ -991,7 +1026,7 @@ function saveMonHD(jenis, ket) {
             data.push({
                 'parameter': 'Dengan ini menyatakan bahwa saya ' + nm2 + ' telah menerima informasi sebagimana di atas yang saya beri tanda/ paraf di kolom kanannya serta telah diberi kesempatan untuk bertanya/berdiskusi, dan telah memahaminya',
                 'jawaban1': ttd2,
-                'is_ttd': 'Y',
+                'tipe': 'ttd',
                 'keterangan': jenis,
                 'jenis': 'tranfusi_hd',
                 'id_detail_checkup': idDetailCheckup
@@ -1118,7 +1153,7 @@ function saveMonHD(jenis, ket) {
                 data.push({
                     'parameter': 'TTD Yang Menyatakan',
                     'jawaban1': ttdA,
-                    'is_ttd': 'Y',
+                    'tipe': 'ttd',
                     'keterangan': jenis,
                     'jenis': 'tranfusi_hd',
                     'id_detail_checkup': idDetailCheckup
@@ -1126,7 +1161,7 @@ function saveMonHD(jenis, ket) {
                 data.push({
                     'parameter': 'TTD Saksi',
                     'jawaban1': ttdB,
-                    'is_ttd': 'Y',
+                    'tipe': 'ttd',
                     'keterangan': jenis,
                     'jenis': 'tranfusi_hd',
                     'id_detail_checkup': idDetailCheckup
@@ -1134,7 +1169,7 @@ function saveMonHD(jenis, ket) {
                 data.push({
                     'parameter': 'TTD Perawat',
                     'jawaban1': ttdC,
-                    'is_ttd': 'Y',
+                    'tipe': 'ttd',
                     'keterangan': jenis,
                     'jenis': 'tranfusi_hd',
                     'id_detail_checkup': idDetailCheckup
@@ -1262,7 +1297,7 @@ function saveMonHD(jenis, ket) {
             data.push({
                 'parameter': 'Dengan ini menyatakan bahwa saya ' + nm1 + ' telah menerangkan hal-hal di atas secara benar dan jelas dan memberikan kesempatan untuk bertanya dan/atau berdiskusi',
                 'jawaban1': ttd1,
-                'is_ttd': 'Y',
+                'tipe': 'ttd',
                 'keterangan': jenis,
                 'jenis': 'persetujuan_hd',
                 'id_detail_checkup': idDetailCheckup
@@ -1270,7 +1305,7 @@ function saveMonHD(jenis, ket) {
             data.push({
                 'parameter': 'Dengan ini menyatakan bahwa saya ' + nm2 + ' telah menerima informasi sebagimana di atas yang saya beri tanda/ paraf di kolom kanannya serta telah diberi kesempatan untuk bertanya/berdiskusi, dan telah memahaminya',
                 'jawaban1': ttd2,
-                'is_ttd': 'Y',
+                'tipe': 'ttd',
                 'keterangan': jenis,
                 'jenis': 'persetujuan_hd',
                 'id_detail_checkup': idDetailCheckup
@@ -1399,7 +1434,7 @@ function saveMonHD(jenis, ket) {
                 data.push({
                     'parameter': 'TTD Yang Menyatakan',
                     'jawaban1': ttdA,
-                    'is_ttd': 'Y',
+                    'tipe': 'ttd',
                     'keterangan': jenis,
                     'jenis': 'persetujuan_hd',
                     'id_detail_checkup': idDetailCheckup
@@ -1407,7 +1442,7 @@ function saveMonHD(jenis, ket) {
                 data.push({
                     'parameter': 'TTD Saksi',
                     'jawaban1': ttdB,
-                    'is_ttd': 'Y',
+                    'tipe': 'ttd',
                     'keterangan': jenis,
                     'jenis': 'persetujuan_hd',
                     'id_detail_checkup': idDetailCheckup
@@ -1415,7 +1450,7 @@ function saveMonHD(jenis, ket) {
                 data.push({
                     'parameter': 'TTD Perawat',
                     'jawaban1': ttdC,
-                    'is_ttd': 'Y',
+                    'tipe': 'ttd',
                     'keterangan': jenis,
                     'jenis': 'persetujuan_hd',
                     'id_detail_checkup': idDetailCheckup
@@ -1593,7 +1628,7 @@ function saveMonHD(jenis, ket) {
             data.push({
                 'parameter': 'Tanda Tangan Dokter',
                 'jawaban1': ttdDok,
-                'is_ttd': 'Y',
+                'tipe': 'ttd',
                 'keterangan': jenis,
                 'jenis': 'hd_ttd_dokter',
                 'nama_terang': nama,
@@ -1692,11 +1727,243 @@ function saveMonHD(jenis, ket) {
             data.push({
                 'parameter': 'TTD Dokter',
                 'jawaban1': canv,
-                'is_ttd': 'Y',
+                'tipe': 'ttd',
                 'keterangan': jenis,
                 'jenis': 'perencanaan_hemodialisa',
                 'nama_terang': nama,
                 'sip':sip,
+                'id_detail_checkup': idDetailCheckup
+            });
+            cek = true;
+        }
+    }
+
+    if ("tindakan_medis" == jenis) {
+
+        var va1 = $('#hd1').val();
+        var va2 = $('#hd2').val();
+        var va3 = $('#hd3').val();
+        var va4 = $('#hd4').val();
+        var va5 = $('#hd5').val();
+        var va6 = $('#hd6').val();
+        var va7 = $('#hd7').val();
+        var va8 = $('#hd8').val();
+        var va9 = $('#hd9').val();
+        var va10 = $('#hd10').val();
+        var va11 = $('#hd11').val();
+
+        var persetujuan = $('#nama_tindakan_medis').val();
+        var parameter = $('[name=parameter]');
+        var tanda = $('[name=tanda]');
+
+        var ttd1 = document.getElementById("ttd1");
+        var ttd2 = document.getElementById("ttd2");
+        var ttd3 = document.getElementById("ttd3");
+        var ttd4 = document.getElementById("ttd4");
+        var ttd5 = document.getElementById("ttd5");
+
+        var nama1 = $('#nama_terang_ttd1').val();
+        var sip1 = $('#sip_ttd1').val();
+        var nama2 = $('#nama_terang_ttd2').val();
+        var nama3 = $('#nama_terang_ttd3').val();
+        var sip3 = $('#sip_ttd3').val();
+        var nama4 = $('#nama_terang_ttd4').val();
+        var nama5 = $('#nama_terang_ttd5').val();
+
+        var cekTtd1 = isCanvasBlank(ttd1);
+        var cekTtd2 = isCanvasBlank(ttd2);
+        var cekTtd3 = isCanvasBlank(ttd3);
+        var cekTtd4 = isCanvasBlank(ttd4);
+        var cekTtd5 = isCanvasBlank(ttd5);
+
+        if (va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
+
+            // var resplacePerse = persetujuan.replace("_", " ");
+            // var perse = convertSentenceCaseUp(resplacePerse);
+            data.push({
+                'parameter': 'pernyataan',
+                'jawaban1': 'Pemberian Informasi dan Persetujuan ' + persetujuan,
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'tipe': 'colspan',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Tanggal',
+                'jawaban1': va1,
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Dokter Penanggung Jawab Anestesi',
+                'jawaban1': va2,
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Pemberi Informasi',
+                'jawaban1': va3,
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Penerima Informasi',
+                'jawaban1': va4,
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            data.push({
+                'parameter': 'Jenis Informasi',
+                'jawaban1': 'Isi Informasi',
+                'jawaban2': 'Check Informasi',
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'tipe': 'bold',
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            $.each(parameter, function (i, item) {
+                var informasi = $('[name=informasi' + i + ']');
+                var info = "";
+                $.each(informasi, function (idx, itemx) {
+                    if (itemx.type == 'checkbox') {
+                        if (itemx.checked) {
+                            if (info != '') {
+                                info = info + ', ' + itemx.value;
+                            } else {
+                                info = itemx.value;
+                            }
+                        }
+                    }
+                    if (itemx.type == 'radio') {
+                        if (itemx.checked) {
+                            if (info != '') {
+                                info = info + ', ' + itemx.value;
+                            } else {
+                                info = itemx.value;
+                            }
+                        }
+                    }
+                    if (itemx.type == 'text') {
+                        if (itemx.value != '') {
+                            if (info != '') {
+                                info = info + ', ' + itemx.value;
+                            } else {
+                                info = itemx.value;
+                            }
+                        }
+                    }
+                    if (itemx.type == 'hidden') {
+                        if (itemx.value != '') {
+                            if (info != '') {
+                                info = info + ', ' + itemx.value;
+                            } else {
+                                info = itemx.value;
+                            }
+                        }
+                    }
+                });
+
+                var tdn = "";
+                if (tanda[i].checked) {
+                    tdn = tanda[i].value;
+                }
+
+                data.push({
+                    'parameter': item.value,
+                    'jawaban2': tdn,
+                    'jawaban1': info,
+                    'keterangan': ket,
+                    'jenis': persetujuan,
+                    'tipe': 'info',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            });
+
+
+            var canv1 = ttd1.toDataURL("image/png"),
+                canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+            var canv2 = ttd2.toDataURL("image/png"),
+                canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
+            var canv3 = ttd3.toDataURL("image/png"),
+                canv3 = canv3.replace(/^data:image\/(png|jpg);base64,/, "");
+            var canv4 = ttd4.toDataURL("image/png"),
+                canv4 = canv4.replace(/^data:image\/(png|jpg);base64,/, "");
+            var canv5 = ttd5.toDataURL("image/png"),
+                canv5 = canv5.replace(/^data:image\/(png|jpg);base64,/, "");
+
+            data.push({
+                'parameter': 'Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatakan bertanya dan atau diskusi kepada pasien dan/atau keluarganya sedemikian rupa sehingga telah memahaminya',
+                'jawaban1': canv1,
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'tipe': 'ttd',
+                'nama_terang':nama1,
+                'sip':sip1,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas dan telah memahaminya',
+                'jawaban1': canv2,
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'tipe': 'ttd',
+                'nama_terang':nama2,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'pernyataan',
+                'jawaban1': 'Persetujuan Tindakan Medis',
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'tipe': 'colspan',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'penyataan',
+                'jawaban1': 'Yang bertanda tangan dibawah ini, Saya ' + va5 + ' ' +
+                    'tanggal lahir ' + va6 + ', ' + va7 + ' dengan ini menyatakan persetujuan untuk dilakukan tindakan ' + persetujuan + ' ' +
+                    'terhadap pasien Bernama ' + va9 + ' tanggal lahir ' + va10 + ', Alamat ' + va11 + '.' +
+                    'Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti diatas ' +
+                    'kepada saya termasuk resiko dan komplikasi yang timbul ' +
+                    'Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti, maka keberhasilan tindakan ' +
+                    'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal ' + converterDate(new Date) + ', Jam ' + converterTime(new Date()),
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'tipe': 'colspan',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'TTD yang menyatakan',
+                'jawaban1': canv3,
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'tipe': 'ttd',
+                'nama_terang': nama3,
+                'sip': sip3,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Saksi I',
+                'jawaban1': canv4,
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'tipe': 'ttd',
+                'nama_terang':nama4,
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'Saksi II',
+                'jawaban1': canv5,
+                'keterangan': ket,
+                'jenis': persetujuan,
+                'tipe': 'ttd',
+                'nama_terang':nama5,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1756,24 +2023,45 @@ function detailMonHD(jenis) {
                     if (item.jawaban2 != null) {
                         jwb2 = item.jawaban2;
                     }
-                    if ("Y" == item.isTtd) {
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + jwb + '" style="width: 100px">' +
-                            '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
-                            '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
-                            '</td>' +
-                            '</tr>';
-                    } else if ("intervensi" == item.keterangan || "diagnosa" == item.keterangan) {
+                    if ("ttd" == item.tipe) {
+                        if("tindakan_medis_hd" == item.keterangan){
+                            body += '<tr>' +
+                                '<td colspan="2">' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + item.jawaban1 + '" style="height: 100px">' + '</td>' +
+                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                '</tr>';
+                        }else{
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + jwb + '" style="width: 100px">' +
+                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                '</td>' +
+                                '</tr>';
+                        }
+                    } else if ("intervensi" == item.keterangan || "diagnosa" == item.keterangan || "Dosis Maintenance" == item.parameter) {
                         var li = "";
                         var isi = jwb.split("|");
-                        $.each(isi, function (i, item) {
-                            li += '<li>' + item + '</li>';
-                        });
-                        body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
-                            '</tr>';
+                        if("intervensi" == item.keterangan){
+                            var jaw2 = jwb2.split("|");
+                            $.each(jaw2, function (i, item) {
+                                li += '<li>' + item + '</li>';
+                            });
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + jwb + '</td>' +
+                                '<td>' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
+                                '</tr>';
+                        }else{
+                            $.each(isi, function (i, item) {
+                                li += '<li>' + item + '</li>';
+                            });
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
+                                '</tr>';
+                        }
                     } else if ("resiko_jatuh" == item.keterangan) {
                         if (item.skor != null) {
                             totalSkor = parseInt(totalSkor) + parseInt(item.skor);
@@ -1817,11 +2105,39 @@ function detailMonHD(jenis) {
                                 '<td>' + jwb + '</td>' +
                                 '</tr>';
                         }
-                    } else if ("Scala Nyeri Paint" == item.parameter) {
+                    } else if ("gambar" == item.tipe) {
                         body += '<tr>' +
                             '<td>' + item.parameter + '</td>' +
                             '<td>' + '<img src="' + jwb + '" style="width: 100px">' + '</td>' +
                             '</tr>';
+                    } else if("tindakan_medis_hd" == item.keterangan){
+                        if ("colspan" == item.tipe) {
+                            body += '<tr>' +
+                                '<td colspan="3">' + item.jawaban1 + '</td>' +
+                                '</tr>';
+                        } else if ("info" == item.tipe) {
+                            body += '<tr>' +
+                                '<td width="25%">' + item.parameter + '</td>' +
+                                '<td >' + item.jawaban1 + '</td>' +
+                                '<td width="20%" align="center">' + cekIcons(item.jawaban2) + '</td>' +
+                                '</tr>';
+                        } else if ("ttd" == item.tipe) {
+                            body += '<tr>' +
+                                '<td colspan="2">' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
+                                '</tr>';
+                        } else if ("bold" == item.tipe) {
+                            body += '<tr style="font-weight: bold">' +
+                                '<td width="25%">' + item.parameter + '</td>' +
+                                '<td >' + item.jawaban1 + '</td>' +
+                                '<td width="20%" align="center">' + item.jawaban2 + '</td>' +
+                                '</tr>';
+                        }else {
+                            body += '<tr>' +
+                                '<td width="30%">' + item.parameter + '</td>' +
+                                '<td colspan="2">' + item.jawaban1 + '</td>' +
+                                '</tr>';
+                        }
                     } else {
                         body += '<tr>' +
                             '<td width="40%">' + item.parameter + '</td>' +
@@ -1998,7 +2314,7 @@ function saveMonTransfusiDarah(jenis) {
         data = {
             'id_detail_checkup': idDetailCheckup,
             'waktu': va1,
-            'tekanan_darah': va2,
+            'tekanan_darah': replaceUnderLine(va2),
             'nadi': va3,
             'suhu': va4,
             'rr': va5,
@@ -2085,7 +2401,7 @@ function saveObservasi(jenis, ket){
                 'waktu': va1+' '+va2,
                 'observasi': va3,
                 'qb': va4,
-                'tensi': va5,
+                'tensi': replaceUnderLine(va5),
                 'nadi': va6,
                 'suhu': va7,
                 'rr': va8,
@@ -2165,7 +2481,7 @@ function detailObservasi(jenis){
                             '<p>'+cekItemIsNull(item.namaTerang)+'</p>'+
                             '<p>'+cekItemIsNull(item.sip)+'</p>'+
                             '</td>' +
-                            '<td align="center">'+'<i onclick="conObs(\''+jenis+'\', \''+item.idObservasiTindakanHd+'\')" class="fa fa-trash fa-2x hvr-grow" style="color: red"></i>'+'</td>'+
+                            '<td align="center">'+'<i onclick="conObs(\''+jenis+'\', \''+item.idObservasiTindakanHd+'\')" class="fa fa-trash hvr-grow" style="color: red; font-size: 18px"></i>'+'</td>'+
                             '</tr>';
                     cekData = true;
                     tgl = item.createdDate;
@@ -2209,7 +2525,7 @@ function detailObservasi(jenis){
 
 function delRowObservasi(id) {
     $('#del_hd_' + id).remove();
-    var url = contextPath + '/pages/images/icons8-plus-25.png';
+    var url = contextPath + '/pages/images/icons8-add-list-25.png';
     $('#btn_hd_' + id).attr('src', url);
     $('#btn_hd_' + id).attr('onclick', 'detailObservasi(\'' + id + '\')');
 }

@@ -265,6 +265,11 @@ public class KategoriLabBoImpl implements KategoriLabBo {
     }
 
     @Override
+    public ImSimrsKategoriLabEntity getDataLab(String idKategori) throws GeneralBOException {
+        return kategoriLabDao.getById("idKategoriLab", idKategori);
+    }
+
+    @Override
     public List<KategoriLab> getAll() throws GeneralBOException {
         return null;
     }
