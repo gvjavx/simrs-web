@@ -133,14 +133,14 @@
                                             <label class="col-md-4" style="margin-top: 7px">Unit</label>
                                             <div class="col-md-8"  style="margin-top: 7px">
                                                 <s:action id="comboBranchSelainKp" namespace="/admin/user" name="initComboBranchSelainKp_user"/>
-                                                <s:select cssClass="form-control" list="#comboBranchSelainKp.listOfComboBranches" id="branch_id"  onchange="isiKeteterangan()" name="pengajuanBiaya.branchId" required="true"
+                                                <s:select cssClass="form-control" list="#comboBranchSelainKp.listOfComboBranches" id="branch_id"  onchange="isiKeteterangan(),initCoa()" name="pengajuanBiaya.branchId" required="true"
                                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Transaksi</label>
                                             <div class="col-md-8" style="margin-top: 7px">
-                                                <s:select list="#{'PDU':'Swift Kas Unit ke Pusat','SMK':'Setoran Modal Kerja ke Unit'}" onchange="initCoa(this.value)"
+                                                <s:select list="#{'PDU':'Swift Kas Unit ke Pusat','SMK':'Setoran Modal Kerja ke Unit'}" onchange="initCoa()"
                                                           id="transaksi_view" name="pengajuanBiaya.transaksi"
                                                           headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                 <s:hidden id="transaksi" />
@@ -335,11 +335,11 @@
         });
     }
 
-    function getCoaRk(value) {
+    function getCoaRk(transaksiId,unit) {
         var option = '<option value=""></option>';
         var transaksi = "";
         var posisi ="";
-        switch(value) {
+        switch(transaksiId) {
             case "SMK":
                 transaksi = "69";
                 posisi="D";
@@ -349,10 +349,10 @@
                 posisi="K";
                 break;
         }
-        KodeRekeningAction.getKodeRekeningLawanByTransId(transaksi,posisi,function (res) {
+        KodeRekeningAction.getKodeRekeningLawanByTransIdRk(transaksi,posisi,unit,function (res) {
             if(res.length > 0){
                 $.each(res, function (i, item) {
-                    option += '<option value="'+item.kodeRekening+'">'+item.tampilanCoa+'</option>';
+                    option = '<option value="'+item.kodeRekening+'">'+item.tampilanCoa+'</option>';
                 });
                 $('#coa_rk').html(option);
             }else{
@@ -377,18 +377,22 @@
         return rupiah;
     }
 
-    function initCoa(value){
-        getCoaGiro(value);
-        getCoaRk(value);
-        switch(value) {
-            case "SMK":
-                $('#transaksi').val("SMK");
-                $('#tipe_transaksi').val("69");
-                break;
-            case "PDU":
-                $('#transaksi').val("PDU");
-                $('#tipe_transaksi').val("68");
-                break;
+    function initCoa(){
+        var unit = $('#branch_id').val();
+        var transaksi = $('#transaksi_view').val();
+        if (unit!=''&&transaksi!=""){
+            getCoaGiro(transaksi);
+            getCoaRk(transaksi,unit);
+            switch(transaksi) {
+                case "SMK":
+                    $('#transaksi').val("SMK");
+                    $('#tipe_transaksi').val("69");
+                    break;
+                case "PDU":
+                    $('#transaksi').val("PDU");
+                    $('#tipe_transaksi').val("68");
+                    break;
+            }
         }
     }
 

@@ -450,6 +450,19 @@ public class KodeRekeningAction extends BaseMasterAction {
         }
         return kodeRekeningList;
     }
+
+    public List<KodeRekening> getKodeRekeningLawanByTransIdRk(String transId,String posisi,String unit) {
+        logger.info("[KodeRekeningAction.getKodeRekeningLawanByTransId] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        List<KodeRekening> kodeRekeningList = new ArrayList();
+        try {
+            kodeRekeningList = kodeRekeningBo.getKodeRekeningLawanByTransIdRk(transId,posisi,unit);
+        } catch (GeneralBOException e) {
+            logger.error("[KodeRekeningAction.getKodeRekeningLawanByTransId] ", e);
+        }
+        return kodeRekeningList;
+    }
     @Override
     public String downloadPdf() {
         return SUCCESS;

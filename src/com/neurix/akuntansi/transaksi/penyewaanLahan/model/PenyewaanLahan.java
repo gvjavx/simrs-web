@@ -27,9 +27,11 @@ public class PenyewaanLahan extends BaseModel {
     private String cancelFlag;
     private String cancelWho;
     private Timestamp cancelDate;
+    private String stCancelDate;
     private String approvalFlag;
     private String approvalWho;
     private Timestamp approvalDate;
+    private String stApprovalDate;
     private String metodeBayar;
     private String bank;
     private String bankName;
@@ -41,6 +43,22 @@ public class PenyewaanLahan extends BaseModel {
     private String namaPenyewaName;
     private String noFaktur;
     private String urlFakturImage;
+
+    public String getStApprovalDate() {
+        return stApprovalDate;
+    }
+
+    public void setStApprovalDate(String stApprovalDate) {
+        this.stApprovalDate = stApprovalDate;
+    }
+
+    public String getStCancelDate() {
+        return stCancelDate;
+    }
+
+    public void setStCancelDate(String stCancelDate) {
+        this.stCancelDate = stCancelDate;
+    }
 
     public String getNoFaktur() {
         return noFaktur;

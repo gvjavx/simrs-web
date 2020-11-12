@@ -259,7 +259,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Kode Vendor</label>
+                                            <label class="col-md-4" style="margin-top: 7px">ID Vendor/Kary/Dokter/Pasien</label>
                                             <div class="col-md-3">
                                                 <s:textfield id="kode_vendor" onkeypress="$(this).css('border','')" wajib="Y"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
@@ -460,8 +460,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" id="btnAddCheckedNota" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Add Checked
-                </button>
+                <%--<button type="button" class="btn btn-success" id="btnAddCheckedNota" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Add Checked--%>
+                <%--</button>--%>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
@@ -600,7 +600,7 @@
                     PembayaranUtangPiutangAction.searchNotaPembayaran(masterId,transaksiId,branchId,divisiId,coaLawan,function (listdata) {
                         tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
-                            "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
+                            // "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Rekening ID</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
@@ -609,10 +609,10 @@
                             "</tr></thead>";
                         var i = i;
                         $.each(listdata, function (i, item) {
-                            var combo = '<input type="checkbox" checked id="check_'+i+'">';
+                            // var combo = '<input type="checkbox" checked id="check_'+i+'">';
                             tmp_table += '<tr style="font-size: 12px;" ">' +
                                 '<td align="center">' + (i + 1) + '</td>' +
-                                '<td align="center">' + combo + '</td>' +
+                                // '<td align="center">' + combo + '</td>' +
                                 '<td align="center">' + item.masterId + '</td>' +
                                 '<td align="center">' + item.rekeningId + '</td>' +
                                 '<td align="center">' + item.noNota + '</td>' +
@@ -731,7 +731,7 @@
             } else if (statusVendor=='Y'&& kodeVendor==""){
                 alert("belum memilih Vendor");
             }else if (statusNota=='Y'&& noNota==""){
-                alert("belum memilih No. Nota");
+                alert("belum memilih/mengisi No. Nota");
             }else if (statusJumlahPembayaran=='Y'&& jumlahPembayaran==""){
                 alert("jumlah pembayaran belum dimasukkan");
             }else{
@@ -915,6 +915,8 @@
                 if (res.biaya=="Y"){
                     $('#jumlah_pembayaran').attr('readonly', false);
                     $('#jumlah_pembayaran').attr('wajib', "Y");
+                    $('#btnSearchNota').hide();
+                    $('#no_nota').attr('readonly', false);
                 }else{
                     $('#jumlah_pembayaran').attr('wajib', "N");
                 }

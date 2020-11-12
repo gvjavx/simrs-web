@@ -653,6 +653,21 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
             imPembayaranUtangPiutangEntity.setCreatedDate(bean.getCreatedDate());
             imPembayaranUtangPiutangEntity.setLastUpdate(bean.getLastUpdate());
 
+            //langsung diapprove bawahan apabila yang membuat adalah atasan
+            if (CommonConstant.ROLE_ID_KASUB_KEU.equalsIgnoreCase(CommonUtil.roleIdAsLogin())||CommonConstant.ROLE_ID_KA_KEU.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+                imPembayaranUtangPiutangEntity.setApprovalKeuanganId(CommonUtil.userIdLogin());
+                imPembayaranUtangPiutangEntity.setApprovalKeuanganDate(bean.getLastUpdate());
+                imPembayaranUtangPiutangEntity.setApprovalKeuanganName(bean.getCreatedWho());
+                imPembayaranUtangPiutangEntity.setApprovalKeuanganFlag("Y");
+            }
+
+            if (CommonConstant.ROLE_ID_KA_KEU.equalsIgnoreCase(CommonUtil.roleIdAsLogin())) {
+                imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganId(CommonUtil.userIdLogin());
+                imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganDate(bean.getLastUpdate());
+                imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganName(bean.getCreatedWho());
+                imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganFlag("Y");
+            }
+
             try {
                 // insert into database
                 pembayaranUtangPiutangDao.addAndSave(imPembayaranUtangPiutangEntity);
