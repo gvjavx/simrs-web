@@ -185,7 +185,16 @@ public class HeaderCheckup {
     private String branchName;
     private String total;
     private Date tanggal;
+    private String all;
     private String tahun;
+
+    public String getAll() {
+        return all;
+    }
+
+    public void setAll(String all) {
+        this.all = all;
+    }
 
     public String getTahun() {
         return tahun;

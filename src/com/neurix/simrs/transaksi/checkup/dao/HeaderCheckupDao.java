@@ -2016,6 +2016,64 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return response;
     }
 
+    public List<HeaderCheckup> getKamarTerpakai(String bulan, String tahun, String branch){
+        List<HeaderCheckup> response = new ArrayList<>();
+        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun)){
+            String branchId = "AND a.branch_id NOT LIKE 'KP'";
+            if(branch != null && !"".equalsIgnoreCase(branch)){
+                branchId = "AND a.branch_id IN "+branch+" \n";
+            }
+            String SQL = "SELECT \n" +
+                    "b.tanggal,\n" +
+                    "a.branch_id,\n" +
+                    "a.branch_name,\n" +
+                    "a.total as all,\n" +
+                    "b.total\n" +
+                    "FROM (\n" +
+                    "\tSELECT\n" +
+                    "\ta.branch_id,\n" +
+                    "\tc.branch_name,\n" +
+                    "\tCOUNT (b.id_tempat_tidur) as total\n" +
+                    "\tFROM mt_simrs_ruangan a\n" +
+                    "\tINNER JOIN mt_simrs_ruangan_tempat_tidur b ON a.id_ruangan = b.id_ruangan\n" +
+                    "\tINNER JOIN im_branches c ON a.branch_id = c.branch_id\n" +
+                    "\tWHERE a.flag = 'Y'\n" + branchId +
+                    "\tGROUP BY a.branch_id, c.branch_name\n" +
+                    ")a \n" +
+                    "INNER JOIN (\n" +
+                    "\tSELECT\n" +
+                    "\ta.branch_id,\n" +
+                    "\tCAST(c.created_date AS DATE) as tanggal,\n" +
+                    "\tCOUNT(c.id_rawat_inap) as total\n" +
+                    "\tFROM it_simrs_header_checkup a \n" +
+                    "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "\tINNER JOIN it_simrs_rawat_inap c ON c.id_detail_checkup = b.id_detail_checkup\n" +
+                    "\tWHERE CAST(DATE_PART('month', c.created_date) AS VARCHAR) = :bulan \n" +
+                    "\tAND CAST(DATE_PART('year', c.created_date) AS VARCHAR) = :tahun \n" +branchId+
+                    "\tGROUP BY CAST(c.created_date AS DATE), a.branch_id\n" +
+                    ")b ON a.branch_id = b.branch_id\n" +
+                    "ORDER BY b.tanggal, a.branch_id ASC";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("bulan", bulan)
+                    .setParameter("tahun", tahun)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    HeaderCheckup checkup = new HeaderCheckup();
+                    checkup.setTanggal(obj[0] == null ? null : (Date) obj[0]);
+                    checkup.setBranchId(obj[1] == null ? null : obj[1].toString());
+                    checkup.setBranchName(obj[2] == null ? "" : obj[2].toString());
+                    checkup.setAll(obj[3] == null ? null : obj[3].toString());
+                    checkup.setTotal(obj[4] == null ? null : obj[4].toString());
+                    response.add(checkup);
+                }
+            }
+        }
+        return response;
+    }
+
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pembayaran_online')");
         Iterator<BigInteger> iter = query.list().iterator();

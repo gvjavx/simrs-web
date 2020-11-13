@@ -474,7 +474,8 @@
                             lineColors: dataParCo,
                             hideHover: 'auto',
                             parseTime: false,
-                            lineWidth: 1
+                            lineWidth: 1,
+                            smooth:true
                         });
                     } else {
                         $('#line-chart').empty();
