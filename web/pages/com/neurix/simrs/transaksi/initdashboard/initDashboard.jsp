@@ -492,6 +492,9 @@
                                     var id = itemx.split("#")[0];
                                     var nilai = itemx.split("#")[1];
                                     if (id == itemt.branch_id) {
+                                        if(itemx.split("#")[1] != undefined){
+
+                                        }
                                         tot = nilai;
                                     }
                                 });
@@ -521,7 +524,7 @@
                             $.each(colorBranch, function (ic, itemc) {
                                 if (itemt.branch_id == itemc.branch_id) {
                                     if (tempCo != "") {
-                                        tempCo = tempCo + ', "' + itemc.color + '"';
+                                        tempCo = tempCo + ',"' + itemc.color + '"';
                                     } else {
                                         tempCo = '"' + itemc.color + '"';
                                     }
@@ -538,6 +541,9 @@
                         var dataParY = JSON.parse(dataY);
                         var dataParL = JSON.parse(dataL);
                         var dataParCo = JSON.parse(dataCo);
+
+                        console.log()
+
 
                         $('#line-chart').empty();
                         var line = new Morris.Line({
@@ -671,15 +677,15 @@
                                     tempTgl = tgl;
                                 }
                                 if (tempTotal != "") {
-                                    tempTotal = tempTotal + '|' + item.branchId + '#' + item.total;
+                                    tempTotal = tempTotal + '|' + item.branchId + '#' + item.total+ '#' + item.all;
                                 } else {
-                                    tempTotal = item.branchId + '#' + item.total;
+                                    tempTotal = item.branchId + '#' + item.total+ '#' + item.all;
                                 }
                             } else {
                                 if (tempTotal != "") {
-                                    tempTotal = tempTotal + '=' + item.branchId + '#' + item.total;
+                                    tempTotal = tempTotal + '=' + item.branchId + '#' + item.total+ '#' + item.all;
                                 } else {
-                                    tempTotal = item.branchId + '#' + item.total;
+                                    tempTotal = item.branchId + '#' + item.total+ '#' + item.all;
                                 }
                             }
                         }
@@ -715,21 +721,32 @@
                             var b = "}";
                             var tp = tTotal[i].split("=");
                             var isi = "";
+                            var tempNum = 0;
 
                             $.each(tempUnit, function (it, itemt) {
                                 var tot = 0;
+                                var all = 0;
                                 $.each(tp, function (ix, itemx) {
                                     var id = itemx.split("#")[0];
-                                    var nilai = itemx.split("#")[1];
                                     if (id == itemt.branch_id) {
-                                        tot = nilai;
+                                        if(itemx.split("#")[1] != undefined){
+                                            tot = itemx.split("#")[1];
+                                        }
+                                        if(itemx.split("#")[2] != undefined){
+                                            all = itemx.split("#")[2];
+                                        }
                                     }
                                 });
                                 var it = it + 1;
+                                var it2 = it + 1;
+                                var it3 = tempNum + 1;
+                                var it4 = it3 + 1;
                                 if (isi != "") {
-                                    isi = isi + ',' + '"' + 'item' + it + '"' + ':' + '"' + tot + '"';
+                                    isi = isi + ',' + '"' + 'item' + it3 + '"' + ':' + '"' + tot + '",'+'"' + 'item' + it4 + '"' + ':' + '"' + all + '"';
+                                    tempNum = it4;
                                 } else {
-                                    isi = '"' + 'item' + it + '"' + ':' + '"' + tot + '"';
+                                    isi = '"' + 'item' + it + '"' + ':' + '"' + tot + '",'+'"' + 'item' + it2 + '"' + ':' + '"' + all + '"';
+                                    tempNum = it2;
                                 }
                             });
 
@@ -739,21 +756,28 @@
                                 temp = a + isi + b;
                             }
                         });
+
+                        var tempNum = 0;
                         $.each(tempUnit, function (it, itemt) {
                             var it = it + 1;
+                            var it2 = it + 1;
+                            var it3 = tempNum + 1;
+                            var it4 = it3 + 1;
                             if (tempY != "") {
-                                tempY = tempY + ', ' + '"' + 'item' + it + '"';
-                                tempL = tempL + ', ' + '"' + itemt.branch_name + '"';
+                                tempY = tempY + ', ' + '"' + 'item' + it3 + '",'+'"' + 'item' + it4 + '"';;
+                                tempL = tempL + ', ' + '"Terpakai ' + itemt.branch_name + '",'+'"Total ' + itemt.branch_name + '"';
+                                tempNum = it4;
                             } else {
-                                tempY = '"' + 'item' + it + '"';
-                                tempL = '"' + itemt.branch_name + '"';
+                                tempY = '"' + 'item' + it + '",'+'"' + 'item' + it2 + '"';;
+                                tempL = '"Terpakai ' + itemt.branch_name + '",'+'"Total ' + itemt.branch_name + '"';
+                                tempNum = it2;
                             }
                             $.each(colorBranch, function (ic, itemc) {
                                 if (itemt.branch_id == itemc.branch_id) {
                                     if (tempCo != "") {
-                                        tempCo = tempCo + ', "' + itemc.color + '"';
+                                        tempCo = tempCo + ', "' + itemc.color + '",'+'"' + itemc.color + '"';
                                     } else {
-                                        tempCo = '"' + itemc.color + '"';
+                                        tempCo = '"' + itemc.color + '",'+'"' + itemc.color + '"';
                                     }
                                 }
                             });
@@ -781,7 +805,8 @@
                             hideHover: 'auto',
                             parseTime: false,
                             lineWidth: 1,
-                            smooth:true
+                            smooth:true,
+                            continuousLine: true
                         });
                     } else {
                         $('#line-chart-kamar').empty();
@@ -796,14 +821,6 @@
         setChart();
     }
 
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

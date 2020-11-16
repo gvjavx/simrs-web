@@ -409,6 +409,14 @@ apply the skin class to the body tag so the changes take effect.
         border-radius: 5px;
         box-shadow: 1px 3px 8px grey
     }
+    .span-orange{
+        font-size: 13px;
+        padding: 5px;
+        color: white;
+        background-color: #f56954;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
 
 </style>
 <script>
@@ -928,8 +936,10 @@ apply the skin class to the body tag so the changes take effect.
             res = '<span class="span-hijau-muda">'+value+'</span>';
         }else if(jenis == 'asuransi'){
             res = '<span class="span-kuning">'+value+'</span>';
-        }else{
+        }else if(jenis == 'paket_perusahaan'){
             res = '<span class="span-ungu">'+value+'</span>';
+        }else if(jenis == 'paket_individu'){
+            res = '<span class="span-orange">'+value+'</span>';
         }
         return res;
     }
