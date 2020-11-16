@@ -194,27 +194,28 @@
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
-                                        <s:if test='#row.idJenisPeriksa == "asuransi"'>
-                                        <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:if>
-                                                <s:elseif test='#row.idJenisPeriksa == "umum"'>
-                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='#row.idJenisPeriksa == "bpjs"'>
-                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='#row.idJenisPeriksa == "ptpn"'>
-                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:else>
-                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:else>
-                                                    <s:property value="jenisPeriksaPasien"></s:property>
-                                                </span>
+                                        <script>
+                                            document.write(changeJenisPasien('<s:property value="idJenisPeriksa"/>', '<s:property value="jenisPeriksaPasien"/>'));
+                                        </script>
                                     </td>
                                     <td align="center" style="vertical-align: middle">
-                                        <s:if test='#row.idJenisPeriksa == "umum"'>
-                                            <s:if test='#row.isBayar == "Y"'>
+                                        <s:if test='#row.statusPeriksa != "3"'>
+                                            <s:if test='#row.idJenisPeriksa == "umum"'>
+                                                <s:if test='#row.isBayar == "Y"'>
+                                                    <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                        <s:param name="idx"><s:property value="idRawatInap"/></s:param>
+                                                    </s:url>
+                                                    <s:a href="%{add_rawat_inap}">
+                                                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                                    </s:a>
+                                                    <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                                </s:if>
+                                                <s:else>
+                                                    <span class="span-warning">Uang muka belum bayar</span>
+                                                </s:else>
+                                            </s:if>
+                                            <s:else>
                                                 <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
                                                     <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                                     <s:param name="idx"><s:property value="idRawatInap"/></s:param>
@@ -223,21 +224,8 @@
                                                     <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                                 </s:a>
                                                 <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
-                                            </s:if>
-                                            <s:else>
-                                                <label class="label label-warning">Uang muka belum bayar</label>
                                             </s:else>
                                         </s:if>
-                                        <s:else>
-                                            <s:url var="add_rawat_inap" namespace="/rawatinap" action="add_rawatinap" escapeAmp="false">
-                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                <s:param name="idx"><s:property value="idRawatInap"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{add_rawat_inap}">
-                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                            </s:a>
-                                            <img onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
-                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>

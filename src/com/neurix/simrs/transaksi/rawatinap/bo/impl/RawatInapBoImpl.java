@@ -1308,6 +1308,11 @@ public class RawatInapBoImpl implements RawatInapBo {
         return rawatInapDao.getAllListUangMuka(bean);
     }
 
+    @Override
+    public HeaderCheckup getDetailGelang(String noCheckup) throws GeneralBOException {
+        return rawatInapDao.getDetailGelang(noCheckup);
+    }
+
     private String dateFormater(String type) {
         Date date = new Date(new java.util.Date().getTime());
         DateFormat df = new SimpleDateFormat(type);

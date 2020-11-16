@@ -74,7 +74,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Waktu</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'siang':'Siang','sore':'Sore'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'siang':'Siang','malam':'Malam'}" cssStyle="margin-top: 7px"
                                                   id="status" name="rawatInap.keterangan"
                                                   headerKey="pagi" headerValue="Pagi"
                                                   cssClass="form-control select2"/>

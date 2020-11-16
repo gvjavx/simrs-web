@@ -10,4 +10,6 @@ public interface AsesmenRawatInapBo {
     public List<AsesmenRawatInap> getByCriteria(AsesmenRawatInap bean) throws GeneralBOException;
     public CrudResponse saveAdd(List<AsesmenRawatInap> list) throws GeneralBOException;
     public CrudResponse saveDelete(AsesmenRawatInap bean) throws GeneralBOException;
+    public List<AsesmenRawatInap> getListRI(String id, String jenis) throws GeneralBOException;
+    public CrudResponse saveEdit(AsesmenRawatInap bean) throws GeneralBOException;
 }

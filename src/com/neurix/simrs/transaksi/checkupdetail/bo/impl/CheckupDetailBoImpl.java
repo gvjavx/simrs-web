@@ -429,8 +429,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup) throws GeneralBOException {
-        return checkupDetailDao.getIDDetailCheckup(noCheckup);
+    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup, String status) throws GeneralBOException {
+        return checkupDetailDao.getIDDetailCheckup(noCheckup, status);
     }
 
     @Override
@@ -579,7 +579,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             if ("selesai".equalsIgnoreCase(bean.getTindakLanjut()) ||
                     "rujuk_rs_lain".equalsIgnoreCase(bean.getTindakLanjut()) ||
                     "kontrol_ulang".equalsIgnoreCase(bean.getTindakLanjut()) ||
-                    "lanjut_biaya".equalsIgnoreCase(bean.getTindakLanjut())) {
+                    "lanjut_biaya".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                    "rujuk_internal".equalsIgnoreCase(bean.getTindakLanjut())) {
 
                 HeaderCheckup headerCheckup = new HeaderCheckup();
                 headerCheckup.setNoCheckup(entity.getNoCheckup());

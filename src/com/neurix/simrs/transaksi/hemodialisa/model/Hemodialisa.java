@@ -20,7 +20,7 @@ public class Hemodialisa extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String isTtd;
+    private String tipe;
     private String namaTerang;
     private String sip;
 
@@ -40,12 +40,12 @@ public class Hemodialisa extends BaseModel {
         this.sip = sip;
     }
 
-    public String getIsTtd() {
-        return isTtd;
+    public String getTipe() {
+        return tipe;
     }
 
-    public void setIsTtd(String isTtd) {
-        this.isTtd = isTtd;
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
     }
 
     public String getIdHemodialisa() {

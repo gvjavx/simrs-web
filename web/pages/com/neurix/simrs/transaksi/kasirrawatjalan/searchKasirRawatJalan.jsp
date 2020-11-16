@@ -300,6 +300,7 @@
                                 <input type="hidden" id="fin_metode_bayar"/>
                                 <input type="hidden" id="fin_bukti"/>
                                 <input type="hidden" id="h_no_checkup"/>
+                                <input type="hidden" id="h_jenis_pasien"/>
                             </table>
                         </div>
                         <!-- /.col -->
@@ -556,6 +557,7 @@
                         $('#fin_no_rm').html(response.idPasien);
                         $('#fin_poli').html(response.namaPelayanan);
                         $("#fin_id_pasien").val(response.idPasien);
+                        $("#h_jenis_pasien").val(response.idJenisPeriksaPasien);
                 }
             });
 
@@ -834,6 +836,7 @@
         var bukti = $('#fin_bukti').val();
         var noRekening = $('#no_rekening').val();
         var noCheckup = $('#h_no_checkup').val();
+        var jenisPasien = $('#h_jenis_pasien').val();
 
         $('#save_fin').hide();
         $('#load_fin').show();
@@ -848,6 +851,7 @@
                     $('#modal-invoice').modal('hide');
                     $('#info_dialog').dialog('open');
                     $('body').scrollTop(0);
+                    printInvoice(idDetailCheckup, jenisPasien);
                 } else {
                     $('#save_fin').show();
                     $('#load_fin').hide();
@@ -876,6 +880,10 @@
         KasirRawatJalanAction.getCoverAsuransi(idDetail, function (res) {
             return res;
         });
+    }
+
+    function printInvoice(id, jenis){
+        window.open('printInvoice_kasirjalan?id='+id+'&jenis='+jenis,'_blank');
     }
 
 </script>

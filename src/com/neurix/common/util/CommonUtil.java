@@ -3,6 +3,8 @@ package com.neurix.common.util;
 import com.neurix.authorization.role.model.Roles;
 import com.neurix.authorization.user.model.UserDetailsLogin;
 import com.neurix.common.constant.CommonConstant;
+import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.log4j.Logger;
@@ -10,11 +12,21 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -1421,5 +1433,31 @@ public class  CommonUtil {
         number = number.replace(".","");
 
         return BigDecimal.valueOf(Double.valueOf(number));
+    }
+
+    public static CrudResponse compresing(BufferedImage image, String url) {
+        CrudResponse response = new CrudResponse();
+        try {
+            ImageOutputStream out = ImageIO.createImageOutputStream(Files.newOutputStream(Paths.get(url)));
+            ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
+            ImageWriteParam param = writer.getDefaultWriteParam();
+            if(param.canWriteCompressed()){
+                param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                param.setCompressionQuality(0.1f);
+                writer.setOutput(out);
+                writer.write(null, new IIOImage(image, null, null), param);
+            }
+            File f = new File(url);
+            ImageIO.write(image, "png", f);
+            response.setStatus("success");
+            response.setMsg("Berhasil");
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setStatus("error");
+            response.setMsg("Found problem when upload images, "+e.getMessage());
+            throw new GeneralBOException("Found problem when upload images, " + e.getMessage());
+
+        }
+        return response;
     }
 }

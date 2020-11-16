@@ -58,8 +58,10 @@ public class AsesmenSpesialisBoImpl implements AsesmenSpesialisBo {
                     if (!"".equalsIgnoreCase(entity.getTipe()) && entity.getTipe() != null) {
                         if ("ttd".equalsIgnoreCase(entity.getTipe())) {
                             asesmenSpesialis.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban());
-                        } else {
+                        } else if("gambar".equalsIgnoreCase(entity.getTipe())) {
                             asesmenSpesialis.setJawaban(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_IMG_RM + entity.getJawaban());
+                        }else{
+                            asesmenSpesialis.setJawaban(entity.getJawaban());
                         }
                     } else {
                         asesmenSpesialis.setJawaban(entity.getJawaban());

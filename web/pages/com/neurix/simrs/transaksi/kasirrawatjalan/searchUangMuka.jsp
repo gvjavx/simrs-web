@@ -272,17 +272,17 @@
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
                                             <s:if test='#row.flagRefund == "R"'>
-                                                <label class="label label-warning"> proses refund</label>
+                                                <span class="span-warning"> proses refund</span>
                                             </s:if>
                                             <s:elseif test='#row.flagRefund == "Y"'>
-                                                <label class="label label-info"> sudah refund</label>
+                                                <span class="span-primary"> sudah refund</span>
                                             </s:elseif>
                                             <s:else>
-                                                <label class="label label-success"> sudah bayar</label>
+                                                <span class="span-success"> sudah bayar</span>
                                             </s:else>
                                         </s:if>
                                         <s:else>
-                                            <label class="label label-warning"> belum bayar</label>
+                                            <span class="span-warning"> belum bayar</span>
                                         </s:else>
                                     </td>
                                     <%--<td><s:property value="keteranganSelesai"/></td>--%>
@@ -792,6 +792,8 @@
         var metodeBayar = $('#metode_bayar').val();
         var kodeBank = $('#bank').val();
         var noRekening = $('#no_rekening').val();
+        var idDetailCheckup = $('#fin_id_detail_checkup').val();
+
         dwr.engine.setAsync(true);
         KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, metodeBayar, kodeBank, noRekening, {callback: function (response) {
             if(response.status == "success"){
@@ -802,6 +804,7 @@
                 $('#modal-invoice').modal('hide');
                 $('#info_dialog').dialog('open');
                 $('body').scrollTop(0);
+                printInvoice(idDetailCheckup);
             }else{
                 $('#save_fin').show();
                 $('#load_fin').hide();
@@ -922,7 +925,6 @@
     }
 
     function hitungKembalian( jumlah ) {
-        console.log("hitungKembalian >>")
         var um = $("#jumlah_um").val();
         var total = jumlah - um;
         $("#kembalian").val(total);
@@ -940,6 +942,17 @@
                 $('#bank').html(option);
             }
         });
+    }
+
+    function printInvoice(id){
+        window.open('printBuktiUangMuka_uangmuka.action?id='+id,'_blank');
+    }
+
+    function closeOK(){
+        var pos = $('#h_ref').val();
+        if(pos == 1){
+
+        }
     }
 
 </script>

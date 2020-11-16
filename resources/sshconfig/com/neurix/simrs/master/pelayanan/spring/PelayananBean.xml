@@ -24,10 +24,10 @@
     />
 
     <!--setting untuk action-->
-    <!--<bean id="pelayananAction" class="com.neurix.simrs.master.pelayanan.action.PelayananAction"-->
-          <!--p:pelayananBoProxy-ref="pelayananBoProxy"-->
-          <!--p:positionBoProxy-ref="positionBoProxy"-->
-    <!--/>-->
+    <bean id="pelayananAction" class="com.neurix.simrs.master.pelayanan.action.PelayananAction"
+          p:pelayananBoProxy-ref="pelayananBoProxy"
+          p:positionBoProxy-ref="positionBoProxy"
+    />
 
     <bean id="pelayananBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="pelayananBo">

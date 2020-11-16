@@ -26,6 +26,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/historypenunjang.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -146,6 +147,12 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Diagnosa</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.diagnosa"></s:label></table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -193,11 +200,16 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Permeriksaan</b></td>
+                                        <td><b>Radiologi</b></td>
                                         <td>
-                                            <table><s:label name="periksaLab.kategoriLabName"
+                                            <table><s:label name="periksaLab.labName"
                                                             class="label label-success"></s:label></table>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History Radiologi
+                                        </button></td>
                                     </tr>
                                 </table>
                             </div>
@@ -254,10 +266,6 @@
 
                             </div>
                         </div>
-                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rad">
-                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            <p id="msg_rad"></p>
-                        </div>
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-4">
@@ -274,24 +282,28 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rad">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_rad"></p>
+                        </div>
                     </div>
                     <div class="box-header with-border" id="pos_lab">
                     </div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-hospital-o"></i> Catatan Pemeriksaan</h3>
                     </div>
-                    <div class="box-body" id="btn-add-parameter" style="display: none">
-                        <button class="btn btn-success btn-outline" onclick="showModal(1)"><i class="fa fa-plus"></i>
+                    <div class="box-body">
+                        <button id="btn-add-parameter" class="btn btn-success" style="margin-bottom: 10px; display: none" onclick="showModal(1)"><i class="fa fa-plus"></i>
                             Tambah Parameter
                         </button>
-                    </div>
-                    <div class="box-body">
+                        <button class="btn btn-primary" onclick="printPeriksaLab()" style="margin-bottom: 10px;"><i class="fa fa-print"></i> Print Label
+                        </button>
                         <table class="table table-bordered table-striped" id="tabel_radiologi">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>Pemeriksaan</td>
+                                <td width="40%">Pemeriksaan</td>
                                 <td>Hasil</td>
-                                <td align="center" width="10%">Action</td>
+                                <td>Kesan</td>
                             </tr>
                             </thead>
                             <tbody id="body_parameter">
@@ -532,6 +544,65 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-history">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> All History Radiologi
+                </h4>
+            </div>
+            <div class="modal-body" style="height: 450px;overflow-y: scroll;">
+                <div class="box-body">
+                    <table class="table table-bordered" style="font-size: 12px;">
+                        <thead>
+                        <tr style="font-weight: bold">
+                            <td width="30%">Pelayanan</td>
+                            <td width="15%">Waktu</td>
+                            <td>Keterangan</td>
+                            <td width="16%">Catatan</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_history">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-lab_luar">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="title_lab_luar"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img id="img_lab_luar" style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -545,6 +616,7 @@
     var jenisPasien = '<s:property value="periksaLab.idJenisPeriksa"/>';
     var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
     var keterangan = '<s:property value="periksaLab.keterangan"/>';
+    var tipeLab = 'radiologi';
 
     $(document).ready(function () {
         $('#penunjang_active, #periksa_radiologi').addClass('active');
@@ -638,20 +710,17 @@
     function listSelectParameter(idLab) {
         var option = "";
         if (idLab != '') {
-            LabDetailAction.listLabDetail(idLab, function (response) {
-                if (response != null) {
+            LabDetailAction.getListComboParameter(idLab, function (response) {
+                if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
                     });
+                    $('#lab_parameter').html(option);
                 } else {
-                    option = option;
+                    $('#lab_parameter').html(option);
                 }
             });
-        } else {
-            option = option;
         }
-
-        $('#lab_parameter').html(option);
     }
 
     function listSelectDokter() {
@@ -741,13 +810,19 @@
                 var table = "";
                 $.each(response, function (i, item) {
                     var hasil = "";
+                    var kesan = "";
                     if (item.hasil != null && item.hasil != '') {
                         hasil = item.hasil;
                     }
+                    if (item.keteranganPeriksa != null && item.keteranganPeriksa != '') {
+                        kesan = item.keteranganPeriksa;
+                    }
                     table += '<tr>' +
-                        '<td>' + item.namaDetailPeriksa + '</td>' +
-                        '<td>' + hasil + '</td>' +
-                        "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editParameter(\'' + item.idPeriksaLabDetail + '\',\'' + hasil + '\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
+                        '<td>' + item.namaDetailPeriksa +
+                        '<input id="id_periksa_lab_'+i+'" type="hidden" value="'+item.idPeriksaLabDetail+'">' +
+                        '</td>' +
+                        '<td>' + '<textarea id="hasil_'+i+'" class="form-control" value="'+hasil+'"/>' + '</td>' +
+                        '<td>' + '<textarea id="kesan_'+i+'" class="form-control" value="'+kesan+'"/>' + '</td>' +
                         '</tr>';
                 });
                 $('#body_parameter').html(table);
@@ -774,12 +849,12 @@
 
         var cek = false;
         $.each(data, function (i, item) {
-            var hasil = data[i]["Hasil"];
+            var hasil = $('#hasil_'+i).val();
             if (hasil == "") {
                 cek = true;
             }
         });
-        if (!cek && idDokter != '' && !cekPetugas && !cekDokter || img != '' && idDokter != '' && !cekPetugas && !cekDokter) {
+        if (!cek && idDokter != '' && !cekPetugas && !cekDokter || img != '' && data.length > 0) {
             $('#modal-confirm-dialog').modal('show');
             $('#save_con').attr('onclick', 'savePeriksaLab(\'' + idDokter + '\')');
         } else {
@@ -802,15 +877,33 @@
         var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
         var jenisPasien = '<s:property value="periksaLab.idJenisPeriksa"/>';
         var idDetailCheckup = '<s:property value="periksaLab.idDetailCheckup"/>';
+        var noCheckup = '<s:property value="periksaLab.noCheckup"/>';
+        var isiParam = $('#tabel_radiologi').tableToJSON();
+        var jsonData = [];
+        $.each(isiParam, function (i, item) {
+            var idLab = $('#id_periksa_lab_'+i).val();
+            var hasil = $('#hasil_'+i).val();
+            var kesan = $('#kesan_'+i).val();
+            if(hasil != ''){
+                jsonData.push({
+                    'id_periksa_lab':idLab,
+                    'hasil':hasil,
+                    'kesan':kesan,
+                })
+            }
+        });
 
         var data = {
+            'no_checkup':noCheckup,
             'id_pasien': idPasien,
             'id_detail_checkup': idDetailCheckup,
             'jenis_pasien': jenisPasien,
             'id_pelayanan': idPelayanan,
             'metode_bayar': metodePembayaran,
+            'is_resep':'N',
             'just_lab': "Y"
         }
+
         var img = $("#url_img").val();
         var finalImg = "";
         var finalPetugas = convertToDataURL(petugas);
@@ -820,9 +913,10 @@
             finalImg = hasil;
         }
         var result = JSON.stringify(data);
+        var jsonResult = JSON.stringify(jsonData);
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
-        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, result, finalDokter, finalPetugas, {
+        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, result, finalDokter, finalPetugas, jsonResult, {
             callback: function (response) {
                 if (response.status == "success") {
                     $('#waiting_dialog').dialog('close');
@@ -838,6 +932,10 @@
                 }
             }
         });
+    }
+
+    function printPeriksaLab(){
+        window.open('printRadiologi_radiologi.action?id='+idDetailCheckup+'&lab='+idPeriksaLab+'&ket=label', "_blank");
     }
 
 </script>

@@ -56,6 +56,8 @@ public class HemodinamikaBoImpl implements HemodinamikaBo {
                     hemodinamika.setTanggal(entity.getTanggal());
                     hemodinamika.setTensi(entity.getTensi());
                     hemodinamika.setBp(entity.getBp());
+                    hemodinamika.setSistole(entity.getSistole());
+                    hemodinamika.setDiastole(entity.getDiastole());
                     hemodinamika.setHi(entity.getHi());
                     hemodinamika.setRr(entity.getRr());
                     hemodinamika.setEkg(entity.getEkg());
@@ -89,7 +91,8 @@ public class HemodinamikaBoImpl implements HemodinamikaBo {
             String formatDate = new SimpleDateFormat("yyyy-MM-dd").format(bean.getCreatedDate());
             hemodinamikaEntity.setTanggal(Date.valueOf(formatDate));
             hemodinamikaEntity.setTensi(bean.getTensi());
-            hemodinamikaEntity.setBp(bean.getBp());
+            hemodinamikaEntity.setSistole(bean.getSistole());
+            hemodinamikaEntity.setDiastole(bean.getDiastole());
             hemodinamikaEntity.setHi(bean.getHi());
             hemodinamikaEntity.setRr(bean.getRr());
             hemodinamikaEntity.setEkg(bean.getEkg());

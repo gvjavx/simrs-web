@@ -168,18 +168,23 @@ function viewHistory() {
                 var icon = "";
                 var tele = "";
 
-                if ("resep" == item.keterangan || "laboratorium" == item.keterangan || "radiologi" == item.keterangan) {
-                    if ("laboratorium" == item.keterangan || "radiologi" == item.keterangan) {
+                var keteranganTindakan = item.keterangan;
+                if("lab" == item.keterangan){
+                    keteranganTindakan = "laboratorium";
+                }
+
+                if ("resep" == keteranganTindakan || "laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
+                    if ("laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
                         if (item.urlLab != null && item.urlLab != '') {
                             btn = '<img onclick="labLuar(\'' + item.namaTindakan + '\', \'' + item.urlLab + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                         } else {
                             btn = '<img class="hvr-grow" id="btn_' + item.idRiwayatTindakan + '" \n' +
-                                'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + item.keterangan + '\')"\n' +
+                                'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + keteranganTindakan + '\')"\n' +
                                 'src="' + contextPath + '/pages/images/icons8-plus-25.png">';
                         }
                     } else {
                         btn = '<img class="hvr-grow" id="btn_' + item.idRiwayatTindakan + '" \n' +
-                            'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + item.keterangan + '\')"\n' +
+                            'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + keteranganTindakan + '\')"\n' +
                             'src="' + contextPath + '/pages/images/icons8-plus-25.png">';
                     }
                 }
@@ -216,9 +221,8 @@ function detailTindakan(id, idTindakan, keterangan) {
                     if (keterangan == "radiologi") {
                         body += '<tr>' +
                             '<td>' + cekDataNull(item.namaDetailLab) + '</td>' +
-                            '<td>' + cekDataNull(item.satuan) + '</td>' +
-                            '<td>' + cekDataNull(item.acuan) + '</td>' +
                             '<td>' + cekDataNull(item.kesimpulan) + '</td>' +
+                            '<td>' + cekDataNull(item.keterangan) + '</td>' +
                             '</tr>';
                     }
                     if (keterangan == "laboratorium") {
@@ -243,9 +247,8 @@ function detailTindakan(id, idTindakan, keterangan) {
             if (keterangan == "radiologi") {
                 head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
                     '<td>Pemeriksaan</td>' +
-                    '<td>Satuan</td>' +
-                    '<td>Keterangan Acuan</td>' +
                     '<td>Hasil</td>' +
+                    '<td>Kesan</td>' +
                     '</tr>';
             }
             if (keterangan == "laboratorium") {
@@ -329,6 +332,35 @@ function labLuar(kategori, url){
     $('#title_lab_luar').text("Detail Hasil "+kategori+" Luar");
     $('#img_lab_luar').attr('src',url);
     $('#modal-lab_luar').modal({show:true, backdrop:'static'});
+}
+
+function viewAllRekamMedisLama() {
+    $('#modal-rekam-medis-lama').modal({show:true, backdrop:'static'});
+    $('#id_loading').html('<i class="fa fa-circle-o-notch"></i> Sedang mencari data....');
+    dwr.engine.setAsync(true);
+    CheckupAction.geRekamMedisLama(idPasien, function (res) {
+        var ul  = "";
+        var isi = "";
+        if(res.length > 0){
+            $('#id_loading').html('');
+            $.each(res, function (i, item) {
+                var aktive = "";
+                if(i == 0){
+                    aktive = 'active';
+                }
+                ul += '<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="'+aktive+'"></li>';
+                isi += '<div class="item '+aktive+'">\n' +
+                    '<img src="'+item.urlImg+'" style="width: 100%; height: 70%">\n' +
+                    '<div class="carousel-caption">\n' +
+                    '</div>\n' +
+                    '</div>';
+            });
+            $('#button_ol').html(ul);
+            $('#isi_carousel').html(isi);
+        }else{
+            $('#id_loading').html('Data tidak ada....');
+        }
+    });
 }
 
 
