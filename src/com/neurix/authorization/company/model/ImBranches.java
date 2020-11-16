@@ -43,6 +43,15 @@ public class ImBranches implements Serializable {
 
     private String lat;
     private String lon;
+    private String warna;
+
+    public String getWarna() {
+        return warna;
+    }
+
+    public void setWarna(String warna) {
+        this.warna = warna;
+    }
 
     public String getLat() {
         return lat;

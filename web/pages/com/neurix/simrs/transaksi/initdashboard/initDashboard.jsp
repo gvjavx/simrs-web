@@ -107,6 +107,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        Jumlah Pasien
+                    </div>
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-3 col-sm-6 col-xs-12">
@@ -155,7 +160,13 @@
                                 </div>
                             </div>
                         </div>
-                        <hr class="garis">
+                    </div>
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        Jumlah Kunjungan Pasien Rawat Jalan
+                    </div>
+                    <div class="box-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="box-body chart-responsive">
@@ -165,15 +176,55 @@
                                 </div>
                             </div>
                         </div>
-                        <hr class="garis">
+                    </div>
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        Detail Kunjungan Pasien Rawat Jalan
+                    </div>
+                    <div class="box-body">
                         <div class="row" id="donut_rs">
-
+                        </div>
+                    </div>
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        Jumlah Ketersedian Kamar
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box-body chart-responsive">
+                                    <div class="chart" id="line-chart-kamar" style="height: 300px; width: 100%"></div>
+                                </div>
+                                <div class="row" id="nama_rs_kamar">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+</div>
+
+<div class="modal" id="modal-loading">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-body">
+                <div style="text-align: center; color: white;">
+                    <img border="0" style="width: 130px; height: 110px;"
+                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                         name="image_indicator_write">
+                    <br>
+                    <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -67px; margin-left: 45px"
+                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                         name="image_indicator_write">
+                    <p style="margin-top: -3px">Sedang mencari data...</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type='text/javascript'>
@@ -207,23 +258,46 @@
     function setBranch() {
         var namaRS = "";
         var donutRS = "";
+        var tempColor = [];
         dwr.engine.setAsync(true);
         InitDashboardAction.getComboBranch({
             callback: function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
-                        var color = getRandomColor();
+                        var color = "#99ccff";
+                        // var colorRandom = getRandomColor();
+                        // if(tempColor.length > 0){
+                        //     $.each(tempColor, function (ic, itemc) {
+                        //         if(colorRandom == itemc.color || "#3D3418" == colorRandom){
+                        //             colorRandom = getRandomColor();
+                        //         }else{
+                        //             color = colorRandom;
+                        //             tempColor.push({
+                        //                 'color':color
+                        //             });
+                        //         }
+                        //     });
+                        // }else{
+                        //     color = colorRandom;
+                        //     tempColor.push({
+                        //         'color':color
+                        //     });
+                        // }
+                        if(item.warna != null && item.warna != ''){
+                            color = item.warna;
+                        }
+
                         namaRS += '<div class="col-md-2 text-center">\n' +
                             '<div class="form-check">\n' +
                             '<input onclick="cekBranch(this.id)" checked="true" type="checkbox" name="cek_nama_rs" id="id_nama_rs_' + i + '" value="' + item.branchId + '|' + color + '">\n' +
-                            '<label for="id_nama_rs_' + i + '"></label> <b style="border-bottom:' + color + ' solid 2px">' + item.branchName + '</b>\n' +
+                            '<label for="id_nama_rs_' + i + '"></label> <b style="font-size: 12px; margin-left: -6px">' + item.branchName + ' <i class="fa fa-circle" style="color: '+color+'"></i></b>\n' +
                             '</div>\n' +
                             '</div>';
 
-                        donutRS += '<div class="col-md-2">\n' +
+                        donutRS += '<div class="col-md-2" style="margin-top: -80px">\n' +
                             '<div class="box-body chart-responsive">\n' +
                             '<div class="chart" id="donut-chart-' + item.branchId + '" style="height: 300px; position: relative;"></div>\n' +
-                            '<p class="text-center" style="margin-top: -85px; border-bottom:' + color + ' solid 2px"><b>' + item.branchName + '</b></p>\n' +
+                            '<p class="text-center" style="margin-top: -85px; font-size: 12px;"><b>' + item.branchName + '</b></p>\n' +
                             '</div>\n' +
                             '</div>';
                     });
@@ -239,6 +313,7 @@
         var tahun = $('#set_tahun').val();
         var month = parseInt(bulan) + 1;
         if (bulan && tahun != '') {
+            $('#modal-loading').modal({show:true, backdrop:'static'});
             dwr.engine.setAsync(true);
             InitDashboardAction.getCountAll(month, tahun, {
                 callback: function (response) {
@@ -334,6 +409,7 @@
             var tempTotal = "";
             var dataBranch = [];
             var month = parseInt(bulan) + 1;
+            $('#modal-loading').modal({show:true, backdrop:'static'});
             dwr.engine.setAsync(true);
             InitDashboardAction.getKunjuganRJ(month, tahun, branch, {
                 callback: function (response) {
@@ -556,6 +632,161 @@
                             });
                         });
                     }
+                }
+            });
+
+            var tempBranch = "";
+            var tempTgl = "";
+            var tempTotal = "";
+            var dataBranch = [];
+            var month = parseInt(bulan) + 1;
+            dwr.engine.setAsync(true);
+            InitDashboardAction.getKamarTerpakai(month, tahun, branch, {
+                callback: function (response) {
+                    var tempTotal = "";
+                    var tempBranch = "";
+                    var tempTgl = "";
+                    var tempDate = "";
+                    $.each(response, function (i, item) {
+                        var tanggal = "";
+                        if (item.tanggal != null && item.tanggal != '') {
+                            tanggal = converterDate(item.tanggal);
+                        }
+                        if (tempBranch != item.branchId) {
+                            tempBranch = item.branchId;
+                            dataBranch.push({
+                                'branch_id': item.branchId,
+                                'branch_name': item.branchName,
+                                'tanggal': item.tanggal,
+                                'total': item.total
+                            });
+                        }
+                        if (tanggal != "") {
+                            var tgl = converterDate(item.tanggal);
+                            if (tempDate != tgl) {
+                                tempDate = tgl;
+                                if (tempTgl != "") {
+                                    tempTgl = tempTgl + '|' + tgl;
+                                } else {
+                                    tempTgl = tgl;
+                                }
+                                if (tempTotal != "") {
+                                    tempTotal = tempTotal + '|' + item.branchId + '#' + item.total;
+                                } else {
+                                    tempTotal = item.branchId + '#' + item.total;
+                                }
+                            } else {
+                                if (tempTotal != "") {
+                                    tempTotal = tempTotal + '=' + item.branchId + '#' + item.total;
+                                } else {
+                                    tempTotal = item.branchId + '#' + item.total;
+                                }
+                            }
+                        }
+                    });
+                    dataBranch.sort(function (a, b) {
+                        var keyA = a.branch_id,
+                            keyB = b.branch_id;
+                        if (keyA < keyB) return -1;
+                        if (keyA > keyB) return 1;
+                        return 0;
+                    });
+                    var tt = "";
+                    var tempUnit = [];
+                    $.each(dataBranch, function (i, item) {
+                        if (tt != item.branch_id) {
+                            tt = item.branch_id;
+                            tempUnit.push({
+                                'branch_id': item.branch_id,
+                                'branch_name': item.branch_name,
+                            });
+                        }
+                    });
+                    if (tempUnit.length > 0, tempTgl != "" && tempTotal != "") {
+                        var tTgl = tempTgl.split("|");
+                        var tTotal = tempTotal.split("|");
+                        var temp = "";
+                        var tempY = "";
+                        var tempL = "";
+                        var tempCo = "";
+
+                        $.each(tTgl, function (i, item) {
+                            var a = '{' + '"' + 'y' + '"' + ':' + '"' + item + '"' + ',';
+                            var b = "}";
+                            var tp = tTotal[i].split("=");
+                            var isi = "";
+
+                            $.each(tempUnit, function (it, itemt) {
+                                var tot = 0;
+                                $.each(tp, function (ix, itemx) {
+                                    var id = itemx.split("#")[0];
+                                    var nilai = itemx.split("#")[1];
+                                    if (id == itemt.branch_id) {
+                                        tot = nilai;
+                                    }
+                                });
+                                var it = it + 1;
+                                if (isi != "") {
+                                    isi = isi + ',' + '"' + 'item' + it + '"' + ':' + '"' + tot + '"';
+                                } else {
+                                    isi = '"' + 'item' + it + '"' + ':' + '"' + tot + '"';
+                                }
+                            });
+
+                            if (temp != "") {
+                                temp = temp + ', ' + a + isi + b;
+                            } else {
+                                temp = a + isi + b;
+                            }
+                        });
+                        $.each(tempUnit, function (it, itemt) {
+                            var it = it + 1;
+                            if (tempY != "") {
+                                tempY = tempY + ', ' + '"' + 'item' + it + '"';
+                                tempL = tempL + ', ' + '"' + itemt.branch_name + '"';
+                            } else {
+                                tempY = '"' + 'item' + it + '"';
+                                tempL = '"' + itemt.branch_name + '"';
+                            }
+                            $.each(colorBranch, function (ic, itemc) {
+                                if (itemt.branch_id == itemc.branch_id) {
+                                    if (tempCo != "") {
+                                        tempCo = tempCo + ', "' + itemc.color + '"';
+                                    } else {
+                                        tempCo = '"' + itemc.color + '"';
+                                    }
+                                }
+                            });
+                        });
+
+                        var dataC = "[" + temp + "]";
+                        var dataY = "[" + tempY + "]";
+                        var dataL = "[" + tempL + "]";
+                        var dataCo = "[" + tempCo + "]";
+
+                        var dataPar = JSON.parse(dataC);
+                        var dataParY = JSON.parse(dataY);
+                        var dataParL = JSON.parse(dataL);
+                        var dataParCo = JSON.parse(dataCo);
+
+                        $('#line-chart-kamar').empty();
+                        var line = new Morris.Line({
+                            element: 'line-chart-kamar',
+                            resize: true,
+                            data: dataPar,
+                            xkey: 'y',
+                            ykeys: dataParY,
+                            labels: dataParL,
+                            lineColors: dataParCo,
+                            hideHover: 'auto',
+                            parseTime: false,
+                            lineWidth: 1,
+                            smooth:true
+                        });
+                    } else {
+                        $('#line-chart-kamar').empty();
+                    }
+                    $('#modal-loading').modal('hide');
                 }
             });
         }
