@@ -130,8 +130,10 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                     seqKodering = kelasRuanganDao.getNextKodering();
                 } catch (HibernateException e) {
                     logger.error("[PayrollSkalaGajiBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiId id, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiId id, please info to your admin..."
+                            + e.getMessage());
                 }
+
                 Map map = new HashMap<>();
                 map.put("position_id", kelasRuangan.getPositionId());
                 String koderingPosition = positionDao.getKodringPosition(map);

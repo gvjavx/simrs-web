@@ -112,7 +112,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idLab2" name="lab.idLab" required="true" readonly="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="idLab2" name="lab.idLab" required="true"
+                                             readonly="true" disabled="false" cssClass="form-control"/>
                                 <%--<s:hidden id="idLab2" name="lab.idLab" />--%>
                             </table>
                         </td>
@@ -123,7 +124,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaLab2" name="lab.namaLab" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield cssStyle="margin-top: 5px" id="namaLab2" name="lab.namaLab" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -136,7 +137,8 @@
                             <table>
                                 <s:action id="initComboOperatorLab" namespace="/lab" name="initComboOperatorLab_lab"/>
                                 <s:select list="#initComboOperatorLab.listOfComboOperatorLab" id="idOperatorLab2" name="lab.idOperatorLab"
-                                          listKey="idOperatorLab" listValue="namaOperator" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="idOperatorLab" listValue="namaOperator" headerKey=""
+                                          headerValue="[Select one]" cssClass="form-control"  cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -149,7 +151,8 @@
                             <table>
                                 <s:action id="initComboDokter" namespace="/lab" name="initComboDokter_lab"/>
                                 <s:select list="#initComboDokter.listOfComboDokter" id="idDokter2" name="lab.idDokter"
-                                          listKey="idDokter" listValue="namaDokter" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="idDokter" listValue="namaDokter"
+                                          headerKey="" headerValue="[Select one]" cssClass="form-control"  cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -162,7 +165,8 @@
                             <table>
                                 <s:action id="initComboKategoriLab" namespace="/lab" name="initComboKategoriLab_lab"/>
                                 <s:select list="#initComboKategoriLab.listOfComboKategoriLab" id="idKategoriLab2" name="lab.idKategoriLab"
-                                          listKey="idKategoriLab" listValue="namaKategori" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="idKategoriLab" listValue="namaKategori" headerKey=""
+                                          headerValue="[Select one]" cssClass="form-control"  cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -173,7 +177,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="tarif2" name="lab.tarif" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="tarif2" name="lab.tarif" required="true"
+                                             disabled="false" cssClass="form-control"  cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>

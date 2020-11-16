@@ -7,6 +7,7 @@ import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
 import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.Asuransi;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -170,9 +171,16 @@ public class AsuransiBoImpl implements AsuransiBo  {
     public Asuransi saveAdd(Asuransi bean) throws GeneralBOException {
         logger.info("[AsurnasiBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
-            String status = cekStatus(bean.getNoMaster(), bean.getIdAsuransi());
-            String asuransiId;
-            if (!status.equalsIgnoreCase("exist")){
+            List<ImSimrsAsuransiEntity> cekList = new ArrayList<>();
+            try {
+                cekList = asuransiDao.getDataAsuransibaru(bean.getNoMaster());
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+            }
+            if(cekList.size() > 0){
+                throw new GeneralBOException("Nama Asuransi sudah ada...!");
+            }else{
+                String asuransiId;
                 try {
                     // Generating ID, get from postgre sequence
                     asuransiId = asuransiDao.getNextAsuransuId();
@@ -214,10 +222,22 @@ public class AsuransiBoImpl implements AsuransiBo  {
                     logger.error("[AsuransiiBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving new data Asuransi, please info to your admin..." + e.getMessage());
                 }
-            }else{
-                throw new GeneralBOException("Maaf Data dengan Nama Asuransi Tersebut Sudah Ada");
             }
+
+//            else{
+//                throw new GeneralBOException("Maaf Data dengan Nama Asuransi Tersebut Sudah Ada");
+//            }
         }
+
+
+
+
+
+
+//            String status = cekStatus(bean.getNoMaster(), bean.getIdAsuransi());
+
+//            if (!status.equalsIgnoreCase("exist")){
+
 
         logger.info("[AsuransiBoImpl.saveAdd] end process <<<");
         return null;

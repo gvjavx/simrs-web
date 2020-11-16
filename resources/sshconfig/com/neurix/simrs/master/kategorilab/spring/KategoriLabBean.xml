@@ -10,7 +10,9 @@
     />
 
     <bean id="kategoriLabBo" class="com.neurix.simrs.master.kategorilab.bo.impl.KategoriLabBoImpl"
-          p:kategoriLabDao-ref="kategoriLabDao"/>
+          p:kategoriLabDao-ref="kategoriLabDao"
+          p:positionDao-ref="positionDao"
+    />
 
     <bean id="kategoriLabBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="kategoriLabBo">

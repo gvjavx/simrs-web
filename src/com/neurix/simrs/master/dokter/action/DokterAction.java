@@ -78,18 +78,20 @@ public class DokterAction extends BaseMasterAction {
             if(listOfResult != null){
                 for (Dokter dokter: listOfResult) {
                     if(kode.equalsIgnoreCase(dokter.getIdDokter()) && flag.equalsIgnoreCase(dokter.getFlag())){
-                        String kodering = dokter.getKodering();
-                        String[] arrOfStr = kodering.split("\\.");
-                        String kode1 = arrOfStr[1];String kode2 = arrOfStr[2];String kode3 = arrOfStr[3];
-                        String koder = kode1+"."+kode2+"."+kode3;
-                        ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-                        Position position = new Position();
-                        PositionBo positionBo = (PositionBo) context.getBean("positionBoProxy");
-                        position.setKodering(koder);
-                        position.setFlag("Y");
-                        List<Position> positions = positionBo.getByCriteria(position);
-                        String positionId = positions.get(0).getPositionId();
-                        dokter.setPositionId(positionId);
+//                        String kodering = dokter.getKodering();
+//                        String[] arrOfStr = kodering.split("\\.");
+//                        String kode1 = arrOfStr[1];
+//                        String kode2 = arrOfStr[2];
+//                        String kode3 = arrOfStr[3] ;
+//                        String koder = kode1+"."+kode2+"."+kode3;
+//                        ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+//                        Position position = new Position();
+//                        PositionBo positionBo = (PositionBo) context.getBean("positionBoProxy");
+//                        position.setKodering(dokter.getKodering());
+//                        position.setFlag("Y");
+//                        List<Position> positions = positionBo.getByCriteria(position);
+//                        String positionId = positions.get(0).getPositionId();
+//                        dokter.setPositionId(positionId);
 
                         setDokter(dokter);
                         break;
@@ -276,7 +278,7 @@ public class DokterAction extends BaseMasterAction {
     public String initComboPelayanan() {
 
         Pelayanan pelayanan = new Pelayanan();
-        pelayanan.setFlag("Y");
+//        pelayanan.setFlag("Y");
 
         List<Pelayanan> listOfPelayanan = new ArrayList<Pelayanan>();
         try {
@@ -340,7 +342,6 @@ public class DokterAction extends BaseMasterAction {
         try {
 
             Dokter editDokter = getDokter();
-
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -404,7 +405,7 @@ public class DokterAction extends BaseMasterAction {
     public String initComboPosition() {
 
         Position position = new Position();
-        position.setFlag("Y");
+//        position.setFlag("Y");
         position.setKategori("dokter");
 
         List<Position> listOfPosition = new ArrayList<Position>();

@@ -50,7 +50,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pelayanan</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i>Pelayanan</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -68,14 +68,16 @@
                                         <table>
 
                                             <tr>
-                                                <td>
+                                                <td width="18%">
                                                     <label class="control-label"><small>Pelayanan ID :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield cssStyle="margin-top: 7px" id="idPelayanan"
+                                                        <s:textfield cssStyle="margin-top: 7px"
+                                                                     id="idPelayanans"
                                                                      name="pelayanan.idPelayanan"
-                                                                     required="true" disabled="false" cssClass="form-control"/>
+                                                                     required="false"
+                                                                     readonly="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -122,22 +124,6 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Divisi :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                            <s:action id="initComboPosition" namespace="/pelayanan"
-                                                                      name="initComboPosition_pelayanan"/>
-                                                            <s:select list="#initComboPosition.listOfComboPositions"
-                                                                      id="positionId" name="pelayanan.positionId"
-                                                            listKey="positionId" listValue="positionName" headerKey=""
-                                                                      headerValue="[Select one]" cssClass="form-control select2"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
                                                     <label class="control-label"><small>Tipe :</small></label>
                                                 </td>
                                                 <td>
@@ -171,8 +157,8 @@
                                         <div id="actions" class="form-actions">
                                             <table align="center">
                                                 <tr>
-                                                    <td>
-                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="pelayananForm" id="search" name="search"
+                                                    <td >
+                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary" formIds="pelayananForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
@@ -181,13 +167,13 @@
                                                     <td>
                                                         <s:url var="urlAdd" namespace="/pelayanan" action="add_pelayanan" escapeAmp="false">
                                                         </s:url>
-                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                        <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
                                                             Add Pelayanan
                                                         </sj:a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_pelayanan"/>'">
+                                                        <button type="button" class="btn btn-danger" cssStyle="margin-right: 5px" onclick="window.location.href='<s:url action="initForm_pelayanan"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -197,7 +183,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="80%">
+                                            <table id="showdata" width="90%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="waiting_dialog_loading" openTopics="showDialog"
@@ -217,8 +203,9 @@
                                                                      name="image_indicator_write">
                                                             </center>
                                                         </sj:dialog>
+
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="500" width="600" autoOpen="false"
+                                                                   height="440" width="600" autoOpen="false"
                                                                    title="Pelayanan ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
@@ -235,7 +222,7 @@
                                                         <s:set name="listOfsearchPelayanan" value="#session.listOfResultPelayanan" scope="request" />
                                                         <display:table name="listOfsearchPelayanan" class="table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_pelayanan.action" export="true" id="row"
-                                                                       pagesize="14" style="font-size:10">
+                                                                       pagesize="14" style="font-size:12">
 
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>

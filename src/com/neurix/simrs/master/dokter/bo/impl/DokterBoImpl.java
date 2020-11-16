@@ -92,8 +92,8 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     public void saveEdit(Dokter bean) throws GeneralBOException {
         logger.info("[DokterBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
-            String historyId = "";
-            String kodering, seqKodering;
+//            String historyId = "";
+
             String dokterId = bean.getIdDokter();
 
             ImSimrsDokterEntity imSimrsDokterEntity = null;
@@ -107,41 +107,19 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
 
             if (imSimrsDokterEntity != null) {
                 if (bean.getNamaDokter().equalsIgnoreCase(imSimrsDokterEntity.getNamaDokter())){
-                    String kode = imSimrsDokterEntity.getKodering();
-                    if (kode != null){
-                        String[] arrOfStr = kode.split("\\.");
-                        seqKodering = arrOfStr[4];
-
-                        Map map = new HashMap<>();
-                        map.put("position_id", bean.getPositionId());
-                        String koderingPosition = positionDao.getKodringPosition(map);
-
-                        String branchId = CommonUtil.userBranchLogin();
-                        Map map1 = new HashMap<>();
-                        map1.put("branch_id", branchId);
-                        String koderingBranch = branchDao.getKodringBranches(map1);
-
-                        kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-                    }else {
-                        seqKodering = dokterDao.getNextKodering();
-                        Map map = new HashMap<>();
-                        map.put("position_id", bean.getPositionId());
-                        String koderingPosition = positionDao.getKodringPosition(map);
-
-                        String branchId = CommonUtil.userBranchLogin();
-                        Map map1 = new HashMap<>();
-                        map1.put("branch_id", branchId);
-                        String koderingBranch = branchDao.getKodringBranches(map1);
-
-                        kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-                    }
-
                     imSimrsDokterEntity.setIdDokter(bean.getIdDokter());
                     imSimrsDokterEntity.setNamaDokter(bean.getNamaDokter());
                     imSimrsDokterEntity.setIdPelayanan(bean.getIdPelayanan());
                     imSimrsDokterEntity.setKuota(bean.getKuota());
                     imSimrsDokterEntity.setKodeDpjp(bean.getKodeDpjp());
-                    imSimrsDokterEntity.setKodering(kodering);
+
+                    imSimrsDokterEntity.setFlagCall(bean.getFlagCall());
+                    imSimrsDokterEntity.setFlagTele(bean.getFlagTele());
+                    imSimrsDokterEntity.setKuotaTele(bean.getKuotaTele());
+                    imSimrsDokterEntity.setKuotaOnSite(bean.getKuotaOnSite());
+                    imSimrsDokterEntity.setSip(bean.getSip());
+                    imSimrsDokterEntity.setKuotaBpjs(bean.getKuotaBpjs());
+
                     imSimrsDokterEntity.setFlag(bean.getFlag());
                     imSimrsDokterEntity.setAction(bean.getAction());
                     imSimrsDokterEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -159,40 +137,20 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                 }else {
                     String status = cekStatus(bean.getNamaDokter());
                     if (!status.equalsIgnoreCase("exist")){
-                        String kode = imSimrsDokterEntity.getKodering();
-                        if (kode != null){
-                            String[] arrOfStr = kode.split("\\.");
-                            seqKodering = arrOfStr[4];
-
-                            Map map = new HashMap<>();
-                            map.put("position_id", bean.getPositionId());
-                            String koderingPosition = positionDao.getKodringPosition(map);
-
-                            String branchId = CommonUtil.userBranchLogin();
-                            Map map1 = new HashMap<>();
-                            map1.put("branch_id", branchId);
-                            String koderingBranch = branchDao.getKodringBranches(map1);
-
-                            kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-                        }else {
-                            seqKodering = dokterDao.getNextKodering();
-                            Map map = new HashMap<>();
-                            map.put("position_id", bean.getPositionId());
-                            String koderingPosition = positionDao.getKodringPosition(map);
-
-                            String branchId = CommonUtil.userBranchLogin();
-                            Map map1 = new HashMap<>();
-                            map1.put("branch_id", branchId);
-                            String koderingBranch = branchDao.getKodringBranches(map1);
-
-                            kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-                        }
                         imSimrsDokterEntity.setIdDokter(bean.getIdDokter());
                         imSimrsDokterEntity.setNamaDokter(bean.getNamaDokter());
                         imSimrsDokterEntity.setIdPelayanan(bean.getIdPelayanan());
                         imSimrsDokterEntity.setKuota(bean.getKuota());
                         imSimrsDokterEntity.setKodeDpjp(bean.getKodeDpjp());
-                        imSimrsDokterEntity.setKodering(kodering);
+
+
+                        imSimrsDokterEntity.setFlagCall(bean.getFlagCall());
+                        imSimrsDokterEntity.setFlagTele(bean.getFlagTele());
+                        imSimrsDokterEntity.setKuotaTele(bean.getKuotaTele());
+                        imSimrsDokterEntity.setKuotaOnSite(bean.getKuotaOnSite());
+                        imSimrsDokterEntity.setSip(bean.getSip());
+                        imSimrsDokterEntity.setKuotaBpjs(bean.getKuotaBpjs());
+
                         imSimrsDokterEntity.setFlag(bean.getFlag());
                         imSimrsDokterEntity.setAction(bean.getAction());
                         imSimrsDokterEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -304,7 +262,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("flag", "Y");
-        hsCriteria.put("id_dokter", bean.getIdDokter());
+        hsCriteria.put("id_dokter",bean.getIdDokter());
 
         try {
             results = dokterDao.getByCriteria(hsCriteria);
@@ -326,7 +284,6 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
             dokter.setIdDokter(entity.getIdDokter());
             dokter.setNamaDokter(entity.getNamaDokter());
             dokter.setKuota(entity.getKuota());
-            dokter.setKuotaTele(entity.getKuotaTele());
             dokter.setFlag(entity.getFlag());
             dokter.setAction(entity.getAction());
             dokter.setCreatedDate(entity.getCreatedDate());
@@ -336,8 +293,14 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
             dokter.setLat(entity.getLat());
             dokter.setLon(entity.getLon());
             dokter.setKodeDpjp(entity.getKodeDpjp());
-            dokter.setFlagCall(entity.getFlagCall());
-            dokter.setFlagTele(entity.getFlagTele());
+            dokter.setSip(entity.getSip());
+
+
+//            dokter.setKuotaTele(entity.getKuotaTele());
+//            dokter.setFlagCall(entity.getFlagCall());
+//            dokter.setFlagTele(entity.getFlagTele());
+//            dokter.setKuotaOnSite(entity.getKuotaOnSite());
+//            dokter.setKuotaBpjs(entity.getKuotaBpjs());
             results.add(dokter);
         }
 
@@ -582,8 +545,14 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                     dokter.setKodering(entity.getKodering());
                     dokter.setKuotaTele(entity.getKuotaTele());
                     dokter.setFlagTele(entity.getFlagTele());
+                    dokter.setFlagCall(entity.getFlagCall());
+                    dokter.setKuotaOnSite(entity.getKuotaOnSite());
+                    dokter.setSip(entity.getSip());
+                    dokter.setKuotaBpjs(entity.getKuotaBpjs());
+
                     dokter.setLat(entity.getLat());
                     dokter.setLon(entity.getLon());
+                    dokter.setSip(entity.getSip());
 
                     if (entity.getIdPelayanan() != null){
                         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();

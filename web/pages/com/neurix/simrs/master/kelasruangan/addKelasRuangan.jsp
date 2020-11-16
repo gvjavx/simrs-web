@@ -38,7 +38,6 @@
                 }
 
                 document.getElementById('errorValidationMessage1').innerHTML = msg;
-
                 $.publish('showErrorValidationDialog');
             }
         });
@@ -112,7 +111,8 @@
                             <table>
                                 <s:action id="initComboPosition" namespace="/kelasruangan" name="initComboPosition_kelasruangan"/>
                                 <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="kelasRuangan.positionId"
-                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="positionId" listValue="positionName"
+                                          headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>

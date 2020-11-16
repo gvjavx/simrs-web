@@ -23,6 +23,7 @@ import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -70,9 +71,9 @@ public class RuanganBoImpl implements RuanganBo {
         if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())) {
             hsCriteria.put("id_kelas_ruangan", bean.getIdKelasRuangan());
         }
-        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())) {
-            hsCriteria.put("status_ruangan", bean.getStatusRuangan());
-        }
+//        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())) {
+//            hsCriteria.put("status_ruangan", bean.getStatusRuangan());
+//        }
         if (bean.getNoRuangan() != null && !"".equalsIgnoreCase(bean.getNoRuangan())) {
             hsCriteria.put("no_ruangan", bean.getNoRuangan());
         }
@@ -82,12 +83,12 @@ public class RuanganBoImpl implements RuanganBo {
         if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())) {
             hsCriteria.put("id_kelas_ruangan", bean.getIdKelasRuangan());
         }
-        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())) {
-            hsCriteria.put("status_ruangan", bean.getStatusRuangan());
-        }
-        if (bean.getSisaKuota() != null && !"".equalsIgnoreCase(bean.getSisaKuota().toString())) {
-            hsCriteria.put("sisa_kuota", bean.getSisaKuota());
-        }
+//        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())) {
+//            hsCriteria.put("status_ruangan", bean.getStatusRuangan());
+//        }
+//        if (bean.getSisaKuota() != null && !"".equalsIgnoreCase(bean.getSisaKuota().toString())) {
+//            hsCriteria.put("sisa_kuota", bean.getSisaKuota());
+//        }
         if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
             if ("N".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", "N");
@@ -113,18 +114,19 @@ public class RuanganBoImpl implements RuanganBo {
                 ruangan.setNamaRuangan(listEntity.getNamaRuangan());
                 ruangan.setNoRuangan(listEntity.getNoRuangan());
 
-                ruangan.setStatusRuangan(listEntity.getStatusRuangan());
-                if (listEntity.getStatusRuangan().equalsIgnoreCase("Y")){
-                    ruangan.setStatusRuanganName("Tersedia");
-                } else{
-                    ruangan.setStatusRuanganName("Tidak Tersedia");
-                }
+//                ruangan.setStatusRuangan(listEntity.getStatusRuangan());
+//                if (listEntity.getStatusRuangan().equalsIgnoreCase("Y")){
+//                    ruangan.setStatusRuanganName("Tersedia");
+//                } else{
+//                    ruangan.setStatusRuanganName("Tidak Tersedia");
+//                }
                 ruangan.setIdKelasRuangan(listEntity.getIdKelasRuangan());
                 ruangan.setKeterangan(listEntity.getKeterangan());
                 ruangan.setTarif(listEntity.getTarif());
+                ruangan.setStTarif(CommonUtil.numbericFormat(new BigDecimal( listEntity.getTarif()),"###,###"));
                 ruangan.setBranchId(listEntity.getBranchId());
-                ruangan.setSisaKuota(listEntity.getSisaKuota());
-                ruangan.setKuota(listEntity.getKuota());
+//                ruangan.setSisaKuota(listEntity.getSisaKuota());
+//                ruangan.setKuota(listEntity.getKuota());
                 ruangan.setFlag(listEntity.getFlag());
                 ruangan.setAction(listEntity.getAction());
                 ruangan.setStCreatedDate(listEntity.getCreatedDate().toString());
@@ -163,13 +165,13 @@ public class RuanganBoImpl implements RuanganBo {
                 mtSimrsRuanganEntity.setIdRuangan("RUA" + id);
                 mtSimrsRuanganEntity.setNamaRuangan(ruangan.getNamaRuangan());
                 mtSimrsRuanganEntity.setNoRuangan(ruangan.getNoRuangan());
-                mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
+//                mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
                 mtSimrsRuanganEntity.setIdKelasRuangan(ruangan.getIdKelasRuangan());
                 mtSimrsRuanganEntity.setKeterangan(ruangan.getKeterangan());
                 mtSimrsRuanganEntity.setTarif(ruangan.getTarif());
                 mtSimrsRuanganEntity.setBranchId(ruangan.getBranchId());
-                mtSimrsRuanganEntity.setKuota(ruangan.getKuota());
-                mtSimrsRuanganEntity.setSisaKuota(ruangan.getSisaKuota());
+//                mtSimrsRuanganEntity.setKuota(ruangan.getKuota());
+//                mtSimrsRuanganEntity.setSisaKuota(ruangan.getSisaKuota());
 
                 mtSimrsRuanganEntity.setFlag("Y");
                 mtSimrsRuanganEntity.setAction("C");
@@ -198,14 +200,13 @@ public class RuanganBoImpl implements RuanganBo {
     @Override
     public void saveEdit(Ruangan ruangan) throws GeneralBOException {
         logger.info("[RuanganBoImpl.saveEdit] Start >>>>>>>");
+        if (ruangan != null) {
 
-        if (ruangan != null && ruangan.getIdRuangan() != null && !"".equalsIgnoreCase(ruangan.getIdRuangan())) {
-
-            String idRuangan = ruangan.getIdRuangan();
+            String ruanganid = ruangan.getIdRuangan();
             MtSimrsRuanganEntity mtSimrsRuanganEntity = null;
             try {
                 // Get data from database by ID
-                mtSimrsRuanganEntity = ruanganDao.getById("idRuangan", idRuangan);
+                mtSimrsRuanganEntity = ruanganDao.getById("idRuangan", ruanganid);
                 //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
             } catch (HibernateException e) {
                 logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
@@ -221,13 +222,13 @@ public class RuanganBoImpl implements RuanganBo {
                     mtSimrsRuanganEntity.setIdRuangan(ruangan.getIdRuangan());
                     mtSimrsRuanganEntity.setNamaRuangan(ruangan.getNamaRuangan());
                     mtSimrsRuanganEntity.setNoRuangan(ruangan.getNoRuangan());
-                    mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
+//                    mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
                     mtSimrsRuanganEntity.setIdKelasRuangan(ruangan.getIdKelasRuangan());
                     mtSimrsRuanganEntity.setKeterangan(ruangan.getKeterangan());
                     mtSimrsRuanganEntity.setTarif(ruangan.getTarif());
                     mtSimrsRuanganEntity.setBranchId(ruangan.getBranchId());
-                    mtSimrsRuanganEntity.setKuota(ruangan.getKuota());
-                    mtSimrsRuanganEntity.setSisaKuota(ruangan.getSisaKuota());
+//                    mtSimrsRuanganEntity.setKuota(ruangan.getKuota());
+//                    mtSimrsRuanganEntity.setSisaKuota(ruangan.getSisaKuota());
 
                     mtSimrsRuanganEntity.setFlag(ruangan.getFlag());
                     mtSimrsRuanganEntity.setAction("U");
@@ -246,13 +247,13 @@ public class RuanganBoImpl implements RuanganBo {
                         mtSimrsRuanganEntity.setIdRuangan(ruangan.getIdRuangan());
                         mtSimrsRuanganEntity.setNamaRuangan(ruangan.getNamaRuangan());
                         mtSimrsRuanganEntity.setNoRuangan(ruangan.getNoRuangan());
-                        mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
+//                        mtSimrsRuanganEntity.setStatusRuangan(ruangan.getStatusRuangan());
                         mtSimrsRuanganEntity.setIdKelasRuangan(ruangan.getIdKelasRuangan());
                         mtSimrsRuanganEntity.setKeterangan(ruangan.getKeterangan());
                         mtSimrsRuanganEntity.setTarif(ruangan.getTarif());
                         mtSimrsRuanganEntity.setBranchId(ruangan.getBranchId());
-                        mtSimrsRuanganEntity.setKuota(ruangan.getKuota());
-                        mtSimrsRuanganEntity.setSisaKuota(ruangan.getSisaKuota());
+//                        mtSimrsRuanganEntity.setKuota(ruangan.getKuota());
+//                        mtSimrsRuanganEntity.setSisaKuota(ruangan.getSisaKuota());
 
                         mtSimrsRuanganEntity.setFlag(ruangan.getFlag());
                         mtSimrsRuanganEntity.setAction("U");
@@ -423,9 +424,9 @@ public class RuanganBoImpl implements RuanganBo {
         if (bean.getNoRuangan() != null && !"".equalsIgnoreCase(bean.getNoRuangan())) {
             hsCriteria.put("no_ruangan", bean.getNoRuangan());
         }
-        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())) {
-            hsCriteria.put("status_ruangan", bean.getStatusRuangan());
-        }
+//        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())) {
+//            hsCriteria.put("status_ruangan", bean.getStatusRuangan());
+//        }
         if (bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())) {
             hsCriteria.put("id_kelas_ruangan", bean.getIdKelasRuangan());
         }

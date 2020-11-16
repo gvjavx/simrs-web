@@ -67,7 +67,7 @@
                                         </table>
                                         <table>
                                             <tr>
-                                                <td>
+                                                <td width="16%">
                                                     <label class="control-label"><small>Asuransi ID :</small></label>
                                                 </td>
                                                 <td>
@@ -142,7 +142,7 @@
                                                                    formIds="asuransiForm" id="search"
                                                                    name="search"
                                                                    onClickTopics="showDialog"
-                                                                   onCompleteTopics="closeDialog" >
+                                                                   onCompleteTopics="closeDialog" cssStyle="margin-right: 5px">
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>
@@ -151,14 +151,14 @@
                                                         <s:url var="urlAdd" namespace="/asuransi"
                                                                action="add_asuransi" escapeAmp="false">
                                                         </s:url>
-                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu"
+                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" cssStyle="margin-right: 5px"
                                                               href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
                                                             Add Asuransi
                                                         </sj:a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger"
+                                                        <button type="button" class="btn btn-danger" cssStyle="margin-right: 5px"
                                                                 onclick="window.location.href='<s:url
                                                                         action="initForm_asuransi"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
@@ -170,7 +170,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="80%">
+                                            <table id="showdata" width="90%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="waiting_dialog_loading" openTopics="showDialog"
@@ -191,7 +191,7 @@
                                                             </center>
                                                         </sj:dialog>
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="400" width="500" autoOpen="false"
+                                                                   height="340" width="500" autoOpen="false"
                                                                    title="Asuransi ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
@@ -208,7 +208,7 @@
                                                         <s:set name="listOfsearchAsuransi" value="#session.listOfResultAsuransi" scope="request" />
                                                         <display:table name="listOfsearchAsuransi" class="table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_asuransi.action" export="true" id="row" pagesize="14"
-                                                                       style="font-size:10">
+                                                                       style="font-size:12">
 
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>

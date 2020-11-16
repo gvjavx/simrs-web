@@ -656,7 +656,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 if (rawatInapEntity.getIdRuangan() != null && !"".equalsIgnoreCase(rawatInapEntity.getIdRuangan())) {
                     Ruangan ruangan = new Ruangan();
                     ruangan.setIdRuangan(rawatInapEntity.getIdRuangan());
-                    ruangan.setStatusRuangan("N");
+//                    ruangan.setStatusRuangan("N");
                     List<MtSimrsRuanganEntity> ruanganEntities = getListEntityRuangan(ruangan);
 
                     if (!ruanganEntities.isEmpty() && ruanganEntities.size() > 0) {

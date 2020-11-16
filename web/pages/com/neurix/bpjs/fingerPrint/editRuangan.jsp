@@ -98,7 +98,8 @@
         $.subscribe('errorDialog', function (event, data) {
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            document.getElementById('errorMessage').innerHTML = "Status = "
+                + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
         });
 
@@ -116,7 +117,8 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="editRuanganForm" method="post" theme="simple" namespace="/ruangan" action="saveEdit_ruangan" cssClass="well form-horizontal">
+            <s:form id="editRuanganForm" method="post" theme="simple" namespace="/ruangan" action="saveEdit_ruangan"
+                    cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -135,35 +137,48 @@
                 </table>
 
                 <table >
-                    <S:hidden id="id_ruangan2" name="ruangan.idRuangan">
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>ID ruangan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="id_ruangan2" name="ruangan.idRuangan" readonly="true"
+                                             required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
 
-                    </S:hidden>
+
+                    <%--<S:hidden id="" name="ruangan.idRuangan">--%>
+
+                    <%--</S:hidden>--%>
 
                     <tr>
                         <td>
                             <label class="control-label">
-                                <small>Nama Ruangan</small>
+                                <small>Nama ruangan : </small>
                             </label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="nama_ruangan2" cssStyle="margin-top: 7px"
+                                <s:textfield id="nama_ruangan2" cssStyle="margin-top: 5px"
                                              name="ruangan.namaRuangan" required="false"
-                                             readonly="false" cssClass="form-control"/>
+                                             readonly="false" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <label class="control-label">
-                                <small>No. Ruangan</small>
+                                <small>No. Ruangan :</small>
                             </label>
                         </td>
                         <td>
                             <table>
                                 <s:textfield id="no_ruangan2" name="ruangan.noRuangan"
                                              required="false" readonly="false"
-                                             cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                             cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -175,7 +190,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'Y':'Tersedia','N':'Tidak Tersedia'}" cssStyle="margin-top: 7px"
+                                <s:select list="#{'Y':'Tersedia','N':'Tidak Tersedia'}" cssStyle="margin-top: 5px"
                                           id="status_ruangan2" name="ruangan.statusRuangan"
                                           headerKey="" headerValue="[Select one]"
                                           cssClass="form-control"/>
@@ -244,7 +259,8 @@
                             <i class="fa fa-check"></i>
                             Save
                         </sj:submit>
-                        <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
+                        <button type="button" id="cancel" class="btn btn-default"
+                                style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
                         </button>
                     </div>

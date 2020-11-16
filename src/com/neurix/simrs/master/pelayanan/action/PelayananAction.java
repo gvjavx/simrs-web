@@ -84,7 +84,6 @@ public class PelayananAction extends BaseMasterAction {
             } else {
                 setPelayanan(new Pelayanan());
             }
-
             logger.info("[PayrollSkalaGajiAction.init] end process >>>");
         }
         return getPelayanan();
@@ -94,10 +93,12 @@ public class PelayananAction extends BaseMasterAction {
     public String add() {
         logger.info("[PelayananAction.add] start process >>>");
         Pelayanan addPelayanan = new Pelayanan();
+        if(!"ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
+            addPelayanan.setBranchId(CommonUtil.userBranchLogin());
+        }
         setPelayanan(addPelayanan);
         setAddOrEdit(true);
         setAdd(true);
-
 //        HttpSession session = ServletActionContext.getRequest().getSession();
 //        session.removeAttribute("listOfResult");
 
@@ -318,7 +319,6 @@ public class PelayananAction extends BaseMasterAction {
 
         Pelayanan searchPelayanan = getPelayanan();
         List<Pelayanan> listOfsearchPelayanan = new ArrayList();
-
         try {
             listOfsearchPelayanan = pelayananBoProxy.getByCriteria(searchPelayanan);
         } catch (GeneralBOException e) {
@@ -333,7 +333,6 @@ public class PelayananAction extends BaseMasterAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
             return ERROR;
         }
-
         String branchId = CommonUtil.userBranchLogin();
         Pelayanan data = new Pelayanan();
         if (branchId != null){

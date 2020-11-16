@@ -2,6 +2,7 @@ package com.neurix.simrs.master.jenisperiksapasien.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -79,4 +80,15 @@ public class AsuransiDao extends GenericDao<ImSimrsAsuransiEntity, String> {
 
         return "ASN" + sId;
     }
+
+
+    public List<ImSimrsAsuransiEntity> getDataAsuransibaru(String noMaster) throws HibernateException {
+        List<ImSimrsAsuransiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsAsuransiEntity.class)
+                .add(Restrictions.eq("noMaster", noMaster))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results;
+    }
+
 }

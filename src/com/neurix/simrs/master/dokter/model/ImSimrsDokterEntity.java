@@ -27,6 +27,15 @@ public class ImSimrsDokterEntity implements Serializable {
     private String kuotaTele;
     private String sip;
     private BigInteger kuotaOnSite;
+    private String kuotaBpjs;
+
+    public String getKuotaBpjs() {
+        return kuotaBpjs;
+    }
+
+    public void setKuotaBpjs(String kuotaBpjs) {
+        this.kuotaBpjs = kuotaBpjs;
+    }
 
     public BigInteger getKuotaOnSite() {
         return kuotaOnSite;

@@ -34,6 +34,9 @@ public class KategoriLabDao extends GenericDao<ImSimrsKategoriLabEntity,String> 
             if (mapCriteria.get("nama_kategori")!=null) {
                 criteria.add(Restrictions.ilike("namaKategori", "%" + (String)mapCriteria.get("nama_kategori") + "%"));
             }
+            if (mapCriteria.get("divisi_id")!=null) {
+                criteria.add(Restrictions.ilike("divisiId", "%" + (String)mapCriteria.get("divisi_id") + "%"));
+            }
         }
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         // Order by

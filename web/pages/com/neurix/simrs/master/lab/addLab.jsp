@@ -116,7 +116,8 @@
                             <table>
                                 <s:action id="initComboOperatorLab" namespace="/lab" name="initComboOperatorLab_lab"/>
                                 <s:select list="#initComboOperatorLab.listOfComboOperatorLab" id="idOperatorLab1" name="lab.idOperatorLab"
-                                          listKey="idOperatorLab" listValue="namaOperator" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="idOperatorLab" listValue="namaOperator" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -129,7 +130,8 @@
                             <table>
                                 <s:action id="initComboDokter" namespace="/lab" name="initComboDokter_lab"/>
                                 <s:select list="#initComboDokter.listOfComboDokter" id="idDokter1" name="lab.idDokter"
-                                          listKey="idDokter" listValue="namaDokter" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="idDokter" listValue="namaDokter" headerKey=""
+                                          headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -142,7 +144,8 @@
                             <table>
                                 <s:action id="initComboKategoriLab" namespace="/lab" name="initComboKategoriLab_lab"/>
                                 <s:select list="#initComboKategoriLab.listOfComboKategoriLab" id="idKategoriLab1" name="lab.idKategoriLab"
-                                          listKey="idKategoriLab" listValue="namaKategori" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="idKategoriLab" listValue="namaKategori" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -153,7 +156,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="tarif1" name="lab.tarif" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="tarif1" name="lab.tarif" required="true" disabled="false" cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
