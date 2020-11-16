@@ -1384,6 +1384,9 @@ public class RawatInapAction extends BaseMasterAction {
                         detailCheckupList = checkupDetailBo.getByCriteria(detailCheckup);
                     } catch (GeneralBOException e) {
                         logger.error("[RawatInap.saveTppri] Error when geting data detail poli, ", e);
+                        finalResponse.setStatus("error");
+                        finalResponse.setMsg("Terjadi kesalahan ketika mencari detail pasien, "+e.getMessage());
+                        return finalResponse;
                     }
 
                     if (!detailCheckupList.isEmpty()) {
@@ -1401,6 +1404,9 @@ public class RawatInapAction extends BaseMasterAction {
                                 headerCheckupList = checkupBo.getByCriteria(checkup);
                             } catch (GeneralBOException e) {
                                 logger.error("[CheckupDetailAction.getHeaderCheckup] Error When Get Header Checkup Data", e);
+                                finalResponse.setStatus("error");
+                                finalResponse.setMsg("Terjadi kesalahan ketika mencari data checkup pasien, "+e.getMessage());
+                                return finalResponse;
                             }
 
                             if (!headerCheckupList.isEmpty()) {
@@ -1417,6 +1423,9 @@ public class RawatInapAction extends BaseMasterAction {
                                     diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
                                 } catch (GeneralBOException e) {
                                     logger.error("[Foun Error] when search diagnosa awal " + e);
+                                    finalResponse.setStatus("error");
+                                    finalResponse.setMsg("Terjadi kesalahan ketika mencari diagnosa, "+e.getMessage());
+                                    return finalResponse;
                                 }
 
                                 if (diagnosaRawatList.size() > 0) {
@@ -1435,10 +1444,18 @@ public class RawatInapAction extends BaseMasterAction {
                                     pelayananList = pelayananBo.getByCriteria(pelayanan);
                                 } catch (GeneralBOException e) {
                                     logger.error("[Found Error] when search pelayanan " + e.getMessage());
+                                    finalResponse.setStatus("error");
+                                    finalResponse.setMsg("Terjadi kesalahan ketika mencari pelayanan, "+e.getMessage());
+                                    return finalResponse;
                                 }
 
                                 if (pelayananList.size() > 0) {
                                     pelayanan = pelayananList.get(0);
+                                    if(pelayanan.getIdPelayanan() == null || "".equalsIgnoreCase(pelayanan.getIdPelayanan())){
+                                        finalResponse.setStatus("error");
+                                        finalResponse.setMsg("Terjadi kesalahan ketika mencari pelayanan");
+                                        return finalResponse;
+                                    }
                                 }
 
                                 if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
