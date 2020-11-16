@@ -934,7 +934,8 @@ public class PembayaranUtangPiutangAction extends BaseMasterAction {
     public String searchKoreksiPengajuan() {
         logger.info("[PembayaranUtangPiutangAction.searchKoreksiPengajuan] start process >>>");
         PembayaranUtangPiutang searchPembayaranUtangPiutang = getPembayaranUtangPiutang();
-        searchPembayaranUtangPiutang.setTipeTransaksi(CommonConstant.TRANSAKSI_ID_KOREKSI_PENGAJUAN_BIAYA);
+//        searchPembayaranUtangPiutang.setTipeTransaksi(CommonConstant.TRANSAKSI_ID_KOREKSI_PENGAJUAN_BIAYA);
+        searchPembayaranUtangPiutang.setTipePembayaran("KR");
         List<PembayaranUtangPiutang> listOfsearchPembayaranUtangPiutang = new ArrayList();
         try {
             listOfsearchPembayaranUtangPiutang = pembayaranUtangPiutangBoProxy.getByCriteria(searchPembayaranUtangPiutang);

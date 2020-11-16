@@ -486,7 +486,7 @@ public class JurnalAction extends BaseMasterAction {
         JurnalBo jurnalBo = (JurnalBo) ctx.getBean("jurnalBoProxy");
         String[] arrTanggal = tanggal.split("-");
         String[] coa = noBudgetting.split("-");
-        data = jurnalBo.getBudgetTerpakai(branchId,divisiId,arrTanggal[0],arrTanggal[1],coa[3],budget,budgetSdBulanIni);
+        data = jurnalBo.getBudgetTerpakai(branchId,divisiId,arrTanggal[2],arrTanggal[1],coa[3],budget,budgetSdBulanIni);
 
         return data;
     }
