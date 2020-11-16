@@ -1896,7 +1896,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "\tGROUP BY a.branch_id, CAST(b.created_date AS DATE)\n" +
                     ")b\n" +
                     "ON a.branch_id = b.branch_id\n" +
-                    "ORDER BY a.branch_id ASC";
+                    "ORDER BY b.tanggal, a.branch_id ASC";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
