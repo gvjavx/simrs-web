@@ -152,7 +152,23 @@
                                                                 'rawat_inap' : 'Rawat Inap',
                                                                  'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
                                           id="tipePelayananAdd" name="pelayanan.tipePelayanan"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"/>
+                                          headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"
+                                onchange="showKategoriPelayanan(this.value)"
+                                />
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr style="display: none" id="form_kategori">
+                        <td>
+                            <label class="control-label"><small>Kategori :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'spesialis_gigi':'poli gigi'}"
+                                          id="kategoriPelayananAdd" name="pelayanan.kategoriPelayanan"
+                                          headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"
+                                />
                             </table>
                         </td>
                     </tr>
@@ -266,6 +282,16 @@
 </body>
 </html>
 <script>
+    function showKategoriPelayanan(valueTipe){
+        // console.log(valueTipe);
+        if(valueTipe=='rawat_jalan'){
+            $('#form_kategori').show();
+        }else {
+            $('#form_kategori').hide();
+            $('#kategoriPelayananAdd').val('');
+
+        }
+    }
     window.cekEksekutif = function () {
         if (document.getElementById("isEksekutif").checked == true) {
             $("#eksekutif").val("Y");

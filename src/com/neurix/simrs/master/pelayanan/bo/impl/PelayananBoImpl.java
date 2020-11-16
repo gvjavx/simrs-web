@@ -342,6 +342,7 @@ public class PelayananBoImpl implements PelayananBo{
                 imSimrsPelayananEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 imSimrsPelayananEntity.setCreatedDate(bean.getCreatedDate());
                 imSimrsPelayananEntity.setLastUpdate(bean.getLastUpdate());
+                imSimrsPelayananEntity.setKategoriPelayanan(bean.getKategoriPelayanan());
 
                 try {
                     // insert into database
