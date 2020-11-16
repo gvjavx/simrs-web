@@ -7,6 +7,7 @@
     <!--<bean id="checkupAction" class="com.neurix.simrs.transaksi.checkup.action.CheckupAction"-->
           <!--p:checkupBoProxy-ref="checkupBoProxy" />-->
 
+    <!--setting untuk bo impl-->
     <bean id="pelayananBo" class="com.neurix.simrs.master.pelayanan.bo.impl.PelayananBoImpl"
           p:pelayananDao-ref="pelayananDao"
           p:pelayananSpesialisDao-ref="pelayananSpesialisDao"
@@ -14,12 +15,19 @@
           p:branchDao-ref="branchDao"
     />
 
+    <!--setting untuk rest api-->
     <bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"
           p:pelayananBoProxy-ref="pelayananBoProxy"
           p:dokterBoProxy-ref="dokterBoProxy"
           p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"
           p:jadwalShiftKerjaBoProxy-ref="jadwalShiftKerjaBoProxy"
     />
+
+    <!--setting untuk action-->
+    <!--<bean id="pelayananAction" class="com.neurix.simrs.master.pelayanan.action.PelayananAction"-->
+          <!--p:pelayananBoProxy-ref="pelayananBoProxy"-->
+          <!--p:positionBoProxy-ref="positionBoProxy"-->
+    <!--/>-->
 
     <bean id="pelayananBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="pelayananBo">
@@ -37,11 +45,13 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getListAllPelayanan">readOnly</prop>
-                <!--<prop key="saveAdd">PROPAGATION_REQUIRED</prop>-->
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>
 
+
+    <!--setting untuk dao-->
     <bean id="pelayananDao" class="com.neurix.simrs.master.pelayanan.dao.PelayananDao"
           p:sessionFactory-ref="sessionFactory" />
 
