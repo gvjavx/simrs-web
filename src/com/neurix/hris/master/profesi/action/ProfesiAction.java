@@ -257,16 +257,7 @@ public class ProfesiAction extends BaseMasterAction{
 
             profesiBoProxy.saveDelete(deleteProfesi);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = profesiBoProxy.saveErrorMessage(e.getMessage(), "ProfesiBO.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[ProfesiAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[ProfesiAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[ProfesiAction.saveDelete] end process <<<");

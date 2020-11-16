@@ -211,7 +211,7 @@
 
                                             <s:set name="listOfAlat" value="#session.listOfResult" scope="request" />
                                             <display:table name="listOfAlat" class="table table-condensed table-striped table-hover"
-                                                           requestURI="paging_displaytag_alat.action" export="true" id="row" pagesize="10" style="font-size:10">
+                                                           requestURI="paging_displaytag_tipelibur.action" export="true" id="row" pagesize="10" style="font-size:10">
                                                 <display:column media="html" title="Edit">
                                                     <s:if test="#attr.row.flagYes">
                                                         <s:url var="urlEdit" namespace="/tipelibur" action="edit_tipelibur" escapeAmp="false">

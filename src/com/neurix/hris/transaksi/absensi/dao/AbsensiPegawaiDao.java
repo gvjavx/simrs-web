@@ -277,6 +277,17 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
         return results;
     }
 
+    //digunakan untuk cek realisasi
+    public List<AbsensiPegawaiEntity> getListAbsensiByTanggal(Date tanggal) throws HibernateException {
+        List<AbsensiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(AbsensiPegawaiEntity.class)
+                .add(Restrictions.eq("tanggal", tanggal))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("tanggal"))
+                .list();
+
+        return results;
+    }
+
     //digunakan untuk upah gaji
     public List<AbsensiPegawaiEntity> getDataUpahHarian(String nip, String branchId, Date awal, Date akhir) throws HibernateException {
         List<AbsensiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(AbsensiPegawaiEntity.class)

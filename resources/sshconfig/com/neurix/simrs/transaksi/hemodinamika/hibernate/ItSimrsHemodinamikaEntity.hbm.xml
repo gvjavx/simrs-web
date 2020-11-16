@@ -65,6 +65,12 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="sistole">
+                <column name="sistole"/>
+            </basic>
+            <basic name="diastole">
+                <column name="diastole"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

@@ -77,6 +77,15 @@ public class StudyDao extends GenericDao<ImStudyEntity, String> {
         return results;
     }
 
+    public List<ImStudyEntity> getListStudyByJurusanId(String id) throws HibernateException {
+        List<ImStudyEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImStudyEntity.class)
+                .add(Restrictions.ilike("studyJurusanId",id))
+                .addOrder(Order.asc("studyId"))
+                .list();
+
+        return results;
+    }
+
     public List<ImStudyEntity> getListStudyByNip(String nip) throws HibernateException {
         List<ImStudyEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImStudyEntity.class)
                 .add(Restrictions.eq("nip", nip))

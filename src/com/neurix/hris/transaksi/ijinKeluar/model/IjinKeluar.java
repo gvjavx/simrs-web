@@ -93,6 +93,25 @@ public class IjinKeluar extends BaseModel {
 
     private boolean suratDokter = false;
     private boolean cetakSurat = false;
+    private boolean melahirkan = false;
+
+    private Date tglMelahirkan;
+
+    public Date getTglMelahirkan() {
+        return tglMelahirkan;
+    }
+
+    public void setTglMelahirkan(Date tglMelahirkan) {
+        this.tglMelahirkan = tglMelahirkan;
+    }
+
+    public boolean isMelahirkan() {
+        return melahirkan;
+    }
+
+    public void setMelahirkan(boolean melahirkan) {
+        this.melahirkan = melahirkan;
+    }
 
     public String getOs() {
         return os;

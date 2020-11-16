@@ -49,8 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Skala Gaji Pensiun
-            <small>e-HEALTH</small>
+            Payroll Iuran Pegawai DPLK
         </h1>
     </section>
 
@@ -77,7 +76,7 @@
                         <table >
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Skala Gaji Id :</small></label>
+                                    <label class="control-label"><small>ID :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -92,9 +91,9 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                        <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="payrollSkalaGajiPensiun.golonganId"
-                                                  listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                        <s:action id="comboGolongan" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
+                                        <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golongan" name="payrollSkalaGajiPensiun.golonganId"
+                                                  listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="" />
                                     </table>
                                 </td>
                             </tr>
@@ -134,7 +133,7 @@
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
-                                            Add Skala Gaji Pensiun
+                                            Add Iuran Pensiun DPLK
                                         </sj:a>
                                     </td>
                                     <td>
@@ -183,10 +182,12 @@
                                                 </sj:a>
 
                                             </display:column>
-                                            <display:column property="skalaGajiPensiunId" sortable="true" title="Skala Gaji ID" />
+                                            <display:column property="skalaGajiPensiunId" sortable="true" title="ID" />
                                             <display:column property="golonganName" sortable="true" title="Golongan"  />
-                                            <display:column property="poin" sortable="true" title="Poin"  />
                                             <display:column property="nilai" sortable="true" title="Nilai"  />
+                                            <display:setProperty name="export.excel.filename">IuranPensiunDPLK.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">IuranPensiunDPLK.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">IuranPensiunDPLK.pdf</display:setProperty>
                                         </display:table>
                                     </td>
                                 </tr>

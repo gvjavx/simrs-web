@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Dana Pensiun DAPENBUN
+            Payroll Skala Gaji Pensiun
         </h1>
     </section>
 
@@ -76,7 +76,7 @@
                         <table >
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Skala Gaji Id :</small></label>
+                                    <label class="control-label"><small>Skala Gaji ID :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -84,7 +84,6 @@
                                     </table>
                                 </td>
                             </tr>
-
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Golongan :</small></label>
@@ -97,8 +96,18 @@
                                     </table>
                                 </td>
                             </tr>
-
-
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Tipe Dapen :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:action id="comboGolongan" namespace="/payrollDanaPensiun" name="searchPayrollDanaPensiun_payrollDanaPensiun"/>
+                                        <s:select cssClass="form-control" list="#comboGolongan.listComboPayrollDanaPensiun" id="tipeDapenId" name="payrollSkalaGajiPensiunRni.tipeDapenId"
+                                                  listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="" />
+                                    </table>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Flag :</small></label>
@@ -148,12 +157,12 @@
                         <br>
                         <br>
                         <center>
-                            <table id="showdata" width="40%">
+                            <table id="showdata" width="80%">
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                    height="400" width="550" autoOpen="false"
-                                                   title="Payroll Dana Pensiun DAPENBUN">
+                                                   title="Payroll Skala Gaji Pensiun">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
@@ -184,6 +193,7 @@
                                                 </s:if>
                                             </display:column>
                                             <display:column property="skalaGajiPensiunId" sortable="true" title="Skala Gaji ID" />
+                                            <display:column property="tipeDapenName" sortable="true" title="Tipe Dapen"  />
                                             <display:column property="golonganName" sortable="true" title="Golongan"  />
                                             <display:column property="poin" sortable="true" title="Masa Golongan"  />
                                             <display:column property="stNilai" sortable="true" title="Nilai"  />

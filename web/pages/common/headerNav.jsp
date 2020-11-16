@@ -277,14 +277,14 @@
         cekNotifResep();
         setInterval(function () {
             cekNotifResep();
-        }, 5000);
+        }, 6000);
     }
 
     function pushNotifTele(){
         cekNotifTele();
         setInterval(function () {
             cekNotifTele();
-        }, 5000);
+        }, 6000);
     }
 
     function cekNotifResep(){

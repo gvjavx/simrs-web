@@ -1,6 +1,8 @@
 package com.neurix.hris.master.positionBagian.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.department.dao.DepartmentDao;
+import com.neurix.hris.master.department.model.ImDepartmentEntity;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
 import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
@@ -26,6 +28,15 @@ public class PositionBagianBoImpl implements PositionBagianBo {
 
     protected static transient Logger logger = Logger.getLogger(PositionBagianBoImpl.class);
     private PositionBagianDao positionBagianDao;
+    private DepartmentDao departmentDao;
+
+    public DepartmentDao getDepartmentDao() {
+        return departmentDao;
+    }
+
+    public void setDepartmentDao(DepartmentDao departmentDao) {
+        this.departmentDao = departmentDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -77,8 +88,6 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                 imPositionBagianHistoryEntity.setCreatedDate(imPositionBagianEntity.getCreatedDate());
 
                 // Modify from bean to entity serializable
-                imPositionBagianEntity.setBagianId(bean.getBagianId());
-                imPositionBagianEntity.setBagianName(bean.getBagianName());
                 imPositionBagianEntity.setFlag(bean.getFlag());
                 imPositionBagianEntity.setAction(bean.getAction());
                 imPositionBagianEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -140,9 +149,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                     imPositionBagianHistoryEntity.setCreatedWho(imPositionBagianEntity.getCreatedWho());
                     imPositionBagianHistoryEntity.setCreatedDate(imPositionBagianEntity.getCreatedDate());
 
-                    imPositionBagianEntity.setBagianId(bean.getBagianId());
                     imPositionBagianEntity.setBagianName(bean.getBagianName());
-                    imPositionBagianEntity.setKodering(bean.getKodering());
                     imPositionBagianEntity.setFlag(bean.getFlag());
                     imPositionBagianEntity.setAction(bean.getAction());
                     imPositionBagianEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -174,7 +181,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         logger.info("[PositionBagianBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-            String status = cekStatus(bean.getBagianName(), bean.getKodering());
+            String status = cekStatus(bean.getBagianName());
             if (!status.equalsIgnoreCase("Exist")){
                 String kelompokPositionId = "";
                 try {
@@ -190,7 +197,12 @@ public class PositionBagianBoImpl implements PositionBagianBo {
 
                 imPositionBagianEntity.setBagianId(kelompokPositionId);
                 imPositionBagianEntity.setBagianName(bean.getBagianName());
-                imPositionBagianEntity.setKodering(bean.getKodering());
+                imPositionBagianEntity.setDivisiId(bean.getDivisiId());
+                ImDepartmentEntity departmentEntity = departmentDao.getById("departmentId",bean.getDivisiId());
+                List<ImPositionBagianEntity> positionBagianEntityList= positionBagianDao.getListPositionBagianByDivisi(bean.getDivisiId());
+                String sId = String.format("%02d", positionBagianEntityList.size()+1);
+
+                imPositionBagianEntity.setKodering(departmentEntity.getKodering()+"."+sId);
                 imPositionBagianEntity.setFlag(bean.getFlag());
                 imPositionBagianEntity.setAction(bean.getAction());
                 imPositionBagianEntity.setCreatedWho(bean.getCreatedWho());
@@ -231,7 +243,9 @@ public class PositionBagianBoImpl implements PositionBagianBo {
             if (searchBean.getBagianName() != null && !"".equalsIgnoreCase(searchBean.getBagianName())) {
                 hsCriteria.put("bagian_name", searchBean.getBagianName());
             }
-
+            if (searchBean.getDivisiId() != null && !"".equalsIgnoreCase(searchBean.getDivisiId())) {
+                hsCriteria.put("divisi_id", searchBean.getDivisiId());
+            }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -259,6 +273,11 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                     returnPositionBagian = new positionBagian();
                     returnPositionBagian.setBagianId(kelompokPositionEntity.getBagianId());
                     returnPositionBagian.setBagianName(kelompokPositionEntity.getBagianName());
+                    returnPositionBagian.setDivisiId(kelompokPositionEntity.getDivisiId());
+                    ImDepartmentEntity departmentEntity = departmentDao.getById("departmentId",kelompokPositionEntity.getDivisiId());
+                    if (departmentEntity!=null){
+                        returnPositionBagian.setDivisiName(departmentEntity.getDepartmentName());
+                    }
                     returnPositionBagian.setKodering(kelompokPositionEntity.getKodering());
                     returnPositionBagian.setCreatedWho(kelompokPositionEntity.getCreatedWho());
                     returnPositionBagian.setCreatedDate(kelompokPositionEntity.getCreatedDate());
@@ -345,13 +364,12 @@ public class PositionBagianBoImpl implements PositionBagianBo {
 
         return result;
     }
-    public String cekStatus(String bagianName, String kodering)throws GeneralBOException{
+    public String cekStatus(String bagianName)throws GeneralBOException{
         String status ="";
         List<ImPositionBagianEntity> skalaGajiEntity = new ArrayList<>();
         List<ImPositionBagianEntity> positionBagianEntities = new ArrayList<>();
         try {
             skalaGajiEntity = positionBagianDao.getListPositionBagian(bagianName);
-            positionBagianEntities = positionBagianDao.getListPositionBagianKodering(kodering);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

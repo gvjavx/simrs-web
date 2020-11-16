@@ -30,6 +30,10 @@
     </style>
     <script type='text/javascript'>
 
+        var errEmail = "";
+        var userId = document.getElementById("userid").value;
+        var email = document.getElementById("email").value;
+
         $.subscribe('beforeProcessSave', function (event, data) {
 
             if (document.getElementById("userid").value != '' &&
@@ -41,7 +45,10 @@
                     document.getElementById("areaid").value != '' &&
                     document.getElementById("branchid").value != '' &&
                     //document.getElementById("fileUpload").value != '' &&
-                    document.getElementById("password").value == document.getElementById("confirmPassword").value) {
+                    document.getElementById("password").value == document.getElementById("confirmPassword").value &&
+                    errEmail == "" &&
+                    email != userId
+            ) {
 
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
@@ -91,6 +98,14 @@
 
                 if (document.getElementById("roleid").value == '') {
                     msg = msg + 'Field <strong>Role Id</strong> is required.' + '<br/>';
+                }
+
+                if (errEmail == "Y") {
+                    msg = msg + '<strong>Email</strong> is not available.' + '<br/>';
+                }
+
+                if (email == userId) {
+                    msg = msg + '<strong>Email</strong> must be different with <strong>User ID</strong>.' + '<br/>';
                 }
 
                 /*if (document.getElementById("fileUpload").value == '') {
@@ -257,7 +272,8 @@
                                     <div class="form-group">
                                         <label class="control-label col-sm-5" for="users.email">Email :</label>
                                         <div class="col-sm-3">
-                                            <s:textfield id="email" name="users.email" required="true" cssClass="form-control"/>
+                                            <s:textfield id="email" name="users.email" required="true" cssClass="form-control" onchange="checkEmail()" />
+                                            <div class="alert alert-danger" id="err-email" style="display: none"></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -489,6 +505,34 @@
             }
             $('#pelayananId').html(option);
         });
+    }
+
+    function checkEmail() {
+
+        var email = $("#email").val();
+        if (email == null || email == ""){
+            $("#err-email").show();
+            $("#err-email").html("Email Must Be Insert");
+            errEmail = "Y";
+        } else {
+            UserAction.checkEmailAvailable(email, function (res) {
+                if (res.status == "error"){
+                    $("#err-email").show();
+                    $("#err-email").html(res.msg);
+                    errEmail = "Y";
+                } else {
+                    $("#err-email").hide();
+                    errEmail = "";
+                }
+            });
+        }
+    }
+
+    function eraseInput(id) {
+        if (id == "email"){
+//            $("#email").val("");
+            $("#err-email").hide();
+        }
     }
 
 </script>

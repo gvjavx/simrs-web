@@ -163,7 +163,6 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
         return jadwalShiftKerjaList;
     }
 
-
     public String getNextJadwalShiftKerjaId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_jadwal_shift_kerja')");
         Iterator<BigInteger> iter = query.list().iterator();
@@ -417,6 +416,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
         }
         return listOfResult;
     }
+
     public List<JadwalPelayananDTO> getListJadwalDokter(String branchId, String idPelayanan, String noteLike) {
         List<JadwalPelayananDTO> pelayananDTOList = new ArrayList<>();
         String notLikeDokter = "";
@@ -484,7 +484,6 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 pelayananDTOList.add(jadwalPelayananDTO);
             }
         }
-
         return pelayananDTOList;
     }
 }

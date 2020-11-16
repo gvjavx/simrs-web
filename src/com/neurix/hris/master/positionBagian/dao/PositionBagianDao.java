@@ -40,6 +40,9 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
             if (mapCriteria.get("bagian_id")!=null) {
                 criteria.add(Restrictions.eq("bagianId", (String) mapCriteria.get("bagian_id")));
             }
+            if (mapCriteria.get("divisi_id")!=null) {
+                criteria.add(Restrictions.eq("divisiId", (String) mapCriteria.get("divisi_id")));
+            }
             if (mapCriteria.get("bagian_name")!=null) {
                 criteria.add(Restrictions.ilike("bagianName", "%" + (String)mapCriteria.get("bagian_name") + "%"));
             }
@@ -584,6 +587,15 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
             listOfResult.add(result);
         }
         return listOfResult;
+    }
+
+    public List<ImPositionBagianEntity> getListPositionBagianByDivisi(String id) throws HibernateException {
+
+        List<ImPositionBagianEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPositionBagianEntity.class)
+                .add(Restrictions.ilike("divisiId",id))
+                .list();
+
+        return results;
     }
 
 }

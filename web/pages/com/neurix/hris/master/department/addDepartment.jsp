@@ -16,35 +16,17 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var idDepartment = document.getElementById("departmentId").value;
             var nameDepartment    = document.getElementById("departmentName1").value;
-            var kodering          = document.getElementById("kodering1").value;
 
-            console.log("Test")
-            if (nameDepartment != '' && kodering != '') {
-                var karakterKodering = kodering.toString().length;
-                if (karakterKodering < 11){
-                    if (confirm('Do you want to save this record?')) {
-                        event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
+            if (nameDepartment != '' ) {
+                if (confirm('Do you want to save this record?')) {
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
 
-                    } else {
-                        // Cancel Submit comes with 1.8.0
-                        event.originalEvent.options.submit = false;
-                    }
-                }else {
+                } else {
+                    // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
-
-                    var msg = "";
-                    if (karakterKodering > 10){
-                        msg += 'Field <strong>Panjang Kodering maksimal 10 Karakter.</strong>' + '<br/>';
-                    }
-                    console.log("tes 3 "+msg);
-                    document.getElementById('errorValidationMessage').innerHTML = msg;
-                    $.publish('showErrorValidationDialog');
                 }
-
-
             } else {
 
                 event.originalEvent.options.submit = false;
@@ -52,12 +34,8 @@
                 var msg = "";
 
                 if (nameDepartment == '') {
-                    msg += 'Field <strong>Nama Devisi</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Nama Bidang/Divisi</strong> is required.' + '<br/>';
                 }
-                if (kodering == '') {
-                    msg += 'Field <strong>Kodering</strong> is required.' + '<br/>';
-                }
-
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
@@ -126,7 +104,7 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama Devisi :</small></label>
+                            <label class="control-label"><small>Nama Bidang / Divisi :</small></label>
                         </td>
                         <td>
                             <table>
@@ -134,22 +112,7 @@
                             </table>
                         </td>
                     </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Kodering :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="kodering1" name="department.kodering" required="true" disabled="false" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
                 </table>
-
-
-
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

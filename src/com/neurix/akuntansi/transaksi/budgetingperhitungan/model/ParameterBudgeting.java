@@ -38,6 +38,15 @@ public class ParameterBudgeting {
     private BigDecimal realisasi;
     private BigDecimal totalRealisasi;
     private String bulan;
+    private String idTransNilaiDasar;
+
+    public String getIdTransNilaiDasar() {
+        return idTransNilaiDasar;
+    }
+
+    public void setIdTransNilaiDasar(String idTransNilaiDasar) {
+        this.idTransNilaiDasar = idTransNilaiDasar;
+    }
 
     public String getBulan() {
         return bulan;

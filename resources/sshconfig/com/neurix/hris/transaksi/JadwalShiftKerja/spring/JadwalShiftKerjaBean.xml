@@ -24,6 +24,7 @@
           p:liburDao-ref="liburDao"
           p:positionBagianDao-ref="positionBagianDao"
           p:historyOnCallDao-ref="historyOnCallDao"
+          p:absensiPegawaiDao-ref="absensiPegawaiDao"
     />
 
     <bean id="jadwalShiftKerjaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

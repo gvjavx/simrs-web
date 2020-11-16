@@ -382,12 +382,20 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                     }
 
                     String roleId = CommonUtil.roleIdAsLogin();
-                    if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(roleId)){
-                        returnPembayaranUtangPiutang.setJabatan("keu");
-                    }else if (CommonConstant.ROLE_ID_KASUB_KEU.equalsIgnoreCase(roleId)){
-                        returnPembayaranUtangPiutang.setJabatan("kasub");
-                    }else if (CommonConstant.ROLE_ID_KA_KEU.equalsIgnoreCase(roleId)){
-                        returnPembayaranUtangPiutang.setJabatan("ka");
+                    String branchIdUser = CommonUtil.userBranchLogin();
+
+                    if (branchIdUser.equalsIgnoreCase(pembayaranUtangPiutangEntity.getBranchId())){
+                        if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(roleId)){
+                            returnPembayaranUtangPiutang.setJabatan("keu");
+                        }else if (CommonConstant.ROLE_ID_KASUB_KEU.equalsIgnoreCase(roleId)){
+                            if ("Y".equalsIgnoreCase(pembayaranUtangPiutangEntity.getApprovalKeuanganFlag())){
+                                returnPembayaranUtangPiutang.setJabatan("kasub");
+                            }
+                        }else if (CommonConstant.ROLE_ID_KA_KEU.equalsIgnoreCase(roleId)){
+                            if ("Y".equalsIgnoreCase(pembayaranUtangPiutangEntity.getApprovalKasubKeuanganFlag())) {
+                                returnPembayaranUtangPiutang.setJabatan("ka");
+                            }
+                        }
                     }
 
                     returnPembayaranUtangPiutang.setNoJurnal(pembayaranUtangPiutangEntity.getNoJurnal());

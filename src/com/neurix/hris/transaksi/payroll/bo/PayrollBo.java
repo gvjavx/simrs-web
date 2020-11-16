@@ -89,6 +89,10 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
 
     void approvePayrollSdm(Payroll bean) throws GeneralBOException;
 
+    void deleteTransaksiPayroll(Payroll bean) throws GeneralBOException;
+
+    void deleteTransaksiPayrollById(Payroll bean) throws GeneralBOException;
+
     public PayrollKonsistensi showKonsistensiGaji(String nip, String bulan, String tahun) throws GeneralBOException;
     public List<Payroll> printReportPayrollBulanSys(String bulan1, String tahun1, String unit, String status) throws GeneralBOException;
     public List<Payroll> printReportPayrollPotonganDinasSys(String bulan1, String tahun1, String unit, String status) throws GeneralBOException;

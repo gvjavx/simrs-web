@@ -256,16 +256,7 @@ public class DepartmentAction extends BaseMasterAction{
 
             departmentBoProxy.saveDelete(deleteDepartment);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = departmentBoProxy.saveErrorMessage(e.getMessage(), "DepartmentBO.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[DepartmentAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[DepartmentAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+           throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[DepartmentAction.saveDelete] end process <<<");

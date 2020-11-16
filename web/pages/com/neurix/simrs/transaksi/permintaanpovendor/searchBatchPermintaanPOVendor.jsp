@@ -806,7 +806,7 @@
             listOfTrans.push({"idtrans":idTrans, "qty":qty, "expdate":expdate, "diskon":diskon, "bruto":bruto, "nett":nett});
 
             // mengitung yang sudah memiliki harga
-            if ((parseInt(bruto) != 0 && bruto != null) && (parseInt(nett) != 0 && nett != null)){
+            if ((nett != null && nett != 0 && nett != "" && nett > 0)){
                 nn ++;
             }
         }
@@ -862,7 +862,9 @@
             } else {
 
                 // mengecek list obat
-                if (n > 0){
+                if (nn > 0){
+//                    console.log("save -> " + nn);
+//                    console.log("success save -> " + nn);
                     var strJson = JSON.stringify(listOfTrans);
                     var listimg = JSON.stringify(listOfimg);
                     PermintaanVendorAction.saveDo(idPermintaan, numberDo, invoice, faktur, tglfaktur, strJson, listimg, tglInvoice, tglDo, function (res) {

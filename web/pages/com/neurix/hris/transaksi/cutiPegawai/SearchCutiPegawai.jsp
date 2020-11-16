@@ -93,7 +93,7 @@
                 if (values!=0) {
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
-                        $.publish('showDialog');
+                        showDialog("loading");
                     } else {
                         event.originalEvent.options.submit = false;
                     }
@@ -153,7 +153,7 @@
             });
             $.subscribe('successDialog3', function (event, data) {
                 if (event.originalEvent.request.status == 200) {
-                    alert('Reset Cuti Tahunan Berhasil');
+                    showDialog("success");
                     $('#modal-reset').modal('hide');
                 }
             });
@@ -419,10 +419,10 @@
                                                                         <s:a href="#"><i class="fa fa-calendar-plus-o"></i> Cuti Bersama</s:a>
                                                                     </li>
                                                                     <li id="btnResetTahunan">
-                                                                        <s:a href="#"><i class="fa fa-calendar-check-o"></i> Reset Tahunan</s:a>
+                                                                        <s:a href="#"><i class="fa fa-calendar-check-o"></i> Reset Cuti Tahunan</s:a>
                                                                     </li>
                                                                     <li id="btnResetPanjang">
-                                                                        <s:a href="#"><i class="fa fa-calendar-check-o"></i> Reset Panjang</s:a>
+                                                                        <s:a href="#"><i class="fa fa-calendar-check-o"></i> Reset Cuti Panjang</s:a>
                                                                     </li>
                                                                     <li id="btnInisialisasiCuti">
                                                                         <s:a href="#"><i class="fa fa-user-plus"></i> Inisialisasi Data Cuti</s:a>
@@ -501,6 +501,15 @@
                                                                 <s:if test="#attr.row.cancel">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
                                                                 </s:if>
+                                                                <s:elseif test='#attr.row.approvalFlag==null'>
+                                                                    <s:url var="urlCancel" namespace="/cutiPegawai" action="cancel_cutiPegawai" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.cutiPegawaiId" /></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                    </s:url>
+                                                                    <sj:a onClickTopics="showDialogMenuView" href="%{urlCancel}">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                                    </sj:a>
+                                                                </s:elseif>
                                                                 <s:elseif test="#attr.row.notApprove">
                                                                 </s:elseif>
                                                                 <s:elseif test="#attr.row.canCancel">
@@ -645,13 +654,13 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Sisa Cuti Tahunan </label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="stSisaCutiTahunan" name="cutiPegawai.stSisaCutiTahunan">
+                            <input type="number" min="1" class="form-control" id="stSisaCutiTahunan" name="cutiPegawai.stSisaCutiTahunan">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Sisa Cuti Panjang</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="stSisaCutiPanjang" name="cutiPegawai.stSisaCutiPanjang">
+                            <input type="number" min="1" class="form-control" id="stSisaCutiPanjang" name="cutiPegawai.stSisaCutiPanjang">
                         </div>
                     </div>
                     <br>
@@ -961,6 +970,67 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-loading-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Saving ...
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="waiting-content" style="text-align: center">
+                    <h4>Please don't close this window, server is processing your request ...</h4>
+                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                         name="image_indicator_write">
+                    <br>
+                    <img class="spin" border="0"
+                         style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                         name="image_indicator_write">
+                </div>
+
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_fin_error_waiting"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <%--<button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes--%>
+                <%--</button>--%>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-success-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Success
+                </h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                     name="icon_success">
+                Record has been saved successfully.
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <button type="button" class="btn btn-sm btn-success" id="ok_con"><i class="fa fa-check"></i> Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
         $('#btn_reset').click(function(){
@@ -992,34 +1062,43 @@
         var tmp_table = "";
         var unit=$('#branchid').val();
         if(unit!=""){
-            CutiPegawaiAction.searchCutiBersama(unit,function(listdata) {
-                tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAll'></th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #bc6a3c'>Sisa Cuti Panjang</th>"+
-                    "</tr></thead>";
-                var i = i;
-                $.each(listdata, function (i, item) {
-                    var combo = '<input type="checkbox" id="check" name="cutiPegawai.checkedValue" value="'+item.nip+':'+item.sisaCutiTahunan+':'+item.sisaCutiPanjang+'" class="check" >';
-                    tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="center">' + combo + '</td>' +
-                        '<td align="center">' + item.nip + '</td>' +
-                        '<td align="center">' + item.namaPegawai + '</td>' +
-                        '<td align="center">' + item.sisaCutiTahunan + '</td>' +
-                        '<td align="center">' + item.sisaCutiPanjang + '</td>' +
-                        "</tr>";
-                });
-                $('.listCutiTable').append(tmp_table);
-                $("#checkAll").change(function(){
-                    $('input:checkbox').not(this).prop('checked', this.checked);
-                });
+            var cutiAktif="N";
+            CutiPegawaiAction.getCutiAktif(unit,function(data){
+                cutiAktif = data;
             });
-            $('#modal-list').find('.modal-title').text('Cuti Bersama Karyawan');
-            $('#modal-list').modal('show');
+            if( cutiAktif =='N'){
+                CutiPegawaiAction.searchCutiBersama(unit,function(listdata) {
+                    tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAll'></th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
+                        "<th style='text-align: center; color: #fff; background-color:  #bc6a3c'>Sisa Cuti Panjang</th>"+
+                        "</tr></thead>";
+                    var i = i;
+                    $.each(listdata, function (i, item) {
+                        var combo = '<input type="checkbox" id="check" name="cutiPegawai.checkedValue" value="'+item.nip+':'+item.sisaCutiTahunan+':'+item.sisaCutiPanjang+'" class="check" >';
+                        tmp_table += '<tr style="font-size: 12px;" ">' +
+                            '<td align="center">' + (i + 1) + '</td>' +
+                            '<td align="center">' + combo + '</td>' +
+                            '<td align="center">' + item.nip + '</td>' +
+                            '<td align="center">' + item.namaPegawai + '</td>' +
+                            '<td align="center">' + item.sisaCutiTahunan + '</td>' +
+                            '<td align="center">' + item.sisaCutiPanjang + '</td>' +
+                            "</tr>";
+                    });
+                    $('.listCutiTable').append(tmp_table);
+                    $("#checkAll").change(function(){
+                        $('input:checkbox').not(this).prop('checked', this.checked);
+                    });
+                });
+                $('#modal-list').find('.modal-title').text('Cuti Bersama Karyawan');
+                $('#modal-list').modal('show');
+            }else{
+                alert("Cuti bersama Tidak bisa dilakukan dikarenakan ada cuti menggantung ( perlu approve/not approve atasan )");
+            }
+
         }else{
             alert("Unit belum diisi")
         }
@@ -1037,19 +1116,19 @@
 //            alert(cutiAktif);
             if(unit!=""){
                 var cutiAktif="";
-                CutiPegawaiAction.getCutiAktif(unit,function(listdata){
-                    cutiAktif = listdata;
-                });
+                // CutiPegawaiAction.getCutiAktif(unit,function(data){
+                //     cutiAktif = data;
+                // });
                 if( cutiAktif =='N'){
-                    CutiPegawaiAction.searchCutiBersama(unit,function(listdata) {
+                    CutiPegawaiAction.searchPegawaiResetTahunan(unit,function(listdata) {
                         if (listdata!=""){
                             tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
-                                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
-                                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'><input type='checkbox' id='checkAllTahunan'></th>"+
-                                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
-                                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
-                                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
-                                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Setelah Reset</th>"+
+                                    "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
+                                    "<th style='text-align: center; background-color:  #90ee90'><input type='checkbox' id='checkAllTahunan'></th>"+
+                                    "<th style='text-align: center; background-color:  #90ee90'>NIP</th>"+
+                                    "<th style='text-align: center; background-color:  #90ee90'>Nama Pegawai</th>"+
+                                    "<th style='text-align: center; background-color:  #90ee90'>Sisa Cuti Tahunan</th>"+
+                                    "<th style='text-align: center; background-color:  #90ee90'>Setelah Reset</th>"+
                                     "</tr></thead>";
                             var i = i;
                             $.each(listdata, function (i, item) {
@@ -1075,7 +1154,7 @@
                         }
                     });
                 }else{
-                    alert(cutiAktif);
+                    alert("Reset Cuti Tidak bisa dilakukan dikarenakan ada cuti menggantung ( perlu approve/not approve atasan )");
                 }
             }else{
                 alert("Unit belum diisi")
@@ -1197,6 +1276,7 @@
                                 "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
                                 "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
                                 "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Tanggal Aktif</th>"+
+                                "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Level</th>"+
                                 "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
                                 "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Panjang</th>"+
                                 "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Setelah Reset</th>"+
@@ -1210,6 +1290,7 @@
                                     '<td align="center">' + item.nip + '</td>' +
                                     '<td align="center">' + item.namaPegawai + '</td>' +
                                     '<td align="center">' + item.stTanggalAktif + '</td>' +
+                                    '<td align="center">' + item.golonganName + '</td>' +
                                     '<td align="center">' + item.sisaCutiTahunan + '</td>' +
                                     '<td align="center">' + item.sisaCutiPanjang + '</td>' +
                                     '<td align="center">' + item.setelahResetCutiPanjang + '</td>' +
@@ -1244,11 +1325,11 @@
         if (nip!=""){
             CutiPegawaiAction.searchViewCuti(nip,function(listdata) {
                 tmp_table = "<thead style='font-size: 14px' ><tr class='active'>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>NIP</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Nama Pegawai</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Tahunan</th>"+
-                    "<th style='text-align: center; color: #fff; background-color:  #3c8dbc'>Sisa Cuti Panjang</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>NIP</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Nama Pegawai</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Sisa Cuti Tahunan</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Sisa Cuti Panjang</th>"+
                     "</tr></thead>";
                 var i = i;
                 $.each(listdata, function (i, item) {
@@ -1330,21 +1411,36 @@
     });
     $('#btnSaveTmpInisialisasi').on('click', function () {
         var nip=$("#nipEdit").val();
+        var iStSisaCutiTahunan = 0;
+        var iStSisaCutiPanjang = 0;
         var stSisaCutiTahunan=$("#stSisaCutiTahunan").val();
         var stSisaCutiPanjang=$("#stSisaCutiPanjang").val();
-        if(stSisaCutiTahunan!=""||stSisaCutiPanjang!="") {
-            CutiPegawaiAction.editTmpInisialisasiCuti(nip ,stSisaCutiTahunan,stSisaCutiPanjang,function(data) {
-                if (data!=""){
-                    alert(data);
-                }
-                $('#modal-edit-inisialisasi').modal('hide');
-                $("#stSisaCutiTahunan").val("");
-                $("#stSisaCutiPanjang").val("");
-                loadPersonCuti();
-            });
-        }else{
-            alert("Belum mengisi sisa cuti yang dirubah ");
+
+        if (stSisaCutiTahunan!=""){
+            iStSisaCutiTahunan = parseInt(stSisaCutiTahunan);
         }
+        if (stSisaCutiPanjang!=""){
+            iStSisaCutiPanjang = parseInt(stSisaCutiPanjang);
+        }
+
+        if (iStSisaCutiTahunan<0||iStSisaCutiPanjang<0){
+            alert("Sisa cuti tidak boleh minus ");
+        }else{
+            if(stSisaCutiTahunan!=""||stSisaCutiPanjang!="") {
+                CutiPegawaiAction.editTmpInisialisasiCuti(nip ,stSisaCutiTahunan,stSisaCutiPanjang,function(data) {
+                    if (data!=""){
+                        alert(data);
+                    }
+                    $('#modal-edit-inisialisasi').modal('hide');
+                    $("#stSisaCutiTahunan").val("");
+                    $("#stSisaCutiPanjang").val("");
+                    loadPersonCuti();
+                });
+            }else{
+                alert("Belum mengisi sisa cuti yang dirubah ");
+            }
+        }
+
     });
     $('#btnSavePerbaikanSisaCuti').on('click', function () {
         CutiPegawaiAction.saveInisialisasi(function(data) {
@@ -1429,5 +1525,25 @@
             alert("NIP masih kosong.");
         }
     });
+
+    function showDialog(tipe) {
+        if (tipe == "loading"){
+            $("#modal-loading-dialog").modal('show');
+        }
+        if (tipe == "error"){
+            $("#modal-loading-dialog").modal('show');
+            $("#waiting-content").hide();
+            $("#warning_fin_waiting").show();
+//            $("#msg_fin_error_waiting").text("Error. perbaikan");
+        }
+        if (tipe == "success"){
+            $("#modal-loading-dialog").modal('hide');
+            $("#modal-success-dialog").modal('show');
+        }
+    }
+
+    $('#ok_con').click(function () {
+        window.location.href="<s:url action='initForm_cutiPegawai.action'/>";
+    })
 </script>
 

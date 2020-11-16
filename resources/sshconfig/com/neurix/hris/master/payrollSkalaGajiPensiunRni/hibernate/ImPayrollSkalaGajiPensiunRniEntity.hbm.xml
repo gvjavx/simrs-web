@@ -14,6 +14,9 @@
         <property name="golonganId">
             <column name="golongan_id" sql-type="integer" not-null="true" />
         </property>
+        <property name="tipeDapenId">
+            <column name="tipe_dapen_id"/>
+        </property>
         <property name="poin">
             <column name="poin" sql-type="integer" not-null="true" />
         </property>

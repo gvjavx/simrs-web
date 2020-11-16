@@ -7,11 +7,12 @@
     <class name="com.neurix.hris.master.tipelibur.model.ImHrisTipeLiburHistory" dynamic-update="true"
            table="im_hris_tipe_libur_history" select-before-update="true" schema="public">
 
-        <id name="id">
-            <column name="id" sql-type="varchar" length="20" not-null="true"/>
+        <id name="tipeLiburHistoryId">
+            <column name="tipe_libur_history_id" sql-type="varchar" length="20" not-null="true"/>
         </id>
+
         <property name="tipeLiburId">
-            <column name="tipe_libur_id" sql-type="varchar" length="20" not-null="true"/>
+            <column name="id" sql-type="varchar" length="20" not-null="true"/>
         </property>
         <property name="tipeLiburName">
             <column name="tipe_libur_name" sql-type="varchar" length="100"/>

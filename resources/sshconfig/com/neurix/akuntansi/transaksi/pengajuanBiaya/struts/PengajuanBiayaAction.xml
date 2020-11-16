@@ -86,13 +86,25 @@
             <result name="success_save_add_pengajuan">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/addPengajuanBiaya.jsp</result>
 
             <result name="init_do">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPembayaranDo.jsp</result>
+            <result name="init_add_do">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/AddPembayaranDo.jsp</result>
             <result name="success_pengajuan_rk">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/SearchPembayaranDo.jsp</result>
+            <result name="success_add_pengajuan_rk">/pages/com/neurix/akuntansi/transaksi/pengajuanBiaya/AddPembayaranDo.jsp</result>
 
             <result name="cetak_surat_pengajuan_biaya" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/FormPengajuanBiaya.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
+            </result>
+
+            <!-- REPORT REPORT -->
+            <result name="export_hasil_csv_do" type="stream" >
+                <param name="contentType">application/octet-stream</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment; filename="tarikan_pembayaran_do.csv"</param>
+                <param name="allowCaching">false</param>
+                <param name="bufferSize">2048</param>
+                <param name="contentCharSet">string</param>
             </result>
         </action>
 

@@ -237,23 +237,21 @@ public class BiodataAction extends BaseMasterAction{
 
     public Biodata init(String kode, String flag){
         logger.info("[BiodataAction.init] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<Biodata> listOfResult = (List<Biodata>) session.getAttribute("listOfResultBiodata");
 
-        if(kode != null && !"".equalsIgnoreCase(kode)){
-            if(listOfResult != null){
-                for (Biodata biodata : listOfResult) {
-                    if(kode.equalsIgnoreCase(biodata.getNip()) && flag.equalsIgnoreCase(biodata.getFlag())){
-                        setBiodata(biodata);
-                        break;
-                    }
-                }
-            } else {
-                setBiodata(new Biodata());
+        Biodata searchBiodata = new Biodata();
+        searchBiodata.setFlag(flag);
+        searchBiodata.setNip(kode);
+        List<Biodata> listOfsearchBiodata = new ArrayList();
+
+        try {
+            listOfsearchBiodata = biodataBoProxy.getByCriteria(searchBiodata);
+            for (Biodata biodata : listOfsearchBiodata){
+                setBiodata(biodata);
             }
-
-            logger.info("[BiodataAction.init] end process >>>");
+        }catch (GeneralBOException e){
+            throw new GeneralBOException(e.getMessage());
         }
+
         return getBiodata();
     }
 
@@ -655,7 +653,6 @@ public class BiodataAction extends BaseMasterAction{
             if (!isAdd()) {
                 logger.info("[BiodataAction.saveEdit] start process >>>");
                 try {
-
                     Biodata editBiodata = getBiodata();
                     String golonganId = editBiodata.getGolongan().replace(",","");
                     editBiodata.setGolongan(golonganId);
@@ -684,6 +681,23 @@ public class BiodataAction extends BaseMasterAction{
 
                     if (editBiodata.getStTanggalPraPensiun() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalPraPensiun())){
                         editBiodata.setTanggalPraPensiun(CommonUtil.convertToDate(editBiodata.getStTanggalPraPensiun()));
+                    }
+
+                    //BARU
+                    if (editBiodata.getStPeralihanGapok() != null && !"".equalsIgnoreCase(editBiodata.getStPeralihanGapok())){
+                        editBiodata.setPeralihanGapok(CommonUtil.StringDenganFormatToBigDecimal(editBiodata.getStPeralihanGapok()));
+                    }else{
+                        editBiodata.setPeralihanGapok(BigDecimal.ZERO);
+                    }
+                    if (editBiodata.getStPeralihanSankhus() != null && !"".equalsIgnoreCase(editBiodata.getStPeralihanSankhus())){
+                        editBiodata.setPeralihanSankhus(CommonUtil.StringDenganFormatToBigDecimal(editBiodata.getStPeralihanSankhus()));
+                    }else{
+                        editBiodata.setPeralihanGapok(BigDecimal.ZERO);
+                    }
+                    if (editBiodata.getStPeralihanTunjangan() != null && !"".equalsIgnoreCase(editBiodata.getStPeralihanTunjangan())){
+                        editBiodata.setPeralihanTunjangan(CommonUtil.StringDenganFormatToBigDecimal(editBiodata.getStPeralihanTunjangan()));
+                    }else{
+                        editBiodata.setPeralihanGapok(BigDecimal.ZERO);
                     }
 
                     if (this.fileUpload!=null) {
@@ -766,6 +780,23 @@ public class BiodataAction extends BaseMasterAction{
 
                     if (biodata.getStTanggalPraPensiun() != null && !"".equalsIgnoreCase(biodata.getStTanggalPraPensiun())){
                         biodata.setTanggalPraPensiun(CommonUtil.convertToDate(biodata.getStTanggalPraPensiun()));
+                    }
+
+                    //BARU
+                    if (biodata.getStPeralihanGapok() != null && !"".equalsIgnoreCase(biodata.getStPeralihanGapok())){
+                        biodata.setPeralihanGapok(CommonUtil.StringDenganFormatToBigDecimal(biodata.getStPeralihanGapok()));
+                    }else{
+                        biodata.setPeralihanGapok(BigDecimal.ZERO);
+                    }
+                    if (biodata.getStPeralihanSankhus() != null && !"".equalsIgnoreCase(biodata.getStPeralihanSankhus())){
+                        biodata.setPeralihanSankhus(CommonUtil.StringDenganFormatToBigDecimal(biodata.getStPeralihanSankhus()));
+                    }else{
+                        biodata.setPeralihanGapok(BigDecimal.ZERO);
+                    }
+                    if (biodata.getStPeralihanTunjangan() != null && !"".equalsIgnoreCase(biodata.getStPeralihanTunjangan())){
+                        biodata.setPeralihanTunjangan(CommonUtil.StringDenganFormatToBigDecimal(biodata.getStPeralihanTunjangan()));
+                    }else{
+                        biodata.setPeralihanGapok(BigDecimal.ZERO);
                     }
 
                     if (this.fileUpload!=null) {

@@ -213,8 +213,8 @@
                                 <label style="margin-left: 8px">TTD Dokter DPJP</label>
                                 <canvas class="paint-canvas-ttd" id="ttd2" width="220"
                                         onmouseover="paintTtd('ttd2')"></canvas>
-                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd2" placeholder="Nama Terang">
-                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd2" placeholder="SIP">
+                                <input style="margin-left: 10px" class="form-control nama_dokter_ri" id="nama_terang_ttd2" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control sip_dokter_ri" id="sip_ttd2" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd2')"><i
                                         class="fa fa-trash"></i> Clear

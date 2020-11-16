@@ -1311,7 +1311,9 @@ public class RawatInapAction extends BaseMasterAction {
                         NotifikasiFcmBo notifikasiFcmBo = (NotifikasiFcmBo) ctx.getBean("notifikasiFcmBoProxy");
 
                         resultNotif = notifikasiFcmBo.getByCriteria(beanNotif);
-                        FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan konsultasi" , "dr. meminta persetujuan untuk konsultasi" , "SK", resultNotif.get(0).getOs(), null);
+                        if(resultNotif.size() > 0){
+                            FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan konsultasi" , "dr. meminta persetujuan untuk konsultasi" , "SK", resultNotif.get(0).getOs(), null);
+                        }
 
                     }
                     if("rawat_bersama".equalsIgnoreCase(obj.getString("prioritas"))) {
@@ -1325,7 +1327,9 @@ public class RawatInapAction extends BaseMasterAction {
                         NotifikasiFcmBo notifikasiFcmBo = (NotifikasiFcmBo) ctx.getBean("notifikasiFcmBoProxy");
 
                         resultNotif = notifikasiFcmBo.getByCriteria(beanNotif);
-                        FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan rawat bersama" , "dr. meminta persetujuan untuk rawat bersama" , "SK", resultNotif.get(0).getOs(), null);
+                        if(resultNotif.size() > 0){
+                            FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan rawat bersama" , "dr. meminta persetujuan untuk rawat bersama" , "SK", resultNotif.get(0).getOs(), null);
+                        }
 
                     }
                     teamList.add(dokterTeam);
@@ -3190,6 +3194,11 @@ public class RawatInapAction extends BaseMasterAction {
                     if(uangMuka != null && !"".equalsIgnoreCase(uangMuka)){
                         checkup.setUangMuka(new BigInteger(uangMuka));
                     }
+                    checkup.setIdJenisPeriksaPasien(jenisPasien);
+                    checkup.setBranchId(branchId);
+                    checkup.setIdPasien(responsePasien.getIdPasien());
+                    checkup.setStatusPeriksa("1");
+                    checkup.setJenisKunjungan("Baru");
                     checkup.setRawatInap(true);
                     response = checkupBo.saveAddWithResponse(checkup);
                 }

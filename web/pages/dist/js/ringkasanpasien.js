@@ -744,6 +744,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jenis': 'admisi',
                 'nama_terang': nama1,
                 'sip':sip1,
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
@@ -753,6 +754,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'jenis': 'admisi',
                 'nama_terang': nama2,
                 'sip':sip2,
+                'tipe': 'ttd',
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;

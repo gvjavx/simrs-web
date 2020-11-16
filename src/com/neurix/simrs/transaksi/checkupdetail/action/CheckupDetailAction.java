@@ -55,8 +55,11 @@ import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.ruangan.model.TempatTidur;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.mobileapi.antrian.model.Antrian;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
+import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
+import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -533,6 +536,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             try {
                 checkupDetailBoProxy.saveEdit(detailCheckup);
+                checkupDetailBoProxy.updateFlagPeriksaAntrianOnline(checkup.getIdDetailCheckup());
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.add] Error when update checkup detail");
             }

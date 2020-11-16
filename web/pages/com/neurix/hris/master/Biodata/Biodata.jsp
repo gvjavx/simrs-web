@@ -47,6 +47,8 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BiodataAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/StudyJurusanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
+
     <script type="text/javascript">
 
         function callSearch2() {
@@ -70,22 +72,37 @@
             var flag                = document.getElementById("flagAktif").value;
             var masaGolongan        = document.getElementById("poinLebih").value;
             var shift               = document.getElementById("shift").value;
+            var peralihanGapok      = document.getElementById("peralihanGapok").value;
+            var peralihanSankhus    = document.getElementById("peralihanSankhus").value;
+            var peralihanTunjangan  = document.getElementById("peralihanTunjangan").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '') {
-                if(flag == 'N'){
-                    alert("Non Aktifkan User");
-                }
-
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
-                } else {
-                    // Cancel Submit comes with 1.8.0
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != ''&& peralihanGapok != ''&& peralihanSankhus != ''&& peralihanTunjangan != '') {
+                if (peralihanGapok.includes(",")||peralihanGapok.includes(",")||peralihanGapok.includes(",")) {
                     event.originalEvent.options.submit = false;
+                    var msg = "";
+                    if (peralihanGapok.includes(",")) {
+                        msg += 'Field <strong>Peralihan Gapok</strong> tidak boleh ada tanda koma.' + '<br/>';
+                    }
+                    if (peralihanSankhus.includes(",")) {
+                        msg += 'Field <strong>Peralihan Sankhus</strong> tidak boleh ada tanda koma.' + '<br/>';
+                    }
+                    if (peralihanTunjangan.includes(",")) {
+                        msg += 'Field <strong>Peralihan Tunjangan</strong> tidak boleh ada tanda koma.' + '<br/>';
+                    }
+                    document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                    $.publish('showErrorValidationDialog');
+                }else{
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
+                    } else {
+                        // Cancel Submit comes with 1.8.0
+                        event.originalEvent.options.submit = false;
+                    }
                 }
 
             } else {
-
                 event.originalEvent.options.submit = false;
 
                 var msg = "";
@@ -120,7 +137,15 @@
                 if (masaGolongan == '') {
                     msg += 'Field <strong>Masa Kerja Golongan</strong> is required.' + '<br/>';
                 }
-
+                if (peralihanGapok == '') {
+                    msg += 'Field <strong>Peralihan Gapok</strong> is required.' + '<br/>';
+                }
+                if (peralihanSankhus == '') {
+                    msg += 'Field <strong>Peralihan Sankhus</strong> is required.' + '<br/>';
+                }
+                if (peralihanTunjangan == '') {
+                    msg += 'Field <strong>Peralihan Tunjangan</strong> is required.' + '<br/>';
+                }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
@@ -413,6 +438,18 @@
                                 </tr>
 
                                 <s:if test="isDelete()">
+                                    <tr>
+                                        <td>
+                                            <label class="control-label"><small>Jumlah Anak :</small></label>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </s:if>
+                                <s:if test="isEdit()">
                                     <tr>
                                         <td>
                                             <label class="control-label"><small>Jumlah Anak :</small></label>
@@ -1065,6 +1102,55 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        <label class="control-label"><small>Peralihan Gapok :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield cssStyle="text-align: right;" type="text" readonly="true" cssClass="form-control" id="peralihanGapok" name="biodata.stPeralihanGapok" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: right;" type="text" onkeyup="formatRupiah2(this)" cssClass="form-control" id="peralihanGapok" name="biodata.stPeralihanGapok" />
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Peralihan Sankhus :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield cssStyle="text-align: right;" type="text" readonly="true" cssClass="form-control" id="peralihanSankhus" name="biodata.stPeralihanSankhus" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: right;" type="text" onkeyup="formatRupiah2(this)" cssClass="form-control" id="peralihanSankhus" name="biodata.stPeralihanSankhus" />
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Peralihan Tunjangan :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield cssStyle="text-align: right;" type="text" readonly="true" cssClass="form-control" id="peralihanTunjangan" name="biodata.stPeralihanTunjangan" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: right;" type="text" onkeyup="formatRupiah2(this)" cssClass="form-control" id="peralihanTunjangan" name="biodata.stPeralihanTunjangan" />
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
                                         <label class="control-label label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
                                     </td>
                                     <td>
@@ -1204,10 +1290,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noAnggotaDapen" type="number" name="biodata.noAnggotaDapen" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noAnggotaDapen" type="text" name="biodata.noAnggotaDapen" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noAnggotaDapen"  type="number" name="biodata.noAnggotaDapen" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noAnggotaDapen"  type="text" name="biodata.noAnggotaDapen" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1220,10 +1306,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noBpjsKetenagakerjaan" type="number" name="biodata.noBpjsKetenagakerjaan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noBpjsKetenagakerjaan" type="text" name="biodata.noBpjsKetenagakerjaan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noBpjsKetenagakerjaan"  type="number" name="biodata.noBpjsKetenagakerjaan" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noBpjsKetenagakerjaan"  type="text" name="biodata.noBpjsKetenagakerjaan" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1236,10 +1322,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="number" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="text" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="number" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="text" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1252,10 +1338,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noBpjsKesehatan" type="number" name="biodata.noBpjsKesehatan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noBpjsKesehatan" type="text" name="biodata.noBpjsKesehatan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noBpjsKesehatan" type="number" name="biodata.noBpjsKesehatan" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noBpjsKesehatan" type="text" name="biodata.noBpjsKesehatan" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1475,10 +1561,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noRekBank" type="number" name="biodata.noRekBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noRekBank" type="text" name="biodata.noRekBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noRekBank" type="number" name="biodata.noRekBank" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noRekBank" type="text" name="biodata.noRekBank" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>

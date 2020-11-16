@@ -15,9 +15,27 @@ public class payrollSkalaGajiPensiunRni extends BaseModel {
     private String skalaGajiPensiunId;
     private String golonganId;
     private String golonganName;
+    private String tipeDapenId;
+    private String tipeDapenName;
     private int poin;
     private BigDecimal nilai;
     private String stNilai;
+
+    public String getTipeDapenName() {
+        return tipeDapenName;
+    }
+
+    public void setTipeDapenName(String tipeDapenName) {
+        this.tipeDapenName = tipeDapenName;
+    }
+
+    public String getTipeDapenId() {
+        return tipeDapenId;
+    }
+
+    public void setTipeDapenId(String tipeDapenId) {
+        this.tipeDapenId = tipeDapenId;
+    }
 
     public String getGolonganName() {
         return golonganName;

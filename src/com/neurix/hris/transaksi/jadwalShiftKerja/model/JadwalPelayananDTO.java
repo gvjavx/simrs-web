@@ -19,11 +19,11 @@ public class JadwalPelayananDTO extends BaseModel {
     private String branchId;
     private String branchName;
     private String kuota;
+    private String flagLibur;
 
     //sodiq, 29-09-2020
     private String sip;
     private String kodeDpjp;
-    private String flagLibur;
     private BigInteger kuotaOnSite;
     private BigInteger kuotaTerpakai;
 

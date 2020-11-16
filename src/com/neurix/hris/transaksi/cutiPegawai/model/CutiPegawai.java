@@ -97,6 +97,15 @@ public class CutiPegawai extends BaseModel {
 
     private String roleId;
     private String nipUserLogin;
+    private String golonganName;
+
+    public String getGolonganName() {
+        return golonganName;
+    }
+
+    public void setGolonganName(String golonganName) {
+        this.golonganName = golonganName;
+    }
 
     public String getNipUserLogin() {
         return nipUserLogin;

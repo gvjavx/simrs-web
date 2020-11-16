@@ -1938,8 +1938,8 @@
                                 <label>TTD DPJP</label>
                                 <canvas class="paint-canvas-ttd" id="gen3" width="220"
                                         onmouseover="paintTtd('gen3')"></canvas>
-                                <input class="form-control nama_dokter" id="nama_terang_gen3" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_gen3" placeholder="SIP">
+                                <input class="form-control nama_dokter_ri" id="nama_terang_gen3" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_gen3" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('gen3')"><i
                                         class="fa fa-trash"></i> Clear

@@ -1884,22 +1884,22 @@ public class BudgetingAction {
         return nilaiTotal;
     }
 
-    public List<ParameterBudgeting> getListBudgetingRealisasi(String idJenis, String unit, String tahun){
+    public List<ParameterBudgeting> getListBudgetingRealisasi(String idJenis, String unit, String tahun, String status){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
-        return budgetingBo.getListBudgetingRealisasi(idJenis, unit, tahun);
+        return budgetingBo.getListBudgetingRealisasi(idJenis, unit, tahun, status);
     }
 
-    public List<ParameterBudgeting> getListBudgetingPerPeriode(String idJenis, String unit, String tahun, String divisi, String master, String rekeningId){
+    public List<ParameterBudgeting> getListBudgetingPerPeriode(String idJenis, String unit, String tahun, String divisi, String master, String rekeningId, String status){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
-        return budgetingBo.getListBudgetingRealisasiPerperiode(idJenis, unit, tahun, divisi, master, rekeningId);
+        return budgetingBo.getListBudgetingRealisasiPerperiode(idJenis, unit, tahun, divisi, master, rekeningId, status);
     }
 
-    public List<ParameterBudgeting> getListBudgetingPerRekening(String idJenis, String unit, String tahun, String divisi, String master){
+    public List<ParameterBudgeting> getListBudgetingPerRekening(String idJenis, String unit, String tahun, String divisi, String master, String status){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
-        return budgetingBo.getListBudgetingRealisasiPerKodeRekening(idJenis, unit, tahun, divisi, master);
+        return budgetingBo.getListBudgetingRealisasiPerKodeRekening(idJenis, unit, tahun, divisi, master, status);
     }
 
     public String getIdBudgetingDetailInvestasi(String status, String unit, String tahun, String tipe, String divisi){

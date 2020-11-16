@@ -757,10 +757,10 @@ function listSelectTindakan(idKategori) {
 }
 
 function listSelectTindakanKategori(val) {
-    var option = "<option value=''>[Select One]</option>";
+    var option = '<option value="">[Select One]</option>';
     var idDokter = "";
     var idPelayanan = "";
-    var option = "<option value=''>[Select One]</option>";
+    var def = '';
     if (val != null && val != '') {
         var dataDokter = val.split("|");
         idDokter = dataDokter[0];
@@ -768,24 +768,36 @@ function listSelectTindakanKategori(val) {
         CheckupDetailAction.getListComboTindakanKategori(idPelayanan, null, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    option += "<option value='" + item.idKategoriTindakan + "'>" + item.kategoriTindakan + "</option>";
+                    if(i == 0){
+                        def = item.idKategoriTindakan;
+                    }
+                    option += '<option value="'+ item.idKategoriTindakan + '">' + item.kategoriTindakan + '</option>';
                 });
                 $('#tin_id_ketgori_tindakan').html(option);
+                setTimeout(function () {
+                    $('#tin_id_ketgori_tindakan').val(def).trigger('change');
+                },100);
             } else {
                 $('#tin_id_ketgori_tindakan').html('');
             }
         });
     }
+
 }
 
 function getListNamaDokter() {
     var option = '<option value="">[Select One]</option>';
+    var def = '';
     CheckupAction.getListDokterByIdDetailCheckup(idDetailCheckup, null, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
+                if(i == 0){
+                    def = item.idDokter+'|'+item.idPelayanan;
+                }
                 option += '<option value="' + item.idDokter + '|' + item.idPelayanan + '">' + item.namaDokter + '</option>';
             });
             $('#tin_id_dokter_dpjp').html(option);
+            $('#tin_id_dokter_dpjp').val(def).trigger('change');
         } else {
             $('#tin_id_dokter_dpjp').html(option);
         }

@@ -6,6 +6,8 @@ import com.neurix.hris.master.profesi.dao.ProfesiDao;
 import com.neurix.hris.master.profesi.model.ImProfesiHistoryEntity;
 import com.neurix.hris.master.profesi.model.Profesi;
 import com.neurix.hris.master.profesi.model.ImProfesiEntity;
+import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
+import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -25,6 +27,15 @@ public class ProfesiBoImpl implements ProfesiBo {
 
     protected static transient Logger logger = Logger.getLogger(ProfesiBoImpl.class);
     private ProfesiDao profesiDao;
+    private PersonilPositionDao personilPositionDao;
+
+    public PersonilPositionDao getPersonilPositionDao() {
+        return personilPositionDao;
+    }
+
+    public void setPersonilPositionDao(PersonilPositionDao personilPositionDao) {
+        this.personilPositionDao = personilPositionDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -53,6 +64,16 @@ public class ProfesiBoImpl implements ProfesiBo {
             String profesiHistoryId = "";
             ImProfesiEntity imProfesiEntity = null;
             ImProfesiHistoryEntity historyEntity = new ImProfesiHistoryEntity();
+
+            //validasi
+            List<ItPersonilPositionEntity> personilPositionEntityList= personilPositionDao.getListPersonilPositionByProfesiId(profesiId);
+
+            if (personilPositionEntityList.size()>0){
+                String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
+
             try {
                 // Get data from database by ID
                 imProfesiEntity = profesiDao.getById("profesiId", profesiId);

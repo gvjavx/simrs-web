@@ -36,17 +36,18 @@
             var periodeTahun = document.getElementById("periodeTahun").value;
             var periodeBulan = document.getElementById("periodeBulan").value;
             var masterId = document.getElementById("masterId").value;
-            var kodeRekening = document.getElementById("kode_rekening").value;
-            var rekeningId= document.getElementById("rekening_id").value;
+            var namaMaster = document.getElementById("masterName").value;
+            var kodeRekening= document.getElementById("kode_rekening").value;
+            var namaKodeRekening= document.getElementById("nama_kode_rekening").value;
             var tipeTanggal= document.getElementById("tipeTanggal").value;
             var tanggalAwal= document.getElementById("tglFrom").value;
             var tanggalAkhir= document.getElementById("tglTo").value;
 
-            if ( unit != ''&&kodeRekening!=''&&tipeTanggal!='') {
+            if ( unit != ''&&tipeTanggal!=''&&kodeRekening!="") {
                 if (tipeTanggal=='P'){
                     if (periodeTahun != ''&& periodeBulan != ''){
                         event.originalEvent.options.submit = false;
-                        var url = "printReportKartuBukuBesar_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+masterId+"&laporanAkuntansi.kodeRekening="+kodeRekening+"&laporanAkuntansi.rekeningId="+rekeningId+"&laporanAkuntansi.tipeTanggal="+tipeTanggal;
+                        var url = "printReportKartuBukuBesar_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.tahun="+periodeTahun+"&laporanAkuntansi.bulan="+periodeBulan+"&laporanAkuntansi.masterId="+masterId+"&laporanAkuntansi.kodeRekening="+kodeRekening+"&laporanAkuntansi.tipeTanggal="+tipeTanggal+"&laporanAkuntansi.namaMaster="+namaMaster+"&laporanAkuntansi.namaKodeRekening="+namaKodeRekening;
                         window.open(url,'_blank');
                     } else {
                         event.originalEvent.options.submit = false;
@@ -64,7 +65,7 @@
                 }else if (tipeTanggal=='T'){
                     if (tanggalAwal != ''&& tanggalAkhir != ''){
                         event.originalEvent.options.submit = false;
-                        var url = "printReportKartuBukuBesar_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.stTanggalAwal="+tanggalAwal+"&laporanAkuntansi.stTanggalAkhir="+tanggalAkhir+"&laporanAkuntansi.masterId="+masterId+"&laporanAkuntansi.kodeRekening="+kodeRekening+"&laporanAkuntansi.rekeningId="+rekeningId+"&laporanAkuntansi.tipeTanggal="+tipeTanggal;
+                        var url = "printReportKartuBukuBesar_laporanAkuntansi.action?laporanAkuntansi.unit="+unit+"&laporanAkuntansi.stTanggalAwal="+tanggalAwal+"&laporanAkuntansi.stTanggalAkhir="+tanggalAkhir+"&laporanAkuntansi.masterId="+masterId+"&laporanAkuntansi.kodeRekening="+kodeRekening+"&laporanAkuntansi.tipeTanggal="+tipeTanggal+"&laporanAkuntansi.namaMaster="+namaMaster+"&laporanAkuntansi.namaKodeRekening="+namaKodeRekening;
                         window.open(url,'_blank');
                     }else {
                         event.originalEvent.options.submit = false;
@@ -86,11 +87,11 @@
                 if ( unit == '') {
                     msg += 'Field <strong>Unit </strong> masih belum dipilih' + '<br/>';
                 }
-                if ( kodeRekening == '') {
-                    msg += 'Field <strong>Kode Rekening </strong> masih belum dipilih' + '<br/>';
-                }
                 if ( tipeTanggal == '') {
                     msg += 'Field <strong>Tipe Tanggal </strong> masih belum dipilih' + '<br/>';
+                }
+                if ( kodeRekening == '') {
+                    msg += 'Field <strong>Kode Rekening </strong> masih belum dipilih' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -274,7 +275,6 @@
                                                                 updater: function (item) {
                                                                     var selectedObj = mapped[item];
                                                                     $('#nama_kode_rekening').val(selectedObj.nama);
-                                                                    $('#rekening_id').val(selectedObj.rekeningId);
                                                                     return selectedObj.id;
                                                                 }
                                                             });
@@ -283,8 +283,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield  id="nama_kode_rekening" name="laporanAkuntansi.namaKodeRekening" required="true" readonly="true" cssClass="form-control"/>
-                                                        <s:hidden  id="rekening_id" />
+                                                        <s:textfield  id="nama_kode_rekening" name="laporanAkuntansi.namaKodeRekening"  readonly="true" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -294,7 +293,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield  id="masterId" name="laporanAkuntansi.masterId" required="true" cssClass="form-control" maxLength="10"/>
+                                                        <s:textfield  id="masterId" name="laporanAkuntansi.masterId" cssClass="form-control" maxLength="10"/>
                                                     </table>
                                                     <script>
                                                         $(document).ready(function() {

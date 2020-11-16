@@ -93,7 +93,7 @@
 
 
 
-    <legend align="left">Add Tipe Pegawai</legend>
+    <legend align="left">Add Status Pegawai</legend>
 
 
     <table>
@@ -112,7 +112,7 @@
     <%--</div>--%>
 
     <div class="form-group">
-        <label class="control-label col-sm-2">Tipe Pegawai Name :</label>
+        <label class="control-label col-sm-2">Status Pegawai Name :</label>
         <div class="col-sm-8">
             <s:textfield id="tipePegawaiName1" cssClass="form-control" name="tipePegawai.tipePegawaiName" required="false" disabled="false"/>
         </div>

@@ -62,7 +62,7 @@ public class LiburDao extends GenericDao<ImLiburEntity, String> {
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.asc("liburId"));
+        criteria.addOrder(Order.desc("liburId"));
 
         List<ImLiburEntity> results = criteria.list();
 

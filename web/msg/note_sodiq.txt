@@ -1098,6 +1098,38 @@ UPDATE im_simrs_jenis_periksa_pasien
 SET keterangan = 'Promo'
 WHERE id_jenis_periksa_pasien = 'paket_individu';
 
+--WEEKEND
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100);
+
+ALTER TABLE it_simrs_implementasi_perawat
+ADD COLUMN sip VARCHAR(100);
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000239','RMM00000098','rawat_inap','17','Y','C','migrasi',now(),now(),'migrasi');
+
+
+
+--BARU BARU INI BELUM DI PROD
+--FRIDAY 23-10-2020
+SELECT * FROM im_simrs_pelayanan
+WHERE id_pelayanan = 'PYN00000010';
+
+UPDATE im_simrs_pelayanan
+SET kategori_pelayanan = 'spesialis_mata'
+WHERE id_pelayanan = 'PYN00000010';
+
+--SELOSO
+ALTER TABLE it_simrs_hemodinamika
+ADD COLUMN sistole int,
+ADD COLUMN diastole int;
+
+ALTER TABLE it_simrs_hemodinamika
+ALTER COLUMN ekg TYPE VARCHAR(100);
+
+
+
 
 
 

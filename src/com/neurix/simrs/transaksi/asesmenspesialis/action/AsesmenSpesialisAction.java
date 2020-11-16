@@ -51,36 +51,36 @@ public class AsesmenSpesialisAction {
 
                 if (obj.has("tipe")) {
                     asesmenSpesialis.setTipe(obj.getString("tipe"));
-                    try {
-                        BASE64Decoder decoder = new BASE64Decoder();
-                        byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
-                        logger.info("Decoded upload data : " + decodedBytes.length);
-                        String wkt = time.toString();
-                        String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                        logger.info("PATTERN :" + patten);
-                        String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("jenis") + i + "-" + patten + ".png";
-                        String uploadFile = "";
-                        if ("ttd".equalsIgnoreCase(obj.getString("tipe"))) {
-                            uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
-                        } else {
-                            uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
-                        }
-                        logger.info("File save path : " + uploadFile);
-                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                    if("ttd".equalsIgnoreCase(obj.getString("tipe")) || "gambar".equalsIgnoreCase(obj.getString("tipe"))){
+                        try {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName = obj.getString("id_detail_checkup") + "-" + obj.getString("jenis") + i + "-" + patten + ".png";
+                            String uploadFile = "";
+                            if ("ttd".equalsIgnoreCase(obj.getString("tipe"))) {
+                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                            } else {
+                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                            }
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-                        if (image == null) {
-                            logger.error("Buffered Image is null");
+                            if (image == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                            } else {
+                                File f = new File(uploadFile);
+                                ImageIO.write(image, "png", f);
+                                asesmenSpesialis.setJawaban(fileName);
+                            }
+                        } catch (IOException e) {
                             response.setStatus("error");
-                            response.setMsg("Buffered Image is null");
-                        } else {
-                            File f = new File(uploadFile);
-                            // write the image
-                            ImageIO.write(image, "png", f);
-                            asesmenSpesialis.setJawaban(fileName);
+                            response.setMsg("Error Parse IO Img, " + e.getMessage());
                         }
-                    } catch (IOException e) {
-                        response.setStatus("error");
-                        response.setMsg("Error Parse IO Img, " + e.getMessage());
+                    }else{
+                        asesmenSpesialis.setJawaban(obj.getString("jawaban"));
                     }
                 } else {
                     asesmenSpesialis.setJawaban(obj.getString("jawaban"));
