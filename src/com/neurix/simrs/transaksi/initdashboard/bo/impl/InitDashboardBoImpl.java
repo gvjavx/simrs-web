@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.initdashboard.bo.impl;
 
+import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.initdashboard.bo.InitDashboardBo;
@@ -14,10 +15,10 @@ public class InitDashboardBoImpl implements InitDashboardBo {
     private HeaderCheckupDao headerCheckupDao;
 
     @Override
-    public HeaderCheckup getCountAll(String branch) {
+    public HeaderCheckup getCountAll(String bulan, String tahun, String branch) {
         HeaderCheckup headerCheckup = new HeaderCheckup();
         try {
-            headerCheckup = headerCheckupDao.getCountAll(branch);
+            headerCheckup = headerCheckupDao.getCountAll(bulan, tahun, branch);
         }catch (HibernateException e){
             logger.error(e.getMessage());
         }
@@ -51,6 +52,17 @@ public class InitDashboardBoImpl implements InitDashboardBo {
         List<HeaderCheckup> headerCheckup = new ArrayList<>();
         try {
             headerCheckup = headerCheckupDao.getTahunPeriksa();
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return headerCheckup;
+    }
+
+    @Override
+    public List<HeaderCheckup> getKamarTerpakai(String bulan, String tahun, String branchId) throws GeneralBOException {
+        List<HeaderCheckup> headerCheckup = new ArrayList<>();
+        try {
+            headerCheckup = headerCheckupDao.getKamarTerpakai(bulan, tahun, branchId);
         }catch (HibernateException e){
             logger.error(e.getMessage());
         }
