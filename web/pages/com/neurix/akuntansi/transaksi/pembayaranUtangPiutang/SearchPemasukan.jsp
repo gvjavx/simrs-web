@@ -469,34 +469,6 @@
                 <center class="box">
                     <br>
                     <br>
-                    <%--<div class="row">--%>
-                    <%--<label class="control-label col-sm-4">Nama Lampiran </label>--%>
-                    <%--<div class="col-sm-8">--%>
-                    <%--<s:textfield id="mod_nama_lampiran" onkeypress="$(this).css('border','')" cssClass="form-control modal_lampiran"/>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row" style="margin-top: 7px">--%>
-                    <%--<label class="control-label col-sm-4">Lampiran (PDF/JPEG/PNG) </label>--%>
-                    <%--<div class="col-sm-8">--%>
-                    <%--<div class="input-group" id="img_file2"  style="margin-top: 7px">--%>
-                    <%--<span class="input-group-btn">--%>
-                    <%--<span class="btn btn-default btn-file btn-file-2">--%>
-                    <%--Browse… <s:file id="imgInp2" accept=".jpg" name="fileUpload2"--%>
-                    <%--onchange="$('#img_file2').css('border','')"></s:file>--%>
-                    <%--</span>--%>
-                    <%--</span>--%>
-                    <%--<input type="text" class="form-control" readonly id="namaFile2">--%>
-                    <%--</div>--%>
-                    <%--<canvas id="img_faktur_canvas2" style="display: none"></canvas>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<br>--%>
-                    <%--<div class="row" style="margin-top: 7px">--%>
-                    <%--<center>--%>
-                    <%--<a id="btnAddLampiran" type="button" class="btn btn-default btn-success"><i class="fa fa-plus"></i> Tambah</a>--%>
-                    <%--</center>--%>
-                    <%--</div>--%>
-                    <%--<br>--%>
                     <div class="row">
                         <div class="col-md-12">
                             <table style="width: 100%;" class="tabelLampiran table table-bordered">
@@ -577,7 +549,7 @@
             var who = $(this).attr('who');
             var title ="View Keterangan Approval";
 
-            PembayaranUtangPiutangAction.getViewApproval(pembayaranId,who,function (data) {
+            PembayaranUtangPiutangAction.getViewApproval(pembayaranId,function (data) {
                 if (who=="keu"){
                     title += " Keuangan";
                     $('#mod_approve_by').val(data.approvalKeuanganName);
@@ -750,6 +722,7 @@
             }
         })
     });
+
     window.loadPembayaran = function () {
         loadLampiran();
         $('.pembayaranTable').find('tbody').remove();

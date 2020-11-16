@@ -91,7 +91,7 @@
                             <%--</tr>--%>
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Bagian :</small></label>
+                                    <label class="control-label"><small>Sub Bidang/Divisi :</small></label>
                                 </td>
                                 <td>
                                     <table>

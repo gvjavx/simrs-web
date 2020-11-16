@@ -2973,7 +2973,8 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "SELECT \n" +
                 "  bgt.no_budgeting," +
-                "  bgt.branch_id \n" +
+                "  bgt.branch_id, \n" +
+                "  kr.nama_kode_rekening \n" +
                 "FROM \n" +
                 "  it_akun_budgeting bgt \n" +
                 "  LEFT JOIN (\n" +
@@ -2991,6 +2992,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
                 "      no_budgeting, \n" +
                 "      divisi_id\n" +
                 "  ) bgtd ON bgt.no_budgeting = bgtd.no_budgeting \n" +
+                " LEFT JOIN im_akun_kode_rekening kr ON kr.rekening_id = bgt.rekening_id \n"+
                 "WHERE \n" +
                 "  branch_id = '"+unit+"' \n" +
                 "  AND tahun = '"+tahun+"' \n" +
@@ -3006,6 +3008,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             Budgeting data= new Budgeting();
             data.setNoBudgeting((String) row[0]);
             data.setBranchId((String) row[1]);
+            data.setNamaKodeRekening((String) row[2]);
             listOfResult.add(data);
         }
 
@@ -3019,30 +3022,35 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "SELECT \n" +
                 "  bgt.no_budgeting, \n" +
-                "  bgt.branch_id \n" +
+                "  bgt.branch_id,\n" +
+                "  bgtd.nama_pengadaan\n" +
                 "FROM \n" +
                 "  it_akun_budgeting bgt \n" +
                 "  LEFT JOIN (\n" +
                 "    SELECT \n" +
-                "      no_budgeting, \n" +
-                "      avg(nilai) as nilai, \n" +
-                "      sum(qty) as qty, \n" +
-                "      sum(sub_total) as sub_total, \n" +
-                "      divisi_id \n" +
+                "      bd.no_budgeting, \n" +
+                "      avg(bd.nilai) as nilai, \n" +
+                "      sum(bd.qty) as qty, \n" +
+                "      sum(bd.sub_total) as sub_total, \n" +
+                "      bd.divisi_id,\n" +
+                "\t  nama_pengadaan\n" +
                 "    FROM \n" +
-                "      it_akun_budgeting_detail \n" +
+                "      it_akun_budgeting_detail bd\n" +
+                "\t  LEFT JOIN it_akun_budgeting_pengadaan bp ON bp.id_budgeting_detail = bd.id_budgeting_detail\n" +
                 "    WHERE \n" +
-                "      flag = 'Y' \n" +
+                "      bd.flag = 'Y' \n" +
                 "    group by \n" +
-                "      no_budgeting, \n" +
-                "      divisi_id\n" +
+                "      bd.no_budgeting, \n" +
+                "      bd.divisi_id,\n" +
+                "\t  nama_pengadaan\n" +
                 "  ) bgtd ON bgt.no_budgeting = bgtd.no_budgeting \n" +
                 "WHERE \n" +
                 "  branch_id = '"+unit+"' \n" +
                 "  AND tahun = '"+tahun+"' \n" +
                 "  AND status = '"+status+"' \n" +
                 "  AND bgtd.divisi_id = 'INVS' \n" +
-                "  AND nilai is not null\n\n";
+                "  AND nilai is not null\n" +
+                "\n";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -3051,6 +3059,7 @@ public class LaporanAkuntansiDao extends GenericDao<ItLaporanAkuntansiEntity, St
             Budgeting data= new Budgeting();
             data.setNoBudgeting((String) row[0]);
             data.setBranchId((String) row[1]);
+            data.setNamaPengadaan((String) row[2]);
             listOfResult.add(data);
         }
 

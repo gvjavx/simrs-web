@@ -706,9 +706,9 @@ public class PengajuanBiayaAction extends BaseMasterAction {
 
         String branchId = CommonUtil.userBranchLogin();
         if (branchId!=null){
-            searchPengajuanBiaya.setBranchId(branchId);
+            searchPengajuanBiaya.setBranchIdUser(branchId);
         }else{
-            searchPengajuanBiaya.setBranchId("");
+            searchPengajuanBiaya.setBranchIdUser("");
         }
         setPengajuanBiaya(searchPengajuanBiaya);
         logger.info("[PengajuanBiayaAction.search] end process <<<");
@@ -761,8 +761,10 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         PengajuanBiaya data = new PengajuanBiaya();
         if (branchId!=null){
             data.setBranchId(branchId);
+            data.setBranchIdUser(branchId);
         }else{
             data.setBranchId("");
+            data.setBranchIdUser("");
         }
 
         setPengajuanBiaya(data);
@@ -832,7 +834,7 @@ public class PengajuanBiayaAction extends BaseMasterAction {
         session.removeAttribute("listOfResult");
         logger.info("[PengajuanBiayaAction.initFormPengajuan] end process >>>");
 
-        if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+        if (CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())||CommonConstant.ROLE_ID_KASUB_KEU.equalsIgnoreCase(CommonUtil.roleIdAsLogin())||CommonConstant.ROLE_ID_KA_KEU.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
             return "input_pengajuan_admin";
         }else{
             return "input_pengajuan";

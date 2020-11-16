@@ -29,6 +29,7 @@ public class PengajuanBiaya extends BaseModel {
     private BigDecimal budgetSaatIni;
     private String stBudgetSaatIni;
     private String transaksi;
+    private String transaksiName;
     private String coaTarget;
     private String branchIdKanpus;
     private String tipeTransaksi;
@@ -55,6 +56,14 @@ public class PengajuanBiaya extends BaseModel {
     private String coaTargetName;
 
     private String branchIdUser;
+
+    public String getTransaksiName() {
+        return transaksiName;
+    }
+
+    public void setTransaksiName(String transaksiName) {
+        this.transaksiName = transaksiName;
+    }
 
     public String getBranchIdUser() {
         return branchIdUser;

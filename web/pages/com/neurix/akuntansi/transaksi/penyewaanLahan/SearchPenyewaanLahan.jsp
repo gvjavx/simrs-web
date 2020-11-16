@@ -99,7 +99,7 @@
                                             <s:param name="tipe">lahan</s:param>
                                         </s:action>
                                         <s:select list="#initComboVendor.listOfComboVendor" id="namaPenyewa" cssStyle="width: 100%;font-size: 10px"
-                                                  listKey="nomorMaster" listValue="nama" headerKey="" headerValue="[Select one]" name="penyewaanLahan.namaPenyewa" cssClass="form-control select2"/>
+                                                  listKey="nomorMaster" listValue="nama" headerKey="" headerValue="" name="penyewaanLahan.namaPenyewa" cssClass="form-control select2"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -232,7 +232,10 @@
                                         </td>
                                         <td align="center">
                                             <s:if test='#row.cancelFlag == "Y"'>
-                                                <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_batal">
+                                                <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>">
+                                                <a href="javascript:;" data="<s:property value="%{#attr.row.penyewaanLahanId}"/>" who="batal" class="item-view-approval">
+                                                    <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" >
+                                                </a>
                                             </s:if>
                                             <s:elseif test='#row.approvalFlag == "Y"'>
                                             </s:elseif>
@@ -246,7 +249,10 @@
                                             <s:if test='#row.cancelFlag == "Y"'>
                                             </s:if>
                                             <s:elseif test='#row.approvalFlag == "Y"'>
-                                                <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_batal">
+                                                <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" >
+                                                <a href="javascript:;" data="<s:property value="%{#attr.row.penyewaanLahanId}"/>" who="keu" class="item-view-approval">
+                                                    <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" >
+                                                </a>
                                             </s:elseif>
                                             <s:else>
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.penyewaanLahanId}"/>" class="item-posting">
@@ -311,8 +317,8 @@
                                         <s:action id="initComboVendor" namespace="/masterVendor" name="initComboVendor_masterVendor">
                                             <s:param name="tipe">lahan</s:param>
                                         </s:action>
-                                        <s:select list="#initComboVendor.listOfComboVendor" id="mod_add_nama_penyewa" cssStyle="width: 100%"
-                                                  listKey="nomorMaster" listValue="nama" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
+                                        <s:select list="#initComboVendor.listOfComboVendor" id="mod_add_nama_penyewa" cssStyle="width: 100%" onchange="isiKeterangan()"
+                                                  listKey="nomorMaster" listValue="nama" headerKey="" headerValue="" cssClass="form-control select2"/>
                                     </div>
                                 </div>
                             </div>
@@ -320,7 +326,7 @@
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 14px" >Tanggal</label>
                                     <div class="col-md-6">
-                                        <s:textfield id="mod_add_tanggal_bayar" cssClass="form-control" cssStyle="margin-top: 10px" />
+                                        <s:textfield id="mod_add_tanggal_bayar" cssClass="form-control" cssStyle="margin-top: 10px"  onchange="isiKeterangan()" />
                                         <script>
                                             $('#mod_add_tanggal_bayar').datepicker({
                                                 setDate: new Date(),
@@ -339,7 +345,7 @@
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 14px" >Nilai (RP)</label>
                                     <div class="col-md-6">
-                                        <s:textfield id="mod_add_nilai" cssClass="form-control" onkeyup="formatRupiah2(this),hitungPpn(this.value)" cssStyle="text-align: right;margin-top: 7px" />
+                                        <s:textfield id="mod_add_nilai" cssClass="form-control" onkeyup="formatRupiah2(this),hitungPpn(this.value)" cssStyle="text-align: right;margin-top: 7px"  onmouseout="isiKeterangan()" />
                                     </div>
                                 </div>
                             </div>
@@ -410,15 +416,15 @@
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 14px" >Metode Bayar</label>
                                     <div class="col-md-2">
-                                        <select id="mod_add_metode_bayar" class="form-control select2" style="width: 100%" onchange="pilihMetode(this.value)">
-                                            <option value="" >[Select One]</option>
+                                        <select id="mod_add_metode_bayar" class="form-control select2" style="width: 100%" onchange="pilihMetode(this.value),isiKeterangan()" >
+                                            <option value="" ></option>
                                             <option value="tunai">Tunai</option>
                                             <option value="transfer">Transfer</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4" id="pilih_bank">
-                                        <select class="form-control select2" style="width: 100%" id="mod_add_bank">
-                                            <option value="">[Select One]</option>
+                                        <select class="form-control select2" style="width: 100%" id="mod_add_bank" onchange="isiKeterangan()">
+                                            <option value=""></option>
                                         </select>
                                     </div>
                                 </div>
@@ -742,6 +748,7 @@
                                     alert("Berhasil menambahkan No. Faktur");
                                     $('#mod_no_faktur').val($('#mod_scan_faktur').val());
                                     $('#modal-scan-faktur').modal('hide');
+                                    isiKeterangan();
                                 } else{
                                     alert("NPWP Lawan yang berada di faktur tidak sama dengan NPWP perusahaan");
                                 }
@@ -777,6 +784,44 @@
         </div>
     </div>
 </div>
+
+<div id="modal-view-approval" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-flat modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">By</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_approve_by" readonly="true" cssStyle="margin-top: 7px" cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4" style="margin-top: 7px">Date</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_approve_date" readonly="true" cssStyle="margin-top: 7px" cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         $('#pilih_bank').hide();
@@ -796,6 +841,9 @@
                 $('#mod_view_no_faktur').val(data.noFaktur);
                 $('#mod_view_url_faktur_image').val(data.urlFakturImage);
                 $('#mod_view_keterangan').val(data.keterangan);
+                if (data.noFaktur==""){
+                    $('#btnViewFaktur').hide();
+                }
             });
             $("#btnPostingJurnal").hide();
             $("#btnCancelPenyewaan").hide();
@@ -819,6 +867,9 @@
                 $('#mod_view_url_faktur_image').val(data.urlFakturImage);
                 $('#mod_view_bank').val(data.bankName);
                 $('#mod_view_keterangan').val(data.keterangan);
+                if (data.noFaktur==""){
+                    $('#btnViewFaktur').hide();
+                }
             });
             $("#btnPostingJurnal").show();
             $("#btnCancelPenyewaan").hide();
@@ -842,6 +893,9 @@
                 $('#mod_view_url_faktur_image').val(data.urlFakturImage);
                 $('#mod_view_bank').val(data.bankName);
                 $('#mod_view_keterangan').val(data.keterangan);
+                if (data.noFaktur==""){
+                    $('#btnViewFaktur').hide();
+                }
             });
             $("#btnPostingJurnal").hide();
             $("#btnCancelPenyewaan").show();
@@ -897,15 +951,24 @@
             if (nilaiPph==""){
                 nilaiPph="0";
             }
-
+            if (nilaiPpn==""){
+                nilaiPpn="0";
+            }
             var canvas = document.getElementById('img_faktur_canvas');
             var cekCanvas = $('#namaFile').val();
             var dataURL = canvas.toDataURL("image/png"),
                 dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 
-            if (branchId!=""&&namaPenyewa!=""&&tanggal!=""&&nilai!=""&&metodeBayar!=""&&keterangan!=""&&nilaiPpn!=""&&nilaiNetto!=""&&cekCanvas!=""&&noFakturPajak!=""){
+            if (branchId!=""&&namaPenyewa!=""&&tanggal!=""&&nilai!=""&&metodeBayar!=""&&keterangan!=""&&nilaiPpn!=""&&nilaiNetto!=""){
                 if (metodeBayar=="transfer"&&bank==""){
                     alert("Pilih bank terlebih dahulu");
+                }else if(cekCanvas==""&&noFakturPajak==""){
+                    if (confirm("No. nota dan bukti tidak dimasukkan , apakah anda ingin melanjutkan tanpa nota/bukti dan nilai ppn dijadikan 0 ?")){
+                        PenyewaanLahanAction.saveAdd(branchId,namaPenyewa,tanggal,nilai,metodeBayar,keterangan,bank,"0",nilaiPph,nilaiNetto,noFakturPajak,dataURL,function () {
+                            alert("Berhasil Menambahkan Data");
+                            window.location.reload();
+                        })
+                    }
                 } else{
                     if (confirm("Apakah anda ingin menambahkan data ini ?")){
                         PenyewaanLahanAction.saveAdd(branchId,namaPenyewa,tanggal,nilai,metodeBayar,keterangan,bank,nilaiPpn,nilaiPph,nilaiNetto,noFakturPajak,dataURL,function () {
@@ -940,12 +1003,6 @@
                 if (keterangan==""){
                     msg+="Keterangan masih kosong \n";
                 }
-                if (noFakturPajak=="") {
-                    msg += "No. Faktur Pajak Masih Kosong \n";
-                }
-                if (cekCanvas=="") {
-                    msg += "Belum Upload Faktur Pajak \n";
-                }
                 alert(msg);
             }
         })
@@ -959,6 +1016,35 @@
             }
         }
     }
+
+    window.isiKeterangan = function(){
+        var namaPenyewa = $( "#mod_add_nama_penyewa option:selected" ).text();
+        var tanggal = $('#mod_add_tanggal_bayar').val();
+        var metodeBayar = $( "#mod_add_metode_bayar option:selected" ).text();
+        var metodeBayar2 = $( "#mod_add_bank option:selected" ).text();
+        var noNota = $('#mod_no_faktur').val();
+        var keterangan = $('#mod_add_keterangan').val();
+
+        keterangan ="Penyewaan lahan ";
+
+        if (namaPenyewa!=""){
+            keterangan +=" oleh "+namaPenyewa;
+        }
+        if (tanggal!=""){
+            keterangan+=" pada tanggal "+tanggal;
+        }
+        if (metodeBayar!=""){
+            if (metodeBayar=="Tunai"){
+                keterangan += " dengan pembayaran tunai";
+            }else{
+                keterangan += " dengan pembayaran transfer pada bank "+metodeBayar2;
+            }
+        }
+        if (noNota !=""){
+            keterangan +=" dengan nomor nota "+noNota;
+        }
+        $('#mod_add_keterangan').val(keterangan);
+    };
 
     function generateNoFaktur(val){
         PembayaranUtangPiutangAction.generateQrEfaktur(val,function (result) {
@@ -997,7 +1083,7 @@
         return rupiah;
     }
     function selectPembayaran(){
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""></option>';
         KasirRawatJalanAction.getListPembayaran(function (res) {
             if(res.length > 0){
                 $.each(res, function (i, item) {
@@ -1011,6 +1097,7 @@
     }
     $(document).ready(function () {
         $('#tablePenyewaanLahan').DataTable({
+            "pageLength": 50,
             "order": [[0, "desc"]]
         });
 
@@ -1060,6 +1147,26 @@
         var penyewaanLahanId = $(this).attr('penyewaanLahanId');
         var url = "cetakBuktiPembayaran_penyewaanLahan.action?penyewaanLahan.penyewaanLahanId="+penyewaanLahanId;
         window.open(url,'_blank');
+    });
+
+    $('.tablePenyewaanLahan').on('click', '.item-view-approval', function() {
+        var id = $(this).attr('data');
+        var who = $(this).attr('who');
+        var title ="View Keterangan ";
+
+        PenyewaanLahanAction.getViewApproval(id,function (data) {
+            if (who=="batal"){
+                title += " Pembatalan";
+                $('#mod_approve_by').val(data.cancelWho);
+                $('#mod_approve_date').val(data.stCancelDate);
+            } else {
+                title += " Posting Penyewaan Lahan";
+                $('#mod_approve_by').val(data.approvalWho);
+                $('#mod_approve_date').val(data.stApprovalDate);
+            }
+        });
+        $("#modal-view-approval").find('.modal-title').text(title);
+        $("#modal-view-approval").modal('show');
     });
 </script>
 
