@@ -815,8 +815,8 @@
         var idKategori  = $('#id_kategori').val();
 
 
-        if (nama != '' && jenis != null && lembarBox != '' && bijiLembar != '' && pabrik != ''
-            && merek != '' && pabrik != '' && minStok != '') {
+        if (nama != '' && jenis != null && lembarBox != '' && bijiLembar != ''
+            && merek != '' && minStok != '') {
 
             $('#save_obat').hide();
             $('#load_obat').show();
