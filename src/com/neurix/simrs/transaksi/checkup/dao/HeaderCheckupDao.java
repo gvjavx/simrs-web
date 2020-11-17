@@ -1831,12 +1831,14 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.nama,\n" +
                     "b.jenis_kelamin,\n" +
                     "b.branch_id,\n" +
-                    "c.nama_pelayanan\n" +
+                    "c.nama_pelayanan,\n" +
+                    "d.id_detail_checkup\n" +
                     "FROM it_simrs_antian_online a\n" +
                     "INNER JOIN it_simrs_registrasi_online b ON a.no_checkup_online = b.no_checkup_online\n" +
                     "INNER JOIN im_simrs_pelayanan c ON a.id_pelayanan = c.id_pelayanan\n" +
+                    "LEFT JOIN it_simrs_header_detail_checkup d ON b.no_checkup_online = d.no_checkup_online\n" +
                     "WHERE a.tgl_checkup = CURRENT_DATE\n" +
-                    "AND b.branch_id = :id\n" + pelayanan +
+                    "AND b.branch_id = :id\n" +
                     "ORDER BY a.no_checkup_online ASC";
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -1858,6 +1860,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                         checkup.setJenisKelamin(jk);
                     }
                     checkup.setNamaPelayanan(obj[7] != null ? obj[7].toString() : null);
+                    checkup.setIdDetailCheckup(obj[8] != null ? obj[8].toString() : null);
                     res.add(checkup);
                 }
             }

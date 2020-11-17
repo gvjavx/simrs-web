@@ -743,7 +743,7 @@ public class CheckupAction extends BaseMasterAction {
                 }
 
                 checkup.setIsOnline("Y");
-                checkup.setTglAntian(antianOnline.getLastUpdate());
+                checkup.setTglAntian(antianOnline.getCreatedDate());
             }
         }
         return checkup;

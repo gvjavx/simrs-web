@@ -1121,7 +1121,6 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ---------- SUDAH DI PROD -----------
 ----------- +++++++++++ ------------
 
---BARU BARU INI BELUM DI PROD
 --FRIDAY 23-10-2020
 SELECT * FROM im_simrs_pelayanan
 WHERE id_pelayanan = 'PYN00000010';
@@ -1235,6 +1234,17 @@ ALTER TABLE im_simrs_pasien
 ADD COLUMN pendidikan VARCHAR(100),
 ADD COLUMN status_perkawinan VARCHAR(100);
 
+---------- SUDAH DI PROD -----------
+====================================
+
+            /\   /\   /\
+           |__| |__| |__|
+            ||   ||   ||
+            ||   ||   ||
+            ||   ||   ||
+----------- ||   ||   || -----------
+---------- SUDAH DI PROD -----------
+----------- +++++++++++ ------------
 
 --INI BELOM DI PROD
 --KEMMIS MALAM JUMAT

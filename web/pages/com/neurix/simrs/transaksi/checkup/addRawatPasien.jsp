@@ -3293,9 +3293,15 @@
             callback: function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
-                        var status = '<span class="span-success">sudah periksa</span>';
+                        var status = '';
                         var btn = "";
-                        if(item.flag == null || item.flag == ''){
+                        if(item.idDetailCheckup != null && item.idDetailCheckup != ''){
+                            if(item.flag != null && item.flag != ''){
+                                status = '<span class="span-success">sudah periksa</span>';
+                            }else{
+                                status = '<span class="span-biru">sudah daftar</span>';
+                            }
+                        }else{
                             status = '<span class="span-warning">belum periksa</span>';
                             btn = '<img style="cursor: pointer" class="hvr-grow" onclick="setNoCheckupOnline(\'' + item.noCheckupOnline + '\')" src="' + contextPathHeader + '/pages/images/icons8-create-25.png">';
                         }
