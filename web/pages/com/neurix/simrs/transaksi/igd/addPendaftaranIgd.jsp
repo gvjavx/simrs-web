@@ -2068,14 +2068,7 @@
                 if (res.idPelayanan != null) {
                     if (res.tipePelayanan == "lab" || res.tipePelayanan == "radiologi") {
                         $('#form-lab').show();
-                        var idKategori = "";
-                        if (res.tipePelayanan == "lab") {
-                            idKategori = "KAL00000002";
-                        }
-                        if (res.tipePelayanan == "radiologi") {
-                            idKategori = "KAL00000001";
-                        }
-                        LabAction.listLab(idKategori, function (response) {
+                        LabAction.listLab(res.tipePelayanan, function (response) {
                             if (response != null) {
                                 $.each(response, function (i, item) {
                                     option2 += "<option value='" + item.idLab + "'>" + item.namaLab + "</option>";
@@ -2087,6 +2080,7 @@
                         });
                     } else {
                         $('#form-lab').hide();
+                        $('#h_id_order_lab').val(null);
                     }
                 }
             });

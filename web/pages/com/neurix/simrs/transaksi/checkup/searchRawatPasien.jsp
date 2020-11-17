@@ -266,6 +266,9 @@
                                                 <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
                                             </a>
                                         </s:if>
+                                        <a target="_blank" href="printNoAntrian_checkup.action?id=<s:property value="idPasien"/>&tipe=<s:property value="idPelayanan"/>">
+                                            <img src="<s:url value="/pages/images/icons8-print-25-yellow.png"/>">
+                                        </a>
                                     </td>
                                 </tr>
                             </s:iterator>

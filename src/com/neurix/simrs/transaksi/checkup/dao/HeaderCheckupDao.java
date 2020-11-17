@@ -387,7 +387,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "b.id_jenis_periksa_pasien,\n" +
                 "f.id,\n" +
                 "f.id_detail_checkup,\n" +
-                "f.status_bayar\n" +
+                "f.status_bayar,\n" +
+                "b.no_antrian,\n" +
+                "b.no_checkup_online\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -405,9 +407,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 .setParameter("branchId", branch)
                 .list();
 
-        if (!result.isEmpty()) {
+        if (result.size() > 0) {
 
-            Integer index = 1;
             for (Object[] obj : result) {
 
                 HeaderCheckup headerCheckup = new HeaderCheckup();
@@ -431,7 +432,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 checkup.setNamaKecamatan(obj[7].toString());
                 checkup.setNoCheckup(obj[9].toString());
                 checkup.setIdDetailCheckup(obj[10].toString());
-                checkup.setNoAntrian(index++);
+                checkup.setStNoAntrian(obj[15] != null ? obj[15].toString() : null);
+                checkup.setNoCheckupOnline(obj[16] != null ? obj[16].toString() : null);
                 listOfResult.add(checkup);
             }
         }
@@ -2072,6 +2074,69 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             }
         }
         return response;
+    }
+
+    public List<HeaderCheckup> listAntrianOnline(String branchId, String idPelayanan){
+        List<HeaderCheckup> res = new ArrayList<>();
+        if(branchId != null && !"".equalsIgnoreCase(branchId) && idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+            String SQL = "SELECT \n" +
+                    "a.id_antrian_online,\n" +
+                    "a.no_checkup_online,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "a.id_pelayanan,\n" +
+                    "a.created_date\n" +
+                    "FROM it_simrs_antian_online a\n" +
+                    "INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                    "WHERE tgl_checkup = CURRENT_DATE\n" +
+                    "AND a.branch_id = :branch\n" +
+                    "AND a.id_pelayanan = :pelayanan\n" +
+                    "ORDER BY a.created_date ASC";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("branch", branchId)
+                    .setParameter("pelayanan", idPelayanan)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    HeaderCheckup checkup = new HeaderCheckup();
+                    checkup.setNoCheckupOnline(obj[1] != null ? obj[1].toString() : null);
+                    checkup.setTipePelayanan(obj[2] != null ? obj[2].toString() : null);
+                    res.add(checkup);
+                }
+            }
+        }
+        return res;
+    }
+
+    public HeaderCheckup lastAntrian(String branchId, String idPelayanan){
+        HeaderCheckup res = new HeaderCheckup();
+        if(branchId != null && !"".equalsIgnoreCase(branchId) && idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+            String SQL = "SELECT\n" +
+                    "a.id_detail_checkup,\n" +
+                    "a.no_antrian\n" +
+                    "FROM it_simrs_header_detail_checkup a\n" +
+                    "INNER JOIN it_simrs_header_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "INNER JOIN im_simrs_pelayanan c ON a.id_pelayanan = c.id_pelayanan\n" +
+                    "WHERE CAST(a.created_date AS DATE) = CURRENT_DATE\n" +
+                    "AND c.tipe_pelayanan = 'rawat_jalan'\n" +
+                    "AND a.no_antrian IS NOT NULL\n" +
+                    "AND b.branch_id = :branch\n" +
+                    "AND a.id_pelayanan = :pelayanan\n" +
+                    "AND a.no_checkup_online IS NULL\n" +
+                    "ORDER BY a.created_date DESC LIMIT 1";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("branch", branchId)
+                    .setParameter("pelayanan", idPelayanan)
+                    .list();
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                res.setIdDetailCheckup(obj[0] != null ? obj[0].toString() : null);
+                res.setStNoAntrian(obj[1] != null ? obj[1].toString() : null);
+            }
+        }
+        return res;
     }
 
     public String getNextSeq() {

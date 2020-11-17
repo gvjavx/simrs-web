@@ -4024,4 +4024,37 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.getListRekammedisPasien] END process >>>");
         return listRM;
     }
+
+    public String printNoAntrian() {
+        String id = getId();
+        String tipe = getTipe();
+        String branch = CommonUtil.userBranchLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        reportParams.put("area", CommonUtil.userAreaName());
+        reportParams.put("unit", CommonUtil.userBranchNameLogin());
+        reportParams.put("logo", logo);
+        reportParams.put("idPasien", id);
+        reportParams.put("idPelayanan", tipe);
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            return "search";
+        }
+
+        return "print_no_antrian";
+    }
 }

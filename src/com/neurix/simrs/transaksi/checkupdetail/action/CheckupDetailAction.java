@@ -2676,6 +2676,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                             diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
                         } catch (GeneralBOException e) {
                             logger.error("[Foun Error] when search diagnosa awal " + e);
+                            finalResponse.setStatus("error");
+                            finalResponse.setMsg("Error saat mencari data diagnosa, "+e.getMessage());
+                            return finalResponse;
                         }
 
                         if (diagnosaRawatList.size() > 0) {
@@ -2694,6 +2697,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                             pelayananList = pelayananBo.getByCriteria(pelayanan);
                         } catch (GeneralBOException e) {
                             logger.error("[Found Error] when search pelayanan " + e.getMessage());
+                            finalResponse.setStatus("error");
+                            finalResponse.setMsg("Error saat mencari data pelayanan, "+e.getMessage());
+                            return finalResponse;
                         }
 
                         if (pelayananList.size() > 0) {

@@ -21,7 +21,11 @@ function getJenisResep() {
         arBodyJenisResep.push({"nilai": "asuransi", "label": "ASURANSI"}, {"nilai": "umum", "label": "UMUM"});
     } else if (jenisPeriksaPasien == "bpjs") {
         arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
-    } else {
+    } else if (jenisPeriksaPasien == "paket_perusahaan") {
+        arBodyJenisResep.push({"nilai": "paket_perusahaan", "label": "Medical Checkup"});
+    } else if (jenisPeriksaPasien == "paket_individu") {
+        arBodyJenisResep.push({"nilai": "paket_individu", "label": "Promo"});
+    } else if (jenisPeriksaPasien == "umum") {
         arBodyJenisResep.push({"nilai": "umum", "label": "UMUM"});
     }
 

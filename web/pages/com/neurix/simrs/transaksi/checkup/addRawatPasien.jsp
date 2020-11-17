@@ -318,9 +318,6 @@
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
                 $.publish('showInfoDialog');
-                $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #img_file, #provinsi, #kabupaten, #kecamatan, #desa').css('border', '');
-                resetField();
-
             }
         });
 
@@ -330,94 +327,100 @@
         });
 
         function resetField() {
-            $('#id_online').val(null);
-            $('#pembayaran').val(null);
-            $('#uang_muka').val(null);
-            $('#diagnosa_awal').val(null);
-            $('#perujuk').val(null);
-            $('#intansi_perujuk').val(null);
-            $('#no_rujukan').val(null);
-            $('#ppk_rujukan').val(null);
-            $('#tgl_rujukan').val(null);
-            $('#url_do').val(null);
-            $('#status_bpjs').val(null);
-            $('#status_rujukan').val(null);
-            $('#is_laka').val(null);
-            $('#id_asuransi').val(null);
-            $('#no_kartu').val(null);
-            $('#nominal_cover_biaya').val(null);
-            $('#no_kartu_ptpn').val(null);
-            $('#unit_ptpn').val(null);
-            $('#unit_pg').val(null);
-            $('#cek_is_bpjs').val(null);
-            $('#poli').val(null).trigger('change');
-            $('#nama_dokter').val(null);
-            $('#asuransi').val(null);
-            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan, #perujuk').val(null);
-            var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
-            $('#img-upload').attr('src', img);
-            $('#imgInp').attr('value', null);
-            $('#kelas_pasien').val(null);
-            $('#no_mr').val(null);
-            $('#idPelayananBpjs').val(null);
-            $('#id_checkup_online').val(null);
-            $('#tanggal_rujukan').val(null);
-            $('#h_no_kartu').val(null);
-            $('#h_id_asuransi').val(null);
-            $('#h_no_rujukan').val(null);
-            $('#id_paket').val(null);
-            $('#cover_biaya_paket').val(null);
-            $('#pembayaran').val(null);
-            $('#uang_muka_val').val(null);
-            $('#uang_muka').val(null);
-            $('#url_do').val(null);
+            var pos = $('#close_pos').val();
+            if (pos != 1) {
+                var idPasien = $('#id_pasien').val();
+                var idPelayanan = $('#h_id_pelayanan').val();
+                window.open('printNoAntrian_checkup.action?id='+idPasien+'&tipe='+idPelayanan, '_blank');
+                $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #img_file, #provinsi, #kabupaten, #kecamatan, #desa').css('border', '');
+                $('#id_online').val(null);
+                $('#pembayaran').val(null);
+                $('#uang_muka').val(null);
+                $('#diagnosa_awal').val(null);
+                $('#perujuk').val(null);
+                $('#intansi_perujuk').val(null);
+                $('#no_rujukan').val(null);
+                $('#ppk_rujukan').val(null);
+                $('#tgl_rujukan').val(null);
+                $('#url_do').val(null);
+                $('#status_bpjs').val(null);
+                $('#status_rujukan').val(null);
+                $('#is_laka').val(null);
+                $('#id_asuransi').val(null);
+                $('#no_kartu').val(null);
+                $('#nominal_cover_biaya').val(null);
+                $('#no_kartu_ptpn').val(null);
+                $('#unit_ptpn').val(null);
+                $('#unit_pg').val(null);
+                $('#cek_is_bpjs').val(null);
+                $('#poli').val(null).trigger('change');
+                $('#nama_dokter').val(null);
+                $('#asuransi').val(null);
+                $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan, #perujuk').val(null);
+                var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
+                $('#img-upload').attr('src', img);
+                $('#imgInp').attr('value', null);
+                $('#kelas_pasien').val(null);
+                $('#no_mr').val(null);
+                $('#idPelayananBpjs').val(null);
+                $('#id_checkup_online').val(null);
+                $('#tanggal_rujukan').val(null);
+                $('#h_no_kartu').val(null);
+                $('#h_id_asuransi').val(null);
+                $('#h_no_rujukan').val(null);
+                $('#id_paket').val(null);
+                $('#cover_biaya_paket').val(null);
+                $('#pembayaran').val(null);
+                $('#uang_muka_val').val(null);
+                $('#uang_muka').val(null);
+                $('#url_do').val(null);
 
-            $('#tgl_rujukan').val(null);
-            $('#ppk_rujukan').val(null);
-            $('#intansi_perujuk').val(null);
-            $('#no_rujukan').val(null);
-            $('#perujuk').val(null);
-            $('#no_kartu_ptpn').val(null);
-            $('#unit_pg').val(null);
+                $('#tgl_rujukan').val(null);
+                $('#ppk_rujukan').val(null);
+                $('#intansi_perujuk').val(null);
+                $('#no_rujukan').val(null);
+                $('#perujuk').val(null);
+                $('#no_kartu_ptpn').val(null);
+                $('#unit_pg').val(null);
 
-            $('#unit_ptpn').val(null);
-            $('#cek_is_bpjs').val(null);
-            $('#foto_surat').val(null);
-            $('#tanggal_kejadian').val(null);
-            $('#no_polisi').val(null);
-            $('#no_kartu').val(null);
-            $('#asuransi').val(null);
-            $('#kunjungan_val').val(null);
-            $('#paket_perusahaan').val(null);
-            $('#paket').val(null);
-            $('#dokter').val(null);
-            $('#nama_dokter').val(null);
-            $('#id_lab').val(null);
-            $('#poli').val(null);
-            $('#hubungan').val(null);
-            $('#no_telp').val(null);
-            $('#nama_penanggung').val(null);
+                $('#unit_ptpn').val(null);
+                $('#cek_is_bpjs').val(null);
+                $('#foto_surat').val(null);
+                $('#tanggal_kejadian').val(null);
+                $('#no_polisi').val(null);
+                $('#no_kartu').val(null);
+                $('#asuransi').val(null);
+                $('#kunjungan_val').val(null);
+                $('#paket_perusahaan').val(null);
+                $('#paket').val(null);
+                $('#dokter').val(null);
+                $('#nama_dokter').val(null);
+                $('#id_lab').val(null);
+                $('#poli').val(null);
+                $('#hubungan').val(null);
+                $('#no_telp').val(null);
+                $('#nama_penanggung').val(null);
 
-            $('#img_ktp').val(null);
-            $('#diagnosa_awal').val(null);
-            $('#diagnosa_ket').val(null);
-            $('#is_order_lab').val(null);
-            $('#last_id_detail_checkup').val(null);
+                $('#img_ktp').val(null);
+                $('#diagnosa_awal').val(null);
+                $('#diagnosa_ket').val(null);
+                $('#is_order_lab').val(null);
+                $('#last_id_detail_checkup').val(null);
 
-            $('#is_online').val(null);
-            $('#tgl_antrian').val(null);
-            $('#is_laka').val(null);
-            $('#poli').attr('disabled', false);
-            $('#jenis_pasien').attr('disabled', false);
+                $('#is_online').val(null);
+                $('#tgl_antrian').val(null);
+                $('#is_laka').val(null);
+                $('#poli').attr('disabled', false);
+                $('#jenis_pasien').attr('disabled', false);
 
-            $('#ket_hubungan').hide();
-            $('#form_jawa').hide();
-            $('#form_profesi').hide();
+                $('#ket_hubungan').hide();
+                $('#form_jawa').hide();
+                $('#form_profesi').hide();
 
-            $('#suku, #profesi, #pendidikan, #status_perkawinan, #hubungan, #asuransi').val(null).trigger('change');
-            $('#hub_keluarga, #ket_suku, #ket_profesi, #kunjungan_poli').val(null);
-            $('#alert-pasien').hide();
-
+                $('#suku, #profesi, #pendidikan, #status_perkawinan, #hubungan, #asuransi').val(null).trigger('change');
+                $('#hub_keluarga, #ket_suku, #ket_profesi, #kunjungan_poli').val(null);
+                $('#alert-pasien').hide();
+            }
         }
 
         function formatRupiah2(angka) {
@@ -1518,8 +1521,8 @@
                                                buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         closePos();
                                                                                          $('body').scrollTop(0);
+                                                                                         resetField();
                                                                                      }
                                                                             }">
                                         <s:hidden id="close_pos"></s:hidden>
@@ -1532,7 +1535,9 @@
                                                resizable="false"
                                                height="250" width="600" autoOpen="false" title="Error Dialog"
                                                buttons="{
-                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                                'OK':function() {
+                                                                                $('#error_dialog').dialog('close');
+                                                                                }
                                                                             }"
                                     >
                                         <div class="alert alert-danger alert-dismissible">
@@ -2195,15 +2200,8 @@
                 if (res.idPelayanan != null) {
                     if (res.tipePelayanan == "lab" || res.tipePelayanan == "radiologi") {
                         $('#form-lab').show();
-                        var idKategori = "";
-                        if (res.tipePelayanan == "lab") {
-                            idKategori = "KAL00000002";
-                        }
-                        if (res.tipePelayanan == "radiologi") {
-                            idKategori = "KAL00000001";
-                        }
-                        LabAction.listLab(idKategori, function (response) {
-                            if (response != null) {
+                        LabAction.listLab(res.tipePelayanan, function (response) {
+                            if (response.length > 0) {
                                 $.each(response, function (i, item) {
                                     option2 += "<option value='" + item.idLab + "'>" + item.namaLab + "</option>";
                                 });
@@ -2213,6 +2211,7 @@
                             }
                         });
                     } else {
+                        $('#h_id_order_lab').val(null);
                         $('#form-lab').hide();
                     }
                 }

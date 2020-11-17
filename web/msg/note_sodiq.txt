@@ -1278,6 +1278,15 @@ UPDATE im_branches
 SET warna = '#00ffff'
 WHERE branch_id = 'RS06';
 
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN no_antrian VARCHAR(100);
+
+INSERT INTO im_functions VALUES
+(2356, 'print no antrian', '/checkup/printNoAntrian_checkup.action', 1474, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2356, 32, 'Y', now(), now(), 'admin', 'admin');
+
 
 
 
