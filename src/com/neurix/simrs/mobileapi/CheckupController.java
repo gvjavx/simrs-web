@@ -1184,6 +1184,7 @@ public class CheckupController implements ModelDriven<Object> {
                     CheckupMobile checkupMobile = new CheckupMobile();
                     checkupMobile.setBranchName(item.getBranchName());
                     checkupMobile.setBranchId(item.getBranchId());
+                    checkupMobile.setWarna(item.getWarna());
 
                     listOfCheckup.add(checkupMobile);
                 }

@@ -76,6 +76,15 @@ public class CheckupMobile {
 
     private String tahun;
     private String all;
+    private String warna;
+
+    public String getWarna() {
+        return warna;
+    }
+
+    public void setWarna(String warna) {
+        this.warna = warna;
+    }
 
     public String getAll() {
         return all;
