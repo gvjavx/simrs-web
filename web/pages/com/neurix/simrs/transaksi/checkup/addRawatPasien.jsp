@@ -331,7 +331,10 @@
             if (pos != 1) {
                 var idPasien = $('#id_pasien').val();
                 var idPelayanan = $('#h_id_pelayanan').val();
-                window.open('printNoAntrian_checkup.action?id='+idPasien+'&tipe='+idPelayanan, '_blank');
+                var jenisPasien = $('#jenis_pasien').val();
+                if(jenisPasien != 'paket_perusahaan'){
+                    window.open('printNoAntrian_checkup.action?id='+idPasien+'&tipe='+idPelayanan, '_blank');
+                }
                 $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #img_file, #provinsi, #kabupaten, #kecamatan, #desa').css('border', '');
                 $('#id_online').val(null);
                 $('#pembayaran').val(null);
