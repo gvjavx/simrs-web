@@ -1255,6 +1255,29 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000244','RMM00000105','igd','10','Y','C','migrasi',now(),now(),'migrasi'),
 ('RMP000000245','RMM00000105','rawat_inap','10','Y','C','migrasi',now(),now(),'migrasi');
 
+ALTER TABLE im_branches
+ADD COLUMN warna VARCHAR (100);
+
+-- UPDATE BRANCHES
+UPDATE im_branches
+SET warna = '#0000ff'
+WHERE branch_id = 'RS01';
+UPDATE im_branches
+SET warna = '#66ff66'
+WHERE branch_id = 'RS02';
+UPDATE im_branches
+SET warna = '#ff0000'
+WHERE branch_id = 'RS03';
+UPDATE im_branches
+SET warna = '#ff33cc'
+WHERE branch_id = 'RS04';
+UPDATE im_branches
+SET warna = '#ff9900'
+WHERE branch_id = 'RS05';
+UPDATE im_branches
+SET warna = '#00ffff'
+WHERE branch_id = 'RS06';
+
 
 
 

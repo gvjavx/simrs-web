@@ -254,6 +254,7 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setCoderNik(imBranches.getCoderNik());
                     resultBranch.setLat(imBranches.getLat());
                     resultBranch.setLon(imBranches.getLon());
+                    resultBranch.setWarna(imBranches.getWarna());
 
                     listOfResultBranch.add(resultBranch);
                 }
