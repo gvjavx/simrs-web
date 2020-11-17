@@ -262,6 +262,16 @@
                                             <s:if test='#row.ttdPasien == null || #row.ttdApoteker == null'>
                                                 <img class="hvr-grow" style="cursor: pointer;" src='<s:url value="/pages/images/icons8-autograph-20.png"/>' onclick="showttd('<s:property value="idPermintaanResep"/>')">
                                             </s:if>
+
+                                            <%--<s:url var="reture" namespace="/reseppoli" action="retureObatResep_reseppoli" escapeAmp="false">--%>
+                                            <s:url var="reture" namespace="/reseppoli" action="searchResepReture_reseppoli" escapeAmp="false">
+                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                <s:param name="idPermintaan"><s:property value="idPermintaanResep"/></s:param>
+                                                <s:param name="idApprove"><s:property value="idApprovalObat"/></s:param>
+                                            </s:url>
+                                            <s:a href="%{reture}" target="_blank">
+                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-transaction-25.png"/>" style="cursor: pointer;">
+                                            </s:a>
                                         </s:if>
                                         <s:else>
                                             <s:url var="add_proses" namespace="/reseppoli" action="searchResep_reseppoli" escapeAmp="false">
@@ -272,15 +282,7 @@
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                             </s:a>
                                         </s:else>
-                                        <%--<s:url var="reture" namespace="/reseppoli" action="retureObatResep_reseppoli" escapeAmp="false">--%>
-                                        <s:url var="reture" namespace="/reseppoli" action="searchResepReture_reseppoli" escapeAmp="false">
-                                            <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                            <s:param name="idPermintaan"><s:property value="idPermintaanResep"/></s:param>
-                                            <s:param name="idApprove"><s:property value="idApprovalObat"/></s:param>
-                                        </s:url>
-                                        <s:a href="%{reture}" target="_blank">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                        </s:a>
+
                                     </td>
                                 </tr>
                             </s:iterator>
