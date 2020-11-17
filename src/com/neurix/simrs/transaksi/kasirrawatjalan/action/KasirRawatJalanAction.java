@@ -1218,14 +1218,14 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                     mapTindakan.put("divisi_id", getDivisiId(idDetail, "umum", keterangan, ""));
                                     mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetail, "umum", keterangan, "", ""));
                                     mapTindakan.put("activity", getAcitivityList(idDetail, "umum", keterangan, kode, ""));
-                                    listOfMapTindakanUmum.add(mapTindakan);
+                                    listOfMapTindakanUmumRi.add(mapTindakan);
 
                                     mapTindakan = new HashMap();
                                     mapTindakan.put("master_id", getMasterIdByTipe(idDetail, "asuransi"));
                                     mapTindakan.put("divisi_id", getDivisiId(idDetail, "asuransi", keterangan, ""));
                                     mapTindakan.put("nilai", getJumlahNilaiBiayaByKeterangan(idDetail, "asuransi", keterangan, "", ""));
                                     mapTindakan.put("activity", getAcitivityList(idDetail, "asuransi", keterangan, kode, ""));
-                                    listOfMapTindakanAsuransi.add(mapTindakan);
+                                    listOfMapTindakanUmumRi.add(mapTindakan);
                                 } else {
 
                                     // jika list poli adalah rawat inap
@@ -1274,8 +1274,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                     BigDecimal jumlahPPN = ppnObatUmum.add(ppnObatAsuransi);
                                     ppnObat = ppnObat.add(jumlahPPN);
 
-                                    listOfMapTindakanUmum.add(mapTindakanUmum);
-                                    listOfMapTindakanAsuransi.add(mapTindakanAsuransi);
+                                    listOfMapTindakanUmumRi.add(mapTindakanUmum);
+                                    listOfMapTindakanAsuransiRi.add(mapTindakanAsuransi);
                                 } else {
 
                                     listOfMapTindakanUmumRi.add(mapTindakanUmum);
@@ -1377,9 +1377,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         if ("tunai".equalsIgnoreCase(jenis) || "bpjs".equalsIgnoreCase(jenis)){
 
-            mapJurnal.put("pendapatan_rawat_jalan_umum", listOfMapTindakanUmum);
 
             if ("JRJ".equalsIgnoreCase(type) && !"Y".equalsIgnoreCase(withObat)) {
+
+                mapJurnal.put("pendapatan_rawat_jalan_umum", listOfMapTindakanUmum);
 
                 transId = "12";
 
@@ -1390,6 +1391,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 }
             }
             if ("JRJ".equalsIgnoreCase(type) && "Y".equalsIgnoreCase(withObat)) {
+
+                mapJurnal.put("pendapatan_rawat_jalan_umum", listOfMapTindakanUmum);
 
 //                mapPajakObat.put("bukti", invoiceNumber);
                 mapPajakObat.put("nilai", ppnObat);
@@ -1476,21 +1479,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 } else {
                     if ("Y".equalsIgnoreCase(withObat)){
 
-//                        Map mapResepAsuransi = new HashMap();
-//                        mapResepAsuransi.put("master_id", masterId);
-////                        mapResepAsuransi.put("pasien_id", idPasien);
-//                        mapResepAsuransi.put("divisi_id", divisiId);
-//                        mapResepAsuransi.put("nilai", pendapatanResep);
-//                        mapResepAsuransi.put("activity", listActivityResep);
-//
-//                        Map mapResepUmum = new HashMap();
-//                        mapResepUmum.put("master_id", masterUmum);
-////                        mapResepUmum.put("pasien_id", idPasien);
-//                        mapResepUmum.put("divisi_id", divisiId);
-//                        mapResepUmum.put("nilai", pendapatanResepUmum);
-//                        mapResepUmum.put("activity", listActivityResepUmum);
-
-//                        mapPajakObat.put("bukti", invoiceNumber);
                         mapPajakObat.put("nilai", ppnObat);
                         mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
