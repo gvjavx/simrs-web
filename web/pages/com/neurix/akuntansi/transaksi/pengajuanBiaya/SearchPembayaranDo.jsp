@@ -306,9 +306,11 @@
                                                         <td><s:property value="noJurnal"/></td>
                                                         <td><s:property value="statusName"/></td>
                                                         <td align="center">
-                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaRkId}"/>" class="item-view">
-                                                                <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
-                                                            </a>
+                                                            <s:if test='#row.pengajuanBiayaRkId!= null'>
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaRkId}"/>" class="item-view">
+                                                                    <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
+                                                                </a>
+                                                            </s:if>
                                                         </td>
                                                         <td align="center">
                                                             <s:if test='#row.status== "D"'>
@@ -344,99 +346,95 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Pengajuan Biaya</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Pengajuan Biaya Pembayaran DO</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="formDetail">
                     <div class="form-group">
                         <label class="control-label col-sm-3" >ID : </label>
                         <div class="col-sm-7">
-                            <input type="text" readonly class="form-control" id="modPengajuanBiayaDetailIdDetail">
+                            <input type="text" readonly class="form-control" id="mod_id">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-top: 7px">
                         <label class="control-label col-sm-3" >Unit : </label>
                         <div class="col-sm-7">
-                            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="mod_branch_id_detail" required="true" disabled="true"
-                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                            <input type="text" readonly class="form-control" id="mod_unit">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" >Divisi : </label>
-                        <div class="col-sm-7">
-                            <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
-                            <s:select cssClass="form-control" list="#comboPosition.listOfComboPositions" id="mod_divisi_id_detail" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
-                                      listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" >Tanggal Pengajuan: </label>
-                        <div class="col-sm-7">
-                            <input type="text" readonly class="form-control" id="mod_tanggal_detail">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" >Tanggal Realisasi: </label>
-                        <div class="col-sm-7">
-                            <input type="text" readonly class="form-control" id="mod_tanggal_realisasi_detail">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" >No. Budgetting : </label>
-                        <div class="col-sm-7">
-                            <input type="text" readonly class="form-control" id="mod_no_budgetting_detail">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" >Jumlah ( RP ) : </label>
-                        <div class="col-sm-7">
-                            <input type="text" class="form-control" id="mod_jumlah_detail" readonly>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" >Budget RKAP ( RP ) : </label>
-                        <div class="col-sm-7">
-                            <input type="text" readonly class="form-control" id="mod_budget_detail">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" >Keterangan : </label>
-                        <div class="col-sm-7">
-                            <input type="text" readonly class="form-control" id="mod_keterangan_detail">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3" >Status : </label>
-                        <div class="col-sm-7">
-                            <input type="text" readonly class="form-control" id="mod_status_detail">
-                        </div>
-                    </div>
-                    <div class="form-group view-ipa">
-                        <label class="control-label col-sm-3" >Ijin Prinsip Atasan : </label>
-                        <div class="col-sm-7">
-                            <input type="text" class="form-control" readonly id="namaFileUpload">
+                    <div class="form-group" style="margin-top: 7px">
+                        <label class="control-label col-sm-3" >No. Faktur : </label>
+                        <div class="col-sm-3">
+                            <input type="text" readonly class="form-control" id="mod_no_faktur">
                         </div>
                         <div class="col-sm-1">
-                            <a href="javascript:;" id="btnViewIpaUploaded">
-                                <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
-                            </a>
+                            Tgl :
                         </div>
-                        <script>
-                            $('#btnViewIpaUploaded').click(function () {
-                                dwr.engine.setAsync(false);
-                                var pengajuanId = $('#modPengajuanBiayaDetailIdDetail').val();
-                                PengajuanBiayaAction.searchPengajuanDetailImage(pengajuanId,function(data){
-                                    $("#my-image").attr("src", data);
-                                });
-                                $('#modal-view-ipa').modal('show');
-                            })
-                        </script>
+                        <div class="col-sm-3">
+                            <input type="text" readonly class="form-control" id="mod_tgl_faktur">
+                        </div>
                     </div>
-                    <div class="form-group" id="not_approval_note_detail">
-                        <label class="control-label col-sm-3" >Keterangan Not Approve : </label>
+                    <div class="form-group" style="margin-top: 7px">
+                        <label class="control-label col-sm-3" >No. Invoice : </label>
+                        <div class="col-sm-3">
+                            <input type="text" readonly class="form-control" id="mod_no_invoice">
+                        </div>
+                        <div class="col-sm-1">
+                            Tgl :
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" readonly class="form-control" id="mod_tgl_invoice">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 7px">
+                        <label class="control-label col-sm-3" >No. DO : </label>
+                        <div class="col-sm-3">
+                            <input type="text" readonly class="form-control" id="mod_no_do">
+                        </div>
+                        <div class="col-sm-1">
+                            Tgl :
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" readonly class="form-control" id="mod_tgl_do">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 7px">
+                        <label class="control-label col-sm-3" >ID Vendor : </label>
+                        <div class="col-sm-3">
+                            <input type="text" readonly class="form-control" id="mod_id_vendor">
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" readonly class="form-control" id="mod_vendor">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 7px">
+                        <label class="control-label col-sm-3" >No. Rek. Vendor : </label>
                         <div class="col-sm-7">
-                            <input type="text" readonly class="form-control" id="mod_not_approval_note_detail">
+                            <input type="text" readonly class="form-control" id="mod_no_rekening">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 7px">
+                        <label class="control-label col-sm-3" >Jumlah (RP): </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_jumlah" style="text-align: right">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 7px">
+                        <label class="control-label col-sm-3" >ID RK : </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_id_rk">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 7px">
+                        <label class="control-label col-sm-3" >No. Jurnal : </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_no_jurnal">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 7px">
+                        <label class="control-label col-sm-3" >Status Saat Ini : </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_status">
                         </div>
                     </div>
                 </form>
@@ -675,25 +673,25 @@
 
         $('.tablePengajuanBiaya').on('click', '.item-view', function() {
             var pengajuanBiayaId = $(this).attr('data');
-            PengajuanBiayaAction.getForModalPopUpDetail(pengajuanBiayaId,function (data) {
-                $('#mod_jumlah_detail').val(data.stJumlah);
-                $('#modPengajuanBiayaDetailIdDetail').val(data.pengajuanBiayaDetailId);
-                $('#mod_branch_id_detail').val(data.branchId);
-                $('#mod_divisi_id_detail').val(data.divisiId);
-                $('#mod_keterangan_detail').val(data.keterangan);
-                $('#mod_no_budgetting_detail').val(data.noBudgeting);
-                $('#mod_tanggal_detail').val(data.stTanggal);
-                $('#mod_tanggal_realisasi_detail').val(data.stTanggalRealisasi);
-                $('#mod_budget_detail').val(data.stBudgetBiayaSdBulanIni);
-                $('#mod_status_detail').val(data.statusSaatIni);
-                $('#namaFileUpload').val(data.fileName);
-                if (data.notApprovalNote!="null"){
-                    $('#mod_not_approval_note_detail').val(data.notApprovalNote);
-                } else{
-                    $('#not_approval_note_detail').hide();
-                }
-                $('#modal-detail').modal('show');
+            PengajuanBiayaAction.getForModalPopUpDo(pengajuanBiayaId,function (data) {
+                console.log(data);
+                $('#mod_id').val(data.pengajuanBiayaRkId);
+                $('#mod_unit').val(data.branchName);
+                $('#mod_no_faktur').val(data.noFaktur);
+                $('#mod_no_invoice').val(data.noInvoice);
+                $('#mod_no_do').val(data.noTransaksi);
+                $('#mod_tgl_faktur').val(data.stTanggalFaktur);
+                $('#mod_tgl_invoice').val(data.stTanggalInvoice);
+                $('#mod_tgl_do').val(data.stTanggalDo);
+                $('#mod_id_vendor').val(data.masterId);
+                $('#mod_vendor').val(data.masterName);
+                $('#mod_no_rekening').val(data.noRekening);
+                $('#mod_jumlah').val(data.stJumlah);
+                $('#mod_id_rk').val(data.rkId);
+                $('#mod_no_jurnal').val(data.noJurnal);
+                $('#mod_status').val(data.statusName);
             });
+            $("#modal-detail").modal('show');
         });
         function formatRupiahAngka(angka) {
             var number_string = angka.replace(/[^,\d]/g, '').toString(),

@@ -5,7 +5,9 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.diagnosa.dao.DiagnosaDao;
 import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
+import com.neurix.simrs.master.tindakan.dao.HeaderTindakanDao;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
+import com.neurix.simrs.master.tindakan.model.ImSimrsHeaderTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsAntianOnlineEntity;
@@ -84,6 +86,11 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
     private DiagnosaRawatDao diagnosaRawatDao;
     private TransaksiStokDao transaksiStokDao;
     private StrukAsuransiDao strukAsuransiDao;
+    private HeaderTindakanDao headerTindakanDao;
+
+    public void setHeaderTindakanDao(HeaderTindakanDao headerTindakanDao) {
+        this.headerTindakanDao = headerTindakanDao;
+    }
 
     public void setStrukAsuransiDao(StrukAsuransiDao strukAsuransiDao) {
         this.strukAsuransiDao = strukAsuransiDao;
@@ -516,11 +523,21 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                             if (tindakanEntities.size() > 0) {
 
                                 ImSimrsTindakanEntity tindakanEntity = tindakanEntities.get(0);
+
+                                String namaTindakan = "";
+                                if (tindakanEntity.getIdTindakan() != null){
+                                    // mencari berdasarkan idHeaderTindakan yang diperoleh dari tindakanEnity. untuk mencari nama tindakan
+                                    ImSimrsHeaderTindakanEntity headerTindakanEntity = headerTindakanDao.getById("idHeaderTindakan", tindakanEntity.getIdHeaderTindakan());
+                                    if (headerTindakanEntity != null){
+                                        namaTindakan = headerTindakanEntity.getNamaTindakan();
+                                    }
+                                }
+
                                 ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
                                 tindakanRawatEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
                                 tindakanRawatEntity.setIdTindakanRawat("TDR" + getNextTindakanRawatId());
                                 tindakanRawatEntity.setIdTindakan(tindakanEntity.getIdTindakan());
-                                tindakanRawatEntity.setNamaTindakan(tindakanEntity.getTindakan());
+                                tindakanRawatEntity.setNamaTindakan(namaTindakan);
                                 tindakanRawatEntity.setIdDokter(bean.getIdDokter());
                                 tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
                                 tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());

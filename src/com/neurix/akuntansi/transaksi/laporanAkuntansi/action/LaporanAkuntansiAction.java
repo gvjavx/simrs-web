@@ -2019,7 +2019,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
         titleReport="LAPORAN ARUS KAS";
         result="print_report_arus_kas";
-        listArusKas = laporanAkuntansiBo.getArusKas(reportId,data.getUnit(),data.getStTanggalAwal());
+        listArusKas = laporanAkuntansiBo.getArusKas(reportId,data.getUnit(),data.getBulan()+"-"+data.getTahun());
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("reportId", reportId);

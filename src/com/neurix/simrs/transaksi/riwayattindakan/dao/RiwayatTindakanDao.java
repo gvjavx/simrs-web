@@ -383,7 +383,7 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
         String SQL = "SELECT c.id_pelayanan, c.divisi_id, c.tipe_pelayanan FROM it_simrs_header_detail_checkup a\n" +
                 "INNER JOIN im_simrs_pelayanan c ON c.id_pelayanan = a.id_pelayanan\n" +
                 "WHERE a.id_detail_checkup = :idDetail \n" +
-                "AND tipe_pelayanan = 'rawat_jalan' OR tipe_pelayanan = 'igd' ";
+                "AND tipe_pelayanan IN ('rawat_jalan','igd')";
 
         List<Object[]> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idDetail", idDetailCheckup)

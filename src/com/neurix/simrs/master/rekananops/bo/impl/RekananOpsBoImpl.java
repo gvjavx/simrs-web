@@ -1,8 +1,10 @@
 package com.neurix.simrs.master.rekananops.bo.impl;
 
+import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
 import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;
+import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
 import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -22,6 +24,7 @@ public class RekananOpsBoImpl implements RekananOpsBo {
     public List<RekananOps> getByCriteria(RekananOps bean) throws GeneralBOException {
         logger.info("[RekananOpsBoImpl.getByCriteria] Start >>>>>>");
         List<RekananOps> result = new ArrayList<>();
+
         if(bean != null){
             Map hsCriteria = new HashMap();
             if (bean.getIdRekananOps() != null && !"".equalsIgnoreCase(bean.getIdRekananOps())) {

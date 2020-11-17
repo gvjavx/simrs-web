@@ -386,7 +386,7 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
 
         try {
             arusKasList = settingReportKeuanganArusKasDao.listReportKeuanganArusKas();
-            keuanganArusKasDetailList = laporanAkuntansiDao.getArusKas(periode,unit);
+            keuanganArusKasDetailList = laporanAkuntansiDao.getArusKas(unit,periode);
         } catch (HibernateException e) {
             logger.error("[LaporanAkuntansiBoImpl.getArusKas] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem , please info to your admin..." + e.getMessage());

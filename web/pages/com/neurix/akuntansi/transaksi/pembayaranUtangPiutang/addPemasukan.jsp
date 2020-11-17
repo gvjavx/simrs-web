@@ -142,7 +142,7 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <s:textfield id="tanggal" name="pembayaranUtangPiutang.stTanggal"
+                                                    <s:textfield id="tanggal" name="pembayaranUtangPiutang.stTanggal" cssStyle="background-color: #fff" readonly="true"
                                                                  cssClass="form-control datemask" onchange="$('#st_tgl').css('border','')"/>
                                                     <script>
                                                         $("#tanggal").datepicker({
@@ -259,7 +259,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Kode Vendor</label>
+                                            <label class="col-md-4" style="margin-top: 7px">ID Vendor/Kary/Dokter/Pasien</label>
                                             <div class="col-md-3">
                                                 <s:textfield id="kode_vendor" onkeypress="$(this).css('border','')" wajib="Y"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
@@ -322,7 +322,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Jumlah Pembayaran</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="jumlah_pembayaran" onkeypress="$(this).css('border','')" readonly="true"
+                                                <s:textfield id="jumlah_pembayaran" onkeypress="$(this).css('border','')" readonly="true" wajib="Y"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" onkeyup="formatRupiah2(this)" />
                                             </div>
                                         </div>
@@ -460,8 +460,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" id="btnAddCheckedNota" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Add Checked
-                </button>
+                <%--<button type="button" class="btn btn-success" id="btnAddCheckedNota" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Add Checked--%>
+                <%--</button>--%>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
@@ -569,6 +569,7 @@
         $('#divisi_id').attr('wajib', "N");
         $('#kode_vendor').attr('wajib', "N");
         $('#no_nota').attr('wajib', "N");
+        $('#jumlah_pembayaran').attr('wajib', "N");
 
         selectPembayaran();
         $('#btnSearchNota').click(function () {
@@ -599,7 +600,7 @@
                     PembayaranUtangPiutangAction.searchNotaPembayaran(masterId,transaksiId,branchId,divisiId,coaLawan,function (listdata) {
                         tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
-                            "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
+                            // "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Rekening ID</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
@@ -608,10 +609,10 @@
                             "</tr></thead>";
                         var i = i;
                         $.each(listdata, function (i, item) {
-                            var combo = '<input type="checkbox" checked id="check_'+i+'">';
+                            // var combo = '<input type="checkbox" checked id="check_'+i+'">';
                             tmp_table += '<tr style="font-size: 12px;" ">' +
                                 '<td align="center">' + (i + 1) + '</td>' +
-                                '<td align="center">' + combo + '</td>' +
+                                // '<td align="center">' + combo + '</td>' +
                                 '<td align="center">' + item.masterId + '</td>' +
                                 '<td align="center">' + item.rekeningId + '</td>' +
                                 '<td align="center">' + item.noNota + '</td>' +
@@ -723,13 +724,16 @@
             var statusDivisi=$('#divisi_id').attr('wajib');
             var statusVendor=$('#kode_vendor').attr('wajib');
             var statusNota=$('#no_nota').attr('wajib');
+            var statusJumlahPembayaran=$('#jumlah_pembayaran').attr('wajib');
 
             if (statusDivisi=='Y'&& divisiId==""){
                 alert("belum memilih Divisi");
             } else if (statusVendor=='Y'&& kodeVendor==""){
                 alert("belum memilih Vendor");
             }else if (statusNota=='Y'&& noNota==""){
-                alert("belum memilih No. Nota");
+                alert("belum memilih/mengisi No. Nota");
+            }else if (statusJumlahPembayaran=='Y'&& jumlahPembayaran==""){
+                alert("jumlah pembayaran belum dimasukkan");
             }else{
                 PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,divisiId,divisiName,function (result) {
                     if (result==""){
@@ -759,8 +763,9 @@
             var rekeningId = $(this).attr('rekening');
             var nonota = $(this).attr('data');
             var vendor = $(this).attr('vendor');
+            var divisi = $(this).attr('divisi');
             var biaya = $(this).attr('biaya');
-            PembayaranUtangPiutangAction.deleteDetailPembayaran(rekeningId,nonota,vendor,biaya,function (result) {
+            PembayaranUtangPiutangAction.deleteDetailPembayaran(rekeningId,divisi,vendor,nonota,biaya,function () {
                 alert("data berhasil dihapus");
                 loadDetailPembayaran();
                 var totalBayar = $('#bayar').val();
@@ -811,7 +816,7 @@
                         '<td align="center">' + item.noNota + '</td>' +
                         '<td align="center">' + item.stJumlahPembayaran+ '</td>' +
                         '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' rekening ='" + item.rekeningId + "' vendor ='" + item.masterId + "' biaya ='" + item.stJumlahPembayaran + "'>" +
+                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' rekening ='" + item.rekeningId + "' vendor ='" + item.masterId + "' biaya ='" + item.stJumlahPembayaran + "' divisi ='" + item.divisiId + "'>" +
                         "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>' name='icon_delete'>" +
                         '</a>' +
                         '</td>' +
@@ -886,6 +891,7 @@
         $('#divisi_id').attr('wajib', "N");
         $('#kode_vendor').attr('wajib', "N");
         $('#no_nota').attr('wajib', "N");
+        $('#jumlah_pembayaran').attr('wajib', "N");
 
         var tipeTransaksi = $('#tipe_transaksi option:selected').val();
         var coaLawan = $('#coa_lawan option:selected').val();
@@ -908,6 +914,11 @@
 
                 if (res.biaya=="Y"){
                     $('#jumlah_pembayaran').attr('readonly', false);
+                    $('#jumlah_pembayaran').attr('wajib', "Y");
+                    $('#btnSearchNota').hide();
+                    $('#no_nota').attr('readonly', false);
+                }else{
+                    $('#jumlah_pembayaran').attr('wajib', "N");
                 }
             });
         }else{
