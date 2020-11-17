@@ -75,6 +75,15 @@ public class CheckupMobile {
     private String total;
 
     private String tahun;
+    private String all;
+
+    public String getAll() {
+        return all;
+    }
+
+    public void setAll(String all) {
+        this.all = all;
+    }
 
     public String getTahun() {
         return tahun;

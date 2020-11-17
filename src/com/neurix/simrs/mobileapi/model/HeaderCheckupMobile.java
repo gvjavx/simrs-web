@@ -103,6 +103,17 @@ public class HeaderCheckupMobile implements Serializable {
     private String branchName;
     private String total;
 
+    private String all;
+    private String tanggal;
+
+    public String getAll() {
+        return all;
+    }
+
+    public void setAll(String all) {
+        this.all = all;
+    }
+
     public String getTotal() {
         return total;
     }

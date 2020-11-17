@@ -607,6 +607,8 @@ public class CheckupController implements ModelDriven<Object> {
                 return listOfCheckup;
             case "getComboBranch":
                 return listOfCheckup;
+            case "getKamarTerpakai":
+                return listOfCheckup;
             default:
                 return model;
         }
@@ -1087,8 +1089,13 @@ public class CheckupController implements ModelDriven<Object> {
         } else if(action.equalsIgnoreCase("getCountAll")){
             HeaderCheckup result = new HeaderCheckup();
 
+            String branch = "";
+            if(!branchId.equalsIgnoreCase("KP")) {
+                branch = branchId;
+            }
+
             try {
-                result = initDashboardBoProxy.getCountAll(branchId);
+                result = initDashboardBoProxy.getCountAll(bulan, tahun, branch);
             } catch (GeneralBOException e){
                 logger.error("Found Error getCountAll" + e);
             }
@@ -1160,21 +1167,45 @@ public class CheckupController implements ModelDriven<Object> {
         } else if (action.equalsIgnoreCase("getComboBranch")) {
             List<Branch> result = new ArrayList<>();
 
-            String query = "";
+            Branch bean = new Branch();
             if (!branchId.equalsIgnoreCase("KP")) {
-                query = branchId;
+                bean.setBranchId(branchId);
             }
 
             try {
-                result = branchBoProxy.getComboBranchWithCriteria(query);
+                result = branchBoProxy.getByCriteria(bean);
             } catch (GeneralBOException e) {
                 logger.error("Found Error getComboBranch" + e);
             }
 
             listOfCheckup = new ArrayList<>();
             for (Branch item : result) {
+                if(!item.getBranchId().equalsIgnoreCase("KP")) {
+                    CheckupMobile checkupMobile = new CheckupMobile();
+                    checkupMobile.setBranchName(item.getBranchName());
+                    checkupMobile.setBranchId(item.getBranchId());
+
+                    listOfCheckup.add(checkupMobile);
+                }
+
+            }
+        } else if (action.equalsIgnoreCase("getKamarTerpakai")) {
+            List<HeaderCheckup> result = new ArrayList<>();
+
+            try {
+               result = initDashboardBoProxy.getKamarTerpakai(bulan, tahun, branchId);
+            } catch (GeneralBOException e){
+                logger.error("Found Error getKamarTerpakai" + e);
+            }
+
+            listOfCheckup = new ArrayList<>();
+            for(HeaderCheckup item : result) {
                 CheckupMobile checkupMobile = new CheckupMobile();
+                checkupMobile.setBranchId(item.getBranchId());
                 checkupMobile.setBranchName(item.getBranchName());
+                checkupMobile.setTanggal(item.getTanggal() != null ? CommonUtil.convertDateToString(item.getTanggal()) : "");
+                checkupMobile.setAll(item.getAll());
+                checkupMobile.setTotal(item.getTotal());
 
                 listOfCheckup.add(checkupMobile);
             }
