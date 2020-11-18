@@ -575,19 +575,30 @@ public class TesTelemedicController implements ModelDriven<Object> {
 
     }
 
-    public List<DokterTeam> tesDokterTeam(String id){
+    public void tesDokterTeam(String id){
 
         DokterTeam dokterTeam = new DokterTeam();
         dokterTeam.setIdDetailCheckup(id);
 
         List<DokterTeam> dokterTeams = new ArrayList<>();
-        try {
-            dokterTeams = teamDokterBoProxy.getByCriteria(dokterTeam);
-        } catch (GeneralBOException e){
-            logger.error("[TesTelemedicController.tesDokterTeam] Test dokter team. ",e);
+        DokterTeam resultDokter = new DokterTeam();
 
+
+        if ("nama".equalsIgnoreCase(this.result)){
+            try {
+                dokterTeams = teamDokterBoProxy.getByCriteria(dokterTeam);
+            } catch (GeneralBOException e){
+                logger.error("[TesTelemedicController.tesDokterTeam] Test dokter team. pelayanan",e);
+            }
         }
 
-        return dokterTeams;
+        if ("pelayanan".equalsIgnoreCase(this.result)){
+
+            try {
+                resultDokter  = teamDokterBoProxy.getNamaDokter(id);
+            } catch (GeneralBOException e){
+                logger.error("[TesTelemedicController.tesDokterTeam] Test dokter team. dokter",e);
+            }
+        }
     }
 }
