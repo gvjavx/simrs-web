@@ -2772,6 +2772,7 @@ public class UserBoImpl implements UserBo {
                 resultUsers.setLastUpdate(imUsers.getLastUpdate());
                 resultUsers.setCreatedWho(imUsers.getCreatedWho());
                 resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+                resultUsers.setPhotoUserUrl(imUsers.getPhotoUrl());
 
                 StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
                 imageUpload.append(ServletActionContext.getRequest().getContextPath());
