@@ -14,9 +14,7 @@ import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.kasirrawatjalan.action.KasirRawatJalanAction;
 import com.neurix.simrs.transaksi.notifikasiadmin.bo.NotifikasiAdminBo;
-import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
-import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
-import com.neurix.simrs.transaksi.teamdokter.bo.impl.TeamDokterBoImpl;
+import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction;
@@ -56,14 +54,10 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
     private PasienBo pasienBoProxy;
     private PelayananBo pelayananBoProxy;
-    private TeamDokterBoImpl teamDokterBoProxy;
+    private TeamDokterBo teamDokterBoProxy;
 
-    public void setTeamDokterBoProxy(TeamDokterBoImpl teamDokterBoProxy) {
+    public void setTeamDokterBoProxy(TeamDokterBo teamDokterBoProxy) {
         this.teamDokterBoProxy = teamDokterBoProxy;
-    }
-
-    public TeamDokterBoImpl getTeamDokterBoProxy() {
-        return teamDokterBoProxy;
     }
 
     public static Logger getLogger() {
