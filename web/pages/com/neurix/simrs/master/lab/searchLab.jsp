@@ -86,19 +86,19 @@
                                                 </td>
                                             </tr>
 
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Operator Lab :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:action id="initComboOperatorLab" namespace="/lab" name="initComboOperatorLab_lab"/>
-                                                        <s:select list="#initComboOperatorLab.listOfComboOperatorLab" id="idOperatorLab" name="lab.idOperatorLab"
-                                                                  listKey="idOperatorLab" listValue="namaOperator"
-                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                            <%--<tr>--%>
+                                                <%--<td>--%>
+                                                    <%--<label class="control-label"><small>Operator Lab :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<s:action id="initComboOperatorLab" namespace="/lab" name="initComboOperatorLab_lab"/>--%>
+                                                        <%--<s:select list="#initComboOperatorLab.listOfComboOperatorLab" id="idOperatorLab" name="lab.idOperatorLab"--%>
+                                                                  <%--listKey="idOperatorLab" listValue="namaOperator"--%>
+                                                                  <%--headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>--%>
+                                                    <%--</table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
 
                                             <tr>
                                                 <td>
@@ -237,12 +237,10 @@
                                                             </display:column>
                                                             <display:column property="idLab" sortable="true" title="ID Lab" />
                                                             <display:column property="namaLab" sortable="true" title="Nama Lab"  />
-                                                            <display:column property="namaOperatorLab" sortable="true" title="Operator Lab"/>
                                                             <display:column property="namaDokter" sortable="true" title="Nama Dokter"/>
                                                             <display:column property="namaKategoriLab" sortable="true" title="Kategori Lab"/>
-                                                            <display:column property="stTarif" sortable="true" title="Tarif"/>
-                                                            <display:column property="flag" sortable="true" title="flag"  />
-                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
+                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
                                                             <display:column property="stCreatedDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="stLastUpdate" sortable="true" title="Last update"  />

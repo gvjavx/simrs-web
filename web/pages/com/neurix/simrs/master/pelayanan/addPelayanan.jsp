@@ -165,7 +165,16 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'spesialis_gigi':'poli gigi'}"
+                                <s:select list="#{'spesialis_nephrologi':'Poli Spesialis Nephrologi','spesilais_bedah_sarah':'Poli Spesialis Bedah Saraf',
+                                'spesialis_btkv':'Poli Spesialis BTKV','klinik_nyeri':'Klinik Nyeri',
+                                'spesialis_ortopedi':'Poli Spesialis Orthopaedi','spesialis_urologi':'Poli Spesialis Urologi',
+                                'spesialis_jiwa':'Poli Spesialis Kedokteran Jiwa','spesialis_penyakit_dalam':'Poli Spesialis Penyakit Dalam',
+                                'spesialis_jantung':'Poli Spesialis Jantung','spesialis_paru':'Poli Spesialis Paru',
+                                'hemodialisa':'Poli Hemodialisa','fisioterapi':'Poli Fisioterapi','spesialis_onkologi':'Poli Spesialis Onkologi',
+                                'rehab_medik':'Poli Spesialis Rehabilitasi Medis','dokter_umum':'Poli Umum','spesialis_gigi':'Poli Spesialis Bedah Gigi dan Mulut',
+                                'spesialis_obstetri':'Poli Spesialis Kandungan','spesialis_neurologi':'Poli Spesialis Saraf',
+                                'spesialis_tht':'Poli Spesialis THT','spesialis_anak':'Poli Spesialis Anak',
+                                'spesialis_bedah':'Poli Spesialis Bedah Umum','spesialis_gigi':'Poli Gigi','spesialis_mata':'Poli Spesialis Mata','spesialis_kulit_kelamin':'Poli Spesialis Kulit dan Kelamin'}"
                                           id="kategoriPelayananAdd" name="pelayanan.kategoriPelayanan"
                                           headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"
                                 />
@@ -179,7 +188,7 @@
                         </td>
                         <td>
                             <table>
-                                <input type="checkbox" id="isEksekutifAdd" class="checkEksekutif" onchange="cekEksekutif()"  cssStyle="margin-top: 5px"/>
+                                <input type="checkbox" id="isEksekutifAdd" class="checkEksekutif" onchange="cekEksekutif1()"  cssStyle="margin-top: 5px"/>
                                 <s:hidden id="eksekutif" name="pelayanan.isEksekutif"  />
                             </table>
                         </td>
@@ -282,6 +291,13 @@
 </body>
 </html>
 <script>
+    window.cekEksekutif1 = function () {
+        if (document.getElementById("isEksekutifAdd").checked == true) {
+            $("#eksekutif").val("Yes");
+        } else {
+            $("#eksekutif").val("No");
+        }
+    }
     function showKategoriPelayanan(valueTipe){
         // console.log(valueTipe);
         if(valueTipe=='rawat_jalan'){
@@ -292,12 +308,6 @@
 
         }
     }
-    window.cekEksekutif = function () {
-        if (document.getElementById("isEksekutif").checked == true) {
-            $("#eksekutif").val("Y");
-        } else {
-            $("#eksekutif").val("N");
-        }
-    }
+
 </script>
 

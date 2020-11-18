@@ -254,8 +254,8 @@
                                                             <display:column property="kodering" sortable="true" title="Kode"  />
                                                             <display:column property="divisiName" sortable="true" title="ID Divisi"  />
                                                             <display:column property="isEksekutif" sortable="true" title="Ekseskutif"  />
-                                                            <display:column property="flag" sortable="true" title="flag"  />
-                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
+                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
                                                             <display:column property="stCreatedDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="stLastUpdate" sortable="true" title="Last update"  />

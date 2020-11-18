@@ -41,7 +41,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Lab
+            Kategori Lab
         </h1>
     </section>
     <!-- Main content -->
@@ -199,8 +199,8 @@
                                                             <display:column property="idKategoriLab" sortable="true" title="ID Kategori Lab" />
                                                             <display:column property="namaKategori" sortable="true" title="Nama Kategori Lab"  />
                                                             <display:column property="divisiName" sortable="true" title="Divisi"  />
-                                                            <display:column property="flag" sortable="true" title="flag"  />
-                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
+                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
                                                             <display:column property="stCreatedDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="stLastUpdate" sortable="true" title="Last update"  />

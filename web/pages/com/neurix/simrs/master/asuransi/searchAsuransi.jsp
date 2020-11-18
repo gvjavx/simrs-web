@@ -236,9 +236,9 @@
 
                                                             <display:column property="idAsuransi" sortable="true" title="ID Asuransi" />
                                                             <display:column property="namaAsuransi" sortable="true" title="Nama Asuransi"  />
-                                                            <display:column property="flag" sortable="true" title="flag"  />
+                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
                                                             <display:column property="isLaka" sortable="true" title="is laka"  />
-                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
                                                             <display:column property="stCreatedDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="stLastUpdate" sortable="true" title="Last update"  />

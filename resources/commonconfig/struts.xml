@@ -283,5 +283,6 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/initdashboard/struts/InitDashboardAction.xml"/>
 
     <include file="sshconfig/com/neurix/hris/master/payrollParamBpjs/struts/PayrollParamBpjsAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/rekananops/struts/RekananOpsAction.xml"/>
 
 </struts>

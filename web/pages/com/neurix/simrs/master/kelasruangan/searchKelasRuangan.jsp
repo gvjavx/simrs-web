@@ -235,8 +235,8 @@ To change this template use File | Settings | File Templates.
                                                         <display:column property="namaKelasRuangan" sortable="true" title="Nama Kelas"  />
                                                         <display:column property="divisiName" sortable="true" title="Divisi"/>
                                                         <display:column property="kodering" sortable="true" title="kodering"  />
-                                                        <display:column property="flag" sortable="true" title="flag"  />
-                                                        <display:column property="action" sortable="true" title="action"  />
+                                                        <%--<display:column property="flag" sortable="true" title="flag"  />--%>
+                                                        <%--<display:column property="action" sortable="true" title="action"  />--%>
                                                         <display:column property="stCreatedDate" sortable="true" title="Created date"  />
                                                         <display:column property="createdWho" sortable="true" title="Created who"  />
                                                         <display:column property="stLastUpdate" sortable="true" title="Last update"  />

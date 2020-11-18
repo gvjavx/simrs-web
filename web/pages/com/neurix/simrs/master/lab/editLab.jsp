@@ -20,12 +20,10 @@
         $.subscribe('beforeProcessSave2', function (event, data) {
             var idLab = document.getElementById("idLab2").value;
             var namaLab = document.getElementById("namaLab2").value;
-            var idOperatorLab = document.getElementById("idOperatorLab2").value;
             var idDokter = document.getElementById("idDokter2").value;
             var idKategoriLab = document.getElementById("idKategoriLab2").value;
-            var tarif = document.getElementById("tarif2").value;
 
-            if (idLab != '' && namaLab != '' && idOperatorLab != '' && idDokter != '' && idKategoriLab != '' && tarif != '') {
+            if (idLab != '' && namaLab != '' && idDokter != '' && idKategoriLab != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -42,18 +40,14 @@
                 if (namaLab == '') {
                     msg += 'Field <strong>Nama Lab </strong> is required.' + '<br/>';
                 }
-                if (idOperatorLab == '') {
-                    msg += 'Field <strong>Id Operator Lab </strong> is required.' + '<br/>';
-                }
+
                 if (idDokter == '') {
                     msg += 'Field <strong>Id Dokter </strong> is required.' + '<br/>';
                 }
                 if (idKategoriLab == '') {
                     msg += 'Field <strong>Id Kategori Lab </strong> is required.' + '<br/>';
                 }
-                if (tarif == '') {
-                    msg += 'Field <strong>Tarif </strong> is required.' + '<br/>';
-                }
+
 
                 document.getElementById('errorValidationMessage2').innerHTML = msg;
 
@@ -129,19 +123,7 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Operator Lab :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:action id="initComboOperatorLab" namespace="/lab" name="initComboOperatorLab_lab"/>
-                                <s:select list="#initComboOperatorLab.listOfComboOperatorLab" id="idOperatorLab2" name="lab.idOperatorLab"
-                                          listKey="idOperatorLab" listValue="namaOperator" headerKey=""
-                                          headerValue="[Select one]" cssClass="form-control"  cssStyle="margin-top: 5px"/>
-                            </table>
-                        </td>
-                    </tr>
+
 
                     <tr>
                         <td>
@@ -171,17 +153,6 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tarif :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="tarif2" name="lab.tarif" required="true"
-                                             disabled="false" cssClass="form-control"  cssStyle="margin-top: 5px"/>
-                            </table>
-                        </td>
-                    </tr>
 
                 </table>
 

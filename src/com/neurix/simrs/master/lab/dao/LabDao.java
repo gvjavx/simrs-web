@@ -34,9 +34,9 @@ public class LabDao extends GenericDao<ImSimrsLabEntity, String> {
             if (mapCriteria.get("nama_lab") != null) {
                 criteria.add(Restrictions.ilike("namaLab", "%" + (String) mapCriteria.get("nama_lab") + "%"));
             }
-            if (mapCriteria.get("id_operator_lab") != null) {
-                criteria.add(Restrictions.eq("idOperatorLab", (String) mapCriteria.get("id_operator_lab")));
-            }
+//            if (mapCriteria.get("id_operator_lab") != null) {
+//                criteria.add(Restrictions.eq("idOperatorLab", (String) mapCriteria.get("id_operator_lab")));
+//            }
             if (mapCriteria.get("id_dokter") != null) {
                 criteria.add(Restrictions.eq("idDokter", (String) mapCriteria.get("id_dokter")));
             }
