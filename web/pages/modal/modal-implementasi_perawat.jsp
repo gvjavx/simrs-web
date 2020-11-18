@@ -100,8 +100,8 @@
                                 <label style="margin-left: 8px">TTD DPJP</label>
                                 <canvas class="paint-canvas-ttd" id="impl4" width="250"
                                         onmouseover="paintTtd('impl4')"></canvas>
-                                <input style="margin-left: 10px" class="form-control" id="nama_terang" placeholder="Nama Terang">
-                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip" placeholder="SIP">
+                                <input style="margin-left: 10px" class="form-control nama_dokter_ri" id="nama_terang" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control sip_dokter_ri" id="sip" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('impl4')"><i
                                         class="fa fa-trash"></i> Clear

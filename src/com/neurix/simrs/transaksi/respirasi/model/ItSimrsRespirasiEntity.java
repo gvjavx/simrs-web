@@ -2,10 +2,8 @@ package com.neurix.simrs.transaksi.respirasi.model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Objects;
 
 public class ItSimrsRespirasiEntity {
-
     private String idRespirasi;
     private String idDetailCheckup;
     private String waktu;
@@ -15,28 +13,21 @@ public class ItSimrsRespirasiEntity {
     private String reflekCahaya;
     private String tk;
     private String kk;
-    private String jenisNkRmNrm;
-    private String nkRmNrm;
-    private String jenisTPieceJRise;
-    private String tPieceJRise;
+    private String o2;
     private String tipeVentilasi;
-    private String jenisPeepCpapEt;
-    private String peepCpapEt;
+    private String peep;
     private String frekwensi;
     private String tv;
     private String mv;
-    private String jenisPSupportPAsb;
     private String pSupportPAsb;
-    private String jenisPInsPCon;
     private String pInsPCon;
     private String triger;
     private String insTime;
     private String flow;
-    private String jenisFioKon;
     private String fioKon;
-    private String jenisUkuranKedalamaanEtt;
-    private String ukuranKedalamaanEtt;
-    private String spo;
+    private String ukuranEtt;
+    private String kedalamanEtt;
+    private String spo2;
     private String secret;
     private String keterangan;
     private String flag;
@@ -45,22 +36,6 @@ public class ItSimrsRespirasiEntity {
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-
-    public String getDiameterPupil() {
-        return diameterPupil;
-    }
-
-    public void setDiameterPupil(String diameterPupil) {
-        this.diameterPupil = diameterPupil;
-    }
-
-    public String getReflekCahaya() {
-        return reflekCahaya;
-    }
-
-    public void setReflekCahaya(String reflekCahaya) {
-        this.reflekCahaya = reflekCahaya;
-    }
 
     public String getIdRespirasi() {
         return idRespirasi;
@@ -102,6 +77,22 @@ public class ItSimrsRespirasiEntity {
         this.gcs = gcs;
     }
 
+    public String getDiameterPupil() {
+        return diameterPupil;
+    }
+
+    public void setDiameterPupil(String diameterPupil) {
+        this.diameterPupil = diameterPupil;
+    }
+
+    public String getReflekCahaya() {
+        return reflekCahaya;
+    }
+
+    public void setReflekCahaya(String reflekCahaya) {
+        this.reflekCahaya = reflekCahaya;
+    }
+
     public String getTk() {
         return tk;
     }
@@ -118,36 +109,12 @@ public class ItSimrsRespirasiEntity {
         this.kk = kk;
     }
 
-    public String getJenisNkRmNrm() {
-        return jenisNkRmNrm;
+    public String getO2() {
+        return o2;
     }
 
-    public void setJenisNkRmNrm(String jenisNkRmNrm) {
-        this.jenisNkRmNrm = jenisNkRmNrm;
-    }
-
-    public String getNkRmNrm() {
-        return nkRmNrm;
-    }
-
-    public void setNkRmNrm(String nkRmNrm) {
-        this.nkRmNrm = nkRmNrm;
-    }
-
-    public String getJenisTPieceJRise() {
-        return jenisTPieceJRise;
-    }
-
-    public void setJenisTPieceJRise(String jenisTPieceJRise) {
-        this.jenisTPieceJRise = jenisTPieceJRise;
-    }
-
-    public String gettPieceJRise() {
-        return tPieceJRise;
-    }
-
-    public void settPieceJRise(String tPieceJRise) {
-        this.tPieceJRise = tPieceJRise;
+    public void setO2(String o2) {
+        this.o2 = o2;
     }
 
     public String getTipeVentilasi() {
@@ -158,20 +125,12 @@ public class ItSimrsRespirasiEntity {
         this.tipeVentilasi = tipeVentilasi;
     }
 
-    public String getJenisPeepCpapEt() {
-        return jenisPeepCpapEt;
+    public String getPeep() {
+        return peep;
     }
 
-    public void setJenisPeepCpapEt(String jenisPeepCpapEt) {
-        this.jenisPeepCpapEt = jenisPeepCpapEt;
-    }
-
-    public String getPeepCpapEt() {
-        return peepCpapEt;
-    }
-
-    public void setPeepCpapEt(String peepCpapEt) {
-        this.peepCpapEt = peepCpapEt;
+    public void setPeep(String peep) {
+        this.peep = peep;
     }
 
     public String getFrekwensi() {
@@ -198,28 +157,12 @@ public class ItSimrsRespirasiEntity {
         this.mv = mv;
     }
 
-    public String getJenisPSupportPAsb() {
-        return jenisPSupportPAsb;
-    }
-
-    public void setJenisPSupportPAsb(String jenisPSupportPAsb) {
-        this.jenisPSupportPAsb = jenisPSupportPAsb;
-    }
-
     public String getpSupportPAsb() {
         return pSupportPAsb;
     }
 
     public void setpSupportPAsb(String pSupportPAsb) {
         this.pSupportPAsb = pSupportPAsb;
-    }
-
-    public String getJenisPInsPCon() {
-        return jenisPInsPCon;
-    }
-
-    public void setJenisPInsPCon(String jenisPInsPCon) {
-        this.jenisPInsPCon = jenisPInsPCon;
     }
 
     public String getpInsPCon() {
@@ -254,14 +197,6 @@ public class ItSimrsRespirasiEntity {
         this.flow = flow;
     }
 
-    public String getJenisFioKon() {
-        return jenisFioKon;
-    }
-
-    public void setJenisFioKon(String jenisFioKon) {
-        this.jenisFioKon = jenisFioKon;
-    }
-
     public String getFioKon() {
         return fioKon;
     }
@@ -270,28 +205,28 @@ public class ItSimrsRespirasiEntity {
         this.fioKon = fioKon;
     }
 
-    public String getJenisUkuranKedalamaanEtt() {
-        return jenisUkuranKedalamaanEtt;
+    public String getUkuranEtt() {
+        return ukuranEtt;
     }
 
-    public void setJenisUkuranKedalamaanEtt(String jenisUkuranKedalamaanEtt) {
-        this.jenisUkuranKedalamaanEtt = jenisUkuranKedalamaanEtt;
+    public void setUkuranEtt(String ukuranEtt) {
+        this.ukuranEtt = ukuranEtt;
     }
 
-    public String getUkuranKedalamaanEtt() {
-        return ukuranKedalamaanEtt;
+    public String getKedalamanEtt() {
+        return kedalamanEtt;
     }
 
-    public void setUkuranKedalamaanEtt(String ukuranKedalamaanEtt) {
-        this.ukuranKedalamaanEtt = ukuranKedalamaanEtt;
+    public void setKedalamanEtt(String kedalamanEtt) {
+        this.kedalamanEtt = kedalamanEtt;
     }
 
-    public String getSpo() {
-        return spo;
+    public String getSpo2() {
+        return spo2;
     }
 
-    public void setSpo(String spo) {
-        this.spo = spo;
+    public void setSpo2(String spo2) {
+        this.spo2 = spo2;
     }
 
     public String getSecret() {
@@ -356,54 +291,5 @@ public class ItSimrsRespirasiEntity {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ItSimrsRespirasiEntity that = (ItSimrsRespirasiEntity) o;
-        return Objects.equals(idRespirasi, that.idRespirasi) &&
-                Objects.equals(idDetailCheckup, that.idDetailCheckup) &&
-                Objects.equals(waktu, that.waktu) &&
-                Objects.equals(tanggal, that.tanggal) &&
-                Objects.equals(gcs, that.gcs) &&
-                Objects.equals(tk, that.tk) &&
-                Objects.equals(kk, that.kk) &&
-                Objects.equals(jenisNkRmNrm, that.jenisNkRmNrm) &&
-                Objects.equals(nkRmNrm, that.nkRmNrm) &&
-                Objects.equals(jenisTPieceJRise, that.jenisTPieceJRise) &&
-                Objects.equals(tPieceJRise, that.tPieceJRise) &&
-                Objects.equals(tipeVentilasi, that.tipeVentilasi) &&
-                Objects.equals(jenisPeepCpapEt, that.jenisPeepCpapEt) &&
-                Objects.equals(peepCpapEt, that.peepCpapEt) &&
-                Objects.equals(frekwensi, that.frekwensi) &&
-                Objects.equals(tv, that.tv) &&
-                Objects.equals(mv, that.mv) &&
-                Objects.equals(jenisPSupportPAsb, that.jenisPSupportPAsb) &&
-                Objects.equals(pSupportPAsb, that.pSupportPAsb) &&
-                Objects.equals(jenisPInsPCon, that.jenisPInsPCon) &&
-                Objects.equals(pInsPCon, that.pInsPCon) &&
-                Objects.equals(triger, that.triger) &&
-                Objects.equals(insTime, that.insTime) &&
-                Objects.equals(flow, that.flow) &&
-                Objects.equals(jenisFioKon, that.jenisFioKon) &&
-                Objects.equals(fioKon, that.fioKon) &&
-                Objects.equals(jenisUkuranKedalamaanEtt, that.jenisUkuranKedalamaanEtt) &&
-                Objects.equals(ukuranKedalamaanEtt, that.ukuranKedalamaanEtt) &&
-                Objects.equals(spo, that.spo) &&
-                Objects.equals(secret, that.secret) &&
-                Objects.equals(keterangan, that.keterangan) &&
-                Objects.equals(flag, that.flag) &&
-                Objects.equals(action, that.action) &&
-                Objects.equals(createdWho, that.createdWho) &&
-                Objects.equals(createdDate, that.createdDate) &&
-                Objects.equals(lastUpdate, that.lastUpdate) &&
-                Objects.equals(lastUpdateWho, that.lastUpdateWho);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(idRespirasi, idDetailCheckup, waktu, tanggal, gcs, tk, kk, jenisNkRmNrm, nkRmNrm, jenisTPieceJRise, tPieceJRise, tipeVentilasi, jenisPeepCpapEt, peepCpapEt, frekwensi, tv, mv, jenisPSupportPAsb, pSupportPAsb, jenisPInsPCon, pInsPCon, triger, insTime, flow, jenisFioKon, fioKon, jenisUkuranKedalamaanEtt, ukuranKedalamaanEtt, spo, secret, keterangan, flag, action, createdWho, createdDate, lastUpdate, lastUpdateWho);
     }
 }

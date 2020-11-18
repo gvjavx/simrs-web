@@ -150,7 +150,9 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 "b.id_paket,\n" +
                 "d.id_pelayanan,\n" +
                 "c.nama_paket,\n" +
-                "c.tarif\n" +
+                "c.tarif,\n" +
+                "a.pendidikan,\n" +
+                "a.status_perkawinan\n" +
                 "FROM im_simrs_pasien a\n" +
                 "INNER JOIN it_simrs_paket_pasien b ON a.id_pasien = b.id_pasien\n" +
                 "INNER JOIN mt_simrs_paket c ON b.id_paket = c.id_paket\n" +
@@ -183,6 +185,8 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 pasien.setIdPelayanan(obj[15] == null ? "" : obj[15].toString());
                 pasien.setNamaPaket(obj[16] == null ? "" : obj[16].toString());
                 pasien.setTarif(obj[17] != null ? new BigDecimal(obj[17].toString()) : null);
+                pasien.setPendidikan(obj[18] != null ? obj[18].toString() : null);
+                pasien.setStatusPerkawinan(obj[19] != null ? obj[19].toString() : null);
 
                 if(obj[0] != null && !"".equalsIgnoreCase(obj[0].toString())){
                     List<Object[]> objects = getListAlamat(obj[7].toString());

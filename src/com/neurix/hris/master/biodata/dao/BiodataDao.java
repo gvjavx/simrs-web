@@ -1,6 +1,7 @@
 package com.neurix.hris.master.biodata.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.biodata.model.ImBiodataHistoryEntity;
@@ -183,15 +184,13 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public List<ImBiodataEntity> getPegawaiCutiTahunan() throws HibernateException {
         List<ImBiodataEntity> listOfResult = new ArrayList<ImBiodataEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "SELECT pegawai.nip,pegawai.nama_pegawai,pegawai.tanggal_aktif\n" +
+        String query = "SELECT pegawai.nip,pegawai.nama_pegawai,pegawai.tanggal_masuk\n" +
                 "FROM \n" +
                 "( SELECT * FROM im_hris_pegawai) pegawai LEFT JOIN \n" +
                 "( SELECT * FROM it_hris_pegawai_position) posisi ON pegawai.nip=posisi.nip\n" +
                 "WHERE pegawai.flag='Y' \n" +
-                "\tAND pegawai.tipe_pegawai='TP01'\n" +
-//                "\tAND pegawai.tanggal_aktif+ interval '1 year'<NOW()\n" +
-                "\tAND date_part('year', pegawai.tanggal_aktif+ interval '1 year')=date_part('year', CURRENT_DATE)\n" +
-                "\tAND posisi.branch_id='KD01'" +
+                "\tAND date_part('year', pegawai.tanggal_masuk+ interval '1 year')=date_part('year', CURRENT_DATE)\n" +
+                "\tAND posisi.branch_id='"+ CommonUtil.userBranchLogin() +"'" +
                 "\tAND posisi.flag='Y'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -221,7 +220,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tAND MOD(CAST(((SELECT date_part('year', CURRENT_DATE))-(SELECT date_part('year', pegawai.tanggal_aktif)))as bigint),5)=0\n" +
                 "\tAND CAST(((SELECT date_part('month', CURRENT_DATE))-(SELECT date_part('month', pegawai.tanggal_aktif)))as bigint)>=0\n" +
                 "\tAND CAST(((SELECT date_part('day', CURRENT_DATE))-(SELECT date_part('day', pegawai.tanggal_aktif)))as bigint)>=0\n" +
-                "\tAND posisi.branch_id='KD01'" +
+                "\tAND posisi.branch_id='"+ CommonUtil.userBranchLogin() +"'" +
                 "\tAND posisi.flag='Y'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -707,9 +706,19 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setFlagDokterKso((String) row[91]);
             result.setJenisPegawai((String) row[92]);
 
-            result.setBagianId((String) row[93]);
-            result.setBagianName((String) row[94]);
-            result.setProfesiId((String)row[95]);
+            if(row[93] != null){
+                result.setPeralihanGapok(BigDecimal.valueOf(Double.parseDouble(row[93].toString())));
+            }
+            if(row[94] != null){
+                result.setPeralihanSankhus(BigDecimal.valueOf(Double.parseDouble(row[94].toString())));
+            }
+            if(row[95] != null){
+                result.setPeralihanTunjangan(BigDecimal.valueOf(Double.parseDouble(row[95].toString())));
+            }
+
+            result.setBagianId((String) row[96]);
+            result.setBagianName((String) row[97]);
+            result.setProfesiId((String)row[98]);
 
             result.setDivisiName((String)row[9]);
             listOfResult.add(result);
@@ -967,8 +976,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     //for Cuti
     public List<ImBiodataEntity> findAllUserCuti() throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
-                .add(Restrictions.eq("tipePegawai","TP01"))
-                .add(Restrictions.isNotNull("pin"))
+//                .add(Restrictions.eq("tipePegawai","TP01"))
+//                .add(Restrictions.isNotNull("pin"))
                 .add(Restrictions.eq("flag","Y"))
                 .addOrder(Order.asc("nip"))
                 .list();
@@ -978,8 +987,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public List<ImBiodataEntity> findUserCuti(String nip) throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
                 .add(Restrictions.eq("nip",nip))
-                .add(Restrictions.eq("tipePegawai","TP01"))
-                .add(Restrictions.isNotNull("pin"))
+//                .add(Restrictions.eq("tipePegawai","TP01"))
+//                .add(Restrictions.isNotNull("pin"))
                 .add(Restrictions.eq("flag","Y"))
                 .addOrder(Order.asc("nip"))
                 .list();

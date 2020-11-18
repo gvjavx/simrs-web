@@ -35,6 +35,9 @@
             <basic name="kategoriInaBpjs">
                 <column name="kategori_ina_bpjs"/>
             </basic>
+            <basic name="flagKonsulTele">
+                <column name="flag_konsul_tele"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

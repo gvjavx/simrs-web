@@ -427,22 +427,15 @@ public class LemburAction extends BaseMasterAction {
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         java.sql.Date dateStart = CommonUtil.convertToDate(lembur.getStTanggalAwal());
         java.sql.Date dateEnd = CommonUtil.convertToDate(lembur.getStTanggalAkhir());
-        String sLamaJam="";
-//        if (lembur.getLamaJam()>20){
-//            if (lembur.getLamaJam()>100){
-//                lembur.setLamaJam(lembur.getLamaJam()/100);
-//            }else{
-//                lembur.setLamaJam(lembur.getLamaJam()/10);
-//            }
-//        }
+        Double lamaJam=Double.valueOf(0);
         try{
-            sLamaJam = calcJamLembur(lembur.getNip(), lembur.getStTanggalAwal(),lembur.getStTanggalAkhir(),lembur.getJamAwal(),lembur.getJamAkhir());
+            lamaJam = calcJamLembur(lembur.getNip(), lembur.getStTanggalAwal(),lembur.getStTanggalAkhir(),lembur.getJamAwal(),lembur.getJamAkhir());
 
         }catch (ParseException e) {
             logger.error("[lemburAction.saveAdd] Error when saving error,", e);
             return ERROR;
         }
-        lembur.setLamaJam(Double.parseDouble(sLamaJam));
+        lembur.setLamaJam(lamaJam);
         lembur.setTanggalAwal(dateStart);
         lembur.setTanggalAkhir(dateEnd);
         lembur.setCreatedWho(userLogin);
@@ -513,9 +506,6 @@ public class LemburAction extends BaseMasterAction {
         if (!("").equalsIgnoreCase(keterangan)){
             editLembur.setNotApprovalNote(keterangan);
         }
-        if (lama == null){
-            lama= String.valueOf(0);
-        }
         editLembur.setTmpApprove(who);
         editLembur.setNip(nip);
         editLembur.setTanggalAwalSetuju(dateStart);
@@ -524,7 +514,11 @@ public class LemburAction extends BaseMasterAction {
         editLembur.setStTanggalAkhir(tglAkhir);
         editLembur.setJamAwal(jamAwal);
         editLembur.setJamAkhir(jamAkhir);
-        editLembur.setLamaJam(Double.valueOf(lama));
+        try {
+            editLembur.setLamaJam(calcJamLembur(nip,tglAwal,tglAkhir,jamAwal,jamAkhir));
+        } catch (ParseException e) {
+            throw new GeneralBOException("Error parsing");
+        }
         editLembur.setApprovalName(userLogin);
         editLembur.setLastUpdateWho(userLogin);
         editLembur.setApprovalId(userId);
@@ -681,7 +675,7 @@ public class LemburAction extends BaseMasterAction {
 
         return "success_save_delete";
     }
-    public String calcJamLembur(String nip,String tglAwal,String tglAkhir,String jamAwal,String jamAkhir) throws ParseException {
+    public Double calcJamLembur(String nip,String tglAwal,String tglAkhir,String jamAwal,String jamAkhir) throws ParseException {
         logger.info("[LemburAction.calcJamLembur] start process >>>");
         String hariKerja ="hari_libur";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -690,7 +684,6 @@ public class LemburAction extends BaseMasterAction {
         BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
 
         Double hasil = (double) 0;
-        String sHasil;
         String sJamKerjaAwalDb="",sJamKerjaAkhirDb="";
         int iJamAwalKerja=Integer.parseInt(jamAwal.replace(":",""));
         int iJamAkhirKerja=Integer.parseInt(jamAkhir.replace(":",""));
@@ -728,7 +721,7 @@ public class LemburAction extends BaseMasterAction {
             hariKerja="hari_libur";
         }
 
-        if (hariKerja=="hari_kerja"){
+        if ("hari_kerja".equalsIgnoreCase(hariKerja)){
             JamKerja search = new JamKerja();
             search.setFlag("Y");
             List<JamKerja> jamKerjaList = jamKerjaBo.getByCriteria(search);
@@ -749,14 +742,13 @@ public class LemburAction extends BaseMasterAction {
                 hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
             }
 
-            if (iJamAwalKerja>=iJamAwalDb&&iJamAwalKerja<=iJamAkhirDb){
+            if (iJamAwalKerja>iJamAwalDb&&iJamAwalKerja<iJamAkhirDb){
                 hasil = hasil+CommonUtil.SubtractJamAwalDanJamAkhir(sJamKerjaAkhirDb,jamAkhir,"positif");
             }
         }else{
             hasil=CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,jamAkhir,"positif");
         }
-        sHasil = hasil.toString();
-        return sHasil;
+        return hasil;
     }
 
     public Double cekLembur (String nip,String stTanggal){

@@ -299,7 +299,7 @@
                             <div class="col-md-3">
                                 <label>Nadi</label>
                                 <div class="input-group">
-                                    <input class="form-control nadi-pasien" id="pre_nadi">
+                                    <input class="form-control nadi-pasien" id="pre_nadi" type="number">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -526,7 +526,7 @@
                             <label class="col-md-3" style="margin-top: 7px">Nadi</label>
                             <div class="col-md-6">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="circulation_nadi">
+                                    <input class="form-control nadi-pasien" id="circulation_nadi" type="number">
                                     <div class="input-group-addon">
                                         x/menit
                                     </div>
@@ -644,7 +644,7 @@
                             <div class="col-md-4">
                                 <label>Nadi</label>
                                 <div class="input-group">
-                                    <input class="form-control nadi-pasien" id="kep_nadi">
+                                    <input class="form-control nadi-pasien" id="kep_nadi" type="number">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>

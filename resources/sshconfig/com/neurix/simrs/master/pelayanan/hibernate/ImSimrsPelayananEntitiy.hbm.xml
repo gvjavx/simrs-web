@@ -53,6 +53,9 @@
         <property name="kategoriPelayanan">
             <column name="kategori_pelayanan" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="kodePoliVclaim">
+            <column name="kode_poli_vclaim"/>
+        </property>
 
     </class>
 </hibernate-mapping>

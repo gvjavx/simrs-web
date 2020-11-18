@@ -409,4 +409,37 @@ public class VerifikatorBoImpl implements VerifikatorBo {
         }
         return response;
     }
+
+    @Override
+    public CheckResponse updateFlagSendKlaim(HeaderDetailCheckup bean) throws GeneralBOException {
+        logger.info("[VerifikatorBoImpl.updateFlagSendKlaim] START process <<<");
+        CheckResponse response = new CheckResponse();
+        if (bean != null) {
+            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+            try {
+                entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+            } catch (HibernateException e) {
+                logger.error("[VerifikatorBoImpl.updateFlagSendKlaim] Error when update data flag approve tindakan rawat ", e);
+            }
+            if (entity != null) {
+
+                entity.setFlagSendKlaim(bean.getFlagSendKlaim());
+                entity.setAction("U");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    checkupDetailDao.updateAndSave(entity);
+                    response.setStatus("200");
+                    response.setMessage("Berhasil mengubah flag bpjs flag klaim!");
+                } catch (HibernateException e) {
+                    logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when save update data flag approve tindakan rawat ", e);
+                    response.setStatus("400");
+                    response.setMessage("Terjadi kesalahan saat menyimpan ke database : " + e.getMessage());
+                }
+            }
+        }
+        logger.info("[VerifikatorBoImpl.updateFlagSendKlaim] END process <<<");
+        return response;
+    }
 }

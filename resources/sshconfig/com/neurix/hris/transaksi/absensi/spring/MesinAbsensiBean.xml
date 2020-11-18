@@ -10,6 +10,7 @@
 
     <bean id="mesinAbsensiBo" class="com.neurix.hris.transaksi.absensi.bo.impl.MesinAbsensiBoImpl"
           p:mesinDao-ref="mesinDao"
+          p:branchDao-ref="branchDao"
     />
 
     <bean id="mesinAbsensiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

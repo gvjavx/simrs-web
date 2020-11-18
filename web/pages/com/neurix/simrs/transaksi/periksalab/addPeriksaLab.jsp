@@ -26,6 +26,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/historypenunjang.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -145,6 +146,12 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Diagnosa</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.diagnosa"></s:label></table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -190,10 +197,15 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Labotarium</b></td>
+                                        <td><b>Laboratorium</b></td>
                                         <td>
-                                            <table><s:label name="periksaLab.kategoriLabName" class="label label-success"></s:label></table>
+                                            <table><s:label name="periksaLab.labName" class="label label-success"></s:label></table>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History Laboratorium
+                                        </button></td>
                                     </tr>
                                 </table>
                             </div>
@@ -265,6 +277,8 @@
                     <div class="box-body">
                         <button id="btn-add-parameter" class="btn btn-success btn-outline" onclick="showModal(1)" style="margin-bottom: 10px; display: none"><i class="fa fa-plus"></i> Tambah Parameter
                         </button>
+                        <button class="btn btn-primary" onclick="printPeriksaLab()" style="margin-bottom: 10px;"><i class="fa fa-print"></i> Print Label
+                        </button>
                         <table class="table table-bordered table-striped" id="tabel_lab">
                             <thead>
                             <tr bgcolor="#90ee90">
@@ -273,7 +287,6 @@
                                 <td>Satuan</td>
                                 <td>Hasil</td>
                                 <td>Keterangan</td>
-                                <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody id="body_parameter">
@@ -479,6 +492,64 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-history">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> All History Laboratorium
+                </h4>
+            </div>
+            <div class="modal-body" style="height: 450px;overflow-y: scroll;">
+                <div class="box-body">
+                    <table class="table table-bordered" style="font-size: 12px;">
+                        <thead>
+                        <tr style="font-weight: bold">
+                            <td width="30%">Pelayanan</td>
+                            <td width="15%">Waktu</td>
+                            <td>Keterangan</td>
+                            <td width="16%">Catatan</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_history">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-lab_luar">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="title_lab_luar"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img id="img_lab_luar" style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="mask"></div>
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
@@ -492,6 +563,7 @@
     var jenisPasien     = '<s:property value="periksaLab.idJenisPeriksa"/>';
     var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
     var keterangan       = '<s:property value="periksaLab.keterangan"/>';
+    var tipeLab         = 'laboratorium';
 
     $(document).ready(function () {
 
@@ -584,12 +656,13 @@
         var cekDokter = isCanvasBlank(dokter);
         var cek = false;
         $.each(data, function (i, item) {
-            if(data[i]["Hasil"] == ""){
+            var hasil = $('#hasil_'+i).val();
+            if(hasil == ""){
                 cek = true;
             }
         });
         var idDokter = $('#list_dokter').val();
-        if (idPeriksaLab != '' && !cekPetugas && !cekDokter && idDokter != '' && !cek || img != '' && idDokter != '' && !cekPetugas && !cekDokter) {
+        if (idPeriksaLab != '' && !cekPetugas && !cekDokter && idDokter != '' && !cek || img != '' && data.length > 0) {
             $('#modal-confirm-dialog').modal('show');
             $('#save_con').attr('onclick', 'saveDokterLab(\''+idDokter+'\')');
         } else {
@@ -610,13 +683,30 @@
         var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
         var jenisPasien = '<s:property value="periksaLab.idJenisPeriksa"/>';
         var idDetailCheckup = '<s:property value="periksaLab.idDetailCheckup"/>';
+        var noCheckup = '<s:property value="periksaLab.noCheckup"/>';
+        var isiParam = $('#tabel_lab').tableToJSON();
+        var jsonData = [];
+        $.each(isiParam, function (i, item) {
+            var idLab = $('#id_periksa_lab_'+i).val();
+            var hasil = $('#hasil_'+i).val();
+            var kesan = $('#kesan_'+i).val();
+            if(hasil != ''){
+                jsonData.push({
+                    'id_periksa_lab':idLab,
+                    'hasil':hasil,
+                    'kesan':kesan,
+                })
+            }
+        });
 
         var data = {
+            'no_checkup':noCheckup,
             'id_pasien':idPasien,
             'id_detail_checkup': idDetailCheckup,
             'jenis_pasien': jenisPasien,
             'id_pelayanan': idPelayanan,
             'metode_bayar': metodePembayaran,
+            'is_resep':'N',
             'just_lab': "Y"
         }
 
@@ -629,9 +719,10 @@
             finalImg = hasil;
         }
         var result = JSON.stringify(data);
+        var jsonResult = JSON.stringify(jsonData);
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
-        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, result, finalDokter, finalPetugas, {
+        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, result, finalDokter, finalPetugas, jsonResult, {
             callback: function (response) {
                 if (response.status == "success") {
                     $('#success_dok').show().fadeOut(5000);
@@ -771,18 +862,18 @@
                         keterangan = item.keteranganPeriksa;
                     }
                     table += "<tr>" +
-                            "<td>" + pemeriksaan + "</td>" +
+                            "<td>" + pemeriksaan +
+                            '<input id="id_periksa_lab_'+i+'" type="hidden" value="'+item.idPeriksaLabDetail+'">' +
+                            "</td>" +
                             "<td>" + acuan + "</td>" +
                             "<td>" + satuan + "</td>" +
-                            "<td>" + hasil + "</td>" +
-                            "<td>" + keterangan + "</td>" +
-                            "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editParameter(\''+item.idPeriksaLabDetail+'\',\''+hasil+'\',\''+keterangan+'\')" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + "</td>" +
+                            '<td>' + '<textarea id="hasil_'+i+'" class="form-control" value="'+hasil+'"/>' + '</td>' +
+                            '<td>' + '<textarea id="kesan_'+i+'" class="form-control" value="'+keterangan+'"/>' + '</td>' +
                             "</tr>"
                 });
+                $('#body_parameter').html(table);
             }
         });
-
-        $('#body_parameter').html(table);
     }
     function editParameter(id, hasil, keterangan){
         $('#save_par').show();
@@ -834,24 +925,21 @@
     function listSelectParameter(idLab) {
         var option = "";
         if (idLab != '') {
-            LabDetailAction.listLabDetail(idLab, function (response) {
-                if (response != null) {
+            LabDetailAction.getListComboParameter(idLab, function (response) {
+                if (response.length > 0) {
                     $.each(response, function (i, item) {
                         option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
                     });
+                    $('#lab_parameter').html(option);
                 } else {
-                    option = option;
+                    $('#lab_parameter').html(option);
                 }
             });
-        } else {
-            option = option;
         }
-
-        $('#lab_parameter').html(option);
     }
 
     function printPeriksaLab(){
-        window.open('printPeriksaLab_periksalab.action?id='+idDetailCheckup, "_blank");
+        window.open('printLab_periksalab.action?id='+idDetailCheckup+'&lab='+idPeriksaLab+'&ket=label', "_blank");
     }
 
 

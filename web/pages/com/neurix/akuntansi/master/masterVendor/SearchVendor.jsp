@@ -217,11 +217,11 @@
                                                             <display:column property="nama" sortable="true" title="Nama Vendor"  />
                                                             <display:column property="alamat" sortable="true" title="Alamat"  />
                                                             <display:column property="npwp" sortable="true" title="NPWP"  />
+                                                            <display:column property="noRekening" sortable="true" title="No. Rekening"  />
                                                             <display:column property="email" sortable="true" title="email"  />
                                                             <display:column property="noTelp" sortable="true" title="No. Telp."  />
                                                             <display:column property="vendorObat" sortable="true" title="Vendor Obat"  />
                                                             <display:column property="tipeVendorName" sortable="true" title="Tipe Vendor"  />
-                                                            <display:column property="flag" sortable="true" title="Flag" />
                                                             <display:column property="createdWho" sortable="true" title="Created Who"/>
                                                             <display:column property="lastUpdate" sortable="true" title="Last Update"/>
                                                         </display:table>

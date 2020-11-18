@@ -647,37 +647,49 @@ public class RawatInapAction extends BaseMasterAction {
     public String printGelangPasien() {
 
         String id = getId();
-
+        HeaderCheckup headerCheckup = new HeaderCheckup();
         //get data from session
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<RawatInap> listOfResult = (List) session.getAttribute("listOfResult");
+//        HttpSession session = ServletActionContext.getRequest().getSession();
+//        List<RawatInap> listOfResult = (List) session.getAttribute("listOfResult");
+//
+//        if (id != null && !"".equalsIgnoreCase(id)) {
+//
+//            if (listOfResult != null) {
+//
+//                for (RawatInap rawatInap : listOfResult) {
+//                    if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
+//
+//                        HeaderCheckup headerCheckup = getHeaderCheckup(id);
+//                        reportParams.put("idPasien", rawatInap.getIdPasien());
+//                        reportParams.put("noCheckup", id);
+//                        reportParams.put("idDetailCheckup", rawatInap.getIdDetailCheckup());
+//                        reportParams.put("nama", headerCheckup.getNama());
+//                        reportParams.put("ruang", rawatInap.getNamaRangan() + " [" + rawatInap.getNoRuangan() + "]");
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+        try {
+            headerCheckup = rawatInapBoProxy.getDetailGelang(id);
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+        }
 
-        if (id != null && !"".equalsIgnoreCase(id)) {
-
-            if (listOfResult != null) {
-
-                for (RawatInap rawatInap : listOfResult) {
-                    if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
-
-                        HeaderCheckup headerCheckup = getHeaderCheckup(id);
-                        reportParams.put("noCheckup", id);
-                        reportParams.put("idDetailCheckup", rawatInap.getIdDetailCheckup());
-                        reportParams.put("nama", headerCheckup.getNama());
-                        reportParams.put("ruang", rawatInap.getNamaRangan() + " [" + rawatInap.getNoRuangan() + "]");
-                        break;
-                    }
-                }
+        if(headerCheckup != null){
+            reportParams.put("idPasien", headerCheckup.getIdPasien());
+            reportParams.put("noCheckup", headerCheckup.getNoCheckup());
+            reportParams.put("idDetailCheckup", headerCheckup.getIdDetailCheckup());
+            reportParams.put("nama", headerCheckup.getNama());
+            reportParams.put("tglLahir", headerCheckup.getStTglLahir());
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "search";
             }
         }
-
-        try {
-            preDownload();
-        } catch (SQLException e) {
-            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
-            return "search";
-        }
-
         return "print_gelang_pasien";
     }
 
@@ -1300,7 +1312,7 @@ public class RawatInapAction extends BaseMasterAction {
                         idDokterDpjp = obj.getString("id_dpjp");
                         dokterTeam.setFlagApprove("Y");
                     }
-                    if("konsultasi".equalsIgnoreCase(obj.getString("prioritas"))) {
+                    if ("konsultasi".equalsIgnoreCase(obj.getString("prioritas"))) {
                         //PUSH NOTIF
 
                         List<NotifikasiFcm> resultNotif = new ArrayList<>();
@@ -1311,12 +1323,12 @@ public class RawatInapAction extends BaseMasterAction {
                         NotifikasiFcmBo notifikasiFcmBo = (NotifikasiFcmBo) ctx.getBean("notifikasiFcmBoProxy");
 
                         resultNotif = notifikasiFcmBo.getByCriteria(beanNotif);
-                        if(resultNotif.size() > 0){
-                            FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan konsultasi" , "dr. meminta persetujuan untuk konsultasi" , "SK", resultNotif.get(0).getOs(), null);
+                        if (resultNotif.size() > 0) {
+                            FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan konsultasi", "dr. meminta persetujuan untuk konsultasi", "SK", resultNotif.get(0).getOs(), null);
                         }
 
                     }
-                    if("rawat_bersama".equalsIgnoreCase(obj.getString("prioritas"))) {
+                    if ("rawat_bersama".equalsIgnoreCase(obj.getString("prioritas"))) {
                         //PUSH NOTIF
 
                         List<NotifikasiFcm> resultNotif = new ArrayList<>();
@@ -1327,8 +1339,8 @@ public class RawatInapAction extends BaseMasterAction {
                         NotifikasiFcmBo notifikasiFcmBo = (NotifikasiFcmBo) ctx.getBean("notifikasiFcmBoProxy");
 
                         resultNotif = notifikasiFcmBo.getByCriteria(beanNotif);
-                        if(resultNotif.size() > 0){
-                            FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan rawat bersama" , "dr. meminta persetujuan untuk rawat bersama" , "SK", resultNotif.get(0).getOs(), null);
+                        if (resultNotif.size() > 0) {
+                            FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan rawat bersama", "dr. meminta persetujuan untuk rawat bersama", "SK", resultNotif.get(0).getOs(), null);
                         }
 
                     }
@@ -1372,6 +1384,9 @@ public class RawatInapAction extends BaseMasterAction {
                         detailCheckupList = checkupDetailBo.getByCriteria(detailCheckup);
                     } catch (GeneralBOException e) {
                         logger.error("[RawatInap.saveTppri] Error when geting data detail poli, ", e);
+                        finalResponse.setStatus("error");
+                        finalResponse.setMsg("Terjadi kesalahan ketika mencari detail pasien, "+e.getMessage());
+                        return finalResponse;
                     }
 
                     if (!detailCheckupList.isEmpty()) {
@@ -1389,6 +1404,9 @@ public class RawatInapAction extends BaseMasterAction {
                                 headerCheckupList = checkupBo.getByCriteria(checkup);
                             } catch (GeneralBOException e) {
                                 logger.error("[CheckupDetailAction.getHeaderCheckup] Error When Get Header Checkup Data", e);
+                                finalResponse.setStatus("error");
+                                finalResponse.setMsg("Terjadi kesalahan ketika mencari data checkup pasien, "+e.getMessage());
+                                return finalResponse;
                             }
 
                             if (!headerCheckupList.isEmpty()) {
@@ -1405,6 +1423,9 @@ public class RawatInapAction extends BaseMasterAction {
                                     diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
                                 } catch (GeneralBOException e) {
                                     logger.error("[Foun Error] when search diagnosa awal " + e);
+                                    finalResponse.setStatus("error");
+                                    finalResponse.setMsg("Terjadi kesalahan ketika mencari diagnosa, "+e.getMessage());
+                                    return finalResponse;
                                 }
 
                                 if (diagnosaRawatList.size() > 0) {
@@ -1423,10 +1444,18 @@ public class RawatInapAction extends BaseMasterAction {
                                     pelayananList = pelayananBo.getByCriteria(pelayanan);
                                 } catch (GeneralBOException e) {
                                     logger.error("[Found Error] when search pelayanan " + e.getMessage());
+                                    finalResponse.setStatus("error");
+                                    finalResponse.setMsg("Terjadi kesalahan ketika mencari pelayanan, "+e.getMessage());
+                                    return finalResponse;
                                 }
 
                                 if (pelayananList.size() > 0) {
                                     pelayanan = pelayananList.get(0);
+                                    if(pelayanan.getIdPelayanan() == null || "".equalsIgnoreCase(pelayanan.getIdPelayanan())){
+                                        finalResponse.setStatus("error");
+                                        finalResponse.setMsg("Terjadi kesalahan ketika mencari pelayanan");
+                                        return finalResponse;
+                                    }
                                 }
 
                                 if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
@@ -1872,7 +1901,7 @@ public class RawatInapAction extends BaseMasterAction {
                                     }
                                 }
 
-                                if(berkas != null && !"".equalsIgnoreCase(berkas)){
+                                if (berkas != null && !"".equalsIgnoreCase(berkas)) {
                                     try {
                                         BASE64Decoder decoder = new BASE64Decoder();
                                         byte[] decodedBytes = decoder.decodeBuffer(berkas);
@@ -1888,13 +1917,13 @@ public class RawatInapAction extends BaseMasterAction {
                                             ImageIO.write(image, "png", f);
                                             headerDetailCheckup.setBerkas(fileName);
                                         }
-                                    }catch (IOException e){
+                                    } catch (IOException e) {
                                         finalResponse.setStatus("error");
-                                        finalResponse.setMsg("Found Error, "+e.getMessage());
+                                        finalResponse.setMsg("Found Error, " + e.getMessage());
                                     }
                                 }
 
-                                if(kunjungan != null && !"".equalsIgnoreCase(kunjungan)){
+                                if (kunjungan != null && !"".equalsIgnoreCase(kunjungan)) {
                                     headerDetailCheckup.setFlagKunjungan(kunjungan);
                                 }
 
@@ -2669,48 +2698,48 @@ public class RawatInapAction extends BaseMasterAction {
                 pasien.setLastUpdate(now);
                 pasien.setLastUpdateWho(user);
 
-                if(obj.getString("img_ktp") != null && !"".equalsIgnoreCase(obj.getString("img_ktp"))){
+                if (obj.getString("img_ktp") != null && !"".equalsIgnoreCase(obj.getString("img_ktp"))) {
                     try {
                         BASE64Decoder decoder = new BASE64Decoder();
                         byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img_ktp"));
-                        String fileName = checkup.getNoKtp()+"-"+dateFormater("MM")+dateFormater("yy")+".png";
-                        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_KTP_PASIEN+fileName;
+                        String fileName = checkup.getNoKtp() + "-" + dateFormater("MM") + dateFormater("yy") + ".png";
+                        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN + fileName;
                         BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
                         if (image == null) {
                             logger.error("Buffered Image is null");
-                        }else{
+                        } else {
                             File f = new File(uploadFile);
                             ImageIO.write(image, "png", f);
                             pasien.setUrlKtp(fileName);
                         }
-                    }catch (IOException e){
+                    } catch (IOException e) {
                         response.setStatus("error");
                         response.setMsg(e.getMessage());
                     }
                 }
 
-                if(obj.getString("img_rujukan") != null && !"".equalsIgnoreCase(obj.getString("img_rujukan"))){
+                if (obj.getString("img_rujukan") != null && !"".equalsIgnoreCase(obj.getString("img_rujukan"))) {
                     try {
                         BASE64Decoder decoder = new BASE64Decoder();
                         byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img_rujukan"));
-                        String fileName = checkup.getNoKtp()+"-"+dateFormater("MM")+dateFormater("yy")+".png";
-                        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN+fileName;
+                        String fileName = checkup.getNoKtp() + "-" + dateFormater("MM") + dateFormater("yy") + ".png";
+                        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN + fileName;
                         BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
                         if (image == null) {
                             logger.error("Buffered Image is null");
-                        }else{
+                        } else {
                             File f = new File(uploadFile);
                             ImageIO.write(image, "png", f);
                             checkup.setUrlDocRujuk(fileName);
                         }
-                    }catch (IOException e){
+                    } catch (IOException e) {
                         response.setStatus("error");
                         response.setMsg(e.getMessage());
                     }
                 }
 
                 Pasien responsePasien = pasienBo.saveAddWithResponse(pasien);
-                if("success".equalsIgnoreCase(responsePasien.getStatus())){
+                if ("success".equalsIgnoreCase(responsePasien.getStatus())) {
                     List<DokterTeam> teamList = new ArrayList<>();
                     JSONArray jsonArray = obj.getJSONArray("data_dpjp");
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -2749,7 +2778,7 @@ public class RawatInapAction extends BaseMasterAction {
                         pelayanan = pelayananList.get(0);
                     }
 
-                    if("bpjs".equalsIgnoreCase(jenisPasien)){
+                    if ("bpjs".equalsIgnoreCase(jenisPasien)) {
                         checkup.setRujuk(obj.getString("perujuk"));
                         checkup.setTglRujukan(obj.getString("tgl_ppk"));
                         checkup.setNoRujukan(obj.getString("no_rujukan"));
@@ -3189,11 +3218,18 @@ public class RawatInapAction extends BaseMasterAction {
                     checkup.setIdRuangan(kamar);
                     checkup.setIdPelayanan(pelayanan.getIdPelayanan());
                     checkup.setMetodePembayaran(metodeBayar);
-                    checkup.setDiagnosa("diagnosa");
-                    checkup.setNamaDiagnosa("ket_diagnosa");
-                    if(uangMuka != null && !"".equalsIgnoreCase(uangMuka)){
+                    checkup.setDiagnosa(obj.getString("diagnosa"));
+                    checkup.setNamaDiagnosa(obj.getString("ket_diagnosa"));
+                    if (uangMuka != null && !"".equalsIgnoreCase(uangMuka)) {
                         checkup.setUangMuka(new BigInteger(uangMuka));
                     }
+                    checkup.setIdJenisPeriksaPasien(jenisPasien);
+                    checkup.setBranchId(branchId);
+                    checkup.setIdPasien(responsePasien.getIdPasien());
+                    checkup.setStatusPeriksa("1");
+                    checkup.setJenisKunjungan("Baru");
+                    checkup.setKunjunganPoli("Baru");
+                    checkup.setUrlKtp(responsePasien.getImgKtp());
                     checkup.setRawatInap(true);
                     response = checkupBo.saveAddWithResponse(checkup);
                 }

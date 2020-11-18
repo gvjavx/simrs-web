@@ -150,32 +150,38 @@
                                                                        requestURI="paging_displaytag_mappingJurnal.action" export="true" id="row" pagesize="30" style="font-size:10">
                                                             <s:if test='#attr.row.flag == "Y"'>
                                                                 <display:column media="html" title="View">
-                                                                    <s:url var="urlView" namespace="/mappingJurnal" action="view_mappingJurnal" escapeAmp="false">
-                                                                        <s:param name="transId"><s:property value="#attr.row.transId"/></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                    </s:url>
-                                                                    <s:a href="%{urlView}">
-                                                                        <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
-                                                                    </s:a>
+                                                                    <s:if test='#attr.row.tipeJurnalName != ""'>
+                                                                        <s:url var="urlView" namespace="/mappingJurnal" action="view_mappingJurnal" escapeAmp="false">
+                                                                            <s:param name="transId"><s:property value="#attr.row.transId"/></s:param>
+                                                                            <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                        </s:url>
+                                                                        <s:a href="%{urlView}">
+                                                                            <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
+                                                                        </s:a>
+                                                                    </s:if>
                                                                 </display:column>
 
                                                                 <display:column media="html" title="Edit">
-                                                                    <s:url var="urlEdit" namespace="/mappingJurnal" action="edit_mappingJurnal" escapeAmp="false">
-                                                                        <s:param name="transId"><s:property value="#attr.row.transId"/></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                    </s:url>
-                                                                    <s:a href="%{urlEdit}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                                    </s:a>
+                                                                    <s:if test='#attr.row.tipeJurnalName != ""'>
+                                                                        <s:url var="urlEdit" namespace="/mappingJurnal" action="edit_mappingJurnal" escapeAmp="false">
+                                                                            <s:param name="transId"><s:property value="#attr.row.transId"/></s:param>
+                                                                            <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                        </s:url>
+                                                                        <s:a href="%{urlEdit}">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                        </s:a>
+                                                                    </s:if>
                                                                 </display:column>
                                                                 <display:column media="html" title="Delete">
-                                                                    <s:url var="urlDelete" namespace="/mappingJurnal" action="delete_mappingJurnal" escapeAmp="false">
-                                                                        <s:param name="transId"><s:property value="#attr.row.transId"/></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                    </s:url>
-                                                                    <s:a href="%{urlDelete}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_delete">
-                                                                    </s:a>
+                                                                    <s:if test='#attr.row.tipeJurnalName != ""'>
+                                                                        <s:url var="urlDelete" namespace="/mappingJurnal" action="delete_mappingJurnal" escapeAmp="false">
+                                                                            <s:param name="transId"><s:property value="#attr.row.transId"/></s:param>
+                                                                            <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                        </s:url>
+                                                                        <s:a href="%{urlDelete}">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_delete">
+                                                                        </s:a>
+                                                                    </s:if>
                                                                 </display:column>
                                                             </s:if>
                                                             <%--<display:column property="mappingJurnalId" sortable="true" title="Mapping Jurnal ID" />--%>

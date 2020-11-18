@@ -102,7 +102,7 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 BigDecimal hargaRata    = obat.getAverageHargaBiji();
                 BigDecimal hargaJual    = obat.getHargaJual();
                 BigDecimal selisih      = hargaJual.subtract(hargaRata);
-                BigDecimal margin       = selisih.divide(hargaRata, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100));
+                BigDecimal margin       = hargaJual.intValue() != 0 ? selisih.divide(hargaRata, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100)) : new BigDecimal(0);
                 Integer intMargin       = margin.intValue();
 
                 obat.setMargin(intMargin);

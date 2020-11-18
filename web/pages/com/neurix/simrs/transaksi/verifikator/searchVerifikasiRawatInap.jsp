@@ -185,14 +185,14 @@
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td style="vertical-align: middle">
                                         <s:if test='#row.klaimBpjsFlag == "Y"'>
-                                            <label class="label label-success"> sudah finasisasi</label>
+                                            <span class="span-success"> sudah finasisasi</span>
                                         </s:if>
                                         <s:else>
                                             <s:if test='#row.cekApprove == false'>
-                                                <label class="label label-info"> sudah diverifikasi</label>
+                                                <span class="span-biru"> sudah diverifikasi</span>
                                             </s:if>
                                             <s:else>
-                                                <label class="label label-warning"> belum diverifikasi</label>
+                                                <span class="span-warning"> belum diverifikasi</span>
                                             </s:else>
                                         </s:else>
                                     </td>
@@ -377,6 +377,41 @@
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_verif"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-send-online">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-ambulance"></i> Send Claim Online</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_online">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_online"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_online">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_online2"></p>
+                </div>
+                <div class="box-body">
+                    <h4 class="text-center">Kirim Klaim Online ?</h4>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" id="tidak_online"><i class="fa fa-times"></i> Tidak
+                </button>
+                <button type="button" class="btn btn-success" id="save_online"><i class="fa fa-check"></i> Kirim
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                        id="load_online"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -829,9 +864,9 @@
                     if (response.status == "200") {
                         $('#load_verif').hide();
                         $('#save_verif').show();;
-                        $('#modal-detail-pasien').modal('hide');
-                        $('#info_dialog').dialog('open');
-                        $('body').scrollTop(0);
+                        $('#tidak_online').attr('onclick', 'closeModal()');
+                        $('#save_online').attr('onclick', 'sendOnline(\'' + idDetailCheckup + '\')');
+                        $('#modal-send-online').modal({show: true, backdrop: 'static'});
                     } else {
                         $('#load_verif').hide();
                         $('#save_verif').show();
@@ -841,6 +876,35 @@
                     }
                 }
         });
+    }
+
+    function sendOnline(idDetailCheckup) {
+        $('#load_online').show();
+        $('#save_online').hide();
+        dwr.engine.setAsync(true);
+        VerifikatorAction.sendClaimOnline(idDetailCheckup, {
+            callback : function (res) {
+                if (res.status == "200") {
+                    $('#load_online').show();
+                    $('#save_online').hide();
+                    $('#modal-send-online').modal('hide');
+                    $('#modal-detail-pasien').modal('hide');
+                    $('#info_dialog').dialog('open');
+                    $('body').scrollTop(0);
+                } else {
+                    $('#load_online').hide();
+                    $('#save_online').show();
+                    $('#msg_online').text(res.message);
+                    $('#warning_online').show().fadeOut(5000);
+                }
+            }
+        });
+    }
+
+    function closeModal() {
+        $('#modal-send-online').modal('hide');
+        $('#modal-detail-pasien').modal('hide');
+        window.location.reload(true);
     }
 
     function convertSentenceCase(myString){

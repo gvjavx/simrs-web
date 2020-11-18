@@ -140,7 +140,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Lama</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="rb9" type="number" placeholder="hari">
+                                <input onchange="setHPL('rb12', 'rb11', this.id)" class="form-control" id="rb9" type="number" placeholder="hari">
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
@@ -157,12 +157,26 @@
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-4">HPHT</label>
-                            <div class="col-md-3">
-                                <input class="form-control" id="rb11" type="number">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input onchange="setHPL('rb12', this.id, 'rb9')" class="form-control ptr-tgl" id="rb11" placeholder="HTPH" readonly style="cursor: pointer">
+                                </div>
                             </div>
-                            <label class="col-md-1">HPL</label>
-                            <div class="col-md-3">
-                                <input class="form-control" id="rb12" type="number">
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-4">HPL</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control" id="rb12" readonly>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -411,7 +425,7 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <span>Tensi (mmHg)</span>
-                                <input class="form-control" id="rb44">
+                                <input class="form-control" id="rb44" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                             <div class="col-md-3">
                                 <span>Nadi (x/menit)</span>
@@ -471,8 +485,8 @@
                                 <label style="margin-left: 8px">TTD DPJP</label>
                                 <canvas class="paint-canvas-ttd" id="rb53" width="220"
                                         onmouseover="paintTtd('rb53')"></canvas>
-                                <input style="margin-left: 10px" class="form-control" id="nama_terang_rb53" placeholder="Nama Terang">
-                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_rb53" placeholder="SIP">
+                                <input style="margin-left: 10px" class="form-control nama_dokter_ri" id="nama_terang_rb53" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control sip_dokter_ri" id="sip_rb53" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('rb53')"><i
                                         class="fa fa-trash"></i> Clear

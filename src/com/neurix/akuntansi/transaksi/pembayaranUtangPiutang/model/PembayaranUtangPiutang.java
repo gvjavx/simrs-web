@@ -23,7 +23,8 @@ public class PembayaranUtangPiutang extends BaseModel {
     private String branchId;
     private String noJurnal;
     private String registeredFlag;
-    private Date registeredDate;
+    private Timestamp registeredDate;
+    private String stRegisteredDate;
     private String registeredWho;
     private String tipePembayaran;
     private String metodePembayaranName;
@@ -54,11 +55,37 @@ public class PembayaranUtangPiutang extends BaseModel {
     private String approvalKeuanganId;
     private String approvalKeuanganName;
     private Timestamp approvalKeuanganDate;
+    private String stApprovalKeuanganDate;
 
     private String approvalKasubKeuanganFlag;
     private String approvalKasubKeuanganId;
     private String approvalKasubKeuanganName;
     private Timestamp approvalKasubKeuanganDate;
+    private String stApprovalKasubKeuanganDate;
+
+    public String getStRegisteredDate() {
+        return stRegisteredDate;
+    }
+
+    public void setStRegisteredDate(String stRegisteredDate) {
+        this.stRegisteredDate = stRegisteredDate;
+    }
+
+    public String getStApprovalKeuanganDate() {
+        return stApprovalKeuanganDate;
+    }
+
+    public void setStApprovalKeuanganDate(String stApprovalKeuanganDate) {
+        this.stApprovalKeuanganDate = stApprovalKeuanganDate;
+    }
+
+    public String getStApprovalKasubKeuanganDate() {
+        return stApprovalKasubKeuanganDate;
+    }
+
+    public void setStApprovalKasubKeuanganDate(String stApprovalKasubKeuanganDate) {
+        this.stApprovalKasubKeuanganDate = stApprovalKasubKeuanganDate;
+    }
 
     public String getBranchIdUser() {
         return branchIdUser;
@@ -260,11 +287,11 @@ public class PembayaranUtangPiutang extends BaseModel {
         this.registeredFlag = registeredFlag;
     }
 
-    public Date getRegisteredDate() {
+    public Timestamp getRegisteredDate() {
         return registeredDate;
     }
 
-    public void setRegisteredDate(Date registeredDate) {
+    public void setRegisteredDate(Timestamp registeredDate) {
         this.registeredDate = registeredDate;
     }
 

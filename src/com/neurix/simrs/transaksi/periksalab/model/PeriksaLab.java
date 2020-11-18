@@ -84,6 +84,44 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String idPengirim;
     private String dokterPengirim;
 
+    private String isPending;
+    private String statusBayar;
+    private String diagnosa;
+
+    private String isRead;
+
+    public String getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(String isRead) {
+        this.isRead = isRead;
+    }
+
+    public String getDiagnosa() {
+        return diagnosa;
+    }
+
+    public void setDiagnosa(String diagnosa) {
+        this.diagnosa = diagnosa;
+    }
+
+    public String getStatusBayar() {
+        return statusBayar;
+    }
+
+    public void setStatusBayar(String statusBayar) {
+        this.statusBayar = statusBayar;
+    }
+
+    public String getIsPending() {
+        return isPending;
+    }
+
+    public void setIsPending(String isPending) {
+        this.isPending = isPending;
+    }
+
     public String getDokterPengirim() {
         return dokterPengirim;
     }

@@ -1,5 +1,7 @@
 package com.neurix.hris.transaksi.absensi.bo.impl;
 
+import com.neurix.authorization.company.dao.BranchDao;
+import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.transaksi.absensi.bo.MesinAbsensiBo;
@@ -16,6 +18,15 @@ import java.util.*;
 public class MesinAbsensiBoImpl implements MesinAbsensiBo {
     protected static transient Logger logger = Logger.getLogger(MesinAbsensiBoImpl.class);
     private MesinDao mesinDao;
+    private BranchDao branchDao;
+
+    public BranchDao getBranchDao() {
+        return branchDao;
+    }
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
 
     public MesinDao getMesinDao() {
         return mesinDao;
@@ -117,6 +128,7 @@ public class MesinAbsensiBoImpl implements MesinAbsensiBo {
                 imMesinAbsensiEntity.setMesinId(bean.getMesinId());
                 imMesinAbsensiEntity.setMesinName(bean.getMesinAddress());
                 imMesinAbsensiEntity.setMesinSn(bean.getMesinSn());
+                imMesinAbsensiEntity.setBranchId(bean.getBranchId());
                 imMesinAbsensiEntity.setFlag(bean.getFlag());
                 imMesinAbsensiEntity.setAction(bean.getAction());
                 imMesinAbsensiEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -160,6 +172,7 @@ public class MesinAbsensiBoImpl implements MesinAbsensiBo {
             entity.setMesinId(mesinAbsensiId);
             entity.setMesinName(bean.getMesinAddress());
             entity.setMesinSn(bean.getMesinSn());
+            entity.setBranchId(bean.getBranchId());
             entity.setFlag(bean.getFlag());
             entity.setAction(bean.getAction());
             entity.setCreatedWho(bean.getCreatedWho());
@@ -199,6 +212,9 @@ public class MesinAbsensiBoImpl implements MesinAbsensiBo {
             if (bean.getMesinSn() != null && !"".equalsIgnoreCase(bean.getMesinSn())){
                 hsCriteria.put("mesin_sn", bean.getMesinSn());
             }
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+                hsCriteria.put("branch_id", bean.getBranchId());
+            }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 if ("N".equalsIgnoreCase(bean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -224,6 +240,13 @@ public class MesinAbsensiBoImpl implements MesinAbsensiBo {
                     mesinAbsensi.setMesinId(entity.getMesinId());
                     mesinAbsensi.setMesinAddress(entity.getMesinName());
                     mesinAbsensi.setMesinSn(entity.getMesinSn());
+                    mesinAbsensi.setBranchId(entity.getBranchId());
+                    if (entity.getBranchId()!=null){
+                        List<ImBranches> branchesList = branchDao.getListBranchById(entity.getBranchId());
+                        for (ImBranches branches : branchesList){
+                            mesinAbsensi.setBranchName(branches.getBranchName());
+                        }
+                    }
                     mesinAbsensi.setAction(entity.getAction());
                     mesinAbsensi.setFlag(entity.getFlag());
                     mesinAbsensi.setCreatedDate(entity.getCreatedDate());

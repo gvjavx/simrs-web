@@ -243,6 +243,13 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
+            <result name="print_surat_cuti" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratCuti.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
     </package>

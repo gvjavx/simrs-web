@@ -25,7 +25,7 @@ public class ImPembayaranUtangPiutangEntity implements Serializable {
     private String branchId;
     private String noJurnal;
     private String registeredFlag;
-    private Date registeredDate;
+    private Timestamp registeredDate;
     private String registeredWho;
     private String tipePembayaran;
 
@@ -145,11 +145,11 @@ public class ImPembayaranUtangPiutangEntity implements Serializable {
         this.registeredFlag = registeredFlag;
     }
 
-    public Date getRegisteredDate() {
+    public Timestamp getRegisteredDate() {
         return registeredDate;
     }
 
-    public void setRegisteredDate(Date registeredDate) {
+    public void setRegisteredDate(Timestamp registeredDate) {
         this.registeredDate = registeredDate;
     }
 

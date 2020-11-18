@@ -23,7 +23,7 @@ public interface PeriksaLabBo {
     public CrudResponse saveAddWithParameter(PeriksaLab periksaLab, List<String> labDetailIds) throws GeneralBOException;
     public CrudResponse saveUpdateHasilLab(PeriksaLabDetail bean) throws GeneralBOException;
     public List<PeriksaLabDetail> getListParameterLab(PeriksaLabDetail bean) throws GeneralBOException;
-    public CheckResponse saveDokterLab(PeriksaLab bean) throws GeneralBOException;
+    public CheckResponse saveDokterLab(PeriksaLab bean, List<PeriksaLabDetail> list) throws GeneralBOException;
 
     public CheckResponse updateFlagApprovePeriksaLab (PeriksaLab bean) throws GeneralBOException;
 
@@ -39,4 +39,5 @@ public interface PeriksaLabBo {
     public ItSimrsPeriksaLabEntity getPeriksaLabEntityById(String id) throws GeneralBOException;
 
     public List<PeriksaLab> getListLab(String noChekcup) throws GeneralBOException;
+    public List<PeriksaLab> pushListLab(String kategori, String branchId) throws GeneralBOException;
 }

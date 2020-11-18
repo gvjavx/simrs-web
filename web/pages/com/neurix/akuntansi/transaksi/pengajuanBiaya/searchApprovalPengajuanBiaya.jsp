@@ -164,7 +164,7 @@
                                                 </display:column>
                                                 <display:column property="pengajuanBiayaId" sortable="true" title="Pengajuan Biaya ID" />
                                                 <display:column property="branchName" sortable="true" title="Unit" />
-                                                <display:column property="divisiName" sortable="true" title="Divisi" />
+                                                <display:column property="divisiName" sortable="true" title="Bidang/Divisi" />
                                                 <display:column property="stTanggal" sortable="true" title="Tanggal" />
                                                 <display:column property="stTotalBiaya" sortable="true" title="Total Biaya ( RP )" />
                                                 <display:column property="keterangan" sortable="true" title="Keterangan" />
@@ -217,7 +217,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-3" >Divisi : </label>
+                            <label class="control-label col-sm-3" >Bidang/Divisi : </label>
                             <div class="col-sm-8">
                                 <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
                                 <s:select cssClass="form-control mod_divisi_id_class" list="#comboPosition.listOfComboPositions" id="mod_divisi_id" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
@@ -279,7 +279,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Divisi : </label>
+                        <label class="control-label col-sm-4" >Bidang/Divisi : </label>
                         <div class="col-sm-6">
                             <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
                             <s:select cssClass="form-control mod_divisi_id_class" list="#comboPosition.listOfComboPositions" id="mod_divisi_id_atasan" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
@@ -453,7 +453,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Divisi : </label>
+                        <label class="control-label col-sm-4" >Bidang/Divisi : </label>
                         <div class="col-sm-6">
                             <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
                             <s:select cssClass="form-control mod_divisi_id_class" list="#comboPosition.listOfComboPositions" id="mod_divisi_id_keuangan" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
@@ -623,7 +623,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Divisi : </label>
+                        <label class="control-label col-sm-4" >Bidang/Divisi : </label>
                         <div class="col-sm-6">
                             <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
                             <s:select cssClass="form-control mod_divisi_id_class" list="#comboPosition.listOfComboPositions" id="mod_divisi_id_keuangan_kp" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
@@ -813,7 +813,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Divisi : </label>
+                        <label class="control-label col-sm-3" >Bidang/Divisi : </label>
                         <div class="col-sm-8">
                             <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
                             <s:select cssClass="form-control" list="#comboPosition.listOfComboPositions" id="mod_divisi_id_rk" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"

@@ -36,6 +36,8 @@ public class RekamMedikAction extends BaseTransactionAction {
     private String idPasien;
     private String imgKtp;
     private String tipe;
+    private String idx;
+    private String url;
 
     @Override
     public String search() {
@@ -157,61 +159,10 @@ public class RekamMedikAction extends BaseTransactionAction {
             detailCheckup.setAsesmenLabel("Asesmen " + label);
             detailCheckup.setKategoriPelayanan(checkup.getKategoriPelayanan());
             detailCheckup.setTipePelayanan(checkup.getTipePelayanan());
+            detailCheckup.setIdx(getIdx());
+            detailCheckup.setUrl(getUrl());
             setDetailCheckup(detailCheckup);
         }
-//else {
-//            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-//            try {
-//                checkup = checkupBoProxy.getLastDataPasienByIdPasien(idPasien);
-//            } catch (GeneralBOException e) {
-//                logger.error("Found error when detail pasien " + e.getMessage());
-//            }
-//            detailCheckup.setNoCheckup(checkup.getNoCheckup());
-//            detailCheckup.setIdDetailCheckup(checkup.getIdDetailCheckup());
-//            detailCheckup.setIdPasien(checkup.getIdPasien());
-//            detailCheckup.setNamaPasien(checkup.getNama());
-//            detailCheckup.setAlamat(checkup.getJalan());
-//            detailCheckup.setDesa(checkup.getNamaDesa());
-//            detailCheckup.setKecamatan(checkup.getNamaKecamatan());
-//            detailCheckup.setKota(checkup.getNamaKota());
-//            detailCheckup.setProvinsi(checkup.getNamaProvinsi());
-//            detailCheckup.setNamaPelayanan(checkup.getNamaPelayanan());
-//            if (checkup.getJenisKelamin() != null) {
-//                if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
-//                    jk = "Perempuan";
-//                } else {
-//                    jk = "Laki-Laki";
-//                }
-//            }
-//            detailCheckup.setJenisKelamin(jk);
-//            detailCheckup.setTempatLahir(checkup.getTempatLahir());
-//            detailCheckup.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
-//            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-//            detailCheckup.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
-//            detailCheckup.setNik(checkup.getNoKtp());
-//            detailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
-//            detailCheckup.setTinggi(checkup.getTinggi());
-//            detailCheckup.setBerat(checkup.getBerat());
-//            detailCheckup.setNoSep(checkup.getNoSep());
-//            detailCheckup.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
-//            if(checkup.getTglKeluar() != null){
-//                String tglKeluar = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglKeluar());
-//                detailCheckup.setTglKeluar(tglKeluar);
-//            }
-//            detailCheckup.setDiagnosa(checkup.getDiagnosa());
-//            detailCheckup.setUmur(calculateAge(checkup.getTglLahir(), true));
-//            setDetailCheckup(detailCheckup);
-//        }
-//        if (idPasien != null && !"".equalsIgnoreCase(idPasien)) {
-//            List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
-//            try {
-//                detailCheckupList = rekamMedikBoProxy.getDetailListRekamMedis(idPasien);
-//            } catch (GeneralBOException e) {
-//                logger.error("Found Error when search rekam medis " + e.getMessage());
-//            }
-//            HttpSession session = ServletActionContext.getRequest().getSession();
-//            session.setAttribute("listOfRekamMedis", detailCheckupList);
-//        }
         logger.info("[CheckupDetailAction.add] end process <<<");
         return "init_detail";
     }
@@ -350,5 +301,21 @@ public class RekamMedikAction extends BaseTransactionAction {
 
     public void setTipe(String tipe) {
         this.tipe = tipe;
+    }
+
+    public String getIdx() {
+        return idx;
+    }
+
+    public void setIdx(String idx) {
+        this.idx = idx;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

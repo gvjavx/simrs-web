@@ -35,6 +35,9 @@ public class HeaderTindakanDao extends GenericDao<ImSimrsHeaderTindakanEntity, S
         if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         }
+        if (mapCriteria.get("konsul_tele") != null){
+            criteria.add(Restrictions.eq("flagKonsulTele", mapCriteria.get("konsul_tele").toString()));
+        }
         return criteria.list();
     }
 

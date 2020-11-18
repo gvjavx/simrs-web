@@ -251,11 +251,19 @@
                                     <td><s:property value="jenisPeriksaPasien"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <img id="t_<s:property value="idDetailCheckup"/>"
-                                             onclick="detail('<s:property value="noCheckup"/>','<s:property
-                                                     value="idDetailCheckup"/>','<s:property value="tindakLanjut"/>','<s:property value="keteranganSelesai"/>')" class="hvr-grow"
-                                             src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>"
-                                             style="cursor: pointer;">
+                                        <s:if test='#row.flagTppri == "Y"'>
+                                            <img id="t_<s:property value="idDetailCheckup"/>"
+                                                 onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow"
+                                                 src="<s:url value="/pages/images/icons8-print-25.png"/>"
+                                                 style="cursor: pointer;">
+                                        </s:if>
+                                        <s:else>
+                                            <img id="t_<s:property value="idDetailCheckup"/>"
+                                                 onclick="detail('<s:property value="noCheckup"/>','<s:property
+                                                         value="idDetailCheckup"/>','<s:property value="tindakLanjut"/>','<s:property value="keteranganSelesai"/>')" class="hvr-grow"
+                                                 src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>"
+                                                 style="cursor: pointer;">
+                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -525,7 +533,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Daftar Pasien Baru Lahir</h4>
             </div>
-            <div class="modal-body" style="height: 70%; overflow-y: scroll">
+            <div class="modal-body" style="height: 70%; overflow-y: scroll" id="back_top">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_add">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_add"></p>
@@ -546,17 +554,18 @@
                             </div>
                             <div class="form-group" style="display: none" id="form_no_bpjs">
                                 <label style="margin-top: 7px">No BPJS</label>
-                                <div class="input-group">
-                                    <input class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')">
-                                    <div class="input-group-addon" style="cursor: pointer"
-                                         onclick="cekBpjs(this.value)">
-                                        <i class="fa fa-search"></i> Check
-                                    </div>
-                                </div>
+                                <input type="number" class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')">
+                                <%--<div class="input-group">--%>
+                                    <%----%>
+                                    <%--<div class="input-group-addon" style="cursor: pointer"--%>
+                                         <%--onclick="cekBpjs(this.value)">--%>
+                                        <%--<i class="fa fa-search"></i> Check--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">NIK</label>
-                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')" type="number">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Nama</label>
@@ -572,7 +581,7 @@
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Tempat Lahir</label>
-                                <input class="form-control" id="add_tempat_lahir" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_tempat_lahir" oninput="$(this).css('border',''); setKotaKab(this.id)">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Tanggal Lahir</label>
@@ -580,8 +589,8 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control datepicker datemask" id="add_tanggal_lahir"
-                                           onchange="$(this).css('border','')">
+                                    <input class="form-control datepicker datemask" id="add_tanggal_lahir" readonly
+                                           onchange="$(this).css('border','')" style="cursor: pointer" placeholder="yyyy-mm-dd">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -610,36 +619,36 @@
                                 <input class="form-control" id="add_alamat">
                             </div>
                             <div class="form-group">
-                                <label style="margin-top: 7px">No Telp</label>
+                                <label style="margin-top: 7px">No Telp.</label>
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </div>
-                                    <input class="form-control" id="add_no_telp"
+                                    <input class="form-control" id="add_no_telp" oninput="$(this.id).css('border','')"
                                            data-inputmask="'mask': ['9999-9999-9999']"
                                            data-mask="">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Provinsi</label>
-                                <input class="form-control" id="add_provinsi" oninput="$(this).css('border',''); setJawaTimur(this.id)">
+                                <input class="form-control" id="add_provinsi" oninput="$(this).css('border',''); setProvAtas(this.id, 'add_id_provinsi')">
                                 <input type="hidden" id="add_id_provinsi">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Kota</label>
-                                <input class="form-control" id="add_kota" oninput="$(this).css('border',''); setKota(this.id)">
+                                <input class="form-control" id="add_kota" oninput="$(this).css('border',''); setKabAtas(this.id, 'add_id_kota', 'add_id_provinsi')">
                                 <input type="hidden" id="add_id_kota">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Kecamatan</label>
-                                <input class="form-control" id="add_kecamatan" oninput="$(this).css('border',''); setKec(this.id)">
+                                <input class="form-control" id="add_kecamatan" oninput="$(this).css('border',''); setKecAtas(this.id, 'add_id_kecamatan', 'add_id_kota')">
                                 <input type="hidden" id="add_id_kecamatan">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Kelurahan/Desa</label>
-                                <input class="form-control" id="add_desa" oninput="$(this).css('border',''); setDesa(this.id)">
+                                <input class="form-control" id="add_desa" oninput="$(this).css('border',''); setDesAtas(this.id, 'add_id_desa', 'add_id_kecamatan')">
                                 <input type="hidden" id="add_id_desa">
                             </div>
                             <div class="form-group">
@@ -658,7 +667,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Diagnosa</label>
                                 <input class="form-control" id="add_id_diagnosa"
-                                       oninput="showDiagnosa(this.id); $(this.id).css('border','')">
+                                       oninput="showDiagnosa(this.value, this.id); $(this.id).css('border','')">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Keterangan Diagnosa</label>
@@ -786,7 +795,7 @@
                             <div class="col-md-4">
                                 <div class="form-check" style="margin-top: 7px;">
                                     <input type="checkbox" id="cek_add_uang_muka" value="Y"
-                                           onclick="cekUangMuka(this.id)">
+                                           onclick="cekUangMukaNew(this.id)">
                                     <label for="cek_add_uang_muka"></label>
                                 </div>
                             </div>
@@ -915,6 +924,10 @@
     var diagnosa = "";
     var idPasien = "";
     var tglLahir = "";
+
+    function printGelangPasien(noCheckup) {
+        window.open('printGelangPasien_rawatinap.action?id=' + noCheckup, '_blank');
+    }
 
     function convertRp(id, val) {
         $('#' + id).val(formatRupiahAtas2(val));
@@ -1328,6 +1341,7 @@
                         $('#info_dialog').dialog('open');
                         $('#modal-detail').modal('hide');
                         $('body').scrollTop(0);
+                        console.log(response);
                     } else {
                         $('#save_fin').show();
                         $('#load_fin').hide();
@@ -1426,6 +1440,14 @@
         }
     }
 
+    function cekUangMukaNew(id) {
+        var cek = $('#' + id).is(':checked');
+        if (cek) {
+            $('#form_uang_muka').show();
+        } else {
+            $('#form_uang_muka').hide();
+        }
+    }
 </script>
 <script>
     function showDaftar() {
@@ -1456,13 +1478,11 @@
             $('#form_no_bpjs').hide();
             $('#form_data_rujukan').hide();
             $('#form_is_uang_muka').show();
-            $('#form_uang_muka').show();
         }
         if (jen == 'bpjs') {
             $('#form_no_bpjs').show();
             $('#form_data_rujukan').show();
             $('#form_is_uang_muka').hide();
-            $('#form_uang_muka').hide();
         }
     }
 
@@ -1514,6 +1534,7 @@
                 } else {
                     $('#warning_add').show().fadeOut(5000);
                     $('#msg_add').text("Silahkan cek kembali data id diagnosa dan no bpjs...!");
+                    $('#back_top').scrollTop(0);
                     if (noBpjs == '') {
                         $('#add_no_bpjs').css('border', 'solid ipx red');
                     }
@@ -1532,6 +1553,7 @@
                     } else {
                         $('#warning_add').show().fadeOut(5000);
                         $('#msg_add').text("Silahkan cek kembali data uang muka dan metode bayar...!");
+                        $('#back_top').scrollTop(0);
                     }
                 } else {
                     cek = true;
@@ -1541,6 +1563,7 @@
         } else {
             $('#warning_add').show().fadeOut(5000);
             $('#msg_add').text("Silahkan cek kembali data inputan anda...!");
+            $('#back_top').scrollTop(0);
             if (nik == '') {
                 $('#add_nik').css('border', 'solid 1px red');
             }
@@ -1629,8 +1652,8 @@
             ktpFinal = convertToDataURL(ktp);
         }
         var dataDpjp = [];
-        var dataDokter = $('.id_dpjp');
-        var dataPrio = $('.dpjp');
+        var dataDokter = $('.add_id_dpjp');
+        var dataPrio = $('.add_dpjp');
         $.each(dataDokter, function (i, item) {
             if (item.value != '') {
                 var data = item.value.split("|");
@@ -1662,7 +1685,6 @@
             'kamar': kamar,
             'id_diganosa': idDignosa,
             'ket_diagnosa': ketDiagnosa,
-            'img_rujukan': kelasKamar,
             'perujuk': perujuk,
             'no_rujukan': noRujukan,
             'ket_perujuk': ketRujukan,
@@ -1695,158 +1717,43 @@
         });
     }
 
-    function showDiagnosa(id) {
-        var menus, mapped;
-        $('#' + id).typeahead({
-            minLength: 3,
-            source: function (query, process) {
-                menus = [];
-                mapped = {};
+    function showDiagnosa(value, id) {
+        if(value != ''){
+            var menus, mapped;
+            $('#' + id).typeahead({
+                minLength: 3,
+                source: function (query, process) {
+                    menus = [];
+                    mapped = {};
 
-                var data = [];
-                dwr.engine.setAsync(false);
-                CheckupAction.getICD10(query, function (listdata) {
-                    data = listdata;
-                });
+                    var data = [];
+                    dwr.engine.setAsync(false);
+                    CheckupAction.getICD10(query, function (listdata) {
+                        data = listdata;
+                    });
 
-                $.each(data, function (i, item) {
-                    var labelItem = item.idDiagnosa + '-' + item.descOfDiagnosa;
-                    mapped[labelItem] = {
-                        id: item.idDiagnosa,
-                        label: labelItem,
-                        name: item.descOfDiagnosa
-                    };
-                    menus.push(labelItem);
-                });
+                    $.each(data, function (i, item) {
+                        var labelItem = item.idDiagnosa + '-' + item.descOfDiagnosa;
+                        mapped[labelItem] = {
+                            id: item.idDiagnosa,
+                            label: labelItem,
+                            name: item.descOfDiagnosa
+                        };
+                        menus.push(labelItem);
+                    });
 
-                process(menus);
-            },
-            updater: function (item) {
-                var selectedObj = mapped[item];
-                // insert to textarea diagnosa_ket
-                $("#add_keterangan_diagnosa").val(selectedObj.name);
-                return selectedObj.id;
-            }
-        });
-    }
-
-    function setJawaTimur(id) {
-        var functions, mapped;
-        $('#'+id).typeahead({
-            minLength: 1,
-            source: function (query, process) {
-                functions = [];
-                mapped = {};
-
-                var data = [];
-                dwr.engine.setAsync(false);
-                ProvinsiAction.initComboProvinsi(query, function (listdata) {
-                    data = listdata;
-                });
-
-                $.each(data, function (i, item) {
-                    var labelItem = item.provinsiName;
-                    mapped[labelItem] = {id: item.provinsiId, label: labelItem};
-                    functions.push(labelItem);
-                });
-
-                process(functions);
-            },
-            updater: function (item) {
-                var selectedObj = mapped[item];
-                var namaAlat = selectedObj.label;
-                document.getElementById("add_id_provinsi").value = selectedObj.id;
-                prov = selectedObj.id;
-                return namaAlat;
-            }
-        });
-    }
-
-    function setKota(id){
-        $('#add_id_provinsi').val();
-        $('#'+id).typeahead({
-            minLength: 1,
-            source: function (query, process) {
-                functions = [];
-                mapped = {};
-
-                var data = [];
-                dwr.engine.setAsync(false);
-                ProvinsiAction.initComboKota(query, prov, function (listdata) {
-                    data = listdata;
-                });
-                $.each(data, function (i, item) {
-                    var labelItem = item.kotaName;
-                    mapped[labelItem] = {id: item.kotaId, label: labelItem};
-                    functions.push(labelItem);
-                });
-                process(functions);
-            },
-            updater: function (item) {
-                var selectedObj = mapped[item];
-                var namaAlat = selectedObj.label;
-                document.getElementById("add_id_kota").value = selectedObj.id;
-                return namaAlat;
-            }
-        });
-    }
-
-    function setKec(id){
-        var kab = $('#add_id_kota').val();
-        $('#'+id).typeahead({
-            minLength: 1,
-            source: function (query, process) {
-                functions = [];
-                mapped = {};
-
-                var data = [];
-                dwr.engine.setAsync(false);
-                ProvinsiAction.initComboKecamatan(query, kab, function (listdata) {
-                    data = listdata;
-                });
-                $.each(data, function (i, item) {
-                    var labelItem = item.kecamatanName;
-                    mapped[labelItem] = {id: item.kecamatanId, label: labelItem};
-                    functions.push(labelItem);
-                });
-                process(functions);
-            },
-            updater: function (item) {
-                var selectedObj = mapped[item];
-                var namaAlat = selectedObj.label;
-                document.getElementById("add_id_kecamatan").value = selectedObj.id;
-                return namaAlat;
-            }
-        });
-    }
-
-    function setDesa(id){
-        var kec = $('#add_id_kecamatan').val();
-        $('#'+id).typeahead({
-            minLength: 1,
-            source: function (query, process) {
-                functions = [];
-                mapped = {};
-
-                var data = [];
-                dwr.engine.setAsync(false);
-                ProvinsiAction.initComboDesa(query, kec, function (listdata) {
-                    data = listdata;
-                });
-                $.each(data, function (i, item) {
-                    var labelItem = item.desaName;
-                    mapped[labelItem] = {id: item.desaId, label: labelItem};
-                    functions.push(labelItem);
-                });
-                process(functions);
-            },
-            updater: function (item) {
-                var selectedObj = mapped[item];
-                var namaAlat = selectedObj.label;
-                document.getElementById("add_id_desa").value = selectedObj.id;
-                return namaAlat;
-            }
-        });
+                    process(menus);
+                },
+                updater: function (item) {
+                    var selectedObj = mapped[item];
+                    // insert to textarea diagnosa_ket
+                    $("#add_keterangan_diagnosa").val(selectedObj.name);
+                    return selectedObj.id;
+                }
+            });
+        }else{
+            $('#add_keterangan_diagnosa').val('');
+        }
     }
 </script>
 

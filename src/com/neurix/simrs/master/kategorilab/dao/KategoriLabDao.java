@@ -25,8 +25,6 @@ public class KategoriLabDao extends GenericDao<ImSimrsKategoriLabEntity,String> 
     @Override
     public List<ImSimrsKategoriLabEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImSimrsKategoriLabEntity.class);
-
-        // Get Collection and sorting
         if (mapCriteria!=null) {
             if (mapCriteria.get("id_kategori_lab")!=null) {
                 criteria.add(Restrictions.eq("idKategoriLab", (String) mapCriteria.get("id_kategori_lab")));
@@ -34,12 +32,16 @@ public class KategoriLabDao extends GenericDao<ImSimrsKategoriLabEntity,String> 
             if (mapCriteria.get("nama_kategori")!=null) {
                 criteria.add(Restrictions.ilike("namaKategori", "%" + (String)mapCriteria.get("nama_kategori") + "%"));
             }
+            if (mapCriteria.get("kategori")!=null) {
+                criteria.add(Restrictions.eq("kategori", (String)mapCriteria.get("kategori")));
+            }
+            if(mapCriteria.get("flag") != null) {
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }
             if (mapCriteria.get("divisi_id")!=null) {
                 criteria.add(Restrictions.ilike("divisiId", "%" + (String)mapCriteria.get("divisi_id") + "%"));
             }
         }
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
-        // Order by
         criteria.addOrder(Order.asc("idKategoriLab"));
         List<ImSimrsKategoriLabEntity> results = criteria.list();
         return results;

@@ -277,23 +277,9 @@
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:if test='rawatInap.idJenisPeriksa == "asuransi"'>
-                                                <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:if>
-                                                <s:elseif test='rawatInap.idJenisPeriksa == "umum"'>
-                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='rawatInap.idJenisPeriksa == "bpjs"'>
-                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='rawatInap.idJenisPeriksa == "rekanan"'>
-                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:else>
-                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:else>
-                                                    <s:property value="rawatInap.jenisPeriksaPasien"></s:property>
-                                                </span>
+                                                <script>
+                                                    document.write(changeJenisPasien('<s:property value="rawatInap.idJenisPeriksa"/>', '<s:property value="rawatInap.jenisPeriksaPasien"/>'));
+                                                </script>
                                             </table>
                                         </td>
                                     </tr>
@@ -449,7 +435,7 @@
                                    <button class="btn btn-primary" onclick="showModalPlan('<s:property value="rawatInap.idDetailCheckup"/>','','suster')">
                                        <i class="fa fa-calendar"></i> Schedule Rawat
                                    </button>
-                                   <div class="btn-group btn-hide dropdown">
+                                   <div class="btn-group dropdown">
                                        <button type="button" class="btn btn-info"><i class="fa fa-edit"></i> Observasi dan Pemberian
                                        </button>
                                        <button type="button" class="btn btn-info dropdown-toggle"
@@ -459,19 +445,19 @@
                                        </button>
                                        <ul class="dropdown-menu" role="menu">
                                            <li><a onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Form Observasi Cairan</a></li>
+                                                   class="fa fa-file-o"></i> Observasi Cairan</a></li>
                                            <li><a onclick="showModalMonVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Form Observasi Vital Sign</a></li>
+                                                   class="fa fa-file-o"></i> Vital Sign</a></li>
                                            <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','parenteral')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Form Pemberian Obat Parenteral</a></li>
+                                                   class="fa fa-file-o"></i> Pemberian Obat Parenteral</a></li>
                                            <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','nonparenteral')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Form Pemberian Obat Non Parenteral</a></li>
+                                                   class="fa fa-file-o"></i> Pemberian Obat Non Parenteral</a></li>
                                        </ul>
                                    </div>
                                </div>
                            </s:if>
                            <div class="col-md-6">
-                               <div class="btn-group btn-hide dropdown">
+                               <div class="btn-group dropdown">
                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary hvr-icon-down"><i class="fa fa-edit"></i> Asesmen
                                    </button>
                                    <button onclick="setRekamMedis()" type="button" class="btn btn-primary dropdown-toggle"
@@ -482,6 +468,10 @@
                                    <ul class="dropdown-menu" role="menu" id="asesmen_ri">
                                    </ul>
                                </div>
+                               <button type="button" id="btn_tranfer_pasien" onmouseenter="loadModalRM('transfer_pasien')" class="btn btn-info" onclick="showModalAsesmenRawatInap('transfer_pasien')"><i class="fa fa-file-o"></i> Serah Terima Pasien
+                               </button>
+                               <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History
+                               </button>
                            </div>
                        </div>
                     </div>
@@ -991,7 +981,7 @@
                                     <div class="form-group">
                                         <div class="col-md-offset-4 col-md-8">
                                             <div class="form-check jarak">
-                                                <input onclick="isPemeriksaan(this.id)" type="checkbox" name="pemeriksaan_lab" id="pemeriksaan_lab" value="yes">
+                                                <input onclick="isPemeriksaan(this.id, 'form-pemeriksaan')" type="checkbox" name="pemeriksaan_lab" id="pemeriksaan_lab" value="yes">
                                                 <label for="pemeriksaan_lab"></label> Pemeriksaan Lab/Radiologi?
                                             </div>
                                         </div>
@@ -1027,6 +1017,15 @@
                                             <select class="form-control select2" multiple style="margin-top: 7px; width: 100%" id="ckp_parameter">
                                                 <option value=''>[Select One]</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="form-asesmen" style="display: none">
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-8">
+                                            <button onmouseenter="loadModalRM('transfer_pasien')" class="btn btn-primary" onclick="showModalAsesmenRawatInap('transfer_pasien')">
+                                                <i class="fa fa-file-o"></i> Asesmen Transfer Pasien
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -1242,7 +1241,7 @@
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="tin_id_tindakan"
-                                    onchange="var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide()}">
+                                    onchange="var warn =$('#war_tindakan').is(':visible'); if (warn){$('#cor_tindakan').show().fadeOut(3000);$('#war_tindakan').hide()}; setDiskonHarga(this.value)">
                                 <option value=''>[Select One]</option>
                             </select>
                         </div>
@@ -1254,10 +1253,31 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Diskon</label>
+                        <div class="col-md-7">
+                            <input style="margin-top: 7px" class="form-control" readonly id="h_diskon">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Harga</label>
+                        <div class="col-md-7">
+                            <input style="margin-top: 7px" class="form-control" readonly id="h_harga">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                         <div class="col-md-7">
                             <input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty"
                                    oninput="$(this).css('border','')" onchange="$(this).css('border','')" value="1">
+                        </div>
+                    </div>
+                    <input type="hidden" id="is_edit">
+                    <input type="hidden" id="is_elektif">
+                    <div class="form-group" style="display: none" id="form_elektif">
+                        <label class="col-md-3" style="margin-top: 7px">Jumlah Jam</label>
+                        <div class="col-md-7">
+                            <input type="number" min="1" class="form-control" style="margin-top: 7px" id="tin_qty_elektif"
+                                   oninput="$(this).css('border','')" onchange="$(this).css('border','')">
                         </div>
                     </div>
                 </div>
@@ -1465,6 +1485,41 @@
                                id="war_parameter"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_parameter"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-7">
+                            <div class="form-check jarak">
+                                <input onclick="isPemeriksaan(this.id, 'form_pending')" type="checkbox" id="is_pending_lab" value="yes">
+                                <label for="is_pending_lab"></label> Is Pending?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: none" id="form_pending">
+                        <label class="col-md-3">Tanggal Jam</label>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="form-control tgl" id="tgl_pending" readonly style="cursor: pointer"
+                                       onchange="var warn =$('#war_pending').is(':visible'); if (warn){$('#cor_pending').show().fadeOut(3000);$('#war_pending').hide()};">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input class="form-control jam" id="jam_pending"
+                                       onchange="var warn =$('#war_pending').is(':visible'); if (warn){$('#cor_pending').show().fadeOut(3000);$('#war_pending').hide()};">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_pending"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_pending"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>
@@ -2427,33 +2482,29 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi Vital Sign </h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-line-chart"></i> Chart Vital Sign </h4>
             </div>
             <div class="modal-body">
-                <div style="margin-bottom:7px">
-                    <button type="button" class="btn btn-success" onclick="addMonVitalSign()">
-                        <i class="fa fa-plus"></i> Add
-                    </button>
-                    <button type="button" class="btn btn-info" onclick="showGrafVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')">
-                        <i class="fa fa-pie-chart"></i> View Graf
-                    </button>
+                <div class="box-body chart-responsive">
+                    <div class="chart" id="line-chart_vital_sign" style="height: 300px; width: 100%"></div>
+                    <hr class="garis">
+                    <div class="row" style="font-size: 12px">
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-1">
+                                <i class="fa fa-circle" style="color: #ff0000"></i> RR
+                            </div>
+                            <div class="col-md-1">
+                                <i class="fa fa-circle" style="color: #0000ff"></i> Nadi
+                            </div>
+                            <div class="col-md-2">
+                                <i class="fa fa-circle" style="color: #00cc00"></i> Sistole
+                            </div>
+                            <div class="col-md-2">
+                                <i class="fa fa-circle" style="color: #cc6699; margin-left: -70px"></i> Diastole
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <table class="table table-bordered" style="font-size: 12px">
-                    <thead>
-                    <td>Jam</td>
-                    <td>Nafas</td>
-                    <td>Nadi</td>
-                    <td>Suhu</td>
-                    <td>Tensi</td>
-                    <td>Berat Badan</td>
-                    <td>Tinggi Badan</td>
-                    <td>Created Who</td>
-                    <td>Created Date</td>
-                    </thead>
-                    <tbody id="body-list-vital-sign">
-
-                    </tbody>
-                </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -3683,31 +3734,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-lab_luar">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="title_lab_luar"></span></h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <img id="img_lab_luar" style="width: 100%">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="modal-detail-dokter">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -3862,6 +3888,88 @@
 <div id="modal-temp"></div>
 
 
+<div class="modal fade" id="modal-history">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> All History
+                </h4>
+            </div>
+            <div class="modal-body" style="height: 450px;overflow-y: scroll;">
+                <div class="box-body">
+                    <table class="table table-bordered" style="font-size: 12px;">
+                        <thead>
+                        <tr style="font-weight: bold">
+                            <td width="30%">Pelayanan</td>
+                            <%--<td>No Transaksi</td>--%>
+                            <td width="15%">Waktu</td>
+                            <td>Keterangan</td>
+                            <td width="16%">Catatan</td>
+                            <td width="8%">Telemedic</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_history">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-lab_luar">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="title_lab_luar"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img id="img_lab_luar" style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-telemedic">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Telemedic Pasien Pada Tanggal <span id="tanggal_tele"></span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <video controls width="100%" height="420px" id="body-video-rm"></video>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -3905,7 +4013,6 @@
     </div>
 </div>
 
-
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MonitoringTransfusiDarahAction.js"/>'></script>
@@ -3924,6 +4031,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/IcuAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/KasirRawatJalanAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
@@ -3946,6 +4054,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/tindakan_medis.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/custome_form.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rencana_asuahan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/allhistory.js"/>'></script>
 
 
 <script type='text/javascript'>
@@ -3991,7 +4100,7 @@
     var kategoriRuangan = '<s:property value="rawatInap.kategoriRuangan"/>';
     var kelasPasienBpjs = '<s:property value="rawatInap.idKelas"/>';
     var tempidRm = "";
-    var urlPages = "";
+    var urlPage = "";
     var idRuangan = '<s:property value="rawatInap.idRuangan"/>';
     var namaRuangan = '<s:property value="rawatInap.namaRangan"/>';
     var stayRuangan = '<s:property value="rawatInap.isStay"/>';
@@ -4035,46 +4144,47 @@
         hitungCoverBiaya();
         getJenisResep();
         listICD9();
+        cekTranfersPasien('transfer_pasien');
 
         if(kategoriRuangan == 'rawat_inap'){
             $('#title-pages').text("Rawat Inap Pasien");
             $('#rawat_inap').addClass('active');
-            urlPages = 'rawatinap';
+            urlPage = 'rawatinap';
             $('#pel_ri_active, #bayar_rawat_inap').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'rawat_intensif'){
             $('#title-pages').text("Rawat Intensif Pasien");
             $('#rawat_intensif').addClass('active');
-            urlPages = 'rawatintensif';
+            urlPage = 'rawatintensif';
             $('#pel_ri_active, #rawat_intensif').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'rawat_isolasi'){
             $('#title-pages').text("Rawat Isolasi Pasien");
             $('#rawat_isolasi').addClass('active');
-            urlPages = 'rawatisolasi';
+            urlPage = 'rawatisolasi';
             $('#pel_ri_active, #rawat_isolasi').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'kamar_operasi'){
             $('#title-pages').text("Rawat Operasi Pasien");
             $('#rawat_operasi').addClass('active');
-            urlPages = 'rawatoperasi';
+            urlPage = 'rawatoperasi';
             $('#pel_ri_active, #rawat_operasi').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'ruang_bersalin'){
             $('#title-pages').text("Rawat Bersalin Pasien");
             $('#rawat_bersalin').addClass('active');
-            urlPages = 'rawatbersalin';
+            urlPage = 'rawatbersalin';
             $('#pel_ri_active, #rawat_bersalin').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
         if(kategoriRuangan == 'rr'){
             $('#title-pages').text("Recovery Room");
             $('#rr').addClass('active');
-            urlPages = 'recoveryroom';
+            urlPage = 'recoveryroom';
             $('#pel_ri_active, #rr').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }

@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.laporanAkuntansi.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.akuntansi.master.settingReportArusKas.model.AkunSettingReportKeuanganArusKas;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol;
 import com.neurix.akuntansi.master.settingReportUser.bo.SettingReportUserBo;
 import com.neurix.akuntansi.master.settingReportUser.model.SettingReportUser;
@@ -55,6 +56,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     private List<PendapatanDTO> listPendapatanDokter = new ArrayList<>();
     private List<KartuBukuBesarPerBukuBantuDTO> listBukuBesar = new ArrayList<>();
     private List<AkunSettingReportKeuanganKonsol> listKonsol= new ArrayList<>() ;
+    private List<AkunSettingReportKeuanganArusKas> listArusKas= new ArrayList<>() ;
     private List<ArusKasDTO> arusKasDTOList = new ArrayList<>();
     private List<BudgettingDTO> budgettingDTOList = new ArrayList<>();
 
@@ -2013,44 +2015,16 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         String titleReport="";
         String reportId="RPT21";
-        String unit = "";
-        if (("All").equalsIgnoreCase(data.getUnit())){
-            List<Branch> branchList = new ArrayList<>();
-            branchList = branchBo.getAll();
-            int i = 1;
-            for (Branch dataUnit : branchList){
-                if (i==1){
-                    unit="'"+dataUnit.getBranchId()+"'";
-                }else{
-                    unit=unit+",'"+dataUnit.getBranchId()+"'";
-                }
-                i++;
-            }
-            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
-            branch.setBranchName("Semua");
-        }else{
-            unit="'"+data.getUnit()+"'";
-        }
-
         String result="";
 
-        switch (data.getTipeLaporan()){
-            case "AK":
-                titleReport="LAPORAN ARUS KAS";
-                result="print_report_arus_kas";
-                arusKasDTOList = laporanAkuntansiBo.getArusKas(reportId,unit,data.getStTanggalAwal(),"AK");
-                break;
-            case "ARD":
-                titleReport="LAPORAN ARUS KAS DETAIL";
-                result="print_report_arus_kas_detail";
-                arusKasDTOList = laporanAkuntansiBo.getArusKas(reportId,unit,data.getStTanggalAwal(),"ARD");
-                break;
-        }
+        titleReport="LAPORAN ARUS KAS";
+        result="print_report_arus_kas";
+        listArusKas = laporanAkuntansiBo.getArusKas(reportId,data.getUnit(),data.getBulan()+"-"+data.getTahun());
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("reportId", reportId);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
-        reportParams.put("branchId", unit);
+        reportParams.put("branchId", data.getUnit());
         reportParams.put("periodeTitle", data.getStTanggalAwal());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));

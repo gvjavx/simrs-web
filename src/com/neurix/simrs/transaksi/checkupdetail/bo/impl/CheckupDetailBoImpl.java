@@ -429,8 +429,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup) throws GeneralBOException {
-        return checkupDetailDao.getIDDetailCheckup(noCheckup);
+    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup, String status) throws GeneralBOException {
+        return checkupDetailDao.getIDDetailCheckup(noCheckup, status);
     }
 
     @Override
@@ -579,7 +579,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             if ("selesai".equalsIgnoreCase(bean.getTindakLanjut()) ||
                     "rujuk_rs_lain".equalsIgnoreCase(bean.getTindakLanjut()) ||
                     "kontrol_ulang".equalsIgnoreCase(bean.getTindakLanjut()) ||
-                    "lanjut_biaya".equalsIgnoreCase(bean.getTindakLanjut())) {
+                    "lanjut_biaya".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                    "rujuk_internal".equalsIgnoreCase(bean.getTindakLanjut())) {
 
                 HeaderCheckup headerCheckup = new HeaderCheckup();
                 headerCheckup.setNoCheckup(entity.getNoCheckup());
@@ -1277,41 +1278,29 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     public void updateFlagPeriksaAntrianOnline(String idDetailCheckup) throws GeneralBOException {
 
         if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+            List<ItSimrsAntianOnlineEntity> onlineEntityList = new ArrayList<>();
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("id_detail_checkup", idDetailCheckup);
 
-            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
             try {
-                entity = checkupDetailDao.getById("idDetailCheckup", idDetailCheckup);
+                onlineEntityList = antrianOnlineDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
-                logger.error("Found Error when search detail checkup " + e.getMessage());
+                logger.error("Found Error when search antrian online " + e.getMessage());
             }
 
-            if (entity.getNoCheckupOnline() != null && !"".equalsIgnoreCase(entity.getNoCheckupOnline())) {
+            ItSimrsAntianOnlineEntity onlineEntity = new ItSimrsAntianOnlineEntity();
+            if (onlineEntityList.size() > 0) {
+                onlineEntity = onlineEntityList.get(0);
+                if (onlineEntity.getIdAntrianOnline() != null) {
+                    Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                    onlineEntity.setLastUpdateWho(CommonUtil.userLogin());
+                    onlineEntity.setLastUpdate(updateTime);
+                    onlineEntity.setFlagPeriksa("Y");
 
-                List<ItSimrsAntianOnlineEntity> onlineEntityList = new ArrayList<>();
-                Map hsCriteria = new HashMap();
-
-                try {
-                    onlineEntityList = antrianOnlineDao.getByCriteria(hsCriteria);
-                } catch (HibernateException e) {
-                    logger.error("Found Error when search antrian online " + e.getMessage());
-                }
-
-                ItSimrsAntianOnlineEntity onlineEntity = new ItSimrsAntianOnlineEntity();
-                if (onlineEntityList.size() > 0) {
-                    onlineEntity = onlineEntityList.get(0);
-
-                    if (onlineEntity.getIdAntrianOnline() != null) {
-
-                        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                        onlineEntity.setLastUpdateWho(CommonUtil.userLogin());
-                        onlineEntity.setLastUpdate(updateTime);
-                        onlineEntity.setFlagPeriksa("Y");
-
-                        try {
-                            antrianOnlineDao.updateAndSave(onlineEntity);
-                        } catch (HibernateException e) {
-                            logger.error("Found Error when update save flag antrian online");
-                        }
+                    try {
+                        antrianOnlineDao.updateAndSave(onlineEntity);
+                    } catch (HibernateException e) {
+                        logger.error("Found Error when update save flag antrian online");
                     }
                 }
             }

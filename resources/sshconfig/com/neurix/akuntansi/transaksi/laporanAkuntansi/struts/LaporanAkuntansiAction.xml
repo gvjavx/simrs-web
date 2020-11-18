@@ -212,16 +212,16 @@
             <!-- ARUS KAS -->
             <result name="print_report_arus_kas" type="jasper">
                 <param name="location">/pages/report/com/neurix/akuntansi/LaporanArusKas.jasper</param>
-                <param name="dataSource">arusKasDTOList</param>
+                <param name="dataSource">listArusKas</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>
-            <result name="print_report_arus_kas_detail" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/LaporanArusKasDetail.jasper</param>
-                <param name="dataSource">arusKasDTOList</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <!--<result name="print_report_arus_kas_detail" type="jasper">-->
+                <!--<param name="location">/pages/report/com/neurix/akuntansi/LaporanArusKasDetail.jasper</param>-->
+                <!--<param name="dataSource">arusKasDTOList</param>-->
+                <!--<param name="format">PDF</param>-->
+                <!--<param name="reportParameters">reportParams</param>-->
+            <!--</result>-->
             <!-- END OF ARUS KAS -->
 
             <!-- KOMPILASI -->

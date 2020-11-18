@@ -43,6 +43,17 @@ public class PengajuanBiayaRk extends BaseModel {
     private String tipe;
     private String tipeCetak;
 
+    //DO
+    private String noRekening;
+
+    public String getNoRekening() {
+        return noRekening;
+    }
+
+    public void setNoRekening(String noRekening) {
+        this.noRekening = noRekening;
+    }
+
     public String getTipeCetak() {
         return tipeCetak;
     }

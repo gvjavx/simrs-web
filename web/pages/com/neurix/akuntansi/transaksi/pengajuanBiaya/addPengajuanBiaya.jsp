@@ -140,16 +140,15 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <s:textfield id="tanggalId" name="pengajuanBiaya.stTanggal" cssClass="form-control datemask" onchange="$('#st_tgl').css('border','')"/>
+                                                    <s:textfield id="tanggalId" name="pengajuanBiaya.stTanggal" cssClass="form-control" cssStyle="background-color: #fff" readonly="true" onchange="$('#st_tgl').css('border','')"/>
                                                     <script>
                                                         $("#tanggalId").datepicker({
-                                                            setDate: new Date(),
                                                             autoclose: true,
                                                             changeMonth: true,
                                                             changeYear:true,
-                                                            dateFormat:'yy-mm-dd'
+                                                            dateFormat:'dd-mm-yy'
                                                         });
-                                                        $("#tanggalId").datepicker("setDate", new Date());
+                                                        $("#tanggalId").datepicker("setDate", converterDate(new Date()));
                                                     </script>
                                                 </div>
                                             </div>
@@ -246,7 +245,7 @@
                                     <button type="button" class="btn btn-danger" onclick="resetField()">
                                         <i class="fa fa-refresh"></i> Reset
                                     </button>
-                                    <a type="button" class="btn btn-warning" href="initForm_pengajuanBiaya.action">
+                                    <a type="button" class="btn btn-warning" href="initFormPengajuan_pengajuanBiaya.action">
                                         <i class="fa fa-arrow-left"></i> Back
                                     </a>
                                 </div>
@@ -335,7 +334,7 @@
                             <div class="form-group">
                                 <label class="col-md-4" style="margin-top: 7px">Tanggal</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="tanggal" onkeypress="$(this).css('border','')" cssStyle="margin-top: 7px"
+                                    <s:textfield id="tanggal" onkeypress="$(this).css('border','')" cssStyle="margin-top: 7px;background-color: #fff" readonly="true"
                                                  cssClass="form-control" />
                                     <script>
                                         $("#tanggal").datepicker({
@@ -343,9 +342,9 @@
                                             autoclose: true,
                                             changeMonth: true,
                                             changeYear:true,
-                                            dateFormat:'yy-mm-dd'
+                                            dateFormat:'dd-mm-yy'
                                         });
-                                        $("#tanggal").datepicker("setDate", new Date());
+                                        $("#tanggal").datepicker("setDate", converterDate(new Date()));
                                     </script>
                                 </div>
                             </div>
@@ -453,7 +452,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" id="btnTambahPengajuan" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Tambahkan</button>
+                <button type="button" class="btn btn-success" id="btnTambahPengajuan"><i class="fa fa-arrow-right"></i> Tambahkan</button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
             </div>
         </div>
@@ -600,7 +599,7 @@
             BudgetingAction.getNoBudgetByDivisi(branch_id,divisi_Id,tanggal,function (res) {
                 if(res.length > 0){
                     $.each(res, function (i, item) {
-                        option += '<option value="'+item.noBudgeting+'">'+item.noBudgeting+'</option>';
+                        option += '<option value="'+item.noBudgeting+'">'+item.noBudgeting+' | '+item.namaKodeRekening+'</option>';
                     });
                     $('#no_budget').html(option);
                 }else{
@@ -627,7 +626,7 @@
             BudgetingAction.getInvestasiByDivisi(branch_id,divisi_Id,tanggal,function (res) {
                 if(res.length > 0){
                     $.each(res, function (i, item) {
-                        option += '<option value="'+item.noBudgeting+'">'+item.noBudgeting+'</option>';
+                        option += '<option value="'+item.noBudgeting+'">'+item.noBudgeting+' | '+item.namaPengadaan+'</option>';
                     });
                     $('#no_budget').html(option);
                 }else{
@@ -725,13 +724,23 @@
             var keterangan=$('#keterangan').val();
 
             if (branchId!=""&&divisiId!=""&&stTanggal!=""&&transaksi!=""&&noBudgeting!=""&&stJumlah!=""&&stBudgetBiaya!=""&&stBudgetTerpakai!=""&&keterangan!=""&&keperluan!=""){
-                PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,keperluanName,stBudgetBiayaSdBulanIni,stBudgetTerpakaiSdBulanIni,stSisaBudget,stSisaBudgetSdBulanIni,stBudgetTerpakaiAplikasi,termin,function(result){
-                    if (result==""){
-                        loadPengajuan();
-                    } else{
-                        alert(result);
-                    }
-                })
+                var from = stTanggal.split("-");
+                var tanggal = new Date(from[2], from[1] - 1, from[0]);
+                var tanggalSekarang = new Date();
+                tanggalSekarang.setDate(tanggalSekarang.getDate() - 1);
+
+                if (tanggal < tanggalSekarang){
+                    alert("Tanggal yang dimasukkan tidak boleh tanggal kemarin");
+                } else{
+                    PengajuanBiayaAction.saveSessionPengajuan(branchId,divisiId,stTanggal,transaksi,noBudgeting,stJumlah,stBudgetBiaya,stBudgetTerpakai,keperluan,keterangan,keperluanName,stBudgetBiayaSdBulanIni,stBudgetTerpakaiSdBulanIni,stSisaBudget,stSisaBudgetSdBulanIni,stBudgetTerpakaiAplikasi,termin,function(result){
+                        if (result==""){
+                            loadPengajuan();
+                            $("#modal-tambah-data").modal('hide');
+                        } else{
+                            alert(result);
+                        }
+                    })
+                }
             }else{
                 var msg="";
                 if (branchId==""){

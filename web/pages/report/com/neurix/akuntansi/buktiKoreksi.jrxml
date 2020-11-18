@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="buktiJKM" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="a49a14d5-e3a4-4699-826c-3b998a58d949">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="610"/>
+	<property name="ireport.zoom" value="0.8467108950806665"/>
+	<property name="ireport.x" value="12"/>
+	<property name="ireport.y" value="220"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -468,24 +468,8 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tanggal_jurnal}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement x="431" y="572" width="93" height="1" uuid="7e1f1ebe-624a-4e1c-83c2-02b7d8a8c02e"/>
-			</line>
-			<line>
-				<reportElement x="321" y="572" width="93" height="1" uuid="f19b9e64-ddd7-486f-9592-44a9b06db7b4"/>
-			</line>
-			<image>
-				<reportElement x="234" y="509" width="55" height="55" uuid="92c1cbd6-079a-4069-bbb9-457ba925171d"/>
-				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
-new com.google.zxing.qrcode.QRCodeWriter().encode(
-$F{approval_keuangan_name},
-com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
-			</image>
-			<line>
-				<reportElement x="214" y="572" width="93" height="1" uuid="2866c502-44e8-4365-9b13-eba9a25c97ec"/>
-			</line>
 			<staticText>
-				<reportElement key="staticText-1" x="214" y="488" width="93" height="15" uuid="6af75a9b-2953-45ea-bfd1-2adc402145ea"/>
+				<reportElement key="staticText-1" x="430" y="488" width="93" height="15" uuid="0b46541a-461a-4bc4-b3f3-cff3d83cfc5f"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -495,24 +479,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Pembuat]]></text>
+				<text><![CDATA[Disetujui]]></text>
 			</staticText>
-			<image>
-				<reportElement x="445" y="509" width="55" height="55" uuid="169b1b1b-c26d-4c9d-9605-4463a1312677"/>
-				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
-new com.google.zxing.qrcode.QRCodeWriter().encode(
-$F{registered_user},
-com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="339" y="509" width="55" height="55" uuid="5ab63634-04ce-482f-98fd-6083c3c7dfdc"/>
-				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
-new com.google.zxing.qrcode.QRCodeWriter().encode(
-$F{approval_kasub_keuangan_name},
-com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
-			</image>
 			<staticText>
-				<reportElement key="staticText-1" x="321" y="488" width="93" height="15" uuid="abb74de0-5b54-448b-8f10-93cd9ffac82f"/>
+				<reportElement key="staticText-1" x="321" y="488" width="95" height="15" uuid="bffebd01-2ebe-46de-a471-7b54a152deb0"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -525,7 +495,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Diperiksa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-1" x="430" y="488" width="93" height="15" uuid="fe440be0-a06f-4b86-9292-8f8e6f14a98d"/>
+				<reportElement key="staticText-1" x="214" y="488" width="93" height="15" uuid="f5875da3-a9b0-40d2-b993-4951fefcaaed"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -535,8 +505,59 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Disetujui]]></text>
+				<text><![CDATA[Pembuat]]></text>
 			</staticText>
+			<image>
+				<reportElement x="234" y="509" width="55" height="55" uuid="26d072ca-f966-4fae-b755-c2abe0f3a2cc"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+$F{approval_keuangan_name},
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="321" y="569" width="95" height="15" uuid="b352a31b-4464-4e9f-9ed5-c6b84c42e23b"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approval_kasub_keuangan_name}.substring(0, 1).toUpperCase() + $F{approval_kasub_keuangan_name}.substring(1).toLowerCase()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="445" y="509" width="55" height="55" uuid="b6169101-f755-4448-bb0b-aef8abfbbe47"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+$F{registered_user},
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="214" y="569" width="93" height="15" uuid="8c353430-133f-4abc-aa97-b83e34fcc565"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approval_keuangan_name}.substring(0, 1).toUpperCase() + $F{approval_keuangan_name}.substring(1).toLowerCase()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="339" y="509" width="55" height="55" uuid="fdfcef8c-4a94-48df-bebf-2ef6a0e652d5"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+$F{approval_kasub_keuangan_name},
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="430" y="569" width="93" height="15" uuid="9fd9d402-b5f7-4bb5-8dfb-04be8a5f0f70"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{registered_user}.substring(0, 1).toUpperCase() + $F{registered_user}.substring(1).toLowerCase()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

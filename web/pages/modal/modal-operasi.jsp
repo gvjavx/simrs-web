@@ -477,7 +477,7 @@
                                <label class="col-md-4" style="margin-top: 7px">Tekanan Darah</label>
                                <div class="col-md-4">
                                    <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list191">
+                                       <input class="form-control" data-inputmask="'mask': ['999/999']" data-mask="" id="cek_list191">
                                        <div class="input-group-addon">
                                            mmHg
                                        </div>
@@ -485,7 +485,7 @@
                                </div>
                                <div class="col-md-4">
                                    <div class="input-group" style="margin-top: 7px">
-                                       <input class="form-control" type="number" id="cek_list192">
+                                       <input class="form-control" data-inputmask="'mask': ['999/999']" data-mask="" id="cek_list192">
                                        <div class="input-group-addon">
                                            mmHg
                                        </div>
@@ -1137,7 +1137,7 @@
                             <div class="col-md-4">
                                 <label>Tekanan Darah</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control tensi-pasien" id="cek_pf9">
+                                    <input class="form-control tensi-pasien" id="cek_pf9" data-inputmask="'mask': ['999/999']" data-mask="">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>
@@ -1155,7 +1155,7 @@
                             <div class="col-md-4">
                                 <label>Suhu</label>
                                 <div class="input-group">
-                                    <input class="form-control suhu-pasien" id="cek_pf111">
+                                    <input class="form-control suhu-pasien" id="cek_pf111" type="number">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         C
                                     </div>
@@ -1463,8 +1463,8 @@
                                 <label style="margin-left: 8px">TTD Dokter Spesialis Anestesi</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_spesialis" width="220"
                                         onmouseover="paintTtd('ttd_spesialis')"></canvas>
-                                <input class="form-control" id="nama_terang_spesialis" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_spesialis" placeholder="SIP">
+                                <input class="form-control nama_dokter_ri" id="nama_terang_spesialis" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_spesialis" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_spesialis')"><i
                                         class="fa fa-trash"></i> Clear

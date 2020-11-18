@@ -1659,11 +1659,11 @@ public class BudgetingAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
-        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[0], "");
+        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[2], "");
         budgetingStatus.setDivisi(divisiId);
         budgetingStatus.setCoa(noBudgetting);
         budgetingStatus.setBranchId(branchId);
-        budgetingStatus.setTahun(arrTanggal[0]);
+        budgetingStatus.setTahun(arrTanggal[2]);
         budgetingStatus.setBulan(CommonUtil.convertNumberToStringBulan(arrTanggal[1]));
 
 
@@ -1678,11 +1678,11 @@ public class BudgetingAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
-        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[0], "");
+        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[2], "");
         budgetingStatus.setDivisi(divisiId);
         budgetingStatus.setIdPengadaan(idPengadaan);
         budgetingStatus.setBranchId(branchId);
-        budgetingStatus.setTahun(arrTanggal[0]);
+        budgetingStatus.setTahun(arrTanggal[2]);
 
         data = budgetingBo.getBudgetBiayaInvestasiSaatIni(budgetingStatus);
 
@@ -1695,10 +1695,10 @@ public class BudgetingAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
-        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[0], "");
+        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[2], "");
         budgetingStatus.setDivisi(divisiId);
         budgetingStatus.setBranchId(branchId);
-        budgetingStatus.setTahun(arrTanggal[0]);
+        budgetingStatus.setTahun(arrTanggal[2]);
 
         budgetingList = budgetingBo.getNoBudgetByDivisi(budgetingStatus);
 
@@ -1747,10 +1747,10 @@ public class BudgetingAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
-        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[0], "");
+        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[2], "");
         budgetingStatus.setDivisi(divisiId);
         budgetingStatus.setBranchId(branchId);
-        budgetingStatus.setTahun(arrTanggal[0]);
+        budgetingStatus.setTahun(arrTanggal[2]);
 
         budgetingList = budgetingBo.getInvestasiByDivisi(budgetingStatus);
 

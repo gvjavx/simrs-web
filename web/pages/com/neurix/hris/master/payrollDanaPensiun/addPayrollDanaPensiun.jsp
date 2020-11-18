@@ -33,10 +33,10 @@
                     event.originalEvent.options.submit = false;
                     var msg = "";
                     if (isNaN(nilai.replace('.',''))) {
-                        msg += 'Field <strong>Persentase Karyawan</strong> Harus angka tanpa koma.' + '<br/>';
+                        msg += 'Field <strong>Persentase Karyawan</strong> untuk koma gunakan tanda titik.' + '<br/>';
                     }
                     if (isNaN(nilai1.replace('.',''))) {
-                        msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
+                        msg += 'Field <strong>Persentase Perusahaan</strong>untuk koma gunakan tanda titik' + '<br/>';
                     }
 
                     document.getElementById('errorValidationMessage').innerHTML = msg;

@@ -235,9 +235,9 @@
                 <br>
 
                 <div style="margin-bottom:20px">
-                    <button type="button" class="btn btn-success" onclick="showModalAdd('vitalsign')">
-                        <i class="fa fa-plus"></i> Add Monitoring Vital Sign
-                    </button>
+                    <%--<button type="button" class="btn btn-success" onclick="showModalAdd('vitalsign')">--%>
+                        <%--<i class="fa fa-plus"></i> Add Monitoring Vital Sign--%>
+                    <%--</button>--%>
                     <%--<button type="button" class="btn btn-info" onclick="showGrafVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')">--%>
                     <%--<i class="fa fa-pie-chart"></i> View Graf--%>
                     <%--</button>--%>
@@ -255,18 +255,18 @@
 
                 <input type="hidden" id="idDetailCheckup">
 
-                <h4> Vital Sign </h4>
-                <table class="table table-bordered" style="width: 50%">
-                    <thead>
-                    <td>Waktu</td>
-                    <td>Jam</td>
-                    <td>Catatan Dokter</td>
-                    </thead>
-                    <tbody id="body-list-vital-sign">
+                <%--<h4> Vital Sign </h4>--%>
+                <%--<table class="table table-bordered" style="width: 50%">--%>
+                    <%--<thead>--%>
+                    <%--<td>Waktu</td>--%>
+                    <%--<td>Jam</td>--%>
+                    <%--<td>Catatan Dokter</td>--%>
+                    <%--</thead>--%>
+                    <%--<tbody id="body-list-vital-sign">--%>
 
-                    </tbody>
-                </table>
-                <br>
+                    <%--</tbody>--%>
+                <%--</table>--%>
+                <%--<br>--%>
 
                 <h4> Monitoring Cairan </h4>
                 <table class="table table-bordered" style="font-size:11px;">

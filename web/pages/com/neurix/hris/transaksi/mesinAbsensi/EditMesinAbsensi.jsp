@@ -21,8 +21,9 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var mesinAddress = document.getElementById("mesinAddress2").value;
             var mesinSn = document.getElementById("mesinSn2").value;
+            var branchId = document.getElementById("branchIdEdit").value;
 
-            if (mesinAddress != ''&& mesinSn != '') {
+            if (mesinAddress != ''&& mesinSn != ''&&branchId!="") {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -39,7 +40,9 @@
                 if (mesinSn == '') {
                     msg += 'Field <strong>MesinSn </strong> is required.' + '<br/>';
                 }
-
+                if (branchId == '') {
+                    msg += 'Field <strong>Unit </strong> is required.' + '<br/>';
+                }
                 document.getElementById('errorValidationMessage2').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
@@ -123,11 +126,17 @@
                             </table>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Unit :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchIdEdit" name="mesinAbsensi.branchId" required="true" listKey="branchId" listValue="branchName" headerKey="" headerValue="" />                            </table>
+                        </td>
+                    </tr>
                 </table>
-
-
-
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -198,7 +207,7 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close');} //window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">

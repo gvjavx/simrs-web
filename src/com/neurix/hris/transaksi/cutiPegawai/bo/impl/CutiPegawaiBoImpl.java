@@ -597,9 +597,11 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
         }
 
         if (bean!=null) {
+            // validasi hanya bisa mengajukan cuti di tahun yang diajukan paling akhir
             String tahunCuti = cekTahunCuti(bean.getNip(), bean.getTanggalDari(), bean.getTanggalSelesai());
             if (!tahunCuti.equalsIgnoreCase("false")){
 
+                // validasi jika ada cuti diluar tanggungan maka lempar error sudah mengajukan cuti diluar tanggungan
                 String status = cekStatusCuti(bean.getNip(), bean.getCutiId(), bean.getJenisCuti());
                 if (!status.equalsIgnoreCase("exist")){
                     java.util.Date tglMulai = bean.getTanggalDari();
@@ -622,75 +624,12 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     int tahunMulai = calendar1.get(Calendar.YEAR);
 
                     if (tahunMulai > tahun){
-//                        String cutiPegawaiID;
-//                        try {
-//                            // Generating ID, get from postgre sequence
-//                            cutiPegawaiID = cutiPegawaiDao.getNextCutiPegawaiId();
-//                        } catch (HibernateException e) {
-//                            logger.error("[CutiPegawaiBoImpl.saveCutiBersama] Error, " + e.getMessage());
-//                                throw new GeneralBOException("Found problem when getting sequence cutiPegawai Id , please info to your admin..." + e.getMessage());
-//                        }
-//                        // creating object entity serializable
-//                        ItCutiPegawaiEntity itCutiPegawaiEntity = new ItCutiPegawaiEntity();
-//                        itCutiPegawaiEntity.setCutiPegawaiId(cutiPegawaiID);
-//                        itCutiPegawaiEntity.setNip(bean.getNip());
-//                        itCutiPegawaiEntity.setPegawaiPenggantiSementara("");
-//                        itCutiPegawaiEntity.setCutiId("CT002");
-//                        itCutiPegawaiEntity.setLamaHariCuti(BigInteger.valueOf(0));
-//                        itCutiPegawaiEntity.setSisaCutiHari(BigInteger.valueOf(12));
-//                        itCutiPegawaiEntity.setApprovalId("");
-//                        itCutiPegawaiEntity.setKeterangan("RESET TAHUNAN");
-//                        itCutiPegawaiEntity.setAlamatCuti("");
-//                        itCutiPegawaiEntity.setApprovalDate(bean.getCreatedDate());
-//                        itCutiPegawaiEntity.setNote("");
-//                        itCutiPegawaiEntity.setClosed("");
-//                        itCutiPegawaiEntity.setCancelFlag("N");
-//                        itCutiPegawaiEntity.setNoteApproval("");
-//                        itCutiPegawaiEntity.setAlamatCuti("");
-//                        itCutiPegawaiEntity.setApprovalId("system");
-//                        itCutiPegawaiEntity.setTanggalDari((Date) bean.getTanggalDari());
-//                        itCutiPegawaiEntity.setTanggalSelesai((Date) bean.getTanggalSelesai());
-//                        itCutiPegawaiEntity.setApprovalFlag("Y");
-//                        itCutiPegawaiEntity.setApprovalDate(bean.getCreatedDate());
-////                        itCutiPegawaiEntity.setApprovalId(bean.getCreatedWho());
-//                        itCutiPegawaiEntity.setCancelPerson("");
-//                        itCutiPegawaiEntity.setCancelNote("");
-//                        itCutiPegawaiEntity.setFlag("Y");
-//                        itCutiPegawaiEntity.setAction("C");
-//                        itCutiPegawaiEntity.setCreatedWho(bean.getCreatedWho());
-//                        itCutiPegawaiEntity.setLastUpdateWho(bean.getLastUpdateWho());
-//                        itCutiPegawaiEntity.setCreatedDate(bean.getCreatedDate());
-//                        itCutiPegawaiEntity.setLastUpdate(bean.getLastUpdate());
-//                        itCutiPegawaiEntity.setFlagPerbaikan("Y");
-//
-//                        try {
-//                            // insert into database
-//                            cutiPegawaiDao.addAndSave(itCutiPegawaiEntity);
-//                        } catch (HibernateException e) {
-//                            logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-//                            throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
-//                        }
-
-//                        BigInteger jumlahCutiPegawai = BigInteger.valueOf(0);
-//                        List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
 
                         Map hsCriteria = new HashMap();
                         if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
                             hsCriteria.put("nip", bean.getNip());
                         }
                         cutiPegawaiId = cutiPegawaiDao.getNextCutiPegawaiId();
-//                        try {
-//                            // Generating ID, get from postgre sequence
-//                            cutiPegawaiId = cutiPegawaiDao.getNextCutiPegawaiId();
-//
-//                            cutiPegawaiEntityList = cutiPegawaiDao.getJumlahHariCuti(nip,bean.getCutiId());
-//                            for (ItCutiPegawaiEntity cutiPegawai : cutiPegawaiEntityList){
-//                                jumlahCutiPegawai = cutiPegawai.getSisaCutiHari();
-//                            }
-//                        } catch (HibernateException e) {
-//                            logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-//                            throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
-//                        }
 
                         // creating object entity serializable
                         ItCutiPegawaiEntity itCutiPegawaiEntity1 = new ItCutiPegawaiEntity();
@@ -784,7 +723,6 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         }
 
                         if ("KL44".equalsIgnoreCase(imPositionList.get(0).getKelompokId())){
-
 
                             BigInteger jumlahCutiPegawai = BigInteger.valueOf(0);
                             List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
