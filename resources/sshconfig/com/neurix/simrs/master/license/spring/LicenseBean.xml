@@ -2,28 +2,29 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="initDashboardBo" class="com.neurix.simrs.transaksi.initdashboard.bo.impl.InitDashboardBoImpl"
-          p:headerCheckupDao-ref="headerCheckupDao"
+
+
+    <bean id="licenseController" class="com.neurix.simrs.mobileapi.LicenseController"
+          p:licenseZebraBoProxy-ref="licenseZebraBoProxy"
     />
 
-    <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
-          p:initDashboardBoProxy-ref="initDashboardBo"
+    <bean id="licenseZebraBo" class="com.neurix.simrs.master.license.bo.impl.LicenseZebraBoImpl"
+          p:licenseZebraDao-ref="licenseZebraDao"
     />
 
-    <bean id="initDashboardBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="initDashboardBo">
+    <bean id="licenseZebraBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="licenseZebraBo">
         <property name="interceptorNames">
             <list>
-                <value>transactionDiagnosaRawatInterceptor</value>
+                <value>transactionPasienInterceptor</value>
                 <value>hibernateInterceptor</value>
             </list>
         </property>
     </bean>
 
-    <bean id="transactionDiagnosaRawatInterceptor"
+    <bean id="transactionPasienInterceptor"
           class="org.springframework.transaction.interceptor.TransactionInterceptor"
           p:transactionManager-ref="transactionManager">
         <property name="transactionAttributes">
@@ -34,5 +35,8 @@
             </props>
         </property>
     </bean>
+
+    <bean id="licenseZebraDao" class="com.neurix.simrs.master.license.dao.LicenseZebraDao"
+          p:sessionFactory-ref="sessionFactory" />
 
 </beans>

@@ -27,7 +27,7 @@ import java.util.List;
  * @author gondok
  * Wednesday, 20/02/19 13:32
  */
-public class DispensasiController implements ModelDriven<Object> {
+public class    DispensasiController implements ModelDriven<Object> {
 
     private static final transient Logger logger = Logger.getLogger(DispensasiController.class);
 
@@ -287,11 +287,21 @@ public class DispensasiController implements ModelDriven<Object> {
             }
 
 
-            List<Notifikasi> notifikasiList = ijinKeluarBoProxy.saveAddIjinKeluar(ijinKeluar);
+            try {
+                List<Notifikasi> notifikasiList = ijinKeluarBoProxy.saveAddIjinKeluar(ijinKeluar);
 
-            for ( Notifikasi notifikasi : notifikasiList){
-                notifikasiBoProxy.sendNotif(notifikasi);
+                for ( Notifikasi notifikasi : notifikasiList){
+                    notifikasiBoProxy.sendNotif(notifikasi);
+                }
+            } catch (GeneralBOException e){
+                Dispensasi msg = new Dispensasi();
+                msg.setMessage(e.getMessage());
+                listOfDispensasi.add(msg);
+                logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + e + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
             }
+
+
 
 
         } catch (GeneralBOException e) {
