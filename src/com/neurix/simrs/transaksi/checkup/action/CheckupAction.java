@@ -3991,8 +3991,14 @@ public class CheckupAction extends BaseMasterAction {
         return headerCheckupList;
     }
 
-    public String cekLogin() {
-        String res = CommonUtil.userLogin();
+    public CrudResponse cekLogin() {
+        CrudResponse res = new CrudResponse();
+        String nip = CommonUtil.userIdLogin();
+        String nama = CommonUtil.userLogin();
+        if(nip != null && nama != null){
+            res.setStatus(nip);
+            res.setMsg(nama);
+        }
         return res;
     }
 

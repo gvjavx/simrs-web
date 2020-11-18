@@ -866,7 +866,7 @@
                             <label >TTD</label>
                             <canvas class="paint-canvas-ttd" id="ttd_perawat"
                                     onmouseover="paintTtd('ttd_perawat')"></canvas>
-                            <input class="form-control" id="nama_terang_perawat" placeholder="Nama Terang">
+                            <input class="form-control nama_petugas" id="nama_terang_perawat" placeholder="Nama Terang">
                             <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                     onclick="removePaint('ttd_perawat')"><i class="fa fa-trash"></i>
                                 Clear
