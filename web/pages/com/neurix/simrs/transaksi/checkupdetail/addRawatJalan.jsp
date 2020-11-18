@@ -1879,7 +1879,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Pemberian</label>
                         <div class="col-md-7">
-                            <s:select list="#{'sebelum':'Sebelum'}"
+                            <s:select list="#{'Saat':'Saat','Sebelum':'Sebelum'}"
                                       cssStyle="margin-top: 7px; width: 100%"
                                       onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()}"
                                       id="resep_waktu"
