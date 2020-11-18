@@ -88,8 +88,17 @@ public class Budgeting {
     private String idKategoriBudgeting;
     private String namaKategori;
     private String jenis;
+    private String namaPengadaan;
 
     private BigDecimal realisasi;
+
+    public String getNamaPengadaan() {
+        return namaPengadaan;
+    }
+
+    public void setNamaPengadaan(String namaPengadaan) {
+        this.namaPengadaan = namaPengadaan;
+    }
 
     public BigDecimal getRealisasi() {
         return realisasi;

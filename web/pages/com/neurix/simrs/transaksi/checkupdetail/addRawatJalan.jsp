@@ -192,7 +192,7 @@
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
                                                 <table>
-                                                    <span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                    <span class="span-success">
                                                     <s:property value="headerDetailCheckup.noSep"></s:property>
                                                     </span>
                                                 </table>
@@ -277,43 +277,29 @@
                             <s:hidden value="headerDetailCheckup.jenisPeriksaPasien" id="jenis_periksa"></s:hidden>
 
                             <div class="col-md-6">
-                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
-                                     class="card card-4 pull-right">
-                                    <img border="2" id="img_ktp" src="<s:property value="headerDetailCheckup.urlKtp"/>"
-                                         style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
-                                </div>
-                                <%--<img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"--%>
-                                <%--style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">--%>
+                                <script>
+                                    var cek = cekImages('<s:property value="headerDetailCheckup.urlKtp"/>');
+                                    var url = '';
+                                    if(cek){
+                                        url = '<s:property value="headerDetailCheckup.urlKtp"/>';
+                                    }else{
+                                        url = contextPathHeader+'/pages/images/no-images.png';
+                                    }
+                                    var set = '<div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"\n' +
+                                        'class="card card-4 pull-right">\n' +
+                                        '<img border="2" id="img_ktp" src="'+url+'"\n' +
+                                        'style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">\n' +
+                                        '</div>';
+                                    document.write(set);
+                                </script>
                                 <table class="table table-striped">
                                     <tr id="row_jenis_pasien">
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
-                                                    <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                        <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
-                                                    </span>
-                                                </s:if>
-                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "umum"'>
-                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                        <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
-                                                    </span>
-                                                </s:elseif>
-                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
-                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                        <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
-                                                    </span>
-                                                </s:elseif>
-                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "rekanan"'>
-                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                        <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property> <s:property value="headerDetailCheckup.namaRekanan"></s:property>
-                                                    </span>
-                                                </s:elseif>
-                                                <s:else>
-                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                        <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
-                                                    </span>
-                                                </s:else>
+                                                <script>
+                                                    document.write(changeJenisPasien('<s:property value="headerDetailCheckup.idJenisPeriksaPasien"/>', '<s:property value="headerDetailCheckup.jenisPeriksaPasien"/>'));
+                                                </script>
                                             </table>
                                         </td>
                                     </tr>
@@ -1137,6 +1123,21 @@
                                             <button onmouseenter="loadModalRM('transfer_pasien')" class="btn btn-primary" onclick="showModalAsesmenRawatInap('transfer_pasien')">
                                                 <i class="fa fa-file-o"></i> Asesmen Transfer Pasien
                                             </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="display: none" id="form-rujuk_internal">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Poli Rujukan</label>
+                                        <div class="col-md-8">
+                                            <s:action id="initComboPoli2" namespace="/checkup"
+                                                      name="getComboPelayanan_checkup"/>
+                                            <s:select
+                                                    list="#initComboPoli2.listOfPelayanan" id="rujuk_internal"
+                                                    name="headerCheckup.idPelayanan" listKey="idPelayanan"
+                                                    listValue="namaPelayanan" cssStyle="width: 100%"
+                                                    headerKey="" headerValue="[Select one]"
+                                                    cssClass="form-control select2"/>
                                         </div>
                                     </div>
                                 </div>

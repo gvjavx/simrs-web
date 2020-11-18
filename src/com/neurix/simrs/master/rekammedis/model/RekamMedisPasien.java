@@ -22,6 +22,33 @@ public class RekamMedisPasien {
     private String jumlahKategori;
     private String terisi;
     private String tipeRM;
+    private String urlImg;
+    private String idPasien;
+    private String idImg;
+
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getIdImg() {
+        return idImg;
+    }
+
+    public void setIdImg(String idImg) {
+        this.idImg = idImg;
+    }
 
     public String getTipeRM() {
         return tipeRM;

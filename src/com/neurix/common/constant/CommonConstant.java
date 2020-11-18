@@ -152,7 +152,7 @@ public class CommonConstant {
     public final static String IMAGE_TYPE = ".png";
 
     public final static String URL_IMG = "/images/";
-    public final static String URL_IMG_RM = "rekam_medic";
+    public final static String URL_IMG_RM = "/rekam_medic/";
 
     public static final String AGORA_LIB = "/opt/tomcat/webapps/simrs/WEB-INF/lib";
 
@@ -204,7 +204,7 @@ public class CommonConstant {
     public final static String CUTI_ID_DILUAR_TANGGUNJAWAB = CommonUtil.getPropertyParams("cuti.id.diluar.tanggungjawab");
 
     //TELEMEDICINE
-    public static final int ADD_JAM_BAYAR = 30; //MENIT
+    public static final int ADD_JAM_BAYAR = 5; //MENIT
 
     public final static String posisiKabidKeuanganKp = CommonUtil.getPropertyParams("posisi.kabid.keuangan.kp");
     public final static String posisiKasubbidKeuanganKp = CommonUtil.getPropertyParams("posisi.kasubbid.keuangan.kp");
@@ -237,6 +237,7 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_KIRIM_PENGAJUAN_PEMBAYARAN_DO = CommonUtil.getPropertyParams("transaksi.id.kirim.pengajuan.pembayaran.do");
     public final static String TRANSAKSI_ID_TERIMA_PENGAJUAN_PEMBAYARAN_DO = CommonUtil.getPropertyParams("transaksi.id.terima.pengajuan.pembayaran.do");
     public final static String TRANSAKSI_ID_PEMBAYARAN_DO = CommonUtil.getPropertyParams("transaksi.id.pembayaran.do");
+    public final static String TRANSAKSI_ID_KOREKSI_PENGAJUAN_BIAYA = CommonUtil.getPropertyParams("transaksi.id.koreksi.pengajuan.biaya");
 
     public final static String REKENING_ID_PPN_MASUKAN = CommonUtil.getPropertyParams("rekening.id.ppn.masukan");
     public final static String REKENING_ID_PPN_KELUARAN = CommonUtil.getPropertyParams("rekening.id.ppn.keluaran");

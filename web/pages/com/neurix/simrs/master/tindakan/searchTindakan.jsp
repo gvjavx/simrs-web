@@ -255,7 +255,7 @@
 </div>
 
 <div class="modal fade" id="modal-add">
-    <div class="modal-dialog" style="width: 55%">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -346,6 +346,7 @@
                             <thead>
                             <tr style="font-weight: bold">
                                 <td width="30%">Nama Tindakan</td>
+                                <td>Kategori</td>
                                 <td>Tarif (Rp.)</td>
                                 <td>Tarif Bpjs (Rp.)</td>
                                 <td>Diskon (%)</td>
@@ -680,6 +681,7 @@
         var data = $('#table_pelayanan').tableToJSON();
         var branch = $('#set_nama_unit').val();
         var pelayanan = $('#set_nama_pelayanan').val();
+        var kategoriName = $('#set_kategori_tindakan option:selected').text();
         var kategori = $('#set_kategori_tindakan').val();
         var tindakan = $('#set_nama_tindakan').val();
         var namaTindakan = $('#set_nama_tindakan option:selected').text();
@@ -689,7 +691,8 @@
             var cek = false;
             $.each(data, function (i, item) {
                 var idTindakan = $('#id_tindakan_' + i).val();
-                if (idTindakan == tindakan) {
+                var idKategori = $('#id_kategori_' + i).val();
+                if (idTindakan == tindakan && idKategori == kategori) {
                     cek = true;
                 }
             });
@@ -702,6 +705,8 @@
                         var table = '<tr id="row_' + tindakan + '">' +
                             '<td style="vertical-align: middle">' + namaTindakan +
                             '<input id="id_tindakan_' + id + '" type="hidden" value="' + tindakan + '"></td>' +
+                            '<td style="vertical-align: middle">' + kategoriName +
+                            '<input id="id_kategori_' + id + '" type="hidden" value="' + kategori + '"></td>' +
                             '<td>' +
                             '<input id="tarif_' + id + '" class="form-control" value="' + formatRupiahAtas(res.standardCost) + '" oninput="convertRpAtas(this.id, this.value, \'h_tarif_' + id + '\')">' +
                             '<input type="hidden" id="h_tarif_' + id + '" class="form-control" value="' + res.standardCost + '">' +
@@ -732,7 +737,7 @@
                         $('#body_tindakan').append(table);
                         $('#set_nama_unit').attr('disabled', true);
                         $('#set_nama_pelayanan').attr('disabled', true);
-                        $('#set_kategori_tindakan').attr('disabled', true);
+                        // $('#set_kategori_tindakan').attr('disabled', true);
                     }
                 });
             }
@@ -843,19 +848,20 @@
             var dataPelayanan = $('#table_pelayanan').tableToJSON();
             var namaUnit = $('#set_nama_unit').val();
             var namaPelayanan = $('#set_nama_pelayanan').val();
-            var idKategori = $('#set_kategori_tindakan').val();
+            var kete = $('#set_kategori_tindakan').val();
             var namaTindakan = $('#set_nama_tindakan').val();
             var tarif = $('#h_tarif').val();
             var tarifBpjs = $('#h_tarif_bpjs').val();
             var diskon = $('#h_diskon').val();
 
-            if (namaUnit && namaPelayanan && idKategori && namaTindakan != '' && dataPelayanan.length > 0) {
+            if (namaUnit && namaPelayanan && namaTindakan != '' && dataPelayanan.length > 0) {
                 if (dataPelayanan.length > 0) {
                     var dataSave = [];
                     $('#save_add').hide();
                     $('#load_add').show();
                     $.each(dataPelayanan, function (i, item) {
                         var idHeaderTindakan = $('#id_tindakan_' + i).val();
+                        var idKategori = $('#id_kategori_' + i).val();
                         var tarif = $('#h_tarif_' + i).val();
                         var tarifBpjs = $('#h_tarif_bpjs_' + i).val();
                         var diskon = $('#diskon_' + i).val();
@@ -914,7 +920,7 @@
                 if (namaPelayanan == '') {
                     $('#war_set_nama_pelayanan').show();
                 }
-                if (idKategori == '') {
+                if (kete == '') {
                     $('#war_set_kategori_tindakan').show();
                 }
                 if (namaTindakan == '') {

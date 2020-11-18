@@ -76,12 +76,12 @@
                                             </tr>
                                         </table>
 
-                                        <table >
+                                        <table>
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Unit :</small></label>
                                                 </td>
-                                                <td>
+                                                <td colspan="5">
                                                     <table>
                                                         <s:if test='pengajuanSetor.branchId == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
@@ -101,7 +101,7 @@
                                                 <td>
                                                     <label class="control-label"><small>Pengajuan Setor ID :</small></label>
                                                 </td>
-                                                <td>
+                                                <td colspan="5">
                                                     <table>
                                                         <s:textfield  id="pengajuanSetorId" name="pengajuanSetor.pengajuanSetorId" cssClass="form-control"/>
                                                     </table>
@@ -111,7 +111,7 @@
                                                 <td>
                                                     <label class="control-label"><small>Keterangan :</small></label>
                                                 </td>
-                                                <td>
+                                                <td colspan="5">
                                                     <table>
                                                         <s:textfield  id="keterangan" name="pengajuanSetor.keterangan" cssClass="form-control"/>
                                                     </table>
@@ -119,43 +119,53 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tanggal :</small></label>
+                                                    <label class="control-label"><small>Periode :</small></label>
                                                 </td>
                                                 <td>
-                                                    <div class="input-group date">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <s:textfield id="tgl1" name="pengajuanSetor.stTanggalDari" cssClass="form-control pull-right"
-                                                                     required="false"/>
-                                                        <div class="input-group-addon">
-                                                            s/d
-                                                        </div>
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <s:textfield id="tgl2" name="pengajuanSetor.stTanggalSelesai" cssClass="form-control pull-right"
-                                                                     required="false"/>
-                                                    </div>
-                                                    <script>
-                                                        $("#tgl1").datepicker({
-                                                            setDate: new Date(),
-                                                            autoclose: true,
-                                                            changeMonth: true,
-                                                            changeYear:true,
-                                                            dateFormat:'dd-mm-yy'
-                                                        });
-                                                        $("#tgl1").datepicker("setDate", new Date());
-                                                        $("#tgl2").datepicker({
-                                                            setDate: new Date(),
-                                                            autoclose: true,
-                                                            changeMonth: true,
-                                                            changeYear:true,
-                                                            dateFormat:'dd-mm-yy'
-                                                        });
-                                                        $("#tgl2").datepicker("setDate", new Date());
-                                                    </script>
+                                                    <table>
+                                                        <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                                  id="bulan1" name="pengajuanSetor.bulan"
+                                                                  headerKey="0" headerValue="Bulan" cssClass="form-control" />
+                                                    </table>
                                                 </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                                        <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahun1"
+                                                                  name="pengajuanSetor.tahun" required="true" headerKey=""
+                                                                  headerValue="[Select one]"/>
+                                                    </table>
+                                                </td>
+
+                                                <td>
+                                                    <table>
+                                                        <h4>s/d </h4>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'01':'Januari', '02' : 'Februari', '03':'Maret', '04':'April', '05':'Mei', '06':'Juni', '07':'Juli',
+                                '08': 'Agustus', '09' : 'September', '10' : 'Oktober', '11' : 'November', '12' : 'Desember'}"
+                                                                  id="bulan2" name="pengajuanSetor.bulan1"
+                                                                  headerKey="0" headerValue="Bulan" cssClass="form-control" />
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                                        <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahun2"
+                                                                  name="pengajuanSetor.tahun1" required="true" headerKey=""
+                                                                  headerValue="[Select one]"/>
+                                                    </table>
+                                                </td>
+                                                <script>
+                                                    var dt = new Date();
+                                                    $('#bulan1').val("01");
+                                                    $('#tahun1').val(dt.getFullYear());
+                                                    $('#bulan2').val(("0" + (dt.getMonth() + 1)).slice(-2));
+                                                    $('#tahun2').val(dt.getFullYear());
+                                                </script>
                                             </tr>
                                         </table>
                                         <br>
@@ -193,7 +203,8 @@
                                                     <thead >
                                                     <tr bgcolor="#90ee90">
                                                         <td>ID</td>
-                                                        <td>Tanggal Pengajuan</td>
+                                                        <td>Bulan</td>
+                                                        <td>Tahun</td>
                                                         <td>Payroll (RP)</td>
                                                         <td>KSO (RP)</td>
                                                         <td>PPH21 Rekanan(RP)</td>
@@ -209,7 +220,8 @@
                                                     <s:iterator value="#session.listOfResult" var="row">
                                                         <tr>
                                                             <td><s:property value="pengajuanSetorId"/></td>
-                                                            <td><s:property value="stRegisteredDate"/></td>
+                                                            <td><s:property value="bulan"/></td>
+                                                            <td><s:property value="tahun"/></td>
                                                             <td style="text-align: right"><s:property value="stJumlahPph21Payroll"/></td>
                                                             <td style="text-align: right"><s:property value="stJumlahPph21Kso"/></td>
                                                             <td style="text-align: right"><s:property value="stJumlahPph21Pengajuan"/></td>

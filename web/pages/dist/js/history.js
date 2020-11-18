@@ -334,4 +334,33 @@ function labLuar(kategori, url){
     $('#modal-lab_luar').modal({show:true, backdrop:'static'});
 }
 
+function viewAllRekamMedisLama() {
+    $('#modal-rekam-medis-lama').modal({show:true, backdrop:'static'});
+    $('#id_loading').html('<i class="fa fa-circle-o-notch"></i> Sedang mencari data....');
+    dwr.engine.setAsync(true);
+    CheckupAction.geRekamMedisLama(idPasien, function (res) {
+        var ul  = "";
+        var isi = "";
+        if(res.length > 0){
+            $('#id_loading').html('');
+            $.each(res, function (i, item) {
+                var aktive = "";
+                if(i == 0){
+                    aktive = 'active';
+                }
+                ul += '<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="'+aktive+'"></li>';
+                isi += '<div class="item '+aktive+'">\n' +
+                    '<img src="'+item.urlImg+'" style="width: 100%; height: 70%">\n' +
+                    '<div class="carousel-caption">\n' +
+                    '</div>\n' +
+                    '</div>';
+            });
+            $('#button_ol').html(ul);
+            $('#isi_carousel').html(isi);
+        }else{
+            $('#id_loading').html('Data tidak ada....');
+        }
+    });
+}
+
 

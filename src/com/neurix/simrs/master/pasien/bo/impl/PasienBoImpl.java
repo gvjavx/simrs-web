@@ -784,8 +784,8 @@ public class PasienBoImpl implements PasienBo {
     }
 
     @Override
-    public void saveUploadRekamMedicLama(ImSImrsRekamMedicLamaEntity rekamMedicLama, List<ImSimrsUploadRekamMedicLamaEntity> uploads) throws GeneralBOException {
-
+    public CrudResponse saveUploadRekamMedicLama(ImSImrsRekamMedicLamaEntity rekamMedicLama, List<ImSimrsUploadRekamMedicLamaEntity> uploads) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
         if (rekamMedicLama.getIdPasien() != null && !"".equalsIgnoreCase(rekamMedicLama.getIdPasien())) {
 
             ImSImrsRekamMedicLamaEntity rekamMedicLamaEntity = new ImSImrsRekamMedicLamaEntity();
@@ -801,13 +801,19 @@ public class PasienBoImpl implements PasienBo {
 
             try {
                 rekamMedicLamaDao.addAndSave(rekamMedicLamaEntity);
+                response.setStatus("success");
+                response.setMsg("Oke");
             } catch (HibernateException e) {
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
                 logger.error("[PasienBoImpl.saveUploadRekamMedicLama] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving data, please info to your admin..." + e.getMessage());
+
             }
 
             if (uploads.size() > 0) {
                 for (ImSimrsUploadRekamMedicLamaEntity uploadEntity : uploads) {
+                    uploadEntity.setId("URM"+uploadRekamMedicLamaDao.getNextSeq());
                     uploadEntity.setHeadId(rekamMedicLamaEntity.getId());
                     uploadEntity.setFlag(rekamMedicLama.getFlag());
                     uploadEntity.setAction(rekamMedicLama.getAction());
@@ -818,13 +824,18 @@ public class PasienBoImpl implements PasienBo {
 
                     try {
                         uploadRekamMedicLamaDao.addAndSave(uploadEntity);
+                        response.setStatus("success");
+                        response.setMsg("Oke");
                     } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg(e.getMessage());
                         logger.error("[PasienBoImpl.saveUploadRekamMedicLama] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving data, please info to your admin..." + e.getMessage());
                     }
                 }
             }
         }
+        return response;
     }
 
     private String dateFormater(String type) {

@@ -65,6 +65,99 @@ public class CheckupMobile {
     private String noAntrian;
     private String belumBayarUangMuka;
 
+    private String jmlRJ;
+    private String jmlRI;
+    private String jmlIGD;
+    private String jmlTelemedic;
+
+    private String branchName;
+    private String tanggal;
+    private String total;
+
+    private String tahun;
+    private String all;
+    private String warna;
+
+    public String getWarna() {
+        return warna;
+    }
+
+    public void setWarna(String warna) {
+        this.warna = warna;
+    }
+
+    public String getAll() {
+        return all;
+    }
+
+    public void setAll(String all) {
+        this.all = all;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
+    public String getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getJmlRJ() {
+        return jmlRJ;
+    }
+
+    public void setJmlRJ(String jmlRJ) {
+        this.jmlRJ = jmlRJ;
+    }
+
+    public String getJmlRI() {
+        return jmlRI;
+    }
+
+    public void setJmlRI(String jmlRI) {
+        this.jmlRI = jmlRI;
+    }
+
+    public String getJmlIGD() {
+        return jmlIGD;
+    }
+
+    public void setJmlIGD(String jmlIGD) {
+        this.jmlIGD = jmlIGD;
+    }
+
+    public String getJmlTelemedic() {
+        return jmlTelemedic;
+    }
+
+    public void setJmlTelemedic(String jmlTelemedic) {
+        this.jmlTelemedic = jmlTelemedic;
+    }
+
     public String getBelumBayarUangMuka() {
         return belumBayarUangMuka;
     }

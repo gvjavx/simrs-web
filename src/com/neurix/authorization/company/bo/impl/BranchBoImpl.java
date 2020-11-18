@@ -136,6 +136,10 @@ public class BranchBoImpl implements BranchBo {
                 hsCriteria.put("area_id", searchBranch.getAreaId());
             }
 
+            if (searchBranch.getNotLike() != null && !"".equalsIgnoreCase(searchBranch.getNotLike())) {
+                hsCriteria.put("not_like", searchBranch.getNotLike());
+            }
+
             if (searchBranch.getFlag() != null && !"".equalsIgnoreCase(searchBranch.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBranch.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -250,6 +254,7 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setCoderNik(imBranches.getCoderNik());
                     resultBranch.setLat(imBranches.getLat());
                     resultBranch.setLon(imBranches.getLon());
+                    resultBranch.setWarna(imBranches.getWarna());
 
                     listOfResultBranch.add(resultBranch);
                 }

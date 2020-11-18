@@ -269,31 +269,29 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-md-6">
-                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center" class="card card-4 pull-right">
-                                    <img border="2" id="img_ktp" src="<s:property value="rawatInap.urlKtp"/>" style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
-                                </div>
+                                <script>
+                                    var cek = cekImages('<s:property value="rawatInap.urlKtp"/>');
+                                    var url = '';
+                                    if(cek){
+                                        url = '<s:property value="rawatInap.urlKtp"/>';
+                                    }else{
+                                        url = contextPathHeader+'/pages/images/no-images.png';
+                                    }
+                                    var set = '<div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"\n' +
+                                        'class="card card-4 pull-right">\n' +
+                                        '<img border="2" id="img_ktp" src="'+url+'"\n' +
+                                        'style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">\n' +
+                                        '</div>';
+                                    document.write(set);
+                                </script>
                                 <table class="table table-striped">
                                     <tr>
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:if test='rawatInap.idJenisPeriksa == "asuransi"'>
-                                                <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:if>
-                                                <s:elseif test='rawatInap.idJenisPeriksa == "umum"'>
-                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='rawatInap.idJenisPeriksa == "bpjs"'>
-                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='rawatInap.idJenisPeriksa == "rekanan"'>
-                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:else>
-                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:else>
-                                                    <s:property value="rawatInap.jenisPeriksaPasien"></s:property>
-                                                </span>
+                                                <script>
+                                                    document.write(changeJenisPasien('<s:property value="rawatInap.idJenisPeriksa"/>', '<s:property value="rawatInap.jenisPeriksaPasien"/>'));
+                                                </script>
                                             </table>
                                         </td>
                                     </tr>
@@ -459,13 +457,13 @@
                                        </button>
                                        <ul class="dropdown-menu" role="menu">
                                            <li><a onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Form Observasi Cairan</a></li>
+                                                   class="fa fa-file-o"></i> Observasi Cairan</a></li>
                                            <li><a onclick="showModalMonVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Form Observasi Vital Sign</a></li>
+                                                   class="fa fa-file-o"></i> Vital Sign</a></li>
                                            <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','parenteral')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Form Pemberian Obat Parenteral</a></li>
+                                                   class="fa fa-file-o"></i> Pemberian Obat Parenteral</a></li>
                                            <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','nonparenteral')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Form Pemberian Obat Non Parenteral</a></li>
+                                                   class="fa fa-file-o"></i> Pemberian Obat Non Parenteral</a></li>
                                        </ul>
                                    </div>
                                </div>
@@ -2496,33 +2494,29 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi Vital Sign </h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-line-chart"></i> Chart Vital Sign </h4>
             </div>
             <div class="modal-body">
-                <div style="margin-bottom:7px">
-                    <button type="button" class="btn btn-success" onclick="addMonVitalSign()">
-                        <i class="fa fa-plus"></i> Add
-                    </button>
-                    <button type="button" class="btn btn-info" onclick="showGrafVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')">
-                        <i class="fa fa-pie-chart"></i> View Graf
-                    </button>
+                <div class="box-body chart-responsive">
+                    <div class="chart" id="line-chart_vital_sign" style="height: 300px; width: 100%"></div>
+                    <hr class="garis">
+                    <div class="row" style="font-size: 12px">
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-1">
+                                <i class="fa fa-circle" style="color: #ff0000"></i> RR
+                            </div>
+                            <div class="col-md-1">
+                                <i class="fa fa-circle" style="color: #0000ff"></i> Nadi
+                            </div>
+                            <div class="col-md-2">
+                                <i class="fa fa-circle" style="color: #00cc00"></i> Sistole
+                            </div>
+                            <div class="col-md-2">
+                                <i class="fa fa-circle" style="color: #cc6699; margin-left: -70px"></i> Diastole
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <table class="table table-bordered" style="font-size: 12px">
-                    <thead>
-                    <td>Jam</td>
-                    <td>Nafas</td>
-                    <td>Nadi</td>
-                    <td>Suhu</td>
-                    <td>Tensi</td>
-                    <td>Berat Badan</td>
-                    <td>Tinggi Badan</td>
-                    <td>Created Who</td>
-                    <td>Created Date</td>
-                    </thead>
-                    <tbody id="body-list-vital-sign">
-
-                    </tbody>
-                </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close

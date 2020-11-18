@@ -2202,6 +2202,8 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                 if (myResponseCheck.isNull("response")) {
                     JSONObject response = myResponseCheck.getJSONObject("metaData");
                     logger.error("[BPJSBoImpl.insertRujukanBpjs] : " + response.getString("message"));
+                    rujukanResponse.setStatus(response.getString("code"));
+                    rujukanResponse.setMessage(response.getString("message"));
                 } else {
                     JSONObject response = myResponseCheck.getJSONObject("response");
                     JSONObject rujukan = response.getJSONObject("rujukan");
@@ -2269,6 +2271,8 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                     if (!tujuanRujukan.isNull("nama")){
                         rujukanResponse.setNamaTujuanRujukan(tujuanRujukan.getString("nama"));
                     }
+                    rujukanResponse.setStatus(response.getString("code"));
+                    rujukanResponse.setMessage(response.getString("message"));
                 }
 
             } catch (IOException | JSONException | GeneralSecurityException e) {

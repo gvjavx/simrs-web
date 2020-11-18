@@ -32,6 +32,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
+import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -371,10 +372,16 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                     returnPembayaranUtangPiutang.setApprovalKeuanganId(pembayaranUtangPiutangEntity.getApprovalKeuanganId());
                     returnPembayaranUtangPiutang.setApprovalKeuanganName(pembayaranUtangPiutangEntity.getApprovalKeuanganName());
                     returnPembayaranUtangPiutang.setApprovalKeuanganDate(pembayaranUtangPiutangEntity.getApprovalKeuanganDate());
+                    if (pembayaranUtangPiutangEntity.getApprovalKeuanganDate()!=null){
+                        returnPembayaranUtangPiutang.setStApprovalKeuanganDate(CommonUtil.convertTimestampToStringLengkap(pembayaranUtangPiutangEntity.getApprovalKeuanganDate()));
+                    }
                     returnPembayaranUtangPiutang.setApprovalKasubKeuanganFlag(pembayaranUtangPiutangEntity.getApprovalKasubKeuanganFlag());
                     returnPembayaranUtangPiutang.setApprovalKasubKeuanganId(pembayaranUtangPiutangEntity.getApprovalKasubKeuanganId());
                     returnPembayaranUtangPiutang.setApprovalKasubKeuanganName(pembayaranUtangPiutangEntity.getApprovalKasubKeuanganName());
                     returnPembayaranUtangPiutang.setApprovalKasubKeuanganDate(pembayaranUtangPiutangEntity.getApprovalKasubKeuanganDate());
+                    if (pembayaranUtangPiutangEntity.getApprovalKasubKeuanganDate()!=null){
+                        returnPembayaranUtangPiutang.setStApprovalKasubKeuanganDate(CommonUtil.convertTimestampToStringLengkap(pembayaranUtangPiutangEntity.getApprovalKasubKeuanganDate()));
+                    }
 
                     List<ImBranches> branchesList = branchDao.getListBranchById(pembayaranUtangPiutangEntity.getBranchId());
                     for (ImBranches branches : branchesList){
@@ -419,6 +426,11 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                     returnPembayaranUtangPiutang.setMetodePembayaranName(kodeRekeningDao.getNamaRekeningByCoa(pembayaranUtangPiutangEntity.getMetodeBayar()));
 
                     returnPembayaranUtangPiutang.setRegisteredFlag(pembayaranUtangPiutangEntity.getRegisteredFlag());
+                    returnPembayaranUtangPiutang.setRegisteredWho(pembayaranUtangPiutangEntity.getRegisteredWho());
+                    returnPembayaranUtangPiutang.setRegisteredDate(pembayaranUtangPiutangEntity.getRegisteredDate());
+                    if (pembayaranUtangPiutangEntity.getRegisteredDate()!=null){
+                        returnPembayaranUtangPiutang.setStRegisteredDate(CommonUtil.convertTimestampToStringLengkap(pembayaranUtangPiutangEntity.getRegisteredDate()));
+                    }
                     returnPembayaranUtangPiutang.setCreatedWho(pembayaranUtangPiutangEntity.getCreatedWho());
                     returnPembayaranUtangPiutang.setCreatedDate(pembayaranUtangPiutangEntity.getCreatedDate());
                     returnPembayaranUtangPiutang.setLastUpdate(pembayaranUtangPiutangEntity.getLastUpdate());
@@ -529,7 +541,7 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
                 }
 
                 ItJurnalEntity jurnalEntity = jurnalDao.getById("noJurnal",imPembayaranUtangPiutangEntity.getNoJurnal());
-                jurnalEntity.setRegisteredDate(bean.getRegisteredDate());
+                jurnalEntity.setRegisteredDate(CommonUtil.convertTimestampToDate(bean.getRegisteredDate()));
                 jurnalEntity.setRegisteredUser(bean.getLastUpdateWho());
                 jurnalEntity.setRegisteredFlag("Y");
 
@@ -640,6 +652,21 @@ public class PembayaranUtangPiutangBoImpl implements PembayaranUtangPiutangBo {
             imPembayaranUtangPiutangEntity.setLastUpdateWho(bean.getLastUpdateWho());
             imPembayaranUtangPiutangEntity.setCreatedDate(bean.getCreatedDate());
             imPembayaranUtangPiutangEntity.setLastUpdate(bean.getLastUpdate());
+
+            //langsung diapprove bawahan apabila yang membuat adalah atasan
+            if (CommonConstant.ROLE_ID_KASUB_KEU.equalsIgnoreCase(CommonUtil.roleIdAsLogin())||CommonConstant.ROLE_ID_KA_KEU.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+                imPembayaranUtangPiutangEntity.setApprovalKeuanganId(CommonUtil.userIdLogin());
+                imPembayaranUtangPiutangEntity.setApprovalKeuanganDate(bean.getLastUpdate());
+                imPembayaranUtangPiutangEntity.setApprovalKeuanganName(bean.getCreatedWho());
+                imPembayaranUtangPiutangEntity.setApprovalKeuanganFlag("Y");
+            }
+
+            if (CommonConstant.ROLE_ID_KA_KEU.equalsIgnoreCase(CommonUtil.roleIdAsLogin())) {
+                imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganId(CommonUtil.userIdLogin());
+                imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganDate(bean.getLastUpdate());
+                imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganName(bean.getCreatedWho());
+                imPembayaranUtangPiutangEntity.setApprovalKasubKeuanganFlag("Y");
+            }
 
             try {
                 // insert into database

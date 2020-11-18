@@ -83,7 +83,6 @@
                     <div class="box-body">
                         <div class="form-group">
                             <s:form id="pembayaranUtangPiutangForm" method="post"  theme="simple" namespace="/pembayaranUtangPiutang" action="searchKoreksiPengajuan_pembayaranUtangPiutang.action" cssClass="form-horizontal">
-                                <s:hidden name="pembayaranUtangPiutang.tipePembayaran" value="KR" />
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Unit </label>
                                     <div class="col-sm-4">
@@ -111,16 +110,6 @@
                                     <label class="control-label col-sm-4">No. Jurnal</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="noJurnal" name="pembayaranUtangPiutang.noJurnal" cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Tipe Transaksi</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="comboTrans" namespace="/trans" name="initComboTransPembayaran_trans">
-                                            <s:param name="tipe">KM</s:param>
-                                        </s:action>
-                                        <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi" cssStyle="margin-top: 7px"
-                                                  listKey="transId" listValue="transName" headerKey="" headerValue="[ Select One ]" cssClass="form-control select2" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -1137,7 +1126,6 @@
     </div>
 </div>
 </div>
-
 <div id="modal-view-lampiran" class="modal fade" role="dialog">
     <div class="modal-dialog modal-md">
         <!-- Modal content-->
@@ -1155,7 +1143,6 @@
         </div>
     </div>
 </div>
-
 <script>
     $('#btnAddDetailPembayaran').click(function () {
         $('.modal_pengajuan').val('');
@@ -1165,7 +1152,8 @@
 
     $(document).ready(function () {
         $('#tablePembayaranUtangPiutang').DataTable({
-            "order": [[0, "desc"]]
+            "order": [[0, "desc"]],
+            "pageLength": 50,
         });
 
         $('.tablePembayaranUtangPiutang').on('click', '.item-view', function() {

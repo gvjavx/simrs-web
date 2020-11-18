@@ -208,6 +208,11 @@
         <property name="berkas">
             <column name="berkas"/>
         </property>
-
+        <property name="flagSendKlaim">
+            <column name="flag_send_klaim"/>
+        </property>
+        <property name="noAntrian">
+            <column name="no_antrian"/>
+        </property>
     </class>
 </hibernate-mapping>

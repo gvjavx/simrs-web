@@ -9,6 +9,10 @@
           p:headerCheckupDao-ref="headerCheckupDao"
     />
 
+    <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
+          p:initDashboardBoProxy-ref="initDashboardBo"
+    />
+
     <bean id="initDashboardBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="initDashboardBo">
         <property name="interceptorNames">

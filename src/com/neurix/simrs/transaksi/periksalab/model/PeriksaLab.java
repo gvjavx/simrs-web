@@ -88,6 +88,16 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String statusBayar;
     private String diagnosa;
 
+    private String isRead;
+
+    public String getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(String isRead) {
+        this.isRead = isRead;
+    }
+
     public String getDiagnosa() {
         return diagnosa;
     }

@@ -307,7 +307,7 @@ public class PenyewaanLahanAction extends BaseMasterAction {
             penyewaanLahan.setNilai(BigDecimal.valueOf(Double.valueOf(stNilai.replace(".","").replace(",",""))));
             penyewaanLahan.setNilaiPpn(BigDecimal.valueOf(Double.valueOf(nilaiPpn.replace(".","").replace(",",""))));
             penyewaanLahan.setNilaiPph(BigDecimal.valueOf(Double.valueOf(nilaiPph.replace(".","").replace(",",""))));
-            penyewaanLahan.setNilaiNetto(BigDecimal.valueOf(Double.valueOf(nilaiNetto.replace(".","").replace(",",""))));
+            penyewaanLahan.setNilaiNetto(penyewaanLahan.getNilai().subtract(penyewaanLahan.getNilaiPpn()).subtract(penyewaanLahan.getNilaiPph()));
             penyewaanLahan.setMetodeBayar(metodeBayar);
             penyewaanLahan.setBank(bank);
             penyewaanLahan.setKeterangan(keterangan);
@@ -565,6 +565,18 @@ public class PenyewaanLahanAction extends BaseMasterAction {
         logger.info("[PenyewaanLahanAction.cetakBuktiPembayaran] end process <<<");
 
         return "print_bukti_pembayaran";
+    }
+
+    public PenyewaanLahan getViewApproval(String pembayaranId) {
+        logger.info("[PenyewaanLahanAction.getViewApproval] start process >>>");
+        String itemFlag = "Y";
+        PenyewaanLahan modalApproval;
+        try {
+            modalApproval = init(pembayaranId, itemFlag);
+        } catch (GeneralBOException e) {
+            throw new GeneralBOException("Error saat mengambil data approval ");
+        }
+        return modalApproval;
     }
 
     private String dateFormater(String type) {

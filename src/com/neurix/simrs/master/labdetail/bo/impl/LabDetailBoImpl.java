@@ -30,41 +30,65 @@ public class LabDetailBoImpl implements LabDetailBo {
         CrudResponse response = new CrudResponse();
         if (bean != null) {
             ImSimrsLabDetailEntity entity = null;
+            ImSimrsLabEntity labEntity = new ImSimrsLabEntity();
             try {
-                entity = labDetailDao.getById("idLabDetail", bean.getIdLabDetail());
-                response.setStatus("success");
-                response.setMsg("success");
-            } catch (HibernateException e) {
+                labEntity = labDao.getById("idLab", bean.getIdLab());
+            }catch (HibernateException e){
                 logger.error(e.getMessage());
                 response.setStatus("error");
                 response.setMsg("Mohon maaf error saat mencari ID lab, " +e.getMessage());
             }
-            if (entity != null) {
-                if(bean.getIdLab() != null){
-                    entity.setIdLab(bean.getIdLab());
-                }
-                if(bean.getIdParameterPemeriksaan() != null){
-                    entity.setIdParameterPemeriksaan(bean.getIdParameterPemeriksaan());
-                }
-                if(bean.getTarif() != null){
-                    entity.setTarif(bean.getTarif());
-                }
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setLastUpdate(bean.getLastUpdate());
+
+            if(labEntity != null){
+                labEntity.setNamaLab(bean.getNamaLab());
+                labEntity.setLastUpdate(bean.getLastUpdate());
+                labEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                labEntity.setAction("U");
                 try {
-                    labDetailDao.updateAndSave(entity);
+                    labDao.updateAndSave(labEntity);
+                }catch (HibernateException e){
+                    logger.error(e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg("Mohon maaf error saat update database, " +e.getMessage());
+                }
+
+                try {
+                    entity = labDetailDao.getById("idLabDetail", bean.getIdLabDetail());
                     response.setStatus("success");
                     response.setMsg("success");
                 } catch (HibernateException e) {
                     logger.error(e.getMessage());
                     response.setStatus("error");
-                    response.setMsg("Mohon maaf error saat update database, " +e.getMessage());
+                    response.setMsg("Mohon maaf error saat mencari ID lab, " +e.getMessage());
                 }
-            } else {
-                response.setStatus("error");
-                response.setMsg("Mohon maaf error tidak menukan ID lab");
+
+                if (entity != null) {
+                    if(bean.getIdLab() != null){
+                        entity.setIdLab(bean.getIdLab());
+                    }
+                    if(bean.getIdParameterPemeriksaan() != null){
+                        entity.setIdParameterPemeriksaan(bean.getIdParameterPemeriksaan());
+                    }
+                    if(bean.getTarif() != null){
+                        entity.setTarif(bean.getTarif());
+                    }
+                    entity.setFlag(bean.getFlag());
+                    entity.setAction(bean.getAction());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    try {
+                        labDetailDao.updateAndSave(entity);
+                        response.setStatus("success");
+                        response.setMsg("success");
+                    } catch (HibernateException e) {
+                        logger.error(e.getMessage());
+                        response.setStatus("error");
+                        response.setMsg("Mohon maaf error saat update database, " +e.getMessage());
+                    }
+                } else {
+                    response.setStatus("error");
+                    response.setMsg("Mohon maaf error tidak menukan ID lab");
+                }
             }
         }
         return response;

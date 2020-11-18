@@ -181,6 +181,61 @@ public class HeaderCheckup {
     private String statusPerkawinan;
     private String kunjunganPoli;
 
+    private String kodePoliVclaim;
+    private String branchName;
+    private String total;
+    private Date tanggal;
+    private String all;
+    private String tahun;
+
+    public String getAll() {
+        return all;
+    }
+
+    public void setAll(String all) {
+        this.all = all;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public Date getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(Date tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getKodePoliVclaim() {
+        return kodePoliVclaim;
+    }
+
+    public void setKodePoliVclaim(String kodePoliVclaim) {
+        this.kodePoliVclaim = kodePoliVclaim;
+    }
+
     public String getPendidikan() {
         return pendidikan;
     }
@@ -778,6 +833,15 @@ public class HeaderCheckup {
     private String noCheckupOnline;
 
     private String metodePembayaran;
+    private String stNoAntrian;
+
+    public String getStNoAntrian() {
+        return stNoAntrian;
+    }
+
+    public void setStNoAntrian(String stNoAntrian) {
+        this.stNoAntrian = stNoAntrian;
+    }
 
     public String getMetodePembayaran() {
         return metodePembayaran;

@@ -395,31 +395,60 @@ function viewSkor(noGroup){
 }
 
 function showModalMonVitalSign(idDetail){
-    $("#modal-vital-sign").modal("show");
-
-    // alert("klik");
-    dwr.engine.setAsync(true);
-    RawatInapAction.getListMonVitalSign("", idDetail, "", function(response){
-        console.log(response);
-        var str = "";
-        $.each(response, function(i, item) {
-            str += "<tr>"+
-                "<td>"+item.jam+"</td>"+
-                "<td>"+item.nafas+"</td>"+
-                "<td>"+item.nadi+"</td>"+
-                "<td>"+item.suhu+"</td>"+
-                "<td>"+item.tensi+"</td>"+
-                "<td>"+item.bb+"</td>"+
-                "<td>"+item.tb+"</td>"+
-                "<td>"+item.createdWho+"</td>"+
-                "<td>"+formateDate(item.stDate)+"</td>"+
-                "</tr>";
-        });
-
-        $("#body-list-vital-sign").html(str);
+    $("#modal-vital-sign").modal({show:true, backdrop:'static'});
+    var tempData = [];
+    CatatanTerintegrasiAction.getListCatatanTerintegrasi(idDetail, 'catatan_terintegrasi_ina', function (res) {
+        if (res.length > 0) {
+            var dataArray = [];
+            $.each(res, function (i, item) {
+                var tgl = ""
+                var jam = "";
+                if(item.waktu != null && item.waktu != ''){
+                    var waktu = converterDateTime(item.waktu);
+                    if(waktu.split(" ")[0] != undefined){
+                        tgl = waktu.split(" ")[0];
+                    }
+                    if(waktu.split(" ")[1] != undefined){
+                        jam = waktu.split(" ")[1];
+                    }
+                }
+                var sistole = 0;
+                var diastole = 0;
+                if(item.tensi != null && item.tensi != ''){
+                    if(item.tensi.split("/")[0] != undefined){
+                        sistole = item.tensi.split("/")[0];
+                    }
+                    if(item.tensi.split("/")[1] != undefined){
+                        diastole = item.tensi.split("/")[1];
+                    }
+                }
+                dataArray.push({
+                    y: jam,
+                    a: item.rr,
+                    b: item.nadi,
+                    c: sistole,
+                    d: diastole
+                });
+            });
+            $('#modal-vital-sign').on('shown.bs.modal', function (event) {
+                $('#line-chart_vital_sign').empty();
+                var line = new Morris.Line({
+                    element: 'line-chart_vital_sign',
+                    resize: true,
+                    data: dataArray,
+                    xkey: 'y',
+                    ykeys: ['a', 'b', 'c', 'd'],
+                    labels: ['RR', 'Nadi', 'Sistole', 'Diastole'],
+                    lineColors: ['#ff0000', '#0000ff', '#00cc00', '#cc6699'],
+                    hideHover: 'auto',
+                    parseTime: false,
+                    lineWidth: 1
+                });
+            });
+        }
     });
-
 }
+
 function addMonVitalSign(){
     $("#modal-add-vital-sign").modal("show");
 }
