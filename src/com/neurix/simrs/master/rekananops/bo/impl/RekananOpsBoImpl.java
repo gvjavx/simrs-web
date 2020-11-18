@@ -132,7 +132,6 @@ public class RekananOpsBoImpl implements RekananOpsBo {
                             detailRekananOps.setNamaRekanan(head.getNamaRekanan());
                             detailRekananOps.setNomorMaster(head.getNomorMaster());
                             detailRekananOps.setTipe(head.getTipe());
-
                         }
                     }
 

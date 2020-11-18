@@ -6,6 +6,7 @@
 
     <bean id="rekananOpsBo" class="com.neurix.simrs.master.rekananops.bo.impl.RekananOpsBoImpl"
           p:rekananOpsDao-ref="rekananOpsDao"
+
     />
     <bean id="rekananOpsBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="rekananOpsBo">
