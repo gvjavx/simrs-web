@@ -1825,7 +1825,6 @@ public class CheckupAction extends BaseMasterAction {
         List<JadwalPelayananDTO> dokterList = new ArrayList<>();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
         String branchId = CommonUtil.userBranchLogin();
 
@@ -1836,14 +1835,6 @@ public class CheckupAction extends BaseMasterAction {
                 logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
             }
         }
-
-        //        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
-//            try {
-//                dokterList = dokterBo.getDokterByPelayanan(idPelayanan, notLike);
-//            } catch (GeneralBOException e) {
-//                logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
-//            }
-//        }
 
         logger.info("[CheckupAction.listOfDokter] end process >>>");
         return dokterList;
