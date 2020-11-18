@@ -108,12 +108,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td width="25%">
                             <label class="control-label"><small>Nama Pelayanan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaPelayanan1" name="pelayanan.namaPelayanan" required="true" disabled="false" readonly="true" cssClass="form-control"/>
+                                <s:textfield id="namaPelayanan1" name="pelayanan.namaPelayanan"
+                                             required="true" disabled="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -124,7 +125,7 @@
                         <td>
                             <table>
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                <s:select list="#initComboBranch.listOfComboBranch" id="branchId1" name="pelayanan.branchId" disabled="true"
+                                <s:select list="#initComboBranch.listOfComboBranch" id="branchId1" name="pelayanan.branchId" disabled="false"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>

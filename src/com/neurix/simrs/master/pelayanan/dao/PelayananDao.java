@@ -182,7 +182,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
 
-        return "SG" + sId;
+        return "PYN" + sId;
     }
 
     public String getNextKodering() throws HibernateException {

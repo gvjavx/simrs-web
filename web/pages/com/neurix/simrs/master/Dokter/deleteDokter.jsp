@@ -127,7 +127,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="kuota1" name="dokter.kuota" required="true" readonly="true" disabled="false" type="number" cssClass="form-control"/>
+                                <s:textfield id="kuota1" name="dokter.kuota" required="true"
+                                             readonly="true" disabled="false" type="number" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -138,23 +139,92 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="kodeDpjp1" name="dokter.kodeDpjp" required="true" readonly="true" disabled="false" type="number" cssClass="form-control"/>
+                                <s:textfield id="kodeDpjp1" name="dokter.kodeDpjp" required="true"
+                                             readonly="true" disabled="false" type="number" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Divisi :</small></label>
+                            <label class="control-label"><small>Kuota Telemedeik :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="initComboPosition" namespace="/dokter" name="initComboPosition_dokter"/>
-                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="dokter.positionId" disabled="true"
-                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:textfield id="kuotaTele" name="dokter.kuotaTele" required="true"
+                                             readonly="true" disabled="false" type="number" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kuota On site:</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="kuotaOnSite" name="dokter.kuotaOnSite" required="true"
+                                             readonly="true" disabled="false" type="number" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Surat Ijin Praktek :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="sip" name="dokter.sip" required="true"
+                                             readonly="true" disabled="false" type="number" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kuota Bpjs :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="kuotaBpjs" name="dokter.kuotaBpjs" required="true"
+                                             readonly="true" disabled="false" type="number" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Flag Call :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'Non-Active'}" id="flagCall" name="dokter.flagCall"
+                                          headerKey="Y" headerValue="Active" readonly="true"  cssClass="form-control" />
+                            </table>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Flag Tele :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'Non-Active'}" id="flagTele" name="dokter.flagTele"
+                                          headerKey="Y" headerValue="Active" readonly="true"  cssClass="form-control" />
+                            </table>
+
+                        </td>
+                    </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Divisi :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:action id="initComboPosition" namespace="/dokter" name="initComboPosition_dokter"/>--%>
+                                <%--<s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="dokter.positionId" disabled="true"--%>
+                                          <%--listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
 
                 </table>
 

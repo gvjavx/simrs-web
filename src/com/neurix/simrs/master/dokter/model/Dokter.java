@@ -33,12 +33,23 @@ public class Dokter {
     private String flagCall;
     private String flagTele;
     private String kuotaTele;
-    private String idTeamDokter;
+    private String kuotaBpjs;
     private String sip;
     private BigInteger kuotaOnSite;
+
+    private String idTeamDokter;
     private String flagApprove;
     private String jenisDpjp;
     private String keterangan;
+
+
+    public String getKuotaBpjs() {
+        return kuotaBpjs;
+    }
+
+    public void setKuotaBpjs(String kuotaBpjs) {
+        this.kuotaBpjs = kuotaBpjs;
+    }
 
     public String getFlagApprove() {
         return flagApprove;

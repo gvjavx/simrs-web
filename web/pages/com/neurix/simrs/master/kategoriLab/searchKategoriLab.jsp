@@ -41,7 +41,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Lab
+            Kategori Lab
         </h1>
     </section>
     <!-- Main content -->
@@ -56,7 +56,8 @@
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="kategoriLabForm" method="post"  theme="simple" namespace="/kategorilab" action="search_kategorilab.action" cssClass="form-horizontal">
+                                    <s:form id="kategoriLabForm" method="post"  theme="simple" namespace="/kategorilab"
+                                            action="search_kategorilab.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -66,12 +67,13 @@
                                         </table>
                                         <table>
                                             <tr>
-                                                <td>
+                                                <td width="18%">
                                                     <label class="control-label"><small>Kategori Lab. ID :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="idKategoriLab" name="kategoriLab.idKategoriLab" required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:textfield cssStyle="margin-right: 5px" id="idKategoriLab" name="kategoriLab.idKategoriLab"
+                                                                     required="true" disabled="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -81,7 +83,8 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="namaKategori" name="kategoriLab.namaKategori" required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:textfield cssStyle="margin-top: 7px" id="namaKategori" name="kategoriLab.namaKategori"
+                                                                     required="true" disabled="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -93,7 +96,7 @@
                                                 <td>
                                                     <table>
                                                         <s:select list="#{'N':'Non-Active'}" id="flag" name="kategoriLab.flag"
-                                                                  headerKey="Y" headerValue="Active" cssClass="form-control" />
+                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
 
                                                 </td>
@@ -105,7 +108,8 @@
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="kategoriLabForm" id="search" name="search"
+                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary"
+                                                                   formIds="kategoriLabForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
@@ -114,13 +118,13 @@
                                                     <td>
                                                         <s:url var="urlAdd" namespace="/kategorilab" action="add_kategorilab" escapeAmp="false">
                                                         </s:url>
-                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                        <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
                                                             Add Kategori Lab
                                                         </sj:a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_kategorilab"/>'">
+                                                        <button type="button" cssStyle="margin-right: 5px" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_kategorilab"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -130,7 +134,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="80%">
+                                            <table id="showdata" width="90%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="waiting_dialog_loading" openTopics="showDialog"
@@ -151,7 +155,7 @@
                                                             </center>
                                                         </sj:dialog>
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="400" width="600" autoOpen="false"
+                                                                   height="330" width="600" autoOpen="false"
                                                                    title="Kategori Lab. ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
@@ -167,7 +171,8 @@
 
                                                         <s:set name="listOfsearchKategoriLab" value="#session.listOfResultKategoriLab" scope="request" />
                                                         <display:table name="listOfsearchKategoriLab" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_kategorilab.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                                       requestURI="paging_displaytag_kategorilab.action"
+                                                                       export="true" id="row" pagesize="14" style="font-size:12">
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
                                                                     <s:url var="urlEdit" namespace="/kategorilab" action="edit_kategorilab" escapeAmp="false">
@@ -194,8 +199,8 @@
                                                             <display:column property="idKategoriLab" sortable="true" title="ID Kategori Lab" />
                                                             <display:column property="namaKategori" sortable="true" title="Nama Kategori Lab"  />
                                                             <display:column property="divisiName" sortable="true" title="Divisi"  />
-                                                            <display:column property="flag" sortable="true" title="flag"  />
-                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
+                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
                                                             <display:column property="stCreatedDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="stLastUpdate" sortable="true" title="Last update"  />

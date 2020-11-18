@@ -15,6 +15,7 @@ public class Asuransi {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String isLaka;
+    private String noMaster;
 
     public String getIsLaka() {
         return isLaka;
@@ -24,7 +25,7 @@ public class Asuransi {
         this.isLaka = isLaka;
     }
 
-    private String noMaster;
+
 
     public String getIdAsuransi() {
         return idAsuransi;

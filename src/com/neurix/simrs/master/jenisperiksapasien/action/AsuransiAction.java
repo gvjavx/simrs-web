@@ -64,7 +64,6 @@ public class AsuransiAction extends BaseMasterAction {
         setAsuransi(addAsuransi);
         setAddOrEdit(true);
         setAdd(true);
-
 //        HttpSession session = ServletActionContext.getRequest().getSession();
 //        session.removeAttribute("listOfResult");
 
@@ -79,7 +78,6 @@ public class AsuransiAction extends BaseMasterAction {
         String itemFlag = getFlag();
 
         Asuransi editAsuransi = new Asuransi();
-
         if(itemFlag != null){
             try {
                 editAsuransi = init(itemId, itemFlag);

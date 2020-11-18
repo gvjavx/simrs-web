@@ -67,5 +67,9 @@
             <column name="kuota_on_site"/>
         </property>
 
+        <property name="kuotaBpjs">
+            <column name="kuota_bpjs" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
     </class>
 </hibernate-mapping>

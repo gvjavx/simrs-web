@@ -3272,10 +3272,10 @@ public class CheckupDetailAction extends BaseMasterAction {
         logger.info("[TindakanRawatAction.listTindakanRawat] start process >>>");
         List<Ruangan> ruanganList = new ArrayList<>();
         Ruangan ruangan = new Ruangan();
-        if (flag) {
-            ruangan.setStatusRuangan("Y");
-            ruangan.setSisaKuota(0);
-        }
+//        if (flag) {
+//            ruangan.setStatusRuangan("Y");
+//            ruangan.setSisaKuota(0);
+//        }
         ruangan.setIdKelasRuangan(idkelas);
         ruangan.setBranchId(CommonUtil.userBranchLogin());
         ruangan.setKategori(kategori);

@@ -1,0 +1,2 @@
+-- 2020-11-05
+update im_simrs_asuransi set is_laka = 'Y' where is_laka is null ;
