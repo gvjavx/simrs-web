@@ -355,7 +355,7 @@
                                         <td><b>Ruangan</b></td>
                                         <td>
                                             <table>
-                                                <span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                <span class="span-success">
                                                     <span id="no_ruang"></span> -
                                                     <span id="name_ruang"></span>
                                                 </span>
@@ -825,7 +825,9 @@
                                                         <option value="rawat_intensif">Rawat Intensif</option>
                                                         <option value="rawat_isolasi">Rawat Isolasi</option>
                                                         <option value="kamar_operasi">Kamar Operasi</option>
-                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                        <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                            <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                        </s:if>
                                                         <option value="rujuk_rs_lain">Dirujuk</option>
                                                         <option value="kontrol_ulang">Kontrol Ulang</option>
                                                     </s:if>
@@ -834,7 +836,9 @@
                                                         <option value="rawat_intensif">Rawat Intensif</option>
                                                         <option value="rawat_isolasi">Rawat Isolasi</option>
                                                         <option value="kamar_operasi">Kamar Operasi</option>
-                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                        <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                            <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                        </s:if>
                                                         <option value="rujuk_rs_lain">Dirujuk</option>
                                                         <option value="kontrol_ulang">Kontrol Ulang</option>
                                                         <option value="lanjut_biaya">Lanjut Biaya</option>
@@ -853,7 +857,9 @@
                                                     </s:else>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
                                                     <option value="kamar_operasi">Kamar Operasi</option>
-                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    </s:if>
                                                     <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
                                                     <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
                                                     <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
@@ -867,7 +873,9 @@
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="kamar_operasi">Kamar Operasi</option>
-                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    </s:if>
                                                     <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
                                                     <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
                                                     <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
@@ -881,7 +889,9 @@
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    </s:if>
                                                     <option value="rr">Recovery Room</option>
                                                 </s:elseif>
                                                 <s:elseif test='rawatInap.kategoriRuangan == "ruang_bersalin"'>
