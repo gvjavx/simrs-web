@@ -960,6 +960,21 @@ apply the skin class to the body tag so the changes take effect.
         return http.status!=404;
     }
 
+    function imagesDefault(url){
+        var res = contextPathHeader+'/pages/images/no-images.png';
+        if(url != null && url != ''){
+            if(cekImages(url)){
+                res = url;
+            }
+        }
+        var set = '<div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"\n' +
+            'class="card card-4 pull-right">\n' +
+            '<img border="2" id="img_ktp" src="'+res+'"\n' +
+            'style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">\n' +
+            '</div>';
+        return set;
+    }
+
 </script>
 
 
