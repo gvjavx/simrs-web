@@ -16,6 +16,8 @@ import com.neurix.simrs.transaksi.kasirrawatjalan.action.KasirRawatJalanAction;
 import com.neurix.simrs.transaksi.notifikasiadmin.bo.NotifikasiAdminBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsResepOnlineEntity;
+import com.neurix.simrs.transaksi.teamdokter.bo.TeamDokterBo;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
@@ -54,6 +56,11 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
     private PasienBo pasienBoProxy;
     private PelayananBo pelayananBoProxy;
+    private TeamDokterBo teamDokterBoProxy;
+
+    public void setTeamDokterBoProxy(TeamDokterBo teamDokterBoProxy) {
+        this.teamDokterBoProxy = teamDokterBoProxy;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -217,6 +224,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "bayar-tagihan-rj":
                 savePembayaranTagihan(this.id);
+                break;
+            case "tes-team-dokter":
+                tesDokterTeam(this.id);
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -565,5 +575,21 @@ public class TesTelemedicController implements ModelDriven<Object> {
             e.printStackTrace();
         }
 
+    }
+
+    public List<DokterTeam> tesDokterTeam(String id){
+
+        DokterTeam dokterTeam = new DokterTeam();
+        dokterTeam.setIdDetailCheckup(id);
+
+        List<DokterTeam> dokterTeams = new ArrayList<>();
+        try {
+            dokterTeams = teamDokterBoProxy.getByCriteria(dokterTeam);
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.tesDokterTeam] Test dokter team. ",e);
+
+        }
+
+        return dokterTeams;
     }
 }
