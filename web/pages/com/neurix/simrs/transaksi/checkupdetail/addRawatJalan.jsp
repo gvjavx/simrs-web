@@ -277,13 +277,21 @@
                             <s:hidden value="headerDetailCheckup.jenisPeriksaPasien" id="jenis_periksa"></s:hidden>
 
                             <div class="col-md-6">
-                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
-                                     class="card card-4 pull-right">
-                                    <img border="2" id="img_ktp" src="<s:property value="headerDetailCheckup.urlKtp"/>"
-                                         style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
-                                </div>
-                                <%--<img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"--%>
-                                <%--style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">--%>
+                                <script>
+                                    var cek = cekImages('<s:property value="headerDetailCheckup.urlKtp"/>');
+                                    var url = '';
+                                    if(cek){
+                                        url = '<s:property value="headerDetailCheckup.urlKtp"/>';
+                                    }else{
+                                        url = contextPathHeader+'/pages/images/no-images.png';
+                                    }
+                                    var set = '<div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"\n' +
+                                        'class="card card-4 pull-right">\n' +
+                                        '<img border="2" id="img_ktp" src="'+url+'"\n' +
+                                        'style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">\n' +
+                                        '</div>';
+                                    document.write(set);
+                                </script>
                                 <table class="table table-striped">
                                     <tr id="row_jenis_pasien">
                                         <td><b>Jenis Pasien</b></td>

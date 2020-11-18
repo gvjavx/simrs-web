@@ -326,13 +326,13 @@
             $.publish('showErrorDialog');
         });
 
-        function resetField() {
+        function resetField(input) {
             var pos = $('#close_pos').val();
             if (pos != 1) {
                 var idPasien = $('#id_pasien').val();
                 var idPelayanan = $('#h_id_pelayanan').val();
                 var jenisPasien = $('#jenis_pasien').val();
-                if(jenisPasien != 'paket_perusahaan'){
+                if(jenisPasien != 'paket_perusahaan' && input != 1){
                     window.open('printNoAntrian_checkup.action?id='+idPasien+'&tipe='+idPelayanan, '_blank');
                 }
                 $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #img_file, #provinsi, #kabupaten, #kecamatan, #desa').css('border', '');
@@ -570,7 +570,7 @@
                                                 <div class="col-md-8">
                                                     <select style="width: 100%" class="form-control select2"
                                                             id="jenis_pasien"
-                                                            onchange="setJenisPasien(this.value)"></select>
+                                                            onchange="setJenisPasien(this.value); resetField(1);"></select>
                                                 </div>
                                             </div>
                                         </div>
@@ -2643,7 +2643,12 @@
                 $('#jalan').val(selectedObj.alamat);
                 $('#suku').val(selectedObj.suku).trigger('change');
                 $('#img_ktp').val(selectedObj.imgKtp);
-                $('#img-upload').attr('src', selectedObj.urlktp);
+                var cek = cekImages(selectedObj.urlktp);
+                if(cek){
+                    $('#img-upload').attr('src', selectedObj.urlktp);
+                }else{
+                    $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                }
                 $('#provinsi').val(selectedObj.prov);
                 $('#kabupaten').val(selectedObj.kota);
                 $('#kecamatan').val(selectedObj.kec);
@@ -2670,16 +2675,16 @@
 
     function searchNoRM(id, value) {
         var functions, mapped;
-        var tipe = $('#jenis_pasien').val();
         if (value != '') {
             $('#' + id).typeahead({
                 minLength: 1,
                 source: function (query, process) {
+                    var jenisPasien = $('#jenis_pasien').val();
                     functions = [];
                     mapped = {};
                     var data = [];
                     dwr.engine.setAsync(false);
-                    PasienAction.getListComboPasien(query, tipe, function (listdata) {
+                    PasienAction.getListComboPasien(query, jenisPasien, function (listdata) {
                         data = listdata;
                     });
                     $.each(data, function (i, item) {
@@ -2748,7 +2753,12 @@
                     $('#jalan').val(selectedObj.alamat);
                     $('#suku').val(selectedObj.suku).trigger('change');
                     $('#img_ktp').val(selectedObj.imgKtp);
-                    $('#img-upload').attr('src', selectedObj.urlktp);
+                    var cek = cekImages(selectedObj.urlktp);
+                    if(cek){
+                        $('#img-upload').attr('src', selectedObj.urlktp);
+                    }else{
+                        $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                    }
                     $('#provinsi').val(selectedObj.prov);
                     $('#kabupaten').val(selectedObj.kota);
                     $('#kecamatan').val(selectedObj.kec);

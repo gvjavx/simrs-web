@@ -2506,7 +2506,12 @@
                 $('#jalan').val(selectedObj.alamat);
                 $('#suku').val(selectedObj.suku);
                 $('#img_ktp').val(selectedObj.imgKtp);
-                $('#img-upload').attr('src', selectedObj.urlktp);
+                var cek = cekImages(selectedObj.urlktp);
+                if(cek){
+                    $('#img-upload').attr('src', selectedObj.urlktp);
+                }else{
+                    $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                }
                 $('#provinsi').val(selectedObj.prov);
                 $('#kabupaten').val(selectedObj.kota);
                 $('#kecamatan').val(selectedObj.kec);
@@ -2531,11 +2536,11 @@
 
     function searchNoRM(id, value) {
         var functions, mapped;
-        var tipe = $('#jenis_pasien').val();
         if(value != ''){
             $('#' + id).typeahead({
                 minLength: 1,
                 source: function (query, process) {
+                    var tipe = $('#jenis_pasien').val();
                     functions = [];
                     mapped = {};
                     var data = [];
@@ -2609,7 +2614,12 @@
                     $('#jalan').val(selectedObj.alamat);
                     $('#suku').val(selectedObj.suku).trigger('change');
                     $('#img_ktp').val(selectedObj.imgKtp);
-                    $('#img-upload').attr('src', selectedObj.urlktp);
+                    var cek = cekImages(selectedObj.urlktp);
+                    if(cek){
+                        $('#img-upload').attr('src', selectedObj.urlktp);
+                    }else{
+                        $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                    }
                     $('#provinsi').val(selectedObj.prov);
                     $('#kabupaten').val(selectedObj.kota);
                     $('#kecamatan').val(selectedObj.kec);

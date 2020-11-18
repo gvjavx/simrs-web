@@ -953,6 +953,13 @@ apply the skin class to the body tag so the changes take effect.
         return ttd;
     }
 
+    function cekImages(url){
+        var http = new XMLHttpRequest();
+        http.open('HEAD', url, false);
+        http.send();
+        return http.status!=404;
+    }
+
 </script>
 
 
