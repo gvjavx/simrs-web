@@ -1039,4 +1039,27 @@ public class UserAction extends BaseMasterAction {
 
         return response;
     }
+
+    public String getStringUrlPhotoProfile(){
+
+        String url = "";
+        String userId = CommonUtil.userIdLogin();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        UserBo userBo = (UserBo) ctx.getBean("userBoProxy");
+
+        User user = new User();
+
+        try {
+            user = userBo.getUserById(userId, "Y");
+        } catch (GeneralBOException e){
+            logger.error("[UserAction.getStringUrlPhotoProfile] Error Where Search User ID. "+e);
+            throw new GeneralBOException("[UserAction.getStringUrlPhotoProfile] Error Where Search User ID. "+e);
+        }
+
+        if (user != null && user.getUserId() != null && user.getPhotoUserUrl() != null)
+            url = ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD + user.getPhotoUserUrl();
+
+        return url;
+    }
 }

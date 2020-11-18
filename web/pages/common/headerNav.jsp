@@ -8,6 +8,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/NotifikasiAdminAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
 <script type="text/javascript">
 
     function loadDataLogin() {
@@ -496,18 +497,32 @@
                 });
             }
         });*/
+
+        getStringUrlPhotoProfile();
     });
+
+    function getStringUrlPhotoProfile() {
+
+        var usname = $('#user_name_head').text;
+
+        if (usname != ""){
+            UserAction.getStringUrlPhotoProfile(function (str) {
+                $("#img-profile-sm-sm").attr('src', str);
+                $("#img-profile").attr('src', str);
+            });
+        }
+    }
 </script>
 <style>
     .sidebar-menu li i{
         color: #50d4a3 !important;
     }
 
-    .skin-blue .sidebar-menu>li:hover>a, .skin-blue .sidebar-menu>li.active>a {
-        color: #fff;
-        background: #1e282c;
-        border-left-color: #50d4a3;
-    }
+        /*color: #fff;*/
+        /*background: #1e282c;*/
+        /*border-left-color: #50d4a3;*/
+    /*}*/
+
     .box.box-primary {
         border-top-color: #50d4a3;
     }
@@ -668,15 +683,17 @@
                     </ul>
                 </li>
                 <li class="dropdown user user-menu">
-                    <a style="cursor: pointer" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<s:url value="/pages/images/unknown-person.png"/>" class="user-image" alt="User Image">
+                    <a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">
+                        <%--<div id="img-profile-small">--%>
+
+                        <%--</div>--%>
+                        <img id="img-profile-sm-sm" class="user-image" alt="User Image" onerror="this.onerror=null;this.src='<s:url value="/pages/images/unknown-person.png"></s:url>;'">
                         <span class="hidden-xs" id="user_name_head"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header" style="background-color: #30d196; height: 200px">
-                            <img src="<s:url value="/pages/images/unknown-person.png"/>" class="img-circle" alt="User Image">
-
+                            <img id="img-profile" class="img-circle" alt="User Image" onerror="this.onerror=null;this.src='<s:url value="/pages/images/unknown-person.png"></s:url>;'">
                             <p>
                                 <span id="user_name"></span>
                                 <small id="user_branch"></small>
