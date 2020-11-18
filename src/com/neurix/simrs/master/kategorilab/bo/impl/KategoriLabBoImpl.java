@@ -234,6 +234,7 @@ public class KategoriLabBoImpl implements KategoriLabBo {
                     kategoriLab.setStLastUpdate(kategoriLabEntity.getLastUpdate().toString());
                     kategoriLab.setLastUpdate(kategoriLabEntity.getLastUpdate());
                     kategoriLab.setLastUpdateWho(kategoriLabEntity.getLastUpdateWho());
+                    kategoriLab.setKategori(kategoriLabEntity.getKategori());
                     ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
                     if (kategoriLabEntity.getDivisiId() != null){
                         Position position = new Position();
@@ -241,10 +242,11 @@ public class KategoriLabBoImpl implements KategoriLabBo {
                         position.setPositionId(kategoriLabEntity.getDivisiId());
                         position.setFlag("Y");
                         List<Position> positions = positionBo.getByCriteria(position);
-                        String positionName = positions.get(0).getPositionName();
-                        kategoriLab.setDivisiName(positionName);
+                        if(positions.size() > 0){
+                            String positionName = positions.get(0).getPositionName();
+                            kategoriLab.setDivisiName(positionName);
+                        }
                     }
-
                     result.add(kategoriLab);
                 }
             }

@@ -157,19 +157,7 @@
                             <!-- /.col -->
                             <div class="col-md-6">
                                 <script>
-                                    var cek = cekImages('<s:property value="periksaLab.urlKtp"/>');
-                                    var url = '';
-                                    if(cek){
-                                        url = '<s:property value="periksaLab.urlKtp"/>';
-                                    }else{
-                                        url = contextPathHeader+'/pages/images/no-images.png';
-                                    }
-                                    var set = '<div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"\n' +
-                                        'class="card card-4 pull-right">\n' +
-                                        '<img border="2" id="img_ktp" src="'+url+'"\n' +
-                                        'style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">\n' +
-                                        '</div>';
-                                    document.write(set);
+                                    document.write(imagesDefault('<s:property value="periksaLab.urlKtp"/>'));
                                 </script>
                                 <table class="table table-striped">
                                     <tr>

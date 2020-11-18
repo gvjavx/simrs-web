@@ -276,19 +276,7 @@
                             <s:hidden value="headerDetailCheckup.jenisPeriksaPasien" id="jenis_periksa"></s:hidden>
                             <div class="col-md-6">
                                 <script>
-                                    var cek = cekImages('<s:property value="headerDetailCheckup.urlKtp"/>');
-                                    var url = '';
-                                    if(cek){
-                                        url = '<s:property value="headerDetailCheckup.urlKtp"/>';
-                                    }else{
-                                        url = contextPathHeader+'/pages/images/no-images.png';
-                                    }
-                                    var set = '<div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"\n' +
-                                        'class="card card-4 pull-right">\n' +
-                                        '<img border="2" id="img_ktp" src="'+url+'"\n' +
-                                        'style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">\n' +
-                                        '</div>';
-                                    document.write(set);
+                                    document.write(imagesDefault('<s:property value="headerDetailCheckup.urlKtp"/>'));
                                 </script>
                                 <table class="table table-striped">
                                     <tr>
@@ -1851,7 +1839,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Pemberian</label>
                         <div class="col-md-7">
-                            <s:select list="#{'sebelum':'Sebelum'}"
+                            <s:select list="#{'Saat':'Saat','Sebelum':'Sebelum'}"
                                       cssStyle="margin-top: 7px; width: 100%"
                                       onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()}"
                                       id="resep_waktu"
