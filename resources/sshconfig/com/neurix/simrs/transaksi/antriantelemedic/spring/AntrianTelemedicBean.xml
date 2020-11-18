@@ -36,7 +36,6 @@
           p:verifikatorPembayaranBoProxy-ref="verifikatorPembayaranBoProxy"
           p:pelayananBoProxy-ref="pelayananBoProxy"
           p:pasienBoProxy-ref="pasienBoProxy"
-          p:teamDokterBoProxy-ref="teamDokterBoProxy"
     />
 
     <bean id="pengirimanObatController" class="com.neurix.simrs.mobileapi.PengirimanObatController"

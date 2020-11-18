@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Created by Toshiba on 18/11/2019.
  */
-public class TeamDokterBoImpl implements TeamDokterBo{
+public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
     private static transient Logger logger = Logger.getLogger(TeamDokterBoImpl.class);
     private DokterTeamDao dokterTeamDao;
 
@@ -50,10 +50,10 @@ public class TeamDokterBoImpl implements TeamDokterBo{
                     Dokter dokter = new Dokter();
                     dokter.setIdDokter(entity.getIdDokter());
 
-                    ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-                    DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
+//                    ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+//                    DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
 
-                    List<Dokter> dokters = dokterBo.getByCriteria(dokter);
+                    List<Dokter> dokters = getByCriteria(dokter);
 
                     if (!dokters.isEmpty()){
                         Dokter dokterData = dokters.get(0);

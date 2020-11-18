@@ -18,7 +18,11 @@
           p:teamDokterBoProxy-ref="teamDokterBoProxy"/>
 
     <bean id="teamDokterBo" class="com.neurix.simrs.transaksi.teamdokter.bo.impl.TeamDokterBoImpl"
+          p:dokterSpesialisDao-ref="dokterSpesialisDao"
+          p:dokterDao-ref="dokterDao"
           p:dokterTeamDao-ref="dokterTeamDao"
+          p:spesialisDao-ref="spesialisDao"
+          p:pelayananSpesialisDao-ref="pelayananSpesialisDao"
     />
 
     <bean id="teamDokterBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
