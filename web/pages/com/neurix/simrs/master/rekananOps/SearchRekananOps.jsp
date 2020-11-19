@@ -81,6 +81,21 @@
                                                     </table>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>No master :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield cssStyle="margin-top: 7px"
+                                                                     id="nomorMaster"
+                                                                     name="rekananOps.nomorMaster"
+                                                                     required="false"
+                                                                     readonly="false" cssClass="form-control"/>
+                                                    </table>
+
+                                                </td>
+                                            </tr>
 
                                             <tr>
                                                 <td>
@@ -162,8 +177,8 @@
                                                                    title="Pendapatan Dokter">
                                                         </sj:dialog>
 
-                                                        <s:set name="tes" value="#session.listOfResultRekananOps" scope="request" />
-                                                        <display:table name="tes" class="table table-condensed table-striped table-hover"
+                                                        <s:set name="listOfsearchRekananOps" value="#session.listOfResultRekananOps" scope="request" />
+                                                        <display:table name="listOfsearchRekananOps" class="table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_rekananOps.action" export="true" id="row"
                                                                        pagesize="14" style="font-size:12">
 
@@ -190,11 +205,14 @@
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
-                                                            <display:column property="idRekananOps" sortable="true" title="ID RekananOps" />
-                                                            <display:column property="nomorMaster" sortable="true" title="ID RekananOps" />
+                                                            <%--<display:column property="idRekananOps" sortable="true" title="ID RekananOps" />--%>
+                                                            <display:column property="nomorMaster" sortable="true" title="Nomor Master" />
+                                                            <display:column property="namaRekanan" sortable="true" title="Nama Rekanan" />
+                                                            <display:column property="branchName" sortable="true" title="Nama Branche" />
+                                                            <display:column property="tipe" sortable="true" title="tipe" />
+                                                            <display:column property="flag" sortable="true" title="flag"  />
 
-                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
-                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
+                                                            <display:column property="action" sortable="true" title="action"  />
                                                             <display:column property="createdDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />

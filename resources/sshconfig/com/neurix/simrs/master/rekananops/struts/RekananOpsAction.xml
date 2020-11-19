@@ -93,10 +93,9 @@
             <!--</result>-->
         </action>
 
-
         <action name="paging_displaytag_rekananOps"
-                class="com.neurix.simrs.master.rekananOps.action.RekananOpsAction" method="paging">
-            <interceptor-ref name="defaultStack"/>
+                class="com.neurix.simrs.master.rekananops.action.RekananOpsAction" method="paging">
+            <interceptor-ref name="defaultStack" />
             <result name="success">/pages/com/neurix/simrs/master/rekananOps/SearchRekananOps.jsp</result>
         </action>
 
