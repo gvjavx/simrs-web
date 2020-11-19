@@ -44,15 +44,15 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
             if(mapCriteria.get("divisi_id") != null){
                 criteria.add(Restrictions.eq("divisiId",  mapCriteria.get("divisi_id").toString()));
             }
-            if (mapCriteria.get("in_pelayanan_medic") != null){
-
-                List<String> arrayList = new ArrayList();
-                arrayList.add("gudang_obat");
-                arrayList.add("apotek");
-                arrayList.add("apotek_ri");
-
-                criteria.add(Restrictions.in("tipePelayanan", arrayList));
-            }
+//            if (mapCriteria.get("in_pelayanan_medic") != null){
+//
+//                List<String> arrayList = new ArrayList();
+//                arrayList.add("gudang_obat");
+//                arrayList.add("apotek");
+//                arrayList.add("apotek_ri");
+//
+//                criteria.add(Restrictions.in("tipePelayanan", arrayList));
+//            }
 
             if (mapCriteria.get("not_own_branch") != null)
                 criteria.add(Restrictions.ne("branchId", mapCriteria.get("not_own_branch")));
