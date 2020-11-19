@@ -400,8 +400,6 @@ public class PelayananBoImpl implements PelayananBo{
                 hsCriteria.put("not_own_branch", bean.getNotOwnBranch());
             }
 
-
-
             List<ImSimrsPelayananEntity> entityList = new ArrayList<>();
 
             try {
