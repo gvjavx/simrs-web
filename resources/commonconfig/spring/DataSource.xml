@@ -24,7 +24,7 @@
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource"
           p:driverClassName="org.postgresql.Driver"
-          p:url="jdbc:postgresql://localhost:5432/simrs"
+          p:url="jdbc:postgresql://localhost:5432/gomedsys_nmu"
           p:username="postgres"
-          p:password="123456"/>
+          p:password="postgres"/>
 </beans>

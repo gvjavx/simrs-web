@@ -39,6 +39,15 @@ public class Dokter {
     private String flagApprove;
     private String jenisDpjp;
     private String keterangan;
+    private BigInteger kuotaBpjs;
+
+    public BigInteger getKuotaBpjs() {
+        return kuotaBpjs;
+    }
+
+    public void setKuotaBpjs(BigInteger kuotaBpjs) {
+        this.kuotaBpjs = kuotaBpjs;
+    }
 
     public String getFlagApprove() {
         return flagApprove;
