@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.authorization.position.model.ImPosition" table="im_position" dynamic-update="true"
+           select-before-update="true" schema="public">
+
+<!--        <id name="positionId" column="position_id" type="java.lang.Long" unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">seq_position</param>
+            </generator>
+        </id>-->
+
+        <id name="positionId">
+            <column name="position_id" sql-type="varchar" length="11" not-null="true" />
+        </id>
+
+        <property name="positionName">
+            <column name="position_name" sql-type="varchar" length="100"/>
+        </property>
+        <property name="departmentId">
+            <column name="department_id" sql-type="varchar" length="3"/>
+        </property>
+        <property name="kelompokId">
+            <column name="kelompok_id" sql-type="varchar" length="4"/>
+        </property>
+        <property name="strataId">
+            <column name="carrer_path_strata_id" sql-type="varchar" length="10"/>
+        </property>
+        <property name="flagDijabatSatuOrang">
+            <column name="flag_dijabat_satu" sql-type="varchar" length="1"/>
+        </property>
+        <property name="kodering">
+            <column name="kodering" sql-type="varchar" length="10"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+
+        <!--<property name="createdDate">-->
+            <!--<column name="created_date" sql-type="date" not-null="false" />-->
+        <!--</property>-->
+
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+
+        <!--<property name="lastUpdate">-->
+            <!--<column name="last_update" sql-type="date" not-null="false" />-->
+        <!--</property>-->
+
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1"/>
+        </property>
+        <property name="bagianId">
+            <column name="bagian_id" sql-type="varchar" length="10"/>
+        </property>
+        <property name="kategori">
+            <column name="kategori" sql-type="varchar" length="20"/>
+        </property>
+        <many-to-one name="imDepartmentEntity" class="com.neurix.hris.master.department.model.ImDepartmentEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="department_id"></column>
+        </many-to-one>
+
+        <many-to-one name="imKelompokPositionEntity" class="com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="kelompok_id"></column>
+        </many-to-one>
+
+        <many-to-one name="imPositionBagianEntity" class="com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="bagian_id"></column>
+        </many-to-one>
+
+        <!--<set name="imUserses" inverse="true" lazy="true" where="flag='Y'">
+            <key>
+                <column name="position_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="com.neurix.authorization.user.model.ImUsers"/>
+        </set>-->
+    </class>
+</hibernate-mapping>

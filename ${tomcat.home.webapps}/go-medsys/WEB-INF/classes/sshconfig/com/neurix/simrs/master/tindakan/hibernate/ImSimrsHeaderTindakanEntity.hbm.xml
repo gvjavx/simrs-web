@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.master.tindakan.model.ImSimrsHeaderTindakanEntity">
+        <table name="im_simrs_header_tindakan" schema="public"/>
+        <attributes>
+            <id name="idHeaderTindakan">
+                <column name="id_header_tindakan"/>
+            </id>
+            <basic name="namaTindakan">
+                <column name="nama_tindakan"/>
+            </basic>
+            <basic name="standardCost">
+                <column name="standard_cost"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="kategoriInaBpjs">
+                <column name="kategori_ina_bpjs"/>
+            </basic>
+            <basic name="flagKonsulTele">
+                <column name="flag_konsul_tele"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

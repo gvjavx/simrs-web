@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity" dynamic-update="true"
+           table="im_hris_payroll_skala_gaji" select-before-update="true" schema="public">
+
+
+        <id name="skalaGajiId">
+            <column name="skala_gaji_id" sql-type="varchar" length="8" not-null="true" />
+        </id>
+
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="5" not-null="true" />
+        </property>
+        <property name="point">
+            <column name="point" sql-type="int"  not-null="true" />
+        </property>
+
+        <property name="nilai">
+            <column name="nilai" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="santunanKhusus">
+            <column name="santunan_khusus" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="rumah">
+            <column name="rumah" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="air">
+            <column name="air" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="listrik">
+            <column name="listrik" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="bbm">
+            <column name="bbm" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="total">
+            <column name="total" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+
+
+
+
+
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar" length="4" not-null="false" />
+        </property>
+        <property name="noSk">
+            <column name="no_sk" sql-type="varchar" length="15" not-null="false" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imGolonganEntity" class="com.neurix.hris.master.golongan.model.ImGolonganEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="golongan_id"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

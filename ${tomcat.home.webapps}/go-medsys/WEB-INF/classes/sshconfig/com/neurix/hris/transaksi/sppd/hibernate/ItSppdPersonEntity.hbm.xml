@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.sppd.model.ItSppdPersonEntity" dynamic-update="true"
+           table="it_hris_sppd_person" select-before-update="true" schema="public">
+
+
+        <id name="sppdPersonId">
+            <column name="sppd_person_id" sql-type="varchar" length="20" not-null="true" />
+        </id>
+
+        <property name="personId">
+            <column name="person_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="personName">
+            <column name="person_name" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="tipePerson">
+            <column name="tipe_person" sql-type="varchar" length="8" not-null="true" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="divisiId">
+            <column name="divisi_id" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="positionId">
+            <column name="position_id" sql-type="varchar" length="4" not-null="false" />
+        </property>
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="kelompokId">
+            <column name="kelompok_id" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="berangkatDari">
+            <column name="berangkat_dari" sql-type="varchar" length="100" not-null="true" />
+        </property>
+        <property name="tujuanKe">
+            <column name="tujuan_ke" sql-type="varchar" length="100"  not-null="true" />
+        </property>
+        <property name="tanggalBerangkat">
+            <column name="tanggal_berangkat" sql-type="date"  not-null="true" />
+        </property>
+        <property name="tanggalKembali">
+            <column name="tanggal_kembali" sql-type="date" not-null="false" />
+        </property>
+        <property name="pejabatSementara">
+            <column name="pejabat_sementara" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="berangkatVia">
+            <column name="berangkat_via" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="kembaliVia">
+            <column name="pulang_via" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" length="1000" />
+        </property>
+        <property name="flagReroute">
+            <column name="flag_reroute" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="trainingFlag">
+            <column name="training_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="trainingId">
+            <column name="training_id" sql-type="varchar" length="15" not-null="false" />
+        </property>
+        <property name="sppdId">
+            <column name="sppd_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="approvalId">
+            <column name="approval_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="approvalName">
+            <column name="approval_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="approvalDate">
+            <column name="approval_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="approvalFlag">
+            <column name="approval_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="notApprovalNote">
+            <column name="not_approve_note" sql-type="varchar" length="1000" not-null="false" />
+        </property>
+        <property name="tiketPergi">
+            <column name="tiket_pergi" sql-type="bigint" not-null="false" />
+        </property>
+        <property name="tiketKembali">
+            <column name="tiket_kembali" sql-type="bigint" not-null="false" />
+        </property>
+        <property name="tanggalBerangkatRealisasi">
+            <column name="tanggal_berangkat_realisasi" sql-type="date" not-null="false" />
+        </property>
+        <property name="tanggalKembaliRealisasi">
+            <column name="tanggal_kembali_realisasi" sql-type="date" not-null="false" />
+        </property>
+
+        <property name="berangkatViaRealisasi">
+            <column name="berangkat_via_realisasi" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="pulangViaRealisasi">
+            <column name="pulang_via_realisasi" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="noteAtasanTransport">
+            <column name="note_atasan_transport" sql-type="varchar" length="1000" not-null="false" />
+        </property>
+        <property name="noteSdmTransport">
+            <column name="note_sdm_transport" sql-type="varchar" length="1000" not-null="false" />
+        </property>
+        <property name="penginapan">
+            <column name="penginapan" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="biayaTujuan">
+            <column name="transport_tujuan" sql-type="bigint" not-null="false" />
+        </property>
+        <property name="biayaLokalBerangkat">
+            <column name="transport_lokal_berangkat" sql-type="numeric" precision="2" not-null="false" length="10" />
+        </property>
+        <property name="biayaLokalKembali">
+            <column name="transport_lokal_kembali" sql-type="numeric" not-null="false" precision="2" length="10" />
+        </property>
+        <property name="biayaLain">
+            <column name="biaya_lain" sql-type="numeric" precision="2" length="10" not-null="false" />
+        </property>
+        <property name="biayaMakan">
+            <column name="biaya_makan" sql-type="numeric" precision="2" length="10" not-null="false" />
+        </property>
+        <property name="biayaTambahan">
+            <column name="biaya_tambahan" sql-type="numeric" precision="2" length="10" not-null="false" />
+        </property>
+
+        <property name="approvalSdmId">
+            <column name="approval_sdm_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="approvalSdmName">
+            <column name="approval_sdm_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="approvalSdmDate">
+            <column name="approval_sdm_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="approvalSdmFlag">
+            <column name="approval_sdm_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="notApprovalSdmNote">
+            <column name="not_approval_sdm_note" sql-type="varchar" length="1000" not-null="false" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <many-to-one name="imKotaEntity" class="com.neurix.hris.master.provinsi.model.ImKotaEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="berangkat_dari"/>
+        </many-to-one>
+
+        <many-to-one name="imSppdEntity" class="com.neurix.hris.transaksi.sppd.model.ImSppdEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="sppd_id"/>
+        </many-to-one>
+
+        <many-to-one name="imKotaEntity2" class="com.neurix.hris.master.provinsi.model.ImKotaEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="tujuan_ke"/>
+        </many-to-one>
+
+        <many-to-one name="imBranches" class="com.neurix.authorization.company.model.ImBranches"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="branch_id"/>
+        </many-to-one>
+
+        <many-to-one name="imDepartmentEntity" class="com.neurix.hris.master.department.model.ImDepartmentEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="divisi_id"/>
+        </many-to-one>
+
+        <many-to-one name="imPosition" class="com.neurix.authorization.position.model.ImPosition"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="position_id"/>
+        </many-to-one>
+
+        <many-to-one name="imBiodataEntity" class="com.neurix.hris.master.biodata.model.ImBiodataEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="pejabat_sementara"/>
+        </many-to-one>
+
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="laporanAkuntansiAction" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.action.LaporanAkuntansiAction"
+          p:laporanAkuntansiBoProxy-ref="laporanAkuntansiBoProxy"
+          p:settingReportUserBoProxy-ref="settingReportUserBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
+    />
+
+    <bean id="laporanAkuntansiBo" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.impl.LaporanAkuntansiBoImpl"
+          p:laporanAkuntansiDao-ref="laporanAkuntansiDao"
+          p:personilPositionDao-ref="personilPositionDao"
+          p:biodataDao-ref="biodataDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:budgetingDao-ref="budgetingDao"
+          p:settingReportKeuanganKonsolDao-ref="settingReportKeuanganKonsolDao"
+          p:settingReportKeuanganArusKasDao-ref="settingReportKeuanganArusKasDao"
+    />
+
+    <bean id="laporanAkuntansiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="laporanAkuntansiBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="laporanAkuntansiDao" class="com.neurix.akuntansi.transaksi.laporanAkuntansi.dao.LaporanAkuntansiDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

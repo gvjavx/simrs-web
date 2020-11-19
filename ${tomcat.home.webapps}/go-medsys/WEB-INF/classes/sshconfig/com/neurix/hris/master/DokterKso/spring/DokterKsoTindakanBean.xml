@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--<bean id="checkupAction" class="com.neurix.simrs.transaksi.checkup.action.CheckupAction"-->
+          <!--p:checkupBoProxy-ref="checkupBoProxy" />-->
+
+    <bean id="dokterKsoTindakanBo" class="com.neurix.hris.master.dokterKsoTindakan.bo.Impl.DokterKsoTindakanBoImpl"
+          p:dokterKsoTindakanDao-ref="dokterKsoTindakanDao"
+          p:tindakanDao-ref="tindakanDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+    />
+
+    <!--<bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"-->
+          <!--p:pelayananBoProxy-ref="pelayananBoProxy"-->
+          <!--p:dokterBoProxy-ref="dokterBoProxy"-->
+          <!--p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"-->
+          <!--p:jadwalShiftKerjaBoProxy-ref="jadwalShiftKerjaBoProxy"-->
+    <!--/>-->
+
+    <bean id="dokterKsoTindakanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="dokterKsoTindakanBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionPelayananInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionPelayananInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="dokterKsoTindakanDao" class="com.neurix.hris.master.dokterKsoTindakan.dao.DokterKsoTindakanDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="tindakanDao" class="com.neurix.simrs.master.tindakan.dao.TindakanDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

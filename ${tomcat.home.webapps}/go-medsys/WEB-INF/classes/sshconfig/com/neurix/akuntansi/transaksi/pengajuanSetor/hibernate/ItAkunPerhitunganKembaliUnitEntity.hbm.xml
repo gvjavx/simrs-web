@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItAkunPerhitunganKembaliUnitEntity">
+        <table name="it_akun_perhitungan_kembali_unit" schema="public"/>
+        <attributes>
+            <id name="perhitunganKembaliUnitId">
+                <column name="perhitungan_kembali_unit_id"/>
+            </id>
+            <basic name="perhitunganPpnKdId">
+                <column name="perhitungan_ppn_kd_id"/>
+            </basic>
+            <basic name="branchId">
+                <column name="branch_id"/>
+            </basic>
+            <basic name="pajakMasukan">
+                <column name="pajak_masukan"/>
+            </basic>
+            <basic name="perhitunganKembali1">
+                <column name="perhitungan_kembali_1"/>
+            </basic>
+            <basic name="perhitunganKembali2">
+                <column name="perhitungan_kembali_2"/>
+            </basic>
+            <basic name="perhitunganPmSudahDibuku">
+                <column name="perhitungan_pm_sudah_dibuku"/>
+            </basic>
+            <basic name="perhitunganPmYmhDibuku">
+                <column name="perhitungan_pm_ymh_dibuku"/>
+            </basic>
+            <basic name="bulan">
+                <column name="bulan"/>
+            </basic>
+            <basic name="tahun">
+                <column name="tahun"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

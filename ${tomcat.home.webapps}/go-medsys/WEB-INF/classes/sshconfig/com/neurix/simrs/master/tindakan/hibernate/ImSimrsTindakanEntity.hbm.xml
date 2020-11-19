@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity" dynamic-update="true"
+           table="im_simrs_tindakan" select-before-update="true" schema="public">
+
+
+        <id name="idTindakan">
+            <column name="id_tindakan" sql-type="varchar" length="30" not-null="true" />
+        </id>
+        <property name="idKategoriTindakan">
+            <column name="id_kategori_tindakan" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="tarif">
+            <column name="tarif" sql-type="long"/>
+        </property>
+        <property name="tarifBpjs">
+            <column name="tarif_bpjs" sql-type="long"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="30" not-null="false" />
+        </property>
+        <property name="diskon">
+            <column name="diskon" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="isIna">
+            <column name="is_ina" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="idHeaderTindakan">
+            <column name="id_header_tindakan"/>
+        </property>
+        <property name="idPelayanan">
+            <column name="id_pelayanan"/>
+        </property>
+        <property name="isElektif">
+            <column name="is_elektif"/>
+        </property>
+    </class>
+</hibernate-mapping>

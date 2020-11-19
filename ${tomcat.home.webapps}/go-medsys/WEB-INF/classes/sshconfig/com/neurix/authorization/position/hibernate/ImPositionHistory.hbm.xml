@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.authorization.position.model.ImPositionHistory" table="im_position_history" schema="public">
+
+        <id name="positionIdHistory">
+            <column name="position_id_history" sql-type="varchar" length="10" not-null="true" />
+        </id>
+
+        <property name="positionId">
+            <column name="position_id" sql-type="varchar" length="10"/>
+        </property>
+        <property name="positionName">
+            <column name="position_name" sql-type="varchar" length="100"/>
+        </property>
+        <property name="departmentId">
+            <column name="department_id" sql-type="varchar" length="3"/>
+        </property>
+        <property name="kelompokId">
+            <column name="kelompok_id" sql-type="varchar" length="4"/>
+        </property>
+        <property name="strataId">
+            <column name="carrer_path_strata_id" sql-type="varchar" length="10"/>
+        </property>
+        <property name="flagDijabatSatuOrang">
+            <column name="flag_dijabat_satu" sql-type="varchar" length="1"/>
+        </property>
+        <property name="kodering">
+            <column name="kodering" sql-type="varchar" length="10"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+
+        <!--<property name="createdDate">-->
+        <!--<column name="created_date" sql-type="date" not-null="false" />-->
+        <!--</property>-->
+
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+
+        <!--<property name="lastUpdate">-->
+        <!--<column name="last_update" sql-type="date" not-null="false" />-->
+        <!--</property>-->
+
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1"/>
+        </property>
+        <property name="bagianId">
+            <column name="bagian_id" sql-type="varchar" length="10"/>
+        </property>
+        <property name="kategori">
+            <column name="kategori" sql-type="varchar" length="20"/>
+        </property>
+    </class>
+</hibernate-mapping>

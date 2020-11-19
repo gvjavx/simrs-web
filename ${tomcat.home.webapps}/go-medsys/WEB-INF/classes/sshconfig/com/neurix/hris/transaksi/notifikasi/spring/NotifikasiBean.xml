@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="countingAllNotificationController" class="com.neurix.hris.mobileapi.CountingAllNotificationController"
+          p:notifikasiBoProxy-ref="notifikasiBoProxy" />
+
+    <bean id="notifikasiController" class="com.neurix.hris.mobileapi.NotifikasiController"
+          p:notifikasiBoProxy-ref="notifikasiBoProxy" />
+
+    <bean id="cutiFormPegawaiController" class="com.neurix.hris.mobileapi.CutiFormPegawaiController"
+          p:notifikasiBoProxy-ref="notifikasiBoProxy" />
+
+    <bean id="notifikasiAction" class="com.neurix.hris.transaksi.notifikasi.action.NotifikasiAction"
+          p:notifikasiBoProxy-ref="notifikasiBoProxy"
+          p:sppdBoProxy-ref="sppdBoProxy"
+    />
+
+    <bean id="notifikasiBo" class="com.neurix.hris.transaksi.notifikasi.bo.impl.NotifikasiBoImpl"
+          p:notifikasiDao-ref="notifikasiDao"
+          p:trainingPersonDao-ref="trainingPersonDao2"
+          p:trainingDao-ref="trainingDao2"
+          p:ijinKeluarDao-ref="ijinKeluarDao2"
+          p:cutiPegawaiDao-ref="cutiPegawaiDao2"
+          p:lemburDao-ref="lemburDao2"
+          p:rekruitmenPabrikDetailDao-ref="rekruitmenPabrikDetailDao"
+          p:indisiplinerDao-ref="indisiplinerDao"
+          p:departmentDao-ref="departmentDao"
+          p:personilPositionDao-ref="personilPositionDao"
+          p:positionDao-ref="positionDao"
+          p:strukturJabatanDao-ref="strukturJabatanDao"
+          p:absensiPegawaiDao-ref="absensiPegawaiDao"
+          p:biodataDao-ref="biodataDao"
+          p:branchDao-ref="branchDao"
+          p:cutiDao-ref="cutiDao"
+          p:notifikasiFcmDao-ref="notifikasiFcmDao"
+          p:tipeNotifDao-ref="tipeNotifDao"
+          p:pengajuanBiayaDao-ref="pengajuanBiayaDao"
+          p:pengajuanBiayaDetailDao-ref="pengajuanBiayaDetailDao"
+
+
+    />
+
+    <bean id="notifikasiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="notifikasiBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="notifikasiDao" class="com.neurix.hris.transaksi.notifikasi.dao.NotifikasiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="trainingPersonDao2" class="com.neurix.hris.transaksi.training.dao.TrainingPersonDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="trainingDao2" class="com.neurix.hris.transaksi.training.dao.TrainingDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="ijinKeluarDao2" class="com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="cutiPegawaiDao2" class="com.neurix.hris.transaksi.cutiPegawai.dao.CutiPegawaiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="lemburDao2" class="com.neurix.hris.transaksi.lembur.dao.LemburDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

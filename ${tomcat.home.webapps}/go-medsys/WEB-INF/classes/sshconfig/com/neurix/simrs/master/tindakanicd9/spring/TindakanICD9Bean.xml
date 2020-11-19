@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="tindakanICD9Bo" class="com.neurix.simrs.master.tindakanicd9.bo.impl.TindakanICD9BoImpl"
+        p:tindakanICD9Dao-ref="tindakanICD9Dao"
+    />
+
+    <bean id="tindakanICD9BoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="tindakanICD9Bo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionTindakanInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionTindakanInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="tindakanICD9Dao" class="com.neurix.simrs.master.tindakanicd9.dao.TindakanICD9Dao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

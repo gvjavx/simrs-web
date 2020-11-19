@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="rekamMedikAction" class="com.neurix.simrs.transaksi.rekammedik.action.RekamMedikAction"
+          p:rekamMedikBoProxy-ref="rekamMedikBoProxy"
+          p:checkupBoProxy-ref="checkupBoProxy"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+          p:pasienBoProxy-ref="pasienBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
+    />
+
+    <bean id="rekamMedikBo" class="com.neurix.simrs.transaksi.rekammedik.bo.impl.RekamMedikBoImpl"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:statusPengisianRekamMedisDao-ref="statusPengisianRekamMedisDao"
+          p:rekamMedisPasienDao-ref="rekamMedisPasienDao"
+    />
+
+    <bean id="rekamMedikBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="rekamMedikBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionHeaderCheckupInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionHeaderCheckupInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getListPasien">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="statusPengisianRekamMedisDao" class="com.neurix.simrs.transaksi.rekammedik.dao.StatusPengisianRekamMedisDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

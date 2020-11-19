@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="trainingController" class="com.neurix.hris.mobileapi.TrainingController"
+        p:trainingBoProxy-ref="trainingBoProxy"
+          p:userBoProxy-ref="userBoProxy"
+    />
+
+    <bean id="trainingAction" class="com.neurix.hris.transaksi.training.action.TrainingAction"
+        p:trainingBoProxy-ref="trainingBoProxy"
+        p:notifikasiBoProxy-ref="notifikasiBoProxy"
+    />
+    <bean id="trainingBo" class="com.neurix.hris.transaksi.training.bo.impl.TrainingBoImpl"
+         p:trainingDao-ref="trainingDao"
+         p:trainingPersonDao-ref="trainingPersonDao"
+         p:trainingDocDao-ref="trainingDocDao"
+         p:notifikasiDao-ref="notifikasiDao"
+         p:strukturJabatanDao-ref="strukturJabatanDao2"
+         p:biodataDao-ref="biodataDao"
+         p:personilPositionDao-ref="personilPositionDao2"
+         p:notifikasiFcmDao-ref="notifikasiFcmDao"
+          p:positionDao-ref="positionDao"
+          p:departmentDao-ref="departmentDao"
+    />
+    <bean id="trainingBoProxy"
+          class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="trainingBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAddTraining">PROPAGATION_REQUIRED</prop>
+                <prop key="saveUpdateTraining">PROPAGATION_REQUIRED</prop>
+                <prop key="saveDocTraining">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="trainingDao" class="com.neurix.hris.transaksi.training.dao.TrainingDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="trainingPersonDao" class="com.neurix.hris.transaksi.training.dao.TrainingPersonDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="trainingDocDao" class="com.neurix.hris.transaksi.training.dao.TrainingDocDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="notifikasiDao" class="com.neurix.hris.transaksi.notifikasi.dao.NotifikasiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="strukturJabatanDao2" class="com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="biodataDao" class="com.neurix.hris.master.biodata.dao.BiodataDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="personilPositionDao2" class="com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+
+</beans>

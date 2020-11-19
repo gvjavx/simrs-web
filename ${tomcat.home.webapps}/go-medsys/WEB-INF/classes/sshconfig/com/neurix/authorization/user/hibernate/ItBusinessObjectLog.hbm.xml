@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.authorization.user.model.ItBusinessObjectLog" table="it_business_object_log" dynamic-update="true"
+           select-before-update="true" schema="public">
+
+        <id name="id" column="id" type="java.lang.Long" unsaved-value="null"/>
+
+        <property name="moduleMethod">
+            <column name="module_method" sql-type="varchar" length="100"/>
+        </property>
+        <property name="message">
+            <column name="message" sql-type="varchar" length="5000"/>
+        </property>
+        <property name="errorTimestamp">
+            <column name="created_date" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+
+        <property name="userId">
+            <column name="user_id" sql-type="varchar" length="100"/>
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="100"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

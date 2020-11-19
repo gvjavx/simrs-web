@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="billingSystemBo" class="com.neurix.akuntansi.transaksi.billingSystem.bo.impl.BillingSystemBoImpl"
+          p:jurnalDao-ref="jurnalDao"
+          p:jurnalDetailDao-ref="jurnalDetailDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:jurnalDetailActivityDao-ref="jurnalDetailActivityDao"
+          p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
+
+          p:jurnalDetailActivityPendingDao-ref="jurnalDetailActivityPendingDao"
+          p:jurnalDetailPendingDao-ref="jurnalDetailPendingDao"
+          p:jurnalPendingDao-ref="jurnalPendingDao"
+          p:saldoAkhirDetailDao-ref="saldoAkhirDetailDao"
+          p:tutupPeriodDao-ref="tutupPeriodDao"
+          p:saldoAkhirDao-ref="saldoAkhirDao"
+          p:riwayatTindakanDao-ref="riwayatTindakanDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:tindakanTransitorisDao-ref="tindakanTransitorisDao"
+          p:permintaanResepDao-ref="permintaanResepDao"
+          p:ruanganDao-ref="ruanganDao"
+          p:rawatInapDao-ref="rawatInapDao"
+          p:pelayananDao-ref="pelayananDao"
+          p:asuransiDao-ref="asuransiDao"
+          p:dokterTeamDao-ref="dokterTeamDao"
+          p:headerCheckupDao-ref="headerCheckupDao"
+          p:jenisPeriksaPasienDao-ref="jenisPeriksaPasienDao"
+          p:positionDao-ref="positionDao"
+          p:kelasRuanganDao-ref="kelasRuanganDao"
+          p:masterDao-ref="masterDao"
+          p:transaksiStokDao-ref="transaksiStokDao"
+          p:mappingJurnalDao-ref="mappingJurnalDao"
+          p:obatPoliDao-ref="obatPoliDao"
+          p:transDao-ref="transDao"
+          p:obatDao-ref="obatDao"
+          p:branchDao-ref="branchDao"
+          p:saldoAkhirHistoryDao-ref="saldoAkhirHistoryDao"
+          p:saldoAkhirDetailHistoryDao-ref="saldoAkhirDetailHistoryDao"
+          p:jurnalAkhirTahunDao-ref="jurnalAkhirTahunDao"
+          p:jurnalDetailAkhirTahunDao-ref="jurnalDetailAkhirTahunDao"
+    />
+
+    <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="billingSystemBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionBillingInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionBillingInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="createJurnal">PROPAGATION_REQUIRED</prop>
+                <prop key="saveTutupPeriod">PROPAGATION_REQUIRED</prop>
+                <prop key="updateSaldoAkhirBulanBerjalan">PROPAGATION_REQUIRED</prop>
+                <!--<prop key="generateAndSaveCurrentSaldoPersediaanToNextMonth">readOnly</prop>-->
+            </props>
+        </property>
+    </bean>
+
+
+
+</beans>

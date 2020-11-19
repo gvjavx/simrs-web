@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.simrs.transaksi.riwayatbarang.model.ItSimrsTransaksiStokEntity" dynamic-update="true"
+           table="it_simrs_transaksi_stok" select-before-update="true" schema="public">
+
+        <id name="idTransaksi">
+            <column name="id_transaksi" sql-type="varchar" length="50" not-null="true" />
+        </id>
+
+        <property name="idObat">
+            <column name="id_obat" sql-type="varchar" length="50" not-null="false"/>
+        </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="text" not-null="false"/>
+        </property>
+        <property name="tipe">
+            <column name="tipe" sql-type="varchar" length="1" not-null="false"/>
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="qty">
+            <column name="qty" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="total">
+            <column name="total" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="subTotal">
+            <column name="sub_total" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="registeredDate">
+            <column name="registered_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="idVendor">
+            <column name="id_vendor" sql-type="varchar" length="50" not-null="false"/>
+        </property>
+        <property name="idBarang">
+            <column name="id_barang" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="idPelayanan">
+            <column name="id_pelayanan" sql-type="varchar" length="50" not-null="false"/>
+        </property>
+        <property name="qtyLalu">
+            <column name="qty_lalu" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="totalLalu">
+            <column name="total_lalu" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="subTotalLalu">
+            <column name="sub_total_lalu" sql-type="numeric" not-null="false"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

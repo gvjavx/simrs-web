@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <!--<bean id="reportKeuanganArusKasAction" class="com.neurix.akuntansi.master.settingReportKeuanganKonsol.action.SettingReportKeuanganKonsolAction"-->
+          <!--p:akunSettingReportKeuanganKonsolBoProxy-ref="akunSettingReportKeuanganKonsolBoProxy"-->
+          <!--p:akunSettingReportKeuanganKonsolDetailBoProxy-ref="akunSettingReportKeuanganKonsolDetailBoProxy"-->
+    <!--/>-->
+
+    <!--<bean id="akunSettingReportKeuanganKonsolBo" class="com.neurix.akuntansi.master.settingReportKeuanganKonsol.bo.impl.AkunSettingReportKeuanganKonsolBoImpl"-->
+          <!--p:settingReportKeuanganKonsolDao-ref="settingReportKeuanganKonsolDao"-->
+          <!--p:settingReportKeuanganKonsolDetailDao-ref="settingReportKeuanganKonsolDetailDao"-->
+    <!--/>-->
+
+    <!--<bean id="akunSettingReportKeuanganKonsolBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"-->
+          <!--p:target-ref="akunSettingReportKeuanganKonsolBo">-->
+        <!--<property name="interceptorNames">-->
+            <!--<list>-->
+                <!--<value>transactionUserInterceptor</value>-->
+                <!--<value>hibernateInterceptor</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="transactionUserInterceptor"-->
+          <!--class="org.springframework.transaction.interceptor.TransactionInterceptor"-->
+          <!--p:transactionManager-ref="transactionManager">-->
+        <!--<property name="transactionAttributes">-->
+            <!--<props>-->
+                <!--<prop key="getByCriteria">readOnly</prop>-->
+                <!--<prop key="saveAdd">PROPAGATION_REQUIRED</prop>-->
+            <!--</props>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <bean id="settingReportKeuanganArusKasDao" class="com.neurix.akuntansi.master.settingReportArusKas.dao.SettingReportKeuanganArusKasDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="settingReportKeuanganArusKasDetailDao" class="com.neurix.akuntansi.master.settingReportArusKas.dao.SettingReportKeuanganArusKasDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsVideoRmEntity">
+        <table name="it_simrs_video_rm" schema="public"/>
+        <attributes>
+            <id name="idVideoRm">
+                <column name="id_video_rm" length="50"/>
+            </id>
+            <basic name="path">
+                <column name="path"  length="200"/>
+            </basic>
+            <basic name="idAntrianTelemedic">
+                <column name="id_antrian_telemedic"  length="50"/>
+            </basic>
+            <basic name="idDetailCheckup">
+                <column name="id_detail_checkup"  length="50"/>
+            </basic>
+            <basic name="tipeVideo">
+                <column name="tipe_video" length="50"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date" />
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"  length="100"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"  />
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"  length="100"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag" />
+            </basic>
+            <basic name="action">
+                <column name="action" />
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

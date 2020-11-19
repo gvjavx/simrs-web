@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.jadwalShiftKerja.model.ItJadwalShiftKerjaDetailEntity" dynamic-update="true"
+           table="it_hris_jadwal_shift_kerja_detail" select-before-update="true" schema="public">
+
+        <id name="jadwalShiftKerjaDetailId">
+            <column name="jadwal_shift_kerja_detail_id" sql-type="varchar" length="20" not-null="true" />
+        </id>
+        <property name="jadwalShiftKerjaId">
+            <column name="jadwal_shift_kerja_id" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="shiftGroupId">
+            <column name="group_shift_id" sql-type="varchar" length="8" not-null="false" />
+        </property>
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="shiftId">
+            <column name="shift_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="positionName">
+            <column name="position_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="profesiName">
+            <column name="profesi_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="profesiId">
+            <column name="profesi_id" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="namaPegawai">
+            <column name="nama_pegawai" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="onCall">
+            <column name="on_call"/>
+        </property>
+        <property name="flagPanggil">
+            <column name="flag_panggil"/>
+        </property>
+        <property name="flagLibur">
+            <column name="flag_libur"/>
+        </property>
+        <property name="panggilWho">
+            <column name="panggil_who"/>
+        </property>
+        <property name="panggilDate">
+            <column name="panggil_date"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="mappingJurnalAction" class="com.neurix.akuntansi.master.mappingJurnal.action.MappingJurnalAction"
+          p:mappingJurnalBoProxy-ref="mappingJurnalBoProxy" />
+
+    <bean id="mappingJurnalBo" class="com.neurix.akuntansi.master.mappingJurnal.bo.impl.MappingJurnalBoImpl"
+          p:mappingJurnalDao-ref="mappingJurnalDao"
+          p:tipeJurnalDao-ref="tipeJurnalDao"
+          p:transDao-ref="transDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
+    />
+
+    <bean id="mappingJurnalBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="mappingJurnalBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="mappingJurnalDao" class="com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

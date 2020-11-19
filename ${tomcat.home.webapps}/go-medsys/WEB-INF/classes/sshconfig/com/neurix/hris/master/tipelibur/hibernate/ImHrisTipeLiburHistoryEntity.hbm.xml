@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.hris.master.tipelibur.model.ImHrisTipeLiburHistory" dynamic-update="true"
+           table="im_hris_tipe_libur_history" select-before-update="true" schema="public">
+
+        <id name="tipeLiburHistoryId">
+            <column name="tipe_libur_history_id" sql-type="varchar" length="20" not-null="true"/>
+        </id>
+
+        <property name="tipeLiburId">
+            <column name="id" sql-type="varchar" length="20" not-null="true"/>
+        </property>
+        <property name="tipeLiburName">
+            <column name="tipe_libur_name" sql-type="varchar" length="100"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp"/>
+        </property>
+        <property name="createDateWho">
+            <column name="create_date_who" sql-type="varchar"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

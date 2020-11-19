@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceBpjs" language="groovy" pageWidth="421" pageHeight="200" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
+	<property name="ireport.zoom" value="2.3579476910000072"/>
+	<property name="ireport.x" value="245"/>
+	<property name="ireport.y" value="143"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="dataset" uuid="50b3d02f-a52d-4ad6-8563-2bee725e4ce6">
+		<field name="namaTindakan" class="java.lang.String"/>
+		<field name="stTglTindakan" class="java.lang.String"/>
+		<field name="totalTarif" class="java.lang.Integer"/>
+		<variable name="totalTarif" class="java.lang.Integer" calculation="Sum">
+			<variableExpression><![CDATA[$F{totalTarif}]]></variableExpression>
+			<initialValueExpression><![CDATA[]]></initialValueExpression>
+		</variable>
+	</subDataset>
+	<subDataset name="datasetobat" uuid="f9f0a678-8542-40c4-ab42-4153bd2cc23b">
+		<field name="namaObat" class="java.lang.String"/>
+		<field name="qty" class="java.lang.String"/>
+		<field name="jenisSatuan" class="java.lang.String"/>
+		<field name="harga" class="java.lang.Integer"/>
+		<field name="totalHarga" class="java.lang.Integer"/>
+		<variable name="totalHargaObat" class="java.lang.Integer" calculation="Sum">
+			<variableExpression><![CDATA[$F{totalHarga}]]></variableExpression>
+		</variable>
+	</subDataset>
+	<subDataset name="datasetmuka" uuid="2ce47195-923a-4fa2-86c9-b54e38d6c476">
+		<field name="stCreatedDate" class="java.lang.String"/>
+		<field name="jumlah" class="java.lang.Integer"/>
+		<field name="noNota" class="java.lang.String"/>
+		<field name="id" class="java.lang.String"/>
+		<field name="dibayar" class="java.lang.Integer"/>
+	</subDataset>
+	<parameter name="reportParams.unit" class="java.lang.String"/>
+	<parameter name="reportParams.logo" class="java.lang.String"/>
+	<parameter name="reportParams.nik" class="java.lang.String"/>
+	<parameter name="reportParams.nama" class="java.lang.String"/>
+	<parameter name="reportParams.tglLahir" class="java.lang.String"/>
+	<parameter name="reportParams.jenisKelamin" class="java.lang.String"/>
+	<parameter name="reportParams.jenisPasien" class="java.lang.String"/>
+	<parameter name="reportParams.poli" class="java.lang.String"/>
+	<parameter name="reportParams.provinsi" class="java.lang.String"/>
+	<parameter name="reportParams.kabupaten" class="java.lang.String"/>
+	<parameter name="reportParams.kecamatan" class="java.lang.String"/>
+	<parameter name="reportParams.desa" class="java.lang.String"/>
+	<parameter name="reportParams.noCheckup" class="java.lang.String"/>
+	<parameter name="reportParams.idDetailCheckup" class="java.lang.String"/>
+	<parameter name="reportParams.itemDataSource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="reportParams.listObatDetail" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="reportParams.area" class="java.lang.String"/>
+	<parameter name="reportParams.listUangMuka" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="reportParams.totalJasa" class="java.lang.Integer"/>
+	<parameter name="reportParams.terbilang" class="java.lang.String"/>
+	<parameter name="reportParams.invoice" class="java.lang.String"/>
+	<parameter name="reportParams.title" class="java.lang.String"/>
+	<parameter name="reportParams.idPasien" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
+	</queryString>
+	<field name="id_pasien" class="java.lang.String"/>
+	<field name="nama" class="java.lang.String">
+		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
+	</field>
+	<field name="jenis_kelamin" class="java.lang.String"/>
+	<field name="no_ktp" class="java.lang.String"/>
+	<field name="no_bpjs" class="java.lang.String"/>
+	<field name="tempat_lahir" class="java.lang.String"/>
+	<field name="tgl_lahir" class="java.sql.Date"/>
+	<field name="desa_id" class="java.lang.Long"/>
+	<field name="jalan" class="java.lang.String"/>
+	<field name="suku" class="java.lang.String"/>
+	<field name="agama" class="java.lang.String"/>
+	<field name="profesi" class="java.lang.String"/>
+	<field name="no_telp" class="java.lang.String"/>
+	<field name="url_ktp" class="java.lang.String"/>
+	<field name="flag" class="java.lang.String"/>
+	<field name="action" class="java.lang.String"/>
+	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="created_who" class="java.lang.String"/>
+	<field name="last_update" class="java.sql.Timestamp"/>
+	<field name="last_update_who" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="password" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="160" splitType="Stretch">
+			<staticText>
+				<reportElement x="248" y="39" width="59" height="19" uuid="f1001fbb-6e3b-4ec3-920b-036db1549a87"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="306" y="39" width="75" height="19" uuid="ebe6dc6c-3839-45b7-81d1-f7cab1e78acc"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="94" height="39" uuid="7919286e-e855-436b-98b4-eaeedb81ef26"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="119" width="90" height="15" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="134" width="90" height="15" uuid="a5b9a80e-195a-4a19-a403-96703a2a8764"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tempat, Tanggal Lahir]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="74" width="60" height="15" uuid="f460e830-099e-4f5e-8a66-6c0df7fc255d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jenis Kelamin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="89" width="60" height="15" uuid="965ee103-5b85-4b9c-9f39-4912ae949d04"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jenis Pasien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="104" width="90" height="15" uuid="3ec64ed1-e2b1-43c7-990e-b5ef6bdabd53"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[NIK]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="104" width="5" height="15" uuid="27bb378b-d5ad-4e5d-84d1-73a09bac82ed"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="119" width="5" height="15" uuid="c68a50c7-f5e0-4775-aaff-1bfefa19e52d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="134" width="5" height="15" uuid="3f134a74-d8ce-4e88-8153-5afc04245054"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="274" y="74" width="5" height="15" uuid="64e71867-e434-4315-9330-2660670831dd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="274" y="89" width="5" height="15" uuid="90a2f6a7-3ca2-4703-b1fb-c39413a844c3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="96" y="104" width="98" height="15" uuid="ba387fca-a220-41d7-86a0-f7bdbc0958e7"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nik} == null ? "" : $P{reportParams.nik}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="119" width="98" height="15" uuid="85597b11-0127-46c5-9839-b72b43d88ddd"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="134" width="98" height="15" uuid="6ea987d3-b994-439c-849a-28abc91b7a06"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.tglLahir} == null ? "" : $P{reportParams.tglLahir}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="74" width="102" height="15" uuid="befa0515-1d3b-4974-8d29-6745a598e43e"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.jenisKelamin} == null ? "" : $P{reportParams.jenisKelamin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="89" width="102" height="15" uuid="b26a9b04-6ba9-4730-bd24-ae3f8668c18e"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.jenisPasien} == null ? "" : $P{reportParams.jenisPasien}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="214" y="104" width="60" height="15" uuid="0dc5621a-1442-4ded-8185-901fd28a439a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Alamat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="274" y="104" width="5" height="15" uuid="094d0463-2d7f-495e-829d-c061cacc119f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="279" y="104" width="102" height="35" uuid="7bef5f69-1940-4c09-95d1-29e5ff26f6f0"/>
+				<box topPadding="3" leftPadding="1"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.desa} == null ? "" : $P{reportParams.desa}+", "+$P{reportParams.kecamatan}+", "+$P{reportParams.kabupaten}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="285" y="7" width="96" height="32" uuid="a0654d59-6f2a-4bb1-afab-1849040b7343"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{reportParams.idDetailCheckup}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
+			<textField>
+				<reportElement x="0" y="35" width="173" height="20" uuid="d2b3e75b-9224-4fbb-bff7-77fb9d422379"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="52" width="173" height="15" uuid="c4b0b4f6-54f6-4c3e-8cc3-fafff2503a26"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Top">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="74" width="98" height="15" uuid="82e85134-9b7e-4742-a76e-1e742cb18676"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.invoice} == null ? "" : $P{reportParams.invoice}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="91" y="74" width="5" height="15" uuid="34a3a4fa-b227-4cf6-9f36-5c8682746ad7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="74" width="90" height="15" uuid="6dd2b8ef-6ede-4428-a003-bf62a697d1e5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No Invoice]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="67" width="381" height="1" uuid="af26c429-ff38-40f1-a6c4-670eabb9991f"/>
+			</line>
+			<textField>
+				<reportElement x="101" y="11" width="173" height="20" uuid="3366000b-e86c-432a-9869-ceab3070b699"/>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Invoice Rawat Pasien Bpjs"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="89" width="90" height="15" uuid="481c7807-654b-4c4d-87ef-1344c97c122c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nomor RM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="89" width="5" height="15" uuid="6f56333e-be3f-4e62-9e8a-14ff50f58207"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="96" y="89" width="98" height="15" uuid="ebfd5876-a5a7-4757-b6cb-a22366c45db7"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.idPasien} == null ? "" : $P{reportParams.idPasien}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

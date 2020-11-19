@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.authorization.role.model.ImFuncRoles" table="im_func_roles" schema="public">
+        <composite-id name="primaryKey" class="com.neurix.authorization.role.model.ImFuncRolesPK">
+            <key-property name="funcId">
+                <column name="func_id" sql-type="int8" not-null="true"/>
+            </key-property>
+            <key-property name="roleId">
+                <column name="role_id" sql-type="int8" not-null="true"/>
+            </key-property>
+        </composite-id>
+
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp"/>
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1"/>
+        </property>
+
+        <many-to-one name="imRoles" class="com.neurix.authorization.role.model.ImRoles"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="role_id"/>
+        </many-to-one>
+
+        <many-to-one name="imFunctions" class="com.neurix.authorization.function.model.ImFunctions"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="func_id"/>
+        </many-to-one>
+
+
+    </class>
+</hibernate-mapping>

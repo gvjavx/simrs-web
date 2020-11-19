@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity">
+        <table name="it_simrs_antrian_telemedic" schema="public"/>
+        <attributes>
+            <id name="id">
+                <column name="id" length="50"/>
+            </id>
+            <basic name="idPasien">
+                <column name="id_pasien"  length="50"/>
+            </basic>
+            <basic name="idDokter">
+                <column name="id_dokter"  length="50"/>
+            </basic>
+            <basic name="idPelayanan">
+                <column name="id_pelayanan"  length="50"/>
+            </basic>
+            <basic name="flagResep">
+                <column name="flag_resep" />
+            </basic>
+            <basic name="status">
+                <column name="status" />
+            </basic>
+            <basic name="biayaKonsultasi">
+                <column name="biaya_konsultasi" />
+            </basic>
+            <basic name="flagBayarKonsultasi">
+                <column name="flag_bayar_konsultasi" />
+            </basic>
+            <basic name="flagBayarResep">
+                <column name="flag_bayar_resep" />
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date" />
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"  length="100"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"  />
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"  length="100"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag" />
+            </basic>
+            <basic name="action">
+                <column name="action" />
+            </basic>
+            <basic name="noKartu">
+                <column name="no_kartu"  length="100"/>
+            </basic>
+            <basic name="idJenisPeriksaPasien">
+                <column name="id_jenis_periksa_pasien"  length="30"/>
+            </basic>
+            <basic name="idAsuransi">
+                <column name="id_asuransi"  length="30"/>
+            </basic>
+            <basic name="kodeBank">
+                <column name="kode_bank"  length="10"/>
+            </basic>
+            <basic name="branchId">
+                <column name="branch_id"  length="10"/>
+            </basic>
+            <basic name="keluhan">
+                <column name="keluhan"/>
+            </basic>
+            <basic name="flagEresep">
+                <column name="flag_eresep"/>
+            </basic>
+            <basic name="urlFotoResep">
+                <column name="url_foto_resep"/>
+            </basic>
+            <basic name="alamat">
+                <column name="alamat"/>
+            </basic>
+            <basic name="jenisPengambilan">
+                <column name="jenis_pengambilan"/>
+            </basic>
+            <basic name="lat">
+                <column name="lat"/>
+            </basic>
+            <basic name="lon">
+                <column name="lon"/>
+            </basic>
+            <basic name="noTelp">
+                <column name="no_telp"/>
+            </basic>
+            <basic name="jumlahCover">
+                <column name="jumlah_cover"/>
+            </basic>
+            <basic name="jenisPembayaran">
+                <column name="jenis_pembayaran"/>
+            </basic>
+            <basic name="noJurnal">
+                <column name="no_jurnal"/>
+            </basic>
+            <basic name="noRujukan">
+                <column name="no_rujukan"/>
+            </basic>
+            <basic name="jenisRujukan">
+                <column name="jenis_rujukan"/>
+            </basic>
+            <basic name="noSep">
+                <column name="no_sep"/>
+            </basic>
+            <basic name="idDiagnosa">
+                <column name="id_diagnosa"/>
+            </basic>
+            <basic name="ketDiagnosa">
+                <column name="ket_diagnosa"/>
+            </basic>
+            <basic name="idRekening">
+                <column name="id_rekening"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

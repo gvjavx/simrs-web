@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItPengajuanSetorEntity" dynamic-update="true"
+           table="it_akun_pengajuan_setor" select-before-update="true" schema="public">
+
+        <id name="pengajuanSetorId">
+            <column name="pengajuan_setor_id" sql-type="varchar" length="20" not-null="true" />
+        </id>
+
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="bulan">
+            <column name="bulan" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="registeredDate">
+            <column name="registered_date" sql-type="date" not-null="false" />
+        </property>
+
+        <property name="noJurnal">
+            <column name="no_jurnal" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="approvalFlag">
+            <column name="approval_flag" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="approvalId">
+            <column name="approval_id" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="approvalDate">
+            <column name="approval_date" sql-type="date" not-null="false" />
+        </property>
+
+        <property name="cancelFlag">
+            <column name="cancel_flag" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="cancelId">
+            <column name="cancel_id" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="cancelDate">
+            <column name="cancel_date" sql-type="date" not-null="false" />
+        </property>
+
+        <property name="tipePengajuanSetor">
+            <column name="tipe_pengajuan_setor" sql-type="varchar" not-null="false" />
+        </property>
+
+        <property name="jumlahPph21Payroll">
+            <column name="jumlah_pph21_payroll" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="jumlahPph21Kso">
+            <column name="jumlah_pph21_kso" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="jumlahPph21Pengajuan">
+            <column name="jumlah_pph21_pengajuan" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="jumlahSeluruhnya">
+            <column name="jumlah_seluruhnya" sql-type="numeric" not-null="false" />
+        </property>
+
+        <property name="jumlahPpnMasukanB2">
+            <column name="jumlah_ppn_masukan_b2" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="jumlahPpnKeluaran">
+            <column name="jumlah_ppn_keluaran" sql-type="numeric" not-null="false" />
+        </property>
+        <property name="jumlahPpnMasukanB3">
+            <column name="jumlah_ppn_masukan_b3" sql-type="numeric" not-null="false" />
+        </property>
+
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" not-null="false" />
+        </property>
+
+        <property name="kas">
+            <column name="kas" sql-type="varchar" not-null="false" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <property name="postingFlag">
+            <column name="posting_flag" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="postingId">
+            <column name="posting_who" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="postingDate">
+            <column name="posting_date" sql-type="date" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

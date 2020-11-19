@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printSuratIndisipliner" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cbea96cd-ecc7-4290-ba68-3a506cc60cbd">
+	<property name="ireport.zoom" value="1.1000000000000032"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="519"/>
+	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
+	<parameter name="reportParams.indisiplinerId" class="java.lang.String"/>
+	<parameter name="reportParams.nama" class="java.lang.String"/>
+	<parameter name="reportParams.date" class="java.lang.String"/>
+	<parameter name="reportParams.nip" class="java.lang.String"/>
+	<parameter name="reportParams.bagianName" class="java.lang.String"/>
+	<parameter name="reportParams.jabatan" class="java.lang.String"/>
+	<parameter name="reportParams.keteranganPelanggaran" class="java.lang.String"/>
+	<parameter name="reportParams.tipeIndisipliner" class="java.lang.String"/>
+	<parameter name="reportParams.dampak" class="java.lang.String"/>
+	<parameter name="reportParams.kabagSdm" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from it_hris_indisipliner where indisipliner_id = $P{reportParams.indisiplinerId}]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="138" splitType="Stretch">
+			<staticText>
+				<reportElement x="158" y="90" width="245" height="22" uuid="8894fb30-d647-4c10-a54f-de0ad19f740b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[SURAT INDISIPLINER 1]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement x="1" y="0" width="157" height="55" uuid="27f23dfe-5885-4d50-a600-71c969c401de"/>
+				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="432" y="0" width="69" height="70" uuid="45186799-edcc-4047-b52a-18ad5d4e96f4"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+new com.google.zxing.qrcode.QRCodeWriter().encode(
+"Indisipliner Id : " + $P{reportParams.indisiplinerId}+"\n"+
+"Tipe Indisipliner :"+$P{reportParams.tipeIndisipliner}+"\n"+
+"Keterangan Pelanggaran :"+$P{reportParams.keteranganPelanggaran}+"\n",
+com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="400" y="70" width="89" height="20" uuid="6cd2d4f2-1be9-488a-a6e4-11f92737228e"/>
+				<text><![CDATA[Printed Date :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="462" y="70" width="100" height="20" uuid="5e9375ff-c412-44a8-8d20-a6ea66631f71"/>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="458" splitType="Stretch">
+			<staticText>
+				<reportElement x="54" y="47" width="96" height="17" uuid="e8514e85-d6a0-46d9-8e36-aa6b3afadf8f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[NIP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="54" y="64" width="96" height="17" uuid="4fceee00-7ba3-44ef-ab45-396923f51931"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Jabatan]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="174" y="47" width="333" height="17" uuid="4a615868-02c9-411f-bb1e-6b9f0c78a2f5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nip}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="174" y="64" width="333" height="17" uuid="de57b2dd-f6c4-4e07-93c2-8b753a4f66f7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.jabatan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="52" y="193" width="455" height="35" uuid="645e585a-093f-4f22-8fe0-b64eb95a9ff3"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Dengan merujuk pada aturan PKB pasal 57 tentang aturan kedisiplinan perihal sanksi / hukuman yaitu :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="54" y="30" width="96" height="17" uuid="a2f1f0c3-e1a4-46c4-af2d-daae3f8d5646"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="174" y="30" width="333" height="17" uuid="bc7b9023-5ce3-4296-9c42-cf00e00c8df2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nama}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="54" y="81" width="96" height="17" uuid="69fe60e3-a703-4c5f-9a53-6e5b1ac9ec7e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Bagian]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="228" width="455" height="20" uuid="39a6d198-43c1-435c-a3ed-72c4c656e474"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[1. Ketidakhadiran 1 hari kerja dalam sebulan.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="247" width="455" height="20" uuid="21b42775-d8e1-481d-afad-29a56581072c"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[2. Terlambat masuk kerja 2 hari dalam seminggu.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="266" width="455" height="20" uuid="9caeb286-34a9-4bdf-a173-ebd45841e621"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[3. Terlambat masuk kerja selama 4 hari dalam sebulan.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="302" width="455" height="44" uuid="3a9296c3-9d43-4b01-9617-ce9f8e3a1eb7"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="none">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Maka, bagian SDM & UMUM akan menerbitkan teguran dan atau surat peringatan sebagai bentuk sanksi atas tindakan indisipliner yang anda lakukan.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="346" width="455" height="63" uuid="b4b82ec6-6eb8-450a-82b1-3e848b202413"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="none">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Surat Indisipliner ini bertujuan untuk memberikan pengarahan sekaligus peringatan kepada saudara agar melaksanakan tata tertib perusahaan dan tidak melakukan kesalahan yang dapat merugikan pihak perusahaan.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="409" width="455" height="49" uuid="f8de2808-395d-407d-9237-95e700842e34"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="none">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Demikian berita acara ini dibuat agar dapat dijadikan sebagai bahan perhatian dan introspeksi diri saudara. Dan terimakasih atas kerjasamanya.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="3" width="355" height="20" uuid="25efb2a5-d913-4be9-ae0f-67933afc91a1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Berdasarkan laporan indisipliner saudara/i pada tanggal ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="358" y="3" width="100" height="20" uuid="e9914cdb-6326-4951-aa1d-b681933fd20b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="174" y="115" width="333" height="17" uuid="45353fd0-b795-4cd4-83a2-9e34f78ea751"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.keteranganPelanggaran}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="174" y="81" width="333" height="17" uuid="e3927e0e-8aea-498e-87ec-9dcf174b6ec7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.bagianName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="54" y="98" width="96" height="17" uuid="6466ed95-c76a-47e8-8abd-849f69ded74e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Tipe Indisipliner]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="174" y="98" width="333" height="17" uuid="f25f1378-448a-40b1-a92a-6ef95e4e5e3b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.tipeIndisipliner}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="54" y="115" width="96" height="17" uuid="f7f387f5-e546-405d-9ff4-c89d921d4ba2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Keterangan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="30" width="10" height="17" uuid="89fc4095-e998-45cd-8fa3-bc5173b5b61e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="47" width="10" height="17" uuid="29838213-5d76-4192-94d3-3443e8fc9f31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="64" width="10" height="17" uuid="9d021b01-5c19-4a5c-a8bb-23580be935a6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="81" width="10" height="17" uuid="8487e38b-300d-4ec0-9bf8-04dc6f665af8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="98" width="10" height="17" uuid="edc73693-4d1c-467d-9854-814c7aaa2456"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="115" width="10" height="17" uuid="dfa5980f-a39b-44a4-a0b9-7825264fb214"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="54" y="132" width="96" height="17" uuid="6009a1f9-12bd-47fc-9afb-f15236028d77"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Dampak]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="132" width="10" height="17" uuid="57eca692-34ca-4836-8d2e-61e3a49048a2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="174" y="132" width="333" height="61" uuid="11b515e3-d2dc-4c07-be1d-387d36068fd6"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.dampak}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="164" splitType="Stretch">
+			<staticText>
+				<reportElement x="364" y="16" width="74" height="20" uuid="628d4063-772b-4e60-990b-1662ced7d48c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Surabaya , ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="438" y="16" width="100" height="20" uuid="a466ca50-c6dc-4151-b449-075b343e2548"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="350" y="36" width="159" height="20" uuid="d668c02d-e644-4074-802b-c098a46878c0"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Kabag. SDM & UMUM]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="339" y="121" width="188" height="20" uuid="158ae127-d4f3-4683-a130-ee1019c6febb"/>
+				<textElement textAlignment="Center">
+					<font size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.kabagSdm}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

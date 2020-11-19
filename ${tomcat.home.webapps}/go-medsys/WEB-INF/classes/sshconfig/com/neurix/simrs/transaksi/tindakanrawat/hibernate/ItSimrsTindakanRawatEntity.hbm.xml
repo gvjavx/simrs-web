@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity" dynamic-update="true"
+           table="it_simrs_tindakan_rawat" select-before-update="true" schema="public">
+
+
+        <id name="idTindakanRawat">
+            <column name="id_tindakan_rawat" sql-type="varchar" length="30" not-null="true" />
+        </id>
+
+        <property name="idDetailCheckup">
+            <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="true"/>
+        </property>
+        <property name="idTindakan">
+            <column name="id_tindakan" sql-type="varchar" length="10" not-null="true"/>
+        </property>
+        <property name="namaTindakan">
+            <column name="nama_tindakan" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="idDokter">
+            <column name="id_dokter" sql-type="varchar" length="30" not-null="true"/>
+        </property>
+        <property name="idPerawat">
+            <column name="id_perawat" sql-type="varchar" length="10" not-null="false"/>
+        </property>
+        <property name="tarif">
+            <column name="tarif" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="qty">
+            <column name="qty" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="tarifTotal">
+            <column name="tarif_total" sql-type="bigint" not-null="false"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="approveFlag">
+            <column name="approve_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="idPelayanan">
+            <column name="id_pelayanan"/>
+        </property>
+        <property name="idRuangan">
+            <column name="id_ruangan"/>
+        </property>
+    </class>
+</hibernate-mapping>

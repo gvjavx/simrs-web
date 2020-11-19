@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="provinsiAction" class="com.neurix.hris.master.provinsi.action.ProvinsiAction"
+          p:provinsiBoProxy-ref="provinsiBoProxy" />
+
+    <bean id="provinsiBo" class="com.neurix.hris.master.provinsi.bo.impl.ProvinsiBoImpl"
+          p:provinsiDao-ref="provinsiDao" />
+
+    <bean id="provinsiController" class="com.neurix.simrs.mobileapi.ProvinsiController"
+          p:provinsiBoProxy-ref="provinsiBoProxy"/>
+
+    <bean id="kotaController" class="com.neurix.simrs.mobileapi.KotaController"
+          p:provinsiBoProxy-ref="provinsiBoProxy"/>
+
+    <bean id="kecamatanController" class="com.neurix.simrs.mobileapi.KecamatanController"
+          p:provinsiBoProxy-ref="provinsiBoProxy"/>
+
+    <bean id="desaController" class="com.neurix.simrs.mobileapi.DesaController"
+          p:provinsiBoProxy-ref="provinsiBoProxy"/>
+
+
+    <bean id="provinsiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="provinsiBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="provinsiDao" class="com.neurix.hris.master.provinsi.dao.ProvinsiDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

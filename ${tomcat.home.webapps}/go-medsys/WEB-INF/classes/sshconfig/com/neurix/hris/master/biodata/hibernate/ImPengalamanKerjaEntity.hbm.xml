@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.master.biodata.model.ImPengalamanKerjaEntity" dynamic-update="true"
+           table="im_hris_pengalaman_kerja" select-before-update="true" schema="public">
+
+
+        <id name="pengalamanId">
+            <column name="id_pengalaman_kerja" sql-type="varchar" length="10" not-null="true" />
+        </id>
+
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="10" not-null="true" />
+        </property>
+        <property name="namaPerusahaan">
+            <column name="nama_perusahaan" sql-type="varchar" length="30" not-null="false" />
+        </property>
+        <property name="jabatan">
+            <column name="jabatan" sql-type="varchar" length="30" not-null="false" />
+        </property>
+        <property name="profesiId">
+            <column name="profesi_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="tahunMasuk">
+            <column name="tanggal_masuk" sql-type="date" not-null="false" />
+        </property>
+            <property name="tahunKeluar">
+            <column name="tanggal_keluar" sql-type="date" not-null="false" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

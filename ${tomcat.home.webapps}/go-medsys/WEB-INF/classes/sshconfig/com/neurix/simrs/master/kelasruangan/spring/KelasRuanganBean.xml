@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="kelasRuanganController" class="com.neurix.simrs.mobileapi.RuanganController"
+        p:kelasRuanganBoProxy-ref="kelasRuanganBoProxy" />
+
+    <bean id="kelasRuanganBo" class="com.neurix.simrs.master.kelasruangan.bo.impl.KelasRuanganBoImpl"
+          p:kelasRuanganDao-ref="kelasRuanganDao"
+          p:branchDao-ref="branchDao"
+          p:positionDao-ref="positionDao"
+    />
+    <bean id="kelasRuanganBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="kelasRuanganBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionJenisPeriksaInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionJenisPeriksaInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getListAllJenisPeriksa">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="kelasRuanganDao" class="com.neurix.simrs.master.kelasruangan.dao.KelasRuanganDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="branchDao" class="com.neurix.authorization.company.dao.BranchDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="positionDao" class="com.neurix.authorization.position.dao.PositionDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

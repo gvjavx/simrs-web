@@ -1,0 +1,327 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.master.biodata.model.ImBiodataEntity" dynamic-update="true"
+           table="im_hris_pegawai" select-before-update="true" schema="public">
+
+
+        <id name="nip">
+            <column name="nip" sql-type="varchar" length="15" not-null="true" />
+        </id>
+
+        <property name="namaPegawai">
+            <column name="nama_pegawai" sql-type="varchar" length="100" not-null="true" />
+        </property>
+        <property name="gelarDepan">
+            <column name="gelar_depan" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="gelarBelakang">
+            <column name="gelar_belakang" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="noKtp">
+            <column name="no_ktp" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="alamat">
+            <column name="alamat" sql-type="varchar" length="1000" not-null="false" />
+        </property>
+        <property name="rtRw">
+            <column name="rt_rw" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="desaId">
+            <column name="desa" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="kecamatanId">
+            <column name="kecamatan" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="noTelp">
+            <column name="no_telp" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="kotaId">
+            <column name="kabupaten" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="provinsiId">
+            <column name="provinsi" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="tanggalLahir">
+            <column name="tanggal_lahir" sql-type="timestamp" length="100" not-null="false" />
+        </property>
+        <property name="tempatLahir">
+            <column name="tempat_lahir" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="tipePegawai">
+            <column name="tipe_pegawai" sql-type="varchar" length="4" not-null="false" />
+        </property>
+        <property name="fotoUpload">
+            <column name="foto_upload" sql-type="varchar" length="1000"  />
+        </property>
+        <property name="statusCaption">
+            <column name="status_caption" sql-type="varchar" length="1000" not-null="false" />
+        </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" length="1000" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="tanggalAktif">
+            <column name="tanggal_aktif" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="golongan">
+            <column name="golongan_id" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <!--<property name="divisi">-->
+            <!--<column name="divisi" sql-type="varchar" length="4" not-null="false" />-->
+        <!--</property>-->
+
+        <property name="statusPegawai">
+            <column name="status_pegawai" sql-type="varchar" length="20"/>
+        </property>
+        <property name="statusKeluarga">
+            <column name="status_keluarga" sql-type="varchar" length="1"/>
+        </property>
+        <property name="jumlahAnak">
+            <column name="jumlah_anak" sql-type="bigint"/>
+        </property>
+        <property name="gender">
+            <column name="jenis_kelamin" sql-type="integer" not-null="false" />
+        </property>
+        <property name="statusGiling">
+            <column name="status_giling" sql-type="varchar" length="10" not-null="false" />
+        </property>
+
+        <property name="noSkAktif">
+            <column name="no_sk_aktif" sql-type="integer" not-null="false" />
+        </property>
+        <property name="flagTunjanganSupervisi">
+            <column name="flag_tunjangan_supervisi" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjanganLokasi">
+            <column name="flag_tunjangan_lokasi" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjanganSiaga">
+            <column name="flag_tunjangan_siaga" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjanganProfesional">
+            <column name="flag_tunjangan_profesional" sql-type="varchar" length="1" />
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="pin">
+            <column name="pin" sql-type="varchar" length="10"/>
+        </property>
+        <property name="point">
+            <column name="point" sql-type="integer" not-null="false" />
+        </property>
+        <property name="zakatProfesi">
+            <column name="zakat_profesi" sql-type="integer" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="tanggalPensiun">
+            <column name="tanggal_pensiun" sql-type="timestamp" not-null="false" />
+        </property>
+        <!--<property name="danaPensiun">-->
+            <!--<column name="dana_pensiun" sql-type="numeric" length="5" precision="2"/>-->
+        <!--</property>-->
+        <property name="danaPensiun">
+            <column name="dana_pensiun" sql-type="varchar" length="100" />
+        </property>
+        <property name="strukturGaji">
+            <column name="struktur_gaji" sql-type="varchar" length="1" />
+        </property>
+        <property name="gaji">
+            <column name="gaji" sql-type="numeric" length="10" precision="2"/>
+        </property>
+        <property name="poinLebih">
+            <column name="poin_lebih" sql-type="integer" not-null="false" />
+        </property>
+        <!--<property name="agama">-->
+            <!--<column name="agama" sql-type="integer" not-null="false" />-->
+        <!--</property>-->
+        <property name="agama">
+            <column name="agama" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <!--<property name="tanggalMenikah">-->
+            <!--<column name="tanggal_menikah" sql-type="integer" not-null="false" />-->
+        <!--</property>-->
+        <property name="tanggalMenikah">
+            <column name="tanggal_menikah" sql-type="date" not-null="false" />
+        </property>
+        <!--<property name="npwp">-->
+            <!--<column name="npwp" sql-type="integer" not-null="false" />-->
+        <!--</property>-->
+        <property name="npwp">
+            <column name="npwp" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <!--<property name="mt">-->
+            <!--<column name="mt" sql-type="integer" not-null="false" />-->
+        <!--</property>-->
+        <property name="mt">
+            <column name="mt" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="noAnggotaDapen">
+            <column name="no_anggota_dapen" sql-type="varchar" length="30" />
+        </property>
+        <property name="noBpjsKetenagakerjaan">
+            <column name="no_bpjs_ketenagakerjaan" sql-type="varchar" length="30" />
+        </property>
+        <property name="noBpjsKetenagakerjaanPensiun">
+            <column name="no_bpjs_ketenagakerjaan_pensiun" sql-type="varchar" length="30" />
+        </property>
+        <property name="noBpjsKesehatan">
+            <column name="no_bpjs_kesehatan" sql-type="varchar" length="30" />
+        </property>
+        <property name="shift">
+            <column name="shift" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="golonganDapen">
+            <column name="golongan_dapen" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="golonganDapenNusindo">
+            <column name="golongan_dapen_nusindo" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="namaBank">
+            <column name="nama_bank" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="noRekBank">
+            <column name="no_rek_bank" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="persentasiHutangPph">
+            <column name="persentase_pph_komisaris" sql-type="numeric" length="5" precision="2" not-null="false" />
+        </property>
+        <property name="cabangBank">
+            <column name="cabang_bank" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="flagMess">
+            <column name="flag_mess" sql-type="varchar" length="1" />
+        </property>
+        <property name="tanggalMasuk">
+            <column name="tanggal_masuk" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="golonganDapenId">
+            <column name="golongan_dapen_id" sql-type="varchar" length="3" not-null="false" />
+        </property>
+        <property name="masaKerjaGolongan">
+            <column name="masa_kerja_gol" sql-type="integer" not-null="false" />
+        </property>
+        <property name="tanggalAkhirKontrak">
+            <column name="tgl_akhir_kontrak" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="branchIdTerakhir">
+        <column name="branch_id_terakhir" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="positionIdTerakhir">
+            <column name="position_id_terakhir" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="tanggalPraPensiun">
+            <column name="tanggal_pra_pensiun" sql-type="timestamp" not-null="false" />
+        </property>
+
+        <property name="positionPltId">
+            <column name="position_plt_id" sql-type="varchar" length="5" />
+        </property>
+        <property name="flagPlt">
+            <column name="flag_plt" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagPjs">
+            <column name="flag_pjs" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagFingerMobile">
+            <column name="flag_finger_mobile" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjRumah">
+            <column name="flag_tunj_rumah" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjAir">
+            <column name="flag_tunj_air" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjListrik">
+            <column name="flag_tunj_listrik" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagTunjBbm">
+            <column name="flag_tunj_bbm" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagBpjsKs">
+            <column name="flag_bpjs_ks" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagBpjsTk">
+            <column name="flag_bpjs_tk" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagPercobaan">
+            <column name="flag_percobaan" sql-type="varchar" length="1" />
+        </property>
+        <property name="flagDokterKso">
+            <column name="flag_dokter_kso" sql-type="varchar" length="1" />
+        </property>
+        <property name="jenisPegawai">
+            <column name="jenis_pegawai"/>
+        </property>
+        <property name="nipLama">
+            <column name="nip_lama" sql-type="varchar" length="15" />
+        </property>
+
+        <!-- BARU -->
+        <property name="peralihanGapok">
+            <column name="peralihan_gapok"/>
+        </property>
+        <property name="peralihanSankhus">
+            <column name="peralihan_sankhus"/>
+        </property>
+        <property name="peralihanTunjangan">
+            <column name="peralihan_tunjangan"/>
+        </property>
+
+        <many-to-one name="imProvinsiEntity" class="com.neurix.hris.master.provinsi.model.ImProvinsiEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="provinsi"/>
+        </many-to-one>
+
+        <many-to-one name="imKotaEntity" class="com.neurix.hris.master.provinsi.model.ImKotaEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="kabupaten"/>
+        </many-to-one>
+
+        <many-to-one name="imKecamatanEntity" class="com.neurix.hris.master.provinsi.model.ImKecamatanEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="kecamatan"/>
+        </many-to-one>
+
+        <many-to-one name="imDesaEntity" class="com.neurix.hris.master.provinsi.model.ImDesaEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="desa"/>
+        </many-to-one>
+
+        <many-to-one name="imHrisTipePegawai" class="com.neurix.hris.master.tipepegawai.model.ImHrisTipePegawai"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="tipe_pegawai"/>
+        </many-to-one>
+
+        <many-to-one name="imGolonganEntity" class="com.neurix.hris.master.golongan.model.ImGolonganEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="golongan_id"/>
+        </many-to-one>
+        <many-to-one name="imDanaPensiunEntity" class="com.neurix.hris.master.payrollDanaPensiun.model.ImPayrollDanaPensiunEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="dana_pensiun"/>
+        </many-to-one>
+
+        <many-to-one name="imGolonganPkwtEntity" class="com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="golongan_id"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

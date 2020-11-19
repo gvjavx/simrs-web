@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printReportRiwayatObatMasuk" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1f1d46d-b0ce-493a-8119-1250c2de0d06">
+	<property name="ireport.zoom" value="1.6105100000000125"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="63"/>
+	<parameter name="reportParams.logo" class="java.lang.String"/>
+	<parameter name="reportParams.area" class="java.lang.String"/>
+	<parameter name="reportParams.unit" class="java.lang.String"/>
+	<parameter name="reportParams.tglForm" class="java.lang.String"/>
+	<parameter name="reportParams.tglTo" class="java.lang.String"/>
+	<parameter name="reportParams.printDate" class="java.lang.String"/>
+	<parameter name="reportParams.namaObat" class="java.lang.String"/>
+	<parameter name="reportParams.namaPelayanan" class="java.lang.String"/>
+	<parameter name="reportParams.idObat" class="java.lang.String"/>
+	<parameter name="reportParams.bulan" class="java.lang.String"/>
+	<parameter name="reportParams.tahun" class="java.lang.String"/>
+	<parameter name="reportParams.periode" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="registeredDate" class="java.lang.String"/>
+	<field name="createdDate" class="java.lang.String"/>
+	<field name="keterangan" class="java.lang.String"/>
+	<field name="namaObat" class="java.lang.String"/>
+	<field name="qty" class="java.lang.String"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="subTotal" class="java.math.BigDecimal"/>
+	<field name="qtyKredit" class="java.lang.String"/>
+	<field name="totalKredit" class="java.math.BigDecimal"/>
+	<field name="subTotalKredit" class="java.math.BigDecimal"/>
+	<field name="qtySaldo" class="java.lang.String"/>
+	<field name="totalSaldo" class="java.math.BigDecimal"/>
+	<field name="subTotalSaldo" class="java.math.BigDecimal"/>
+	<field name="tipe" class="java.lang.String"/>
+	<field name="qtyLalu" class="java.lang.String"/>
+	<field name="totalLalu" class="java.lang.String"/>
+	<field name="subTotalLalu" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="122" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="56" width="173" height="20" uuid="05994a7a-2190-4070-b521-1c5c1f98e2a9"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="43" width="173" height="20" uuid="eea67a7c-2985-4321-86a2-8f97edc1dfd5"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="0" y="0" width="94" height="39" uuid="8ac7c141-71c7-42b1-89af-2c0b0ab37869"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="172" y="19" width="211" height="20" uuid="e3af36e9-e291-40da-ab09-c31164c4fffb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Report Saldo Persediaan Obat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="42" height="20" uuid="544589ac-ff31-40d0-ab35-85a28c0063ce"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Pelayanan]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="42" y="80" width="100" height="20" uuid="4216ad61-9ce0-4faf-9d92-33711ab30d3c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[": "+$P{reportParams.namaPelayanan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="235" y="43" width="42" height="20" uuid="a0d03032-93df-4241-8e98-c6cf35953b2e"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Periode ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="278" y="43" width="63" height="20" uuid="b7fd8bb0-c594-4dd3-8625-6f70473d5ea3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.periode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="493" y="80" width="81" height="20" uuid="1eb22638-1bb5-4f3b-8bdd-d685efd0ab04"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.printDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="391" y="80" width="100" height="20" uuid="f03f20a6-b168-48bc-aa65-546b49383318"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Print Date : ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="43" splitType="Stretch">
+			<line>
+				<reportElement x="74" y="42" width="417" height="1" uuid="23bc7a35-bc98-4b20-9c07-57c7515213d5"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="74" y="0" width="417" height="1" uuid="d7fe8f46-de70-4a3e-adac-10a371ae7cd3"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="329" y="21" width="42" height="20" uuid="c83bf857-3d75-41eb-883b-fc662cc3e7ef"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[QTY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="371" y="21" width="54" height="20" uuid="0f9d9cca-eb2c-48d0-bdde-a6e8399326b3"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Nilai]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="21" width="66" height="20" uuid="5bba7dd5-0519-4320-bf1e-e02c264d7800"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="342" y="1" width="149" height="20" uuid="60a839fc-ffaa-4079-80eb-3bbd457a8164"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Saldo S/D]]></text>
+			</staticText>
+			<line>
+				<reportElement x="342" y="21" width="149" height="1" uuid="58538af0-e349-497a-b570-2c1c5a4abded"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="74" y="21" width="154" height="19" uuid="758b3446-17ae-42f6-b21c-99669ff6e4b1"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Nama Obat]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="329" y="1" width="42" height="20" uuid="6d63782a-24ff-4647-a667-f92e493cdcc4"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtySaldo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="371" y="1" width="54" height="20" uuid="f06cf22c-cd94-43d7-b4e9-48757e132eb2"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalSaldo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="425" y="1" width="66" height="20" uuid="2e3de485-441b-4f0d-b0e9-33843ed6713e"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subTotalSaldo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="74" y="1" width="154" height="20" uuid="0e421ae7-a67a-49e1-a6e2-9a5229c66f10"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{keterangan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

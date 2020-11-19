@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.hris.master.kualifikasiCalonPejabat.model.ImHrisKualifikasiCalonPejabatEntity"
+           table="imt_hris_carrer_path" dynamic-update="true" select-before-update="true" schema="public">
+
+        <id name="kualifikasiId">
+            <column name="id_carrer_path" sql-type="varchar" length="5" not-null="true"/>
+        </id>
+
+        <property name="jabatanId">
+            <column name="jabatan_id" sql-type="varchar" length="100"/>
+        </property>
+        <property name="divisiId">
+            <column name="divisi_id" sql-type="varchar" length="100"/>
+        </property>
+        <property name="bagianId">
+            <column name="bagian_id" sql-type="varchar" length="100"/>
+        </property>
+        <property name="thMinKerja">
+            <column name="th_min_kerja" sql-type="varchar" length="100"/>
+        </property>
+        <property name="thMinBidang">
+            <column name="th_min_bidang" sql-type="varchar" length="100"/>
+        </property>
+        <property name="thMinBagian">
+            <column name="th_min_bagian" sql-type="varchar" length="100"/>
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="100"/>
+        </property>
+        <property name="pendidikan">
+            <column name="pendidikan" sql-type="varchar" length="100"/>
+        </property>
+        <property name="jurusanId">
+            <column name="jurusan_id" sql-type="varchar" length="100"/>
+        </property>
+        <property name="kelompokPositionId">
+            <column name="kelompok_position_id" sql-type="varchar" length="100"/>
+        </property>
+        <property name="pelatihanJabatan">
+            <column name="pelatihan_jabatan" sql-type="varchar" length="100"/>
+        </property>
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="100"/>
+        </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" length="100"/>
+        </property>
+
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp"/>
+        </property>
+        <property name="createWho">
+            <column name="created_who" sql-type="varchar"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar"/>
+        </property>
+
+        <many-to-one name="imPosition" class="com.neurix.authorization.position.model.ImPosition"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="jabatan_id"/>
+        </many-to-one>
+
+        <many-to-one name="imBranches" class="com.neurix.authorization.company.model.ImBranches"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="branch_id"/>
+        </many-to-one>
+
+        <many-to-one name="imDepartmentEntity" class="com.neurix.hris.master.department.model.ImDepartmentEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="divisi_id"/>
+        </many-to-one>
+
+        <many-to-one name="imPositionBagianEntity" class="com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="bagian_id"/>
+        </many-to-one>
+
+        <many-to-one name="imStudyJurusanEntity" class="com.neurix.hris.master.studyJurusan.model.ImStudyJurusanEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="jurusan_id"/>
+        </many-to-one>
+
+        <many-to-one name="imKelompokPositionEntity" class="com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="kelompok_position_id"/>
+        </many-to-one>
+
+        <many-to-one name="imGolonganEntity" class="com.neurix.hris.master.golongan.model.ImGolonganEntity"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="golongan_id"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

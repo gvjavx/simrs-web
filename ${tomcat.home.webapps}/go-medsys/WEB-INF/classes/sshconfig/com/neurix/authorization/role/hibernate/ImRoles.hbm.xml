@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.authorization.role.model.ImRoles" table="im_roles" dynamic-update="true"
+           select-before-update="true" schema="public">
+        <id name="roleId" column="role_id" type="java.lang.Long" unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">seq_roles</param>
+            </generator>
+        </id>
+
+        <property name="roleName">
+            <column name="role_name" sql-type="varchar" length="20"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" length="29" precision="6"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100"/>
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1"/>
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1"/>
+        </property>
+
+        <set name="imUser" table="im_users_roles" where="flag='Y'"
+        	inverse="true" lazy="true" fetch="select" cascade="all" >
+            <key>
+                <column name="role_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.neurix.authorization.user.model.ImUsers">
+                <column name="user_id" not-null="true" />
+            </many-to-many>
+        </set>
+
+        <set name="imFunction" table="im_func_roles" where="flag='Y'"
+        	inverse="true" lazy="true" fetch="select" cascade="all" >
+            <key>
+                <column name="role_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.neurix.authorization.function.model.ImFunctions">
+                <column name="func_id" not-null="true" />
+            </many-to-many>
+        </set>
+
+    </class>
+</hibernate-mapping>

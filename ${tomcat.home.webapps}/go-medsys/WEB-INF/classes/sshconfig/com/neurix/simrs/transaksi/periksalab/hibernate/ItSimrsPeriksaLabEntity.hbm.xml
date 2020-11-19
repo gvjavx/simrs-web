@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity" dynamic-update="true"
+           table="it_simrs_periksa_lab" select-before-update="true" schema="public">
+
+
+        <id name="idPeriksaLab">
+            <column name="id_periksa_lab" sql-type="varchar" length="30" not-null="true" />
+        </id>
+
+        <property name="idDetailCheckup">
+            <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="true"/>
+        </property>
+        <property name="idLab">
+            <column name="id_lab" sql-type="varchar" length="30" not-null="true"/>
+        </property>
+        <property name="tanggalMasukLab">
+            <column name="tanggal_masuk_lab" sql-type="date" not-null="false"/>
+        </property>
+        <property name="tanggalSelesaiPeriksa">
+            <column name="tanggal_selesai_periksa" sql-type="timestamp" not-null="false"/>
+        </property>
+        <property name="idDokterPengirim">
+            <column name="id_dokter_pengirim" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="idDokter">
+            <column name="id_dokter" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="idPemeriksa">
+            <column name="id_pemeriksa" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="statusPeriksa">
+            <column name="status_periksa" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="approveFlag">
+            <column name="approve_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="urlImg">
+            <column name="url_img"/>
+        </property>
+        <property name="ttdPengirim">
+            <column name="ttd_pengirim"/>
+        </property>
+        <property name="idKategoriLab">
+            <column name="id_kategori_lab"/>
+        </property>
+        <property name="ttdDokter">
+            <column name="ttd_dokter"/>
+        </property>
+        <property name="ttdPetugas">
+            <column name="ttd_petugas"/>
+        </property>
+        <property name="isPending">
+            <column name="is_pending"/>
+        </property>
+        <property name="isReading">
+            <column name="is_read"/>
+        </property>
+    </class>
+</hibernate-mapping>

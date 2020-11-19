@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--<bean id="checkupAction" class="com.neurix.simrs.transaksi.checkup.action.CheckupAction"-->
+          <!--p:checkupBoProxy-ref="checkupBoProxy" />-->
+
+    <bean id="kategoriTindakanBo" class="com.neurix.simrs.master.kategoritindakan.bo.impl.KategoriTindakanBoImpl"
+          p:kategoriTindakanDao-ref="kategoriTindakanDao"
+    />
+
+    <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
+          p:kategoriTindakanBoProxy-ref="kategoriTindakanBoProxy"
+    />
+
+    <bean id="kategoriTindakanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="kategoriTindakanBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionKategorTindakanInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionKategorTindakanInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <!--<prop key="saveAdd">PROPAGATION_REQUIRED</prop>-->
+            </props>
+        </property>
+    </bean>
+
+    <bean id="kategoriTindakanDao" class="com.neurix.simrs.master.kategoritindakan.dao.KategoriTindakanDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+
+
+</beans>

@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.payroll.model.ItPayrollRapelLemburEntity" dynamic-update="true"
+           table="it_hris_payroll_rapel_lembur" select-before-update="true" schema="public">
+
+
+        <id name="rapelLemburId">
+            <column name="rapel_lembur_id" sql-type="varchar" length="10" not-null="true" />
+        </id>
+
+        <property name="absensiPegawaiId">
+            <column name="absensi_id" sql-type="varchar" length="12" not-null="true" />
+        </property>
+        <property name="rapelId">
+            <column name="rapel_id" sql-type="varchar" length="12" not-null="true" />
+        </property>
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="12" not-null="true" />
+        </property>
+        <property name="tipePegawai">
+            <column name="tipe_pegawai" sql-type="varchar" length="12"  />
+        </property>
+
+        <property name="tanggal">
+            <column name="tanggal" sql-type="date" />
+        </property>
+
+        <property name="gajiGolonganLama">
+            <column name="gaji_golongan_lama" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="tunjanganUmkLama">
+            <column name="tunjangan_umk_lama" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="tunjanganPeralihanLama">
+            <column name="tunjangan_peralihan_lama" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+
+        <property name="lamaLembur">
+            <column name="lama_lembur" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="jamLembur">
+            <column name="jam_lembur" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="biayaLemburLama">
+            <column name="biaya_lembur_lama" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="faktorPengali">
+            <column name="faktor_pengali" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+
+        <property name="gajiGolonganBaru">
+            <column name="gaji_golongan_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganUmkBaru">
+            <column name="tunjangan_umk_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganPeralihanBaru">
+            <column name="tunjangan_peralihan_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="biayaLemburBaru">
+            <column name="biaya_lembur_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="selisihBiayaLemburBaru">
+            <column name="selisih_biaya_lembur_baru" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

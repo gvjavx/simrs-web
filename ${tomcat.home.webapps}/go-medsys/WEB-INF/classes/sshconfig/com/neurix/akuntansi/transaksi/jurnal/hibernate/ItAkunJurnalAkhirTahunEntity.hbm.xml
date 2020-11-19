@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.jurnal.model.ItAkunJurnalAkhirTahunEntity">
+        <table name="it_akun_jurnal_akhir_tahun" schema="public" />
+        <attributes>
+            <id name="noJurnal">
+                <column name="no_jurnal"/>
+            </id>
+            <basic name="tipeJurnalId">
+                <column name="tipe_jurnal_id"/>
+            </basic>
+            <basic name="tanggalJurnal">
+                <column name="tanggal_jurnal"/>
+            </basic>
+            <basic name="sumber">
+                <column name="sumber"/>
+            </basic>
+            <basic name="sumberDanaId">
+                <column name="sumber_dana_id"/>
+            </basic>
+            <basic name="carryOver">
+                <column name="carry_over"/>
+            </basic>
+            <basic name="mataUangId">
+                <column name="mata_uang_id"/>
+            </basic>
+            <basic name="kurs">
+                <column name="kurs"/>
+            </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="branchId">
+                <column name="branch_id"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="printedDate">
+                <column name="printed_date"/>
+            </basic>
+            <basic name="printedFlag">
+                <column name="printed_flag"/>
+            </basic>
+            <basic name="registeredDate">
+                <column name="registered_date"/>
+            </basic>
+            <basic name="registeredFlag">
+                <column name="registered_flag"/>
+            </basic>
+            <basic name="registeredUser">
+                <column name="registered_user"/>
+            </basic>
+            <basic name="registerId">
+                <column name="register_id"/>
+            </basic>
+            <basic name="spumId">
+                <column name="spum_id"/>
+            </basic>
+            <basic name="printCount">
+                <column name="print_count"/>
+            </basic>
+            <basic name="printRegisterCount">
+                <column name="print_register_count"/>
+            </basic>
+            <basic name="rePrintedDate">
+                <column name="re_printed_date"/>
+            </basic>
+            <basic name="reRegisteredDate">
+                <column name="re_registered_date"/>
+            </basic>
+            <basic name="caraPenerimaan">
+                <column name="cara_penerimaan"/>
+            </basic>
+            <basic name="noSeriPajakDipungut">
+                <column name="no_seri_pajak_dipungut"/>
+            </basic>
+            <basic name="noSeriPajakDitanggung">
+                <column name="no_seri_pajak_ditanggung"/>
+            </basic>
+            <basic name="personal">
+                <column name="personal"/>
+            </basic>
+            <basic name="posAnggaran">
+                <column name="pos_anggaran"/>
+            </basic>
+            <basic name="buktiPendukung">
+                <column name="bukti_pendukung"/>
+            </basic>
+            <basic name="tanggalPendukung">
+                <column name="tanggal_pendukung"/>
+            </basic>
+            <basic name="dppDipungut">
+                <column name="dpp_dipungut"/>
+            </basic>
+            <basic name="dppDitanggung">
+                <column name="dpp_ditanggung"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="pengajuanBiayaId">
+                <column name="pengajuan_biaya_id"/>
+            </basic>
+            <basic name="tipePeriode">
+                <column name="tipe_periode"/>
+            </basic>
+
+        </attributes>
+    </entity>
+</entity-mappings>

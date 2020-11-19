@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.payroll.model.ItPayrollJasoprEntity" dynamic-update="true"
+           table="it_hris_payroll_jasopr" select-before-update="true" schema="public">
+
+
+        <id name="jasoprId">
+            <column name="jasopr_id" sql-type="varchar" length="10" not-null="true" />
+        </id>
+
+        <property name="payrollId">
+            <column name="payroll_id" sql-type="varchar" length="12" not-null="true" />
+        </property>
+        <property name="bulan">
+            <column name="bulan" sql-type="varchar" length="12" not-null="true" />
+        </property>
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar" length="12" not-null="true" />
+        </property>
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="12" not-null="true" />
+        </property>
+        <property name="totalThp">
+            <column name="total_thp" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="gaji">
+            <column name="gaji" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="sankhus">
+            <column name="santunan_khusus" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="tunjJabatan">
+            <column name="tunjangan_jabatan" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="tunjStruktural">
+            <column name="tunjangan_struktural" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="tunjFungsional">
+            <column name="tunjangan_fungsional" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="tunjPeralihan">
+            <column name="tunjangan_peralihan" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="tunjLain">
+            <column name="tunjangan_lain" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="tunjPph">
+            <column name="tunjangan_pph" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="tunjTambahan">
+            <column name="tunjangan_tambahan" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="pemondokan">
+            <column name="pemondokan" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="komunikasi">
+            <column name="komunikasi" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="totalRlab">
+            <column name="total_rlab" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="totaljasopr">
+            <column name="total_jasopr" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="pphJasopr">
+            <column name="pph_jasopr" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+        <property name="nettojasopr">
+            <column name="netto_jasopr" sql-type="numeric" length="15" precision="2" not-null="true" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="payrollTunjanganStrategisAction" class="com.neurix.hris.master.payrollTunjanganStrategis.action.PayrollTunjanganStrategisAction"
+          p:payrollTunjanganStrategisBoProxy-ref="payrollTunjanganStrategisBoProxy" />
+
+    <bean id="payrollTunjanganStrategisBo" class="com.neurix.hris.master.payrollTunjanganStrategis.bo.impl.PayrollTunjanganStrategisBoImpl"
+          p:payrollTunjanganStrategisDao-ref="payrollTunjanganStrategisDao"
+          p:branchDao-ref="branchDao"
+          p:positionDao-ref="positionDao"
+          p:golonganDao-ref="golonganDao"
+          p:profesiDao-ref="profesiDao"
+          p:payrollTunjanganStrategisHistoryDao-ref="payrollTunjanganStrategisHistoryDao"
+    />
+
+    <bean id="payrollTunjanganStrategisBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="payrollTunjanganStrategisBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="payrollTunjanganStrategisDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollTunjanganStrategisDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="branchDao" class="com.neurix.authorization.company.dao.BranchDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="payrollTunjanganStrategisHistoryDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollTunjanganStrategisHistoryDao"
+          p:sessionFactory-ref="sessionFactory" />
+</beans>

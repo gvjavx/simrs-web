@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sppdPengikut" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e278c3fb-d563-41be-859b-66b0faac1159">
+	<property name="ireport.zoom" value="1.610510000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="reportParams.noSppd" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+	kota.kota_name
+from
+	it_hris_sppd sppd
+	left join it_hris_sppd_person person on person.sppd_id = sppd.sppd_id
+	left join it_hris_sppd_reroute reroute on reroute.sppd_person_id = person.sppd_person_id
+	left join im_hris_kota kota on kota.kota_id = reroute.reroute_ke
+where
+	sppd.sppd_id = 'SPPD1902790'
+	and reroute.flag = 'Y'
+order by
+	reroute.tanggal_reroute_dari]]>
+	</queryString>
+	<field name="kota_name" class="java.lang.String"/>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="14" y="0" width="163" height="20" uuid="c9a84c0a-2d17-48de-9361-8b01643548a9"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kota_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="14" height="20" uuid="9efac914-6563-48b1-8b3b-63b05822ac88"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.payroll.model.ItPayrollPensiunEntity" dynamic-update="true"
+           table="it_hris_payroll_pensiun" select-before-update="true" schema="public">
+
+
+        <id name="pensiunId">
+            <column name="pensiun_id" sql-type="varchar" length="12" not-null="true" />
+        </id>
+
+        <property name="payrollId">
+            <column name="payroll_id" sql-type="varchar" length="12" not-null="true" />
+        </property>
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="20" not-null="true" />
+        </property>
+        <property name="tanggalAktif">
+            <column name="tanggal_aktif" sql-type="date" not-null="true" />
+        </property>
+        <property name="tanggalPensiun">
+            <column name="tanggal_pensiun" sql-type="date" not-null="true" />
+        </property>
+        <!--<property name="faktorPensiun">
+            <column name="faktor_pensiun" sql-type="integer" not-null="true" />
+        </property>
+        <property name="faktorPenghargaan">
+            <column name="faktor_penghargaan" sql-type="integer" not-null="true" />
+        </property>-->
+
+        <property name="gajiGolongan">
+            <column name="gaji_golongan" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="tunjanganUmk">
+            <column name="tunjangan_umk" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="tunjanganStruktural">
+            <column name="tunjangan_struktural" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="tunjanganJabatanStruktural">
+            <column name="tunjangan_jabatan_struktural" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganPeralihan">
+            <column name="tunjangan_peralihan" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+
+        <!--<property name="tunjanganPensiun">
+            <column name="tunjangan_pensiun" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="tunjanganPenghargaan">
+            <column name="tunjangan_penghargaan" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="jumlahTunjangan">
+            <column name="jumlah_tunjangan" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>
+        <property name="penggantianPerumahan">
+            <column name="penggantian_perumahan" sql-type="numeric" length="10" precision="2" not-null="false" />
+        </property>-->
+
+        <property name="jumlahBiayaPensiun">
+            <column name="total_pensiun" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <!--<property name="pph1Nilai">
+            <column name="pph1" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pph2Nilai">
+            <column name="pph2" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pph3Nilai">
+            <column name="pph3" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="pph4Nilai">
+            <column name="pph4" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>-->
+        <property name="pphPensiun">
+            <column name="pph_final" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="nettoPensiun">
+            <column name="netto_pensiun" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+    </class>
+</hibernate-mapping>

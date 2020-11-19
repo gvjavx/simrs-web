@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="absensiAction" class="com.neurix.hris.transaksi.absensi.action.AbsensiAction"
+          p:absensiBoProxy-ref="absensiBoProxy" />
+
+    <bean id="absensiOnine" class="com.neurix.hris.mobileapi.AbsensiOnlineController"
+          p:absensiBoProxy-ref="absensiBoProxy" />
+
+    <bean id="historyPegawaiController" class="com.neurix.hris.mobileapi.HistoryPegawaiController"
+          p:absensiBoProxy-ref="absensiBoProxy" />
+
+    <bean id="absensiBo" class="com.neurix.hris.transaksi.absensi.bo.impl.AbsensiBoImpl"
+          p:absensiPegawaiDao-ref="absensiPegawaiDao"
+          p:biodataDao-ref="biodataDao"
+          p:jamKerjaDao-ref="jamKerjaDao"
+          p:mesinDao-ref="mesinDao"
+          p:mesinAbsensiDao-ref="mesinAbsensiDao"
+          p:personilPositionDao-ref="personilPositionDao"
+          p:lemburDao-ref="lemburDao"
+          p:ijinKeluarDao-ref="ijinKeluarDao"
+          p:branchDao-ref="branchDao"
+          p:positionDao-ref="positionDao"
+          p:mesinAbsensiDetailDao-ref="mesinAbsensiDetailDao"
+          p:pengaliFaktorLemburDao-ref="pengaliFaktorLemburDao"
+          p:jamLemburDao-ref="jamLemburDao"
+          p:payrollDao-ref="payrollDao"
+          p:payrollSkalaGajiDao-ref="skalaGajiDao"
+          p:payrollSkalaGajiPkwtDao-ref="payrollSkalaGajiPkwtDao"
+          p:departmentDao-ref="departmentDao"
+          p:cutiPegawaiDao-ref="cutiPegawaiDao"
+          p:indisiplinerDao-ref="indisiplinerDao"
+          p:sppdDao-ref="sppdDao"
+          p:trainingDao-ref="trainingDao"
+          p:trainingPersonDao-ref="trainingPersonDao"
+          p:payrollTunjanganUmkDao-ref="payrollTunjanganUmkDao"
+          p:strukturJabatanDao-ref="strukturJabatanDao"
+          p:notifikasiDao-ref="notifikasiDao"
+          p:liburDao-ref="liburDao"
+          p:pegawaiTambahanAbsensiDao-ref="pegawaiTambahanAbsensiDao"
+          p:pegawaiTambahanDao-ref="pegawaiTambahanDao"
+          p:absensiDashboardDao-ref="absensiDashboardDao"
+          p:shiftDao-ref="shiftDao"
+          p:companyDao-ref="companyDao"
+          p:mesinAbsensiDetailOnCallDao-ref="mesinAbsensiDetailOnCallDao"
+          p:absensiOnCallDao-ref="absensiOnCallDao"
+    />
+
+    <bean id="absensiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="absensiBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="absensiPegawaiDao" class="com.neurix.hris.transaksi.absensi.dao.AbsensiPegawaiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="biodataDao" class="com.neurix.hris.master.biodata.dao.BiodataDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="jamKerjaDao" class="com.neurix.hris.master.jamkerja.dao.JamKerjaDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="mesinDao" class="com.neurix.hris.transaksi.absensi.dao.MesinDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="mesinAbsensiDao" class="com.neurix.hris.transaksi.absensi.dao.MesinAbsensiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="personilPositionDao" class="com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="lemburDao" class="com.neurix.hris.transaksi.lembur.dao.LemburDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="ijinKeluarDao" class="com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="branchDao" class="com.neurix.authorization.company.dao.BranchDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="positionDao" class="com.neurix.authorization.position.dao.PositionDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="mesinAbsensiDetailDao" class="com.neurix.hris.transaksi.absensi.dao.MesinAbsensiDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="pengaliFaktorLemburDao" class="com.neurix.hris.transaksi.lembur.dao.PengaliFaktorLemburDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="jamLemburDao" class="com.neurix.hris.transaksi.lembur.dao.JamLemburDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="pegawaiTambahanDao" class="com.neurix.hris.transaksi.absensi.dao.PegawaiTambahanDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="pegawaiTambahanAbsensiDao" class="com.neurix.hris.transaksi.absensi.dao.PegawaiTambahanAbsensiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="absensiDashboardDao" class="com.neurix.hris.transaksi.absensi.dao.AbsensiDashboardDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="mesinAbsensiDetailOnCallDao" class="com.neurix.hris.transaksi.absensi.dao.MesinAbsensiDetailOnCallDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="absensiOnCallDao" class="com.neurix.hris.transaksi.absensi.dao.AbsensiOnCallDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

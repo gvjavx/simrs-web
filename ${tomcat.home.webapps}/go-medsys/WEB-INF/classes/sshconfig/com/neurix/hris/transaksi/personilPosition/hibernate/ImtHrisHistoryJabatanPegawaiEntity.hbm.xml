@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.personilPosition.model.ImtHrisHistoryJabatanPegawaiEntity" dynamic-update="true"
+           table="imt_hris_history_jabatan_pegawai" select-before-update="true" schema="public">
+
+        <id name="historyJabatanId">
+            <column name="history_jabatan_pegawai_id" sql-type="varchar" length="10" not-null="true" />
+        </id>
+        <property name="nip">
+            <column name="nip" sql-type="varchar" length="20" not-null="true" />
+        </property>
+        <property name="bidangName">
+            <column name="bidang_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="status">
+            <column name="status" sql-type="varchar" length="100" />
+        </property>
+        <property name="positionName">
+            <column name="position_name" sql-type="varchar" length="100" />
+        </property>
+        <property name="branchName">
+            <column name="branch_name" sql-type="varchar" length="100" />
+        </property>
+        <property name="tahun">
+            <column name="tahun" sql-type="varchar" length="10" />
+        </property>
+        <property name="pjsFlag">
+            <column name="pjs_flag" sql-type="varchar" length="1" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="4" />
+        </property>
+        <property name="positionId">
+            <column name="position_id" sql-type="varchar" length="3" />
+        </property>
+        <property name="divisiId">
+            <column name="divisi_id" sql-type="varchar" length="3" />
+        </property>
+        <property name="profesiId">
+            <column name="profesi_id" sql-type="varchar" length="20" />
+        </property>
+        <property name="tanggalSkMutasi">
+            <column name="tanggal_sk_mutasi" sql-type="date"/>
+        </property>
+        <property name="tipePegawaiName">
+            <column name="tipe_pegawai_name" sql-type="varchar" length="50" />
+        </property>
+        <property name="tipePegawaiId">
+            <column name="tipe_pegawai_id" sql-type="varchar" length="5" />
+        </property>
+        <property name="golonganId">
+            <column name="golongan_id" sql-type="varchar" length="10" />
+        </property>
+        <property name="golonganName">
+            <column name="golongan_name" sql-type="varchar" length="100" />
+        </property>
+        <property name="tanggal">
+            <column name="tanggal" sql-type="varchar" length="20" />
+        </property>
+        <property name="bagianId">
+            <column name="bagian_id" sql-type="varchar" length="5" />
+        </property>
+        <property name="bidangId">
+            <column name="bidang_id" sql-type="varchar" length="5" />
+        </property>
+        <property name="divisiName">
+            <column name="divisi_name" sql-type="varchar" length="100" />
+        </property>
+        <property name="bagianName">
+            <column name="bagian_name" sql-type="varchar" length="100" />
+        </property>
+        <property name="perusahaanLain">
+            <column name="perusahaan_lain" sql-type="varchar" length="100" />
+        </property>
+        <property name="jabatanLain">
+            <column name="jabatan_lain" sql-type="varchar" length="100" />
+        </property>
+
+        <property name="tanggalKeluar">
+            <column name="tanggal_keluar" sql-type="varchar" length="20" />
+        </property>
+
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="date" not-null="false" />
+        </property>
+
+        <property name="jabatanFlag">
+            <column name="jabatan_flag" sql-type="varchar" length="1" />
+        </property>
+
+        <property name="mutasiFlag">
+            <column name="mutasi_flag" sql-type="varchar" length="1" />
+        </property>
+
+        <many-to-one name="imPosition" class="com.neurix.authorization.position.model.ImPosition"
+                     insert="false" update="false" fetch="select" cascade="all">
+            <column name="position_id"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

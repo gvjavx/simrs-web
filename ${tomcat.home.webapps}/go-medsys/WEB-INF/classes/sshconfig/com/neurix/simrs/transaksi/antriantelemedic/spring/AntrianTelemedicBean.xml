@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="telemedicBo" class="com.neurix.simrs.transaksi.antriantelemedic.bo.impl.TelemedicBoImpl"
+          p:pelayananDao-ref="pelayananDao"
+          p:dokterDao-ref="dokterDao"
+          p:pasienDao-ref="pasienDao"
+          p:telemedicDao-ref="telemedicDao"
+          p:tindakanDao-ref="tindakanDao"
+          p:verifikatorPembayaranDao-ref="verifikatorPembayaranDao"
+          p:resepOnlineDao-ref="resepOnlineDao"
+          p:hargaObatDao-ref="hargaObatDao"
+          p:pengirimanObatDao-ref="pengirimanObatDao"
+          p:kurirDao-ref="kurirDao"
+          p:branchDao-ref="branchDao"
+          p:asuransiDao-ref="asuransiDao"
+          p:strukAsuransiDao-ref="strukAsuransiDao"
+          p:batalDokterTelemedicDao-ref="batalDokterTelemedicDao"
+          p:batalTelemedicDao-ref="batalTelemedicDao"
+          p:headerCheckupDao-ref="headerCheckupDao"
+          p:checkupDetailDao-ref="checkupDetailDao"
+          p:notifikasiAdminTelemedicDao-ref="notifikasiAdminTelemedicDao"
+          p:videoRmDao-ref="videoRmDao"
+          p:headerTindakanDao-ref="headerTindakanDao"
+    />
+
+    <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
+          p:telemedicBoProxy-ref="telemedicBoProxy"/>
+
+    <bean id="tesTelemedicController" class="com.neurix.hris.mobileapi.TesTelemedicController"
+          p:telemedicBoProxy-ref="telemedicBoProxy"
+          p:verifikatorPembayaranBoProxy-ref="verifikatorPembayaranBoProxy"
+          p:pelayananBoProxy-ref="pelayananBoProxy"
+          p:pasienBoProxy-ref="pasienBoProxy"
+    />
+
+    <bean id="pengirimanObatController" class="com.neurix.simrs.mobileapi.PengirimanObatController"
+          p:telemedicBoProxy-ref="telemedicBoProxy"/>
+
+    <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
+          p:telemedicBoProxy-ref="telemedicBoProxy"/>
+
+    <bean id="antrianOnlineController" class="com.neurix.simrs.mobileapi.AntrianOnlineController"
+          p:telemedicBoProxy-ref="telemedicBoProxy"/>
+
+
+    <bean id="telemedicBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="telemedicBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionAntrianTelemedicInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionAntrianTelemedicInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getSearchByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
+                <prop key="processBatalDokter">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="telemedicDao" class="com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="resepOnlineDao" class="com.neurix.simrs.transaksi.reseponline.dao.ResepOnlineDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="pengirimanObatDao" class="com.neurix.simrs.transaksi.reseponline.dao.PengirimanObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="kurirDao" class="com.neurix.simrs.master.kurir.dao.KurirDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="branchDao" class="com.neurix.authorization.company.dao.BranchDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="batalDokterTelemedicDao" class="com.neurix.simrs.transaksi.bataltelemedic.dao.BatalDokterTelemedicDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="batalTelemedicDao" class="com.neurix.simrs.transaksi.bataltelemedic.dao.BatalTelemedicDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="videoRmDao" class="com.neurix.simrs.transaksi.antriantelemedic.dao.VideoRmDao"
+          p:sessionFactory-ref="sessionFactory" />
+</beans>

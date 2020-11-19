@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportKPIUnitPrint" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="97aaed94-7f54-4259-9b83-05f2edca6d0e">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="45"/>
+	<property name="ireport.background.image.properties" value="true,true,0.25,18,476,0,0,558,255"/>
+	<subDataset name="dataset1" uuid="0d0ed4b5-ef3f-483a-a02c-27693a01dae2"/>
+	<parameter name="reportParams.musimTanam" class="java.lang.String"/>
+	<parameter name="reportParams.titleReport" class="java.lang.String"/>
+	<parameter name="reportParams.keyCode" class="java.lang.String"/>
+	<parameter name="reportParams.urlLogo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+unit.branch_id,
+unit.branch_name,
+case when gabungan.rata_rata is null then 0 else gabungan.rata_rata end
+from
+im_branches unit
+left outer join
+(
+	select
+	'PB21' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PB21'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a01
+	union
+	select
+	'PB22' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PB22'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a02
+	union
+	select
+	'PG03' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PG03'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a03
+	union
+	select
+	'PG04' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PG04'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a04
+	union
+	select
+	'PG05' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PG05'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a05
+	union
+	select
+	'PG06' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PG06'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a06
+	union
+	select
+	'PG07' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PG07'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a07
+	union
+	select
+	'PG08' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PG08'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a08
+	union
+	select
+	'PG09' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PG09'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a09
+	union
+	select
+	'PG10' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PG10'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a10
+	union
+	select
+	'PG11' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PG11'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a11
+	union
+	select
+	'PG12' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PG12'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a12
+	union
+	select
+	'PG13' as pabrik_gula,
+	round(avg(waiting_time_hours)::numeric,2) as rata_rata
+	from
+	(
+		select
+		a.pabrik_gula,
+		a.waiting_time_hours
+		from
+		(
+			select
+			kontrak.pabrik_gula,
+			kontrak.no_kontrak,
+			kontrak.approve_date as end_date,
+			request.tanggal_permohonan as start_date,
+			kontrak.approve_date - request.tanggal_permohonan as waiting_time,
+			round(extract(epoch from (kontrak.approve_date - request.tanggal_permohonan)) / 3600) as waiting_time_hours
+			from
+			it_ptpnx_kontrak_permohonan_lahan kontrak
+			inner join it_ptpnx_permohonan_petani request on request.permohonan_id = kontrak.permohonan_id
+			where kontrak.pabrik_gula like 'PG13'
+			and kontrak.status = '6'
+			and kontrak.flag = 'Y'
+			and kontrak.approve_flag = 'Y'
+			and kontrak.masa_tanam like $P{reportParams.musimTanam}
+		) a
+	)a13
+) gabungan on gabungan.pabrik_gula = unit.branch_id
+where
+unit.branch_id !='KD01'
+order by unit.branch_id]]>
+	</queryString>
+	<field name="branch_id" class="java.lang.String"/>
+	<field name="branch_name" class="java.lang.String"/>
+	<field name="rata_rata" class="java.math.BigDecimal"/>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="71" splitType="Stretch">
+			<staticText>
+				<reportElement x="148" y="44" width="82" height="13" uuid="81280f02-5af3-4b3c-b0d5-ef53244697b6"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[Musim Tanam :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="230" y="44" width="99" height="13" forecolor="#000000" uuid="4391037b-206b-4a6a-8302-6f0f51ccefef"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.musimTanam}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="23" width="287" height="20" uuid="79d31f8d-b2f1-460d-8dae-9d821eefc7d4"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.titleReport}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="449" y="28" width="59" height="19" uuid="e5a4c962-1302-4611-a7f1-5ac07f9654d4"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="6"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="507" y="28" width="56" height="19" uuid="fc929774-be0d-4798-b729-4d7d5dae9af8"/>
+				<textElement>
+					<font fontName="Calibri" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="423" y="4" width="140" height="20" uuid="885ccae2-5384-4e94-b085-e8f8dca7ac58">
+					<propertyExpression name="net.sf.jasperreports.text.measurer.factory"><![CDATA[$P{reportParams.keyCode}]]></propertyExpression>
+				</reportElement>
+				<jr:Code39 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{reportParams.keyCode}]]></jr:codeExpression>
+				</jr:Code39>
+			</componentElement>
+			<textField>
+				<reportElement x="459" y="43" width="56" height="20" uuid="19a2645a-4c66-4cb0-844b-3295957a5be5"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="43" width="41" height="20" uuid="2c016405-a0bb-4bf9-ae0c-a87df4b22769"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="4" width="94" height="39" uuid="05e3cb87-c3df-40b0-80db-c2c63987c766"/>
+				<imageExpression><![CDATA[$P{reportParams.urlLogo}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="94" y="0" width="136" height="29" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="6c043848-e197-41fb-a8ac-08435af6df82"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="230" y="0" width="172" height="29" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="d6add560-ded1-4294-b5d0-304f21580bd7"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Lama Rata-rata Pendaftaran s.d Kontrak (Dalam Jam)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="94" y="0" width="136" height="13" isPrintWhenDetailOverflows="true" uuid="7121c56a-77bc-41ce-972c-cc621b4c7ef4"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Calibri" size="10" isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branch_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="230" y="0" width="172" height="13" isPrintWhenDetailOverflows="true" uuid="28465e2d-21b0-4277-a0a5-854ab1453f28"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Calibri" size="10" isStrikeThrough="false"/>
+					<paragraph leftIndent="3" rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rata_rata}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="329" splitType="Stretch">
+			<barChart>
+				<chart>
+					<reportElement x="29" y="14" width="497" height="283" uuid="8291e3af-5623-4c34-8bc2-d4e0f9bccdaa"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend>
+						<font fontName="Calibri" size="7"/>
+					</chartLegend>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Lama Rata2 Pelayanan"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{branch_name}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{rata_rata}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot>
+						<seriesColor seriesOrder="0" color="#00FF33"/>
+					</plot>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat>
+							<labelFont>
+								<font fontName="Calibri" size="7"/>
+							</labelFont>
+							<tickLabelFont>
+								<font fontName="Calibri" size="7"/>
+							</tickLabelFont>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont>
+								<font fontName="Calibri" size="7"/>
+							</labelFont>
+							<tickLabelFont>
+								<font fontName="Calibri" size="7"/>
+							</tickLabelFont>
+						</axisFormat>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>

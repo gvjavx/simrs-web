@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity" dynamic-update="true"
+           table="it_simrs_header_checkup" select-before-update="true" schema="public">
+
+        <id name="noCheckup">
+            <column name="no_checkup" sql-type="varchar" length="30" not-null="true" />
+        </id>
+
+        <property name="idPasien">
+            <column name="id_pasien" sql-type="varchar" length="30" not-null="false"/>
+        </property>
+        <property name="nama">
+            <column name="nama" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="jenisKelamin">
+            <column name="jenis_kelamin" sql-type="varchar" length="1" not-null="false"/>
+        </property>
+        <property name="noKtp">
+            <column name="no_ktp" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="tempatLahir">
+            <column name="tempat_lahir" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="tglLahir">
+            <column name="tgl_lahir" sql-type="date"/>
+        </property>
+        <property name="desaId">
+            <column name="desa_id" sql-type="long" />
+        </property>
+        <property name="jalan">
+            <column name="jalan" sql-type="varchar" length="1000" />
+        </property>
+        <property name="suku">
+            <column name="suku" sql-type="varchar" length="100" />
+        </property>
+        <property name="agama">
+            <column name="agama" sql-type="varchar" length="50" />
+        </property>
+        <property name="profesi">
+            <column name="profesi" sql-type="varchar" length="50" />
+        </property>
+        <property name="noTelp">
+            <column name="no_telp" sql-type="varchar" length="50" />
+        </property>
+        <property name="keteranganKeluar">
+            <column name="keterangan_keluar" sql-type="varchar" length="1000" />
+        </property>
+        <property name="urlKtp">
+            <column name="url_ktp" sql-type="varchar" length="100" />
+        </property>
+        <property name="branchId">
+            <column name="branch_id" sql-type="varchar" length="10" />
+        </property>
+        <property name="flag">
+            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="action">
+            <column name="action" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="createdDate">
+            <column name="created_date" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="createdWho">
+            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="jenisKunjungan">
+            <column name="jenis_kunjungan" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="namaPenanggung">
+            <column name="nama_penanggung" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="hubunganKeluarga">
+            <column name="hubungan_keluarga" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="tinggi">
+            <column name="tinggi" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="berat">
+            <column name="berat_badan" sql-type="varchar" length="10" not-null="false" />
+        </property>
+        <property name="tglKeluar">
+            <column name="tgl_keluar" sql-type="timestamp" not-null="false" />
+        </property>
+        <property name="idAntrianOnline">
+            <column name="id_antrian_online" sql-type="varchar" />
+        </property>
+
+        <property name="tensi">
+            <column name="tensi" sql-type="varchar" />
+        </property>
+        <property name="suhu">
+            <column name="suhu" sql-type="varchar" />
+        </property>
+        <property name="nadi">
+            <column name="nadi" sql-type="varchar" />
+        </property>
+        <property name="rr">
+            <column name="rr" sql-type="varchar" />
+        </property>
+        <property name="autoanamnesis">
+            <column name="autoanamnesis" />
+        </property>
+        <property name="heteroanamnesis">
+            <column name="heteroanamnesis" />
+        </property>
+        <property name="pendidikan">
+            <column name="pendidikan" />
+        </property>
+        <property name="statusPerkawinan">
+            <column name="status_perkawinan" />
+        </property>
+        <property name="kunjunganPoli">
+            <column name="kunjungan_poli" />
+        </property>
+
+    </class>
+</hibernate-mapping>

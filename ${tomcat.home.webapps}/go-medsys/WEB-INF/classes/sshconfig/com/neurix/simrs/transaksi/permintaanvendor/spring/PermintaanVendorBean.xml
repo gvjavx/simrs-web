@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="permintaanVendorAction" class="com.neurix.simrs.transaksi.permintaanvendor.action.PermintaanVendorAction"
+          p:permintaanVendorBoProxy-ref="permintaanVendorBoProxy"
+          p:vendorBoProxy-ref="vendorBoProxy"
+          p:branchBoProxy-ref="branchBoProxy"
+    />
+
+    <bean id="purchaseOrderContoller" class="com.neurix.simrs.mobileapi.PurchaseOrderController"
+          p:permintaanVendorBoProxy-ref="permintaanVendorBoProxy"
+    />
+
+    <bean id="permintaanVendorBo" class="com.neurix.simrs.transaksi.permintaanvendor.bo.Impl.PermintaanVendorBoImpl"
+         p:permintaanVendorDao-ref="permintaanVendorDao"
+         p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
+         p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
+         p:obatDao-ref="obatDao"
+         p:tempObatGejalaDao-ref="tempObatGejalaDao"
+         p:transaksiObatDetailBatchDao-ref="transaksiObatDetailBatchDao"
+         p:vendorDao-ref="vendorDao"
+         p:obatGejalaDao-ref="obatGejalaDao"
+         p:riwayatBarangDao-ref="riwayatBarangDao"
+         p:transaksiStokDao-ref="transaksiStokDao"
+         p:branchDao-ref="branchDao"
+            p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
+            p:docPoDao-ref="docPoDao"
+            p:userVendorDao-ref="userVendorDao"
+    />
+
+    <bean id="permintaanVendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="permintaanVendorBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionPermintaanVendorInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionPermintaanVendorInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveListObatPo">PROPAGATION_REQUIRED</prop>
+                <prop key="saveConfirm">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="permintaanVendorDao" class="com.neurix.simrs.transaksi.permintaanvendor.dao.PermintaanVendorDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="tempObatGejalaDao" class="com.neurix.simrs.transaksi.permintaanvendor.dao.TempObatGejalaDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="riwayatBarangDao" class="com.neurix.simrs.transaksi.riwayatbarang.dao.RiwayatBarangDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="transaksiStokDao" class="com.neurix.simrs.transaksi.riwayatbarang.dao.TransaksiStokDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="docPoDao" class="com.neurix.simrs.transaksi.permintaanvendor.dao.DocPoDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="userVendorDao" class="com.neurix.simrs.transaksi.permintaanvendor.dao.UserVendorDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+
+</beans>

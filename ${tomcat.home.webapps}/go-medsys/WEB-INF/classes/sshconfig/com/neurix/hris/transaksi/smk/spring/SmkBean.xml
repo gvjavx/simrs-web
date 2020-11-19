@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="smkAction" class="com.neurix.hris.transaksi.smk.action.SmkAction"
+          p:smkBoProxy-ref="smkBoProxy" />
+
+    <bean id="smkBo" class="com.neurix.hris.transaksi.smk.bo.impl.SmkBoImpl"
+          p:smkDao-ref="smkDao"
+          p:smkIndikatorPenilaianAspekDao-ref="smkIndikatorPenilaianAspekDao3"
+          p:smkEvaluasiPegawaiAspekDao-ref="smkEvaluasiPegawaiAspekDao"
+          p:smkJabatanDao-ref="smkJabatanDao2"
+          p:smkJabatanDetaiDao-ref="smkJabatanDetailDao2"
+          p:smkEvaluasiPegawaiAspekDetailDao-ref="smkEvaluasiPegawaiAspekDetailDao"
+          p:smkIndikatorPenilaianCheckListDao-ref="smkIndikatorPenilaianCheckListDao2"
+          p:smkEvaluasiPegawaiAspekActivityDao-ref="smkEvaluasiPegawaiAspekActivityDao"
+          p:smkAspekActivityMonthlyDao-ref="smkAspekActivityMonthlyDao"
+          p:smkEvaluasiPegawaiAspekActivityPeristiwaDao-ref="smkEvaluasiPegawaiAspekActivityPeristiwaDao"
+          p:smkHistory-ref="smkHistoryEvaluasiPegawaiDao"
+          p:smkSkalaNilaiDao-ref="smkSkalaNilaiDao2"
+          p:biodataDao-ref="biodataDao3"
+          p:strukturJabatanDao-ref="strukturJabatanDao"
+          p:biodataHistoryDao-ref="biodataHistoryDao"
+          p:personilPositionDao-ref="personilPositionDao"
+          p:positionDao-ref="positionDao"
+          p:departmentDao-ref="departementDao"
+          p:positionBagianDao-ref="positionBagianDao"
+          p:historyJabatanPegawaiDao-ref="historyJabatanPegawaiDao"
+          p:branchDao-ref="branchDao"
+
+          p:smkHistoryDao-ref="smkHistoryDao"
+          p:smkHistoryEvaluasiPegawaiAspekDao-ref="smkHistoryEvaluasiPegawaiAspekDao"
+          p:smkHistoryEvaluasiPegawaiAspekDetailDao-ref="smkHistoryEvaluasiPegawaiAspekDetailDao"
+          p:smkHistoryEvaluasiPegawaiAspekActivityDao-ref="smkHistoryEvaluasiPegawaiAspekActivityDao"
+          p:smkHistoryEvaluasiPegawaiAspekActivityPeristiwaDao-ref="smkHistoryEvaluasiPegawaiAspekActivityPeristiwaDao"
+          p:smkHistoryAspekActivityMonthlyDao-ref="smkHistoryAspekActivityMonthlyDao"
+
+          p:smkHistoryGolonganDao-ref="smkHistoryGolonganDao"
+    />
+
+    <bean id="smkBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="smkBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="smkDao" class="com.neurix.hris.transaksi.smk.dao.SmkDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkIndikatorPenilaianAspekDao3" class="com.neurix.hris.master.smkIndikatorPenilaianAspek.dao.SmkIndikatorPenilaianAspekDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkEvaluasiPegawaiAspekDao" class="com.neurix.hris.transaksi.smk.dao.SmkEvaluasiPegawaiAspekDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkJabatanDao2" class="com.neurix.hris.master.smkJabatan.dao.SmkJabatanDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkJabatanDetailDao2" class="com.neurix.hris.master.smkJabatan.dao.SmkJabatanDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkEvaluasiPegawaiAspekDetailDao" class="com.neurix.hris.transaksi.smk.dao.SmkEvaluasiPegawaiAspekDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkIndikatorPenilaianCheckListDao2" class="com.neurix.hris.master.smkIndikatorPenilaianCheckList.dao.SmkIndikatorPenilaianCheckListDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkEvaluasiPegawaiAspekActivityDao" class="com.neurix.hris.transaksi.smk.dao.SmkEvaluasiPegawaiAspekActivityDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkAspekActivityMonthlyDao" class="com.neurix.hris.transaksi.smk.dao.SmkAspekActivityMonthlyDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkEvaluasiPegawaiAspekActivityPeristiwaDao" class="com.neurix.hris.transaksi.smk.dao.SmkEvaluasiPegawaiAspekActivityPeristiwaDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkHistoryEvaluasiPegawaiDao" class="com.neurix.hris.transaksi.smk.dao.SmkHistoryEvaluasiPegawaiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkSkalaNilaiDao2" class="com.neurix.hris.master.smkSkalaNilai.dao.SmkSkalaNilaiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="biodataDao3" class="com.neurix.hris.master.biodata.dao.BiodataDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="smkHistoryDao" class="com.neurix.hris.transaksi.smk.dao.SmkHistoryDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkHistoryEvaluasiPegawaiAspekDao" class="com.neurix.hris.transaksi.smk.dao.SmkHistoryEvaluasiPegawaiAspekDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkHistoryEvaluasiPegawaiAspekDetailDao" class="com.neurix.hris.transaksi.smk.dao.SmkHistoryEvaluasiPegawaiAspekDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkHistoryEvaluasiPegawaiAspekActivityDao" class="com.neurix.hris.transaksi.smk.dao.SmkHistoryEvaluasiPegawaiAspekActivityDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkHistoryEvaluasiPegawaiAspekActivityPeristiwaDao" class="com.neurix.hris.transaksi.smk.dao.SmkHistoryEvaluasiPegawaiAspekActivityPeristiwaDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkHistoryAspekActivityMonthlyDao" class="com.neurix.hris.transaksi.smk.dao.SmkHistoryAspekActivityMonthlyDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="smkHistoryGolonganDao" class="com.neurix.hris.transaksi.smk.dao.SmkHistoryGolonganDao"
+          p:sessionFactory-ref="sessionFactory" />
+</beans>

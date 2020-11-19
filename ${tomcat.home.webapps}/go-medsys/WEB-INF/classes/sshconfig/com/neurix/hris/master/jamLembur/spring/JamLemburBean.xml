@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="jamLemburAction" class="com.neurix.hris.master.jamLembur.action.JamLemburAction"
+          p:jamLemburBoProxy-ref="jamLemburBoProxy" />
+
+    <bean id="jamLemburBo" class="com.neurix.hris.master.jamLembur.bo.impl.JamLemburBoImpl"
+          p:jamLemburDao-ref="jamLemburDao2" />
+
+    <bean id="jamLemburBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="jamLemburBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="jamLemburDao2" class="com.neurix.hris.master.jamLembur.dao.JamLemburDao"
+          p:sessionFactory-ref="sessionFactory" />
+</beans>

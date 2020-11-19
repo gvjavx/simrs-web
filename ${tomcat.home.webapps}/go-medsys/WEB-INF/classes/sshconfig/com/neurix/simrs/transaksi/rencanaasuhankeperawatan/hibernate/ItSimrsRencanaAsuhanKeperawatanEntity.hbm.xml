@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.neurix.simrs.transaksi.rencanaasuhankeperawatan.model.ItSimrsRencanaAsuhanKeperawatanEntity" dynamic-update="true"
+           table="it_simrs_rencana_asuhan_keperawatan" select-before-update="true" schema="public">
+
+        <id name="idRencanaAsuhanKeperawatan">
+            <column name="id_rencana_asuhan_keperawatan" sql-type="varchar" length="30" not-null="true" />
+        </id>
+
+        <property name="idDetailCheckup">
+            <column name="id_detail_checkup"/>
+        </property>
+        <property name="waktu">
+            <column name="waktu"/>
+        </property>
+        <property name="diagnosa">
+            <column name="diagnosa"/>
+        </property>
+        <property name="hasil">
+            <column name="hasil"/>
+        </property>
+        <property name="intervensi">
+            <column name="intervensi"/>
+        </property>
+        <property name="implementasi">
+            <column name="implementasi"/>
+        </property>
+        <property name="evaluasi">
+            <column name="evaluasi"/>
+        </property>
+        <property name="ttdPerawat">
+            <column name="ttd_perawat"/>
+        </property>
+        <property name="keterangan">
+            <column name="keterangan"/>
+        </property>
+        <property name="flag">
+            <column name="flag"/>
+        </property>
+        <property name="action">
+            <column name="action"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date"/>
+        </property>
+        <property name="createdWho">
+            <column name="created_who"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who"/>
+        </property>
+        <property name="namaTerang">
+            <column name="nama_terang"/>
+        </property>
+        <property name="ttdDokter">
+            <column name="ttd_dokter"/>
+        </property>
+        <property name="namaDokter">
+            <column name="nama_dokter"/>
+        </property>
+        <property name="sip">
+            <column name="sip"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="paketPeriksaAction" class="com.neurix.simrs.transaksi.paketperiksa.action.PaketPeriksaAction"
+          p:paketPeriksaBoProxy-ref="paketPeriksaBoProxy"
+          p:masterVendorBoProxy-ref="masterVendorBoProxy"
+    />
+
+    <bean id="paketPeriksaBo" class="com.neurix.simrs.transaksi.paketperiksa.bo.impl.PaketPeriksaBoImpl"
+          p:itemPaketDao-ref="itemPaketDao"
+          p:kelasPaketDao-ref="kelasPaketDao"
+          p:paketPasienDao-ref="paketPasienDao"
+          p:paketDao-ref="paketDao"
+          p:detailPaketDao-ref="detailPaketDao"
+    />
+
+    <bean id="paketPeriksaBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="paketPeriksaBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionPaketPeriksaInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionPaketPeriksaInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getListPaketPeriksa">readOnly</prop>
+                <prop key="savePaketPasien">PROPAGATION_REQUIRED</prop>
+                <!--<prop key="saveEdit">PROPAGATION_REQUIRED</prop>-->
+            </props>
+        </property>
+    </bean>
+
+    <bean id="paketDao" class="com.neurix.simrs.transaksi.paketperiksa.dao.PaketDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="itemPaketDao" class="com.neurix.simrs.transaksi.paketperiksa.dao.ItemPaketDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="kelasPaketDao" class="com.neurix.simrs.transaksi.paketperiksa.dao.KelasPaketDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="paketPasienDao" class="com.neurix.simrs.transaksi.paketperiksa.dao.PaketPasienDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="detailPaketDao" class="com.neurix.simrs.transaksi.paketperiksa.dao.DetailPaketDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>
