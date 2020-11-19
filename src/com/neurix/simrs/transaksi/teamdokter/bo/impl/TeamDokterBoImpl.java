@@ -1,7 +1,6 @@
 package com.neurix.simrs.transaksi.teamdokter.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.bo.impl.DokterBoImpl;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -11,8 +10,6 @@ import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.ContextLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,9 +46,6 @@ public class TeamDokterBoImpl extends DokterBoImpl implements TeamDokterBo{
 
                     Dokter dokter = new Dokter();
                     dokter.setIdDokter(entity.getIdDokter());
-
-//                    ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-//                    DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
 
                     List<Dokter> dokters = getByCriteria(dokter);
 

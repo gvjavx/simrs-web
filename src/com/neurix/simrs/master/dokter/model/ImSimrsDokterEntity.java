@@ -27,13 +27,13 @@ public class ImSimrsDokterEntity implements Serializable {
     private String kuotaTele;
     private String sip;
     private BigInteger kuotaOnSite;
-    private String kuotaBpjs;
+    private BigInteger kuotaBpjs;
 
-    public String getKuotaBpjs() {
+    public BigInteger getKuotaBpjs() {
         return kuotaBpjs;
     }
 
-    public void setKuotaBpjs(String kuotaBpjs) {
+    public void setKuotaBpjs(BigInteger kuotaBpjs) {
         this.kuotaBpjs = kuotaBpjs;
     }
 
