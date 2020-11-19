@@ -73,9 +73,9 @@
                 class="com.neurix.simrs.master.rekananops.action.RekananOpsAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/master/rekananOps/SearchRekananOps.jsp</result>
-            <result name="success">/pages/com/neurix/simrs/master/rekananOps/SearchRekananOps.jsp</result>
-            <result name="input">/pages/com/neurix/simrs/master/rekananOps/SearchRekananOps.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/master/rekananOps/searchRekananOps.jsp</result>
+            <result name="success">/pages/com/neurix/simrs/master/rekananOps/searchRekananOps.jsp</result>
+            <result name="input">/pages/com/neurix/simrs/master/rekananOps/searchRekananOps.jsp</result>
             <result name="init_add">/pages/com/neurix/simrs/master/rekananOps/addRekananOps.jsp</result>
             <result name="success_save_add">/pages/com/neurix/simrs/master/rekananOps/addRekananOps.jsp</result>
             <result name="error">/pages/com/neurix/simrs/master/rekananOps/addRekananOps.jsp</result>
@@ -96,7 +96,7 @@
         <action name="paging_displaytag_rekananOps"
                 class="com.neurix.simrs.master.rekananops.action.RekananOpsAction" method="paging">
             <interceptor-ref name="defaultStack" />
-            <result name="success">/pages/com/neurix/simrs/master/rekananOps/SearchRekananOps.jsp</result>
+            <result name="success">/pages/com/neurix/simrs/master/rekananOps/searchRekananOps.jsp</result>
         </action>
 
     </package>

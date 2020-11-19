@@ -34,9 +34,6 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
             if (mapCriteria.get("id_dokter") != null){
                 criteria.add(Restrictions.eq("idDokter", mapCriteria.get("id_dokter").toString()));
             }
-            if (mapCriteria.get("kuota_on_site") != null){
-                criteria.add(Restrictions.eq("kuotaOnSite", (BigInteger)mapCriteria.get("kuota_tele")));
-            }
             if (mapCriteria.get("nama_dokter") != null){
                 criteria.add(Restrictions.ilike("namaDokter", "%" + (String)mapCriteria.get("nama_dokter") + "%"));
             }
@@ -68,14 +65,6 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "c.nama_pelayanan, \n" +
                     "a.lat, \n" +
                     "a.lon \n" +
-//
-//                    "a.flag_call, \n" +
-//                    "a.flag_tele, \n" +
-//                    "a.sip, \n" +
-//                    "a.kuota_on_site, \n" +
-//                    "a.kuota_bpjs, \n" +
-//                    "a.kuota_tele \n" +
-
                     "FROM im_simrs_dokter a\n" +
                     "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
                     "INNER JOIN im_simrs_pelayanan c ON c.id_pelayanan = b.id_pelayanan\n" +
@@ -98,14 +87,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     dokter.setIdPelayanan(obj[6] == null ? "" : obj[6].toString());
                     dokter.setNamaPelayanan(obj[7] == null ? "" : obj[7].toString());
                     dokter.setLat(obj[8] == null ? "": obj[8].toString());
-                    dokter.setLon(obj[9] == null ? "": (String) obj[9]);
-
-//                    dokter.setFlagCall(obj[10] == null ? "": (String) obj[10]);
-//                    dokter.setFlagTele(obj[11] == null ? "" : (String) obj[11]);
-//                    dokter.setSip(obj[12] == null ? "" : (String) obj[12]) ;
-//                    dokter.setKuotaOnSite(obj[13] == null ? null : (BigInteger) obj[13]);
-//                    dokter.setKuotaBpjs(obj[14] == null ? "" : (String) obj[14]);
-//                    dokter.setKuotaTele(obj[15] == null ? "" : (String) obj[15]);
+                    dokter.setLon(obj[9] == null ? "": obj[9].toString());
                     list.add(dokter);
                 }
             }
