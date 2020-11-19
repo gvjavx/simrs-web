@@ -10,6 +10,10 @@
           p:branchDao-ref="branchDao"
     />
 
+    <bean id="detailRekananOpsAction" class="com.neurix.simrs.master.rekananops.action.DetailRekananOpsAction"
+          p:detailRekananOpsBoProxy-ref="detailRekananOpsBoProxy"
+    />
+
     <bean id="detailRekananOpsBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="detailRekananOpsBo">
         <property name="interceptorNames">

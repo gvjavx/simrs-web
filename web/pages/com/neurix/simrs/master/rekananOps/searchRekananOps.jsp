@@ -25,7 +25,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_rekananOps'/>";
+            window.location.href="<s:url action='initForm_detailrekananops'/>";
         }
 
     </script>
@@ -57,7 +57,7 @@
                             <tr>
                                 <td align="center">
                                     <s:form id="rekananOpsForm" method="post"  theme="simple"
-                                            namespace="/rekananOps" action="search_rekananOps.action" cssClass="form-horizontal">
+                                            namespace="/detailrekananops" action="search_detailrekananops.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -123,7 +123,7 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:url var="urlAdd" namespace="/rekananOps" action="add_rekananOps" escapeAmp="false">
+                                                        <s:url var="urlAdd" namespace="/detailrekananops" action="add_detailrekananops" escapeAmp="false">
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
@@ -184,7 +184,7 @@
 
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlEdit" namespace="/rekananOps" action="edit_rekananOps" escapeAmp="false">
+                                                                    <s:url var="urlEdit" namespace="/detailrekananops" action="edit_detailrekananops" escapeAmp="false">
                                                                         <s:param name="id"><s:property value="#attr.row.idRekananOps"/></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                     </s:url>
@@ -196,7 +196,7 @@
 
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlViewDelete" namespace="/rekananOps" action="delete_rekananOps" escapeAmp="false">
+                                                                    <s:url var="urlViewDelete" namespace="/detailrekananops" action="delete_detailrekananops" escapeAmp="false">
                                                                         <s:param name="id"><s:property value="#attr.row.idRekananOps" /></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                                     </s:url>

@@ -1,9 +1,0 @@
-.vertical-alignment-helper {
-    display:table;
-    height: 100%;
-    width: 100%;
-}
-.vertical-align-center {
-    display: table-cell;
-    vertical-align: middle;
-}
