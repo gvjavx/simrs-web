@@ -26,6 +26,13 @@ public class RekananOpsBoImpl implements RekananOpsBo {
     private DetailRekananOpsDao detailRekananOpsDao;
     private BranchDao branchDao;
 
+    public void setDetailRekananOpsDao(DetailRekananOpsDao detailRekananOpsDao) {
+        this.detailRekananOpsDao = detailRekananOpsDao;
+    }
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
 
     @Override
     public List<RekananOps> getByCriteria(RekananOps bean) throws GeneralBOException {
@@ -36,9 +43,7 @@ public class RekananOpsBoImpl implements RekananOpsBo {
             if (bean.getIdRekananOps() != null && !"".equalsIgnoreCase(bean.getIdRekananOps())) {
                 hsCriteria.put("id_rekanan_ops", bean.getIdRekananOps());
             }
-            if (bean.getNomorMaster() != null && !"".equalsIgnoreCase(bean.getNomorMaster())) {
-                hsCriteria.put("nomor_master", bean.getNomorMaster());
-            }
+
             if (bean.getIsBpjs() != null && !"".equalsIgnoreCase(bean.getIsBpjs())) {
                 hsCriteria.put("is_bpjs", bean.getIsBpjs());
             }
@@ -90,6 +95,9 @@ public class RekananOpsBoImpl implements RekananOpsBo {
             if (bean.getIdRekananOps() != null && !"".equalsIgnoreCase(bean.getIdRekananOps())) {
                 hsCriteria.put("id_rekanan_ops", bean.getIdRekananOps());
             }
+            if (bean.getNomorMaster() != null && !"".equalsIgnoreCase(bean.getNomorMaster())) {
+                hsCriteria.put("nomor_master", bean.getNomorMaster());
+            }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 if ("N".equalsIgnoreCase(bean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -98,6 +106,15 @@ public class RekananOpsBoImpl implements RekananOpsBo {
                 }
             } else {
                 hsCriteria.put("flag", "Y");
+            }
+            if (bean.getTipe() != null && !"".equalsIgnoreCase(bean.getTipe())) {
+                if ("no".equalsIgnoreCase(bean.getFlag())) {
+                    hsCriteria.put("tipe", "no");
+                } else {
+                    hsCriteria.put("tipe", bean.getFlag());
+                }
+            } else {
+                hsCriteria.put("tipe", "ptpn");
             }
 
             List<ImSimrsDetailRekananOpsEntity> listOfDetail = null;
@@ -111,16 +128,23 @@ public class RekananOpsBoImpl implements RekananOpsBo {
                 for (ImSimrsDetailRekananOpsEntity detail :listOfDetail){
                     DetailRekananOps detailRekananOps = new DetailRekananOps();
                     detailRekananOps.setIdDetailRekananOps(detail.getIdDetailRekananOps());
+                    detailRekananOps.setIdRekananOps(detail.getIdRekananOps());
                     detailRekananOps.setDiskon(detail.getDiskon());
                     detailRekananOps.setIsBpjs(detail.getIsBpjs());
                     detailRekananOps.setBranchId(detail.getBranchId());
+                    detailRekananOps.setCreatedWho(detail.getCreatedWho());
                     detailRekananOps.setCreatedDate(detail.getCreatedDate());
                     detailRekananOps.setLastUpdate(detail.getLastUpdate());
                     detailRekananOps.setLastUpdateWho(detail.getLastUpdateWho());
+                    detailRekananOps.setFlag(detail.getFlag());
+                    detailRekananOps.setAction(detail.getAction());
 
                     // mengambil dari RekananOps
                     hsCriteria = new HashMap();
-                    hsCriteria.put("id_detail_rekanan_ops)", detail.getIdDetailRekananOps());
+                    hsCriteria.put("id_rekanan_ops", detail.getIdRekananOps());
+                    if (bean.getNomorMaster() != null && !"".equalsIgnoreCase(bean.getNomorMaster())) {
+                        hsCriteria.put("nomor_master", bean.getNomorMaster());
+                    }
                     List<ImSimrsRekananOpsEntity> listOfHead = null ;
                     try {
                         listOfHead = rekananOpsDao.getByCriteria(hsCriteria);
@@ -135,8 +159,12 @@ public class RekananOpsBoImpl implements RekananOpsBo {
                         }
                     }
 
+                    // END
+
+                    // mengambil data dari branch
                     hsCriteria = new HashMap();
                     hsCriteria.put("branch_id", detail.getBranchId());
+                    hsCriteria.put("flag", "Y");
 
                     List<ImBranches> listOfBranch = null;
                     try {

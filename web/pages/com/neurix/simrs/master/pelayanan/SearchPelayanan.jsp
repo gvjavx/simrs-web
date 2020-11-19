@@ -220,7 +220,8 @@
                                                         </sj:dialog>
 
                                                         <s:set name="listOfsearchPelayanan" value="#session.listOfResultPelayanan" scope="request" />
-                                                        <display:table name="listOfsearchPelayanan" class="table table-condensed table-striped table-hover"
+                                                        <display:table name="listOfsearchPelayanan"
+                                                                       class="table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_pelayanan.action" export="true" id="row"
                                                                        pagesize="14" style="font-size:12">
 
