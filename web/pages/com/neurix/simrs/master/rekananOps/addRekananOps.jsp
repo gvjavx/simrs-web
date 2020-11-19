@@ -16,7 +16,7 @@
         };
 
     $.subscribe('beforeProcessSaveAdd', function (event, data) {
-        var namarekanan = document.getElementById("namaRekananOpsAdd").value;
+        var namarekanan = document.getElementById("rekananOps").value;
      
         if (namarekanan != '' ) {
             if (confirm('Do you want to save this record?')) {
@@ -89,19 +89,18 @@
                 <table >
 
                     <tr>
-                        <td width="30%">
-                            <label class="control-label"><small>Nama RekananOps :</small></label>
+                        <td width="20%">
+                            <label class="control-label"><small>Nomor Master :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaRekananOpsAdd" name="rekananOps.namaRekanan"
-                                             required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="rekananOps" name="rekananOps.namaRekanan" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
                     <tr>
-                        <td width="30%">
+                        <td >
                             <label class="control-label"><small>Nama Branche :</small></label>
                         </td>
                         <td>
