@@ -253,7 +253,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Konsul Tele</label>
