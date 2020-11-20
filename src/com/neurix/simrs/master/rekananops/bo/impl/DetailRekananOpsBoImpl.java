@@ -93,9 +93,7 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
                     // mengambil dari RekananOps
                     hsCriteria = new HashMap();
                     hsCriteria.put("id_rekanan_ops", detail.getIdRekananOps());
-                    if (bean.getNomorMaster() != null && !"".equalsIgnoreCase(bean.getNomorMaster())) {
-                        hsCriteria.put("nomor_master", bean.getNomorMaster());
-                    }
+
                     List<ImSimrsRekananOpsEntity> listOfHead = null ;
                     try {
                         listOfHead = rekananOpsDao.getByCriteria(hsCriteria);
