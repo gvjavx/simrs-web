@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="detailRekananOpsBo" class="com.neurix.simrs.master.rekananops.bo.impl.DetailRekananOpsBoImpl"
+          p:detailRekananOpsDao-ref="detailRekananOpsDao"
+          p:rekananOpsDao-ref="rekananOpsDao"
+          p:branchDao-ref="branchDao"
+    />
+
+    <bean id="detailRekananOpsAction" class="com.neurix.simrs.master.rekananops.action.DetailRekananOpsAction"
+          p:detailRekananOpsBoProxy-ref="detailRekananOpsBoProxy"
+    />
+
+    <bean id="detailRekananOpsBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="detailRekananOpsBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionDetailRekananInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionDetailRekananInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
+                <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
+                <prop key="saveDelete">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

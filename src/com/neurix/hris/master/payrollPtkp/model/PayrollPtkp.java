@@ -10,6 +10,16 @@ public class PayrollPtkp extends BaseModel {
     private Integer jumlahTanggungan;
     private BigDecimal nilai;
 
+    private String statusKeluargaName;
+
+    public String getStatusKeluargaName() {
+        return statusKeluargaName;
+    }
+
+    public void setStatusKeluargaName(String statusKeluargaName) {
+        this.statusKeluargaName = statusKeluargaName;
+    }
+
     public String getIdPtkp() {
         return idPtkp;
     }
@@ -41,4 +51,5 @@ public class PayrollPtkp extends BaseModel {
     public void setNilai(BigDecimal nilai) {
         this.nilai = nilai;
     }
+
 }

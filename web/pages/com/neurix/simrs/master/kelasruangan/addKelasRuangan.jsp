@@ -18,7 +18,6 @@
         $.subscribe('beforeProcessSave1', function (event, data) {
             var namaKelasRuangan = document.getElementById("nama_kelasruangan1").value;
             var position = document.getElementById("positionId1").value;
-            console.log(position);
 
             if (namaKelasRuangan != '' && position != '') {
                 if (confirm('Do you want to save this record?')) {
@@ -39,7 +38,6 @@
                 }
 
                 document.getElementById('errorValidationMessage1').innerHTML = msg;
-
                 $.publish('showErrorValidationDialog');
             }
         });
@@ -72,12 +70,14 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addKelasRuanganForm" method="post" theme="simple" namespace="/kelasruangan" action="saveAdd_kelasruangan" cssClass="well form-horizontal">
+            <s:form id="addKelasRuanganForm" method="post"
+                    theme="simple" namespace="/kelasruangan"
+                    action="saveAdd_kelasruangan" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
-                <legend align="left">Add Kelas Ruangan</legend>
+                <legend align="left">Add Kelas Ruangan :</legend>
 
 
                 <table>
@@ -90,15 +90,15 @@
 
                 <table >
                     <tr>
-                        <td>
+                        <td width="30%">
                             <label class="control-label">
-                                <small>Nama Kelas Ruangan</small>
+                                <small>Nama Kelas Ruangan :</small>
                             </label>
                         </td>
                         <td>
                             <table>
                                 <s:textfield id="nama_kelasruangan1" cssStyle="margin-top: 7px"
-                                             name="kelasRuangan.namaKelasRuangan" required="false"
+                                             name="kelasRuangan.namaKelasRuangan"
                                              readonly="false" cssClass="form-control"/>
                             </table>
                         </td>
@@ -111,7 +111,8 @@
                             <table>
                                 <s:action id="initComboPosition" namespace="/kelasruangan" name="initComboPosition_kelasruangan"/>
                                 <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="kelasRuangan.positionId"
-                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="positionId" listValue="positionName"
+                                          headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -121,7 +122,8 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addKelasRuanganForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addKelasRuanganForm"
+                                   id="save" name="save"
                                    onBeforeTopics="beforeProcessSave1" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>

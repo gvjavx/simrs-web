@@ -18,14 +18,23 @@
         };
 
         $.subscribe('beforeProcessSave2', function (event, data) {
-            var idDokter = document.getElementById("idDokter1").value;
+            // var idDokter = document.getElementById("idDokter1").value;
             var namaDokter = document.getElementById("namaDokter1").value;
             var kuota = document.getElementById("kuota1").value;
             var kodeDpjp = document.getElementById("kodeDpjp1").value;
             var pelayanan = document.getElementById("idPelayanan1").value;
-            var position = document.getElementById("positionId1").value;
+            // var position = document.getElementById("positionId1").value;
 
-            if (idDokter != '' && namaDokter != '' && kuota != '' && kodeDpjp != '' && pelayanan != '' && position != '') {
+            var flagcall = document.getElementById("flagCall1").value;
+            var flagtele = document.getElementById("flagTele1").value;
+            var kuotatele = document.getElementById("kuotaTele1").value;
+            var kuotaonsite = document.getElementById("kuotaOnSite1").value;
+            var sip = document.getElementById("sip1").value;
+            var kuotabpjs = document.getElementById("kuotaBpjs1").value;
+
+
+            if ( namaDokter != '' && pelayanan != '' && kuota != '' && kodeDpjp != ''  && flagcall != ''
+                && flagtele != '' && kuotatele != '' && kuotaonsite != '' && sip != '' && kuotabpjs != '' ) {
                 if (confirm('Do you want to update this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -36,24 +45,36 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (idDokter == '') {
+                if (namaDokter == '') {
                     msg += 'Field <strong>ID Dokter </strong> is required.' + '<br/>';
                 }
-                if (namaDokter == '') {
-                    msg += 'Field <strong>Nama Dokter </strong> is required.' + '<br/>';
+                if (pelayanan == '') {
+                    msg += 'Field <strong>pelayanan </strong> is required.' + '<br/>';
                 }
                 if (kuota == '') {
-                    msg += 'Field <strong>Kuota Dokter </strong> is required.' + '<br/>';
+                    msg += 'Field <strong>kuota </strong> is required.' + '<br/>';
                 }
                 if (kodeDpjp == '') {
-                    msg += 'Field <strong>Kode DPJP </strong> is required.' + '<br/>';
+                    msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
                 }
-                if (pelayanan == '') {
-                    msg += 'Field <strong>Nama Pelayanan </strong> is required.' + '<br/>';
+                if (flagcall == '') {
+                    msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
                 }
-                if (position == '') {
-                    msg += 'Field <strong>Divisi </strong> is required.' + '<br/>';
+                if (kuotatele == '') {
+                    msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
                 }
+                if (kuotaonsite == '') {
+                    msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
+                }
+                if (sip == '') {
+                    msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
+                }
+                if (kuotabpjs == '') {
+                    msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
+                }
+
+
+
 
                 document.getElementById('errorValidationMessage2').innerHTML = msg;
 
@@ -89,7 +110,8 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="editDokterForm" method="post" theme="simple" namespace="/dokter" action="saveEdit_dokter" cssClass="well form-horizontal">
+            <s:form id="editDokterForm" method="post" theme="simple" namespace="/dokter"
+                    action="saveEdit_dokter" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -113,7 +135,7 @@
                         <td>
                             <table>
                                 <s:textfield id="idDokter1" name="dokter.idDokter" required="true" disabled="true" cssClass="form-control"/>
-                                <s:hidden id="idDokter1" name="dokter.idDokter" />
+                                <s:hidden  name="dokter.idDokter" />
                             </table>
                         </td>
                     </tr>
@@ -123,7 +145,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaDokter1" name="dokter.namaDokter" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="namaDokter1" name="dokter.namaDokter" cssStyle="margin-top: 5px"
+                                             required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -135,8 +158,10 @@
                         <td>
                             <table>
                                 <s:action id="initComboPelayanan" namespace="/dokter" name="initComboPelayanan_dokter"/>
-                                <s:select list="#initComboPelayanan.listOfComboPelayanan" id="idPelayanan1" name="dokter.idPelayanan"
-                                          listKey="idPelayanan" listValue="namaPelayanan" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:select list="#initComboPelayanan.listOfComboPelayanan" id="idPelayanan1"
+                                          name="dokter.idPelayanan"
+                                          listKey="idPelayanan" listValue="namaPelayanan"
+                                          headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -147,7 +172,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="kuota1" name="dokter.kuota" required="true" disabled="false" type="number" cssClass="form-control"/>
+                                <s:textfield id="kuota1" name="dokter.kuota" required="true" cssStyle="margin-top: 5px" disabled="false" type="number" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -158,24 +183,81 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="kodeDpjp1" name="dokter.kodeDpjp" required="true" disabled="false" type="number" cssClass="form-control"/>
+                                <s:textfield id="kodeDpjp1" name="dokter.kodeDpjp"
+                                             required="true" disabled="false" type="number" cssClass="form-control" cssStyle="margin-top: 5px"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Flag Call :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'Non-Active'}" id="flagCall1" name="dokter.flagCall"
+                                          headerKey="Y" headerValue="Active" cssClass="form-control" cssStyle="margin-top: 5px" />
+                            </table>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Flag Tele :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'Non-Active'}" id="flagTele1" name="dokter.flagTele"
+                                          headerKey="Y" headerValue="Active" cssClass="form-control" cssStyle="margin-top: 5px"/>
+                            </table>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kuota Telemedik :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="kuotaTele1" name="dokter.kuotaTele" required="true"
+                                             disabled="false" type="number" cssClass="form-control" cssStyle="margin-top: 5px"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kuota On Site :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="kuotaOnSite1" name="dokter.kuotaOnSite" required="true"
+                                             disabled="false" type="number" cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Divisi :</small></label>
+                            <label class="control-label"><small>Surat Ijin Praktek :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="initComboPosition" namespace="/dokter" name="initComboPosition_dokter"/>
-                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="dokter.positionId"
-                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:textfield id="sip1" name="dokter.sip" required="true"
+                                             disabled="false" type="number" cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kuota Bpjs :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="kuotaBpjs1" name="dokter.kuotaBpjs" required="true"
+                                             disabled="false" type="number" cssClass="form-control" cssStyle="margin-top: 5px"/>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
 
 
@@ -222,7 +304,7 @@
                                         </sj:dialog>
 
                                         <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   height="250" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');

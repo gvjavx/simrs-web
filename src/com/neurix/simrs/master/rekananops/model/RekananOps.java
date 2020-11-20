@@ -20,6 +20,7 @@ public class RekananOps {
     private String tipe;
     private String branchId;
 
+
     public String getBranchId() {
         return branchId;
     }

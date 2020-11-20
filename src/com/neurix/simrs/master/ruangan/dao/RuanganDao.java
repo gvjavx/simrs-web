@@ -62,9 +62,7 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
             }
-            if (mapCriteria.get("sisa_kuota") != null) {
-                criteria.add(Restrictions.gt("sisaKuota", Integer.parseInt(mapCriteria.get("sisa_kuota").toString())));
-            }
+
 
         }
 
@@ -152,7 +150,7 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     ruangan.setIdRuangan(obj[1] == null ? "" : obj[1].toString());
                     ruangan.setNamaRuangan(obj[2] == null ? "" : obj[2].toString());
                     ruangan.setNoRuangan(obj[3] == null ? "" : obj[3].toString());
-                    ruangan.setStatusRuangan(obj[4] == null ? "" : obj[4].toString());
+//                ruangan.setStatusRuangan(obj[4] == null ? "" : obj[4].toString());
                     ruangan.setIdDetailCheckup(obj[5] == null ? "" : obj[5].toString());
                     ruangan.setTglMasuk(obj[6] == null ? "" : obj[6].toString());
                     if(obj[7] != null){
@@ -249,9 +247,9 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
         if(bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
             idKelas = "AND b.id_kelas_ruangan = '"+bean.getIdKelasRuangan()+"' \n";
         }
-        if("Y".equalsIgnoreCase(bean.getStatusRuangan())){
-            status = "AND c.status = 'Y'\n";
-        }
+//        if("Y".equalsIgnoreCase(bean.getStatusRuangan())){
+//            status = "AND c.status = 'Y'\n";
+//        }
         if(bean.getKategori() != null && !"".equalsIgnoreCase(bean.getKategori())){
             kategori = bean.getKategori();
         }
@@ -264,7 +262,7 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                 "FROM im_simrs_kelas_ruangan a\n" +
                 "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
                 "INNER JOIN mt_simrs_ruangan_tempat_tidur c ON b.id_ruangan = c.id_ruangan\n" +
-                "WHERE a.kategori LIKE :kategori\n" + idKelas + status +
+                "WHERE a.kategori LIKE :kategori\n" + idKelas  +
                 "AND b.branch_id = :branchId\n" +
                 "ORDER BY b.nama_ruangan ASC";
 

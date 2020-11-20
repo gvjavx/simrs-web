@@ -11,8 +11,10 @@
           p:asuransiBoProxy-ref="asuransiBo"
     />
 
+    <!--memberi ijin mengambil database lain-->
     <bean id="asuransiBo" class="com.neurix.simrs.master.jenisperiksapasien.bo.impl.AsuransiBoImpl"
           p:asuransiDao-ref="asuransiDao"
+          p:masterDao-ref="masterDao"
     />
 
     <bean id="asuransiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
