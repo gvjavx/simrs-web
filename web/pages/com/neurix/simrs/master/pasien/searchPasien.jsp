@@ -858,18 +858,10 @@
         }
     }
 
-    $('.tablePasien').on('click', '.item-register-finger', function () {
-        var idPasien = $(this).attr('data');
-        var location = window.location.hostname;
-        var url = btoa('http://192.168.43.222:8080/simrs/registerFinger.action?userId=' + idPasien);
-        var href = 'finspot:FingerspotReg;' + url;
-        window.location.href = href;
-    });
-
     function registrasiFinger(idPasien) {
+        var hostname = window.location.origin+contextPathHeader;
         if (idPasien != '') {
-            var location = window.location.href;
-            var url = btoa('http://192.168.43.222:8080/simrs/registerFinger.action?userId=' + idPasien);
+            var url = btoa(hostname+'/registerFinger.action?userId=' + idPasien+'&hostname='+hostname);
             var href = 'finspot:FingerspotReg;' + url;
             window.location.href = href;
         }

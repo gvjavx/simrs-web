@@ -64,7 +64,7 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                 headerTindakan.setCreatedWho(entity.getCreatedWho());
                 headerTindakan.setLastUpdate(entity.getLastUpdate());
                 headerTindakan.setLastUpdateWho(entity.getLastUpdateWho());
-                ImSimrsTindakanBpjsEntity bpjsEntity = tindakanBpjsDao.getById("idTindakanBpjs", bean.getKategoriInaBpjs());
+                ImSimrsTindakanBpjsEntity bpjsEntity = tindakanBpjsDao.getById("idTindakanBpjs", entity.getKategoriInaBpjs());
                 if(bpjsEntity != null){
                     headerTindakan.setNamaKategoriBpjs(bpjsEntity.getNamaTindakanBpjs());
                 }

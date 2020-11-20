@@ -170,8 +170,8 @@
                                         <%--</div>--%>
                                         <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>
                                                 <%--class="fa fa-plus"></i> Tambah Rawat Pasien</a>--%>
-                                        <a type="button" class="btn btn-warning" id="btnFingerPrint"><i
-                                                class="fa fa-plus"></i> With Finger Print</a>
+                                        <%--<a type="button" class="btn btn-warning" id="btnFingerPrint"><i--%>
+                                                <%--class="fa fa-plus"></i> With Finger Print</a>--%>
                                         <a type="button" class="btn btn-danger" href="initForm_checkup.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
