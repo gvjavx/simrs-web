@@ -1433,7 +1433,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         request.setJnsPelayanan("2");
                         request.setCatatan(catatan);
                         request.setDiagRujukan(diagnosaRawat.getIdDiagnosa());
-                        request.setTipeRujukan("1");
+                        request.setTipeRujukan("0");
                         request.setPoliRujukan(pelayananEntity.getKodePoliVclaim());
                         request.setUserPembuatRujukan(user);
                         try {
