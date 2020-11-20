@@ -10,7 +10,7 @@
 
     <bean id="headerTindakanBo" class="com.neurix.simrs.master.tindakan.bo.impl.HeaderTindakanBoImpl"
         p:headerTindakanDao-ref="headerTindakanDao"
-        p:tindakanBpjsDao-ref="tindakanBpjsDao"
+        p:kategoriTindakanInaDao-ref="kategoriTindakanInaDao"
     />
 
     <bean id="headerTindakanBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

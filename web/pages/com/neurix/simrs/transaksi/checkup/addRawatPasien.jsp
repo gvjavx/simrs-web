@@ -340,7 +340,6 @@
                 $('#pembayaran').val(null);
                 $('#uang_muka').val(null);
                 $('#diagnosa_awal').val(null);
-                $('#perujuk').val(null);
                 $('#intansi_perujuk').val(null);
                 $('#no_rujukan').val(null);
                 $('#ppk_rujukan').val(null);
@@ -359,7 +358,7 @@
                 $('#poli').val(null).trigger('change');
                 $('#nama_dokter').val(null);
                 $('#asuransi').val(null);
-                $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan, #perujuk').val(null);
+                $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan').val(null);
                 var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
                 $('#img-upload').attr('src', img);
                 $('#imgInp').attr('value', null);
@@ -382,7 +381,6 @@
                 $('#ppk_rujukan').val(null);
                 $('#intansi_perujuk').val(null);
                 $('#no_rujukan').val(null);
-                $('#perujuk').val(null);
                 $('#no_kartu_ptpn').val(null);
                 $('#unit_pg').val(null);
 
