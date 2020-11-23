@@ -1,16 +1,22 @@
 package com.neurix.simrs.master.rekananops.bo.impl;
 
+
+
 import com.neurix.authorization.company.dao.BranchDao;
-import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
+
+import com.neurix.hris.master.cuti.model.ImCutiEntity;
+import com.neurix.hris.master.cuti.model.ImCutiHistoryEntity;
+
+
+import com.neurix.simrs.master.rekananops.bo.DetailRekananOpsBo;
 import com.neurix.simrs.master.rekananops.dao.DetailRekananOpsDao;
 import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;
 import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
 import com.neurix.simrs.master.rekananops.model.ImSimrsDetailRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
-import com.neurix.simrs.master.rekananops.model.RekananOps;
+
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -20,11 +26,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RekananOpsBoImpl implements RekananOpsBo {
-    protected static transient Logger logger = Logger.getLogger(RekananOpsBoImpl.class);
+public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
+    protected static transient Logger logger = Logger.getLogger(DetailRekananOpsBoImpl.class);
+
     private RekananOpsDao rekananOpsDao;
     private DetailRekananOpsDao detailRekananOpsDao;
     private BranchDao branchDao;
+
+    public void setRekananOpsDao(RekananOpsDao rekananOpsDao) {
+        this.rekananOpsDao = rekananOpsDao;
+    }
 
     public void setDetailRekananOpsDao(DetailRekananOpsDao detailRekananOpsDao) {
         this.detailRekananOpsDao = detailRekananOpsDao;
@@ -35,68 +46,16 @@ public class RekananOpsBoImpl implements RekananOpsBo {
     }
 
     @Override
-    public List<RekananOps> getByCriteria(RekananOps bean) throws GeneralBOException {
-        logger.info("[RekananOpsBoImpl.getByCriteria] Start >>>>>>");
-        List<RekananOps> listOfResultRekananOps = new ArrayList<>();
-        if(bean != null){
-            Map hsCriteria = new HashMap();
-            if (bean.getIdRekananOps() != null && !"".equalsIgnoreCase(bean.getIdRekananOps())) {
-                hsCriteria.put("id_rekanan_ops", bean.getIdRekananOps());
-            }
-
-            if (bean.getIsBpjs() != null && !"".equalsIgnoreCase(bean.getIsBpjs())) {
-                hsCriteria.put("is_bpjs", bean.getIsBpjs());
-            }
-            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
-                if ("N".equalsIgnoreCase(bean.getFlag())) {
-                    hsCriteria.put("flag", "N");
-                } else {
-                    hsCriteria.put("flag", bean.getFlag());
-                }
-            } else {
-                hsCriteria.put("flag", "Y");
-            }
-
-            List<ImSimrsRekananOpsEntity> imSimrsRekananOpsEntities = null;
-            try {
-                imSimrsRekananOpsEntities = rekananOpsDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e) {
-                logger.error("[RekananOpsBoImpl.getByCriteria] Error get ruangan data " + e.getMessage());
-            }
-
-            if (imSimrsRekananOpsEntities.size() > 0) {
-                for (ImSimrsRekananOpsEntity listEntity : imSimrsRekananOpsEntities) {
-                    RekananOps rekananOps = new RekananOps();
-                    rekananOps.setIdRekananOps(listEntity.getIdRekananOps());
-                    rekananOps.setNomorMaster(listEntity.getNomorMaster());
-                    rekananOps.setNamaRekanan(listEntity.getNamaRekanan());
-                    rekananOps.setAction(listEntity.getAction());
-                    rekananOps.setFlag(listEntity.getFlag());
-                    rekananOps.setCreatedDate(listEntity.getCreatedDate());
-                    rekananOps.setCreatedWho(listEntity.getCreatedWho());
-                    rekananOps.setLastUpdate(listEntity.getLastUpdate());
-                    rekananOps.setLastUpdateWho(listEntity.getLastUpdateWho());
-                    rekananOps.setTipe(listEntity.getTipe());
-                    listOfResultRekananOps.add(rekananOps);
-                }
-            }
-        }
-        logger.info("[RekananOpsBoImpl.getByCriteria] End <<<<<<");
-        return listOfResultRekananOps;
-
-    }
-
-    @Override
-    public List<DetailRekananOps> getSearchByCriteria(RekananOps bean) throws GeneralBOException {
+    public List<DetailRekananOps> getSearchByCriteria(DetailRekananOps bean) throws GeneralBOException {
         logger.info("[RekananOpsBoImpl.getByCriteria] Start >>>>>>");
         List<DetailRekananOps> listOfResultRekananOps = new ArrayList<>();
-        if(bean != null) {
+        if (bean != null) {
             Map hsCriteria = new HashMap();
             if (bean.getIdRekananOps() != null && !"".equalsIgnoreCase(bean.getIdRekananOps())) {
                 hsCriteria.put("id_rekanan_ops", bean.getIdRekananOps());
             }
-            if (bean.getNomorMaster() != null && !"".equalsIgnoreCase(bean.getNomorMaster())) {
-                hsCriteria.put("nomor_master", bean.getNomorMaster());
+            if (bean.getIsBpjs() != null && !"".equalsIgnoreCase(bean.getIsBpjs())) {
+                hsCriteria.put("is_bpjs", bean.getIsBpjs());
             }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 if ("N".equalsIgnoreCase(bean.getFlag())) {
@@ -124,8 +83,8 @@ public class RekananOpsBoImpl implements RekananOpsBo {
                 logger.error("[RekananOpsBoImpl.getByCriteria] Error get ruangan data " + e.getMessage());
             }
 
-            if (listOfDetail.size() > 0){
-                for (ImSimrsDetailRekananOpsEntity detail :listOfDetail){
+            if (listOfDetail.size() > 0) {
+                for (ImSimrsDetailRekananOpsEntity detail : listOfDetail) {
                     DetailRekananOps detailRekananOps = new DetailRekananOps();
                     detailRekananOps.setIdDetailRekananOps(detail.getIdDetailRekananOps());
                     detailRekananOps.setIdRekananOps(detail.getIdRekananOps());
@@ -145,22 +104,20 @@ public class RekananOpsBoImpl implements RekananOpsBo {
                     if (bean.getNomorMaster() != null && !"".equalsIgnoreCase(bean.getNomorMaster())) {
                         hsCriteria.put("nomor_master", bean.getNomorMaster());
                     }
-                    List<ImSimrsRekananOpsEntity> listOfHead = null ;
+                    List<ImSimrsRekananOpsEntity> listOfHead = null;
                     try {
                         listOfHead = rekananOpsDao.getByCriteria(hsCriteria);
                     } catch (HibernateException e) {
                         logger.error("[RekananOpsBoImpl.getByCriteria] Error get ruangan data " + e.getMessage());
                     }
-                    if(listOfHead.size()>0){
-                        for(ImSimrsRekananOpsEntity head : listOfHead){
+                    if (listOfHead.size() > 0) {
+                        for (ImSimrsRekananOpsEntity head : listOfHead) {
                             detailRekananOps.setNamaRekanan(head.getNamaRekanan());
                             detailRekananOps.setNomorMaster(head.getNomorMaster());
                             detailRekananOps.setTipe(head.getTipe());
                         }
                     }
-
                     // END
-
                     // mengambil data dari branch
                     hsCriteria = new HashMap();
                     hsCriteria.put("branch_id", detail.getBranchId());
@@ -172,12 +129,11 @@ public class RekananOpsBoImpl implements RekananOpsBo {
                     } catch (HibernateException e) {
                         logger.error("[RekananOpsBoImpl.getByCriteria] Error get ruangan data " + e.getMessage());
                     }
-                    if(listOfBranch.size()>0){
-                        for(ImBranches branch : listOfBranch){
+                    if (listOfBranch.size() > 0) {
+                        for (ImBranches branch : listOfBranch) {
                             detailRekananOps.setBranchName(branch.getBranchName());
                         }
                     }
-
                     listOfResultRekananOps.add(detailRekananOps);
                 }
             }
@@ -186,69 +142,55 @@ public class RekananOpsBoImpl implements RekananOpsBo {
         return listOfResultRekananOps;
     }
 
-//    @Override
-//    public CrudResponse saveAdd(RekananOps bean) throws GeneralBOException {
-//        return null;
-//    }
-
     @Override
-    public CrudResponse saveAdd(RekananOps bean) throws GeneralBOException{
+    public CrudResponse saveAdd(DetailRekananOps bean) throws GeneralBOException {
+        if (bean != null) {
+            List<ImSimrsDetailRekananOpsEntity> cekList = new ArrayList<>();
+            try {
+                cekList = detailRekananOpsDao.getDetailRekananOps(bean.getIdDetailRekananOps());
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+            if (cekList.size() > 0) {
+                throw new GeneralBOException("nama rekanan ops sudah ada...!");
+            } else {
+                String detailrekanan;
+                try {
+                    // Generating ID, get from postgre sequence
+                    detailrekanan = detailRekananOpsDao.getNextId();
+                } catch (HibernateException e) {
+                    logger.error("[AsuransiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence Asuransi id, please info to your admin..." + e.getMessage());
+                }
+                // creating object entity serializable
+                ImSimrsDetailRekananOpsEntity imSimrsDetailRekananOpsEntity = new ImSimrsDetailRekananOpsEntity();
+
+                imSimrsDetailRekananOpsEntity.setIdDetailRekananOps(detailrekanan);
+                //cari ke dao akun Master berdasarkan no master
+
+                imSimrsDetailRekananOpsEntity.setIdRekananOps(bean.getIdRekananOps());
+                imSimrsDetailRekananOpsEntity.setIsBpjs(bean.getIsBpjs());
+                imSimrsDetailRekananOpsEntity.setDiskon(bean.getDiskon());
+                imSimrsDetailRekananOpsEntity.setBranchId(bean.getBranchId());
+
+                imSimrsDetailRekananOpsEntity.setFlag(bean.getFlag());
+                imSimrsDetailRekananOpsEntity.setAction(bean.getAction());
+                imSimrsDetailRekananOpsEntity.setCreatedWho(bean.getCreatedWho());
+                imSimrsDetailRekananOpsEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imSimrsDetailRekananOpsEntity.setCreatedDate(bean.getCreatedDate());
+                imSimrsDetailRekananOpsEntity.setLastUpdate(bean.getLastUpdate());
+                try {
+                    // insert into database
+                    detailRekananOpsDao.addAndSave(imSimrsDetailRekananOpsEntity);
+                } catch (HibernateException e) {
+                    logger.error("[AsuransiiBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data Asuransi, please info to your admin..." + e.getMessage());
+                }
+            }
+        }
         return null;
     }
 
-    @Override
-    public CrudResponse saveEdit(RekananOps bean) throws GeneralBOException {
-        return null;
-    }
 
-    @Override
-    public CrudResponse saveDelete(RekananOps bean) throws GeneralBOException {
-        return null;
-    }
-
-    @Override
-    public RekananOps getDetailRekananOps(String id, String branchId) throws GeneralBOException {
-        RekananOps rekananOps = new RekananOps();
-        try {
-            rekananOps = rekananOpsDao.getDetailRekananOps(id, branchId);
-        }catch (HibernateException e){
-            logger.error("Error when search detail rekanan ops,"+e.getMessage());
-        }
-        return rekananOps;
-    }
-
-    @Override
-    public RekananOps getDetailRekananOpsByDetail(String id, String branchId) throws GeneralBOException {
-        RekananOps rekananOps = new RekananOps();
-        try {
-            rekananOps = rekananOpsDao.getRekananOpsByIdDetail(id, branchId);
-        }catch (HibernateException e){
-            logger.error("Error when search detail rekanan ops,"+e.getMessage());
-        }
-        return rekananOps;
-    }
-
-    @Override
-    public List<RekananOps> getComboRekananOps(String branchId) throws GeneralBOException {
-        List<RekananOps> rekananOps = new ArrayList<>();
-        try {
-            rekananOps = rekananOpsDao.getComboRekananOps(branchId);
-        }catch (HibernateException e){
-            logger.error("Error when search detail rekanan ops,"+e.getMessage());
-        }
-        return rekananOps;
-    }
-
-    @Override
-    public ImSimrsRekananOpsEntity getRekananEntityById(String id) throws GeneralBOException {
-        return rekananOpsDao.getById("idRekananOps", id);
-    }
-
-    public static Logger getLogger() {
-        return logger;
-    }
-
-    public void setRekananOpsDao(RekananOpsDao rekananOpsDao) {
-        this.rekananOpsDao = rekananOpsDao;
-    }
 }
+

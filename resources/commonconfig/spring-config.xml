@@ -293,6 +293,7 @@
     <import resource="sshconfig/com/neurix/hris/master/jenisPegawai/spring/JenisPegawaiBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/master/rekananops/spring/RekananOpsBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/rekananops/spring/DetailRekananOpsBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/tindakan/spring/HeaderTindakanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/parampemeriksaan/spring/ParameterPemeriksaanBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/master/ruangan/spring/TempatTidurBean.xml"/>

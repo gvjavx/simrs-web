@@ -189,7 +189,6 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kodering')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%01d", iter.next());
-
         return sId;
     }
 
