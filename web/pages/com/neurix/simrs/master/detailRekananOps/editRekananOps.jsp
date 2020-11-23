@@ -90,14 +90,14 @@
     <tr>
         <td align="center">
             <s:form id="editRekananOpsForm" method="post" theme="simple"
-                    namespace="/rekananOps" action="saveEdit_rekananOps" cssClass="well form-horizontal">
+                    namespace="/detailrekananops" action="saveEdit_detailrekananops" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Edit RekananOps</legend>
+                <legend align="left">Edit Detail RekananOps</legend>
 
 
                 <table>
@@ -111,13 +111,13 @@
                 <table >
                     <tr>
                         <td width="30%">
-                            <label class="control-label"><small>ID RekananOps :</small></label>
+                            <label class="control-label"><small>ID Detail RekananOps :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idRekananOpsedit" name="rekananOps.idRekananOps" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield id="idDetailRekananOpsedit" name="detailRekananOps.idDetailRekananOps" required="true" readonly="true" cssClass="form-control"/>
                                 <%--<s:hidden id="idRekananOps1" name="rekananOps.idRekananOps" />--%>
-                                <s:hidden id="idRekananOpsedit" name="rekananOps.idRekananOps" />
+                                <s:hidden id="idDetailRekananOpsedit" name="detailRekananOps.idDetailRekananOps" />
                             </table>
                         </td>
                     </tr>

@@ -87,17 +87,31 @@
                 </table>
 
                 <table >
+
                     <tr>
-                        <td width="18%">
-                            <label class="control-label"><small> ID rekanan ops :</small></label>
-                        </td>
                         <td>
+                            <label class="control-label"><small>Nama rekanan :</small></label>
+                        </td>
+                        <td width="70%">
                             <table>
-                                <s:textfield cssStyle="margin-top: 7px"
-                                             id="idRekananOpsadd"
-                                             name="detailRekananOps.idRekananOps"
-                                             required="false"
-                                             readonly="false" cssClass="form-control"/>
+                                <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
+                                <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
+                                          listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control" cssStyle="margin-top: 5px"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>branch:</small></label>
+                        </td>
+                        <td width="70%">
+                            <table>
+                                <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="detailRekananOps.branchId"
+                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control" />
                             </table>
                         </td>
                     </tr>
@@ -118,45 +132,16 @@
                     </tr>
 
                     <tr>
-                        <td width="18%">
-                            <label class="control-label"><small> branch :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield cssStyle="margin-top: 7px"
-                                             id="branch"
-                                             name="detailRekananOps.branchId"
-                                             required="false"
-                                             readonly="false" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
                         <td width="20%">
                             <label class="control-label"><small>is bpjs :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'N':'Non-Active'}" id="bpjs" name="rekananOps.isBpjs"
+                                <s:select list="#{'N':'Non-Active'}" id="bpjs" name="detailRekananOps.isBpjs"
                                           headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                             </table>
                         </td>
                     </tr>
-
-                    <%--<tr>--%>
-                        <%--<td>--%>
-                            <%--<label class="control-label"><small>Nama rekanan :</small></label>--%>
-                        <%--</td>--%>
-                        <%--<td width="70%">--%>
-                            <%--<table>--%>
-                                <%--<s:action id="initComboRekananOps" namespace="/kategorilab" name="initComboRekananOps_kategorilab"/>--%>
-                                <%--<s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="kategoriLab.divisiId"--%>
-                                          <%--listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]"--%>
-                                          <%--cssClass="form-control" cssStyle="margin-top: 5px"/>--%>
-                            <%--</table>--%>
-                        <%--</td>--%>
-                    <%--</tr>--%>
 
                 </table>
 
@@ -227,7 +212,6 @@
                                                 </label>
                                             </div>
                                         </sj:dialog>
-
                                         <sj:dialog id="error_validation_dialog_add" openTopics="showErrorValidationDialogAdd" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{

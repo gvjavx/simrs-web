@@ -8,7 +8,7 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import java.util.List;
 
 public interface DetailRekananOpsBo {
-    public List<DetailRekananOps> getSearchByCriteria (RekananOps bean) throws GeneralBOException;
+    public List<DetailRekananOps> getSearchByCriteria (DetailRekananOps bean) throws GeneralBOException;
     public CrudResponse saveAdd(DetailRekananOps bean) throws GeneralBOException;
 
 

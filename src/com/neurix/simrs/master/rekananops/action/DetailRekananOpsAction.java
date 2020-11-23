@@ -1,5 +1,7 @@
 package com.neurix.simrs.master.rekananops.action;
 
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
@@ -28,8 +30,27 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     private RekananOps rekananOps;
     private RekananOpsBo rekananOpsBoProxy;
     private PositionBo positionBoProxy;
+
     private DetailRekananOpsBo detailRekananOpsBoProxy;
     private DetailRekananOps detailRekananOps;
+    private Branch branch;
+    private BranchBo branchBoProxy;
+
+    public BranchBo getBranchBoProxy() {
+        return branchBoProxy;
+    }
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
+
+    public Branch getBranch() {
+        return branch;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
 
     public DetailRekananOps getDetailRekananOps() {
         return detailRekananOps;
@@ -38,8 +59,21 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     public void setDetailRekananOps(DetailRekananOps detailRekananOps) {
         this.detailRekananOps = detailRekananOps;
     }
+    private List<DetailRekananOps> listOfComboDetailRekananOps = new ArrayList<DetailRekananOps>();
+    private List<RekananOps> listOfComboRekananOps = new ArrayList<RekananOps>();
+    private List<Branch>listOfComboBranch = new ArrayList<Branch>();
+
+    public List<RekananOps> getListOfComboRekananOps() {
+        return listOfComboRekananOps;
+    }
+
+    public void setListOfComboRekananOps(List<RekananOps> listOfComboRekananOps) {
+        this.listOfComboRekananOps = listOfComboRekananOps;
+    }
 
     private List<Position> listOfComboPositions = new ArrayList<Position>();
+
+
     private List<RekananOps> listOfCombo = new ArrayList<RekananOps>();
 
     public List<RekananOps> getListOfCombo() {
@@ -123,7 +157,7 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[DetailRekananOpsAction.add] stop process >>>");
         return "init_add";
     }
-//
+
     @Override
     public String edit() {
         logger.info("[PayrollSkalaGajiAction.edit] start process >>>");
@@ -240,25 +274,25 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     }
 
     public String saveEdit(){
-        logger.info("[PayrollSkalaGajiAction.saveEdit] start process >>>");
-        try {
-
-            RekananOps editRekananOps = getRekananOps();
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-            editRekananOps.setLastUpdateWho(userLogin);
-            editRekananOps.setLastUpdate(updateTime);
-            editRekananOps.setAction("U");
-            editRekananOps.setFlag("Y");
-
-            rekananOpsBoProxy.saveEdit(editRekananOps);
-        } catch (GeneralBOException e) {
-            logger.error("ini error, "+e.getMessage());
-            throw new GeneralBOException("ini error, "+e.getMessage());
-        }
-
-        logger.info("[PayrollSkalaGajiAction.saveEdit] end process <<<");
+//        logger.info("[PayrollSkalaGajiAction.saveEdit] start process >>>");
+//        try {
+//
+//            DetailRekananOps editDetailRekananOps = getDetailRekananOps();
+//            String userLogin = CommonUtil.userLogin();
+//            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+//
+//            editDetailRekananOps.setLastUpdateWho(userLogin);
+//            editDetailRekananOps.setLastUpdate(updateTime);
+//            editDetailRekananOps.setAction("U");
+//            editDetailRekananOps.setFlag("Y");
+//
+//            detailRekananOpsBoProxy.saveEdit(editDetailRekananOps);
+//        } catch (GeneralBOException e) {
+//            logger.error("ini error, "+e.getMessage());
+//            throw new GeneralBOException("ini error, "+e.getMessage());
+//        }
+//
+//        logger.info("[PayrollSkalaGajiAction.saveEdit] end process <<<");
 
         return "success_save_edit";
     }
@@ -267,18 +301,18 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[DetailRekananOpsAction.saveAdd] start process >>>");
 
         try {
-            RekananOps rekananOps = getRekananOps();
+            DetailRekananOps detailRekananOps = getDetailRekananOps();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            rekananOps.setCreatedWho(userLogin);
-            rekananOps.setLastUpdate(updateTime);
-            rekananOps.setCreatedDate(updateTime);
-            rekananOps.setLastUpdateWho(userLogin);
-            rekananOps.setAction("C");
-            rekananOps.setFlag("Y");
+            detailRekananOps.setCreatedWho(userLogin);
+            detailRekananOps.setLastUpdate(updateTime);
+            detailRekananOps.setCreatedDate(updateTime);
+            detailRekananOps.setLastUpdateWho(userLogin);
+            detailRekananOps.setAction("C");
+            detailRekananOps.setFlag("Y");
 
-            rekananOpsBoProxy.saveAdd(rekananOps);
+            detailRekananOpsBoProxy.saveAdd(detailRekananOps);
         }catch (GeneralBOException e) {
             logger.error("ini error, "+e.getMessage());
             throw new GeneralBOException("ini error, "+e.getMessage());
@@ -296,7 +330,7 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     public String search() {
         logger.info("[DetailRekananOpsAction.search] start process >>>");
 
-        RekananOps searchRekananOps = getRekananOps();
+        DetailRekananOps searchRekananOps = getDetailRekananOps();
         List<DetailRekananOps> listOfsearchRekananOps = new ArrayList();
         try {
             listOfsearchRekananOps = detailRekananOpsBoProxy.getSearchByCriteria(searchRekananOps);
@@ -430,27 +464,48 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[CheckupAction.getListDokterByBranchId] END process >>>");
         return response;
     }
-//    public String initComborekanan() {
-//
-//        Position position = new Position();
-////        position.setFlag("Y");
-//        List<Position> listOfPosition = new ArrayList<Position>();
-//        try {
-//            listOfPosition = positionBoProxy.getByCriteria(position);
-//        } catch (GeneralBOException e) {
-//            Long logId = null;
-//            try {
-//                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
-//            } catch (GeneralBOException e1) {
-//                logger.error("[UserAction.initComboPosition] Error when saving error,", e1);
-//            }
-//            logger.error("[UserAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-//            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-//            return "failure";
-//        }
-//
-//        listOfComboPositions.addAll(listOfPosition);
-//
-//        return "init_combo_position";
-//    }
+
+    public String initComboRekanan() {
+
+        RekananOps rekananOps = new RekananOps();
+//        position.setFlag("Y");
+        List<RekananOps> listOfRekananOps = new ArrayList<RekananOps>();
+        try {
+            listOfRekananOps = rekananOpsBoProxy.getByCriteria(rekananOps);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "detailRekananOpsBo.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[UserAction.initComboPosition] Error when saving error,", e1);
+            }
+            logger.error("[UserAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return "failure";
+        }
+        listOfComboRekananOps.addAll(listOfRekananOps);
+        return SUCCESS;
+    }
+
+    public String initComboBranch() {
+
+        Branch branch = new Branch();
+//        position.setFlag("Y");
+        List<Branch> listOfBranch = new ArrayList<Branch>();
+        try {
+            listOfBranch =branchBoProxy.getByCriteria(branch);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "detailRekananOpsBo.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[UserAction.initComboPosition] Error when saving error,", e1);
+            }
+            logger.error("[UserAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return "failure";
+        }
+        listOfComboBranch.addAll(listOfBranch);
+        return SUCCESS;
+    }
 }

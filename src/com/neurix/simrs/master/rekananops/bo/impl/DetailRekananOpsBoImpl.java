@@ -1,19 +1,22 @@
 package com.neurix.simrs.master.rekananops.bo.impl;
 
 
-import com.neurix.akuntansi.master.master.model.ImMasterEntity;
+
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.exception.GeneralBOException;
 
-import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
+import com.neurix.hris.master.cuti.model.ImCutiEntity;
+import com.neurix.hris.master.cuti.model.ImCutiHistoryEntity;
+
+
 import com.neurix.simrs.master.rekananops.bo.DetailRekananOpsBo;
 import com.neurix.simrs.master.rekananops.dao.DetailRekananOpsDao;
 import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;
 import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
 import com.neurix.simrs.master.rekananops.model.ImSimrsDetailRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
-import com.neurix.simrs.master.rekananops.model.RekananOps;
+
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -43,7 +46,7 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
     }
 
     @Override
-    public List<DetailRekananOps> getSearchByCriteria(RekananOps bean) throws GeneralBOException {
+    public List<DetailRekananOps> getSearchByCriteria(DetailRekananOps bean) throws GeneralBOException {
         logger.info("[RekananOpsBoImpl.getByCriteria] Start >>>>>>");
         List<DetailRekananOps> listOfResultRekananOps = new ArrayList<>();
         if (bean != null) {
@@ -144,12 +147,12 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
         if (bean != null) {
             List<ImSimrsDetailRekananOpsEntity> cekList = new ArrayList<>();
             try {
-                cekList = detailRekananOpsDao.getDetailRekananOps(bean.getIdRekananOps());
+                cekList = detailRekananOpsDao.getDetailRekananOps(bean.getIdDetailRekananOps());
             } catch (HibernateException e) {
                 logger.error(e.getMessage());
             }
             if (cekList.size() > 0) {
-                throw new GeneralBOException("Nama Asuransi sudah ada...!");
+                throw new GeneralBOException("nama rekanan ops sudah ada...!");
             } else {
                 String detailrekanan;
                 try {
@@ -169,6 +172,7 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
                 imSimrsDetailRekananOpsEntity.setIsBpjs(bean.getIsBpjs());
                 imSimrsDetailRekananOpsEntity.setDiskon(bean.getDiskon());
                 imSimrsDetailRekananOpsEntity.setBranchId(bean.getBranchId());
+
                 imSimrsDetailRekananOpsEntity.setFlag(bean.getFlag());
                 imSimrsDetailRekananOpsEntity.setAction(bean.getAction());
                 imSimrsDetailRekananOpsEntity.setCreatedWho(bean.getCreatedWho());
@@ -189,3 +193,4 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
 
 
 }
+

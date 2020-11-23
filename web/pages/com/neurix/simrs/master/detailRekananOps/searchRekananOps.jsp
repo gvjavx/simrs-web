@@ -41,7 +41,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            RekananOps
+            Detail RekananOps
         </h1>
     </section>
     <!-- Main content -->
@@ -50,7 +50,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i>RekananOps</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i>Detail RekananOps</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -68,6 +68,20 @@
                                         <table>
 
                                             <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Nama rekanan :</small></label>
+                                                </td>
+                                                <td width="70%">
+                                                    <table>
+                                                        <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
+                                                        <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
+                                                        listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
+                                                        cssClass="form-control" cssStyle="margin-top: 5px"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
                                                 <td width="18%">
                                                     <label class="control-label"><small>RekananOps ID :</small></label>
                                                 </td>
@@ -75,7 +89,7 @@
                                                     <table>
                                                         <s:textfield cssStyle="margin-top: 7px"
                                                                      id="idRekananOps"
-                                                                     name="rekananOps.idDetailRekananOps"
+                                                                     name="detailRekananOps.idDetailRekananOps"
                                                                      required="false"
                                                                      readonly="false" cssClass="form-control"/>
                                                     </table>
@@ -87,7 +101,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag2" name="rekananOps.isBpjs"
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag2" name="detailRekananOps.isBpjs"
                                                                   headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
 
@@ -99,7 +113,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="rekananOps.flag"
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="detailRekananOps.flag"
                                                                   headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
 

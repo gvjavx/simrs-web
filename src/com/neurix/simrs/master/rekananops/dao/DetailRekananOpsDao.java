@@ -44,22 +44,21 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
             }
         }
-
         criteria.addOrder(Order.desc("createdDate"));
         List<ImSimrsDetailRekananOpsEntity> results = criteria.list();
         return results;
     }
-
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_detail_rekanan_ops')");
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%05d", iter.next());
-        return sId;
+
+        return "DRK"+sId;
     }
 
-    public List<ImSimrsDetailRekananOpsEntity> getDetailRekananOps(String idRekananOps) throws HibernateException {
+    public List<ImSimrsDetailRekananOpsEntity> getDetailRekananOps(String idDetailRekananOps) throws HibernateException {
         List<ImSimrsDetailRekananOpsEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsDetailRekananOpsEntity.class)
-                .add(Restrictions.eq("idRekananOps", idRekananOps))
+                .add(Restrictions.eq("idDetailRekananOps", idDetailRekananOps))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 //        ne (not equal / tidak samadengan)
