@@ -264,16 +264,13 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
                 }
 
             } catch (GeneralBOException e){
-                PengajuanCuti msg = new PengajuanCuti();
-                msg.setActionError(msg.getMessage());
-                listOfCutiPegawai.add(msg);
+                model.setActionError(e.getMessage());
                 logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + e + "] Found problem when searching data by criteria, please inform to your admin.", e);
                 throw new GeneralBOException(e);
             }
 
 
         } catch (GeneralBOException e) {
-            result.setActionError(e.getMessage());
             Long logId = null;
             try {
                 logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog");
