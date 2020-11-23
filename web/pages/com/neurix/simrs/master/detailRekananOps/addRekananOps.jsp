@@ -16,9 +16,9 @@
         };
 
     $.subscribe('beforeProcessSaveAdd', function (event, data) {
-        var namarekanan = document.getElementById("rekananOps").value;
+        var bpjs = document.getElementById("bpjs").value;
      
-        if (namarekanan != '' ) {
+        if (bpjs != '' ) {
             if (confirm('Do you want to save this record?')) {
                 event.originalEvent.options.submit = true;
                 $.publish('showDialogAdd');
@@ -29,8 +29,8 @@
         } else {
             event.originalEvent.options.submit = false;
             var msg = "";
-            if (namarekanan == '') {
-                msg += 'Field <strong>Nama rekananOps </strong> is required.' + '<br/>';
+            if (bpjs == '') {
+                msg += 'Field <strong>bpjs  </strong> is required.' + '<br/>';
             }
            
 
@@ -73,7 +73,7 @@
     <tr>
         <td align="center" >
             <s:form id="addRekananOpsForm" method="post" theme="simple"
-                    namespace="/rekananOps" action="saveAdd_rekananOps" cssClass="well form-horizontal">
+                    namespace="/detailrekananops" action="saveAdd_detailrekananops" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -87,42 +87,76 @@
                 </table>
 
                 <table >
+                    <tr>
+                        <td width="18%">
+                            <label class="control-label"><small> ID rekanan ops :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield cssStyle="margin-top: 7px"
+                                             id="idRekananOpsadd"
+                                             name="detailRekananOps.idRekananOps"
+                                             required="false"
+                                             readonly="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="18%">
+                            <label class="control-label"><small> diskon :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield cssStyle="margin-top: 7px"
+                                             id="diskon"
+                                             name="detailRekananOps.diskon"
+                                             required="false"
+                                             readonly="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="18%">
+                            <label class="control-label"><small> branch :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield cssStyle="margin-top: 7px"
+                                             id="branch"
+                                             name="detailRekananOps.branchId"
+                                             required="false"
+                                             readonly="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
 
                     <tr>
                         <td width="20%">
-                            <label class="control-label"><small>Nomor Master :</small></label>
+                            <label class="control-label"><small>is bpjs :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="rekananOps" name="rekananOps.namaRekanan" required="true" disabled="false" cssClass="form-control"/>
+                                <s:select list="#{'N':'Non-Active'}" id="bpjs" name="rekananOps.isBpjs"
+                                          headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                             </table>
                         </td>
                     </tr>
 
-                    <tr>
-                        <td >
-                            <label class="control-label"><small>Nama Branche :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="namaBrancheOpsAdd" name="rekananOps.namaBranche"
-                                             required="true" disabled="false" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tipe :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'ptpn':'Ptpn'}" id="tipe" name="rekananOps.tipe"
-                                          headerKey="No_ptpn" headerValue="bukan ptpn" cssClass="form-control " />
-                            </table>
-
-                        </td>
-                    </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Nama rekanan :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td width="70%">--%>
+                            <%--<table>--%>
+                                <%--<s:action id="initComboRekananOps" namespace="/kategorilab" name="initComboRekananOps_kategorilab"/>--%>
+                                <%--<s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="kategoriLab.divisiId"--%>
+                                          <%--listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]"--%>
+                                          <%--cssClass="form-control" cssStyle="margin-top: 5px"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
 
                 </table>
 

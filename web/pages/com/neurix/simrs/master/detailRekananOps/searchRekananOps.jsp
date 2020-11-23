@@ -75,7 +75,7 @@
                                                     <table>
                                                         <s:textfield cssStyle="margin-top: 7px"
                                                                      id="idRekananOps"
-                                                                     name="rekananOps.idRekananOps"
+                                                                     name="rekananOps.idDetailRekananOps"
                                                                      required="false"
                                                                      readonly="false" cssClass="form-control"/>
                                                     </table>
@@ -83,20 +83,16 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>No master :</small></label>
+                                                    <label class="control-label"><small>isbpjs :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield cssStyle="margin-top: 7px"
-                                                                     id="nomorMaster"
-                                                                     name="rekananOps.nomorMaster"
-                                                                     required="false"
-                                                                     readonly="false" cssClass="form-control"/>
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag2" name="rekananOps.isBpjs"
+                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
 
                                                 </td>
                                             </tr>
-
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Flag :</small></label>
@@ -131,7 +127,9 @@
                                                         </sj:a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" cssStyle="margin-right: 5px" onclick="window.location.href='<s:url action="initForm_rekananOps"/>'">
+                                                        <button type="button" class="btn btn-danger" cssStyle="margin-right: 5px"
+                                                                onclick="window.location.href='<s:url
+                                                                action="initForm_detailrekananops"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -179,7 +177,7 @@
 
                                                         <s:set name="listOfsearchRekananOps" value="#session.listOfResultRekananOps" scope="request" />
                                                         <display:table name="listOfsearchRekananOps" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_rekananOps.action" export="true" id="row"
+                                                                       requestURI="paging_displaytag_detailRekananOps.action" export="true" id="row"
                                                                        pagesize="14" style="font-size:12">
 
                                                             <display:column media="html" title="Edit">
@@ -206,10 +204,13 @@
                                                                 </s:if>
                                                             </display:column>
                                                             <%--<display:column property="idRekananOps" sortable="true" title="ID RekananOps" />--%>
-                                                            <display:column property="nomorMaster" sortable="true" title="Nomor Master" />
-                                                            <display:column property="namaRekanan" sortable="true" title="Nama Rekanan" />
-                                                            <display:column property="branchName" sortable="true" title="Nama Branche" />
-                                                            <display:column property="tipe" sortable="true" title="tipe" />
+                                                            <display:column property="idDetailRekananOps" sortable="true" title="id DetailRekananOps" />
+                                                            <display:column property="isBpjs" sortable="true" title="is Bpjs" />
+                                                            <display:column property="namaRekanan" sortable="true" title="nama rekanan Ops" />
+                                                            <display:column property="diskon" sortable="true" title="diskon" />
+                                                            <display:column property="branchName" sortable="true" title=" nama branch" />
+                                                            <%--<display:column property="branchName" sortable="true" title="Nama Branche" />--%>
+                                                            <%--<display:column property="tipe" sortable="true" title="tipe" />--%>
                                                             <display:column property="flag" sortable="true" title="flag"  />
 
                                                             <display:column property="action" sortable="true" title="action"  />

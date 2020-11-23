@@ -1,8 +1,11 @@
 package com.neurix.simrs.master.rekananops.dao;
 
 import com.neurix.common.dao.GenericDao;
+
+import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.rekananops.model.ImSimrsDetailRekananOpsEntity;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -33,8 +36,8 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
                 criteria.add(Restrictions.eq("idRekananOps", mapCriteria.get("id_rekanan_ops").toString()));
             }
 
-            if (mapCriteria.get("branch_id") != null) {
-                criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
+            if (mapCriteria.get("is_bpjs") != null) {
+                criteria.add(Restrictions.eq("isBpjs", mapCriteria.get("is_bpjs").toString()));
             }
 
             if (mapCriteria.get("flag") != null) {
@@ -52,5 +55,15 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%05d", iter.next());
         return sId;
+    }
+
+    public List<ImSimrsDetailRekananOpsEntity> getDetailRekananOps(String idRekananOps) throws HibernateException {
+        List<ImSimrsDetailRekananOpsEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsDetailRekananOpsEntity.class)
+                .add(Restrictions.eq("idRekananOps", idRekananOps))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+//        ne (not equal / tidak samadengan)
+
+        return results;
     }
 }

@@ -29,16 +29,25 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     private RekananOpsBo rekananOpsBoProxy;
     private PositionBo positionBoProxy;
     private DetailRekananOpsBo detailRekananOpsBoProxy;
+    private DetailRekananOps detailRekananOps;
 
-    private List<Position> listOfComboPositions = new ArrayList<Position>();
-    private List<RekananOps> listOfComboFarmasi = new ArrayList<RekananOps>();
-
-    public List<RekananOps> getListOfComboFarmasi() {
-        return listOfComboFarmasi;
+    public DetailRekananOps getDetailRekananOps() {
+        return detailRekananOps;
     }
 
-    public void setListOfComboFarmasi(List<RekananOps> listOfComboFarmasi) {
-        this.listOfComboFarmasi = listOfComboFarmasi;
+    public void setDetailRekananOps(DetailRekananOps detailRekananOps) {
+        this.detailRekananOps = detailRekananOps;
+    }
+
+    private List<Position> listOfComboPositions = new ArrayList<Position>();
+    private List<RekananOps> listOfCombo = new ArrayList<RekananOps>();
+
+    public List<RekananOps> getListOfCombo() {
+        return listOfCombo;
+    }
+
+    public void setListOfCombo(List<RekananOps> listOfCombo) {
+        this.listOfCombo = listOfCombo;
     }
 
     public List<Position> getListOfComboPositions() {
@@ -235,7 +244,6 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         try {
 
             RekananOps editRekananOps = getRekananOps();
-
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -347,46 +355,46 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         return null;
     }
 
-    public String initComboPosition() {
-
-        Position position = new Position();
-        position.setFlag("Y");
-//        position.setKategori("rekananOps");
-        List<Position> listOfPosition = new ArrayList<Position>();
-        try {
-            listOfPosition = positionBoProxy.getByCriteria(position);
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
-            } catch (GeneralBOException e1) {
-                logger.error("[UserAction.initComboPosition] Error when saving error,", e1);
-            }
-            logger.error("[UserAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return "failure";
-        }
-
-        listOfComboPositions.addAll(listOfPosition);
-
-        return "init_combo_position";
-    }
-
-//    public String initComboRekananOpsFarmasi(){
+//    public String initComboPosition() {
 //
-//        String branchId = CommonUtil.userBranchLogin();
-//
-//        List<RekananOps> rekananOpss = new ArrayList<>();
+//        Position position = new Position();
+//        position.setFlag("Y");
+////        position.setKategori("rekananOps");
+//        List<Position> listOfPosition = new ArrayList<Position>();
 //        try {
-//            rekananOpss = rekananOpsBoProxy.getListRekananOps(branchId);
-//        } catch (GeneralBOException e){
-//            logger.error("[DetailRekananOpsAction.initComboRekananOpsFarmasi] ERROR. ", e);
-//            throw new GeneralBOException("[DetailRekananOpsAction.initComboRekananOpsFarmasi] ERROR. "+e.getMessage());
+//            listOfPosition = positionBoProxy.getByCriteria(position);
+//        } catch (GeneralBOException e) {
+//            Long logId = null;
+//            try {
+//                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
+//            } catch (GeneralBOException e1) {
+//                logger.error("[UserAction.initComboPosition] Error when saving error,", e1);
+//            }
+//            logger.error("[UserAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+//            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+//            return "failure";
 //        }
 //
-//        listOfComboFarmasi.addAll(rekananOpss);
-//        return "init_combo_farmasi";
+//        listOfComboPositions.addAll(listOfPosition);
+//
+//        return "init_combo_position";
 //    }
+//
+    public String initComboRekananOps(){
+
+        RekananOps rekananOps = new RekananOps();
+
+        List<RekananOps> rekananOpss = new ArrayList<>();
+        try {
+            rekananOpss = rekananOpsBoProxy.getByCriteria(rekananOps);
+        } catch (GeneralBOException e){
+            logger.error("[DetailRekananOpsAction.initComboRekananOps] ERROR. ", e);
+            throw new GeneralBOException("[DetailRekananOpsAction.initComboRekananOps] ERROR. "+e.getMessage());
+        }
+
+        listOfCombo.addAll(rekananOpss);
+        return "init_combo_farmasi";
+    }
 
     public RekananOps getDataRekananOps(String idRekananOps) {
 
@@ -422,4 +430,27 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[CheckupAction.getListDokterByBranchId] END process >>>");
         return response;
     }
+//    public String initComborekanan() {
+//
+//        Position position = new Position();
+////        position.setFlag("Y");
+//        List<Position> listOfPosition = new ArrayList<Position>();
+//        try {
+//            listOfPosition = positionBoProxy.getByCriteria(position);
+//        } catch (GeneralBOException e) {
+//            Long logId = null;
+//            try {
+//                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
+//            } catch (GeneralBOException e1) {
+//                logger.error("[UserAction.initComboPosition] Error when saving error,", e1);
+//            }
+//            logger.error("[UserAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+//            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+//            return "failure";
+//        }
+//
+//        listOfComboPositions.addAll(listOfPosition);
+//
+//        return "init_combo_position";
+//    }
 }
