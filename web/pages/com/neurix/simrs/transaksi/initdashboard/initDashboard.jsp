@@ -180,10 +180,19 @@
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
-                        Detail Kunjungan Pasien Rawat Jalan
+                        Detail Kunjungan Pasien Rawat Jalan Berdasarkan Jenis Pasien
                     </div>
                     <div class="box-body">
                         <div class="row" id="donut_rs">
+                        </div>
+                    </div>
+                    <div class="box-header with-border">
+                    </div>
+                    <div class="box-header with-border">
+                        Detail Kunjungan Pasien Rawat Jalan Berdasarkan Jenis Kelamin
+                    </div>
+                    <div class="box-body">
+                        <div class="row" id="donut_jk">
                         </div>
                     </div>
                     <div class="box-header with-border">
@@ -258,6 +267,7 @@
     function setBranch() {
         var namaRS = "";
         var donutRS = "";
+        var donutJK = "";
         var tempColor = [];
         dwr.engine.setAsync(true);
         InitDashboardAction.getComboBranch({
@@ -265,24 +275,6 @@
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
                         var color = "#99ccff";
-                        // var colorRandom = getRandomColor();
-                        // if(tempColor.length > 0){
-                        //     $.each(tempColor, function (ic, itemc) {
-                        //         if(colorRandom == itemc.color || "#3D3418" == colorRandom){
-                        //             colorRandom = getRandomColor();
-                        //         }else{
-                        //             color = colorRandom;
-                        //             tempColor.push({
-                        //                 'color':color
-                        //             });
-                        //         }
-                        //     });
-                        // }else{
-                        //     color = colorRandom;
-                        //     tempColor.push({
-                        //         'color':color
-                        //     });
-                        // }
                         if(item.warna != null && item.warna != ''){
                             color = item.warna;
                         }
@@ -300,9 +292,17 @@
                             '<p class="text-center" style="margin-top: -85px; font-size: 12px;"><b>' + item.branchName + '</b></p>\n' +
                             '</div>\n' +
                             '</div>';
+
+                        donutJK += '<div class="col-md-2" style="margin-top: -80px">\n' +
+                            '<div class="box-body chart-responsive">\n' +
+                            '<div class="chart" id="donut-chart-jk-' + item.branchId + '" style="height: 300px; position: relative;"></div>\n' +
+                            '<p class="text-center" style="margin-top: -85px; font-size: 12px;"><b>' + item.branchName + '</b></p>\n' +
+                            '</div>\n' +
+                            '</div>';
                     });
                     $('#nama_rs').html(namaRS);
                     $('#donut_rs').html(donutRS);
+                    $('#donut_jk').html(donutJK);
                 }
             }
         });
@@ -631,6 +631,70 @@
                             var parseCol = JSON.parse(col);
                             var donut = new Morris.Donut({
                                 element: 'donut-chart-' + itemc.branch_id,
+                                resize: true,
+                                colors: parseCol,
+                                data: parseData,
+                                hideHover: 'auto'
+                            });
+                        });
+                    }
+                }
+            });
+
+            var colorJenisJK = [];
+            colorJenisJK.push(
+                {
+                    'id': 'P',
+                    'color': '#ff66cc'
+                },
+                {
+                    'id': 'L',
+                    'color': '#66ccff'
+                });
+
+            var tempU = "";
+            var tempClr = "";
+            dwr.engine.setAsync(true);
+            InitDashboardAction.getDetailKunjuganJK(month, tahun, branch, {
+                callback: function (response) {
+                    if (response.length > 0) {
+                        $.each(colorBranch, function (ic, itemc) {
+                            var isi = "";
+                            $.each(response, function (i, item) {
+                                if(itemc.branch_id == item.branchId){
+                                    var tot = 0;
+                                    var jenisKelamin = "Perempuan";
+                                    if(item.total != null){
+                                        tot = item.total;
+                                    }
+                                    if(item.jenisKelamin == "L"){
+                                        jenisKelamin = "Laki-Laki";
+                                    }
+                                    if(isi != ""){
+                                        isi = isi+',{"'+'label'+'":'+'"'+jenisKelamin+'"'+',"'+'value'+'":'+'"'+tot+'"}';
+                                    }else{
+                                        isi = '{"'+'label'+'":'+'"'+jenisKelamin+'"'+',"'+'value'+'":'+'"'+tot+'"}';
+                                    }
+                                    if(ic == 0){
+                                        $.each(colorJenisJK, function (ii, itemi) {
+                                            if(item.jenisKelamin == itemi.id){
+                                                if(tempClr != ""){
+                                                    tempClr = tempClr+',"'+itemi.color+'"';
+                                                }else{
+                                                    tempClr = '"'+itemi.color+'"';
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+                            var dat = "["+isi+"]";
+                            var col = "["+tempClr+"]";
+                            var parseData = JSON.parse(dat);
+                            var parseCol = JSON.parse(col);
+                            var donut = new Morris.Donut({
+                                element: 'donut-chart-jk-' + itemc.branch_id,
                                 resize: true,
                                 colors: parseCol,
                                 data: parseData,

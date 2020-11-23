@@ -11,4 +11,5 @@ public interface InitDashboardBo {
     public List<HeaderCheckup> getDetailKunjunganRJ(String bulan, String tahun, String branchId) throws GeneralBOException;
     public List<HeaderCheckup> getTahunPeriksa() throws GeneralBOException;
     public List<HeaderCheckup> getKamarTerpakai(String bulan, String tahun, String branchId) throws GeneralBOException;
+    public List<HeaderCheckup> getDetailKunjunganJK(String bulan, String tahun, String branchId) throws GeneralBOException;
 }

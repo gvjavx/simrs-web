@@ -69,6 +69,17 @@ public class InitDashboardBoImpl implements InitDashboardBo {
         return headerCheckup;
     }
 
+    @Override
+    public List<HeaderCheckup> getDetailKunjunganJK(String bulan, String tahun, String branchId) throws GeneralBOException {
+        List<HeaderCheckup> headerCheckup = new ArrayList<>();
+        try {
+            headerCheckup = headerCheckupDao.getDetailKunjunganJK(bulan, tahun, branchId);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return headerCheckup;
+    }
+
     public void setHeaderCheckupDao(HeaderCheckupDao headerCheckupDao) {
         this.headerCheckupDao = headerCheckupDao;
     }
