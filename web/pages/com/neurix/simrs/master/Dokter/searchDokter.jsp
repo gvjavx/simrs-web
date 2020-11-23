@@ -56,7 +56,8 @@
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="dokterForm" method="post"  theme="simple" namespace="/dokter" action="search_dokter.action" cssClass="form-horizontal">
+                                    <s:form id="dokterForm" method="post"  theme="simple" namespace="/dokter"
+                                            action="search_dokter.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -66,25 +67,29 @@
                                         </table>
                                         <table>
                                             <tr>
-                                                <td>
+                                                <td width="15%">
                                                     <label class="control-label"><small>Dokter ID :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="idDokter" name="dokter.idDokter" required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:textfield id="idDokter" name="dokter.idDokter" required="true"
+                                                                     disabled="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
+
                                             <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Nama Dokter :</small></label>
+                                                <td >
+                                                    <label class="control-label"><small> Nama Dokter :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="namaDokter" name="dokter.namaDokter" required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:textfield id="namaDokter" name="dokter.namaDokter" required="true" cssStyle="margin-top: 7px"
+                                                                     disabled="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
+
 
                                             <tr>
                                                 <td>
@@ -94,10 +99,12 @@
                                                     <table>
                                                         <s:action id="initComboPelayanan" namespace="/dokter" name="initComboPelayanan_dokter"/>
                                                         <s:select list="#initComboPelayanan.listOfComboPelayanan" id="idPelayanan" name="dokter.idPelayanan"
-                                                                  listKey="idPelayanan" listValue="namaPelayanan" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                  listKey="idPelayanan" listValue="namaPelayanan"
+                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
                                                     </table>
                                                 </td>
                                             </tr>
+
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Flag :</small></label>
@@ -105,7 +112,7 @@
                                                 <td>
                                                     <table>
                                                         <s:select list="#{'N':'Non-Active'}" id="flag" name="dokter.flag"
-                                                                  headerKey="Y" headerValue="Active" cssClass="form-control" />
+                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
 
                                                 </td>
@@ -117,22 +124,16 @@
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="dokterForm" id="search" name="search"
+                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary" formIds="dokterForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>
                                                     </td>
+
                                                     <td>
-                                                        <s:url var="urlAdd" namespace="/dokter" action="add_dokter" escapeAmp="false">
-                                                        </s:url>
-                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
-                                                            <i class="fa fa-plus"></i>
-                                                            Add Dokter
-                                                        </sj:a>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_dokter"/>'">
+                                                        <button type="button"  class="btn btn-danger"
+                                                                onclick="window.location.href='<s:url action="initForm_dokter"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -142,7 +143,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="80%">
+                                            <table id="showdata" width="90%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="waiting_dialog_loading" openTopics="showDialog"
@@ -163,7 +164,7 @@
                                                             </center>
                                                         </sj:dialog>
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="400" width="600" autoOpen="false"
+                                                                   height="650" width="600" autoOpen="false"
                                                                    title="Dokter ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
@@ -179,7 +180,8 @@
 
                                                         <s:set name="listOfsearchDokter" value="#session.listOfResultDokter" scope="request" />
                                                         <display:table name="listOfsearchDokter" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_dokter.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                                       requestURI="paging_displaytag_dokter.action"
+                                                                       export="true" id="row" pagesize="14" style="font-size:12">
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
                                                                     <s:url var="urlEdit" namespace="/dokter" action="edit_dokter" escapeAmp="false">
@@ -209,12 +211,21 @@
                                                             <display:column property="kuota" sortable="true" title="Kuota"/>
                                                             <display:column property="kodeDpjp" sortable="true" title="Kode DPJP"/>
                                                             <display:column property="kodering" sortable="true" title="Kode"/>
-                                                            <display:column property="flag" sortable="true" title="flag"  />
-                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
+                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
                                                             <display:column property="stCreatedDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="stLastUpdate" sortable="true" title="Last update"  />
-                                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
+
+                                                            <display:column property="flagCall" sortable="true" title="flag Call"  />
+                                                            <display:column property="flagTele" sortable="true" title="flag Tele"  />
+                                                            <display:column property="kuotaTele" sortable="true" title="kuota Tele"  />
+
+                                                            <display:column property="sip" sortable="true" title="Surat ijin praktek"  />
+                                                            <display:column property="kuotaOnSite" sortable="true" title="kuota OnSite"  />
+                                                            <display:column property="kuotaBpjs" sortable="true" title="kuota Bpjs"  />
+
+
                                                         </display:table>
                                                     </td>
                                                 </tr>

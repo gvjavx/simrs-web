@@ -14,8 +14,7 @@
             $('#info_dialog').dialog('close');
             window.location.reload(true);
         };
-
-        $.subscribe('beforeProcessSave', function (event, data) {
+        $.subscribe('beforeProcessSaveAdd', function (event, data) {
             var namaKategoriLab = document.getElementById("namaKategori1").value;
             var divisi = document.getElementById("positionId1").value;
 
@@ -37,24 +36,24 @@
                     msg += 'Field <strong>Divisi </strong> is required.' + '<br/>';
                 }
 
-                document.getElementById('errorValidationMessage').innerHTML = msg;
+                document.getElementById('errorValidationMessageAdd').innerHTML = msg;
 
-                $.publish('showErrorValidationDialog');
+                $.publish('showErrorValidationDialogAdd');
             }
         });
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
-                $.publish('showInfoDialog');
+                $.publish('showInfoDialogAdd');
             }
         });
 
-        $.subscribe('errorDialog', function (event, data) {
+        $.subscribe('errorDialogAdd', function (event, data) {
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
+            $.publish('showErrorDialogAdd');
         });
 
         function cancelBtn() {
@@ -71,7 +70,8 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addKategoriLabForm" method="post" theme="simple" namespace="/kategorilab" action="saveAdd_kategorilab" cssClass="well form-horizontal">
+            <s:form id="addKategoriLabForm" method="post" theme="simple" namespace="/kategorilab"
+                    action="saveAdd_kategorilab" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -89,9 +89,10 @@
                         <td>
                             <label class="control-label"><small>Nama Kategori :</small></label>
                         </td>
-                        <td>
+                        <td width="79%">
                             <table>
-                                <s:textfield id="namaKategori1" name="kategoriLab.namaKategori" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="namaKategori1"
+                                             name="kategoriLab.namaKategori" required="true" disabled="false"  cssClass="form-control" />
                             </table>
                         </td>
                     </tr>
@@ -103,7 +104,8 @@
                             <table>
                                 <s:action id="initComboPosition" namespace="/kategorilab" name="initComboPosition_kategorilab"/>
                                 <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="kategoriLab.divisiId"
-                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -116,9 +118,10 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addKategoriLabForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
-                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addKategoriLabForm"
+                                   id="save" name="save"
+                                   onBeforeTopics="beforeProcessSaveAdd" onCompleteTopics="closeDialog,successDialog"
+                                   onSuccessTopics="successDialog" onErrorTopics="errorDialogAdd" >
                             <i class="fa fa-check"></i>
                             Save
                         </sj:submit>
@@ -152,7 +155,7 @@
                                             </center>
                                         </sj:dialog>
 
-                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialogAdd" modal="true" resizable="false"
                                                    height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                               'OK':function() {
@@ -165,10 +168,10 @@
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog_Add" openTopics="showErrorDialogAdd" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_dialog_Add').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -178,17 +181,17 @@
                                             </div>
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_validation_dialog_Add" openTopics="showErrorValidationDialogAdd" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_validation_dialog_Add').dialog('close');  window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage"></div></center>
+                                                    <center><div id="errorValidationMessageAdd"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>

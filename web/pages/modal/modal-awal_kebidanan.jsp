@@ -131,7 +131,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="custom02">
-                                    <input type="radio" value="Tidak" id="rb82" name="rb8"/><label for="rb82">Teratur</label>
+                                    <input type="radio" value="Tidak" id="rb82" name="rb8"/><label for="rb82">Tidak Teratur</label>
                                 </div>
                             </div>
                         </div>

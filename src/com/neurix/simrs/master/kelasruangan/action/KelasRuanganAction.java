@@ -348,7 +348,7 @@ public class KelasRuanganAction extends BaseMasterAction {
 
         Position position = new Position();
         position.setFlag("Y");
-        position.setKategori("kelas_ruangan");
+//        position.setKategori("kelas_ruangan");
 
         List<Position> listOfPosition = new ArrayList<Position>();
         try {

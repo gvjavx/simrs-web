@@ -340,7 +340,6 @@
                 $('#pembayaran').val(null);
                 $('#uang_muka').val(null);
                 $('#diagnosa_awal').val(null);
-                $('#perujuk').val(null);
                 $('#intansi_perujuk').val(null);
                 $('#no_rujukan').val(null);
                 $('#ppk_rujukan').val(null);
@@ -359,7 +358,7 @@
                 $('#poli').val(null).trigger('change');
                 $('#nama_dokter').val(null);
                 $('#asuransi').val(null);
-                $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan, #perujuk').val(null);
+                $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan').val(null);
                 var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
                 $('#img-upload').attr('src', img);
                 $('#imgInp').attr('value', null);
@@ -382,7 +381,6 @@
                 $('#ppk_rujukan').val(null);
                 $('#intansi_perujuk').val(null);
                 $('#no_rujukan').val(null);
-                $('#perujuk').val(null);
                 $('#no_kartu_ptpn').val(null);
                 $('#unit_pg').val(null);
 
@@ -493,6 +491,8 @@
 
                                     </ul>
                                 </div>
+                                <a type="button" onclick="showFinger()" style="margin-right: 5px" class="btn btn-warning pull-right" id="btnFingerPrint"><i
+                                        class="fa fa-plus"></i> With Finger Print</a>
                             </div>
                         </div>
                     </div>
@@ -570,7 +570,7 @@
                                                 <div class="col-md-8">
                                                     <select style="width: 100%" class="form-control select2"
                                                             id="jenis_pasien"
-                                                            onchange="setJenisPasien(this.value); resetField(1);"></select>
+                                                            onchange="setJenisPasien(this.value);"></select>
                                                 </div>
                                             </div>
                                         </div>
@@ -2643,9 +2643,13 @@
                 $('#jalan').val(selectedObj.alamat);
                 $('#suku').val(selectedObj.suku).trigger('change');
                 $('#img_ktp').val(selectedObj.imgKtp);
-                var cek = cekImages(selectedObj.urlktp);
-                if(cek){
-                    $('#img-upload').attr('src', selectedObj.urlktp);
+                if(selectedObj.urlktp != null && selectedObj.urlktp != ''){
+                    var cek = cekImages(selectedObj.urlktp);
+                    if(cek){
+                        $('#img-upload').attr('src', selectedObj.urlktp);
+                    }else{
+                        $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                    }
                 }else{
                     $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
                 }
@@ -2753,9 +2757,13 @@
                     $('#jalan').val(selectedObj.alamat);
                     $('#suku').val(selectedObj.suku).trigger('change');
                     $('#img_ktp').val(selectedObj.imgKtp);
-                    var cek = cekImages(selectedObj.urlktp);
-                    if(cek){
-                        $('#img-upload').attr('src', selectedObj.urlktp);
+                    if(selectedObj.urlktp != null && selectedObj.urlktp != ''){
+                        var cek = cekImages(selectedObj.urlktp);
+                        if(cek){
+                            $('#img-upload').attr('src', selectedObj.urlktp);
+                        }else{
+                            $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                        }
                     }else{
                         $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
                     }
@@ -2917,6 +2925,7 @@
         if (online == "Y") {
             $('#poli').attr('disabled', true);
         } else {
+            resetField(1);
             setPelayanan();
         }
         $('#jenis_pasien').val(jenis);
@@ -3186,7 +3195,16 @@
                                 $('#jalan').val(response.jalan);
                                 $('#suku').val(response.suku);
                                 $('#img_ktp').val(response.imgKtp);
-                                $('#img-upload').attr('src', response.urlKtp);
+                                if(response.urlKtp != null && response.urlKtp != ''){
+                                    var cek = cekImages(response.urlKtp);
+                                    if(cek){
+                                        $('#img-upload').attr('src', response.urlKtp);
+                                    }else{
+                                        $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                                    }
+                                }else{
+                                    $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                                }
                                 $('#provinsi').val(response.namaProvinsi);
                                 $('#kabupaten').val(response.namaKota);
                                 $('#kecamatan').val(response.namaKecamatan);
@@ -3338,6 +3356,11 @@
             $('#id_online').val(no).trigger('change');
             $('#modal-pasien-online').modal('hide');
         }
+    }
+
+    function showFinger(){
+        var url=btoa('http://192.168.43.222:8080/simrs/loginFinger.action?userId='+idPasien+'&tipe=bpjs');
+        window.location.href = 'finspot:FingerspotVer;'+url;
     }
 
 </script>

@@ -17,12 +17,13 @@
             document.asuransiForm.submit();
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
+        $.subscribe('beforeProcessSaveEdit', function (event, data) {
             var namaAsuransi = document.getElementById("namaAsuransi1").value;
-            var noMaster = document.getElementById("noMaster").value;
+            var isLaka = document.getElementById("idIslaka").value;
+            // var noMaster = document.getElementById("noMaster").value;
             console.log(namaAsuransi);
 
-            if (namaAsuransi != '' && noMaster != '') {
+            if (namaAsuransi != '' && isLaka != ''  ) {
                 if (confirm('Do you want to update this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -36,28 +37,29 @@
                 if (namaAsuransi == '') {
                     msg += 'Field <strong>Nama Asuransi </strong> is required.' + '<br/>';
                 }
-                if (noMaster == '') {
-                    msg += 'Field <strong>No Master </strong> is required.' + '<br/>';
+                if (isLaka == '') {
+                    msg += 'Field <strong>isLaka </strong> is required.' + '<br/>';
                 }
 
-                document.getElementById('errorValidationMessage2').innerHTML = msg;
+                document.getElementById('errorValidationMessageEdit').innerHTML = msg;
 
-                $.publish('showErrorValidationDialog');
+                $.publish('showErrorValidationDialogEdit');
             }
         });
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
-                $.publish('showInfoDialog');
+                $.publish('showInfoDialogEdit');
             }
         });
 
-        $.subscribe('errorDialog', function (event, data) {
+        $.subscribe('errorDialogEdit', function (event, data) {
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
+            document.getElementById('errorMessage').innerHTML = "Status = "
+                + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            $.publish('showErrorDialogEdit');
         });
 
         function cancelBtn() {
@@ -74,7 +76,8 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="editAsuransiForm" method="post" theme="simple" namespace="/asuransi" action="saveEdit_asuransi" cssClass="well form-horizontal">
+            <s:form id="editAsuransiForm" method="post" theme="simple"
+                    namespace="/asuransi" action="saveEdit_asuransi" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -99,46 +102,51 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idAsuransi1" name="asuransi.idAsuransi" required="true" disabled="true" cssClass="form-control"/>
+                                <s:textfield id="idAsuransi1" name="asuransi.idAsuransi" required="true"
+                                             disabled="true" cssClass="form-control"/>
                                 <s:hidden id="idAsuransi1" name="asuransi.idAsuransi" />
                             </table>
                         </td>
                     </tr>
+
+
                     <tr>
-                        <td>
+                        <td width="30%">
                             <label class="control-label"><small>Nama Asuransi :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaAsuransi1" name="asuransi.namaAsuransi" required="true" disabled="false" cssClass="form-control"/>
+                                <s:action id="initComboAsuransi" namespace="/masterVendor" name="getComboAsuransi_masterVendor"/>
+                                <s:select list="#initComboAsuransi.listOfComboVendor" id="namaAsuransi1"
+                                          name="asuransi.noMaster"
+                                          listKey="nomorMaster" listValue="nama" headerKey=""
+                                          headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
+
                     <tr>
-                        <td>
-                            <label class="control-label"><small>No. Master :</small></label>
+                        <td >
+                            <label class="control-label"><small>isLaka :</small></label>
                         </td>
-                        <td>
-                            <table>
-                                <s:action id="initComboMaster" namespace="/admin/user" name="initComboMaster_user"/>
-                                <s:select list="#initComboMaster.listOfComboMaster" id="noMaster" name="asuransi.noMaster"
-                                          listKey="noMaster" listValue="noMaster" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                        <td width="80">
 
+                            <table>
+                                <s:select list="#{'N':'Tidak Aktif'}" id="idIslaka" name="asuransi.isLaka"
+                                          headerKey="Y" headerValue="Aktif" cssClass="form-control select2" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
-
                 </table>
-
-
 
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="editAsuransiForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
-                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="editAsuransiForm"
+                                   id="save" name="save"
+                                   onBeforeTopics="beforeProcessSaveEdit" onCompleteTopics="closeDialog,successDialog"
+                                   onSuccessTopics="successDialog" onErrorTopics="errorDialogEdit" >
                             <i class="fa fa-check"></i>
                             Save
                         </sj:submit>
@@ -173,7 +181,7 @@
                                             </center>
                                         </sj:dialog>
 
-                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialogEdit" modal="true" resizable="false"
                                                    height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                               'OK':function() {
@@ -186,10 +194,10 @@
                                             Record has been updated successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialogEdit" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_dialog').dialog('close');}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -199,17 +207,17 @@
                                             </div>
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_validation_dialog_edit" openTopics="showErrorValidationDialogEdit" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_validation_dialog_edit').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage2"></div></center>
+                                                    <center><div id="errorValidationMessageEdit"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>

@@ -113,7 +113,8 @@ public class PayrollPtkpBoImpl implements PayrollPtkpBo {
                 imPayrollPtkpHistoryEntity.setIdPtkp(imPayrollPtkpEntity.getIdPtkp());
                 imPayrollPtkpHistoryEntity.setStatusKeluarga(imPayrollPtkpEntity.getStatusKeluarga());
                 imPayrollPtkpHistoryEntity.setJumlahTanggungan(imPayrollPtkpEntity.getJumlahTanggungan());
-                imPayrollPtkpHistoryEntity.setNilai(java.lang.Integer.valueOf(imPayrollPtkpEntity.getNilai().toString()));
+//                imPayrollPtkpEntity.getNilai().toString();
+                imPayrollPtkpHistoryEntity.setNilai(imPayrollPtkpEntity.getNilai().intValue());
                 imPayrollPtkpHistoryEntity.setFlag(imPayrollPtkpEntity.getFlag());
                 imPayrollPtkpHistoryEntity.setAction(imPayrollPtkpEntity.getAction());
                 imPayrollPtkpHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -121,7 +122,6 @@ public class PayrollPtkpBoImpl implements PayrollPtkpBo {
                 imPayrollPtkpHistoryEntity.setCreatedWho(imPayrollPtkpEntity.getLastUpdateWho());
                 imPayrollPtkpHistoryEntity.setCreatedDate(imPayrollPtkpEntity.getLastUpdate());
 
-                imPayrollPtkpEntity.setIdPtkp(bean.getIdPtkp());
                 imPayrollPtkpEntity.setStatusKeluarga(bean.getStatusKeluarga());
                 imPayrollPtkpEntity.setJumlahTanggungan(bean.getJumlahTanggungan());
                 imPayrollPtkpEntity.setNilai(bean.getNilai());
@@ -160,6 +160,8 @@ public class PayrollPtkpBoImpl implements PayrollPtkpBo {
                 logger.error("[PayrollPtkpBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when getting sequence payrollPtkp id, please info to your admin..." + e.getMessage());
             }
+
+
             if (list.size() > 0) {
                 logger.error("Status Keluarga dan Jumlah Tanggungan sudah ada");
                 throw new GeneralBOException("Status Keluarga dan Jumlah Tanggungan sudah ada");
@@ -176,12 +178,11 @@ public class PayrollPtkpBoImpl implements PayrollPtkpBo {
 
                 // creating object entity serializable
                 ImHrisPayrollPtkpEntity imPayrollPtkpEntity = new ImHrisPayrollPtkpEntity();
-
                 imPayrollPtkpEntity.setIdPtkp(payrollPtkp);
                 imPayrollPtkpEntity.setStatusKeluarga(bean.getStatusKeluarga());
                 imPayrollPtkpEntity.setJumlahTanggungan(bean.getJumlahTanggungan());
-
                 imPayrollPtkpEntity.setNilai(bean.getNilai());
+
                 imPayrollPtkpEntity.setFlag(bean.getFlag());
                 imPayrollPtkpEntity.setAction(bean.getAction());
                 imPayrollPtkpEntity.setCreatedWho(bean.getCreatedWho());
@@ -204,33 +205,33 @@ public class PayrollPtkpBoImpl implements PayrollPtkpBo {
     }
 
     @Override
-    public List<PayrollPtkp> getByCriteria(PayrollPtkp searchBean) throws GeneralBOException {
+    public List<PayrollPtkp> getByCriteria(PayrollPtkp filter) throws GeneralBOException {
         logger.info("[PayrollPtkpBoImpl.getByCriteria] start process >>>");
 
         // Mapping with collection and put
         List<PayrollPtkp> listOfResult = new ArrayList();
 
-        if (searchBean != null) {
+        if (filter != null) {
             Map hsCriteria = new HashMap();
 
-            if (searchBean.getIdPtkp() != null && !"".equalsIgnoreCase(searchBean.getIdPtkp())) {
-                hsCriteria.put("ptkp_id", searchBean.getIdPtkp());
+            if (filter.getIdPtkp() != null && !"".equalsIgnoreCase(filter.getIdPtkp())) {
+                hsCriteria.put("ptkp_id", filter.getIdPtkp());
             }
-            if (searchBean.getStatusKeluarga() != null && !"".equalsIgnoreCase(searchBean.getStatusKeluarga())) {
-                hsCriteria.put("status_keluarga", searchBean.getStatusKeluarga());
+            if (filter.getStatusKeluarga() != null && !"".equalsIgnoreCase(filter.getStatusKeluarga())) {
+                hsCriteria.put("status_keluarga", filter.getStatusKeluarga());
             }
-            if (searchBean.getJumlahTanggungan() != null && !"".equalsIgnoreCase(searchBean.getJumlahTanggungan().toString())) {
-                hsCriteria.put("jumlah_tanggungan", searchBean.getJumlahTanggungan());
+            if (filter.getJumlahTanggungan() != null && !"".equalsIgnoreCase(filter.getJumlahTanggungan().toString())) {
+                hsCriteria.put("jumlah_tanggungan", filter.getJumlahTanggungan());
             }
-            if (searchBean.getNilai() != null && !"".equalsIgnoreCase(searchBean.getNilai().toString())) {
-                hsCriteria.put("nilai", searchBean.getNilai());
+            if (filter.getNilai() != null && !"".equalsIgnoreCase(filter.getNilai().toString())) {
+                hsCriteria.put("nilai", filter.getNilai());
             }
 
-            if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
-                if ("N".equalsIgnoreCase(searchBean.getFlag())) {
+            if (filter.getFlag() != null && !"".equalsIgnoreCase(filter.getFlag())) {
+                if ("N".equalsIgnoreCase(filter.getFlag())) {
                     hsCriteria.put("flag", "N");
                 } else {
-                    hsCriteria.put("flag", searchBean.getFlag());
+                    hsCriteria.put("flag", filter.getFlag());
                 }
             } else {
                 hsCriteria.put("flag", "Y");
@@ -256,6 +257,12 @@ public class PayrollPtkpBoImpl implements PayrollPtkpBo {
                     returnPayrollPtkp.setJumlahTanggungan(payrollPtkpEntity.getJumlahTanggungan());
 
                     returnPayrollPtkp.setNilai(payrollPtkpEntity.getNilai());
+
+                    if ("B".equalsIgnoreCase(payrollPtkpEntity.getStatusKeluarga())){
+                        returnPayrollPtkp.setStatusKeluargaName("Bujang");
+                    }else{
+                        returnPayrollPtkp.setStatusKeluargaName("Keluarga");
+                    }
 
                     returnPayrollPtkp.setCreatedWho(payrollPtkpEntity.getCreatedWho());
                     returnPayrollPtkp.setCreatedDate(payrollPtkpEntity.getCreatedDate());

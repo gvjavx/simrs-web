@@ -35,7 +35,9 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
             if (mapCriteria.get("nomor_master") != null) {
                 criteria.add(Restrictions.eq("nomorMaster", mapCriteria.get("nomor_master").toString()));
             }
-
+            if (mapCriteria.get("tipe") != null) {
+                criteria.add(Restrictions.eq("tipe", mapCriteria.get("tipe")));
+            }
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
             }

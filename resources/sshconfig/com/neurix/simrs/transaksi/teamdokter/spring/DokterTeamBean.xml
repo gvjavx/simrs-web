@@ -25,6 +25,11 @@
           p:pelayananSpesialisDao-ref="pelayananSpesialisDao"
     />
 
+
+    <!--<bean id="teamDokterBo" class="com.neurix.simrs.transaksi.teamdokter.bo.impl.TeamDokterBoImpl"-->
+          <!--p:dokterTeamDao-ref="dokterTeamDao"-->
+    <!--/>-->
+
     <bean id="teamDokterBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="teamDokterBo">
         <property name="interceptorNames">

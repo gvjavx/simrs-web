@@ -55,9 +55,9 @@
                     msg += 'Field <strong>Position</strong> is required.' + '<br/>';
                 }
 
-                document.getElementById('errorValidationMessage2').innerHTML = msg;
+                document.getElementById('errorValidationMessageEdit').innerHTML = msg;
 
-                $.publish('showErrorValidationDialog');
+                $.publish('showErrorValidationDialogEdit');
 
             }
         });
@@ -77,7 +77,7 @@
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
-                $.publish('showInfoDialog');
+                $.publish('showInfoDialogEdit');
             }
         });
 
@@ -85,7 +85,7 @@
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
+            $.publish('showErrorDialogEdit');
         });
 
         function cancelBtn() {
@@ -102,7 +102,9 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="editKelasRuanganForm" method="post" theme="simple" namespace="/kelasruangan" action="saveEdit_kelasruangan" cssClass="well form-horizontal">
+            <s:form id="editKelasRuanganForm" method="post" theme="simple"
+                    namespace="/kelasruangan" action="saveEdit_kelasruangan"
+                    cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -122,12 +124,13 @@
 
                 <table >
                     <tr >
-                        <td>
-                            <label class="control-label"><small>ID Kelas Ruangan</small></label>
+                        <td width="30%">
+                            <label class="control-label"><small>ID Kelas Ruangan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield cssStyle="margin-top: 7px" id="id_kelasruangan" name="kelasRuangan.idKelasRuangan" required="false" disabled="true" cssClass="form-control"/>
+                                <s:textfield cssStyle="margin-top: 7px" id="id_kelasruangan"
+                                             name="kelasRuangan.idKelasRuangan" required="false" disabled="true" cssClass="form-control"/>
                                 <S:hidden name="kelasRuangan.idKelasRuangan"></S:hidden>
                             </table>
                         </td>
@@ -135,7 +138,7 @@
                     <tr>
                         <td>
                             <label class="control-label">
-                                <small>Nama Kelas Ruangan</small>
+                                <small>Nama Kelas Ruangan :</small>
                             </label>
                         </td>
                         <td>
@@ -155,7 +158,8 @@
                             <table>
                                 <s:action id="initComboPosition" namespace="/kelasruangan" name="initComboPosition_kelasruangan"/>
                                 <s:select list="#initComboPosition.listOfComboPositions" id="positionId2" name="kelasRuangan.positionId"
-                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -173,7 +177,7 @@
                             <i class="fa fa-check"></i>
                             Save
                         </sj:submit>
-                        <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
+                        <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
                         </button>
                     </div>
@@ -204,7 +208,7 @@
                                             </center>
                                         </sj:dialog>
 
-                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialogEdit" modal="true" resizable="false"
                                                    height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                               'OK':function() {
@@ -217,10 +221,10 @@
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialogEdit" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -230,17 +234,17 @@
                                             </div>
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_validation_dialogEdit" openTopics="showErrorValidationDialogEdit" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_validation_dialogEdit').dialog('close'); window.location.reload(true) }
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage2"></div></center>
+                                                    <center><div id="errorValidationMessageEdit"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>

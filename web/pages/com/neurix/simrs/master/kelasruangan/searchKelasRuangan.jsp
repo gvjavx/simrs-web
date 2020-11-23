@@ -66,7 +66,8 @@ To change this template use File | Settings | File Templates.
                     <table width="100%" align="center">
                         <tr>
                             <td align="center">
-                                <s:form id="kelasruanganForm" method="post"  theme="simple" namespace="/kelasruangan" action="search_kelasruangan.action" cssClass="form-horizontal">
+                                <s:form id="kelasruanganForm" method="post"  theme="simple"
+                                        namespace="/kelasruangan" action="search_kelasruangan.action" cssClass="form-horizontal">
 
                                     <s:hidden name="addOrEdit"/>
                                     <s:hidden name="delete"/>
@@ -80,34 +81,44 @@ To change this template use File | Settings | File Templates.
                                     </table>
                                     <table>
                                         <tr >
-                                            <td>
-                                                <label class="control-label"><small>ID Kelas Ruangan</small></label>
+                                            <td  width="20%">
+                                                <label class="control-label"><small>ID Kelas Ruangan :</small></label>
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:textfield cssStyle="margin-top: 7px" id="id_kelasruangan" name="kelasRuangan.idKelasRuangan" required="false" readonly="false" cssClass="form-control"/>
+                                                    <s:textfield cssStyle="margin-top: 7px"
+                                                                 id="id_kelasruangan" name="kelasRuangan.idKelasRuangan"
+                                                                 readonly="false" cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
+
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Nama Kelas Ruangan</small></label>
+                                                <label class="control-label"><small>Nama Kelas Ruangan :</small></label>
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:textfield cssStyle="margin-top: 7px"  id="nama_kelasruangan" name="kelasRuangan.namaKelasRuangan" required="false" readonly="false" cssClass="form-control"/>
+                                                    <s:textfield cssStyle="margin-top: 7px" id="nama_kelasruangan"
+                                                                 name="kelasRuangan.namaKelasRuangan"  readonly="false"
+                                                                 cssClass="form-control"/>
                                                 </table>
                                             </td>
                                         </tr>
+
                                         <tr>
                                             <td>
                                                 <label class="control-label"><small>Divisi :</small></label>
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:action id="initComboPosition" namespace="/kelasruangan" name="initComboPosition_kelasruangan"/>
-                                                    <s:select list="#initComboPosition.listOfComboPositions" id="positionId" name="kelasRuangan.positionId"
-                                                              listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                    <s:action id="initComboPosition" namespace="/kelasruangan"
+                                                              name="initComboPosition_kelasruangan"/>
+                                                    <s:select list="#initComboPosition.listOfComboPositions"
+                                                              id="positionId" name="kelasRuangan.positionId"
+                                                              listKey="positionId" listValue="positionName"
+                                                              headerKey="" headerValue="[Select one]"
+                                                              cssClass="form-control select2"/>
                                                 </table>
                                             </td>
                                         </tr>
@@ -118,7 +129,7 @@ To change this template use File | Settings | File Templates.
                                             <td>
                                                 <table>
                                                     <s:select list="#{'N':'Non-Active'}" id="flag" name="kelasRuangan.flag"
-                                                              headerKey="Y" headerValue="Active" cssClass="form-control" />
+                                                              headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                 </table>
 
                                             </td>
@@ -129,21 +140,30 @@ To change this template use File | Settings | File Templates.
                                         <table align="center">
                                             <tr>
                                                 <td>
-                                                    <sj:submit type="button" cssClass="btn btn-primary" formIds="kelasruanganForm" id="search" name="search"
-                                                               onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
+                                                    <sj:submit cssStyle="margin-right: 5px" type="button"
+                                                               cssClass="btn btn-primary" formIds="kelasruanganForm"
+                                                               id="search" name="search"
+                                                               onClickTopics="showDialogLoading"
+                                                               onCompleteTopics="closeDialogLoading" >
                                                         <i class="fa fa-search"></i>
                                                         Search
                                                     </sj:submit>
                                                 </td>
                                                 <td>
-                                                    <s:url var="urlAdd" namespace="/kelasruangan" action="add_kelasruangan" escapeAmp="false">
+                                                    <s:url  var="urlAdd" namespace="/kelasruangan" action="add_kelasruangan"
+                                                            escapeAmp="false">
                                                     </s:url>
-                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlAdd}">
-                                                        <button class="btn btn-success" ><i class="fa fa-plus"></i> Add Kelas Ruangan</button>
+                                                    <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px"
+                                                          onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                        <i class="fa fa-plus"></i>
+                                                    Add Kelas ruangan
                                                     </sj:a>
                                                 </td>
+
                                                 <td>
-                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_kelasruangan"/>'">
+                                                    <button type="button" class="btn btn-danger"
+                                                            cssStyle="margin-right: 5px" onclick="window.location.href='<s:url
+                                                            action="initForm_kelasruangan"/>'">
                                                         <i class="fa fa-refresh"></i> Reset
                                                     </button>
                                                 </td>
@@ -154,10 +174,11 @@ To change this template use File | Settings | File Templates.
                                     <br>
                                     <br>
                                     <center>
-                                        <table id="showdata" width="25%">
+                                        <table id="showdata" width="90%">
                                             <tr>
                                                 <td align="center">
-                                                    <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading" closeTopics="closeDialogLoading" modal="true"
+                                                    <sj:dialog id="waiting_dialog_loading" openTopics="showDialogLoading"
+                                                               closeTopics="closeDialogLoading" modal="true"
                                                                resizable="false"
                                                                height="250" width="600" autoOpen="false" title="Loading ...">
                                                         Please don't close this window, server is processing your request ...
@@ -173,7 +194,7 @@ To change this template use File | Settings | File Templates.
                                                         </center>
                                                     </sj:dialog>
                                                     <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                               height="500" width="600" autoOpen="false"
+                                                               height="350" width="600" autoOpen="false"
                                                                title="Ruangan ">
                                                     </sj:dialog>
                                                     <sj:dialog id="view_dialog_menu" openTopics="showDialogMenuView" modal="true"
@@ -183,7 +204,8 @@ To change this template use File | Settings | File Templates.
                                                     </sj:dialog>
                                                     <s:set name="listOfKelas" value="#session.listOfResultRuanganKelas" scope="request" />
                                                     <display:table name="listOfKelas" class=" tableRekruitmen table table-condensed table-striped table-hover"
-                                                                   requestURI="paging_displaytag_kelasruangan.action" export="true" id="row" pagesize="14" style="font-size:12">
+                                                                   requestURI="paging_displaytag_kelasruangan.action" export="true"
+                                                                   id="row" pagesize="14" style="font-size:12">
                                                         <%--<display:column property="calonPegawaiId" sortable="true" title="Cal Peg ID"  />--%>
                                                         <display:column media="html" title="Edit">
                                                             <s:if test='#attr.row.flag == "Y"'>
@@ -213,8 +235,8 @@ To change this template use File | Settings | File Templates.
                                                         <display:column property="namaKelasRuangan" sortable="true" title="Nama Kelas"  />
                                                         <display:column property="divisiName" sortable="true" title="Divisi"/>
                                                         <display:column property="kodering" sortable="true" title="kodering"  />
-                                                        <display:column property="flag" sortable="true" title="flag"  />
-                                                        <display:column property="action" sortable="true" title="action"  />
+                                                        <%--<display:column property="flag" sortable="true" title="flag"  />--%>
+                                                        <%--<display:column property="action" sortable="true" title="action"  />--%>
                                                         <display:column property="stCreatedDate" sortable="true" title="Created date"  />
                                                         <display:column property="createdWho" sortable="true" title="Created who"  />
                                                         <display:column property="stLastUpdate" sortable="true" title="Last update"  />

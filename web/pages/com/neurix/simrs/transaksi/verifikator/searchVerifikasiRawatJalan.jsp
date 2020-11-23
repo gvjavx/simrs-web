@@ -277,7 +277,7 @@
                                 <tr style="display: none" id="form_no_sep">
                                     <td><b>No SEP</b></td>
                                     <td style="vertical-align: middle">
-                                        <span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px"
+                                        <span class="span-success"
                                               id="det_no_sep"></span></td>
                                 </tr>
                                 <tr>
@@ -630,15 +630,14 @@
                     if (response.idJenisPeriksaPasien == "rekanan") {
                         CheckupAction.cekRekananOpsByDetail(idDetailCheckup, function (res) {
                             if (res.namaRekanan != null && res.namaRekanan != '') {
-                                $('#det_jenis_pasien').html(response.statusPeriksaName + " " + res.namaRekanan);
+                                $('#det_jenis_pasien').html(changeJenisPasien(response.idJenisPeriksaPasien, response.statusPeriksaName+" "+res.namaRekanan));
                                 $('#h_id_paket').val(res.idPaket);
                                 $('#h_is_bpjs').val(res.isBpjs);
                             }
                         });
                     } else {
-                        $('#det_jenis_pasien').html(response.statusPeriksaName);
+                        $('#det_jenis_pasien').html(changeJenisPasien(response.idJenisPeriksaPasien, response.statusPeriksaName));
                     }
-                    setLabelJenisPasien('det_jenis_pasien', response.idJenisPeriksaPasien);
                     $('#h_no_checkup').val(response.noCheckup);
                     $('#h_jenis_pasien').val(response.idDetailCheckup);
                     $('#h_id_pasien').val(response.idPasien);

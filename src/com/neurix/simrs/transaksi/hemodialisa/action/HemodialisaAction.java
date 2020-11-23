@@ -139,7 +139,7 @@ public class HemodialisaAction {
                 response.setMsg("Found Error " + e.getMessage());
                 return response;
             }
-        }catch (JSONException e){
+        }catch (Exception e){
             response.setStatus("error");
             response.setMsg("Found Error, "+e.getMessage());
         }

@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.rekananops.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
 import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -16,4 +17,6 @@ public interface RekananOpsBo {
     public RekananOps getDetailRekananOpsByDetail(String id, String branchId) throws GeneralBOException;
     public List<RekananOps> getComboRekananOps(String branchId) throws GeneralBOException;
     public ImSimrsRekananOpsEntity getRekananEntityById(String id) throws GeneralBOException;
+    public List<DetailRekananOps> getSearchByCriteria (RekananOps bean) throws GeneralBOException;
+
 }

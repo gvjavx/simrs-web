@@ -2506,9 +2506,13 @@
                 $('#jalan').val(selectedObj.alamat);
                 $('#suku').val(selectedObj.suku);
                 $('#img_ktp').val(selectedObj.imgKtp);
-                var cek = cekImages(selectedObj.urlktp);
-                if(cek){
-                    $('#img-upload').attr('src', selectedObj.urlktp);
+                if(selectedObj.urlktp != null && selectedObj.urlktp != ''){
+                    var cek = cekImages(selectedObj.urlktp);
+                    if(cek){
+                        $('#img-upload').attr('src', selectedObj.urlktp);
+                    }else{
+                        $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                    }
                 }else{
                     $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
                 }
@@ -2614,9 +2618,13 @@
                     $('#jalan').val(selectedObj.alamat);
                     $('#suku').val(selectedObj.suku).trigger('change');
                     $('#img_ktp').val(selectedObj.imgKtp);
-                    var cek = cekImages(selectedObj.urlktp);
-                    if(cek){
-                        $('#img-upload').attr('src', selectedObj.urlktp);
+                    if(selectedObj.urlktp != null && selectedObj.urlktp != ''){
+                        var cek = cekImages(selectedObj.urlktp);
+                        if(cek){
+                            $('#img-upload').attr('src', selectedObj.urlktp);
+                        }else{
+                            $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                        }
                     }else{
                         $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
                     }
@@ -2943,7 +2951,16 @@
                     $('#jalan').val(response.jalan);
                     $('#suku').val(response.suku).trigger('change');
                     $('#img_ktp').val(response.imgKtp);
-                    $('#img-upload').attr('src', response.urlKtp);
+                    if(response.urlKtp != null && response.urlKtp != ''){
+                        var cek = cekImages(response.urlKtp);
+                        if(cek){
+                            $('#img-upload').attr('src', response.urlKtp);
+                        }else{
+                            $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                        }
+                    }else{
+                        $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                    }
                     $('#provinsi').val(response.provinsi);
                     $('#kabupaten').val(response.kota);
                     $('#kecamatan').val(response.kecamatan);

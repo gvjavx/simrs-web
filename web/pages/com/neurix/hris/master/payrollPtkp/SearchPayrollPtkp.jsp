@@ -66,7 +66,9 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="payrollPtkpForm" method="post"  theme="simple" namespace="/payrollPtkp" action="search_payrollPtkp.action" cssClass="form-horizontal">
+                    <s:form id="payrollPtkpForm" method="post"  theme="simple"
+                            namespace="/payrollPtkp" action="search_payrollPtkp.action"
+                            cssClass="form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
@@ -86,7 +88,8 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="idPtkpSearch" name="payrollPtkp.idPtkp" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:textfield  id="idPtkpSearch" name="payrollPtkp.idPtkp"
+                                                      required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -100,7 +103,8 @@
                                         <%--<s:action id="initComboTipe" namespace="/statusKeluarga" name="initComboStatusKeluarga_statusKeluarga"/>--%>
                                         <%--<s:select list="" id="statusKeluargaAdd" name="payrollPtkp.statusKeluarga"--%>
                                                   <%--listKey="statusKeluarga" listValue="statusKeluargaName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                            <s:select list="#{'B':'Bujang', 'K':'Keluarga'}" id="statusKeluargaSearch" name="payrollPtkp.statusKeluarga"
+                                            <s:select list="#{'B':'Bujang', 'K':'Keluarga'}" id="statusKeluargaSearch"
+                                                      name="payrollPtkp.statusKeluarga"
                                                       headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </table>
                                 </td>
@@ -112,7 +116,9 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield type="number" min="0" id="jumlahTanggunganSearch" name="payrollPtkp.jumlahTanggungan" required="true" cssClass="form-control"/>
+                                        <s:textfield type="number" min="0" id="jumlahTanggunganSearch"
+                                                     name="payrollPtkp.jumlahTanggungan" required="true"
+                                                     cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -151,14 +157,16 @@
                             <table align="center">
                                 <tr>
                                     <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollPtkpForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollPtkpForm"
+                                                   id="search" name="search"
                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
                                     </td>
                                     <td>
-                                        <s:url var="urlAdd" namespace="/payrollPtkp" action="add_payrollPtkp" escapeAmp="false">
+                                        <s:url var="urlAdd" namespace="/payrollPtkp" action="add_payrollPtkp"
+                                               escapeAmp="false">
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
@@ -166,7 +174,8 @@
                                         </sj:a>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollPtkp"/>'">
+                                        <button type="button" class="btn btn-danger"
+                                                onclick="window.location.href='<s:url action="initForm_payrollPtkp"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
                                     </td>
@@ -188,7 +197,8 @@
 
                                         <s:set name="listOfsearchPayrollPtkp" value="#session.listOfResult" scope="request" />
                                         <display:table name="listOfsearchPayrollPtkp" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_payrollPtkp.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                       requestURI="paging_displaytag_payrollPtkp.action" export="true" id="row"
+                                                       pagesize="14" style="font-size:10">
                                             <display:column media="html" title="View">
                                                 <s:url var="urlView" namespace="/payrollPtkp" action="view_payrollPtkp" escapeAmp="false">
                                                     <s:param name="id"><s:property value="#attr.row.idPtkp"/></s:param>
@@ -221,7 +231,7 @@
 
                                             <%--</display:column>--%>
                                             <display:column property="idPtkp" sortable="true" title="ID PTKP" />
-                                            <display:column property="statusKeluarga" sortable="true" title="Status Keluarga"  />
+                                            <display:column property="statusKeluargaName" sortable="true" title="Status Keluarga"  />
                                             <display:column property="jumlahTanggungan" sortable="true" title="Jumlah Tanggungan"  />
                                             <%--<display:column property="nilai" sortable="true" title="Nilai"  />--%>
                                             <display:column title="Nilai">
