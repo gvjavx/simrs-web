@@ -40,16 +40,16 @@
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ===== DEV ====== -->
-                <prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu</prop>
-                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
-                <prop key="hibernate.connection.username">root</prop>
-                <prop key="hibernate.connection.password">123456</prop>
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">root</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ====== LOCALHOST ======= -->
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu</prop>-->
-                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
-                <!--<prop key="hibernate.connection.username">postgres</prop>-->
-                <!--<prop key="hibernate.connection.password">postgres</prop>-->
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu_prod_dev</prop>
+                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
+                <prop key="hibernate.connection.username">postgres</prop>
+                <prop key="hibernate.connection.password">postgres</prop>
 
             </props>
         </property>
