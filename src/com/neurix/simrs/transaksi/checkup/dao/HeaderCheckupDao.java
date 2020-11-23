@@ -1872,12 +1872,26 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return res;
     }
 
-    public List<HeaderCheckup> getKunjunganRJ(String bulan, String tahun, String branch){
+    public List<HeaderCheckup> getKunjunganRJ(String bulan, String tahun, String branch, String jenisKunjungan){
         List<HeaderCheckup> response = new ArrayList<>();
-        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun)){
+        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun) &&
+        jenisKunjungan != null && !"".equalsIgnoreCase(jenisKunjungan)){
             String branchId = "AND a.branch_id NOT LIKE 'KP'";
+            String jenis = "";
             if(branch != null && !"".equalsIgnoreCase(branch)){
                 branchId = "AND a.branch_id IN "+branch+" \n";
+            }
+            if("rawat_jalan".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'rawat_jalan' AND b.id_transaksi_online IS NULL";
+            }
+            if("igd".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'igd' AND b.id_transaksi_online IS NULL";
+            }
+            if("rawat_inap".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'rawat_inap' AND b.id_transaksi_online IS NULL";
+            }
+            if("telemedic".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND b.id_transaksi_online IS NOT NULL";
             }
             String SQL = "SELECT\n" +
                     "a.branch_id,\n" +
@@ -1899,10 +1913,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "\tFROM it_simrs_header_checkup a\n" +
                     "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "\tINNER JOIN im_simrs_pelayanan e ON b.id_pelayanan = e.id_pelayanan\n" +
-                    "\tLEFT JOIN it_simrs_rawat_inap c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                    "\tWHERE c.id_detail_checkup IS NULL\n" +
-                    "\tAND CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun\n" +
-                    "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan\n" + branchId +
+                    "\tWHERE CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun\n" +
+                    "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan\n" + branchId + jenis +
                     "\tAND b.status_periksa = '3'\n" +
                     "\tGROUP BY a.branch_id, CAST(b.created_date AS DATE)\n" +
                     ")b\n" +
@@ -1928,12 +1940,26 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return response;
     }
 
-    public List<HeaderCheckup> getDetailKunjunganRJ(String bulan, String tahun, String branch){
+    public List<HeaderCheckup> getDetailKunjunganRJ(String bulan, String tahun, String branch, String jenisKunjungan){
         List<HeaderCheckup> response = new ArrayList<>();
-        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun)){
+        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun) &&
+                jenisKunjungan != null && !"".equalsIgnoreCase(jenisKunjungan)){
             String branchId = "AND a.branch_id NOT LIKE 'KP'";
+            String jenis = "";
             if(branch != null && !"".equalsIgnoreCase(branch)){
                 branchId = "AND a.branch_id IN "+branch+" \n";
+            }
+            if("rawat_jalan".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'rawat_jalan' AND b.id_transaksi_online IS NULL";
+            }
+            if("igd".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'igd' AND b.id_transaksi_online IS NULL";
+            }
+            if("rawat_inap".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'rawat_inap' AND b.id_transaksi_online IS NULL";
+            }
+            if("telemedic".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND b.id_transaksi_online IS NOT NULL";
             }
             String SQL = "SELECT\n" +
                     "a.branch_id,\n" +
@@ -1971,10 +1997,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "\t\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "\t\tINNER JOIN im_simrs_pelayanan e ON b.id_pelayanan = e.id_pelayanan\n" +
                     "\t\tINNER JOIN im_simrs_jenis_periksa_pasien pk ON b.id_jenis_periksa_pasien = pk.id_jenis_periksa_pasien\n" +
-                    "\t\tLEFT JOIN it_simrs_rawat_inap c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                    "\t\tWHERE c.id_detail_checkup IS NULL\n" +
-                    "\tAND CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun\n" +
-                    "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan\n" + branchId +
+                    "\tWHERE CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun\n" +
+                    "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan\n" + branchId + jenis +
                     "\t\tAND b.status_periksa = '3'\n" +
                     "\t\tGROUP BY a.branch_id, pk.id_jenis_periksa_pasien \n" +
                     "\t)b ON a.id_jenis_periksa_pasien = b.id_jenis_periksa_pasien\n" +
@@ -2160,12 +2184,26 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return res;
     }
 
-    public List<HeaderCheckup> getDetailKunjunganJK(String bulan, String tahun, String branch){
+    public List<HeaderCheckup> getDetailKunjunganJK(String bulan, String tahun, String branch, String jenisKunjungan){
         List<HeaderCheckup> response = new ArrayList<>();
-        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun)){
+        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun) &&
+                jenisKunjungan != null && !"".equalsIgnoreCase(jenisKunjungan)){
             String branchId = "AND a.branch_id NOT LIKE 'KP'";
+            String jenis = "";
             if(branch != null && !"".equalsIgnoreCase(branch)){
                 branchId = "AND a.branch_id IN "+branch+" \n";
+            }
+            if("rawat_jalan".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'rawat_jalan' AND b.id_transaksi_online IS NULL";
+            }
+            if("igd".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'igd' AND b.id_transaksi_online IS NULL";
+            }
+            if("rawat_inap".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'rawat_inap' AND b.id_transaksi_online IS NULL";
+            }
+            if("telemedic".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND b.id_transaksi_online IS NOT NULL";
             }
             String SQL = "SELECT \n" +
                     "a.branch_name,\n" +
@@ -2200,11 +2238,11 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "\tFROM it_simrs_header_checkup a\n" +
                     "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "\tINNER JOIN im_branches c ON a.branch_id = c.branch_id\n" +
-                    "\tLEFT JOIN it_simrs_rawat_inap d ON b.id_detail_checkup = d.id_detail_checkup\n" +
-                    "\tWHERE a.jenis_kelamin IS NOT NULL\n" +
-                    "\tAND d.id_detail_checkup IS NULL\n" + branchId +
+                    "\tINNER JOIN im_simrs_pelayanan e ON e.id_pelayanan = b.id_pelayanan\n" +
+                    "\tWHERE a.jenis_kelamin IS NOT NULL\n" + branchId + jenis +
                     "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan \n" +
                     "\tAND CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun \n" +
+                    "\tAND b.status_periksa = '3'\n" +
                     "\tGROUP BY a.jenis_kelamin, a.branch_id\n" +
                     ") b ON a.branch_id = b.branch_id AND a.jenis_kelamin = b.jenis_kelamin\n" +
                     "ORDER BY a.branch_id ASC";

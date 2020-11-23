@@ -29,13 +29,13 @@ public class InitDashboardAction {
         return headerCheckupList;
     }
 
-    public List<HeaderCheckup> getKunjuganRJ(String bulan, String tahun, String branch){
+    public List<HeaderCheckup> getKunjuganRJ(String bulan, String tahun, String branch, String jenisKunjungan){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         InitDashboardBo initDashboardBo = (InitDashboardBo) ctx.getBean("initDashboardBoProxy");
         List<HeaderCheckup> headerCheckupList = new ArrayList<>();
         if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun)){
             try {
-                headerCheckupList = initDashboardBo.getKunjunganRJ(bulan, tahun, branch);
+                headerCheckupList = initDashboardBo.getKunjunganRJ(bulan, tahun, branch, jenisKunjungan);
             }catch (GeneralBOException e){
                 logger.error(e.getMessage());
             }
@@ -44,13 +44,13 @@ public class InitDashboardAction {
         return headerCheckupList;
     }
 
-    public List<HeaderCheckup> getDetailKunjuganRJ(String bulan, String tahun, String branch){
+    public List<HeaderCheckup> getDetailKunjuganRJ(String bulan, String tahun, String branch, String jenisKunjungan){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         InitDashboardBo initDashboardBo = (InitDashboardBo) ctx.getBean("initDashboardBoProxy");
         List<HeaderCheckup> headerCheckupList = new ArrayList<>();
         if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun)){
             try {
-                headerCheckupList = initDashboardBo.getDetailKunjunganRJ(bulan, tahun, branch);
+                headerCheckupList = initDashboardBo.getDetailKunjunganRJ(bulan, tahun, branch, jenisKunjungan);
             }catch (GeneralBOException e){
                 logger.error(e.getMessage());
             }
@@ -105,13 +105,13 @@ public class InitDashboardAction {
         return headerCheckupList;
     }
 
-    public List<HeaderCheckup> getDetailKunjuganJK(String bulan, String tahun, String branch){
+    public List<HeaderCheckup> getDetailKunjuganJK(String bulan, String tahun, String branch, String jenisKunjungan){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         InitDashboardBo initDashboardBo = (InitDashboardBo) ctx.getBean("initDashboardBoProxy");
         List<HeaderCheckup> headerCheckupList = new ArrayList<>();
         if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun)){
             try {
-                headerCheckupList = initDashboardBo.getDetailKunjunganJK(bulan, tahun, branch);
+                headerCheckupList = initDashboardBo.getDetailKunjunganJK(bulan, tahun, branch, jenisKunjungan);
             }catch (GeneralBOException e){
                 logger.error(e.getMessage());
             }

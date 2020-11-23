@@ -116,8 +116,8 @@
                         <div class="row">
                             <div class="col-md-3 col-sm-6 col-xs-12">
                                 <div class="info-box box_shadow">
-                                    <span class="info-box-icon bg-green"><img
-                                            style="width: 50px; height: 50px; margin-top: 18px"
+                                    <span style="cursor: pointer" class="info-box-icon bg-yellow cek_warna" id="count_rj" onclick="setJenis(this.id)"><img
+                                            style="width: 50px; height: 50px; margin-top: 18px; cursor: pointer"
                                             src="<s:url value="/pages/images/logo-dokter.png"/>"></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">Rawat Jalan</span>
@@ -127,8 +127,8 @@
                             </div>
                             <div class="col-md-3 col-sm-6 col-xs-12">
                                 <div class="info-box box_shadow">
-                                    <span class="info-box-icon bg-green"><img
-                                            style="width: 30px; height: 50px; margin-top: 18px"
+                                    <span style="cursor: pointer" class="info-box-icon bg-green cek_warna" id="count_igd" onclick="setJenis(this.id)"><img
+                                            style="width: 30px; height: 50px; margin-top: 18px; cursor: pointer"
                                             src="<s:url value="/pages/images/logo-perawat.png"/>"></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">IGD</span>
@@ -139,8 +139,8 @@
                             <div class="clearfix visible-sm-block"></div>
                             <div class="col-md-3 col-sm-6 col-xs-12">
                                 <div class="info-box box_shadow">
-                                    <span class="info-box-icon bg-green"><img
-                                            style="width: 50px; height: 50px; margin-top: 18px"
+                                    <span style="cursor: pointer" class="info-box-icon bg-green cek_warna" id="count_ri" onclick="setJenis(this.id)"><img
+                                            style="width: 50px; height: 50px; margin-top: 18px; cursor: pointer"
                                             src="<s:url value="/pages/images/logo-poli.png"/>"></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">Rawat Inap</span>
@@ -150,8 +150,8 @@
                             </div>
                             <div class="col-md-3 col-sm-6 col-xs-12">
                                 <div class="info-box box_shadow">
-                                    <span class="info-box-icon bg-green"><img
-                                            style="width: 50px; height: 50px; margin-top: 18px"
+                                    <span style="cursor: pointer" class="info-box-icon bg-green cek_warna" id="count_telemedic" onclick="setJenis(this.id)"><img
+                                            style="width: 50px; height: 50px; margin-top: 18px; cursor: pointer"
                                             src="<s:url value="/pages/images/logo-pasien.png"/>"></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">Telemedic</span>
@@ -164,7 +164,7 @@
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
-                        Jumlah Kunjungan Pasien Rawat Jalan
+                        Jumlah Kunjungan Pasien <b><span id="kj_label">Rawat Jalan</span></b>
                     </div>
                     <div class="box-body">
                         <div class="row">
@@ -180,19 +180,33 @@
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
-                        Detail Kunjungan Pasien Rawat Jalan Berdasarkan Jenis Pasien
+                        Detail Kunjungan Pasien <b><span id="jp_label">Rawat Jalan</span></b> Berdasarkan Jenis Pasien
                     </div>
                     <div class="box-body">
                         <div class="row" id="donut_rs">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-10 col-md-2">
+                                <b style="font-size: 12px; margin-left: 7px">Keterangan</b>
+                                <ul class="fa-ul" style="font-size: 12px" id="legend_jp">
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="box-header with-border">
                     </div>
                     <div class="box-header with-border">
-                        Detail Kunjungan Pasien Rawat Jalan Berdasarkan Jenis Kelamin
+                        Detail Kunjungan Pasien <b><span id="jk_label">Rawat Jalan</span></b> Berdasarkan Jenis Kelamin
                     </div>
                     <div class="box-body">
                         <div class="row" id="donut_jk">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-10 col-md-2">
+                                <b style="font-size: 12px; margin-left: 7px">Keterangan</b>
+                                <ul class="fa-ul" style="font-size: 12px" id="legend_jk">
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="box-header with-border">
@@ -266,6 +280,7 @@
 
     function setBranch() {
         var namaRS = "";
+        var legendRS = "";
         var donutRS = "";
         var donutJK = "";
         var tempColor = [];
@@ -299,8 +314,13 @@
                             '<p class="text-center" style="margin-top: -85px; font-size: 12px;"><b>' + item.branchName + '</b></p>\n' +
                             '</div>\n' +
                             '</div>';
+
+                        legendRS += '<div class="col-md-2 text-center">\n' +
+                            '<label style="font-size: 12px;"><i class="fa fa-circle" style="color: '+color+'; margin-right: 6px"></i>' + item.branchName + '</label>' +
+                            '</div>';
                     });
                     $('#nama_rs').html(namaRS);
+                    $('#nama_rs_kamar').html(legendRS);
                     $('#donut_rs').html(donutRS);
                     $('#donut_jk').html(donutJK);
                 }
@@ -317,66 +337,31 @@
             dwr.engine.setAsync(true);
             InitDashboardAction.getCountAll(month, tahun, {
                 callback: function (response) {
-                    if (parseInt(response.jmlRJ) > 0) {
-                        var i = 0;
-                        var interval = setInterval(function () {
-                            if (i <= response.jmlRJ) {
-                                $('#sum_rj').text(i);
-                                i++;
-                            } else {
-                                clearInterval(interval);
-                            }
-                        }, 5000 / response.jmlRJ);
-                    } else {
-                        $('#sum_rj').text(response.jmlRJ);
-                    }
-
-                    if (parseInt(response.jmlRI) > 0) {
-                        var i = 0;
-                        var interval = setInterval(function () {
-                            if (i <= response.jmlRJ) {
-                                $('#sum_ri').text(i);
-                                i++;
-                            } else {
-                                clearInterval(interval);
-                            }
-                        }, 5000 / response.jmlRJ);
-                    } else {
-                        $('#sum_ri').text(response.jmlRI);
-                    }
-
-                    if (parseInt(response.jmlIGD) > 0) {
-                        var i = 0;
-                        var interval = setInterval(function () {
-                            if (i <= response.jmlRJ) {
-                                $('#sum_igd').text(i);
-                                i++;
-                            } else {
-                                clearInterval(interval);
-                            }
-                        }, 5000 / response.jmlRJ);
-                    } else {
-                        $('#sum_igd').text(response.jmlIGD);
-                    }
-
-                    if (parseInt(response.jmlTelemedic) > 0) {
-                        var i = 0;
-                        var interval = setInterval(function () {
-                            if (i <= response.jmlRJ) {
-                                $('#sum_telemedic').text(i);
-                                i++;
-                            } else {
-                                clearInterval(interval);
-                            }
-                        }, 5000 / response.jmlRJ);
-                    } else {
-                        $('#sum_telemedic').text(response.jmlTelemedic);
-                    }
+                    countNumber('sum_rj', response.jmlRJ);
+                    countNumber('sum_igd', response.jmlIGD);
+                    countNumber('sum_ri', response.jmlRI);
+                    countNumber('sum_telemedic', response.jmlTelemedic);
                 }
             });
             setTimeout(function () {
                 setChart();
             },1000);
+        }
+    }
+
+    function countNumber(id, jumlah){
+        if(parseInt(jumlah) > 0){
+            var i = 0;
+            var interval = setInterval(function () {
+                if (i <= jumlah) {
+                    $('#'+id).text(i);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 500 / jumlah);
+        }else{
+            $('#'+id).text(jumlah);
         }
     }
 
@@ -389,6 +374,7 @@
         var isi = "";
         var branch = "";
         var colorBranch = [];
+        var removeColorBranch = [];
         $.each(branchId, function (i, item) {
             if (item.checked) {
                 if (isi != "") {
@@ -400,9 +386,33 @@
                     'branch_id': item.value.split("|")[0],
                     'color': item.value.split("|")[1]
                 })
+            }else{
+                removeColorBranch.push({
+                    'branch_id': item.value.split("|")[0],
+                    'color': item.value.split("|")[1]
+                });
             }
         });
+
         if (isi != "") {
+            var warna = $('.cek_warna');
+            var jenisKunjungan = "";
+            $.each(warna, function (iw, itemw) {
+                if('info-box-icon bg-yellow cek_warna' == itemw.className){
+                    if(itemw.id == 'count_rj'){
+                        jenisKunjungan = 'rawat_jalan';
+                    }
+                    if(itemw.id == 'count_igd'){
+                        jenisKunjungan = 'igd';
+                    }
+                    if(itemw.id == 'count_ri'){
+                        jenisKunjungan = 'rawat_inap';
+                    }
+                    if(itemw.id == 'count_telemedic'){
+                        jenisKunjungan = 'telemedic';
+                    }
+                }
+            });
             branch = awal + isi + akhir;
             var tempBranch = "";
             var tempTgl = "";
@@ -411,7 +421,7 @@
             var month = parseInt(bulan) + 1;
             $('#modal-loading').modal({show:true, backdrop:'static'});
             dwr.engine.setAsync(true);
-            InitDashboardAction.getKunjuganRJ(month, tahun, branch, {
+            InitDashboardAction.getKunjuganRJ(month, tahun, branch, jenisKunjungan, {
                 callback: function (response) {
                     var tempTotal = "";
                     var tempBranch = "";
@@ -542,9 +552,6 @@
                         var dataParL = JSON.parse(dataL);
                         var dataParCo = JSON.parse(dataCo);
 
-                        console.log()
-
-
                         $('#line-chart').empty();
                         var line = new Morris.Line({
                             element: 'line-chart',
@@ -594,11 +601,13 @@
 
             var tempU = "";
             var tempClr = "";
+            var legendJP = "";
             dwr.engine.setAsync(true);
-            InitDashboardAction.getDetailKunjuganRJ(month, tahun, branch, {
+            InitDashboardAction.getDetailKunjuganRJ(month, tahun, branch, jenisKunjungan, {
                 callback: function (response) {
                     if (response.length > 0) {
                         $.each(colorBranch, function (ic, itemc) {
+                            $('#donut-chart-'+itemc.branch_id).empty();
                             var isi = "";
                             $.each(response, function (i, item) {
                                 if(itemc.branch_id == item.branchId){
@@ -619,8 +628,10 @@
                                                 }else{
                                                     tempClr = '"'+itemi.color+'"';
                                                 }
+                                                legendJP += '<li><span class="fa-li"><i class="fa fa-circle" style="color: '+itemi.color+'"></i></span>'+item.statusPeriksaName+'</li>';
                                             }
                                         });
+                                        $('#legend_jp').html(legendJP);
                                     }
                                 }
                             });
@@ -652,14 +663,15 @@
                     'color': '#66ccff'
                 });
 
-            var tempU = "";
-            var tempClr = "";
+            var tempClrJk = "";
+            var legendJK = "";
             dwr.engine.setAsync(true);
-            InitDashboardAction.getDetailKunjuganJK(month, tahun, branch, {
+            InitDashboardAction.getDetailKunjuganJK(month, tahun, branch, jenisKunjungan, {
                 callback: function (response) {
                     if (response.length > 0) {
                         $.each(colorBranch, function (ic, itemc) {
-                            var isi = "";
+                            $('#donut-chart-jk-'+itemc.branch_id).empty();
+                            var isiJK = "";
                             $.each(response, function (i, item) {
                                 if(itemc.branch_id == item.branchId){
                                     var tot = 0;
@@ -670,34 +682,36 @@
                                     if(item.jenisKelamin == "L"){
                                         jenisKelamin = "Laki-Laki";
                                     }
-                                    if(isi != ""){
-                                        isi = isi+',{"'+'label'+'":'+'"'+jenisKelamin+'"'+',"'+'value'+'":'+'"'+tot+'"}';
+                                    if(isiJK != ""){
+                                        isiJK = isiJK+',{"'+'label'+'":'+'"'+jenisKelamin+'"'+',"'+'value'+'":'+'"'+tot+'"}';
                                     }else{
-                                        isi = '{"'+'label'+'":'+'"'+jenisKelamin+'"'+',"'+'value'+'":'+'"'+tot+'"}';
+                                        isiJK = '{"'+'label'+'":'+'"'+jenisKelamin+'"'+',"'+'value'+'":'+'"'+tot+'"}';
                                     }
                                     if(ic == 0){
-                                        $.each(colorJenisJK, function (ii, itemi) {
-                                            if(item.jenisKelamin == itemi.id){
-                                                if(tempClr != ""){
-                                                    tempClr = tempClr+',"'+itemi.color+'"';
+                                        $.each(colorJenisJK, function (ii, itemjk) {
+                                            if(item.jenisKelamin == itemjk.id){
+                                                if(tempClrJk != ""){
+                                                    tempClrJk = tempClrJk+',"'+itemjk.color+'"';
                                                 }else{
-                                                    tempClr = '"'+itemi.color+'"';
+                                                    tempClrJk = '"'+itemjk.color+'"';
                                                 }
+                                                legendJK += '<li><span class="fa-li"><i class="fa fa-circle" style="color: '+itemjk.color+'"></i></span>'+jenisKelamin+'</li>';
                                             }
                                         });
+                                        $('#legend_jk').html(legendJK);
                                     }
                                 }
                             });
 
-                            var dat = "["+isi+"]";
-                            var col = "["+tempClr+"]";
-                            var parseData = JSON.parse(dat);
-                            var parseCol = JSON.parse(col);
+                            var datJK = "["+isiJK+"]";
+                            var colJK = "["+tempClrJk+"]";
+                            var parseDataJK = JSON.parse(datJK);
+                            var parseColJK = JSON.parse(colJK);
                             var donut = new Morris.Donut({
                                 element: 'donut-chart-jk-' + itemc.branch_id,
                                 resize: true,
-                                colors: parseCol,
-                                data: parseData,
+                                colors: parseColJK,
+                                data: parseDataJK,
                                 hideHover: 'auto'
                             });
                         });
@@ -878,10 +892,57 @@
                     $('#modal-loading').modal('hide');
                 }
             });
+        }else{
+            $('#line-chart').empty();
+            $('#line-chart-kamar').empty();
+            if(removeColorBranch.length > 0){
+                $.each(removeColorBranch, function (i, item) {
+                    $('#donut-chart-jk-'+item.branch_id).empty();
+                    $('#donut-chart-'+item.branch_id).empty();
+                });
+            }
+        }
+
+        if(removeColorBranch.length > 0){
+            $.each(removeColorBranch, function (i, item) {
+                $('#donut-chart-jk-'+item.branch_id).empty();
+                $('#donut-chart-'+item.branch_id).empty();
+            });
         }
     }
 
     function cekBranch(id){
+        setChart();
+    }
+
+    function setJenis(idCari){
+        var warna = $('.cek_warna');
+        $.each(warna, function (i, item) {
+            if(item.id == idCari){
+                var cek = $('#'+item.id).hasClass("info-box-icon bg-green cek_warna");
+                if(cek){
+                    $('#'+item.id).removeClass("info-box-icon bg-green cek_warna");
+                    $('#'+item.id).addClass("info-box-icon bg-yellow cek_warna");
+                }
+            }else{
+                var cek = $('#'+item.id).hasClass("info-box-icon bg-yellow cek_warna");
+                if(cek){
+                    $('#'+item.id).removeClass("info-box-icon bg-yellow cek_warna");
+                    $('#'+item.id).addClass("info-box-icon bg-green cek_warna");
+                }
+            }
+        });
+        if(idCari == 'count_rj'){
+            $('#kj_label, #jp_label, #jk_label').text("Rawat Jalan");
+        }else if(idCari == 'count_igd'){
+            $('#kj_label, #jp_label, #jk_label').text("IGD");
+        }else if(idCari == 'count_ri'){
+            $('#kj_label, #jp_label, #jk_label').text("Rawat Inap");
+        }else if(idCari == 'count_telemedic'){
+            $('#kj_label, #jp_label, #jk_label').text("Telemedic");
+        }else{
+            $('#kj_label, #jp_label, #jk_label').text("*[Silahkan pilih jenis kunjungan]");
+        }
         setChart();
     }
 

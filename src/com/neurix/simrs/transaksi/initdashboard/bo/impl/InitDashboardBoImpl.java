@@ -26,10 +26,10 @@ public class InitDashboardBoImpl implements InitDashboardBo {
     }
 
     @Override
-    public List<HeaderCheckup> getKunjunganRJ(String bulan, String tahun, String branchId) {
+    public List<HeaderCheckup> getKunjunganRJ(String bulan, String tahun, String branchId, String jenisKunjungan) {
         List<HeaderCheckup> headerCheckup = new ArrayList<>();
         try {
-            headerCheckup = headerCheckupDao.getKunjunganRJ(bulan, tahun, branchId);
+            headerCheckup = headerCheckupDao.getKunjunganRJ(bulan, tahun, branchId, jenisKunjungan);
         }catch (HibernateException e){
             logger.error(e.getMessage());
         }
@@ -37,10 +37,10 @@ public class InitDashboardBoImpl implements InitDashboardBo {
     }
 
     @Override
-    public List<HeaderCheckup> getDetailKunjunganRJ(String bulan, String tahun, String branchId) {
+    public List<HeaderCheckup> getDetailKunjunganRJ(String bulan, String tahun, String branchId, String jenisKunjungan) {
         List<HeaderCheckup> headerCheckup = new ArrayList<>();
         try {
-            headerCheckup = headerCheckupDao.getDetailKunjunganRJ(bulan, tahun, branchId);
+            headerCheckup = headerCheckupDao.getDetailKunjunganRJ(bulan, tahun, branchId, jenisKunjungan);
         }catch (HibernateException e){
             logger.error(e.getMessage());
         }
@@ -70,10 +70,10 @@ public class InitDashboardBoImpl implements InitDashboardBo {
     }
 
     @Override
-    public List<HeaderCheckup> getDetailKunjunganJK(String bulan, String tahun, String branchId) throws GeneralBOException {
+    public List<HeaderCheckup> getDetailKunjunganJK(String bulan, String tahun, String branchId, String jenisKunjungan) throws GeneralBOException {
         List<HeaderCheckup> headerCheckup = new ArrayList<>();
         try {
-            headerCheckup = headerCheckupDao.getDetailKunjunganJK(bulan, tahun, branchId);
+            headerCheckup = headerCheckupDao.getDetailKunjunganJK(bulan, tahun, branchId, jenisKunjungan);
         }catch (HibernateException e){
             logger.error(e.getMessage());
         }

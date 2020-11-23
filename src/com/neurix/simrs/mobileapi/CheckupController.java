@@ -1111,7 +1111,7 @@ public class CheckupController implements ModelDriven<Object> {
             List<HeaderCheckup> result = new ArrayList<>();
 
             try {
-                result = initDashboardBoProxy.getKunjunganRJ(bulan, tahun, branchId);
+                result = initDashboardBoProxy.getKunjunganRJ(bulan, tahun, branchId, null);
             } catch (GeneralBOException e){
                 logger.error("Found Error getKunjunganRJ" + e);
             }
@@ -1131,7 +1131,7 @@ public class CheckupController implements ModelDriven<Object> {
             List<HeaderCheckup> result = new ArrayList<>();
 
             try{
-              result = initDashboardBoProxy.getDetailKunjunganRJ(bulan, tahun, branchId);
+              result = initDashboardBoProxy.getDetailKunjunganRJ(bulan, tahun, branchId, null);
             } catch (GeneralBOException e){
                 logger.error("Found Error getDetailKunjunganRJ" + e);
             }
