@@ -437,8 +437,7 @@ public class UserLoginAction extends ActionSupport {
 
         String result;
         FingerPrint finalResult = new FingerPrint();
-        String texttipe = ",bpjs";
-        result= getHostname()+"/checkup/add_checkup.action?idPasien="+userId+texttipe;
+        result= getHostname()+"/checkup/add_checkup.action?idPasien="+userId;
         finalResult.setDataResult(result);
         fingerPrint=finalResult;
         logger.info("[BpjsController.prosesLoginFinger] end process <<<");
