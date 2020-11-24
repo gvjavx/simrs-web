@@ -384,11 +384,17 @@
                         <div class="box-header with-border"></div>
                         <div class="row" style="padding: 5px">
                             <div class="col-md-12 text-center">
-                                <a class="btn btn-warning" href="initForm_rekammedis.action"><i class="fa fa-times"></i>
-                                    Back</a>
-                                <a class="btn btn-danger"
-                                   href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>"><i
-                                        class="fa fa-refresh"></i> Reset</a>
+                                <s:if test='detailCheckup.idx != null'>
+                                    <a class="btn btn-warning" href="<%= request.getContextPath() %>/<s:property value="detailCheckup.url"/>/add_<s:property value="detailCheckup.url"/>.action?id=<s:property value="detailCheckup.idx"/>"><i class="fa fa-times"></i>
+                                        Back</a>
+                                </s:if>
+                                <s:else>
+                                    <a class="btn btn-warning" href="initForm_rekammedis.action"><i class="fa fa-times"></i>
+                                        Back</a>
+                                </s:else>
+                                <%--<a class="btn btn-danger"--%>
+                                   <%--href="detail_rekammedis.action?idPasien=<s:property value="detailCheckup.idPasien"/>"><i--%>
+                                        <%--class="fa fa-refresh"></i> Reset</a>--%>
                                 <%--<a class="btn btn-info" id="btn-vidio-rm2" onclick="viewTelemedic()"><i class="fa fa-film"></i>--%>
                                     <%--Telemedic</a>--%>
                                 <%--<a class="btn btn-info" onclick="viewRiwayat()"><i class="fa fa-history"></i> Riwayat Pasien</a>--%>

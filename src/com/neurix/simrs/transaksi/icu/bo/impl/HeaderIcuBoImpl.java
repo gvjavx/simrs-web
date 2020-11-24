@@ -70,8 +70,10 @@ public class HeaderIcuBoImpl implements HeaderIcuBo {
     }
 
     @Override
-    public CrudResponse saveAdd(List<HeaderIcu> list, Boolean isNew) throws GeneralBOException {
+    public CrudResponse saveAdd(List<HeaderIcu> list) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
+        String jenisObat = "";
+        String idHeader = "";
         if (list.size() > 0) {
             for (HeaderIcu bean : list) {
 
@@ -79,51 +81,133 @@ public class HeaderIcuBoImpl implements HeaderIcuBo {
                 ItSimrsDetailIcuEntity detailIcuEntity = new ItSimrsDetailIcuEntity();
                 String idHeaderIcu = bean.getIdHeaderIcu();
 
-                if (isNew) {
+                if (bean.getNew()) {
+                    if("obat".equalsIgnoreCase(bean.getKategori())){
+                        if(!jenisObat.equalsIgnoreCase(bean.getJenis())){
+                            jenisObat = bean.getJenis();
+                            headerIcuEntity.setIdHeaderIcu("HIC" + headerIcuDao.getNextSeq());
+                            headerIcuEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                            headerIcuEntity.setJenis(bean.getJenis());
+                            headerIcuEntity.setKategori(bean.getKategori());
+                            headerIcuEntity.setAction(bean.getAction());
+                            headerIcuEntity.setFlag(bean.getFlag());
+                            headerIcuEntity.setCreatedDate(bean.getCreatedDate());
+                            headerIcuEntity.setCreatedWho(bean.getCreatedWho());
+                            headerIcuEntity.setLastUpdate(bean.getLastUpdate());
+                            headerIcuEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
-                    headerIcuEntity.setIdHeaderIcu("HIC" + headerIcuDao.getNextSeq());
-                    headerIcuEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
-                    headerIcuEntity.setJenis(bean.getJenis());
-                    headerIcuEntity.setKategori(bean.getKategori());
-                    headerIcuEntity.setAction(bean.getAction());
-                    headerIcuEntity.setFlag(bean.getFlag());
-                    headerIcuEntity.setCreatedDate(bean.getCreatedDate());
-                    headerIcuEntity.setCreatedWho(bean.getCreatedWho());
-                    headerIcuEntity.setLastUpdate(bean.getLastUpdate());
-                    headerIcuEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                            try {
+                                headerIcuDao.addAndSave(headerIcuEntity);
+                                response.setStatus("success");
+                                response.setMsg("Berhasil");
+                                idHeader = headerIcuEntity.getIdHeaderIcu();
+                            } catch (HibernateException e) {
+                                response.setStatus("error");
+                                response.setMsg("Found Error " + e.getMessage());
+                                logger.error(e.getMessage());
+                            }
+                        }
+                    }else{
+                        headerIcuEntity.setIdHeaderIcu("HIC" + headerIcuDao.getNextSeq());
+                        headerIcuEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                        headerIcuEntity.setJenis(bean.getJenis());
+                        headerIcuEntity.setKategori(bean.getKategori());
+                        headerIcuEntity.setAction(bean.getAction());
+                        headerIcuEntity.setFlag(bean.getFlag());
+                        headerIcuEntity.setCreatedDate(bean.getCreatedDate());
+                        headerIcuEntity.setCreatedWho(bean.getCreatedWho());
+                        headerIcuEntity.setLastUpdate(bean.getLastUpdate());
+                        headerIcuEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        try {
+                            headerIcuDao.addAndSave(headerIcuEntity);
+                            response.setStatus("success");
+                            response.setMsg("Berhasil");
+                            idHeaderIcu = headerIcuEntity.getIdHeaderIcu();
+                        } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMsg("Found Error " + e.getMessage());
+                            logger.error(e.getMessage());
+                        }
+                    }
+                }
+
+                if(bean.getNew()){
+                    detailIcuEntity.setIdDetailIcu("IDI" + detailIcuDao.getNextSeq());
+                    if("obat".equalsIgnoreCase(bean.getKategori())){
+                        detailIcuEntity.setIdHeaderIcu(idHeader);
+                    }else{
+                        detailIcuEntity.setIdHeaderIcu(idHeaderIcu);
+                    }
+                    detailIcuEntity.setNilai(bean.getNilai()+"#"+bean.getNilai());
+                    detailIcuEntity.setWaktu(bean.getWaktu());
+                    detailIcuEntity.setAction(bean.getAction());
+                    detailIcuEntity.setFlag(bean.getFlag());
+                    detailIcuEntity.setCreatedDate(bean.getCreatedDate());
+                    detailIcuEntity.setCreatedWho(bean.getCreatedWho());
+                    detailIcuEntity.setLastUpdate(bean.getLastUpdate());
+                    detailIcuEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    detailIcuEntity.setIdDetailChekcup(bean.getIdDetailCheckup());
 
                     try {
-                        headerIcuDao.addAndSave(headerIcuEntity);
+                        detailIcuDao.addAndSave(detailIcuEntity);
                         response.setStatus("success");
                         response.setMsg("Berhasil");
-                        idHeaderIcu = headerIcuEntity.getIdHeaderIcu();
                     } catch (HibernateException e) {
                         response.setStatus("error");
                         response.setMsg("Found Error " + e.getMessage());
                         logger.error(e.getMessage());
                     }
-                }
+                }else{
+                    if("obat".equalsIgnoreCase(bean.getKategori())){
+                        ItSimrsDetailIcuEntity entity = detailIcuDao.getById("idDetailIcu", bean.getIdDetailIcu());
+                        if(entity != null){
+                            String nilai = headerIcuDao.lastNilai(idHeaderIcu);
+                            if(nilai != null && !"".equalsIgnoreCase(nilai)){
+                                Integer a = Integer.valueOf(nilai);
+                                Integer b = Integer.valueOf(bean.getNilai());
+                                Integer hasil = a + b;
+                                entity.setNilai(bean.getNilai()+"#"+hasil);
+                            }
+                            entity.setLastUpdate(bean.getLastUpdate());
+                            entity.setLastUpdateWho(bean.getLastUpdateWho());
+                            try {
+                                detailIcuDao.updateAndSave(entity);
+                                response.setStatus("success");
+                                response.setMsg("Berhasil");
+                            }catch (HibernateException e){
+                                response.setStatus("error");
+                                response.setMsg(e.getMessage());
+                            }
+                        }
+                    }else{
+                        detailIcuEntity.setIdDetailIcu("IDI" + detailIcuDao.getNextSeq());
+                        detailIcuEntity.setIdHeaderIcu(idHeaderIcu);
+                        String nilai = headerIcuDao.lastNilai(idHeaderIcu);
+                        if(nilai != null && !"".equalsIgnoreCase(nilai)){
+                            Integer a = Integer.valueOf(nilai);
+                            Integer b = Integer.valueOf(bean.getNilai());
+                            Integer hasil = a + b;
+                            detailIcuEntity.setNilai(bean.getNilai()+"#"+hasil);
+                        }
+                        detailIcuEntity.setWaktu(bean.getWaktu());
+                        detailIcuEntity.setAction(bean.getAction());
+                        detailIcuEntity.setFlag(bean.getFlag());
+                        detailIcuEntity.setCreatedDate(bean.getCreatedDate());
+                        detailIcuEntity.setCreatedWho(bean.getCreatedWho());
+                        detailIcuEntity.setLastUpdate(bean.getLastUpdate());
+                        detailIcuEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        detailIcuEntity.setIdDetailChekcup(bean.getIdDetailCheckup());
 
-                detailIcuEntity.setIdDetailIcu("IDI" + detailIcuDao.getNextSeq());
-                detailIcuEntity.setIdHeaderIcu(idHeaderIcu);
-                detailIcuEntity.setNilai(bean.getNilai());
-                detailIcuEntity.setWaktu(bean.getWaktu());
-                detailIcuEntity.setAction(bean.getAction());
-                detailIcuEntity.setFlag(bean.getFlag());
-                detailIcuEntity.setCreatedDate(bean.getCreatedDate());
-                detailIcuEntity.setCreatedWho(bean.getCreatedWho());
-                detailIcuEntity.setLastUpdate(bean.getLastUpdate());
-                detailIcuEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                detailIcuEntity.setIdDetailChekcup(bean.getIdDetailCheckup());
-
-                try {
-                    detailIcuDao.addAndSave(detailIcuEntity);
-                    response.setStatus("success");
-                    response.setMsg("Berhasil");
-                } catch (HibernateException e) {
-                    response.setStatus("error");
-                    response.setMsg("Found Error " + e.getMessage());
-                    logger.error(e.getMessage());
+                        try {
+                            detailIcuDao.addAndSave(detailIcuEntity);
+                            response.setStatus("success");
+                            response.setMsg("Berhasil");
+                        } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMsg("Found Error " + e.getMessage());
+                            logger.error(e.getMessage());
+                        }
+                    }
                 }
             }
         }
@@ -178,6 +262,37 @@ public class HeaderIcuBoImpl implements HeaderIcuBo {
         } else {
             response.setStatus("error");
             response.setMsg("Data tidak ditemukan...!");
+        }
+        return response;
+    }
+
+    @Override
+    public List<HeaderIcu> getListHeadIcu(String id, String kategori, String tgl) throws GeneralBOException {
+        return headerIcuDao.getHeadIcu(id, kategori, tgl);
+    }
+
+    @Override
+    public CrudResponse editObat(HeaderIcu bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsDetailIcuEntity entity = detailIcuDao.getById("idDetailIcu", bean.getIdDetailIcu());
+        if(entity != null){
+            String nilai = headerIcuDao.lastNilai(bean.getIdHeaderIcu());
+            if(nilai != null && !"".equalsIgnoreCase(nilai)){
+                Integer a = Integer.valueOf(nilai);
+                Integer b = Integer.valueOf(bean.getNilai());
+                Integer hasil = a + b;
+                entity.setNilai(bean.getNilai()+"#"+hasil);
+            }
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            try {
+                detailIcuDao.updateAndSave(entity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            }catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
+            }
         }
         return response;
     }

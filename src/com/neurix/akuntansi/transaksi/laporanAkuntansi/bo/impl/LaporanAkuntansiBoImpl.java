@@ -2,6 +2,10 @@ package com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.impl;
 
 import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.settingReportArusKas.dao.SettingReportKeuanganArusKasDao;
+import com.neurix.akuntansi.master.settingReportArusKas.model.AkunSettingReportKeuanganArusKas;
+import com.neurix.akuntansi.master.settingReportArusKas.model.AkunSettingReportKeuanganArusKasDetail;
+import com.neurix.akuntansi.master.settingReportArusKas.model.ImAkunSettingReportArusKasEntity;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.dao.SettingReportKeuanganKonsolDao;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsolDetail;
@@ -36,7 +40,16 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     private BiodataDao biodataDao;
     private KodeRekeningDao kodeRekeningDao;
     private SettingReportKeuanganKonsolDao settingReportKeuanganKonsolDao;
+    private SettingReportKeuanganArusKasDao settingReportKeuanganArusKasDao;
     private BudgetingDao budgetingDao;
+
+    public SettingReportKeuanganArusKasDao getSettingReportKeuanganArusKasDao() {
+        return settingReportKeuanganArusKasDao;
+    }
+
+    public void setSettingReportKeuanganArusKasDao(SettingReportKeuanganArusKasDao settingReportKeuanganArusKasDao) {
+        this.settingReportKeuanganArusKasDao = settingReportKeuanganArusKasDao;
+    }
 
     public BudgetingDao getBudgetingDao() {
         return budgetingDao;
@@ -366,51 +379,63 @@ public class LaporanAkuntansiBoImpl implements LaporanAkuntansiBo {
     }
 
     @Override
-    public List<ArusKasDTO> getArusKas(String reportId, String unit, String periode, String tipeLaporan) throws GeneralBOException {
-        List<ArusKasDTO> arusKasDTOList= new ArrayList<>();
+    public List<AkunSettingReportKeuanganArusKas> getArusKas(String reportId, String unit, String periode) throws GeneralBOException {
+        List<AkunSettingReportKeuanganArusKas> result = new ArrayList<>();
+        List<ImAkunSettingReportArusKasEntity> arusKasList = new ArrayList<>();
+        List<AkunSettingReportKeuanganArusKasDetail> keuanganArusKasDetailList = new ArrayList<>();
+
         try {
-            if (("AK").equalsIgnoreCase(tipeLaporan)){
-                arusKasDTOList = laporanAkuntansiDao.getArusKas(reportId,unit,periode);
-
-                if (arusKasDTOList.size()!=0){
-                    List<ArusKasDTO> arusKasDTOListPending= laporanAkuntansiDao.getArusKasBiayaPendingTanggalItu(reportId,unit,periode);
-                    List<ArusKasDTO> arusKasDTOListPendingDibayar= laporanAkuntansiDao.getArusKasBiayaPendingDibayarTanggalItu(reportId,unit,periode);
-
-                    if (arusKasDTOListPending.size()!=0){
-                        //Menambahkan 1 baris baru yang kosong
-
-                        arusKasDTOList.addAll(arusKasDTOListPending);
-                    }
-
-                    if (arusKasDTOListPendingDibayar.size()!=0){
-                        //Menambahkan 1 baris baru yang kosong
-                        arusKasDTOList.addAll(arusKasDTOListPendingDibayar);
-                    }
-                }
-            }else if (("ARD").equalsIgnoreCase(tipeLaporan)){
-                arusKasDTOList = laporanAkuntansiDao.getArusKasDetail(reportId,unit,periode);
-
-                if (arusKasDTOList.size()!=0){
-                    List<ArusKasDTO> arusKasDTOListPending= laporanAkuntansiDao.getArusKasDetailBiayaPendingTanggalItu(reportId,unit,periode);
-                    List<ArusKasDTO> arusKasDTOListPendingDibayar= laporanAkuntansiDao.getArusKasDetailBiayaPendingDibayarTanggalItu(reportId,unit,periode);
-
-                    if (arusKasDTOListPending.size()!=0){
-                        //Menambahkan 1 baris baru yang kosong
-
-                        arusKasDTOList.addAll(arusKasDTOListPending);
-                    }
-
-                    if (arusKasDTOListPendingDibayar.size()!=0){
-                        //Menambahkan 1 baris baru yang kosong
-                        arusKasDTOList.addAll(arusKasDTOListPendingDibayar);
-                    }
-                }
-            }
+            arusKasList = settingReportKeuanganArusKasDao.listReportKeuanganArusKas();
+            keuanganArusKasDetailList = laporanAkuntansiDao.getArusKas(periode,unit);
         } catch (HibernateException e) {
             logger.error("[LaporanAkuntansiBoImpl.getArusKas] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem , please info to your admin..." + e.getMessage());
         }
-        return arusKasDTOList;
+
+        for (ImAkunSettingReportArusKasEntity arusKas : arusKasList){
+            String[] coaSplit = arusKas.getKodeRekeningAlias().split("\\.");
+            if (coaSplit.length==3){
+                AkunSettingReportKeuanganArusKas data = new AkunSettingReportKeuanganArusKas();
+
+                data.setLevel1(settingReportKeuanganArusKasDao.getCoaAliasNameByCoaAlias(coaSplit[0]));
+                data.setLevel2(settingReportKeuanganArusKasDao.getCoaAliasNameByCoaAlias(coaSplit[0]+"."+coaSplit[1]));
+
+                BigDecimal totalUnit1= BigDecimal.ZERO;
+                BigDecimal totalLastSaldoUnit1= BigDecimal.ZERO;
+                BigDecimal totalCurSaldoUnit1= BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit11TahunLalu = BigDecimal.ZERO;
+                BigDecimal totalSaldoUnit12TahunLalu = BigDecimal.ZERO;
+                for (AkunSettingReportKeuanganArusKasDetail arusKasDetail : keuanganArusKasDetailList){
+                    if (arusKasDetail.getSettingReportArusKasId().equalsIgnoreCase(arusKas.getSettingReportArusKasId())){
+                        if ("T".equalsIgnoreCase(arusKasDetail.getOperator())){
+                            totalUnit1 = totalUnit1.add(arusKasDetail.getSaldoUnit1());
+                            totalLastSaldoUnit1 = totalLastSaldoUnit1.add(arusKasDetail.getLastSaldoUnit1());
+                            totalCurSaldoUnit1 = totalCurSaldoUnit1.add(arusKasDetail.getCurSaldoUnit1());
+                            totalSaldoUnit11TahunLalu = totalSaldoUnit11TahunLalu.add(arusKasDetail.getSaldoUnit11TahunLalu());
+                            totalSaldoUnit12TahunLalu = totalSaldoUnit12TahunLalu.add(arusKasDetail.getSaldoUnit12TahunLalu());
+                        }else if ("K".equalsIgnoreCase(arusKasDetail.getOperator())){
+                            totalUnit1 = totalUnit1.subtract(arusKasDetail.getSaldoUnit1());
+                            totalLastSaldoUnit1 = totalLastSaldoUnit1.subtract(arusKasDetail.getLastSaldoUnit1());
+                            totalCurSaldoUnit1 = totalCurSaldoUnit1.subtract(arusKasDetail.getCurSaldoUnit1());
+                            totalSaldoUnit11TahunLalu = totalSaldoUnit11TahunLalu.subtract(arusKasDetail.getSaldoUnit11TahunLalu());
+                            totalSaldoUnit12TahunLalu = totalSaldoUnit12TahunLalu.subtract(arusKasDetail.getSaldoUnit12TahunLalu());
+                        }
+                    }
+                }
+
+                data.setSettingReportArusKasId(arusKas.getSettingReportArusKasId());
+                data.setKodeRekeningAlias(arusKas.getKodeRekeningAlias());
+                data.setNamaKodeRekeningAlias(arusKas.getNamaKodeRekeningAlias());
+                data.setFlagLabel(arusKas.getFlagLabel());
+                data.setSaldoUnit1(totalUnit1);
+                data.setLastSaldoUnit1(totalLastSaldoUnit1);
+                data.setCurSaldoUnit1(totalCurSaldoUnit1);
+                data.setSaldoUnit11TahunLalu(totalSaldoUnit11TahunLalu);
+                data.setSaldoUnit12TahunLalu(totalSaldoUnit12TahunLalu);
+                result.add(data);
+            }
+        }
+        return result;
     }
 
     @Override

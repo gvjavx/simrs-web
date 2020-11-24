@@ -338,6 +338,12 @@ public class PaketPeriksaAction extends BaseTransactionAction {
                 if (obj.has("no_telp")) {
                     dataPasien.setNoTelp(obj.getString("no_telp"));
                 }
+                if (obj.has("status")) {
+                    dataPasien.setStatusPerkawinan(obj.getString("status"));
+                }
+                if (obj.has("pendidikan")) {
+                    dataPasien.setPendidikan(obj.getString("pendidikan"));
+                }
                 dataPasien.setNoKtp(obj.getString("nik"));
                 dataPasien.setNama(obj.getString("nama"));
                 dataPasien.setJenisKelamin(obj.getString("jk"));
@@ -372,7 +378,13 @@ public class PaketPeriksaAction extends BaseTransactionAction {
                     }
                 }
                 try {
-                    pasien = pasienBo.saveAddWithResponse(dataPasien);
+                    Boolean cekNik = pasienBo.cekNikPasien(dataPasien.getNoKtp());
+                    if(cekNik){
+                        pasien.setStatus("error");
+                        pasien.setMsg("NIK "+dataPasien.getNoKtp()+" sudah ada...!");
+                    }else{
+                        pasien = pasienBo.saveAddWithResponse(dataPasien);
+                    }
                 } catch (GeneralBOException e) {
                     pasien.setStatus("error");
                     pasien.setMsg("Error " + e.getMessage());

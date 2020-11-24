@@ -8,7 +8,7 @@ function showModalOperasi(jenis, idRM, isSetIdRM) {
         $('.btn-hide').show();
     }
     if ("tindakan_medis_op" == jenis) {
-        selectOptionTM('ina', jenis);
+        selectOptionTM('op', jenis);
     }
     setDataPasien();
     $('#modal-op-' + jenis).modal({show: true, backdrop: 'static'});
@@ -312,8 +312,8 @@ function saveDataOperasi(jenis, ket) {
             });
             data.push({
                 'parameter': 'Tekanan Darah',
-                'jawaban1': cekList191 + ' mmHg',
-                'jawaban2': cekList191 + ' mmHg',
+                'jawaban1': replaceUnderLine(cekList191) + ' mmHg',
+                'jawaban2': replaceUnderLine(cekList191) + ' mmHg',
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
@@ -576,7 +576,7 @@ function saveDataOperasi(jenis, ket) {
             });
             data.push({
                 'parameter': 'Tekanan Darah',
-                'jawaban1': pf9 + ' mmHg',
+                'jawaban1': replaceUnderLine(pf9) + ' mmHg',
                 'keterangan': jenis,
                 'jenis': 'pra_anestesi',
                 'id_detail_checkup': idDetailCheckup
@@ -746,7 +746,7 @@ function saveDataOperasi(jenis, ket) {
         }
     }
 
-    if ("add_informasi_dan_persetujuan" == jenis) {
+    if ("tindakan_medis_op" == jenis) {
 
         var va1 = $('#op1').val();
         var va2 = $('#op2').val();
@@ -760,7 +760,7 @@ function saveDataOperasi(jenis, ket) {
         var va10 = $('#op10').val();
         var va11 = $('#op11').val();
 
-        var persetujuan = $('#tindakan_medis_op').val();
+        var persetujuan = $('#nama_tindakan_medis').val();
         var parameter = $('[name=parameter]');
         var tanda = $('[name=tanda]');
 
@@ -770,6 +770,14 @@ function saveDataOperasi(jenis, ket) {
         var ttd4 = document.getElementById("ttd4");
         var ttd5 = document.getElementById("ttd5");
 
+        var nama1 = $('#nama_terang_ttd1').val();
+        var sip1 = $('#sip_ttd1').val();
+        var nama2 = $('#nama_terang_ttd2').val();
+        var nama3 = $('#nama_terang_ttd3').val();
+        var sip3 = $('#sip_ttd3').val();
+        var nama4 = $('#nama_terang_ttd4').val();
+        var nama5 = $('#nama_terang_ttd5').val();
+
         var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
         var cekTtd3 = isCanvasBlank(ttd3);
@@ -778,12 +786,10 @@ function saveDataOperasi(jenis, ket) {
 
         if (va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
 
-            var resplacePerse = persetujuan.replace("_", " ");
-            var perse = convertSentenceCaseUp(resplacePerse);
             data.push({
                 'parameter': 'pernyataan',
-                'jawaban1': 'Pemberian Informasi dan Persetujuan ' + perse,
-                'keterangan': ket,
+                'jawaban1': 'Pemberian Informasi dan Persetujuan ' + persetujuan,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
@@ -791,28 +797,28 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'Tanggal',
                 'jawaban1': va1,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Dokter Penanggung Jawab Anestesi',
                 'jawaban1': va2,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Pemberi Informasi',
                 'jawaban1': va3,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Penerima Informasi',
                 'jawaban1': va4,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
@@ -821,7 +827,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Jenis Informasi',
                 'jawaban1': 'Isi Informasi',
                 'jawaban2': 'Check Informasi',
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'bold',
                 'id_detail_checkup': idDetailCheckup
@@ -878,7 +884,7 @@ function saveDataOperasi(jenis, ket) {
                     'parameter': item.value,
                     'jawaban2': tdn,
                     'jawaban1': info,
-                    'keterangan': ket,
+                    'keterangan': jenis,
                     'jenis': persetujuan,
                     'tipe': 'info',
                     'id_detail_checkup': idDetailCheckup
@@ -900,23 +906,26 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatakan bertanya dan atau diskusi kepada pasien dan/atau keluarganya sedemikian rupa sehingga telah memahaminya',
                 'jawaban1': canv1,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama1,
+                'sip':sip1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas dan telah memahaminya',
                 'jawaban1': canv2,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama2,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'pernyataan',
                 'jawaban1': 'Persetujuan Tindakan Medis',
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
@@ -924,13 +933,13 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'penyataan',
                 'jawaban1': 'Yang bertanda tangan dibawah ini, Saya ' + va5 + ' ' +
-                    'tanggal lahir ' + va6 + ', ' + va7 + ' dengan ini menyatakan persetujuan untuk dilakukan tindakan ' + va8 + ' ' +
+                    'tanggal lahir ' + va6 + ', ' + va7 + ' dengan ini menyatakan persetujuan untuk dilakukan tindakan ' + persetujuan + ' ' +
                     'terhadap pasien Bernama ' + va9 + ' tanggal lahir ' + va10 + ', Alamat ' + va11 + '.' +
                     'Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti diatas ' +
                     'kepada saya termasuk resiko dan komplikasi yang timbul ' +
                     'Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti, maka keberhasilan tindakan ' +
                     'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal ' + converterDate(new Date) + ', Jam ' + converterTime(new Date()),
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
@@ -938,25 +947,29 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'TTD yang menyatakan',
                 'jawaban1': canv3,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama3,
+                'sip':sip3,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Saksi I',
                 'jawaban1': canv4,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama4,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Saksi II',
                 'jawaban1': canv5,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama5,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -989,7 +1002,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Kesadaran',
                 'jawaban1': isi1,
                 'skor': skor1,
-                'keterangan': jenis,
+                'keterangan': ket,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -997,7 +1010,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Warna Kulit',
                 'jawaban1': isi2,
                 'skor': skor2,
-                'keterangan': jenis,
+                'keterangan': ket,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1005,7 +1018,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Aktifitas',
                 'jawaban1': isi3,
                 'skor': skor3,
-                'keterangan': jenis,
+                'keterangan': ket,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1013,7 +1026,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Respirasi',
                 'jawaban1': isi4,
                 'skor': skor4,
-                'keterangan': jenis,
+                'keterangan': ket,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1021,7 +1034,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Kardio Vaskuler',
                 'jawaban1': isi5,
                 'skor': skor5,
-                'keterangan': jenis,
+                'keterangan': ket,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1050,7 +1063,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Kesadaran',
                 'jawaban1': isi1,
                 'skor': skor1,
-                'keterangan': jenis,
+                'keterangan': ket,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1058,7 +1071,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Respirasi',
                 'jawaban1': isi2,
                 'skor': skor2,
-                'keterangan': jenis,
+                'keterangan': ket,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1066,7 +1079,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Aktifitas',
                 'jawaban1': isi3,
                 'skor': skor3,
-                'keterangan': jenis,
+                'keterangan': ket,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1089,7 +1102,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Penilaian',
                 'jawaban1': isi1,
                 'skor': skor1,
-                'keterangan': jenis,
+                'keterangan': ket,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -2770,6 +2783,36 @@ function detailOperasi(jenis) {
                                 '<td width="35%">' + j2 + '</td>' +
                                 '</tr>';
                         }
+                    }else if("tindakan_medis_op" == item.keterangan){
+                        if ("colspan" == item.tipe) {
+                            body += '<tr>' +
+                                '<td colspan="3">' + item.jawaban1 + '</td>' +
+                                '</tr>';
+                        } else if ("info" == item.tipe) {
+                            body += '<tr>' +
+                                '<td width="25%">' + item.parameter + '</td>' +
+                                '<td >' + item.jawaban1 + '</td>' +
+                                '<td width="20%" align="center">' + cekIcons(item.jawaban2) + '</td>' +
+                                '</tr>';
+                        } else if ("ttd" == item.tipe) {
+                            body += '<tr>' +
+                                '<td colspan="2">' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
+                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                '</tr>';
+                        } else if ("bold" == item.tipe) {
+                            body += '<tr style="font-weight: bold">' +
+                                '<td width="25%">' + item.parameter + '</td>' +
+                                '<td >' + item.jawaban1 + '</td>' +
+                                '<td width="20%" align="center">' + item.jawaban2 + '</td>' +
+                                '</tr>';
+                        }else {
+                            body += '<tr>' +
+                                '<td width="30%">' + item.parameter + '</td>' +
+                                '<td colspan="2">' + item.jawaban1 + '</td>' +
+                                '</tr>';
+                        }
                     } else {
                         var jwb1 = "";
                         if (item.jawaban1 != null) {
@@ -3268,20 +3311,17 @@ function saveMonAnestesi(jenis, ket) {
     var va5 = $('#mon5').val();
     var va6 = $('#mon6').val();
     var va7 = $('#mon7').val();
-    var va8 = $('#mon8').val();
-    var va9 = $('#mon9').val();
-    var va10 = $('#mon10').val();
     var cek = false;
 
     if ("mon_intra_anestesi" == jenis) {
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 != '') {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 != '') {
             cek = true;
         }
     }
 
     if ("mon_pasca_anestesi" == jenis) {
-        if (va1 && va2 && va3 != '') {
-            va4 = va5 = va6 = va7 = va8 = va9 = va10 = "";
+        if (va1 && va2 && va3 && va4 != '') {
+            va5 = va6 = va7 = "";
             cek = true;
         }
     }
@@ -3292,18 +3332,14 @@ function saveMonAnestesi(jenis, ket) {
             'waktu': jam,
             'rr': va1,
             'nadi': va2,
-            'tensi': va3,
-            'anest': va4,
+            'sistole': va3,
+            'diastole': va4,
             'o2': va5,
             'n2o': va6,
-            'ethran': va7,
-            'iso': va8,
-            'sevo': va9,
-            'infus': va10,
+            'inhalasi': va7,
             'keterangan': jenis,
             'jenis': ket
         };
-        console.log(data);
         var result = JSON.stringify(data);
         $('#save_op_' + jenis).hide();
         $('#load_op_' + jenis).show();
@@ -3339,7 +3375,6 @@ function detailMonAnestesi(jenis) {
     AsesmenOperasiAction.getListMonAnestesi(idDetailCheckup, jenis, function (res) {
         if (res.length > 0) {
             $.each(res, function (i, item) {
-                console.log(res);
                 var tanggal = converterDate(new Date(item.createdDate));
 
                 var tempTgl = "";
@@ -3364,14 +3399,11 @@ function detailMonAnestesi(jenis) {
                         '<td width="18%">' + btn + ' ' + tempTgl + ' ' + '<span class="pull-right">' + item.waktu + '</span>' + '</td>' +
                         '<td>' + item.rr + '</td>' +
                         '<td>' + item.nadi + '</td>' +
-                        '<td>' + item.tensi + '</td>' +
-                        '<td>' + item.anest + '</td>' +
+                        '<td>' + item.sistole + '</td>' +
+                        '<td>' + item.diastole + '</td>' +
                         '<td>' + item.o2 + '</td>' +
                         '<td>' + item.n2O + '</td>' +
-                        '<td>' + item.ethran + '</td>' +
-                        '<td>' + item.iso + '</td>' +
-                        '<td>' + item.sevo + '</td>' +
-                        '<td>' + item.infus + '</td>' +
+                        '<td>' + item.inhalasi + '</td>' +
                         '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'monitoring_intra_anestesi\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
                         '</tr>';
                 }
@@ -3380,7 +3412,8 @@ function detailMonAnestesi(jenis) {
                         '<td width="18%">' + btn + ' ' + tempTgl + ' ' + '<span class="pull-right">' + item.waktu + '</span>' + '</td>' +
                         '<td>' + item.rr + '</td>' +
                         '<td>' + item.nadi + '</td>' +
-                        '<td>' + item.tensi + '</td>' +
+                        '<td>' + item.sistole + '</td>' +
+                        '<td>' + item.diastole + '</td>' +
                         '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'monitoring_pasca_anestesi\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
                         '</tr>';
                 }
@@ -3391,14 +3424,11 @@ function detailMonAnestesi(jenis) {
                     '<td align="center">Waktu</td>' +
                     '<td>RR</td>' +
                     '<td>Nadi</td>' +
-                    '<td>Tensi</td>' +
-                    '<td>Anest</td>' +
+                    '<td>Sistole</td>' +
+                    '<td>Diastole</td>' +
                     '<td>O2</td>' +
                     '<td>N2O</td>' +
-                    '<td>Ethran</td>' +
-                    '<td>Iso</td>' +
-                    '<td>Sevo</td>' +
-                    '<td>Infus</td>' +
+                    '<td>Inhalasi</td>' +
                     '<td align="center">Action</td>' +
                     '</tr>';
             }
@@ -3407,7 +3437,8 @@ function detailMonAnestesi(jenis) {
                     '<td align="center">Waktu</td>' +
                     '<td>RR</td>' +
                     '<td>Nadi</td>' +
-                    '<td>Tensi</td>' +
+                    '<td>Sistole</td>' +
+                    '<td>Diastole</td>' +
                     '<td align="center">Action</td>' +
                     '</tr>';
             }
@@ -3448,18 +3479,15 @@ function showChartAnestesi(jenis) {
                         y: item.waktu,
                         a: item.rr,
                         b: item.nadi,
-                        c: item.tensi
+                        c: item.sistole,
+                        d: item.diastole
                     });
 
                     tempData.push({
                         'waktu': item.waktu,
-                        'anest': item.anest,
                         'o2': item.o2,
                         'n2o': item.n2O,
-                        'ethran': item.ethran,
-                        'iso': item.iso,
-                        'sevo': item.sevo,
-                        'infus': item.infus
+                        'inhalasi': item.inhalasi
                     });
                 }
                 if ("mon_pasca_anestesi" == jenis) {
@@ -3467,7 +3495,8 @@ function showChartAnestesi(jenis) {
                         y: item.waktu,
                         a: item.rr,
                         b: item.nadi,
-                        c: item.tensi
+                        c: item.sistole,
+                        d: item.diastole
                     });
                 }
             });
@@ -3480,9 +3509,9 @@ function showChartAnestesi(jenis) {
                         resize: true,
                         data: dataArray,
                         xkey: 'y',
-                        ykeys: ['a', 'b', 'c'],
-                        labels: ['RR', 'Nadi', 'Tensi'],
-                        lineColors: ['#ff0000', '#0000ff', '#00cc00'],
+                        ykeys: ['a', 'b', 'c', 'd'],
+                        labels: ['RR', 'Nadi', 'Sistole', 'Diastole'],
+                        lineColors: ['#ff0000', '#0000ff', '#00cc00', '#cc6699'],
                         hideHover: 'auto',
                         parseTime: false,
                         lineWidth: 1
@@ -3490,33 +3519,21 @@ function showChartAnestesi(jenis) {
 
                     var temp = "";
                     var waktu = "<td style='font-weight: bold'>Waktu</td>";
-                    var temp1 = "<td style='font-weight: bold'>Anest</td>";
-                    var temp2 = "<td style='font-weight: bold'>O2</td>";
-                    var temp3 = "<td style='font-weight: bold'>N2O</td>";
-                    var temp4 = "<td style='font-weight: bold'>Etran</td>";
-                    var temp5 = "<td style='font-weight: bold'>Iso</td>";
-                    var temp6 = "<td style='font-weight: bold'>Sevo</td>";
-                    var temp7 = "<td style='font-weight: bold'>Infus</td>";
+                    var temp1 = "<td style='font-weight: bold'>O2</td>";
+                    var temp2 = "<td style='font-weight: bold'>N2O</td>";
+                    var temp3 = "<td style='font-weight: bold'>Inhalasi</td>";
 
                     $.each(tempData, function (i, item) {
                         waktu += '<td>' + item.waktu + '</td>';
-                        temp1 += '<td>' + item.anest + '</td>';
-                        temp2 += '<td>' + item.o2 + '</td>'
-                        temp3 += '<td>' + item.n2o + '</td>';
-                        temp4 += '<td>' + item.ethran + '</td>';
-                        temp5 += '<td>' + item.iso + '</td>';
-                        temp6 += '<td>' + item.sevo + '</td>';
-                        temp7 += '<td>' + item.infus + '</td>';
+                        temp1 += '<td>' + item.o2 + '</td>'
+                        temp2 += '<td>' + item.n2o + '</td>';
+                        temp3 += '<td>' + item.inhalasi + '</td>';
                     });
                     if (waktu != '') {
                         temp = '<tr>'+waktu+'</tr>' +
                             '<tr>'+temp1+'</tr>' +
                             '<tr>'+temp2+'</tr>' +
-                            '<tr>'+temp3+'</tr>' +
-                            '<tr>'+temp4+'</tr>' +
-                            '<tr>'+temp5+'</tr>' +
-                            '<tr>'+temp6+'</tr>' +
-                            '<tr>'+temp7+'</tr>';
+                            '<tr>'+temp3+'</tr>';
                     }
                     $('#temp_body').html(temp);
                 }
@@ -3526,9 +3543,9 @@ function showChartAnestesi(jenis) {
                         resize: true,
                         data: dataArray,
                         xkey: 'y',
-                        ykeys: ['a', 'b', 'c'],
-                        labels: ['RR', 'Nadi', 'Tensi'],
-                        lineColors: ['#ff0000', '#0000ff', '#00cc00'],
+                        ykeys: ['a', 'b', 'c', 'd'],
+                        labels: ['RR', 'Nadi', 'Sistole', 'Diastole'],
+                        lineColors: ['#ff0000', '#0000ff', '#00cc00', '#cc6699'],
                         hideHover: 'auto',
                         parseTime: false,
                         lineWidth: 1
@@ -3550,7 +3567,6 @@ function conOP(jenis, ket, idAsesmen) {
 }
 
 function delOPM(jenis, ket, idAsesmen) {
-    console.log(ket);
     $('#modal-confirm-rm').modal('hide');
     var dataPasien = {
         'no_checkup': noCheckup,

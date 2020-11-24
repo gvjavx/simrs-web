@@ -219,28 +219,29 @@
                                                 </span>
                                     </td>
                                     <td align="center" style="vertical-align: middle">
-                                        <s:if test='#row.idJenisPeriksaPasien == "umum"'>
-                                            <s:if test='#row.isBayar == "Y"'>
+                                        <s:if test='#row.statusPeriksa != "3"'>
+                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                <s:if test='#row.isBayar == "Y"'>
+                                                    <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                    </s:url>
+                                                    <s:a href="%{add_rawat_jalan}">
+                                                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                                    </s:a>
+                                                </s:if>
+                                                <s:else>
+                                                    <label class="label label-warning">Uang muka belum bayar</label>
+                                                </s:else>
+                                            </s:if>
+                                            <s:else>
                                                 <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
                                                     <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
                                                 </s:url>
                                                 <s:a href="%{add_rawat_jalan}">
                                                     <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                                 </s:a>
-                                            </s:if>
-                                            <s:else>
-                                                <label class="label label-warning">Uang muka belum bayar</label>
                                             </s:else>
                                         </s:if>
-                                        <s:else>
-                                            <s:url var="add_rawat_jalan" namespace="/checkupdetail" action="add_checkupdetail" escapeAmp="false">
-                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{add_rawat_jalan}">
-                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                            </s:a>
-                                        </s:else>
-
                                         <s:if test='#row.tglCekup == null'>
                                         </s:if>
                                         <s:else>

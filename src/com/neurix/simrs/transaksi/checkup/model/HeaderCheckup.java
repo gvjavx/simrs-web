@@ -177,6 +177,34 @@ public class HeaderCheckup {
     private String tglCheckupOnline;
     private String stTglAntrian;
 
+    private String pendidikan;
+    private String statusPerkawinan;
+    private String kunjunganPoli;
+
+    public String getPendidikan() {
+        return pendidikan;
+    }
+
+    public void setPendidikan(String pendidikan) {
+        this.pendidikan = pendidikan;
+    }
+
+    public String getStatusPerkawinan() {
+        return statusPerkawinan;
+    }
+
+    public void setStatusPerkawinan(String statusPerkawinan) {
+        this.statusPerkawinan = statusPerkawinan;
+    }
+
+    public String getKunjunganPoli() {
+        return kunjunganPoli;
+    }
+
+    public void setKunjunganPoli(String kunjunganPoli) {
+        this.kunjunganPoli = kunjunganPoli;
+    }
+
     public String getStTglAntrian() {
         return stTglAntrian;
     }

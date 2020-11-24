@@ -95,7 +95,16 @@
                                                     </table>
                                                 </td>
                                             </tr>
-
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Unit :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchId" name="mesinAbsensi.branchId" required="true" listKey="branchId" listValue="branchName" headerKey="" headerValue="" />                                                    </table>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Flag :</small></label>
@@ -161,20 +170,10 @@
                                                             </center>
                                                         </sj:dialog>
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="500" width="600" autoOpen="false"
+                                                                   height="400" width="600" autoOpen="false"
                                                                    title="Mesin Absensi ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
-
-                                                        <sj:dialog id="view_dialog_menu_pendapatan" openTopics="showDialogMenuView" modal="true"
-                                                                   height="570" width="700" autoOpen="false"
-                                                                   title="Pendapatan Dokter">
-                                                        </sj:dialog>
-                                                        <sj:dialog id="view_dialog_keterangan" openTopics="showDialogMenuKeterangan" modal="true"
-                                                                   height="680" width="700" autoOpen="false"
-                                                                   title="Pendapatan Dokter">
-                                                        </sj:dialog>
-
                                                         <s:set name="listOfsearchMesinAbsensi" value="#session.listOfResultMesinAbsensi" scope="request" />
                                                         <display:table name="listOfsearchMesinAbsensi" class="table table-condensed table-striped table-hover"
                                                                        requestURI="paging_displaytag_mesinAbsensi.action" export="true" id="row" pagesize="14" style="font-size:10">
@@ -204,6 +203,7 @@
                                                             <display:column property="mesinId" sortable="true" title="ID Mesin" />
                                                             <display:column property="mesinAddress" sortable="true" title="Mesin Address"  />
                                                             <display:column property="mesinSn" sortable="true" title="MesinSn"  />
+                                                            <display:column property="branchName" sortable="true" title="Unit"  />
                                                             <display:column property="flag" sortable="true" title="flag"  />
                                                             <display:column property="action" sortable="true" title="action"  />
                                                             <display:column property="stCreatedDate" sortable="true" title="Created date"  />

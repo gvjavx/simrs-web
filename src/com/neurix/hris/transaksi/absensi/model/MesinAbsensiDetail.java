@@ -37,6 +37,15 @@ public class MesinAbsensiDetail extends BaseModel {
     private Date tanggalDari;
     private Date tanggalSelesai;
     private String jam;
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public Date getDateScanDate() {
         return dateScanDate;

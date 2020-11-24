@@ -629,6 +629,25 @@ apply the skin class to the body tag so the changes take effect.
         }
     }
 
+    function replaceStrip(val, id){
+        var res = "";
+        if(val != ''){
+            res = val.replace(/[-]/g, '');
+            res.replace(/[_]/g, '');
+            $('#'+id).val(res);
+        }else{
+            $('#'+id).val(res);
+        }
+    }
+
+    function replaceUnderLine(val){
+        var res = '';
+        if(val != ''){
+            res = val.replace(/[_]/g, '');
+        }
+        return res;
+    }
+
     function convertRpAtas(id, val, idHidden) {
         $('#'+id).val(formatRupiahAtas2(val));
         if(idHidden != '' && idHidden != null){
@@ -823,6 +842,48 @@ apply the skin class to the body tag so the changes take effect.
                 return namaAlat;
             }
         });
+    }
+
+    function setKotaKab(id){
+        $('#'+id).typeahead({
+            minLength: 3,
+            source: function (query, process) {
+                functions = [];
+                mapped = {};
+                var data = [];
+                dwr.engine.setAsync(false);
+                ProvinsiAction.initComboKota(query, "", function (listdata) {
+                    data = listdata;
+                });
+                $.each(data, function (i, item) {
+                    var labelItem = item.kotaName;
+                    mapped[labelItem] = {
+                        id: item.kotaId,
+                        label: labelItem
+                    };
+                    functions.push(labelItem);
+                });
+                process(functions);
+            },
+            updater: function (item) {
+                var selectedObj = mapped[item];
+                var remove = selectedObj.label.substring(5);
+                var namaKota = remove;
+                return namaKota;
+            }
+        });
+    }
+
+    function cekDatePicker(val){
+        var tgl = val.split("-");
+        var cek = false;
+        $.each(tgl, function (i, item) {
+            var numbers = /^[0-9]+$/;
+            if(!item.match(numbers)){
+                cek = true;
+            }
+        });
+        return cek;
     }
 
 </script>

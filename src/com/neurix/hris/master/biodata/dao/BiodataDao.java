@@ -1,6 +1,7 @@
 package com.neurix.hris.master.biodata.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.biodata.model.ImBiodataHistoryEntity;
@@ -183,15 +184,13 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public List<ImBiodataEntity> getPegawaiCutiTahunan() throws HibernateException {
         List<ImBiodataEntity> listOfResult = new ArrayList<ImBiodataEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "SELECT pegawai.nip,pegawai.nama_pegawai,pegawai.tanggal_aktif\n" +
+        String query = "SELECT pegawai.nip,pegawai.nama_pegawai,pegawai.tanggal_masuk\n" +
                 "FROM \n" +
                 "( SELECT * FROM im_hris_pegawai) pegawai LEFT JOIN \n" +
                 "( SELECT * FROM it_hris_pegawai_position) posisi ON pegawai.nip=posisi.nip\n" +
                 "WHERE pegawai.flag='Y' \n" +
-                "\tAND pegawai.tipe_pegawai='TP01'\n" +
-//                "\tAND pegawai.tanggal_aktif+ interval '1 year'<NOW()\n" +
-                "\tAND date_part('year', pegawai.tanggal_aktif+ interval '1 year')=date_part('year', CURRENT_DATE)\n" +
-                "\tAND posisi.branch_id='KD01'" +
+                "\tAND date_part('year', pegawai.tanggal_masuk+ interval '1 year')=date_part('year', CURRENT_DATE)\n" +
+                "\tAND posisi.branch_id='"+ CommonUtil.userBranchLogin() +"'" +
                 "\tAND posisi.flag='Y'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -221,7 +220,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tAND MOD(CAST(((SELECT date_part('year', CURRENT_DATE))-(SELECT date_part('year', pegawai.tanggal_aktif)))as bigint),5)=0\n" +
                 "\tAND CAST(((SELECT date_part('month', CURRENT_DATE))-(SELECT date_part('month', pegawai.tanggal_aktif)))as bigint)>=0\n" +
                 "\tAND CAST(((SELECT date_part('day', CURRENT_DATE))-(SELECT date_part('day', pegawai.tanggal_aktif)))as bigint)>=0\n" +
-                "\tAND posisi.branch_id='KD01'" +
+                "\tAND posisi.branch_id='"+ CommonUtil.userBranchLogin() +"'" +
                 "\tAND posisi.flag='Y'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)

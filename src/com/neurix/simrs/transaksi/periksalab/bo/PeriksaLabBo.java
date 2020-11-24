@@ -23,7 +23,7 @@ public interface PeriksaLabBo {
     public CrudResponse saveAddWithParameter(PeriksaLab periksaLab, List<String> labDetailIds) throws GeneralBOException;
     public CrudResponse saveUpdateHasilLab(PeriksaLabDetail bean) throws GeneralBOException;
     public List<PeriksaLabDetail> getListParameterLab(PeriksaLabDetail bean) throws GeneralBOException;
-    public CheckResponse saveDokterLab(PeriksaLab bean) throws GeneralBOException;
+    public CheckResponse saveDokterLab(PeriksaLab bean, List<PeriksaLabDetail> list) throws GeneralBOException;
 
     public CheckResponse updateFlagApprovePeriksaLab (PeriksaLab bean) throws GeneralBOException;
 

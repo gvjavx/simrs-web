@@ -4660,6 +4660,55 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         }
         return total;
     }
+
+    public Integer getSelisihBulanPayroll(String tahun,String nip){
+        Integer jumlah = 0;
+        String query="select  \n" +
+                "                11-count( payroll_id ) as jumlah \n" +
+                "                from it_hris_payroll \n" +
+                "                where nip = '"+nip+"' \n" +
+                "                and tahun='"+tahun+"' \n" +
+                "                and bulan<>'12' \n" +
+                "                and flag='Y' \n" +
+                "                and flag_payroll='Y' \n" +
+                "                and approval_flag='Y'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            jumlah = (int)results;
+        }else{
+            jumlah = 0;
+        }
+        return jumlah;
+    }
+
+    public BigDecimal getLastBruto(String tahun,String nip){
+        BigDecimal total ;
+        String query="select\n" +
+                "  total_a + total_b as jumlah\n" +
+                "from\n" +
+                "  it_hris_payroll\n" +
+                "where\n" +
+                "  nip = '"+nip+"'\n" +
+                "  and tahun = '"+tahun+"'\n" +
+                "  and bulan <> '12'\n" +
+                "  and flag = 'Y'\n" +
+                "  and flag_payroll = 'Y'\n" +
+                "  and approval_flag = 'Y'\n" +
+                "order by\n" +
+                "  bulan desc\n" +
+                "limit\n" +
+                "  1";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
+
     public BigDecimal getPPhGaji12Bulan(String tahun,String nip){
         BigDecimal total = new BigDecimal(0);
         String query="select \n" +

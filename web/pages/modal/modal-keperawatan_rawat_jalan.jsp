@@ -193,7 +193,7 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <span>Tensi (mmHg)</span>
-                                <input class="form-control tensi-pasien" id="af8">
+                                <input class="form-control tensi-pasien" id="af8" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                             <div class="col-md-3">
                                 <span>Suhu (C)</span>

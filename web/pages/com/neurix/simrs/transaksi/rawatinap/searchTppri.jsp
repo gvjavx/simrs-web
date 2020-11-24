@@ -251,11 +251,19 @@
                                     <td><s:property value="jenisPeriksaPasien"/></td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <img id="t_<s:property value="idDetailCheckup"/>"
-                                             onclick="detail('<s:property value="noCheckup"/>','<s:property
-                                                     value="idDetailCheckup"/>','<s:property value="tindakLanjut"/>','<s:property value="keteranganSelesai"/>')" class="hvr-grow"
-                                             src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>"
-                                             style="cursor: pointer;">
+                                        <s:if test='#row.flagTppri == "Y"'>
+                                            <img id="t_<s:property value="idDetailCheckup"/>"
+                                                 onclick="printGelangPasien('<s:property value="noCheckup"/>')" class="hvr-grow"
+                                                 src="<s:url value="/pages/images/icons8-print-25.png"/>"
+                                                 style="cursor: pointer;">
+                                        </s:if>
+                                        <s:else>
+                                            <img id="t_<s:property value="idDetailCheckup"/>"
+                                                 onclick="detail('<s:property value="noCheckup"/>','<s:property
+                                                         value="idDetailCheckup"/>','<s:property value="tindakLanjut"/>','<s:property value="keteranganSelesai"/>')" class="hvr-grow"
+                                                 src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>"
+                                                 style="cursor: pointer;">
+                                        </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -916,6 +924,10 @@
     var idPasien = "";
     var tglLahir = "";
 
+    function printGelangPasien(noCheckup) {
+        window.open('printGelangPasien_rawatinap.action?id=' + noCheckup, '_blank');
+    }
+
     function convertRp(id, val) {
         $('#' + id).val(formatRupiahAtas2(val));
     }
@@ -1328,6 +1340,7 @@
                         $('#info_dialog').dialog('open');
                         $('#modal-detail').modal('hide');
                         $('body').scrollTop(0);
+                        console.log(response);
                     } else {
                         $('#save_fin').show();
                         $('#load_fin').hide();

@@ -29,6 +29,15 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private String idKategoriLab;
     private String ttdDokter;
     private String ttdPetugas;
+    private String isPending;
+
+    public String getIsPending() {
+        return isPending;
+    }
+
+    public void setIsPending(String isPending) {
+        this.isPending = isPending;
+    }
 
     public String getTtdDokter() {
         return ttdDokter;

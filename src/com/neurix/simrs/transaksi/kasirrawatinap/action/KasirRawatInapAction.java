@@ -319,7 +319,7 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 }
 
                 List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
-                detailCheckupList = checkupDetailBoProxy.getIDDetailCheckup(checkup.getNoCheckup());
+                detailCheckupList = checkupDetailBoProxy.getIDDetailCheckup(checkup.getNoCheckup(),"3");
                 List<UangMuka> mukaList = new ArrayList<>();
                 for (HeaderDetailCheckup detailCheckup: detailCheckupList){
                     UangMuka uangMuka = new UangMuka();

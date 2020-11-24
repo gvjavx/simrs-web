@@ -1103,14 +1103,19 @@ public class CheckupDetailAction extends BaseMasterAction {
                     String jenisPasien = object.getString("jenis_pasien");
                     String idPelayanan = object.getString("id_pelayanan");
                     String jenisBayar = object.getString("metode_bayar");
-                    String isResep = object.getString("is_resep");
+                    String isResep = "";
+                    if(object.has("is_resep")){
+                        isResep = object.getString("is_resep");
+                    }
                     String metodeBayar = "";
                     String justLab = "";
+                    String statusPeriksa = "3";
                     if (object.has("just_lab")) {
                         justLab = object.getString("just_lab");
+                        statusPeriksa = "";
                     }
 
-                    List<HeaderDetailCheckup> detailCheckupList = checkupDetailBo.getIDDetailCheckup(noCheckup);
+                    List<HeaderDetailCheckup> detailCheckupList = checkupDetailBo.getIDDetailCheckup(noCheckup, statusPeriksa);
 
                     if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
                         if (justLab != null && !"".equalsIgnoreCase(justLab)) {

@@ -103,11 +103,15 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
                     response = saveAsesmen(list);
                 }
             }else{
-                if(rawatInapList.size() > 0){
-                    response.setStatus("error");
-                    response.setMsg("Found error, Data yang anda masukan sudah ada...!");
-                }else{
+                if("transfer_pasien".equalsIgnoreCase(inap.getJenis())){
                     response = saveAsesmen(list);
+                }else{
+                    if(rawatInapList.size() > 0){
+                        response.setStatus("error");
+                        response.setMsg("Found error, Data yang anda masukan sudah ada...!");
+                    }else{
+                        response = saveAsesmen(list);
+                    }
                 }
             }
         }
@@ -117,7 +121,6 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
     private CrudResponse saveAsesmen(List<AsesmenRawatInap> list){
         CrudResponse response = new CrudResponse();
         for (AsesmenRawatInap bean : list) {
-
             ItSimrsAsesmenRawatInapEntity asesmenRawatInapEntity = new ItSimrsAsesmenRawatInapEntity();
             asesmenRawatInapEntity.setIdAsesmenKeperawatanRawatInap("ARI" + asesmenRawatInapDao.getNextSeq());
             asesmenRawatInapEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
@@ -136,7 +139,6 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
             asesmenRawatInapEntity.setInformasi(bean.getInformasi());
             asesmenRawatInapEntity.setNamaTerang(bean.getNamaTerang());
             asesmenRawatInapEntity.setSip(bean.getSip());
-
             try {
                 asesmenRawatInapDao.addAndSave(asesmenRawatInapEntity);
                 response.setStatus("success");
@@ -195,6 +197,35 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
             response.setMsg("Data yang anda delete tidak ditemukan");
         }
 
+        return response;
+    }
+
+    @Override
+    public List<AsesmenRawatInap> getListRI(String id, String jenis) throws GeneralBOException {
+        return asesmenRawatInapDao.getListAsesmenRI(id, jenis);
+    }
+
+    @Override
+    public CrudResponse saveEdit(AsesmenRawatInap bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if(bean.getIdAsesmenKeperawatanRawatInap() != null){
+            ItSimrsAsesmenRawatInapEntity asesmenRawatInapEntity = asesmenRawatInapDao.getById("idAsesmenKeperawatanRawatInap", bean.getIdAsesmenKeperawatanRawatInap());
+            if(asesmenRawatInapEntity != null){
+                asesmenRawatInapEntity.setJawaban(asesmenRawatInapEntity.getJawaban()+"|"+bean.getJawaban());
+                asesmenRawatInapEntity.setAction("U");
+                asesmenRawatInapEntity.setLastUpdate(bean.getLastUpdate());
+                asesmenRawatInapEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    asesmenRawatInapDao.updateAndSave(asesmenRawatInapEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    logger.error(e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg(e.getMessage());
+                }
+            }
+        }
         return response;
     }
 

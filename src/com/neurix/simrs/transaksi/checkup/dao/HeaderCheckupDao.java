@@ -1758,6 +1758,60 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return headerCheckup;
     }
 
+    public List<HeaderCheckup> cekKunjunganPoliPasien(String idPasien, String idPelayanan){
+        List<HeaderCheckup> response = new ArrayList<>();
+        if(idPasien != null && !"".equalsIgnoreCase(idPasien) && idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+            String SQL = "SELECT\n" +
+                    "a.no_checkup,\n" +
+                    "b.id_detail_checkup,\n" +
+                    "a.id_pasien,\n" +
+                    "b.id_pelayanan \n" +
+                    "FROM it_simrs_header_checkup a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "WHERE a.id_pasien = :id AND b.id_pelayanan = :pel \n";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idPasien)
+                    .setParameter("pel", idPelayanan)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    HeaderCheckup checkup = new HeaderCheckup();
+                    checkup.setNoCheckup(obj[0] == null ? null : obj[0].toString());
+                    checkup.setIdDetailCheckup(obj[1] == null ? "" : obj[1].toString());
+                    checkup.setIdPasien(obj[2] == null ? null : obj[2].toString());
+                    checkup.setIdPelayanan(obj[3] == null ? null : (String) obj[3]);
+                    response.add(checkup);
+                }
+            }
+        }
+        return response;
+    }
+
+    public String getIdKategoriLab(String idLab){
+        String res = "";
+        if(idLab != null && !"".equalsIgnoreCase(idLab)){
+            String SQL = "SELECT \n" +
+                    "a.id_lab,\n" +
+                    "c.id_kategori_lab\n" +
+                    "FROM im_simrs_lab_detail a\n" +
+                    "INNER JOIN im_simrs_parameter_pemeriksaan b ON a.id_parameter_pemeriksaan = b.id_parameter_pemeriksaan\n" +
+                    "INNER JOIN im_simrs_kategori_lab c ON b.id_kategori_lab = c.id_kategori_lab\n" +
+                    "WHERE a.id_lab = :id\n" +
+                    "LIMIT 1";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idLab)
+                    .list();
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                res = obj[1].toString();
+            }
+        }
+        return res;
+    }
+
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pembayaran_online')");
         Iterator<BigInteger> iter = query.list().iterator();

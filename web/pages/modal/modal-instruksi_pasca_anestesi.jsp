@@ -177,19 +177,19 @@
                     <div class="row">
                         <div class="col-md-3">
                             <span>Tensi</span> <small><b>(mmHg)</b></small>
-                            <input class="form-control tensi-pasien" id="in6">
+                            <input class="form-control tensi-pasien" id="in6" data-inputmask="'mask': ['999/999']" data-mask="">
                         </div>
                         <div class="col-md-3">
                             <span>Nadi</span> <small><b>(x/menit)</b></small>
-                            <input class="form-control nadi-pasien" id="in7">
+                            <input class="form-control nadi-pasien" id="in7" type="number">
                         </div>
                         <div class="col-md-3">
                             <span>RR</span> <small><b>(x/menit)</b></small>
-                            <input class="form-control rr-pasien" id="in8">
+                            <input class="form-control rr-pasien" id="in8" type="number">
                         </div>
                         <div class="col-md-3">
                             <span>Suhu</span> <small><b>(C)</b></small>
-                            <input class="form-control suhu-pasien" id="in9">
+                            <input class="form-control suhu-pasien" id="in9" type="number">
                         </div>
                     </div>
                     <hr class="garis">
