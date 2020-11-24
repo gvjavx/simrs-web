@@ -420,12 +420,16 @@
                 $('#suku, #profesi, #pendidikan, #status_perkawinan, #hubungan, #asuransi').val(null).trigger('change');
                 $('#hub_keluarga, #ket_suku, #ket_profesi, #kunjungan_poli').val(null);
                 $('#alert-pasien').hide();
-                $('#id_online').attr('disabled', false);
+                $('#id_online').attr('readonly', false);
                 $('#jenis_pasien').attr('disabled', false);
-                $('#id_pasien').attr('disabled', false);
-                $('#no_bpjs').attr('disabled', false);
+                $('#id_pasien').attr('readonly', false);
+                $('#no_bpjs').attr('readonly', false);
                 $('#btn-finger').hide();
                 $('#nama_dokter').val(null);
+                $('#status_bpjs').val(null);
+                $('#warn-bpjs').html('');
+                $('#warn_rujukan').html('');
+                $('#status_rujukan').val(null);
             }
 
             var url_string = window.location.href;
@@ -2783,8 +2787,8 @@
                     // $('#kunjungan').val("Baru").attr('disabled', true);
                     $('#kunjungan_val').val("Baru");
                 }
-                $('#id_pasien').attr('disabled', true);
-                $('#no_bpjs').attr('disabled', true);
+                $('#id_pasien').attr('readonly', true);
+                $('#no_bpjs').attr('readonly', true);
                 $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
                 return selectedObj.bpjs;
             }
@@ -2937,8 +2941,8 @@
                         $('#msg_pasien').text("");
                         alertObatKronis(selectedObj.id);
                     }
-                    $('#id_pasien').attr('disabled', true);
-                    $('#no_bpjs').attr('disabled', true);
+                    $('#id_pasien').attr('readonly', true);
+                    $('#no_bpjs').attr('readonly', true);
                     $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
                     return selectedObj.id;
                 }
@@ -3040,10 +3044,10 @@
 
         if (online == "Y") {
             $('#poli').attr('disabled', true);
-            $('#id_online').attr('disabled', true);
+            $('#id_online').attr('readonly', true);
             $('#jenis_pasien').attr('disabled', true);
-            $('#id_pasien').attr('disabled', true);
-            $('#no_bpjs').attr('disabled', true);
+            $('#id_pasien').attr('readonly', true);
+            $('#no_bpjs').attr('readonly', true);
             $('#')
         } else {
             var url_string = window.location.href;
@@ -3051,21 +3055,21 @@
             var idPasien = url.searchParams.get("idPasien");
             if(idPasien != null && idPasien != ''){
                 $('#jenis_pasien').attr('disabled', true);
-                $('#id_pasien').attr('disabled', true);
-                $('#no_bpjs').attr('disabled', true);
-                $('#id_online').attr('disabled', false);
+                $('#id_pasien').attr('readonly', true);
+                $('#no_bpjs').attr('readonly', true);
+                $('#id_online').attr('readonly', false);
             }else{
                 resetField(1);
                 $('#jenis_pasien').attr('disabled', false);
                 if($('#id_pasien').val() != ''){
-                    $('#id_pasien').attr('disabled', true);
+                    $('#id_pasien').attr('readonly', true);
                 }else{
-                    $('#id_pasien').attr('disabled', false);
+                    $('#id_pasien').attr('readonly', false);
                 }
                 if($('#no_bpjs').val() != ''){
-                    $('#no_bpjs').attr('disabled', true);
+                    $('#no_bpjs').attr('readonly', true);
                 }else{
-                    $('#no_bpjs').attr('disabled', false);
+                    $('#no_bpjs').attr('readonly', false);
                 }
             }
             setPelayanan();
@@ -3509,12 +3513,14 @@
     }
 
     function cekPasienUrl(){
+        var hostname = window.location.origin+contextPathHeader;
         var url_string = window.location.href;
         var url = new URL(url_string);
         var idPasien = url.searchParams.get("idPasien");
         if (idPasien != null) {
             $('#jenis_pasien').val('bpjs').trigger('change');
             $('#id_pasien').val(idPasien);
+            window.history.replaceState(null, null, hostname+'/checkup/add_checkup.action');
             PasienAction.getListComboPasien(idPasien, 'bpjs', function (res) {
                 if(res.length > 0){
                     $.each(res, function (i, item) {

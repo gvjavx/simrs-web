@@ -70,16 +70,6 @@
                     }
                 });
             }
-
-            // if(refNominal != ''){
-            //     refNominal.addEventListener('keyup', function (e) {
-            //         refNominal.value = formatRupiah2(this.value);
-            //         var valBayar = refNominal.value.replace(/[.]/g, '');
-            //         $('#ref_val_uang_muka').val(valBayar);
-            //         var total = $('#ref_total_uang_muka').val();
-            //     });
-            // }
-
         });
 
 

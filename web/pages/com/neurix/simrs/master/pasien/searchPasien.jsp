@@ -15,7 +15,6 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
 
     <script type='text/javascript'>
-
         $(document).ready(function () {
             $('#pasien').addClass('active');
             searchPasien();
@@ -25,15 +24,11 @@
             var url_string = window.location.href;
             var url = new URL(url_string);
             var idPasien = url.searchParams.get("id_pasien");
-
             if (idPasien != null) {
                 $('#modal-success-pasien').modal('show');
                 $('#val_id_pasien').val(idPasien);
-
             }
         }
-
-
     </script>
 </head>
 

@@ -197,22 +197,23 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
         String res = "";
         if(idLab != null && branch != null){
             String SQL = "SELECT\n" +
+                    "CAST('id_kategori' AS VARCHAR) as kategori,\n" +
                     "d.id_kategori_lab\n" +
                     "FROM mt_simrs_item_paket_periksa a\n" +
                     "INNER JOIN im_simrs_lab b ON a.id_kategori_item = b.id_lab\n" +
                     "INNER JOIN im_simrs_lab_detail c ON b.id_lab = c.id_lab\n" +
                     "INNER JOIN im_simrs_parameter_pemeriksaan d ON c.id_parameter_pemeriksaan = d.id_parameter_pemeriksaan\n" +
-                    "WHERE b.id_lab = :id \n" +
-                    "AND c.branch_id = :branch'\n" +
-                    "GROUP BY d.id_kategori_lab \n";
+                    "WHERE b.id_lab = :id\n" +
+                    "AND c.branch_id = :branch\n" +
+                    "GROUP BY d.id_kategori_lab\n";
             List<Object[]> resut = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idLab)
                     .setParameter("branch", branch)
                     .list();
             if(resut.size() > 0){
                 Object[] obj = resut.get(0);
-                if(obj[0] != null){
-                    res = obj[0].toString();
+                if(obj[1] != null){
+                    res = obj[1].toString();
                 }
             }
         }
