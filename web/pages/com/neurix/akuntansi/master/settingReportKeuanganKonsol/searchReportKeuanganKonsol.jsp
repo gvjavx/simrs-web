@@ -119,7 +119,9 @@
                                                         <sj:submit type="button" cssClass="btn btn-primary" formIds="reportKeuanganKonsolForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
-                                                            Search
+                                                            <a type="button" class="btn btn-primary" onclick="searchFunc()"><i
+                                                                    class="fa fa-search"></i> Search</a>
+                                                            <%--Search--%>
                                                         </sj:submit>
                                                     </td>
                                                     <td>
@@ -177,63 +179,71 @@
                                                                    title="Report Keuangan Konsol">
                                                         </sj:dialog>
 
-                                                        <s:set name="listOfsearchAkunSettingReportKeuanganKonsol" value="#session.listOfResultKeuanganKonsol" scope="request" />
-                                                        <display:table name="listOfsearchAkunSettingReportKeuanganKonsol" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_reportKeuanganKonsol.action" export="true" id="row" pagesize="14" style="font-size:10">
-                                                            <display:column media="html" title="View">
-                                                                <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlView" namespace="/reportKeuanganKonsol" action="view_reportKeuanganKonsol" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.settingReportKonsolId"/></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                    </s:url>
-                                                                    <s:a href="%{urlView}">
-                                                                        <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_edit">
-                                                                    </s:a>
-                                                                </s:if>
-                                                            </display:column>
+                                                        <div class="box-body">
+                                                            <center>
+                                                                <table style="width: 80%;" class="tree table table-bordered">
+                                                                </table>
+                                                            </center>
+                                                        </div>
 
-                                                            <display:column media="html" title="Edit">
-                                                                <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlEdit" namespace="/reportKeuanganKonsol" action="edit_reportKeuanganKonsol" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.settingReportKonsolId"/></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                    </s:url>
-                                                                    <s:a href="%{urlEdit}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                                    </s:a>
-                                                                </s:if>
-                                                            </display:column>
 
-                                                            <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                                <s:if test='#attr.row.flag == "Y"'>
-                                                                    <%--<s:url var="urlViewDelete" namespace="/reportKeuanganKonsol" action="delete_reportKeuanganKonsol" escapeAmp="false">--%>
-                                                                        <%--<s:param name="id"><s:property value="#attr.row.settingReportKonsolId" /></s:param>--%>
-                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                        <%--<s:set name="listOfsearchAkunSettingReportKeuanganKonsol" value="#session.listOfResultKeuanganKonsol" scope="request" />--%>
+                                                        <%--<display:table name="listOfsearchAkunSettingReportKeuanganKonsol" class="table table-condensed table-striped table-hover"--%>
+                                                                       <%--requestURI="paging_displaytag_reportKeuanganKonsol.action" export="true" id="row" pagesize="14" style="font-size:10">--%>
+                                                            <%--<display:column media="html" title="View">--%>
+                                                                <%--<s:if test='#attr.row.flag == "Y"'>--%>
+                                                                    <%--<s:url var="urlView" namespace="/reportKeuanganKonsol" action="view_reportKeuanganKonsol" escapeAmp="false">--%>
+                                                                        <%--<s:param name="id"><s:property value="#attr.row.settingReportKonsolId"/></s:param>--%>
+                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag"/></s:param>--%>
                                                                     <%--</s:url>--%>
-                                                                    <%--<sj:a href="%{urlViewDelete}">--%>
-                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
-                                                                    <%--</sj:a>--%>
+                                                                    <%--<s:a href="%{urlView}">--%>
+                                                                        <%--<img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_edit">--%>
+                                                                    <%--</s:a>--%>
+                                                                <%--</s:if>--%>
+                                                            <%--</display:column>--%>
 
-                                                                    <s:url var="urlDelete" namespace="/reportKeuanganKonsol" action="delete_reportKeuanganKonsol" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.settingReportKonsolId"/></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                    </s:url>
-                                                                    <s:a href="%{urlDelete}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_delete">
-                                                                    </s:a>
-                                                                </s:if>
-                                                            </display:column>
-                                                            <display:column property="settingReportKonsolId" sortable="true" title="Report Konsol Id" />
-                                                            <display:column property="kodeRekeningAlias" sortable="true" title="Kode Rek. Alias"  />
-                                                            <display:column property="namaKodeRekeningAlias" sortable="true" title="Nama Kode Rek. Alias"/>
-                                                            <display:column property="flagLabel" sortable="true" title="Label"/>
-                                                            <display:column property="flag" sortable="true" title="flag"  />
-                                                            <display:column property="action" sortable="true" title="action"  />
-                                                            <display:column property="stCreatedDate" sortable="true" title="Created date"  />
-                                                            <display:column property="createdWho" sortable="true" title="Created who"  />
-                                                            <display:column property="stLastUpdate" sortable="true" title="Last update"  />
-                                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
-                                                        </display:table>
+                                                            <%--<display:column media="html" title="Edit">--%>
+                                                                <%--<s:if test='#attr.row.flag == "Y"'>--%>
+                                                                    <%--<s:url var="urlEdit" namespace="/reportKeuanganKonsol" action="edit_reportKeuanganKonsol" escapeAmp="false">--%>
+                                                                        <%--<s:param name="id"><s:property value="#attr.row.settingReportKonsolId"/></s:param>--%>
+                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag"/></s:param>--%>
+                                                                    <%--</s:url>--%>
+                                                                    <%--<s:a href="%{urlEdit}">--%>
+                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
+                                                                    <%--</s:a>--%>
+                                                                <%--</s:if>--%>
+                                                            <%--</display:column>--%>
+
+                                                            <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
+                                                                <%--<s:if test='#attr.row.flag == "Y"'>--%>
+                                                                    <%--&lt;%&ndash;<s:url var="urlViewDelete" namespace="/reportKeuanganKonsol" action="delete_reportKeuanganKonsol" escapeAmp="false">&ndash;%&gt;--%>
+                                                                        <%--&lt;%&ndash;<s:param name="id"><s:property value="#attr.row.settingReportKonsolId" /></s:param>&ndash;%&gt;--%>
+                                                                        <%--&lt;%&ndash;<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>&ndash;%&gt;--%>
+                                                                    <%--&lt;%&ndash;</s:url>&ndash;%&gt;--%>
+                                                                    <%--&lt;%&ndash;<sj:a href="%{urlViewDelete}">&ndash;%&gt;--%>
+                                                                        <%--&lt;%&ndash;<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">&ndash;%&gt;--%>
+                                                                    <%--&lt;%&ndash;</sj:a>&ndash;%&gt;--%>
+
+                                                                    <%--<s:url var="urlDelete" namespace="/reportKeuanganKonsol" action="delete_reportKeuanganKonsol" escapeAmp="false">--%>
+                                                                        <%--<s:param name="id"><s:property value="#attr.row.settingReportKonsolId"/></s:param>--%>
+                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag"/></s:param>--%>
+                                                                    <%--</s:url>--%>
+                                                                    <%--<s:a href="%{urlDelete}">--%>
+                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_delete">--%>
+                                                                    <%--</s:a>--%>
+                                                                <%--</s:if>--%>
+                                                            <%--</display:column>--%>
+                                                            <%--<display:column property="settingReportKonsolId" sortable="true" title="Report Konsol Id" />--%>
+                                                            <%--<display:column property="kodeRekeningAlias" sortable="true" title="Kode Rek. Alias"  />--%>
+                                                            <%--<display:column property="namaKodeRekeningAlias" sortable="true" title="Nama Kode Rek. Alias"/>--%>
+                                                            <%--<display:column property="flagLabel" sortable="true" title="Label"/>--%>
+                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
+                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
+                                                            <%--<display:column property="stCreatedDate" sortable="true" title="Created date"  />--%>
+                                                            <%--<display:column property="createdWho" sortable="true" title="Created who"  />--%>
+                                                            <%--<display:column property="stLastUpdate" sortable="true" title="Last update"  />--%>
+                                                            <%--<display:column property="lastUpdateWho" sortable="true" title="Last update who"  />--%>
+                                                        <%--</display:table>--%>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -281,3 +291,213 @@
 <%@ include file="/pages/common/lastScript.jsp" %>
 </body>
 </html>
+
+<script>
+    $(document).ready(function () {
+        $('.tree').treegrid({
+            expanderExpandedClass: 'glyphicon glyphicon-minus',
+            expanderCollapsedClass: 'glyphicon glyphicon-plus'
+        });
+
+        $('.tree').on('click', '.item-edit', function(){
+            var id = $(this).attr('data');
+            KodeRekeningAction.initKodeRekeningSearch(id,"","",function(listdata) {
+                $.each(listdata, function(i,item){
+                    $('#rekeningIdEdit').val(item.rekeningId);
+                    $('#kodeRekeningNameEdit').val(item.namaKodeRekening);
+                    $('#kodeRekeningEdit').val(item.kodeRekening);
+                    $('#tipeRekeningIdEdit').val(item.tipeRekeningId);
+                    $('#flag-master-edit').val(item.flagMaster);
+                    $('#flag-divisi-edit').val(item.flagDivisi);
+                });
+            });
+            $('#modal-edit').modal('show');
+        });
+
+        $('.tree').on('click', '.item-delete', function(){
+            var id = $(this).attr('data');
+            KodeRekeningAction.initKodeRekeningSearch(id,"","",function(listdata) {
+                $.each(listdata, function(i,item){
+                    $('#rekeningIdDelete').val(item.rekeningId);
+                    $('#kodeRekeningNameDelete').val(item.namaKodeRekening);
+                    $('#kodeRekeningDelete').val(item.kodeRekening);
+                    $('#tipeRekeningIdDelete').val(item.tipeRekeningId);
+                });
+            });
+            $('#modal-delete').modal('show');
+        });
+    });
+
+    function searchFunc(){
+        $('.tree').find('tbody').remove();
+        $('.tree').find('thead').remove();
+        f1();
+        $('.tree').treegrid({
+            expanderExpandedClass: 'glyphicon glyphicon-minus',
+            expanderCollapsedClass: 'glyphicon glyphicon-plus'
+        });
+    }
+
+    function f1() {
+        var reportId = document.getElementById("settingReportKonsolId").value;
+        var kodeAlias = document.getElementById("kodeRekeningAlias").value;
+        var namaRekeningAlias = document.getElementById("namaKodeRekeningAlias").value;
+        var flag = document.getElementById("flag")
+
+        var tmp_table = "";
+        var data = [];
+        var data2 = [];
+        dwr.engine.setAsync(false);
+        SettingReportKeuanganKonsolAction.initSettingReportKeuanganKonsolSearch(reportId, namaRekeningAlias, kodeAlias, function(listdata){
+            data = listdata;
+            data2 = new Array();
+            data2_hasil = new Array();
+            data2Tmp= new Array();
+            $.each(data, function(i,item){
+                data2.push({_id : item.settingReportKonsolId, level : whatLevel(item.kodeRekeningAlias), parent : whichParent(item.kodeRekeningAlias),  nama : item.namaKodeRekeningAlias, kode : item.kodeRekeningAlias,
+                    label : item.flagLabel, flag : item.flag, action : item.action, created_date : item.stCreatedDate, created_who : item.createdWho, update_last : item.stLastUpdate, update_who : item.lastUpdatewWho,});
+            });
+
+            function whatLevel(kodeAlias, result) {
+                var splitKode = kodeAlias.split(".");
+                if(splitKode.length == 3){
+                    result = "3";
+                } else if(splitKode.length == 2){
+                    result = "2";
+                } else {
+                    result = "1";
+                }
+                return result;
+            }
+
+            function whichParent(kodeAlias, result) {
+                var splitKode = kodeAlias.split(".");
+                if(splitKode.length == 3){
+                    result = splitKode[0] + "." + splitKode[1];
+                } else if(splitKode.length == 2){
+                    result = splitKode[0];
+                } else {
+                    result = "";
+                }
+                return result;
+            }
+
+            //=== UNDONE ===
+            // function hierarhySort(hashArr, key, result) {
+            //     if (hashArr[key] == undefined){
+            //         //level--;
+            //         return;
+            //     }else{
+            //         var arr = [] ;
+            //         arr  = hashArr[key];
+            //     }
+            //     for (var i=0; i<arr.length; i++) {
+            //         result.push(arr[i]);
+            //         hierarhySort(hashArr, arr[i]._id, result);
+            //     }
+            //     return result;
+            // }
+
+            var hashArr = {};
+            for (var i=0; i<data2.length; i++) {
+                if (hashArr[data2[i].parent] == undefined) {
+                    hashArr[data2[i].parent] = [];
+                }
+                hashArr[data2[i].parent].push(data2[i]);
+            }
+            tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
+                "<th style='text-align: center; background-color:  #30d196'>ID Report Konsol</th>"+
+                "<th style='text-align: center; background-color:  #30d196'>Kode Rekening</th>"+
+                "<th style='text-align: center; background-color:  #30d196'>Nama Kode Rekening</th>"+
+                "<th style='text-align: center; background-color:  #30d196'>Level</th>"+
+                "<th style='text-align: center; background-color:  #30d196'>Label</th>"+
+                "<th style='text-align: center; background-color:  #30d196'>Flag</th>"+
+                "<th style='text-align: center; background-color:  #30d196'>Action</th>"+
+                "<th style='text-align: center; background-color:  #30d196'>Created Date</th>"+
+                "<th style='text-align: center; background-color:  #30d196'>Created Who</th>"+
+                "<th style='text-align: center; background-color:  #30d196'>Last Update</th>"+
+                "<th style='text-align: center; background-color:  #30d196'>Last Update Who</th>"+
+                "<th style='text-align: center; background-color:  #30d196'>Edit</th>"+
+                "<th style='text-align: center; background-color:  #30d196'>Delete</th>"+
+                "</tr></thead>";
+            for(i = 0 ; i < data2.length ; i++){
+                if(data2[i].parent == "-"){
+                    tmp_table += 'tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                        '<td >' + data2[i].kode + '</td>' +
+                        '<td >' + data2[i].nama + '</td>' +
+                        '<td align="center" class="ceknull">' + data2[i].level+ '</td>' +
+                        '<td align="center">' + data2[i].label+ '</td>' +
+                        '<td align="center">' + data2[i].flag+ '</td>' +
+                        '<td align="center">' + data2[i].action+ '</td>' +
+                        '<td >' + data2[i].created_date + '</td>' +
+                        '<td >' + data2[i].created_who + '</td>' +
+                        '<td >' + data2[i].update_last + '</td>' +
+                        '<td >' + data2[i].update_who + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='"+data2[i]._id+"' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
+                } else {
+                    tmp_table += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
+                        + '<td style="border: 2px solid black;">' +
+                        '<td >' + data2[i].kode + '</td>' +
+                        '<td >' + data2[i].nama + '</td>' +
+                        '<td align="center" class="ceknull">' + data2[i].level+ '</td>' +
+                        '<td align="center">' + data2[i].label+ '</td>' +
+                        '<td align="center">' + data2[i].flag+ '</td>' +
+                        '<td align="center">' + data2[i].action+ '</td>' +
+                        '<td >' + data2[i].created_date + '</td>' +
+                        '<td >' + data2[i].created_who + '</td>' +
+                        '<td >' + data2[i].update_last + '</td>' +
+                        '<td >' + data2[i].update_who + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='"+data2[i]._id+"' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='"+data2[i]._id+"' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
+                }
+            }
+            $('.tree').append(tmp_table);
+            $(".tree .ceknull:contains('null')").html("-");
+        });
+    }
+    // function cekAvailableCoaEdit(nilai){
+    //     var coa = nilai.value;
+    //     var length = nilai.length;
+    //     if (length!=0){
+    //         dwr.engine.setAsync(false);
+    //         KodeRekeningAction.cekAvailableCoa(coa, function(listdata) {
+    //             if (listdata.length!=0){
+    //                 alert("COA sudah ada");
+    //                 $('#kodeRekeningEdit').val("");
+    //             }
+    //         });
+    //     }
+    // }
+    // function cekAvailableParentEdit(nilai){
+    //     var coa = nilai.value;
+    //     var length = nilai.length;
+    //     if (length!=0){
+    //         dwr.engine.setAsync(false);
+    //         KodeRekeningAction.cekAvailableParent(coa, function(adaParent) {
+    //             if (!adaParent){
+    //                 alert("COA induk tidak ada");
+    //                 $('#kodeRekeningEdit').val("");
+    //             }
+    //         });
+    //     }
+    // }
+</script>

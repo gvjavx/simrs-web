@@ -97,6 +97,38 @@ public class SettingReportKeuanganKonsolAction extends BaseMasterAction {
         return getAkunSettingReportKeuanganKonsol();
     }
 
+
+    public List<AkunSettingReportKeuanganKonsol> initSettingReportKeuanganKonsolSearch(String reportId, String namaReport, String coa) {
+        logger.info("[SettingReportKeuanganKonsolAction.initSettingReportKeuanganKonsolSearch] start process >>>");
+
+        List<AkunSettingReportKeuanganKonsol> listOfsearchReportKeuangan = new ArrayList();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AkunSettingReportKeuanganKonsolBo akunSettingReportKeuanganKonsolBo= (AkunSettingReportKeuanganKonsolBo) ctx.getBean("akunSettingReportKeuanganKonsolBoProxy");
+
+        AkunSettingReportKeuanganKonsol search = new AkunSettingReportKeuanganKonsol();
+        search.setKodeRekeningAlias(coa);
+        search.setSettingReportKonsolId(reportId);
+        search.setNamaKodeRekeningAlias(namaReport);
+        search.setFlag("Y");
+
+        try {
+            listOfsearchReportKeuangan = akunSettingReportKeuanganKonsolBo.getByCriteria(search);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = akunSettingReportKeuanganKonsolBo.saveErrorMessage(e.getMessage(), "akunSettingReportKeuanganKonsolBo.getDataStrukturCoa");
+            } catch (GeneralBOException e1) {
+                logger.error("[SettingReportKeuanganKonsolDetailAction.initSettingReportKeuanganKonsolSearch] Error when saving error,", e1);
+            }
+            logger.error("[SettingReportKeuanganKonsolDetailAction.initSettingReportKeuanganKonsolSearch] Error when searching Seting Report Keuangan Konsol by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+
+        logger.info("[SettingReportKeuanganKonsolDetailAction.initSettingReportKeuanganKonsolSearch] end process <<<");
+        return listOfsearchReportKeuangan;
+    }
+
     @Override
     public String add() {
         logger.info("[AkunSettingReportKeuanganKonsolAction.add] start process >>>");

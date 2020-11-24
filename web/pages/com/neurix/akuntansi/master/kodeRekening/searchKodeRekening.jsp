@@ -472,7 +472,7 @@
                 "</tr></thead>";
             for(i = 0 ; i < data2.length ; i++){
                 if(data2[i].parent == "-"){
-                    tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                    tmp_table += 'tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
                         '<td >' + data2[i].coa + '</td>' +
                         '<td >' + data2[i].nama + '</td>' +
                         '<td align="center" class="ceknull">' + data2[i].level+ '</td>' +
