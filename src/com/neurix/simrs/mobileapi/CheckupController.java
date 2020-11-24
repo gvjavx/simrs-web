@@ -619,6 +619,8 @@ public class CheckupController implements ModelDriven<Object> {
                 return listOfCheckup;
             case "getKamarTerpakai":
                 return listOfCheckup;
+            case "getDetailKunjunganJK":
+                return listOfCheckup;
             default:
                 return model;
         }
