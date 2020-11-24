@@ -1,6 +1,8 @@
 package com.neurix.simrs.master.kategorilab.bo.impl;
 
 import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.Position;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.jenisobat.bo.JenisObatBo;
@@ -23,6 +25,11 @@ public class KategoriLabBoImpl implements KategoriLabBo {
 
     protected static transient Logger logger = Logger.getLogger(KategoriLabBoImpl.class);
     private KategoriLabDao kategoriLabDao;
+    private PositionDao positionDao;
+
+    public void setPositionDao(PositionDao positionDao) {
+        this.positionDao = positionDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -201,6 +208,9 @@ public class KategoriLabBoImpl implements KategoriLabBo {
             if (bean.getNamaKategori() != null && !"".equalsIgnoreCase(bean.getNamaKategori())) {
                 hsCriteria.put("nama_kategori", bean.getNamaKategori());
             }
+            if (bean.getDivisiId() != null && !"".equalsIgnoreCase(bean.getDivisiId())) {
+                hsCriteria.put("divisi_id", bean.getDivisiId());
+            }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 if ("N".equalsIgnoreCase(bean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -225,7 +235,6 @@ public class KategoriLabBoImpl implements KategoriLabBo {
                     kategoriLab = new KategoriLab();
                     kategoriLab.setIdKategoriLab(kategoriLabEntity.getIdKategoriLab());
                     kategoriLab.setNamaKategori(kategoriLabEntity.getNamaKategori());
-                    kategoriLab.setDivisiId(kategoriLabEntity.getDivisiId());
                     kategoriLab.setFlag(kategoriLabEntity.getFlag());
                     kategoriLab.setAction(kategoriLabEntity.getAction());
                     kategoriLab.setStCreatedDate(kategoriLabEntity.getCreatedDate().toString());
@@ -234,17 +243,13 @@ public class KategoriLabBoImpl implements KategoriLabBo {
                     kategoriLab.setStLastUpdate(kategoriLabEntity.getLastUpdate().toString());
                     kategoriLab.setLastUpdate(kategoriLabEntity.getLastUpdate());
                     kategoriLab.setLastUpdateWho(kategoriLabEntity.getLastUpdateWho());
-                    kategoriLab.setKategori(kategoriLabEntity.getKategori());
-                    ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+
+                    //set divisi dari tabel lain ke tabel kategorilab dan mengambil nama berdasarkan id nya
                     if (kategoriLabEntity.getDivisiId() != null){
-                        Position position = new Position();
-                        PositionBo positionBo = (PositionBo) context.getBean("positionBoProxy");
-                        position.setPositionId(kategoriLabEntity.getDivisiId());
-                        position.setFlag("Y");
-                        List<Position> positions = positionBo.getByCriteria(position);
-                        if(positions.size() > 0){
-                            String positionName = positions.get(0).getPositionName();
-                            kategoriLab.setDivisiName(positionName);
+                        kategoriLab.setDivisiId(kategoriLabEntity.getDivisiId());
+                        ImPosition position = positionDao.getById("positionId",kategoriLabEntity.getDivisiId());
+                        if(position != null){
+                            kategoriLab.setDivisiName(position.getPositionName());
                         }
                     }
                     result.add(kategoriLab);

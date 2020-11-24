@@ -148,6 +148,16 @@ public class CheckupController implements ModelDriven<Object> {
     private String bulan;
     private String tahun;
 
+    private String jenisKunjungan;
+
+    public String getJenisKunjungan() {
+        return jenisKunjungan;
+    }
+
+    public void setJenisKunjungan(String jenisKunjungan) {
+        this.jenisKunjungan = jenisKunjungan;
+    }
+
     public BranchBo getBranchBoProxy() {
         return branchBoProxy;
     }
@@ -1111,7 +1121,7 @@ public class CheckupController implements ModelDriven<Object> {
             List<HeaderCheckup> result = new ArrayList<>();
 
             try {
-                result = initDashboardBoProxy.getKunjunganRJ(bulan, tahun, branchId);
+                result = initDashboardBoProxy.getKunjunganRJ(bulan, tahun, branchId, jenisKunjungan);
             } catch (GeneralBOException e){
                 logger.error("Found Error getKunjunganRJ" + e);
             }
@@ -1131,7 +1141,7 @@ public class CheckupController implements ModelDriven<Object> {
             List<HeaderCheckup> result = new ArrayList<>();
 
             try{
-              result = initDashboardBoProxy.getDetailKunjunganRJ(bulan, tahun, branchId);
+              result = initDashboardBoProxy.getDetailKunjunganRJ(bulan, tahun, branchId, jenisKunjungan);
             } catch (GeneralBOException e){
                 logger.error("Found Error getDetailKunjunganRJ" + e);
             }
@@ -1208,6 +1218,24 @@ public class CheckupController implements ModelDriven<Object> {
                 checkupMobile.setAll(item.getAll());
                 checkupMobile.setTotal(item.getTotal());
 
+                listOfCheckup.add(checkupMobile);
+            }
+        } else if (action.equalsIgnoreCase("getDetailKunjunganJK")) {
+            List<HeaderCheckup> result = new ArrayList<>();
+
+            try {
+                result = initDashboardBoProxy.getDetailKunjunganJK(bulan, tahun, branchId, jenisKunjungan);
+            } catch (GeneralBOException e){
+                logger.error("Found Error getDetailKunjungan" + e);
+            }
+
+            listOfCheckup = new ArrayList<>();
+            for(HeaderCheckup item : result) {
+                CheckupMobile checkupMobile = new CheckupMobile();
+                checkupMobile.setBranchId(item.getBranchId());
+                checkupMobile.setBranchName(item.getBranchName());
+                checkupMobile.setTotal(item.getTotal());
+                checkupMobile.setJenisKelamin(item.getJenisKelamin());
                 listOfCheckup.add(checkupMobile);
             }
         }

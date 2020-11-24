@@ -384,8 +384,7 @@ public class KategoriLabAction extends BaseMasterAction {
     public String initComboPosition() {
 
         Position position = new Position();
-        position.setFlag("Y");
-        position.setKategori("pelayanan");
+//        position.setFlag("Y");
         List<Position> listOfPosition = new ArrayList<Position>();
         try {
             listOfPosition = positionBoProxy.getByCriteria(position);

@@ -214,19 +214,19 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>
-                            <label class="control-label">
-                                <small>Status Ruangan :</small>
-                            </label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'N':'Tidak Tersedia'}" id="statusRuangan3" name="ruangan.statusRuangan" disabled="true"
-                                          headerKey="Y" headerValue="Tersedia" cssClass="form-control" />
-                            </table>
-                        </td>
-                    </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label">--%>
+                                <%--<small>Status Ruangan :</small>--%>
+                            <%--</label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:select list="#{'N':'Tidak Tersedia'}" id="statusRuangan3" name="ruangan.statusRuangan" disabled="true"--%>
+                                          <%--headerKey="Y" headerValue="Tersedia" cssClass="form-control" />--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
                     <tr>
                         <td>
                             <label class="control-label">
@@ -242,27 +242,27 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Kuota</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield cssStyle="margin-top: 7px"  id="kuota3" name="ruangan.kuota" required="false" type="number" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Kuota</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:textfield cssStyle="margin-top: 7px"  id="kuota3" name="ruangan.kuota" required="false" type="number" readonly="true" cssClass="form-control"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
 
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Sisa Kuota</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield cssStyle="margin-top: 7px"  id="sisaKuota3" name="ruangan.sisaKuota" required="false" type="number" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Sisa Kuota</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:textfield cssStyle="margin-top: 7px"  id="sisaKuota3" name="ruangan.sisaKuota" required="false" type="number" readonly="true" cssClass="form-control"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
 
                     <tr>
                         <td>
@@ -297,7 +297,6 @@
                         </button>
                     </div>
                 </div>
-
 
                 <div id="actions" class="form-actions">
                     <table>

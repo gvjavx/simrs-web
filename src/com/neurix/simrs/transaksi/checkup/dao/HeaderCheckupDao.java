@@ -1690,6 +1690,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "\tWHERE c.tipe_pelayanan = 'rawat_jalan'\n" +
                 "\tAND b.id_transaksi_online IS NULL\n" +
                 "\tAND a.branch_id LIKE :branchId\n" +
+                "\tAND b.status_periksa = '3'\n" +
                 "\tAND CAST(DATE_PART('year', a.created_date) AS VARCHAR) = :tahun\n" +
                 "\tAND CAST(DATE_PART('month', a.created_date) AS VARCHAR) = :bulan"+
                 ") a \n" +
@@ -1704,6 +1705,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "\tWHERE c.tipe_pelayanan = 'rawat_inap'\n" +
                 "\tAND b.id_transaksi_online IS NULL\n" +
                 "\tAND a.branch_id LIKE :branchId \n" +
+                "\tAND b.status_periksa = '3'\n" +
                 "\tAND CAST(DATE_PART('year', a.created_date) AS VARCHAR) = :tahun\n" +
                 "\tAND CAST(DATE_PART('month', a.created_date) AS VARCHAR) = :bulan"+
                 ") a \n" +
@@ -1718,6 +1720,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "\tWHERE c.tipe_pelayanan = 'igd'\n" +
                 "\tAND b.id_transaksi_online IS NULL\n" +
                 "\tAND a.branch_id LIKE :branchId \n" +
+                "\tAND b.status_periksa = '3'\n" +
                 "\tAND CAST(DATE_PART('year', a.created_date) AS VARCHAR) = :tahun\n" +
                 "\tAND CAST(DATE_PART('month', a.created_date) AS VARCHAR) = :bulan"+
                 ") a \n" +
@@ -1731,6 +1734,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
                 "\tWHERE b.id_transaksi_online IS NOT NULL\n" +
                 "\tAND a.branch_id LIKE :branchId \n" +
+                "\tAND b.status_periksa = '3'\n" +
                 "\tAND CAST(DATE_PART('year', a.created_date) AS VARCHAR) = :tahun\n" +
                 "\tAND CAST(DATE_PART('month', a.created_date) AS VARCHAR) = :bulan"+
                 ") a \n";
@@ -1868,12 +1872,26 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return res;
     }
 
-    public List<HeaderCheckup> getKunjunganRJ(String bulan, String tahun, String branch){
+    public List<HeaderCheckup> getKunjunganRJ(String bulan, String tahun, String branch, String jenisKunjungan){
         List<HeaderCheckup> response = new ArrayList<>();
-        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun)){
+        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun) &&
+        jenisKunjungan != null && !"".equalsIgnoreCase(jenisKunjungan)){
             String branchId = "AND a.branch_id NOT LIKE 'KP'";
+            String jenis = "";
             if(branch != null && !"".equalsIgnoreCase(branch)){
                 branchId = "AND a.branch_id IN "+branch+" \n";
+            }
+            if("rawat_jalan".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'rawat_jalan' AND b.id_transaksi_online IS NULL";
+            }
+            if("igd".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'igd' AND b.id_transaksi_online IS NULL";
+            }
+            if("rawat_inap".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'rawat_inap' AND b.id_transaksi_online IS NULL";
+            }
+            if("telemedic".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND b.id_transaksi_online IS NOT NULL";
             }
             String SQL = "SELECT\n" +
                     "a.branch_id,\n" +
@@ -1895,10 +1913,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "\tFROM it_simrs_header_checkup a\n" +
                     "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "\tINNER JOIN im_simrs_pelayanan e ON b.id_pelayanan = e.id_pelayanan\n" +
-                    "\tLEFT JOIN it_simrs_rawat_inap c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                    "\tWHERE c.id_detail_checkup IS NULL\n" +
-                    "\tAND CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun\n" +
-                    "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan\n" + branchId +
+                    "\tWHERE CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun\n" +
+                    "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan\n" + branchId + jenis +
                     "\tAND b.status_periksa = '3'\n" +
                     "\tGROUP BY a.branch_id, CAST(b.created_date AS DATE)\n" +
                     ")b\n" +
@@ -1924,12 +1940,26 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return response;
     }
 
-    public List<HeaderCheckup> getDetailKunjunganRJ(String bulan, String tahun, String branch){
+    public List<HeaderCheckup> getDetailKunjunganRJ(String bulan, String tahun, String branch, String jenisKunjungan){
         List<HeaderCheckup> response = new ArrayList<>();
-        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun)){
+        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun) &&
+                jenisKunjungan != null && !"".equalsIgnoreCase(jenisKunjungan)){
             String branchId = "AND a.branch_id NOT LIKE 'KP'";
+            String jenis = "";
             if(branch != null && !"".equalsIgnoreCase(branch)){
                 branchId = "AND a.branch_id IN "+branch+" \n";
+            }
+            if("rawat_jalan".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'rawat_jalan' AND b.id_transaksi_online IS NULL";
+            }
+            if("igd".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'igd' AND b.id_transaksi_online IS NULL";
+            }
+            if("rawat_inap".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'rawat_inap' AND b.id_transaksi_online IS NULL";
+            }
+            if("telemedic".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND b.id_transaksi_online IS NOT NULL";
             }
             String SQL = "SELECT\n" +
                     "a.branch_id,\n" +
@@ -1967,10 +1997,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "\t\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "\t\tINNER JOIN im_simrs_pelayanan e ON b.id_pelayanan = e.id_pelayanan\n" +
                     "\t\tINNER JOIN im_simrs_jenis_periksa_pasien pk ON b.id_jenis_periksa_pasien = pk.id_jenis_periksa_pasien\n" +
-                    "\t\tLEFT JOIN it_simrs_rawat_inap c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                    "\t\tWHERE c.id_detail_checkup IS NULL\n" +
-                    "\tAND CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun\n" +
-                    "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan\n" + branchId +
+                    "\tWHERE CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun\n" +
+                    "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan\n" + branchId + jenis +
                     "\t\tAND b.status_periksa = '3'\n" +
                     "\t\tGROUP BY a.branch_id, pk.id_jenis_periksa_pasien \n" +
                     "\t)b ON a.id_jenis_periksa_pasien = b.id_jenis_periksa_pasien\n" +
@@ -2029,23 +2057,35 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 branchId = "AND a.branch_id IN "+branch+" \n";
             }
             String SQL = "SELECT \n" +
-                    "b.tanggal,\n" +
-                    "a.branch_id,\n" +
                     "a.branch_name,\n" +
-                    "a.total as all,\n" +
+                    "a.branch_id,\n" +
+                    "b.tanggal,\n" +
+                    "b.batas,\n" +
                     "b.total\n" +
                     "FROM (\n" +
+                    "\tSELECT \n" +
+                    "\ta.branch_id,\n" +
+                    "\ta.branch_name\n" +
+                    "\tFROM im_branches a\n" +
+                    "\tWHERE a.flag = 'Y'\n" + branchId +
+                    ") a\n" +
+                    "LEFT JOIN (\n" +
+                    "\tSELECT \n" +
+                    "\tb.tanggal,\n" +
+                    "\ta.branch_id,\n" +
+                    "\ta.total as batas,\n" +
+                    "\tb.total\n" +
+                    "\tFROM (\n" +
                     "\tSELECT\n" +
                     "\ta.branch_id,\n" +
-                    "\tc.branch_name,\n" +
                     "\tCOUNT (b.id_tempat_tidur) as total\n" +
                     "\tFROM mt_simrs_ruangan a\n" +
                     "\tINNER JOIN mt_simrs_ruangan_tempat_tidur b ON a.id_ruangan = b.id_ruangan\n" +
                     "\tINNER JOIN im_branches c ON a.branch_id = c.branch_id\n" +
                     "\tWHERE a.flag = 'Y'\n" + branchId +
-                    "\tGROUP BY a.branch_id, c.branch_name\n" +
-                    ")a \n" +
-                    "INNER JOIN (\n" +
+                    "\tGROUP BY a.branch_id\n" +
+                    "\t)a \n" +
+                    "\tINNER JOIN (\n" +
                     "\tSELECT\n" +
                     "\ta.branch_id,\n" +
                     "\tCAST(c.created_date AS DATE) as tanggal,\n" +
@@ -2054,10 +2094,12 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "\tINNER JOIN it_simrs_rawat_inap c ON c.id_detail_checkup = b.id_detail_checkup\n" +
                     "\tWHERE CAST(DATE_PART('month', c.created_date) AS VARCHAR) = :bulan \n" +
-                    "\tAND CAST(DATE_PART('year', c.created_date) AS VARCHAR) = :tahun \n" +branchId+
+                    "\tAND CAST(DATE_PART('year', c.created_date) AS VARCHAR) = :tahun \n" + branchId +
                     "\tGROUP BY CAST(c.created_date AS DATE), a.branch_id\n" +
-                    ")b ON a.branch_id = b.branch_id\n" +
-                    "ORDER BY b.tanggal, a.branch_id ASC";
+                    "\t)b ON a.branch_id = b.branch_id\n" +
+                    "\tORDER BY b.tanggal, a.branch_id ASC\n" +
+                    ") b ON a.branch_id = b.branch_id\n" +
+                    "ORDER BY a.branch_id ASC";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -2067,9 +2109,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             if(result.size() > 0){
                 for (Object[] obj: result){
                     HeaderCheckup checkup = new HeaderCheckup();
-                    checkup.setTanggal(obj[0] == null ? null : (Date) obj[0]);
+                    checkup.setBranchName(obj[0] == null ? "" : obj[0].toString());
                     checkup.setBranchId(obj[1] == null ? null : obj[1].toString());
-                    checkup.setBranchName(obj[2] == null ? "" : obj[2].toString());
+                    checkup.setTanggal(obj[2] == null ? null : (Date) obj[2]);
                     checkup.setAll(obj[3] == null ? null : obj[3].toString());
                     checkup.setTotal(obj[4] == null ? null : obj[4].toString());
                     response.add(checkup);
@@ -2140,6 +2182,88 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             }
         }
         return res;
+    }
+
+    public List<HeaderCheckup> getDetailKunjunganJK(String bulan, String tahun, String branch, String jenisKunjungan){
+        List<HeaderCheckup> response = new ArrayList<>();
+        if(bulan != null && !"".equalsIgnoreCase(bulan) && tahun != null && !"".equalsIgnoreCase(tahun) &&
+                jenisKunjungan != null && !"".equalsIgnoreCase(jenisKunjungan)){
+            String branchId = "AND a.branch_id NOT LIKE 'KP'";
+            String jenis = "";
+            if(branch != null && !"".equalsIgnoreCase(branch)){
+                branchId = "AND a.branch_id IN "+branch+" \n";
+            }
+            if("rawat_jalan".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'rawat_jalan' AND b.id_transaksi_online IS NULL";
+            }
+            if("igd".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'igd' AND b.id_transaksi_online IS NULL";
+            }
+            if("rawat_inap".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND  e.tipe_pelayanan = 'rawat_inap' AND b.id_transaksi_online IS NULL";
+            }
+            if("telemedic".equalsIgnoreCase(jenisKunjungan)){
+                jenis = "AND b.id_transaksi_online IS NOT NULL";
+            }
+            String SQL = "SELECT \n" +
+                    "a.branch_name,\n" +
+                    "a.branch_id,\n" +
+                    "a.jenis_kelamin,\n" +
+                    "b.total\n" +
+                    "FROM (\n" +
+                    "\tSELECT\n" +
+                    "\ta.branch_name,\n" +
+                    "\ta.branch_id,\n" +
+                    "\tb.jenis_kelamin\n" +
+                    "\tFROM (\n" +
+                    "\t\tSELECT\n" +
+                    "\t\ta.branch_id,\n" +
+                    "\t\ta.branch_name\n" +
+                    "\t\tFROM im_branches a\n" +
+                    "\t\tWHERE a.flag = 'Y'\n" + branchId +
+                    "\t) a,\n" +
+                    "\t(SELECT \n" +
+                    "\t\tjenis_kelamin\n" +
+                    "\t\tFROM (\n" +
+                    "\t\tSELECT CAST('L' AS VARCHAR) as jenis_kelamin\n" +
+                    "\t\tUNION ALL\n" +
+                    "\t\tSELECT CAST('P' AS VARCHAR) as jenis_kelamin) jk\n" +
+                    "\t) b\n" +
+                    ") a\n" +
+                    "LEFT JOIN (\n" +
+                    "SELECT\n" +
+                    "\ta.branch_id,\n" +
+                    "\ta.jenis_kelamin,\n" +
+                    "\tCOUNT(a.no_checkup) as total\n" +
+                    "\tFROM it_simrs_header_checkup a\n" +
+                    "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "\tINNER JOIN im_branches c ON a.branch_id = c.branch_id\n" +
+                    "\tINNER JOIN im_simrs_pelayanan e ON e.id_pelayanan = b.id_pelayanan\n" +
+                    "\tWHERE a.jenis_kelamin IS NOT NULL\n" + branchId + jenis +
+                    "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan \n" +
+                    "\tAND CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun \n" +
+                    "\tAND b.status_periksa = '3'\n" +
+                    "\tGROUP BY a.jenis_kelamin, a.branch_id\n" +
+                    ") b ON a.branch_id = b.branch_id AND a.jenis_kelamin = b.jenis_kelamin\n" +
+                    "ORDER BY a.branch_id ASC";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("bulan", bulan)
+                    .setParameter("tahun", tahun)
+                    .list();
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    HeaderCheckup checkup = new HeaderCheckup();
+                    checkup.setBranchName(obj[0] == null ? null : obj[0].toString());
+                    checkup.setBranchId(obj[1] == null ? null : obj[1].toString());
+                    checkup.setJenisKelamin(obj[2] == null ? "" : obj[2].toString());
+                    checkup.setTotal(obj[3] == null ? null : obj[3].toString());
+                    response.add(checkup);
+                }
+            }
+        }
+        return response;
     }
 
     public String getNextSeq() {

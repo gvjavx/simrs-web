@@ -237,11 +237,11 @@
                         <div class="form-group">
                             <label class="col-md-3">Berat Badan</label>
                             <div class="col-md-3">
-                                <input class="form-control berat-pasien" id="id7">
+                                <input class="form-control berat-pasien" id="id7" type="number">
                             </div>
                             <label class="col-md-3">Tinggi Badan</label>
                             <div class="col-md-3">
-                                <input class="form-control tinggi-pasien" id="id8">
+                                <input class="form-control tinggi-pasien" id="id8" type="number">
                             </div>
                         </div>
                     </div>

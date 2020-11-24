@@ -155,13 +155,10 @@ public class PayrollPtkpAction extends BaseMasterAction{
     @Override
     public String delete() {
         logger.info("[PayrollPtkpAction.delete] start process >>>");
-
         String itemId = getId();
         String itemFlag = getFlag();
         PayrollPtkp deletePayrollPtkp = new PayrollPtkp();
-
         if (itemFlag != null ) {
-
             try {
                 deletePayrollPtkp = init(itemId, itemFlag);
             } catch (GeneralBOException e) {
@@ -202,7 +199,6 @@ public class PayrollPtkpAction extends BaseMasterAction{
     @Override
     public String view() {
         logger.info("[PayrollPtkpAction.view] start process >>>");
-
         String itemId = getId();
         String itemFlag = getFlag();
         PayrollPtkp deletePayrollPtkp = new PayrollPtkp();

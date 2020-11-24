@@ -306,7 +306,9 @@
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="permintaanResep.jenisPeriksaPasien"></s:label>
+                                                <script>
+                                                    document.write(changeJenisPasien('<s:property value="permintaanResep.idJenisPeriksa"/>', '<s:label name="permintaanResep.jenisPeriksaPasien"></s:label>'));
+                                                </script>
                                             </table>
                                         </td>
                                     </tr>

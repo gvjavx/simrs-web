@@ -117,8 +117,8 @@
 
                 <table >
                     <tr >
-                        <td>
-                            <label class="control-label"><small>ID Kelas Ruangan</small></label>
+                        <td width="30%">
+                            <label class="control-label"><small>ID Kelas Ruangan :</small></label>
                         </td>
                         <td>
                             <table>
@@ -131,7 +131,7 @@
                     <tr>
                         <td>
                             <label class="control-label">
-                                <small>Nama Ruangan</small>
+                                <small>Nama Ruangan :</small>
                             </label>
                         </td>
                         <td>
@@ -168,9 +168,9 @@
                             <i class="fa fa-check"></i>
                             Delete
                         </sj:submit>
-                        <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
-                            <i class="fa fa-refresh"/> Cancel
-                        </button>
+                                <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
+                                    <i class="fa fa-refresh"/> Cancel
+                                </button>
                     </div>
                 </div>
 

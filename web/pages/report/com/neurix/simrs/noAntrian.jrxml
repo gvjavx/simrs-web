@@ -29,7 +29,8 @@ INNER JOIN it_simrs_dokter_team d ON b.id_detail_checkup = d.id_detail_checkup
 INNER JOIN im_simrs_dokter e ON d.id_dokter = e.id_dokter
 WHERE a.id_pasien = $P{reportParams.idPasien}
 AND b.id_pelayanan = $P{reportParams.idPelayanan}
-AND CAST(a.created_date AS DATE) = CURRENT_DATE]]>
+AND CAST(a.created_date AS DATE) = CURRENT_DATE
+ORDER BY a.created_date DESC LIMIT 1]]>
 	</queryString>
 	<field name="id_pasien" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String">

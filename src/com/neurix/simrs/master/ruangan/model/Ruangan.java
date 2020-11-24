@@ -12,7 +12,7 @@ public class Ruangan extends BaseModel {
     private String idRuangan;
     private String namaRuangan;
     private String noRuangan;
-    private String statusRuangan;
+//    private String statusRuangan;
     private String statusRuanganName;
     private String idKelasRuangan;
     private String keterangan;
@@ -38,8 +38,8 @@ public class Ruangan extends BaseModel {
     private String tipeTransaksi;
     private BigDecimal nilaiPersen;
 
-    private Integer sisaKuota;
-    private Integer kuota;
+//    private Integer sisaKuota;
+//    private Integer kuota;
 
     private String namaPasien;
     private String branchUser;
@@ -52,7 +52,6 @@ public class Ruangan extends BaseModel {
     private String jenisPasien;
     private BigDecimal totalTarif;
     private String idPasien;
-
     public String getIdPasien() {
         return idPasien;
     }
@@ -125,21 +124,21 @@ public class Ruangan extends BaseModel {
         this.namaPasien = namaPasien;
     }
 
-    public Integer getSisaKuota() {
-        return sisaKuota;
-    }
-
-    public void setSisaKuota(Integer sisaKuota) {
-        this.sisaKuota = sisaKuota;
-    }
-
-    public Integer getKuota() {
-        return kuota;
-    }
-
-    public void setKuota(Integer kuota) {
-        this.kuota = kuota;
-    }
+//    public Integer getSisaKuota() {
+//        return sisaKuota;
+//    }
+//
+//    public void setSisaKuota(Integer sisaKuota) {
+//        this.sisaKuota = sisaKuota;
+//    }
+//
+//    public Integer getKuota() {
+//        return kuota;
+//    }
+//
+//    public void setKuota(Integer kuota) {
+//        this.kuota = kuota;
+//    }
 
 
     public String getTipeTransaksi() {
@@ -214,13 +213,13 @@ public class Ruangan extends BaseModel {
         this.noRuangan = noRuangan;
     }
 
-    public String getStatusRuangan() {
-        return statusRuangan;
-    }
-
-    public void setStatusRuangan(String statusRuangan) {
-        this.statusRuangan = statusRuangan;
-    }
+//    public String getStatusRuangan() {
+//        return statusRuangan;
+//    }
+//
+//    public void setStatusRuangan(String statusRuangan) {
+//        this.statusRuangan = statusRuangan;
+//    }
 
     public String getIdKelasRuangan() {
         return idKelasRuangan;

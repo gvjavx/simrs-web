@@ -89,7 +89,10 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addPayrollPtkpForm" method="post" theme="simple" namespace="/payrollPtkp" action="saveAdd_payrollPtkp.action" cssClass="well form-horizontal">
+            <s:form id="addPayrollPtkpForm" method="post"
+                    theme="simple" namespace="/payrollPtkp"
+                    action="saveAdd_payrollPtkp.action"
+                    cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -131,7 +134,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="jumlahTanggunganAdd" name="payrollPtkp.jumlahTanggungan" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="jumlahTanggunganAdd"
+                                             name="payrollPtkp.jumlahTanggungan" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

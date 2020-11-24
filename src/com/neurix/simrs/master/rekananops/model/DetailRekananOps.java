@@ -16,6 +16,42 @@ public class DetailRekananOps {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String branchName;
+    private String namaRekanan;
+    private String nomorMaster;
+    private String tipe;
+
+    public String getNomorMaster() {
+        return nomorMaster;
+    }
+
+    public void setNomorMaster(String nomorMaster) {
+        this.nomorMaster = nomorMaster;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getNamaRekanan() {
+        return namaRekanan;
+    }
+
+    public void setNamaRekanan(String namaRekanan) {
+        this.namaRekanan = namaRekanan;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
 
     public String getIdDetailRekananOps() {
         return idDetailRekananOps;

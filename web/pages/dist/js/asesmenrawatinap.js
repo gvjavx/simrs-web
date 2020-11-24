@@ -3347,9 +3347,13 @@ function detailAsesmenRawatInap(jenis, idKhusus) {
                                     '</div>' +
                                     '</div></div>';
                             } else {
+                                var tip = 'type="number"';
+                                if("Lain-Lain" == item.parameter){
+                                    tip = "";
+                                }
                                 sesudah = '<div id="set_serah_'+i+'">' +
                                     '<div class="input-group">' +
-                                    '<input id="serah_'+i+'" class="form-control" type="number">' +
+                                    '<input id="serah_'+i+'" class="form-control" '+tip+'>' +
                                     '<div onclick="saveTransferPasien(\''+item.idAsesmenKeperawatanRawatInap+'\', \''+i+'\', \''+item.parameter+'\')" class="input-group-addon" style="cursor: pointer; background-color: #449d44">' +
                                     '<i class="fa fa-check" style="color: white"></i>' +
                                     '</div>' +
