@@ -219,9 +219,6 @@ public class AsuransiBoImpl implements AsuransiBo  {
                 }
             }
 
-//            else{
-//                throw new GeneralBOException("Maaf Data dengan Nama Asuransi Tersebut Sudah Ada");
-//            }
         }
 
 
