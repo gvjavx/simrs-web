@@ -56,7 +56,7 @@
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="rekananOpsForm" method="post"  theme="simple"
+                                    <s:form id="detailRekananOpsForm" method="post"  theme="simple"
                                             namespace="/detailrekananops" action="search_detailrekananops.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
@@ -126,7 +126,7 @@
                                             <table align="center">
                                                 <tr>
                                                     <td >
-                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary" formIds="rekananOpsForm" id="search" name="search"
+                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary" formIds="detailRekananOpsForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
@@ -197,7 +197,7 @@
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
                                                                     <s:url var="urlEdit" namespace="/detailrekananops" action="edit_detailrekananops" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idRekananOps"/></s:param>
+                                                                        <s:param name="id"><s:property value="#attr.row.idDetailRekananOps"/></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -223,8 +223,6 @@
                                                             <display:column property="namaRekanan" sortable="true" title="nama rekanan Ops" />
                                                             <display:column property="diskon" sortable="true" title="diskon" />
                                                             <display:column property="branchName" sortable="true" title=" nama branch" />
-                                                            <%--<display:column property="branchName" sortable="true" title="Nama Branche" />--%>
-                                                            <%--<display:column property="tipe" sortable="true" title="tipe" />--%>
                                                             <display:column property="flag" sortable="true" title="flag"  />
 
                                                             <display:column property="action" sortable="true" title="action"  />

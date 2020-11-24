@@ -9,24 +9,24 @@
     <%--<script type='text/javascript' src='<s:url value="/dwr/interface/PayrollSkalaGajiAction.js"/>'></script>--%>
     <script type="text/javascript">
         $(document).ready(function(){
-            var cek = document.getElementById("eksekutif").value;
-
-            if (cek == 'Y'){
-                console.log(cek);
-                document.getElementById("isEksekutif").checked = true;
-            }
+            // var cek = document.getElementById("eksekutif").value;
+            //
+            // if (cek == 'Y'){
+            //     console.log(cek);
+            //     document.getElementById("isEksekutif").checked = true;
+            // }
         });
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
 //            window.location.reload(true);
-            document.rekananOpsForm.action = "search_rekananOps.action";
-            document.rekananOpsForm.submit();
+            document.detailRekananOpsForm.action = "search_detailrekananops.action";
+            document.detailRekananOpsForm.submit();
         };
 
         $.subscribe('beforeProcessSaveEdit', function (event, data) {
-            var idRekananOpsedit = document.getElementById("idRekananOpsedit").value;
+            var idRekananOpsedit = document.getElementById("idDetailRekananOpsedit").value;
 
             console.log(idRekananOpsedit);
 
@@ -116,13 +116,66 @@
                         <td>
                             <table>
                                 <s:textfield id="idDetailRekananOpsedit" name="detailRekananOps.idDetailRekananOps" required="true" readonly="true" cssClass="form-control"/>
-                                <%--<s:hidden id="idRekananOps1" name="rekananOps.idRekananOps" />--%>
-                                <s:hidden id="idDetailRekananOpsedit" name="detailRekananOps.idDetailRekananOps" />
+                                <%--&lt;%&ndash;<s:hidden id="idRekananOps1" name="rekananOps.idRekananOps" />&ndash;%&gt;--%>
+                                <%--<s:hidden id="idDetailRekananOpsedit" name="detailRekananOps.idDetailRekananOps" />--%>
                             </table>
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>isbpjs :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'Non-Active'}" id="flag2" name="detailRekananOps.isBpjs"
+                                          headerKey="Y" headerValue="Active" cssClass="form-control select2" />
+                            </table>
 
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Nama rekanan :</small></label>
+                        </td>
+                        <td width="70%">
+                            <table>
+                                <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
+                                <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
+                                          listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control" cssStyle="margin-top: 5px"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>branch:</small></label>
+                        </td>
+                        <td width="70%">
+                            <table>
+                                <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="detailRekananOps.branchId"
+                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control" />
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="18%">
+                            <label class="control-label"><small> diskon :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield cssStyle="margin-top: 7px"
+                                             id="diskon"
+                                             name="detailRekananOps.diskon"
+                                             required="false"
+                                             readonly="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
 
 

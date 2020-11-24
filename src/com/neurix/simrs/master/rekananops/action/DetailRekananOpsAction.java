@@ -9,6 +9,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 //import com.neurix.simrs.master.rekananOps.bo.RekananOpsBo;
 //import com.neurix.simrs.master.rekananOps.model.RekananOps;
+import com.neurix.hris.master.payrollPtkp.model.PayrollPtkp;
 import com.neurix.simrs.master.rekananops.bo.DetailRekananOpsBo;
 import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
 import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
@@ -120,35 +121,35 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         this.detailRekananOpsBoProxy = detailRekananOpsBoProxy;
     }
 
-    public RekananOps init(String kode, String flag){
+    public DetailRekananOps init(String kode, String flag){
         logger.info("[PayrollSkalaGajiAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        List<RekananOps> listOfResult = (List<RekananOps>) session.getAttribute("listOfResultRekananOps");
+        List<DetailRekananOps> listOfResult = (List<DetailRekananOps>) session.getAttribute("listOfResultRekananOps");
 
         if(kode != null && !"".equalsIgnoreCase(kode)){
             if(listOfResult != null){
-                for (RekananOps rekananOps: listOfResult) {
-                    if(kode.equalsIgnoreCase(rekananOps.getIdRekananOps()) && flag.equalsIgnoreCase(rekananOps.getFlag())){
-                        setRekananOps(rekananOps);
+                for (DetailRekananOps detailRekananOps: listOfResult) {
+                    if(kode.equalsIgnoreCase(detailRekananOps.getIdDetailRekananOps()) && flag.equalsIgnoreCase(detailRekananOps.getFlag())){
+                        setDetailRekananOps(detailRekananOps);
                         break;
                     }
                 }
             } else {
-                setRekananOps(new RekananOps());
+                setDetailRekananOps(new DetailRekananOps());
             }
             logger.info("[PayrollSkalaGajiAction.init] end process >>>");
         }
-        return getRekananOps();
+        return getDetailRekananOps();
     }
 
     @Override
     public String add() {
         logger.info("[DetailRekananOpsAction.add] start process >>>");
-        RekananOps addRekananOps = new RekananOps();
+        DetailRekananOps addDetailRekananOps = new DetailRekananOps();
         if(!"ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
-            addRekananOps.setBranchId(CommonUtil.userBranchLogin());
+            addDetailRekananOps.setBranchId(CommonUtil.userBranchLogin());
         }
-        setRekananOps(addRekananOps);
+        setDetailRekananOps(addDetailRekananOps);
         setAddOrEdit(true);
         setAdd(true);
 //        HttpSession session = ServletActionContext.getRequest().getSession();
@@ -160,39 +161,35 @@ public class DetailRekananOpsAction extends BaseMasterAction {
 
     @Override
     public String edit() {
-        logger.info("[PayrollSkalaGajiAction.edit] start process >>>");
-        String itemId = getId();
+        logger.info("[DetailRekananOpsAction.edit] start process >>>");
         String itemFlag = getFlag();
-
-        RekananOps editRekananOps = new RekananOps();
-
+        String itemId = getId();
+        DetailRekananOps editDetailRekananOps = new DetailRekananOps();
         if(itemFlag != null){
             try {
-                editRekananOps = init(itemId, itemFlag);
+                editDetailRekananOps = init (itemId,itemFlag);
             } catch (GeneralBOException e) {
-                logger.error("ini error, "+e.getMessage());
-                throw new GeneralBOException("ini error, "+e.getMessage());
+                logger.error("dfsdfdsf"+e.getMessage());
+                throw new GeneralBOException("sdfdsfdf, "+e.getMessage());
             }
 
-            if(editRekananOps != null) {
-                setRekananOps(editRekananOps);
+            if(editDetailRekananOps != null) {
+                setDetailRekananOps(editDetailRekananOps);
             } else {
-                editRekananOps.setFlag(itemFlag);
-                //editPayrollSkalaGaji.getSkalaGajiId(itemId);
-                setRekananOps(editRekananOps);
+                editDetailRekananOps.setFlag(itemFlag);
+                setDetailRekananOps(editDetailRekananOps);
                 addActionError("Error, Unable to find data with id = " + itemId);
                 return "failure";
             }
         } else {
-            //editPayrollSkalaGaji.getSkalaGajiId(itemId);
-            editRekananOps.setFlag(getFlag());
-            setRekananOps(editRekananOps);
+            editDetailRekananOps.setFlag(getFlag());
+            setDetailRekananOps(editDetailRekananOps);
             addActionError("Error, Unable to edit again with flag = N.");
             return "failure";
         }
 
         setAddOrEdit(true);
-        logger.info("[PayrollSkalaGajiAction.edit] end process >>>");
+        logger.info("[DetailRekananOpsAction.edit] end process >>>");
         return "init_edit";
     }
 
@@ -202,31 +199,31 @@ public class DetailRekananOpsAction extends BaseMasterAction {
 
         String itemId = getId();
         String itemFlag = getFlag();
-        RekananOps deleteRekananOps = new RekananOps();
+        DetailRekananOps deleteDetailRekananOps = new DetailRekananOps();
 
         if (itemFlag != null ) {
 
             try {
-                deleteRekananOps = init(itemId, itemFlag);
+                deleteDetailRekananOps = init(itemId, itemFlag);
             } catch (GeneralBOException e) {
                 logger.error("ini error, "+e.getMessage());
                 throw new GeneralBOException("ini error, "+e.getMessage());
             }
 
-            if (deleteRekananOps != null) {
-                setRekananOps(deleteRekananOps);
+            if (deleteDetailRekananOps != null) {
+                setDetailRekananOps(deleteDetailRekananOps);
 
             } else {
                 //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
-                deleteRekananOps.setFlag(itemFlag);
-                setRekananOps(deleteRekananOps);
+                deleteDetailRekananOps.setFlag(itemFlag);
+                setDetailRekananOps(deleteDetailRekananOps);
                 addActionError("Error, Unable to find data with id = " + itemId);
                 return "failure";
             }
         } else {
             //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
-            deleteRekananOps.setFlag(itemFlag);
-            setRekananOps(deleteRekananOps);
+            deleteDetailRekananOps.setFlag(itemFlag);
+            setDetailRekananOps(deleteDetailRekananOps);
             addActionError("Error, Unable to delete again with flag = N.");
             return "failure";
         }
@@ -274,25 +271,25 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     }
 
     public String saveEdit(){
-//        logger.info("[PayrollSkalaGajiAction.saveEdit] start process >>>");
-//        try {
-//
-//            DetailRekananOps editDetailRekananOps = getDetailRekananOps();
-//            String userLogin = CommonUtil.userLogin();
-//            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-//
-//            editDetailRekananOps.setLastUpdateWho(userLogin);
-//            editDetailRekananOps.setLastUpdate(updateTime);
-//            editDetailRekananOps.setAction("U");
-//            editDetailRekananOps.setFlag("Y");
-//
-//            detailRekananOpsBoProxy.saveEdit(editDetailRekananOps);
-//        } catch (GeneralBOException e) {
-//            logger.error("ini error, "+e.getMessage());
-//            throw new GeneralBOException("ini error, "+e.getMessage());
-//        }
-//
-//        logger.info("[PayrollSkalaGajiAction.saveEdit] end process <<<");
+        logger.info("[PayrollSkalaGajiAction.saveEdit] start process >>>");
+        try {
+
+            DetailRekananOps editDetailRekananOps = getDetailRekananOps();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            editDetailRekananOps.setLastUpdateWho(userLogin);
+            editDetailRekananOps.setLastUpdate(updateTime);
+            editDetailRekananOps.setAction("U");
+            editDetailRekananOps.setFlag("Y");
+
+            detailRekananOpsBoProxy.saveEdit(editDetailRekananOps);
+        } catch (GeneralBOException e) {
+            logger.error("ini error, "+e.getMessage());
+            throw new GeneralBOException("ini error, "+e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsAction.saveEdit] end process <<<");
 
         return "success_save_edit";
     }
