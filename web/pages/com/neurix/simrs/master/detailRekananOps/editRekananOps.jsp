@@ -115,7 +115,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idDetailRekananOpsedit" name="detailRekananOps.idDetailRekananOps" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield id="idDetailRekananOpsedit" name="detailRekananOps.idDetailRekananOps"
+                                             required="true" readonly="true" cssClass="form-control"/>
                                 <%--&lt;%&ndash;<s:hidden id="idRekananOps1" name="rekananOps.idRekananOps" />&ndash;%&gt;--%>
                                 <%--<s:hidden id="idDetailRekananOpsedit" name="detailRekananOps.idDetailRekananOps" />--%>
                             </table>

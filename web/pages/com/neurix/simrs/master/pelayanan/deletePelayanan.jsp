@@ -102,7 +102,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idPelayanan1" name="pelayanan.idPelayanan" required="true" disabled="true" cssClass="form-control"/>
+                                <s:textfield id="idPelayanan1" name="pelayanan.idPelayanan" required="true" disabled="true"
+                                             cssClass="form-control"/>
                                 <s:hidden id="idPelayanan1" name="pelayanan.idPelayanan" />
                             </table>
                         </td>

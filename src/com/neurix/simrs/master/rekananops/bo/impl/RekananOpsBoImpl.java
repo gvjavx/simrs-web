@@ -229,6 +229,11 @@ public class RekananOpsBoImpl implements RekananOpsBo {
     }
 
     @Override
+    public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
+        return null;
+    }
+
+    @Override
     public List<RekananOps> getComboRekananOps(String branchId) throws GeneralBOException {
         List<RekananOps> rekananOps = new ArrayList<>();
         try {

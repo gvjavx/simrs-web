@@ -9,4 +9,5 @@ public interface DetailRekananOpsBo {
     public List<DetailRekananOps> getSearchByCriteria (DetailRekananOps bean) throws GeneralBOException;
     public CrudResponse saveAdd(DetailRekananOps bean) throws GeneralBOException;
     public CrudResponse saveEdit (DetailRekananOps bean) throws  GeneralBOException;
+    public CrudResponse saveDelete (DetailRekananOps bean) throws  GeneralBOException;
 }

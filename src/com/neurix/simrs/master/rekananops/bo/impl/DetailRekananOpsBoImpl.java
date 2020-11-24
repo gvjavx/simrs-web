@@ -7,6 +7,7 @@ import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.exception.GeneralBOException;
 
 
+import com.neurix.hris.master.payrollPtkp.model.ImHrisPayrollPtkpEntity;
 import com.neurix.simrs.master.rekananops.bo.DetailRekananOpsBo;
 import com.neurix.simrs.master.rekananops.dao.DetailRekananOpsDao;
 import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;
@@ -233,7 +234,51 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
     }
 
     @Override
-    public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
+    public CrudResponse saveDelete(DetailRekananOps bean) throws GeneralBOException {
+        logger.info("[saveDelete.saveDelete] start process >>>");
+        if (bean != null) {
+            String idDetailRekananOps = bean.getIdDetailRekananOps();
+
+            ImSimrsDetailRekananOpsEntity imSimrsDetailRekananOpsEntity = null;
+
+            try {
+                // Get data from database by ID
+                imSimrsDetailRekananOpsEntity = detailRekananOpsDao.getById("idDetailRekananOps", idDetailRekananOps);
+            } catch (HibernateException e) {
+                logger.error("[PayrollPtkpBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+            }
+
+            if (imSimrsDetailRekananOpsEntity != null) {
+
+                // Modify from bean to entity serializable
+                imSimrsDetailRekananOpsEntity.setIdDetailRekananOps(bean.getIdDetailRekananOps());
+                imSimrsDetailRekananOpsEntity.setIdRekananOps(bean.getIdRekananOps());
+                imSimrsDetailRekananOpsEntity.setIsBpjs(bean.getIsBpjs());
+                imSimrsDetailRekananOpsEntity.setDiskon(bean.getDiskon());
+                imSimrsDetailRekananOpsEntity.setBranchId(bean.getBranchId());
+
+                imSimrsDetailRekananOpsEntity.setFlag(bean.getFlag());
+                imSimrsDetailRekananOpsEntity.setAction(bean.getAction());
+                imSimrsDetailRekananOpsEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imSimrsDetailRekananOpsEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // Delete (Edit) into database
+                    detailRekananOpsDao.updateAndSave(imSimrsDetailRekananOpsEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PayrollPtkpBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data PayrollPtkp, please info to your admin..." + e.getMessage());
+                }
+
+
+            } else {
+                logger.error("[PayrollPtkpBoImpl.saveDelete] Error, not found data PayrollPtkp with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data PayrollPtkp with request id, please check again your data ...");
+
+            }
+        }
+        logger.info("[PayrollPtkpBoImpl.saveDelete] end process <<<");
         return null;
     }
 }

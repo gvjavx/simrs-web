@@ -196,15 +196,12 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     @Override
     public String delete() {
         logger.info("[DetailRekananOpsAction.delete] start process >>>");
-
         String itemId = getId();
         String itemFlag = getFlag();
         DetailRekananOps deleteDetailRekananOps = new DetailRekananOps();
-
         if (itemFlag != null ) {
-
             try {
-                deleteDetailRekananOps = init(itemId, itemFlag);
+                deleteDetailRekananOps = init (itemId, itemFlag);
             } catch (GeneralBOException e) {
                 logger.error("ini error, "+e.getMessage());
                 throw new GeneralBOException("ini error, "+e.getMessage());
@@ -249,23 +246,23 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[PayrollSkalaGajiAction.saveDelete] start process >>>");
         try {
 
-            RekananOps deleteRekananOps = getRekananOps();
+            DetailRekananOps deleteDetailRekananOps = getDetailRekananOps();
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            deleteRekananOps.setLastUpdate(updateTime);
-            deleteRekananOps.setLastUpdateWho(userLogin);
-            deleteRekananOps.setAction("U");
-            deleteRekananOps.setFlag("N");
+            deleteDetailRekananOps.setLastUpdate(updateTime);
+            deleteDetailRekananOps.setLastUpdateWho(userLogin);
+            deleteDetailRekananOps.setAction("U");
+            deleteDetailRekananOps.setFlag("N");
 
-            rekananOpsBoProxy.saveDelete(deleteRekananOps);
+            detailRekananOpsBoProxy.saveDelete(deleteDetailRekananOps);
         } catch (GeneralBOException e) {
             logger.error("ini error, "+e.getMessage());
             throw new GeneralBOException("ini error, "+e.getMessage());
         }
 
-        logger.info("[PayrollSkalaGajiAction.saveDelete] end process <<<");
+        logger.info("[DetailRekananOpsiAction.saveDelete] end process <<<");
 
         return "success_save_delete";
     }

@@ -209,7 +209,7 @@
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                                 <s:if test='#attr.row.flag == "Y"'>
                                                                     <s:url var="urlViewDelete" namespace="/detailrekananops" action="delete_detailrekananops" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idRekananOps" /></s:param>
+                                                                        <s:param name="id"><s:property value="#attr.row.idDetailRekananOps" /></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
