@@ -88,6 +88,15 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
 
     private String flagSendKlaim;
     private String noAntrian;
+    private String poliRujukanInternal;
+
+    public String getPoliRujukanInternal() {
+        return poliRujukanInternal;
+    }
+
+    public void setPoliRujukanInternal(String poliRujukanInternal) {
+        this.poliRujukanInternal = poliRujukanInternal;
+    }
 
     public String getNoAntrian() {
         return noAntrian;

@@ -434,6 +434,42 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
+    public CrudResponse setNoRujukan(HeaderDetailCheckup detailCheckup) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
+        if(detailCheckup.getNoCheckupUlang() != null && !"".equalsIgnoreCase(detailCheckup.getNoCheckupUlang())){
+            try {
+                detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", detailCheckup.getIdDetailCheckup());
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+                response.setStatus("error");
+                response.setMsg("Error when search data detail checkup, "+e.getMessage());
+            }
+            if(detailCheckupEntity != null){
+                detailCheckupEntity.setNoCheckupUlang(detailCheckup.getNoCheckupUlang());
+                detailCheckupEntity.setAction("U");
+                detailCheckupEntity.setLastUpdate(detailCheckup.getLastUpdate());
+                detailCheckupEntity.setLastUpdateWho(detailCheckup.getLastUpdateWho());
+                detailCheckupEntity.setPoliRujukanInternal(detailCheckup.getPoliRujukanInternal());
+                try {
+                    checkupDetailDao.updateAndSave(detailCheckupEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("Error when search data detail checkup, "+e.getMessage());
+                }
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("No rujukan tidak ditemukan...!");
+        }
+        return response;
+    }
+
+    @Override
     public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) throws GeneralBOException {
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         try {

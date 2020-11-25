@@ -225,7 +225,7 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("MM") + dateFormater("yy") + id);
             pasienEntity.setNama(pasien.getNama());
             pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
-            pasienEntity.setNoKtp(pasien.getNoKtp());
+            pasienEntity.setNoKtp(pasien.getNoKtp().replace("-","").replace("_",""));
             pasienEntity.setNoBpjs(pasien.getNoBpjs());
             pasienEntity.setTempatLahir(pasien.getTempatLahir());
 
@@ -238,7 +238,7 @@ public class PasienBoImpl implements PasienBo {
             pasienEntity.setSuku(pasien.getSuku());
             pasienEntity.setAgama(pasien.getAgama());
             pasienEntity.setProfesi(pasien.getProfesi());
-            pasienEntity.setNoTelp(pasien.getNoTelp());
+            pasienEntity.setNoTelp(pasien.getNoTelp().replace("-","").replace("_",""));
             pasienEntity.setUrlKtp(pasien.getUrlKtp());
             pasienEntity.setPendidikan(pasien.getPendidikan());
             pasienEntity.setStatusPerkawinan(pasien.getStatusPerkawinan());
@@ -275,7 +275,7 @@ public class PasienBoImpl implements PasienBo {
 
                 pasienEntity.setNama(pasien.getNama());
                 pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
-                pasienEntity.setNoKtp(pasien.getNoKtp());
+                pasienEntity.setNoKtp(pasien.getNoKtp().replace("-","").replace("_",""));
                 if (pasien.getNoBpjs() != null && !"".equalsIgnoreCase(pasien.getNoBpjs())) {
                     pasienEntity.setNoBpjs(pasien.getNoBpjs());
                 }
@@ -286,7 +286,7 @@ public class PasienBoImpl implements PasienBo {
                 pasienEntity.setSuku(pasien.getSuku());
                 pasienEntity.setAgama(pasien.getAgama());
                 pasienEntity.setProfesi(pasien.getProfesi());
-                pasienEntity.setNoTelp(pasien.getNoTelp());
+                pasienEntity.setNoTelp(pasien.getNoTelp().replace("-", "").replace("_",""));
                 pasienEntity.setPendidikan(pasien.getPendidikan());
                 pasienEntity.setStatusPerkawinan(pasien.getStatusPerkawinan());
 

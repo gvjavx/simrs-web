@@ -1394,11 +1394,13 @@ public class CheckupDetailAction extends BaseMasterAction {
         String tglToday = new SimpleDateFormat("yyyy-MM-dd").format(date);
         String user = CommonUtil.userLogin();
         String branchId = CommonUtil.userBranchLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
 
         if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(idPoliRujukan)) {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BpjsBo bpjsBo = (BpjsBo) ctx.getBean("bpjsBoProxy");
             CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
             DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
             PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
             HeaderCheckup detailCheckup = new HeaderCheckup();
@@ -1444,8 +1446,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                         }
 
                         if("200".equalsIgnoreCase(rujukanResponse.getStatus())){
-                            finalResponse.setStatus("success");
-                            finalResponse.setMsg("Berhasil");
+                            HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+                            headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
+                            headerDetailCheckup.setPoliRujukanInternal(idPoliRujukan);
+                            headerDetailCheckup.setNoCheckupUlang(rujukanResponse.getNoRujukan());
+                            headerDetailCheckup.setLastUpdate(now);
+                            headerDetailCheckup.setLastUpdateWho(user);
+                            finalResponse = checkupDetailBo.setNoRujukan(headerDetailCheckup);
                         }else{
                             finalResponse.setStatus("error");
                             finalResponse.setMsg(rujukanResponse.getMessage());
@@ -5168,6 +5175,66 @@ public class CheckupDetailAction extends BaseMasterAction {
         } else {
             return "print_radiologi";
         }
+    }
+
+    public String printNoRujukan() {
+        HeaderCheckup checkup = new HeaderCheckup();
+        String id = getId();
+        String jk = "";
+        String branch = CommonUtil.userBranchLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search data detail pasien " + e.getMessage());
+        }
+
+        if (checkup != null) {
+            reportParams.put("area", CommonUtil.userAreaName());
+            reportParams.put("unit", CommonUtil.userBranchNameLogin());
+            reportParams.put("idPasien", checkup.getIdPasien());
+            reportParams.put("idDetailCheckup", id);
+            reportParams.put("logo", logo);
+            reportParams.put("nik", checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama());
+            reportParams.put("noBpjs", checkup.getNoBpjs());
+
+            if (checkup.getTglLahir() != null) {
+                String tahun = calculateAge(checkup.getTglLahir(), false);
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+                reportParams.put("umur", tahun);
+            }
+
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                jk = "Laki-Laki";
+            } else {
+                jk = "Perempuan";
+            }
+
+            reportParams.put("jenisKelamin", jk);
+            reportParams.put("diagnosa", checkup.getDiagnosa()+"-"+checkup.getNamaDiagnosa());
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                return "init_add";
+            }
+        }
+        return "print_rujukan";
     }
 
     private String calculateAge(java.sql.Date birthDate, boolean justTahun) {

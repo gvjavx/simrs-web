@@ -3064,6 +3064,9 @@ function savePemeriksaanPasien() {
                     $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(6);
+                    if('rujuk_internal' == tindakLanjut){
+                        window.open('printNoRujukan_checkupdetail.action?id='+idDetailCheckup, '_blank');
+                    }
                 } else {
                     $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');

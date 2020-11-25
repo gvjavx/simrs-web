@@ -214,5 +214,8 @@
         <property name="noAntrian">
             <column name="no_antrian"/>
         </property>
+        <property name="poliRujukanInternal">
+            <column name="poli_rujukan_internal"/>
+        </property>
     </class>
 </hibernate-mapping>

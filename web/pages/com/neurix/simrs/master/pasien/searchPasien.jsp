@@ -516,11 +516,11 @@
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">NO BPJS</label>
-                                <input class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')" type="number">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">NIK</label>
-                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')" type="number">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Nama</label>
@@ -570,7 +570,7 @@
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">No Telp</label>
-                                <input class="form-control" id="add_no_telp">
+                                <input class="form-control" id="add_no_telp" type="number">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Provinsi</label>
