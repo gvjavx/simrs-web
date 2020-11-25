@@ -8901,6 +8901,14 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payrollPerson.setPotonganLainNilai(payroll.getPotonganLainNilai());
                     payrollPerson.setPotonganLain(CommonUtil.numbericFormat(payroll.getPotonganLainNilai(), "###,###"));
 
+                    // update tunj bpjs TK pers pada B, Sigit 2020-11-24, START
+                    payrollPerson.setTunjanganBpjsKsNilai(payrollPerson.getIuranBpjsKsPersNilai());
+                    payrollPerson.setTunjanganBpjsTkNilai(payrollPerson.getIuranBpjsTkPersNilai());
+
+                    payrollPerson.setTunjanganBpjsKs(CommonUtil.numbericFormat(payrollPerson.getTunjanganBpjsKsNilai(),"###,###"));
+                    payrollPerson.setTunjanganBpjsTk(CommonUtil.numbericFormat(payrollPerson.getTunjanganBpjsTkNilai(),"###,###"));
+                    // END
+
                     //pphGaji
                     payrollPph = kalkulasiGrossUpPphSimRs(payrollPerson.getNip(),payrollPerson.getBulan(),payrollPerson.getTahun(),
                             payrollPerson.getBranchId(),payrollPerson.getGajiGolonganNilai(),payrollPerson.getTunjanganUmkNilai(),
