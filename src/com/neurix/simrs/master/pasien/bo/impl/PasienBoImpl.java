@@ -454,6 +454,8 @@ public class PasienBoImpl implements PasienBo {
                 pasien.setLastUpdateWho(data.getLastUpdateWho());
                 pasien.setEmail(data.getEmail());
                 pasien.setPassword(data.getPassword());
+                pasien.setStatusPerkawinan(data.getStatusPerkawinan());
+                pasien.setPendidikan(data.getPendidikan());
 
                 if (pasien.getDesaId() != null) {
                     List<Object[]> objs = provinsiDao.getListAlamatByDesaId(pasien.getDesaId().toString());

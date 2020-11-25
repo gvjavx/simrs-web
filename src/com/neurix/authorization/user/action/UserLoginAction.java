@@ -445,6 +445,29 @@ public class UserLoginAction extends ActionSupport {
 
     }
 
+    //updated by ferdi, 17-11-2020, get time session from dwr action
+    public boolean getTimeOutSession() {
+        logger.info("[UserLoginAction.getTimeOutSession] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        boolean isTimeout = false;
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                if (securityContextImpl.getAuthentication().isAuthenticated()) {
+                    isTimeout = false;
+                } else {
+                    isTimeout = true;
+                }
+            } else {
+                isTimeout = true;
+            }
+        } else {
+            isTimeout = true;
+        }
+        logger.info("[UserLoginAction.getTimeOutSession] end process <<<");
+        return isTimeout;
+    }
+
     public String getPetugasId() {
         return petugasId;
     }

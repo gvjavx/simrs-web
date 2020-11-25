@@ -430,6 +430,8 @@
                 $('#warn-bpjs').html('');
                 $('#warn_rujukan').html('');
                 $('#status_rujukan').val(null);
+                $('#url_do').val(null);
+                $('#surat_polisi, #surat_rujuk').val(null);
             }
 
             var url_string = window.location.href;
@@ -1142,7 +1144,7 @@
                                                                             name="fileUploadDocPolisi"></s:file>
                                                         </span>
                                                     </span>
-                                                                <input type="text" class="form-control" readonly>
+                                                                <input type="text" class="form-control" readonly id="surat_polisi">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1309,8 +1311,8 @@
                                                             <div class="input-group-addon">
                                                                 <i class="fa fa-calendar"></i>
                                                             </div>
-                                                            <s:textfield id="tgl_rujukan"
-                                                                         cssClass="form-control datepicker datemask"
+                                                            <s:textfield id="tgl_rujukan" readonly="true" placeholder="yyyy-mm-dd"
+                                                                         cssClass="form-control datepicker datemask" cssStyle="cursor: pointer"
                                                                          onchange="var warn =$('#war_tgl_rujukan').is(':visible'); if (warn){$('#con_tgl_rujukan').show().fadeOut(3000);$('#war_tgl_rujukan').hide()}; $('#tanggal_rujukan').val(this.value)"
                                                             />
                                                         </div>
@@ -1334,7 +1336,7 @@
                                                                             name="fileUploadDoc"></s:file>
                                                         </span>
                                                     </span>
-                                                            <input type="text" class="form-control" readonly>
+                                                            <input type="text" class="form-control" id="surat_rujuk" readonly>
                                                         </div>
                                                         <span style="color: red; display: none" id="war_foto_rujukan"><i
                                                                 class="fa fa-times"></i> required</span>
@@ -1368,7 +1370,7 @@
                             <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="h_id_jenis_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.idLab" id="h_id_order_lab"></s:hidden>
 
-                            <div id="form-uang-muka">
+                            <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
                                     <h3 class="box-title"><i class="fa fa-money"></i> Pembayaran</h3>
