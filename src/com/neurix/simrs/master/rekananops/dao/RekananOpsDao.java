@@ -153,7 +153,7 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_rekanan_ops')");
         Iterator<BigInteger> iter = query.list().iterator();
-        String sId = String.format("%05d", iter.next());
+        String sId = String.format("%08d", iter.next());
         return "RKN" +sId;
     }
 

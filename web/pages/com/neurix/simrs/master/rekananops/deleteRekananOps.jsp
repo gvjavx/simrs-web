@@ -20,15 +20,15 @@
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-//            window.location.reload(true);
-            document.detailRekananOpsForm.action = "search_detailrekananops.action";
-            document.detailRekananOpsForm.submit();
+           window.location.reload(true);
+
+
         };
 
         $.subscribe('beforeProcessSaveDelete', function (event, data) {
-            var diskondelet = document.getElementById("diskondelet").value;
+            var namarekanandelete = document.getElementById("namarekanandelete").value;
 
-            if (diskondelet != '') {
+            if (namarekanandelete != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -39,8 +39,8 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (diskondelet == '') {
-                    msg += 'Field <strong> diskondelet </strong> is required.' + '<br/>';
+                if (namarekanandelete == '') {
+                    msg += 'Field <strong> namare kanan  </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -77,8 +77,8 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="deletePelayananForm" method="post" theme="simple" namespace="/detailrekananops"
-                    action="saveDelete_detailrekananops" cssClass="well form-horizontal">
+            <s:form id="deletePelayananForm" method="post" theme="simple" namespace="/rekananops"
+                    action="saveDelete_rekananops" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -103,26 +103,14 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idDetailRekananOpsdelet" name="detailRekananOps.idDetailRekananOps"
-                                             required="true" disabled="true"  readonly="true" cssClass="form-control"/>
+                                <s:textfield id="idRekananOpsedit" name="rekananOps.idRekananOps" disabled="true"
+                                             required="true" readonly="true" cssClass="form-control"/>
                                     <%--&lt;%&ndash;<s:hidden id="idRekananOps1" name="rekananOps.idRekananOps" />&ndash;%&gt;--%>
-                                    <s:hidden id="idDetailRekananOpsdelet" name="detailRekananOps.idDetailRekananOps" />
+                                    <s:hidden id="idRekananOpsedit" name="rekananOps.idRekananOps" />
                             </table>
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>isbpjs :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'N':'Non-Active'}" id="isbpjs" name="detailRekananOps.isBpjs"
-                                          headerKey="Y" headerValue="Active" cssClass="form-control select2" readonly="true" required="true" disabled="false" />
-                            </table>
-
-                        </td>
-                    </tr>
 
                     <tr>
                         <td>
@@ -130,42 +118,15 @@
                         </td>
                         <td width="70%">
                             <table>
-                                <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
-                                <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps" disabled="false"
-                                          listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]" readonly="true"
+                                <s:action id="initComboAsuransi" namespace="/masterVendor"
+                                          name="getComboAsuransi_masterVendor" />
+                                <s:select list="#initComboAsuransi.listOfComboVendor" id="namarekanandelete" name="rekananOps.nomorMaster"
+                                          listKey="nomorMaster" listValue="nama" headerKey="" headerValue="[Select one]" disabled="true"
                                           cssClass="form-control" cssStyle="margin-top: 5px"/>
+                                <s:hidden id="namarekanandelete" name="rekananOps.nomorMaster" />
                             </table>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>branch:</small></label>
-                        </td>
-                        <td width="70%">
-                            <table>
-                                <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="detailRekananOps.branchId"
-                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" readonly="true"
-                                          cssClass="form-control" />
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="18%">
-                            <label class="control-label"><small> diskon :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield cssStyle="margin-top: 7px"
-                                             id="diskondelet"
-                                             name="detailRekananOps.diskon"
-                                             required="false"
-                                             readonly="true" cssClass="form-control" />
-                            </table>
-                        </td>
-                    </tr>
-
 
                 </table>
 

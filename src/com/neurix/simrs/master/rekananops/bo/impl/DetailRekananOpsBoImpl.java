@@ -145,12 +145,12 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
         if (bean != null) {
             List<ImSimrsDetailRekananOpsEntity> cekList = new ArrayList<>();
             try {
-                cekList = detailRekananOpsDao.getDetailRekananOps(bean.getIdDetailRekananOps());
+                cekList = detailRekananOpsDao.getDetailRekananOps(bean.getIdRekananOps() , bean.getBranchId());
             } catch (HibernateException e) {
                 logger.error(e.getMessage());
             }
             if (cekList.size() > 0) {
-                throw new GeneralBOException("nama rekanan ops sudah ada...!");
+                throw new GeneralBOException("nama Detail rekanan ops dan branch sudah ada sudah ada...!");
             } else {
                 String detailrekanan;
                 try {
@@ -193,6 +193,17 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
     public CrudResponse saveEdit(DetailRekananOps bean) throws GeneralBOException {
         logger.info("[DetailRekananOps.saveEdit] start process >>>");
         if (bean != null) {
+
+            List<ImSimrsDetailRekananOpsEntity> cekList = new ArrayList<>();
+            try {
+                cekList = detailRekananOpsDao.getDetailRekananOps(bean.getIdRekananOps() , bean.getBranchId());
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+            if (cekList.size() > 0) {
+                throw new GeneralBOException("nama Detail rekanan ops dan branch sudah ada sudah ada...!");
+            } else {
+
             String idDetailRekananOps = bean.getIdDetailRekananOps();
             ImSimrsDetailRekananOpsEntity imSimrsDetailRekananOpsEntity = null;
             try {
@@ -229,6 +240,7 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
 //                condition = "Error, not found data Cuti with request id, please check again your data ...";
             }
         }
+        }
         logger.info("[DetailImpl.saveEdit] end process <<<");
         return null;
     }
@@ -237,8 +249,8 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
     public CrudResponse saveDelete(DetailRekananOps bean) throws GeneralBOException {
         logger.info("[saveDelete.saveDelete] start process >>>");
         if (bean != null) {
-            String idDetailRekananOps = bean.getIdDetailRekananOps();
 
+            String idDetailRekananOps = bean.getIdDetailRekananOps();
             ImSimrsDetailRekananOpsEntity imSimrsDetailRekananOpsEntity = null;
 
             try {

@@ -56,9 +56,10 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
         return "DRK"+sId;
     }
 
-    public List<ImSimrsDetailRekananOpsEntity> getDetailRekananOps(String idDetailRekananOps) throws HibernateException {
+    public List<ImSimrsDetailRekananOpsEntity> getDetailRekananOps(String idRekananOps, String branchId ) throws HibernateException {
         List<ImSimrsDetailRekananOpsEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsDetailRekananOpsEntity.class)
-                .add(Restrictions.eq("idDetailRekananOps", idDetailRekananOps))
+                .add(Restrictions.eq("idRekananOps", idRekananOps))
+                .add(Restrictions.eq("branchId", branchId))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 //        ne (not equal / tidak samadengan)

@@ -196,37 +196,37 @@ public class RekananOpsAction extends BaseMasterAction {
 
     @Override
     public String delete() {
-////        logger.info("[DetailRekananOpsAction.delete] start process >>>");
-////        String itemId = getId();
-////        String itemFlag = getFlag();
-////        DetailRekananOps deleteDetailRekananOps = new DetailRekananOps();
-////        if (itemFlag != null ) {
-////            try {
-////                deleteDetailRekananOps = init (itemId, itemFlag);
-////            } catch (GeneralBOException e) {
-////                logger.error("ini error, "+e.getMessage());
-////                throw new GeneralBOException("ini error, "+e.getMessage());
-////            }
-////
-////            if (deleteDetailRekananOps != null) {
-////                setDetailRekananOps(deleteDetailRekananOps);
-////
-////            } else {
-////                //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
-////                deleteDetailRekananOps.setFlag(itemFlag);
-////                setDetailRekananOps(deleteDetailRekananOps);
-////                addActionError("Error, Unable to find data with id = " + itemId);
-////                return "failure";
-////            }
-////        } else {
-////            //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
-////            deleteDetailRekananOps.setFlag(itemFlag);
-////            setDetailRekananOps(deleteDetailRekananOps);
-////            addActionError("Error, Unable to delete again with flag = N.");
-//            return "failure";
-//        }
-//
-//        logger.info("[PayrollSkalaGajiAction.delete] end process <<<");
+        logger.info("[DetailRekananOpsAction.delete] start process >>>");
+        String itemId = getId();
+        String itemFlag = getFlag();
+        RekananOps deleteRekananOps = new RekananOps();
+        if (itemFlag != null ) {
+            try {
+                deleteRekananOps = init (itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                logger.error("ini error, "+e.getMessage());
+                throw new GeneralBOException("ini error, "+e.getMessage());
+            }
+
+            if (deleteRekananOps != null) {
+                setRekananOps(deleteRekananOps);
+
+            } else {
+                //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
+                deleteRekananOps.setFlag(itemFlag);
+                setRekananOps(deleteRekananOps);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
+            deleteRekananOps.setFlag(itemFlag);
+            setRekananOps(deleteRekananOps);
+            addActionError("Error, Unable to delete again with flag = N.");
+            return "failure";
+        }
+
+        logger.info("[deleteRekananOpsAction.delete] end process <<<");
 
         return "init_delete";
     }
@@ -247,23 +247,23 @@ public class RekananOpsAction extends BaseMasterAction {
         logger.info("[PayrollSkalaGajiAction.saveDelete] start process >>>");
         try {
 
-            DetailRekananOps deleteDetailRekananOps = getDetailRekananOps();
+            RekananOps deleteRekananOps = getRekananOps();
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            deleteDetailRekananOps.setLastUpdate(updateTime);
-            deleteDetailRekananOps.setLastUpdateWho(userLogin);
-            deleteDetailRekananOps.setAction("U");
-            deleteDetailRekananOps.setFlag("N");
+            deleteRekananOps.setLastUpdate(updateTime);
+            deleteRekananOps.setLastUpdateWho(userLogin);
+            deleteRekananOps.setAction("U");
+            deleteRekananOps.setFlag("N");
 
-            detailRekananOpsBoProxy.saveDelete(deleteDetailRekananOps);
+            rekananOpsBoProxy.saveDelete(deleteRekananOps);
         } catch (GeneralBOException e) {
             logger.error("ini error, "+e.getMessage());
             throw new GeneralBOException("ini error, "+e.getMessage());
         }
 
-        logger.info("[DetailRekananOpsiAction.saveDelete] end process <<<");
+        logger.info("[RekananOpsiAction.saveDelete] end process <<<");
 
         return "success_save_delete";
     }
@@ -272,17 +272,17 @@ public class RekananOpsAction extends BaseMasterAction {
         logger.info("[PayrollSkalaGajiAction.saveEdit] start process >>>");
         try {
 
-            DetailRekananOps editDetailRekananOps = getDetailRekananOps();
+            RekananOps editRekananOps = getRekananOps();
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            editDetailRekananOps.setLastUpdateWho(userLogin);
-            editDetailRekananOps.setLastUpdate(updateTime);
-            editDetailRekananOps.setAction("U");
-            editDetailRekananOps.setFlag("Y");
+            editRekananOps.setLastUpdateWho(userLogin);
+            editRekananOps.setLastUpdate(updateTime);
+            editRekananOps.setAction("U");
+            editRekananOps.setFlag("Y");
 
-            detailRekananOpsBoProxy.saveEdit(editDetailRekananOps);
+            rekananOpsBoProxy.saveEdit(editRekananOps);
         } catch (GeneralBOException e) {
             logger.error("ini error, "+e.getMessage());
             throw new GeneralBOException("ini error, "+e.getMessage());

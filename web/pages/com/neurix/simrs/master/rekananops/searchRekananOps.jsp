@@ -166,7 +166,7 @@
 
                                                         <s:set name="listOfsearchRekananOps" value="#session.listOfResultRekananOps" scope="request" />
                                                         <display:table name="listOfsearchRekananOps" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_RekananOps.action" export="true" id="row"
+                                                                       requestURI="paging_displaytag_rekananOps.action" export="true" id="row"
                                                                        pagesize="14" style="font-size:12">
 
                                                             <display:column media="html" title="Edit">

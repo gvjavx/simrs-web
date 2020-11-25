@@ -118,7 +118,9 @@
                         <td>
                             <table>
                                 <s:select list="#{'N':'Non-Active'}" id="isbpjs" name="detailRekananOps.isBpjs"
-                                          headerKey="Y" headerValue="Active" cssClass="form-control select2" readonly="true" required="true" disabled="false" />
+                                          headerKey="Y" headerValue="Active" cssClass="form-control select2" readonly="true"
+                                          required="true" disabled="true" />
+                                <s:hidden id="isbpjs" name="detailRekananOps.isBpjs" />
                             </table>
 
                         </td>
@@ -131,9 +133,12 @@
                         <td width="70%">
                             <table>
                                 <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
-                                <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps" disabled="false"
-                                          listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]" readonly="true"
+                                <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
+                                          disabled="true"
+                                          listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
+                                          readonly="true"
                                           cssClass="form-control" cssStyle="margin-top: 5px"/>
+                                <s:hidden id="positionId1" name="detailRekananOps.idRekananOps" />
                             </table>
                         </td>
                     </tr>
@@ -145,8 +150,10 @@
                             <table>
                                 <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                                 <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="detailRekananOps.branchId"
-                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" readonly="true"
+                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                          readonly="true" disabled="true"
                                           cssClass="form-control" />
+                                <s:hidden id="branchId" name="detailRekananOps.branchId" />
                             </table>
                         </td>
                     </tr>

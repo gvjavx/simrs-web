@@ -17,8 +17,11 @@
 
     $.subscribe('beforeProcessSaveAdd', function (event, data) {
         var bpjs = document.getElementById("bpjs").value;
+        var namarekananadd = document.getElementById("namarekananadd").value;
+        var branchIdadd = document.getElementById("branchIdadd").value;
+        var diskonadd = document.getElementById("diskonadd").value;
      
-        if (bpjs != '' ) {
+        if (bpjs != '' && namarekananadd != '' && branchIdadd != '' && diskonadd != '' ) {
             if (confirm('Do you want to save this record?')) {
                 event.originalEvent.options.submit = true;
                 $.publish('showDialogAdd');
@@ -30,9 +33,17 @@
             event.originalEvent.options.submit = false;
             var msg = "";
             if (bpjs == '') {
-                msg += 'Field <strong>bpjs  </strong> is required.' + '<br/>';
+                msg += 'Field <strong>Bpjs  </strong> is required.' + '<br/>';
             }
-           
+            if (namarekananadd == '') {
+                msg += 'Field <strong>Nama rekanan Ops   </strong> is required.' + '<br/>';
+            }
+            if (branchIdadd == '') {
+                msg += 'Field <strong>Branch   </strong> is required.' + '<br/>';
+            }
+            if (diskonadd == '') {
+                msg += 'Field <strong>Diskon  </strong> is required.' + '<br/>';
+            }
 
             document.getElementById('errorValidationMessageAdd').innerHTML = msg;
 
@@ -95,7 +106,7 @@
                         <td width="70%">
                             <table>
                                 <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
-                                <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
+                                <s:select list="#initComboRekanan.listOfComboRekananOps" id="namarekananadd" name="detailRekananOps.idRekananOps"
                                           listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
                                           cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
@@ -109,7 +120,7 @@
                         <td width="70%">
                             <table>
                                 <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="detailRekananOps.branchId"
+                                <s:select list="#comboBranch.listOfComboBranches" id="branchIdadd" name="detailRekananOps.branchId"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
                                           cssClass="form-control" />
                             </table>
@@ -123,7 +134,7 @@
                         <td>
                             <table>
                                 <s:textfield cssStyle="margin-top: 7px"
-                                             id="diskon"
+                                             id="diskonadd"
                                              name="detailRekananOps.diskon"
                                              required="false"
                                              readonly="false" cssClass="form-control"/>

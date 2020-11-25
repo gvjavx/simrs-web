@@ -18,19 +18,19 @@
         });
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
-            $('#view_dialog_menu').dialog('close');
+            // $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-//            window.location.reload(true);
-            document.detailRekananOpsForm.action = "search_detailrekananops.action";
-            document.detailRekananOpsForm.submit();
+           window.location.reload(true);
+//             document.editRekananOpsForm.action = "search_rekananops.action"
+//             document.editRekananOpsForm.submit();
         };
 
         $.subscribe('beforeProcessSaveEdit', function (event, data) {
-            var idRekananOpsedit = document.getElementById("idDetailRekananOpsedit").value;
+            var namarekananedit = document.getElementById("namarekananedit").value;
 
-            console.log(idRekananOpsedit);
+            console.log(namarekananedit);
 
-            if (idRekananOpsedit != '') {
+            if (namarekananedit != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -41,8 +41,8 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (idRekananOpsedit == '') {
-                    msg += 'Field <strong>id Rekanan Opsedit </strong> is required.' + '<br/>';
+                if (namarekananedit == '') {
+                    msg += 'Field <strong>namarekananedit </strong> is required.' + '<br/>';
                 }
                 // if (branchId == '') {
                 //     msg += 'Field <strong>Unit </strong> is required.' + '<br/>';
@@ -90,7 +90,7 @@
     <tr>
         <td align="center">
             <s:form id="editRekananOpsForm" method="post" theme="simple"
-                    namespace="/detailrekananops" action="saveEdit_detailrekananops" cssClass="well form-horizontal">
+                    namespace="/rekananops" action="saveEdit_rekananops" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -115,7 +115,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idDetailRekananOpsedit" name="detailRekananOps.idDetailRekananOps"
+                                <s:textfield id="idlRekananOpsedit" name="rekananOps.idRekananOps"
                                              required="true" readonly="true" cssClass="form-control"/>
                                 <%--&lt;%&ndash;<s:hidden id="idRekananOps1" name="rekananOps.idRekananOps" />&ndash;%&gt;--%>
                                 <%--<s:hidden id="idDetailRekananOpsedit" name="detailRekananOps.idDetailRekananOps" />--%>
@@ -123,18 +123,6 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>isbpjs :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'N':'Non-Active'}" id="flag2" name="detailRekananOps.isBpjs"
-                                          headerKey="Y" headerValue="Active" cssClass="form-control select2" />
-                            </table>
-
-                        </td>
-                    </tr>
 
                     <tr>
                         <td>
@@ -142,38 +130,11 @@
                         </td>
                         <td width="70%">
                             <table>
-                                <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
-                                <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
-                                          listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
+                                <s:action id="initComboAsuransi" namespace="/masterVendor"
+                                          name="getComboAsuransi_masterVendor" />
+                                <s:select list="#initComboAsuransi.listOfComboVendor" id="namarekananedit" name="rekananOps.nomorMaster"
+                                          listKey="nomorMaster" listValue="nama" headerKey="" headerValue="[Select one]"
                                           cssClass="form-control" cssStyle="margin-top: 5px"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>branch:</small></label>
-                        </td>
-                        <td width="70%">
-                            <table>
-                                <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="detailRekananOps.branchId"
-                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control" />
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td width="18%">
-                            <label class="control-label"><small> diskon :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield cssStyle="margin-top: 7px"
-                                             id="diskon"
-                                             name="detailRekananOps.diskon"
-                                             required="false"
-                                             readonly="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

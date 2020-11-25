@@ -71,7 +71,7 @@
                                                 <td>
                                                     <label class="control-label"><small>Nama rekanan :</small></label>
                                                 </td>
-                                                <td width="70%">
+                                                <td>
                                                     <table>
                                                         <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
                                                         <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
@@ -81,20 +81,20 @@
                                                 </td>
                                             </tr>
 
-                                            <tr>
-                                                <td width="18%">
-                                                    <label class="control-label"><small>RekananOps ID :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield cssStyle="margin-top: 7px"
-                                                                     id="idRekananOps"
-                                                                     name="detailRekananOps.idDetailRekananOps"
-                                                                     required="false"
-                                                                     readonly="false" cssClass="form-control"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                            <%--<tr>--%>
+                                                <%--<td width="18%">--%>
+                                                    <%--<label class="control-label"><small>RekananOps ID :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<s:textfield cssStyle="margin-top: 7px"--%>
+                                                                     <%--id="idRekananOps"--%>
+                                                                     <%--name="detailRekananOps.idDetailRekananOps"--%>
+                                                                     <%--required="false"--%>
+                                                                     <%--readonly="false" cssClass="form-control"/>--%>
+                                                    <%--</table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>isbpjs :</small></label>

@@ -9,11 +9,11 @@
     <%--<script type='text/javascript' src='<s:url value="/dwr/interface/PayrollSkalaGajiAction.js"/>'></script>--%>
     <script type="text/javascript">
     function callSearch2() {
-            //$('#waiting_dialog').dialog('close');
-            $('#view_dialog_menu').dialog('close');
-            $('#info_dialog').dialog('close');
-            window.location.reload(true);
-        };
+        //$('#waiting_dialog').dialog('close');
+        $('#view_dialog_menu').dialog('close');
+        $('#info_dialog').dialog('close');
+        window.location.reload(true);
+    };
 
     $.subscribe('beforeProcessSaveAdd', function (event, data) {
         var namarekananadd = document.getElementById("namarekananadd").value;
@@ -61,10 +61,7 @@
         function cancelBtn() {
             $('#view_dialog_menu').dialog('close');
         };
-
-
     </script>
-
 </head>
 
 <body bgcolor="#FFFFFF">
