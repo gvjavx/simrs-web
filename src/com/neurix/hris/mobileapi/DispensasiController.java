@@ -235,9 +235,6 @@ public class    DispensasiController implements ModelDriven<Object> {
     public HttpHeaders update() {
         logger.info("[DispensasiController.update] end process POST /pengajuancuti/{id} <<<");
 
-        Dispensasi result = new Dispensasi();
-        listOfDispensasi = new ArrayList<>();
-        result.setActionError("");
 
         try {
 
@@ -294,9 +291,7 @@ public class    DispensasiController implements ModelDriven<Object> {
                     notifikasiBoProxy.sendNotif(notifikasi);
                 }
             } catch (GeneralBOException e){
-                Dispensasi msg = new Dispensasi();
-                msg.setMessage(e.getMessage());
-                listOfDispensasi.add(msg);
+                model.setActionError(e.getMessage());
                 logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + e + "] Found problem when searching data by criteria, please inform to your admin.", e);
                 throw new GeneralBOException(e);
             }
@@ -305,7 +300,6 @@ public class    DispensasiController implements ModelDriven<Object> {
 
 
         } catch (GeneralBOException e) {
-            result.setActionError(e.getMessage());
             Long logId = null;
             try {
                 logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "DispensasiController.isFoundOtherSessionActiveUserSessionLog");
@@ -316,7 +310,6 @@ public class    DispensasiController implements ModelDriven<Object> {
             throw new GeneralBOException(e);
         }
 
-        listOfDispensasi.add(result);
 
 
         logger.info("[DispensasiController.update] end process POST /pengajuancuti/{id} <<<");

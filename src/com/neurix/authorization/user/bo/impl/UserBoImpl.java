@@ -1557,6 +1557,9 @@ public class UserBoImpl implements UserBo {
         userPK.setId(username);
 
         ImUsers loginUser = (ImUsers) userDao.getById(userPK,active);
+        if(loginUser == null) {
+            loginUser = getUserByEmailId(username);
+        }
         UserDetailsLogin userDetailsLogin = null;
         if (loginUser != null) {
             String namaPosisi = "";
@@ -1598,35 +1601,34 @@ public class UserBoImpl implements UserBo {
 
             ImBiodataEntity biodata = biodataDao.getById("nip", userId, "Y");
 
-            userDetailsLogin = new UserDetailsLogin();
-            userDetailsLogin.setUserId(userId);
-            userDetailsLogin.setUsername(username);
-            userDetailsLogin.setUserNameDetail(userName);
-            userDetailsLogin.setPassword(password);
-            userDetailsLogin.setRoles(listRoles);
-            userDetailsLogin.setEnabled(true);
-            userDetailsLogin.setNonBlocked(true);
-            userDetailsLogin.setNonExpired(true);
-            userDetailsLogin.setUserCredentialsNonExpired(true);
-            userDetailsLogin.setPositionId(positionId);
-            userDetailsLogin.setPositionName(positionName);
-            userDetailsLogin.setBranchId(branchId);
-            userDetailsLogin.setBranchName(branchName);
-            userDetailsLogin.setCompanyId(companyId);
-            userDetailsLogin.setCompanyName(companyName);
-            userDetailsLogin.setAreaId(areaId);
-            userDetailsLogin.setAreaName(areaName);
-            userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
-            try {
-                userDetailsLogin.setPin(biodata.getPin());
-            } catch (NullPointerException e){
-                e.printStackTrace();
-            }
-            userDetailsLogin.setIdDevice(loginUser.getIdDevice());
-
             if  (biodata != null) {
                 userDetailsLogin.setJenisKelamin(biodata.getGender());
                 userDetailsLogin.setFlagFingerMoblie(biodata.getFlagFingerMobile());
+                userDetailsLogin = new UserDetailsLogin();
+                userDetailsLogin.setUserId(userId);
+                userDetailsLogin.setUsername(userId);
+                userDetailsLogin.setUserNameDetail(userName);
+                userDetailsLogin.setPassword(password);
+                userDetailsLogin.setRoles(listRoles);
+                userDetailsLogin.setEnabled(true);
+                userDetailsLogin.setNonBlocked(true);
+                userDetailsLogin.setNonExpired(true);
+                userDetailsLogin.setUserCredentialsNonExpired(true);
+                userDetailsLogin.setPositionId(positionId);
+                userDetailsLogin.setPositionName(positionName);
+                userDetailsLogin.setBranchId(branchId);
+                userDetailsLogin.setBranchName(branchName);
+                userDetailsLogin.setCompanyId(companyId);
+                userDetailsLogin.setCompanyName(companyName);
+                userDetailsLogin.setAreaId(areaId);
+                userDetailsLogin.setAreaName(areaName);
+                userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
+                try {
+                    userDetailsLogin.setPin(biodata.getPin());
+                } catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+                userDetailsLogin.setIdDevice(loginUser.getIdDevice());
             }
 
 
@@ -3194,4 +3196,6 @@ public class UserBoImpl implements UserBo {
     public ImUsers getUserByEmailId(String email) throws GeneralBOException {
         return userDao.getById("email", email);
     }
+
+
 }
