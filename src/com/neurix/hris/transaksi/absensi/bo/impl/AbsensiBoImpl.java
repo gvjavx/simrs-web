@@ -21,6 +21,9 @@ import com.neurix.hris.master.jamkerja.model.ImHrisJamKerja;
 import com.neurix.hris.master.jamkerja.model.JamKerja;
 import com.neurix.hris.master.libur.dao.LiburDao;
 import com.neurix.hris.master.libur.model.ImLiburEntity;
+import com.neurix.hris.master.mappingpersengaji.dao.MappingPersenGajiDao;
+import com.neurix.hris.master.mappingpersengaji.model.ImHrisMappingPersenGaji;
+import com.neurix.hris.master.mappingpersengaji.model.MappingPersenGaji;
 import com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao;
 import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
 import com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtDao;
@@ -129,6 +132,11 @@ public class AbsensiBoImpl implements AbsensiBo {
     private CompanyDao companyDao;
     private MesinAbsensiDetailOnCallDao mesinAbsensiDetailOnCallDao;
     private AbsensiOnCallDao absensiOnCallDao;
+    private MappingPersenGajiDao mappingPersenGajiDao;
+
+    public void setMappingPersenGajiDao(MappingPersenGajiDao mappingPersenGajiDao) {
+        this.mappingPersenGajiDao = mappingPersenGajiDao;
+    }
 
     public AbsensiOnCallDao getAbsensiOnCallDao() {
         return absensiOnCallDao;
@@ -866,6 +874,22 @@ public class AbsensiBoImpl implements AbsensiBo {
         }
         return hasil;
     }
+
+    // Sigit, 2020-11-26
+    // Perhitungan Tunjangan Peralihan Gapok, bulan terakhir pada tahun sekarang
+    private BigDecimal getPeralihanGapok(String nip, Date tanggal){
+        BigDecimal hasil = new BigDecimal(0);
+        List<ItPayrollEntity> itPayrollEntityList= new ArrayList<>();
+        DateFormat df = new SimpleDateFormat("yyyy");
+        String tahun = df.format(tanggal);
+        itPayrollEntityList = payrollDao.getTunjanganPeralihanForAbsensi(nip, tahun);
+        for(ItPayrollEntity itPayrollEntity : itPayrollEntityList){
+            hasil = hasil.add(itPayrollEntity.getPeralihanGapok());
+            break;
+        }
+        return hasil;
+    }
+
     @Override
     public List<AbsensiPegawaiEntity> saveTmp(AbsensiPegawai bean, String tipeHari) throws GeneralBOException {
         logger.info("[AbsensiPegawaiBoImpl.saveAdd] start process >>>");
@@ -5143,8 +5167,32 @@ public class AbsensiBoImpl implements AbsensiBo {
                                             }while (finalLamaLembur>0);
                                         }
                                         Double peralihan = 0d;
-                                        peralihan = getTunjPeralihan(biodata.getNip(),CommonUtil.dateUtiltoDateSql(data.getTanggalUtil())).doubleValue();
-                                        upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
+//                                        peralihan = getTunjPeralihan(biodata.getNip(),CommonUtil.dateUtiltoDateSql(data.getTanggalUtil())).doubleValue();
+//                                        upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
+
+                                        // Sigit 2020-11-26, Perhitungan upah biaya lembur, START
+                                        BigDecimal prosentase = new BigDecimal(0);
+                                        List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(biodata.getJenisPegawai());
+                                        if (mappingPersenGajiList.size() > 0){
+                                            for (ImHrisMappingPersenGaji persenGaji : mappingPersenGajiList){
+
+                                                if (persenGaji.getPresentase() != null){
+                                                    BigDecimal bdPersenGaji = new BigDecimal(persenGaji.getPresentase());
+                                                    prosentase = bdPersenGaji.divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                                                }
+
+                                            }
+                                        }
+                                        // END
+
+                                        peralihan = getPeralihanGapok(biodata.getNip(),CommonUtil.dateUtiltoDateSql(data.getTanggalUtil())).doubleValue();
+
+                                        BigDecimal bGapokPeralihan = new BigDecimal(gapok+peralihan);
+                                        BigDecimal bFaktor = new BigDecimal(faktor);
+                                        BigDecimal bJamLembur = new BigDecimal(jamLembur);
+
+                                        BigDecimal bUpahLembur = bGapokPeralihan.multiply(prosentase).multiply(bFaktor).multiply(bJamLembur);
+                                        upahLembur = bUpahLembur.doubleValue();
 
 
                                         String upahNew = "";

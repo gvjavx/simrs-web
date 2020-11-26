@@ -30,90 +30,108 @@
     </style>
     <script type='text/javascript'>
 
-        var errEmail = "";
-        var userId = document.getElementById("userid").value;
-        var email = document.getElementById("email").value;
+
 
         $.subscribe('beforeProcessSave', function (event, data) {
 
-            if (document.getElementById("userid").value != '' &&
-                    document.getElementById("name").value != '' &&
-                    document.getElementById("password").value != '' &&
-                    document.getElementById("confirmPassword").value != '' &&
-                    //document.getElementById("positionid").value != '' &&
-                    document.getElementById("roleid").value != '' &&
-                    document.getElementById("areaid").value != '' &&
-                    document.getElementById("branchid").value != '' &&
-                    //document.getElementById("fileUpload").value != '' &&
-                    document.getElementById("password").value == document.getElementById("confirmPassword").value &&
-                    errEmail == "" &&
-                    email != userId
-            ) {
+            var errEmail = "";
+            var iduser = $("#userid").val();
+            var email = $("#email").val();
+            var name = $("#name").val();
+            var pass = $("#password").val();
+            var conpass = $("#confirmPassword").val();
+            var roleid = $("#roleid").val();
+            var areaid = $("#areaid").val();
+            var branchid = $("#branchid").val();
 
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
+            var msg = "";
+
+            // Sigit, 2020-11-26
+            // check apakah ada error email, email tidak boleh sama dengan userId
+            // dan password harus sama dengan confirmasi passwordnya
+            if (errEmail == "" && email != iduser && pass == conpass) {
+
+                if (email != "" &&
+                        iduser != "" &&
+                        name != "" &&
+                        pass != "" &&
+                        conpass != "" &&
+                        roleid != "" &&
+                        areaid != "" &&
+                        branchid != "")
+                {
+
+                    // Sigit, 2020-11-26
+                    // jika input  diisi semua
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
+
+                    } else {
+                        // Cancel Submit comes with 1.8.0
+                        event.originalEvent.options.submit = false;
+                    }
 
                 } else {
-                    // Cancel Submit comes with 1.8.0
+
+                    // Sigit, 2020-11-26
+                    // validasi error jika ada yng tidak diiisi
+
                     event.originalEvent.options.submit = false;
+
+                    if (document.getElementById("userid").value == '') {
+                        msg = 'Field <strong>User Id</strong> is required.' + '<br/>';
+                    }
+
+                    if (document.getElementById("name").value == '') {
+                        msg = msg + 'Field <strong>UserName</strong> is required.' + '<br/>';
+                    }
+
+                    if (document.getElementById("password").value == '') {
+                        msg = msg + 'Field <strong>Password</strong> is required.' + '<br/>';
+                    }
+
+                    if (document.getElementById("confirmPassword").value == '') {
+                        msg = msg + 'Field <strong>ConfirmPassword</strong> is required.' + '<br/>';
+                    }
+
+                    if (document.getElementById("password").value != document.getElementById("confirmPassword").value) {
+                        msg = msg + 'Field <strong>Password</strong> and <strong>confirmPassword</strong> not match.' + '<br/>';
+                    }
+
+                    if (document.getElementById("areaid").value == '') {
+                        msg = msg + 'Field <strong>Area Id</strong> is required.' + '<br/>';
+                    }
+
+                    if (document.getElementById("branchid").value == '') {
+                        msg = msg + 'Field <strong>Unit</strong> is required.' + '<br/>';
+                    }
+
+                    if (document.getElementById("roleid").value == '') {
+                        msg = msg + 'Field <strong>Role Id</strong> is required.' + '<br/>';
+                    }
+
                 }
 
             } else {
 
+                // Sigit, 2020-11-26
+                // validasi error jika kondisi tidak terpenuhi
+
                 event.originalEvent.options.submit = false;
-
-                var msg = "";
-                if (document.getElementById("userid").value == '') {
-                    msg = 'Field <strong>User Id</strong> is required.' + '<br/>';
-                }
-
-                if (document.getElementById("name").value == '') {
-                    msg = msg + 'Field <strong>UserName</strong> is required.' + '<br/>';
-                }
-
-                if (document.getElementById("password").value == '') {
-                    msg = msg + 'Field <strong>Password</strong> is required.' + '<br/>';
-                }
-
-                if (document.getElementById("confirmPassword").value == '') {
-                    msg = msg + 'Field <strong>ConfirmPassword</strong> is required.' + '<br/>';
-                }
-
-                if (document.getElementById("password").value != document.getElementById("confirmPassword").value) {
-                    msg = msg + 'Field <strong>Password</strong> and <strong>confirmPassword</strong> not match.' + '<br/>';
-                }
-
-                /*if (document.getElementById("positionid").value == '') {
-                    msg = msg + 'Field <strong>Jabatan</strong> is required.' + '<br/>';
-                }*/
-
-                if (document.getElementById("areaid").value == '') {
-                    msg = msg + 'Field <strong>Area Id</strong> is required.' + '<br/>';
-                }
-
-                if (document.getElementById("branchid").value == '') {
-                    msg = msg + 'Field <strong>Unit</strong> is required.' + '<br/>';
-                }
-
-                if (document.getElementById("roleid").value == '') {
-                    msg = msg + 'Field <strong>Role Id</strong> is required.' + '<br/>';
-                }
 
                 if (errEmail == "Y") {
                     msg = msg + '<strong>Email</strong> is not available.' + '<br/>';
                 }
 
-                if (email == userId) {
+                if (email == iduser) {
                     msg = msg + '<strong>Email</strong> must be different with <strong>User ID</strong>.' + '<br/>';
                 }
 
-                /*if (document.getElementById("fileUpload").value == '') {
-                    msg = msg + 'Field <strong>File Upload</strong> is required.' + '<br/>';
-                }*/
-
+                if (pass != conpass) {
+                    msg = msg + '<strong>Password</strong> must be same with <strong>Confirmation Password</strong>.' + '<br/>';
+                }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
-
                 $.publish('showErrorValidationDialog');
 
             }
@@ -293,7 +311,7 @@
                                         <label class="control-label col-sm-4" style="visibility: hidden"></label>
 
                                         <div style="padding-left: 140px" class="col-sm-4">
-                                            <sj:dialog id="waiting_dialog" openTopics="showDialog1" closeTopics="closeDialog" modal="true"
+                                            <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
                                                        resizable="false"
                                                        height="250" width="600" autoOpen="false" title="Searching...">
                                                 Please don't close this window, server is processing your request ...
