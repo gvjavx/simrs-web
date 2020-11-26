@@ -1449,7 +1449,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
                             headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
                             headerDetailCheckup.setPoliRujukanInternal(idPoliRujukan);
-                            headerDetailCheckup.setNoCheckupUlang(rujukanResponse.getNoRujukan());
+                            headerDetailCheckup.setNoRujukanInternal(rujukanResponse.getNoRujukan());
                             headerDetailCheckup.setLastUpdate(now);
                             headerDetailCheckup.setLastUpdateWho(user);
                             finalResponse = checkupDetailBo.setNoRujukan(headerDetailCheckup);
@@ -5225,7 +5225,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
 
             reportParams.put("jenisKelamin", jk);
-            reportParams.put("diagnosa", checkup.getDiagnosa()+"-"+checkup.getNamaDiagnosa());
+            reportParams.put("diagnosa", "("+checkup.getDiagnosa()+") "+checkup.getNamaDiagnosa());
 
             try {
                 preDownload();

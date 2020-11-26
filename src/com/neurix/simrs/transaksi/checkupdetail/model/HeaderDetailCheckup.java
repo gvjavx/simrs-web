@@ -204,6 +204,15 @@ public class HeaderDetailCheckup extends BaseModel{
 
     private String flagSendKlaim;
     private String poliRujukanInternal;
+    private String noRujukanInternal;
+
+    public String getNoRujukanInternal() {
+        return noRujukanInternal;
+    }
+
+    public void setNoRujukanInternal(String noRujukanInternal) {
+        this.noRujukanInternal = noRujukanInternal;
+    }
 
     public String getPoliRujukanInternal() {
         return poliRujukanInternal;

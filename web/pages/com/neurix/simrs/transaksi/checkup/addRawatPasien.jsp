@@ -442,6 +442,107 @@
             }
         }
 
+        function resetAllField(input) {
+            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #img_file, #provinsi, #kabupaten, #kecamatan, #desa').css('border', '');
+            $('#id_online').val(null);
+            $('#pembayaran').val(null);
+            $('#uang_muka').val(null);
+            $('#diagnosa_awal').val(null);
+            $('#intansi_perujuk').val(null);
+            $('#no_rujukan').val(null);
+            $('#ppk_rujukan').val(null);
+            $('#tgl_rujukan').val(null);
+            $('#url_do').val(null);
+            $('#status_bpjs').val(null);
+            $('#status_rujukan').val(null);
+            $('#is_laka').val(null);
+            $('#id_asuransi').val(null);
+            $('#no_kartu').val(null);
+            $('#nominal_cover_biaya').val(null);
+            $('#no_kartu_ptpn').val(null);
+            $('#unit_ptpn').val(null);
+            $('#unit_pg').val(null);
+            $('#cek_is_bpjs').val(null);
+            $('#poli').val(null).trigger('change');
+            $('#nama_dokter').val(null);
+            $('#asuransi').val(null);
+            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan').val(null);
+            var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
+            $('#img-upload').attr('src', img);
+            $('#imgInp').attr('value', null);
+            $('#kelas_pasien').val(null);
+            $('#no_mr').val(null);
+            $('#idPelayananBpjs').val(null);
+            $('#id_checkup_online').val(null);
+            $('#tanggal_rujukan').val(null);
+            $('#h_no_kartu').val(null);
+            $('#h_id_asuransi').val(null);
+            $('#h_no_rujukan').val(null);
+            $('#id_paket').val(null);
+            $('#cover_biaya_paket').val(null);
+            $('#pembayaran').val(null);
+            $('#uang_muka_val').val(null);
+            $('#uang_muka').val(null);
+            $('#url_do').val(null);
+
+            $('#tgl_rujukan').val(null);
+            $('#ppk_rujukan').val(null);
+            $('#intansi_perujuk').val(null);
+            $('#no_rujukan').val(null);
+            $('#no_kartu_ptpn').val(null);
+            $('#unit_pg').val(null);
+
+            $('#unit_ptpn').val(null);
+            $('#cek_is_bpjs').val(null);
+            $('#foto_surat').val(null);
+            $('#tanggal_kejadian').val(null);
+            $('#no_polisi').val(null);
+            $('#no_kartu').val(null);
+            $('#asuransi').val(null);
+            $('#kunjungan_val').val(null);
+            $('#paket_perusahaan').val(null);
+            $('#paket').val(null);
+            $('#dokter').val(null);
+            $('#nama_dokter').val(null);
+            $('#id_lab').val(null);
+            $('#poli').val(null);
+            $('#hubungan').val(null);
+            $('#no_telp').val(null);
+            $('#nama_penanggung').val(null);
+
+            $('#img_ktp').val(null);
+            $('#diagnosa_awal').val(null);
+            $('#diagnosa_ket').val(null);
+            $('#is_order_lab').val(null);
+            $('#last_id_detail_checkup').val(null);
+
+            $('#is_online').val(null);
+            $('#tgl_antrian').val(null);
+            $('#is_laka').val(null);
+            $('#poli').attr('disabled', false);
+            $('#jenis_pasien').attr('disabled', false);
+
+            $('#ket_hubungan').hide();
+            $('#form_jawa').hide();
+            $('#form_profesi').hide();
+
+            $('#suku, #profesi, #pendidikan, #status_perkawinan, #hubungan, #asuransi').val(null).trigger('change');
+            $('#hub_keluarga, #ket_suku, #ket_profesi, #kunjungan_poli').val(null);
+            $('#alert-pasien').hide();
+            $('#id_online').attr('readonly', false);
+            $('#jenis_pasien').attr('disabled', false);
+            $('#id_pasien').attr('readonly', false);
+            $('#no_bpjs').attr('readonly', false);
+            $('#btn-finger').hide();
+            $('#nama_dokter').val(null);
+            $('#status_bpjs').val(null);
+            $('#warn-bpjs').html('');
+            $('#warn_rujukan').html('');
+            $('#status_rujukan').val(null);
+            $('#url_do').val(null);
+            $('#surat_polisi, #surat_rujuk').val(null);
+        }
+
         function formatRupiah2(angka) {
             var number_string = angka.replace(/[^,\d]/g, '').toString(),
                 split = number_string.split(','),
@@ -613,10 +714,15 @@
                                             <div class="form-group">
                                                 <label class="col-md-4" style="margin-top: 7px">NO RM</label>
                                                 <div class="col-md-8">
-                                                    <s:textfield id="id_pasien" name="headerCheckup.idPasien"
-                                                                 oninput="searchNoRM(this.id, this.value)"
-                                                                 onkeypress="$(this).css('border','');"
-                                                                 cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                                    <div class="input-group" style="margin-top: 7px">
+                                                        <s:textfield id="id_pasien" name="headerCheckup.idPasien"
+                                                                     oninput="searchNoRM(this.id, this.value)"
+                                                                     onkeypress="$(this).css('border','');"
+                                                                     cssClass="form-control"/>
+                                                        <div class="input-group-btn">
+                                                            <a class="btn btn-warning" onclick="resetAllField()"><i class="fa fa-refresh"></i> Reset</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

@@ -1300,6 +1300,16 @@ INSERT INTO im_func_roles VALUES
 ALTER TABLE it_simrs_header_detail_checkup
 ADD COLUMN poli_rujukan_internal VARCHAR(100);
 
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN no_rujukan_internal VARCHAR(100);
+
+INSERT INTO im_functions VALUES
+(2357, 'print no rujukan', '/checkupdetail/printNoRujukan_checkupdetail.action', 1481, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2357, 32, 'Y', now(), now(), 'admin', 'admin');
+
+
 
 
 

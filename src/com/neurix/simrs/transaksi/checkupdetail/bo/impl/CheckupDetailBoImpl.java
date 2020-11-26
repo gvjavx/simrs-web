@@ -434,12 +434,12 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-    public CrudResponse setNoRujukan(HeaderDetailCheckup detailCheckup) throws GeneralBOException {
+    public CrudResponse setNoRujukan(HeaderDetailCheckup bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
-        if(detailCheckup.getNoCheckupUlang() != null && !"".equalsIgnoreCase(detailCheckup.getNoCheckupUlang())){
+        ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+        if(bean.getNoRujukanInternal() != null && !"".equalsIgnoreCase(bean.getNoRujukanInternal())){
             try {
-                detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", detailCheckup.getIdDetailCheckup());
+                entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
                 response.setStatus("success");
                 response.setMsg("Berhasil");
             }catch (HibernateException e){
@@ -447,14 +447,14 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 response.setStatus("error");
                 response.setMsg("Error when search data detail checkup, "+e.getMessage());
             }
-            if(detailCheckupEntity != null){
-                detailCheckupEntity.setNoCheckupUlang(detailCheckup.getNoCheckupUlang());
-                detailCheckupEntity.setAction("U");
-                detailCheckupEntity.setLastUpdate(detailCheckup.getLastUpdate());
-                detailCheckupEntity.setLastUpdateWho(detailCheckup.getLastUpdateWho());
-                detailCheckupEntity.setPoliRujukanInternal(detailCheckup.getPoliRujukanInternal());
+            if(entity != null){
+                entity.setNoRujukanInternal(bean.getNoRujukanInternal());
+                entity.setAction("U");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setPoliRujukanInternal(bean.getPoliRujukanInternal());
                 try {
-                    checkupDetailDao.updateAndSave(detailCheckupEntity);
+                    checkupDetailDao.updateAndSave(entity);
                     response.setStatus("success");
                     response.setMsg("Berhasil");
                 }catch (HibernateException e){
