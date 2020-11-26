@@ -373,9 +373,9 @@ function saveICU(jenis, ket) {
 
         var cekTtd1 = isCanvasBlank(dpjp);
         var cekTtd2 = isCanvasBlank(pasien);
-        var nama1 = $('#nama_terang_dokter');
-        var sip1 = $('#sip_dokter');
-        var nama2 = $('#nama_terang_pasien');
+        var nama1 = $('#nama_terang_dokter').val();
+        var sip1 = $('#sip_dokter').val();
+        var nama2 = $('#nama_terang_pasien').val();
 
         $.each(parameter, function (i, item) {
 
@@ -900,6 +900,7 @@ function saveICU(jenis, ket) {
         var va29 = $('[name=ter18]:checked').val();
         var va30 = $('#ter19').val();
         var va31 = $('#ter20').val();
+        var petugas = $('#nama_terang_ter21').val();
 
         var dokter = document.getElementById("ter21");
 
@@ -915,7 +916,7 @@ function saveICU(jenis, ket) {
             }
         });
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 != '' && !cekTtd1) {
+        if (petugas && va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 != '' && !cekTtd1) {
 
             data.push({
                 'parameter': 'Keluarga Terdekat',
@@ -1134,6 +1135,7 @@ function saveICU(jenis, ket) {
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'ttd',
+                'nama_terang': petugas,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1443,7 +1445,10 @@ function detailICU(jenis) {
                         } else if ("ttd" == item.tipe) {
                             body += '<tr>' +
                                 '<td colspan="2">' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
+                                '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' +
+                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                '</td>' +
                                 '</tr>';
                         } else if ("bold" == item.tipe) {
                             body += '<tr style="font-weight: bold">' +
@@ -1475,14 +1480,20 @@ function detailICU(jenis) {
                             if ("ttd" == item.tipe) {
                                 forTTD += '<tr>' +
                                     '<td width="40%">' + item.parameter + '</td>' +
-                                    '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
+                                    '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                    '</td>' +
                                     '</tr>';
                             }
                         } else {
                             if ("ttd" == item.tipe) {
                                 forTTD += '<tr>' +
                                     '<td width="40%">' + item.parameter + '</td>' +
-                                    '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
+                                    '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                    '</td>' +
                                     '</tr>';
                             } else {
                                 body += '<tr>' +

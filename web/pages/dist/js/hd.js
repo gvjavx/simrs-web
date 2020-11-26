@@ -2027,9 +2027,10 @@ function detailMonHD(jenis) {
                         if("tindakan_medis_hd" == item.keterangan){
                             body += '<tr>' +
                                 '<td colspan="2">' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + item.jawaban1 + '" style="height: 100px">' + '</td>' +
+                                '<td>' + '<img src="' + item.jawaban1 + '" style="height: 100px">' +
                                 '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
                                 '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                '</td>' +
                                 '</tr>';
                         }else{
                             body += '<tr>' +

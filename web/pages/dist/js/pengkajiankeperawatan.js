@@ -643,9 +643,19 @@ function savePengkajianKep(jenis, ket) {
         var va6 = $('[name=pak6]:checked').val();
         var va7 = $('[name=pak7]:checked').val();
         var va8 = $('[name=pak8]:checked').val();
+        var ttd1 = document.getElementById('gen2');
+        var ttd2 = document.getElementById('gen3');
+        var nama1 = $('#nama_terang_gen2').val();
+        var nama2 = $('#nama_terang_gen3').val();
+        var sip1 = $('#sip_gen2').val();
+        var sip2 = $('#sip_gen3').val();
+        var cek1 = isCanvasBlank(ttd1);
+        var cek2 = isCanvasBlank(ttd2);
 
-        if (va1 && va2 && va3 && va4 && va5 != '' && va6 && va7 && va8 != undefined) {
+        if (!cek1 && !cek2 && va1 && va2 && va3 && va4 && va5 && nama1 && nama2 && sip1 && sip2 != '' && va6 && va7 && va8 != undefined) {
             var tanggal = va2.split("-").reverse().join("-");
+            var cvs1 = convertToDataURL(ttd1);
+            var cvs2 = convertToDataURL(ttd2);
             data.push({
                 'parameter': 'Tanggal dan Jam',
                 'jawaban': va2 + ' ' + va3,
@@ -703,6 +713,32 @@ function savePengkajianKep(jenis, ket) {
                 'waktu': va1,
                 'tanggal': tanggal,
                 'keterangan': jenis,
+                'jenis': 'pengkajian',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'TTD Perawat',
+                'jawaban': cvs1,
+                'kode': '7',
+                'waktu': va1,
+                'tanggal': tanggal,
+                'keterangan': jenis,
+                'tipe':'ttd',
+                'nama_terang':nama1,
+                'sip':sip1,
+                'jenis': 'pengkajian',
+                'id_detail_checkup': idDetailCheckup
+            });
+            data.push({
+                'parameter': 'TTD DPJP',
+                'jawaban': cvs2,
+                'kode': '8',
+                'waktu': va1,
+                'tanggal': tanggal,
+                'keterangan': jenis,
+                'tipe':'ttd',
+                'nama_terang':nama2,
+                'sip':sip2,
                 'jenis': 'pengkajian',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -779,12 +815,45 @@ function detailPengkajianKep(jenis) {
                             '<td>' + setItm(malam) + '</td>' +
                             '</tr>';
                     }else{
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td>' + setItm(pagi) + '</td>' +
-                            '<td>' + setItm(siang) + '</td>' +
-                            '<td>' + setItm(malam) + '</td>' +
-                            '</tr>';
+                        if(item.tipe == 'ttd'){
+                            var p1 = "";
+                            var p2 = "";
+                            var p3 = "";
+                            var s1 = "";
+                            var s2 = "";
+                            var s3 = "";
+                            var m1 = "";
+                            var m2 = "";
+                            var m3 = "";
+                            if(item.pagi != null && item.pagi != ''){
+                                p1 = '<img src="' + item.pagi.split("|")[0] + '" style="height: 100px">';
+                                p2 = '<p style="margin-top: -3px">'+item.pagi.split("|")[1]+'</p>';
+                                p3 = '<p style="margin-top: -10px">'+item.pagi.split("|")[2]+'</p>';
+                            }
+                            if(item.siang != null && item.siang != ''){
+                                s1 = '<img src="' + item.siang.split("|")[0] + '" style="height: 100px">';
+                                s2 = '<p style="margin-top: -3px">'+item.siang.split("|")[1]+'</p>';
+                                s3 = '<p style="margin-top: -10px">'+item.siang.split("|")[2]+'</p>';
+                            }
+                            if(item.malam != null && item.malam != ''){
+                                m1 = '<img src="' + item.malam.split("|")[0] + '" style="height: 100px">';
+                                m2 = '<p style="margin-top: -3px">'+item.malam.split("|")[1]+'</p>';
+                                m3 = '<p style="margin-top: -10px">'+item.malam.split("|")[2]+'</p>';
+                            }
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + p1+p2+p3 + '</td>' +
+                                '<td>' + s1+s2+s3 + '</td>' +
+                                '<td>' + m1+m2+m3 + '</td>' +
+                                '</tr>';
+                        }else{
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + setItm(pagi) + '</td>' +
+                                '<td>' + setItm(siang) + '</td>' +
+                                '<td>' + setItm(malam) + '</td>' +
+                                '</tr>';
+                        }
                     }
 
                     cekData = true;

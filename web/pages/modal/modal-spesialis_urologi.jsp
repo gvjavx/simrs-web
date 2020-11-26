@@ -105,19 +105,19 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <label>Tensi</label>
-                                <input class="form-control" placeholder="mmHg" type="number" id="kut3">
+                                <input class="form-control tensi-pasien" placeholder="mmHg" type="number" id="kut3">
                             </div>
                             <div class="col-md-3">
                                 <label>Nadi</label>
-                                <input class="form-control" placeholder="x/menit" type="number" id="kut4">
+                                <input class="form-control nadi-pasien" placeholder="x/menit" type="number" id="kut4">
                             </div>
                             <div class="col-md-3">
                                 <label>Suhu </label>
-                                <input class="form-control" placeholder="&#8451" type="number" id="kut5">
+                                <input class="form-control suhu-pasien" placeholder="&#8451" type="number" id="kut5">
                             </div>
                             <div class="col-md-3">
                                 <label>RR </label>
-                                <input class="form-control" placeholder="x/menit" type="number" id="kut6">
+                                <input class="form-control rr-pasien" placeholder="x/menit" type="number" id="kut6">
                             </div>
                         </div>
                     </div>

@@ -47,7 +47,9 @@ public class AsesmenOperasiAction {
 
                 JSONObject obj = json.getJSONObject(i);
                 AsesmenOperasi asesmenOperasi = new AsesmenOperasi();
-                asesmenOperasi.setParameter(obj.getString("parameter"));
+                if(obj.has("parameter")){
+                    asesmenOperasi.setParameter(obj.getString("parameter"));
+                }
                 asesmenOperasi.setIdDetailCheckup(obj.getString("id_detail_checkup"));
                 asesmenOperasi.setKeterangan(obj.getString("keterangan"));
 

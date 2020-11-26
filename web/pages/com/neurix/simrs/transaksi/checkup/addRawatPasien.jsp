@@ -432,6 +432,7 @@
                 $('#status_rujukan').val(null);
                 $('#url_do').val(null);
                 $('#surat_polisi, #surat_rujuk').val(null);
+                $('#warning_pasien').hide();
             }
 
             var url_string = window.location.href;
@@ -541,6 +542,7 @@
             $('#status_rujukan').val(null);
             $('#url_do').val(null);
             $('#surat_polisi, #surat_rujuk').val(null);
+            $('#warning_pasien').hide();
         }
 
         function formatRupiah2(angka) {
@@ -1228,15 +1230,30 @@
                                             <div id="form_jasaraharja_2" style="display: none">
                                                 <div class="row">
                                                     <div class="form-group">
-                                                        <label class="col-md-4" style="margin-top: 10px">Tanggal
+                                                        <label class="col-md-4" style="margin-top: 7px">Tanggal
                                                             Kejadian</label>
                                                         <div class="col-md-8">
-                                                            <s:textfield cssStyle="margin-top: 7px"
-                                                                         id="tanggal_kejadian"
-                                                                         cssClass="form-control datepicker"
-                                                                         onchange="$('#tanggal_rujukan').val(this.value)"></s:textfield>
+                                                            <div class="input-group date" style="margin-top: 7px">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </div>
+                                                                    <s:textfield cssStyle="cursor: pointer" placeholder="yyyy-mm-dd"
+                                                                    id="tanggal_kejadian" readonly="true"
+                                                                    cssClass="form-control datepicker"
+                                                                    onchange="$('#tanggal_rujukan').val(this.value)"></s:textfield>
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <%--<div class="form-group">--%>
+                                                        <%--<label class="col-md-4" style="margin-top: 10px">Tanggal--%>
+                                                            <%--Kejadian</label>--%>
+                                                        <%--<div class="col-md-8">--%>
+                                                            <%--<s:textfield cssStyle="margin-top: 7px"--%>
+                                                                         <%--id="tanggal_kejadian"--%>
+                                                                         <%--cssClass="form-control datepicker"--%>
+                                                                         <%--onchange="$('#tanggal_rujukan').val(this.value)"></s:textfield>--%>
+                                                        <%--</div>--%>
+                                                    <%--</div>--%>
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group">
@@ -2412,6 +2429,8 @@
     }
 
     function listDokter(idPelayanan) {
+        $('#nama_dokter').val(null);
+        $('#id_dokter').val(null);
         var option = "<option value=''>[Select One]</option>";
         if (idPelayanan != null && idPelayanan != '') {
             var online = $('#id_online').val();
@@ -3185,6 +3204,8 @@
         $('#jenis_pasien').val(jenis);
         $('#h_id_jenis_pasien').val(jenis);
         $('#btn-finger').hide();
+        $('#nama_dokter').val(null);
+        $('#id_dokter').val(null);
     }
 
     function showPasienBaru() {

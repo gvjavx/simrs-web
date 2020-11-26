@@ -225,15 +225,15 @@
                             </div>
                             <div class="col-md-3">
                                 <span>Nadi</span>
-                                <input class="form-control" placeholder="x/menit" id="pra15">
+                                <input class="form-control nadi-pasien" placeholder="x/menit" id="pra15" type="number">
                             </div>
                             <div class="col-md-3">
                                 <span>RR</span>
-                                <input class="form-control" placeholder="x/menit" id="pra16">
+                                <input class="form-control rr-pasien" placeholder="x/menit" id="pra16" type="number">
                             </div>
                             <div class="col-md-3">
                                 <span>Suhu</span>
-                                <input class="form-control" placeholder="C" id="pra17">
+                                <input class="form-control suhu-pasien" placeholder="C" id="pra17" type="number">
                             </div>
                         </div>
                     </div>
@@ -241,11 +241,11 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <span>BB</span>
-                                <input class="form-control berat-pasien" placeholder="Kg" id="pra18">
+                                <input class="form-control berat-pasien" placeholder="Kg" id="pra18" type="number">
                             </div>
                             <div class="col-md-3">
                                 <span>TB</span>
-                                <input class="form-control tinggi-pasien" placeholder="Cm" id="pra19">
+                                <input class="form-control tinggi-pasien" placeholder="Cm" id="pra19" type="number">
                             </div>
                         </div>
                     </div>
@@ -272,7 +272,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Capillary refil time</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="pra21" placeholder="detik">
+                                <input class="form-control" id="pra21" placeholder="detik" type="number">
                             </div>
                         </div>
                     </div>
@@ -765,8 +765,8 @@
                                 <label style="margin-left: 8px">TTD Dokter Spesialis</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_dokter_spesialis" width="220"
                                         onmouseover="paintTtd('ttd_dokter_spesialis')"></canvas>
-                                <input class="form-control" id="nama_terang_sps" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_sps" placeholder="SIP">
+                                <input class="form-control nama_dokter_ri" id="nama_terang_sps" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_sps" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_dokter_spesialis')"><i
                                         class="fa fa-trash"></i> Clear

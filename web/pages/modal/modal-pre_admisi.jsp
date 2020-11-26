@@ -121,6 +121,7 @@
                                 <input onclick="showKetRing(this.value, 'pre_alat_bantu')" type="radio" value="Tidak" id="pre05-02" name="pre05" /><label for="pre05-02">Tidak</label>
                             </div>
                             <select style="display: none" class="form-control" id="form-ring-pre_alat_bantu">
+                                <option value="">[Select One]</option>
                                 <option value="Kursi roda">Kursi roda</option>
                                 <option value="Tongkat/kruk">Tongkak/kruk</option>
                                 <option value="Brankar">Brankar</option>

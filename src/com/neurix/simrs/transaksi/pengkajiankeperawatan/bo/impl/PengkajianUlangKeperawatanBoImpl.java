@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.pengkajiankeperawatan.bo.impl;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.pengkajiankeperawatan.bo.PengkajianUlangKeperawatanBo;
@@ -54,9 +55,27 @@ public class PengkajianUlangKeperawatanBoImpl implements PengkajianUlangKeperawa
                     keperawatan.setIdPengkajianUlangKeperawatan(entity.getIdPengkajianUlangKeperawatan());
                     keperawatan.setIdDetailCheckup(entity.getIdDetailCheckup());
                     keperawatan.setParameter(entity.getParameter());
-                    keperawatan.setPagi(entity.getPagi());
-                    keperawatan.setSiang(entity.getSiang());
-                    keperawatan.setMalam(entity.getMalam());
+                    String pagi = "";
+                    String siang = "";
+                    String malam = "";
+                    if(entity.getTipe() != null && "ttd".equalsIgnoreCase(entity.getTipe())){
+                        if(entity.getPagi() != null && !"".equalsIgnoreCase(entity.getPagi())){
+                            pagi = CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getPagi();
+                        }
+                        if(entity.getSiang() != null && !"".equalsIgnoreCase(entity.getSiang())){
+                            siang = CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getSiang();
+                        }
+                        if(entity.getMalam() != null && !"".equalsIgnoreCase(entity.getMalam())){
+                            malam = CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getMalam();
+                        }
+                    }else{
+                        pagi = entity.getPagi();
+                        siang = entity.getSiang();
+                        malam = entity.getMalam();
+                    }
+                    keperawatan.setPagi(pagi);
+                    keperawatan.setSiang(siang);
+                    keperawatan.setMalam(malam);
                     keperawatan.setKodeParameter(entity.getKodeParameter());
                     keperawatan.setKeterangan(entity.getKeterangan());
                     keperawatan.setJenis(entity.getJenis());
@@ -66,6 +85,7 @@ public class PengkajianUlangKeperawatanBoImpl implements PengkajianUlangKeperawa
                     keperawatan.setCreatedWho(entity.getCreatedWho());
                     keperawatan.setLastUpdate(entity.getLastUpdate());
                     keperawatan.setLastUpdateWho(entity.getLastUpdateWho());
+                    keperawatan.setTipe(entity.getTipe());
                     list.add(keperawatan);
                 }
             }
@@ -125,6 +145,7 @@ public class PengkajianUlangKeperawatanBoImpl implements PengkajianUlangKeperawa
                     keperawatanEntity.setCreatedWho(ulangKeperawatan.getCreatedWho());
                     keperawatanEntity.setLastUpdate(ulangKeperawatan.getLastUpdate());
                     keperawatanEntity.setLastUpdateWho(ulangKeperawatan.getLastUpdateWho());
+                    keperawatanEntity.setTipe(ulangKeperawatan.getTipe());
 
                     try {
                         pengkajianUlangKeperawatanDao.addAndSave(keperawatanEntity);

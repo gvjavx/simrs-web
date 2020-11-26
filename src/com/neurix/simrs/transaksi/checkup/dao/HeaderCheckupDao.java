@@ -1225,7 +1225,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         String jenis = "";
 
         if("RI".equalsIgnoreCase(tipe)){
-            jenis = "AND jenis_dpjp = 'DPJP 1'";
+            jenis = "AND jenis_dpjp = 'dpjp_1'";
         }
 
         if(id != null){
@@ -1248,7 +1248,6 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     dokter.setIdDokter(obj[0] != null ? obj[0].toString() : null);
                     dokter.setSip(obj[1] != null ? obj[1].toString() : null);
                     dokter.setNamaDokter(obj[2] != null ? obj[2].toString() : null);
-
                 }
             }
         }

@@ -762,7 +762,7 @@ function saveAsesmenRawatInap(jenis, ket) {
             data.push({
                 'parameter': 'Total Skor',
                 'jawaban': '',
-                'skor': jumlah,
+                'skor': ""+jumlah,
                 'keterangan': jenis,
                 'jenis': ket,
                 'tipe': 'total',
@@ -3176,10 +3176,20 @@ function detailAsesmenRawatInap(jenis, idKhusus) {
                             }
                         });
 
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td width="40%">' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
-                            '</tr>';
+                        if(item.tipe == 'ttd'){
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + item.jawaban + '" style="height: 100px">' +
+                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                '</td>' +
+                                '</tr>';
+                        }else{
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td width="40%">' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
+                                '</tr>';
+                        }
                     } else if ("early_warning_score" == item.keterangan) {
                         if (item.skor != null) {
                             skor = item.skor;
@@ -3741,8 +3751,11 @@ function saveCatatanPemberianObat(jenis, ket) {
     var nama1 = $('#nama_terang_cpo9').val();
     var nama2 = $('#nama_terang_cpo10').val();
     var sip1 = $('#sip_cpo9').val();
+    var nama1 = $('#nama_terang_cpo9').val();
+    var nama2 = $('#nama_terang_cpo10').val();
+    var sip1 = $('#sip_cpo9').val();
 
-    if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && nama1 && nama2 && sip1 != '' && !va9 && !va10) {
+    if (nama1 && nama2 && sip1 && va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && nama1 && nama2 && sip1 != '' && !va9 && !va10) {
 
         var ttd1 = v9.toDataURL("image/png"),
             ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -3760,7 +3773,10 @@ function saveCatatanPemberianObat(jenis, ket) {
             'tanggal_stop': va7.split("-").reverse().join("-"),
             'status': va8,
             'ttd_dokter': ttd1,
-            'ttd_apoteker': ttd2
+            'ttd_apoteker': ttd2,
+            'nama_terang_dokter':nama1,
+            'nama_terang_perawat':nama2,
+            'sip_dokter':sip1
         }
 
         var result = JSON.stringify(data);
@@ -3809,8 +3825,15 @@ function listCatatanPemberianObat() {
                     '<td>' + cekNull(item.aturanPakai) + '</td>' +
                     '<td>' + formaterDate(item.tanggalMulai) + '</td>' +
                     '<td>' + formaterDate(item.tanggalStop) + '</td>' +
-                    '<td align="center">' + '<img style="width: 30px; height: 20px" src="' + item.ttdDokter + '">' + '</td>' +
-                    '<td align="center">' + '<img style="width: 30px; height: 20px" src="' + item.ttdApoteker + '">' + '</td>' +
+                    '<td align="center">' +
+                    '<img style="width: 30px; height: 20px" src="' + item.ttdDokter + '">' +
+                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangDokter)+'</p>' +
+                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sipDokter)+'</p>' +
+                    '</td>' +
+                    '<td align="center">' +
+                    '<img style="width: 30px; height: 20px" src="' + item.ttdApoteker + '">' +
+                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerangPerawat)+'</p>' +
+                    '</td>' +
                     '<td align="center">' + convertCek(item.status) + '</td>' +
                     '</tr>';
             });

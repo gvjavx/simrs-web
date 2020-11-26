@@ -1309,6 +1309,9 @@ INSERT INTO im_functions VALUES
 INSERT INTO im_func_roles VALUES
 (2357, 32, 'Y', now(), now(), 'admin', 'admin');
 
+ALTER TABLE it_simrs_pengkajian_ulang_keperawatan
+ADD COLUMN tipe VARCHAR(100);
+
 
 
 

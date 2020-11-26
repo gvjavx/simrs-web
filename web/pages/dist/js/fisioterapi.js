@@ -406,10 +406,25 @@ function detailFisio(jenis) {
                                 '</tr>';
                         }
                     } else {
-                        body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + item.jawaban + '</td>' +
-                            '</tr>';
+                        if(item.tipe == 'gambar'){
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + '<img src="'+item.jawaban+'" style="width: 100%; height: 300px">' + '</td>' +
+                                '</tr>';
+                        }else if(item.tipe = 'ttd'){
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' +
+                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                '</td>' +
+                                '</tr>';
+                        }else{
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + item.jawaban + '</td>' +
+                                '</tr>';
+                        }
                     }
 
                     cekData = true;
