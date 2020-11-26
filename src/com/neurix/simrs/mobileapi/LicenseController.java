@@ -101,11 +101,11 @@ public class LicenseController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("getZebraKey")) {
             List<LicenseZebra> result = new ArrayList();
             listOfLicenseMZebraobile = new ArrayList<>();
-            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-            String encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
+//            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
+//            String encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
 
             LicenseZebra bean = new LicenseZebra();
-            bean.setLicenseKey(encodedLicenseKey);
+            bean.setLicenseKey(licenseKey);
             bean.setDeviceId(deviceId);
 
             try {
