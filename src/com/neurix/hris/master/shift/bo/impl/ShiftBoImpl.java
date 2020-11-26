@@ -6,6 +6,8 @@ import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.kelompokPosition.dao.KelompokPositionDao;
 import com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionEntity;
+import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
+import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.master.profesi.dao.ProfesiDao;
 import com.neurix.hris.master.profesi.model.ImProfesiEntity;
 import com.neurix.hris.master.shift.bo.ShiftBo;
@@ -31,6 +33,15 @@ public class ShiftBoImpl implements ShiftBo {
     private BranchDao branchDao;
     private KelompokPositionDao kelompokPositionDao;
     private ProfesiDao profesiDao;
+    private PositionBagianDao positionBagianDao;
+
+    public PositionBagianDao getPositionBagianDao() {
+        return positionBagianDao;
+    }
+
+    public void setPositionBagianDao(PositionBagianDao positionBagianDao) {
+        this.positionBagianDao = positionBagianDao;
+    }
 
     public ProfesiDao getProfesiDao() {
         return profesiDao;
@@ -108,39 +119,53 @@ public class ShiftBoImpl implements ShiftBo {
 
         if (saved){
             String id;
-            try {
-                // Generating ID, get from postgre sequence
-                id = shiftDao.getNextShiftHistoryId();
-            } catch (HibernateException e) {
-                logger.error("[ShiftBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
-            }
 
+            ImHrisShiftEntity shiftEntity = null;
             ImHrisShiftHistory entityData = new ImHrisShiftHistory();
-
-            entityData.setShiftId(bean.getShiftId());
-            entityData.setShiftName(bean.getShiftName());
-            if ("Y".equalsIgnoreCase(bean.getFlag())){
-                entityData.setJamAwal(bean.getJamAwalJam()+"."+bean.getJamAwalMenit());
-                entityData.setJamAkhir(bean.getJamAkhirJam()+"."+bean.getJamAkhirMenit());
-            } else {
-                entityData.setJamAwal(bean.getJamAwal());
-                entityData.setJamAkhir(bean.getJamAkhir());
-            }
-            entityData.setFlag(bean.getFlag());
-            entityData.setAction(bean.getAction());
-            entityData.setCreateDateWho(bean.getCreatedWho());
-            entityData.setLastUpdateWho(bean.getLastUpdateWho());
-            entityData.setCreatedDate(bean.getCreatedDate());
-            entityData.setLastUpdate(bean.getLastUpdate());
-            entityData.setId(id);
-            entityData.setIdBranch(bean.getIdBranch());
-            entityData.setProfesiId(bean.getProfesiId());
             try {
-                shiftDao.addAndSaveHistory(entityData);
+                // Get data from database by ID
+                shiftEntity = shiftDao.getById("shiftId", bean.getShiftId());
+                //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
             } catch (HibernateException e) {
-                logger.error("[ShiftBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data PayrollSkalaGaji by Kode PayrollSkalaGaji, please inform to your admin...," + e.getMessage());
+            }
+
+            if (shiftEntity != null){
+                try {
+                    // Generating ID, get from postgre sequence
+                    id = shiftDao.getNextShiftHistoryId();
+                } catch (HibernateException e) {
+                    logger.error("[ShiftBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+                }
+
+                entityData.setShiftId(shiftEntity.getShiftId());
+                entityData.setShiftName(shiftEntity.getShiftName());
+                if ("Y".equalsIgnoreCase(shiftEntity.getFlag())){
+//                    entityData.setJamAwal(shiftEntity.getJamAwal()+"."+bean.getJamAwalMenit());
+//                    entityData.setJamAkhir(shiftEntity.getJamAkhirJam()+"."+bean.getJamAkhirMenit());
+                    entityData.setJamAwal(shiftEntity.getJamAwal());
+                    entityData.setJamAkhir(shiftEntity.getJamAkhir());
+                } else {
+                    entityData.setJamAwal(bean.getJamAwal());
+                    entityData.setJamAkhir(bean.getJamAkhir());
+                }
+                entityData.setFlag("Y");
+                entityData.setAction(shiftEntity.getAction());
+                entityData.setCreateDateWho(shiftEntity.getCreateDateWho());
+                entityData.setLastUpdateWho(shiftEntity.getLastUpdateWho());
+                entityData.setCreatedDate(shiftEntity.getCreatedDate());
+                entityData.setLastUpdate(shiftEntity.getLastUpdate());
+                entityData.setId(id);
+                entityData.setIdBranch(shiftEntity.getIdBranch());
+                entityData.setProfesiId(shiftEntity.getProfesiId());
+                try {
+                    shiftDao.addAndSaveHistory(entityData);
+                } catch (HibernateException e) {
+                    logger.error("[ShiftBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
             }
         }
 
@@ -234,7 +259,7 @@ public class ShiftBoImpl implements ShiftBo {
                 for(ImHrisShiftEntity listEntity : imHrisShiftList){
                     returnData = new Shift();
                     returnData.setShiftId(listEntity.getShiftId());
-                    returnData.setShiftName(listEntity.getShiftName());
+                    returnData.setShiftName(listEntity.getShiftName()+" | "+listEntity.getJamAwal()+" s/d "+listEntity.getJamAkhir());
                     returnData.setJamAwal(listEntity.getJamAwal());
                     returnData.setJamAkhir(listEntity.getJamAkhir());
                     returnData.setCreatedDate(listEntity.getCreatedDate());
@@ -265,8 +290,8 @@ public class ShiftBoImpl implements ShiftBo {
 
                     if (listEntity.getProfesiId()!=null && !"".equalsIgnoreCase(listEntity.getProfesiId())){
 
-                        ImProfesiEntity profesiEntity = profesiDao.getById("profesiId",listEntity.getProfesiId());
-                        returnData.setProfesiName(profesiEntity.getProfesiName());
+                        ImPositionBagianEntity positionBagianEntity = positionBagianDao.getById("bagianId",listEntity.getProfesiId());
+                        returnData.setProfesiName(positionBagianEntity.getBagianName());
                     }else{
                         returnData.setProfesiName("");
                     }

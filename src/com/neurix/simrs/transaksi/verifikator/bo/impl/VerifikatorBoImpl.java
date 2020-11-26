@@ -4,6 +4,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kategoritindakanina.dao.KategoriTindakanInaDao;
 import com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -28,6 +29,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class VerifikatorBoImpl implements VerifikatorBo {
 
@@ -71,23 +73,23 @@ public class VerifikatorBoImpl implements VerifikatorBo {
     public CheckResponse updateApproveBpjsFlag(RiwayatTindakan bean) throws GeneralBOException {
         logger.info("[VerifikatorBoImpl.updateApproveBpjsFlag] START process <<<");
         CheckResponse response = new CheckResponse();
-        if(bean != null){
+        if (bean != null) {
 
             ItSimrsRiwayatTindakanEntity entity = new ItSimrsRiwayatTindakanEntity();
             try {
                 entity = riwayatTindakanDao.getById("idRiwayatTindakan", bean.getIdRiwayatTindakan());
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when update data flag approve tindakan rawat ", e);
             }
 
-            if(entity != null){
+            if (entity != null) {
 
                 entity.setApproveBpjsFlag("Y");
                 entity.setKategoriTindakanBpjs(bean.getKategoriTindakanBpjs());
                 entity.setAction("U");
                 entity.setLastUpdate(bean.getLastUpdate());
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
-                if(!"".equalsIgnoreCase(bean.getJenisPasien()) && bean.getJenisPasien() != null){
+                if (!"".equalsIgnoreCase(bean.getJenisPasien()) && bean.getJenisPasien() != null) {
                     entity.setJenisPasien(bean.getJenisPasien());
                 }
 
@@ -95,10 +97,10 @@ public class VerifikatorBoImpl implements VerifikatorBo {
                     riwayatTindakanDao.updateAndSave(entity);
                     response.setStatus("success");
                     response.setMessage("Berhasil menyimpan kategori tindakan BPJS!");
-                }catch (HibernateException e){
+                } catch (HibernateException e) {
                     logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when save update data flag approve tindakan rawat ", e);
                     response.setStatus("error");
-                    response.setMessage("Terjadi kesalahan saat menyimpan ke database : "+e.getMessage());
+                    response.setMessage("Terjadi kesalahan saat menyimpan ke database : " + e.getMessage());
                 }
             }
         }
@@ -110,18 +112,20 @@ public class VerifikatorBoImpl implements VerifikatorBo {
     public CheckResponse updateKlaimBpjsFlag(HeaderDetailCheckup bean) throws GeneralBOException {
         logger.info("[VerifikatorBoImpl.updateKlaimBpjsFlag] START process <<<");
         CheckResponse response = new CheckResponse();
-        if(bean != null){
+        if (bean != null) {
 
             ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
             try {
                 entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[VerifikatorBoImpl.updateKlaimBpjsFlag] Error when update data flag approve tindakan rawat ", e);
             }
 
-            if(entity != null){
+            if (entity != null) {
 
                 entity.setKlaimBpjsFlag("Y");
+                entity.setFlagCloseTraksaksi("Y");
+                entity.setFlagCover("Y");
                 entity.setAction("U");
                 entity.setLastUpdate(bean.getLastUpdate());
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -130,10 +134,10 @@ public class VerifikatorBoImpl implements VerifikatorBo {
                     checkupDetailDao.updateAndSave(entity);
                     response.setStatus("200");
                     response.setMessage("Berhasil mengubah flag bpjs flag klaim!");
-                }catch (HibernateException e){
+                } catch (HibernateException e) {
                     logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when save update data flag approve tindakan rawat ", e);
                     response.setStatus("400");
-                    response.setMessage("Terjadi kesalahan saat menyimpan ke database : "+e.getMessage());
+                    response.setMessage("Terjadi kesalahan saat menyimpan ke database : " + e.getMessage());
                 }
             }
         }
@@ -145,10 +149,10 @@ public class VerifikatorBoImpl implements VerifikatorBo {
     public List<HeaderDetailCheckup> getListVerifikasiRawatJalan(HeaderDetailCheckup bean) throws GeneralBOException {
         logger.info("[VerifikatorBoImpl.getListVerifikasiRawatJalan] START process <<<");
         List<HeaderDetailCheckup> result = new ArrayList<>();
-        if(bean != null){
+        if (bean != null) {
             try {
                 result = checkupDetailDao.getSearchVerifikasiRawatJalan(bean);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[VerifikatorBoImpl.getListVerifikasiRawatJalan] Error when save update data flag approve tindakan rawat ", e);
             }
         }
@@ -160,10 +164,10 @@ public class VerifikatorBoImpl implements VerifikatorBo {
     public List<RiwayatTindakan> getListAllTindakan(RiwayatTindakan bean) throws GeneralBOException {
         logger.info("[VerifikatorBoImpl.getListAllTindakan] START process <<<");
         List<RiwayatTindakan> result = new ArrayList<>();
-        if(bean != null){
+        if (bean != null) {
             try {
                 result = riwayatTindakanDao.getListTindakan(bean);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[VerifikatorBoImpl.getListVerifikasiRawatJalan] Error when save update data flag approve tindakan rawat ", e);
             }
         }
@@ -176,17 +180,17 @@ public class VerifikatorBoImpl implements VerifikatorBo {
 
         logger.info("[VerifikatorBoImpl.updateFlagKlaim] START process <<<");
         CheckResponse response = new CheckResponse();
-        if(bean != null){
+        if (bean != null) {
             ItSimrsRiwayatTindakanEntity entity = new ItSimrsRiwayatTindakanEntity();
             try {
                 entity = riwayatTindakanDao.getById("idRiwayatTindakan", bean.getIdRiwayatTindakan());
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 response.setStatus("error");
-                response.setMessage("Foun error"+e.getMessage());
+                response.setMessage("Foun error" + e.getMessage());
                 logger.error("[VerifikatorBoImpl.getListVerifikasiRawatJalan] Error when search data tindakan rawat ", e);
             }
 
-            if(entity != null){
+            if (entity != null) {
 
                 entity.setFlagUpdateKlaim("Y");
                 entity.setLastUpdate(bean.getLastUpdate());
@@ -196,9 +200,9 @@ public class VerifikatorBoImpl implements VerifikatorBo {
                     riwayatTindakanDao.updateAndSave(entity);
                     response.setStatus("success");
                     response.setMessage("Berhasil mengupdate flag update klaim");
-                }catch (HibernateException e){
+                } catch (HibernateException e) {
                     response.setStatus("error");
-                    response.setMessage("Foun error"+e.getMessage());
+                    response.setMessage("Foun error" + e.getMessage());
                     logger.error("[VerifikatorBoImpl.getListVerifikasiRawatJalan] Error when save update data flag klaim tindakan rawat ");
                 }
             }
@@ -212,10 +216,10 @@ public class VerifikatorBoImpl implements VerifikatorBo {
     public List<RawatInap> getListVerifikasiRawatInap(RawatInap bean) throws GeneralBOException {
         logger.info("[VerifikatorBoImpl.getListVerifikasiRawatInap] START process <<<");
         List<RawatInap> result = new ArrayList<>();
-        if(bean != null){
+        if (bean != null) {
             try {
                 result = rawatInapDao.getSearchVerifikasiRawatInap(bean, "");
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
 
                 logger.error("[VerifikatorBoImpl.getListVerifikasiRawatInap] Error when save update data flag approve tindakan rawat ", e);
             }
@@ -241,5 +245,201 @@ public class VerifikatorBoImpl implements VerifikatorBo {
 
     public List<ImSimrsKategoriTindakanInaEntity> getAllKatTindakanInaList() throws GeneralBOException {
         return kategoriTindakanInaDao.getByCriteria(new HashMap());
+    }
+
+    @Override
+    public List<HeaderDetailCheckup> getListVerifTransaksi(HeaderDetailCheckup detailCheckup) throws GeneralBOException {
+        return checkupDetailDao.getListVerifTransaksi(detailCheckup);
+    }
+
+    @Override
+    public CrudResponse updateCoverAsuransi(List<RiwayatTindakan> list, HeaderDetailCheckup bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if (list.size() > 0) {
+            List<HeaderDetailCheckup> detailCheckups = new ArrayList<>();
+            String idDetailCheckup = "";
+            for (RiwayatTindakan tindakan : list) {
+                ItSimrsRiwayatTindakanEntity riwayatTindakanEntity = new ItSimrsRiwayatTindakanEntity();
+                riwayatTindakanEntity = riwayatTindakanDao.getById("idRiwayatTindakan", tindakan.getIdRiwayatTindakan());
+                if (riwayatTindakanEntity != null) {
+                    riwayatTindakanEntity.setJenisPasien(tindakan.getJenisPasien());
+                    riwayatTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    riwayatTindakanEntity.setLastUpdate(bean.getLastUpdate());
+                    try {
+                        riwayatTindakanDao.updateAndSave(riwayatTindakanEntity);
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("found error, " + e.getMessage());
+                        return response;
+                    }
+
+                    HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                    if(!idDetailCheckup.equalsIgnoreCase(riwayatTindakanEntity.getIdDetailCheckup())){
+                        idDetailCheckup = riwayatTindakanEntity.getIdDetailCheckup();
+                        detailCheckup.setIdDetailCheckup(riwayatTindakanEntity.getIdDetailCheckup());
+                        detailCheckups.add(detailCheckup);
+                    }
+                }
+            }
+
+            if (detailCheckups.size() > 0) {
+                for (HeaderDetailCheckup dtl: detailCheckups){
+                    ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
+                    detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", dtl.getIdDetailCheckup());
+                    if (detailCheckupEntity != null) {
+                        detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                        detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
+                        try {
+                            checkupDetailDao.updateAndSave(detailCheckupEntity);
+                            response.setStatus("success");
+                            response.setMsg("Berhasil");
+                        } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMsg("found error, " + e.getMessage());
+                        }
+                    }
+                }
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("Found Error, List yang dikirm tidak ada...!");
+        }
+        return response;
+    }
+
+    @Override
+    public CrudResponse updateInvoice(HeaderDetailCheckup bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if (bean.getNoCheckup() != null) {
+            Map hsCriteria = new HashMap();
+            hsCriteria.put("no_checkup", bean.getNoCheckup());
+            hsCriteria.put("status_periksa", "3");
+            List<ItSimrsHeaderDetailCheckupEntity> list = checkupDetailDao.getByCriteria(hsCriteria);
+            if(list.size() > 0){
+                for (ItSimrsHeaderDetailCheckupEntity detailCheckupEntity: list){
+                    detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
+                    detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    detailCheckupEntity.setInvoice(bean.getInvoice());
+                    detailCheckupEntity.setFlagCover(bean.getFlagCover());
+                    detailCheckupEntity.setDibayarPasien(bean.getPasienBayar());
+                    if (bean.getPasienBayar() != null) {
+                        if (bean.getPasienBayar().intValue() > 0) {
+                            detailCheckupEntity.setFlagSisa("Y");
+                        }
+                    }
+                    try {
+                        checkupDetailDao.updateAndSave(detailCheckupEntity);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("found error, " + e.getMessage());
+                    }
+                }
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("found error id detail checkup tidak ditemukan..!");
+        }
+        return response;
+    }
+
+    @Override
+    public CheckResponse updateRiwayatTindakan(List<RiwayatTindakan> list) throws GeneralBOException {
+        CheckResponse response = new CheckResponse();
+        if (list.size() > 0) {
+            Boolean sisaBayar = false;
+            ItSimrsRiwayatTindakanEntity entity = new ItSimrsRiwayatTindakanEntity();
+            for (RiwayatTindakan bean : list) {
+                try {
+                    entity = riwayatTindakanDao.getById("idRiwayatTindakan", bean.getIdRiwayatTindakan());
+                } catch (HibernateException e) {
+                    logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when update data flag approve tindakan rawat ", e);
+                }
+
+                if (entity != null) {
+
+                    entity.setApproveBpjsFlag("Y");
+                    entity.setKategoriTindakanBpjs(bean.getKategoriTindakanBpjs());
+                    entity.setAction("U");
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    if (!"".equalsIgnoreCase(bean.getJenisPasien()) && bean.getJenisPasien() != null) {
+                        if("umum".equalsIgnoreCase(bean.getJenisPasien())){
+                            sisaBayar = true;
+                        }
+                        entity.setJenisPasien(bean.getJenisPasien());
+                    }
+
+                    try {
+                        riwayatTindakanDao.updateAndSave(entity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil menyimpan kategori tindakan BPJS!");
+                    } catch (HibernateException e) {
+                        logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when save update data flag approve tindakan rawat ", e);
+                        response.setStatus("error");
+                        response.setMessage("Terjadi kesalahan saat menyimpan ke database : " + e.getMessage());
+                    }
+                } else {
+                    logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when save update data flag approve tindakan rawat ");
+                    response.setStatus("error");
+                    response.setMessage("Terjadi kesalahan saat menyimpan ke database ");
+                }
+            }
+
+            if(sisaBayar){
+                RiwayatTindakan riwayatTindakan = list.get(0);
+                ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", riwayatTindakan.getIdDetailCheckup());
+                if(detailCheckupEntity != null){
+                    detailCheckupEntity.setFlagSisa("Y");
+                    detailCheckupEntity.setLastUpdateWho(riwayatTindakan.getLastUpdateWho());
+                    detailCheckupEntity.setLastUpdate(riwayatTindakan.getLastUpdate());
+                    try {
+                        checkupDetailDao.updateAndSave(detailCheckupEntity);
+                        response.setStatus("success");
+                        response.setMessage("Berhasil menyimpan kategori tindakan BPJS!");
+                    }catch (HibernateException e){
+                        logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when save update data flag approve tindakan rawat ");
+                        response.setStatus("error");
+                        response.setMessage("Terjadi kesalahan saat menyimpan ke database ");
+                    }
+                }
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public CheckResponse updateFlagSendKlaim(HeaderDetailCheckup bean) throws GeneralBOException {
+        logger.info("[VerifikatorBoImpl.updateFlagSendKlaim] START process <<<");
+        CheckResponse response = new CheckResponse();
+        if (bean != null) {
+            ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+            try {
+                entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+            } catch (HibernateException e) {
+                logger.error("[VerifikatorBoImpl.updateFlagSendKlaim] Error when update data flag approve tindakan rawat ", e);
+            }
+            if (entity != null) {
+
+                entity.setFlagSendKlaim(bean.getFlagSendKlaim());
+                entity.setAction("U");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                try {
+                    checkupDetailDao.updateAndSave(entity);
+                    response.setStatus("200");
+                    response.setMessage("Berhasil mengubah flag bpjs flag klaim!");
+                } catch (HibernateException e) {
+                    logger.error("[VerifikatorBoImpl.updateApproveBpjsFlag] Error when save update data flag approve tindakan rawat ", e);
+                    response.setStatus("400");
+                    response.setMessage("Terjadi kesalahan saat menyimpan ke database : " + e.getMessage());
+                }
+            }
+        }
+        logger.info("[VerifikatorBoImpl.updateFlagSendKlaim] END process <<<");
+        return response;
     }
 }

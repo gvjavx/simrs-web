@@ -53,6 +53,23 @@
         <property name="flagCall">
             <column name="flag_call" sql-type="varchar" length="1" not-null="false" />
         </property>
+        <property name="flagTele">
+            <column name="flag_tele" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="kuotaTele">
+            <column name="kuota_tele" sql-type="varchar" length="5" not-null="false" />
+        </property>
+
+        <property name="sip">
+            <column name="sip"/>
+        </property>
+        <property name="kuotaOnSite">
+            <column name="kuota_on_site"/>
+        </property>
+
+        <property name="kuotaBpjs">
+            <column name="kuota_bpjs" />
+        </property>
 
     </class>
 </hibernate-mapping>

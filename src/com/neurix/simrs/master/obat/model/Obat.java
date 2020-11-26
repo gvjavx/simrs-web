@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Obat extends BaseModel {
@@ -75,6 +76,88 @@ public class Obat extends BaseModel {
     private String bulan;
     private String periode;
     private String namaPelayanan;
+    private String type;
+    private String bentuk;
+    private Integer standarMargin;
+    private Integer margin;
+    private String flagKurangMargin;
+    private String flagGeneric;
+    private String isKp;
+    private String idKategoriPersediaan;
+
+    public String getIdKategoriPersediaan() {
+        return idKategoriPersediaan;
+    }
+
+    public void setIdKategoriPersediaan(String idKategoriPersediaan) {
+        this.idKategoriPersediaan = idKategoriPersediaan;
+    }
+
+    public String getIsKp() {
+        return isKp;
+    }
+
+    public void setIsKp(String isKp) {
+        this.isKp = isKp;
+    }
+
+    public String getFlagGeneric() {
+        return flagGeneric;
+    }
+
+    public void setFlagGeneric(String flagGeneric) {
+        this.flagGeneric = flagGeneric;
+    }
+
+    public String getFlagKurangMargin() {
+        return flagKurangMargin;
+    }
+
+    public void setFlagKurangMargin(String flagKurangMargin) {
+        this.flagKurangMargin = flagKurangMargin;
+    }
+
+    public Integer getMargin() {
+        return margin;
+    }
+
+    public void setMargin(Integer margin) {
+        this.margin = margin;
+    }
+
+    public Integer getStandarMargin() {
+        return standarMargin;
+    }
+
+    public void setStandarMargin(Integer standarMargin) {
+        this.standarMargin = standarMargin;
+    }
+
+    public String getBentuk() {
+        return bentuk;
+    }
+
+    public void setBentuk(String bentuk) {
+        this.bentuk = bentuk;
+    }
+
+    private List<KandunganObat> kandunganObats = new ArrayList<>();
+
+    public List<KandunganObat> getKandunganObats() {
+        return kandunganObats;
+    }
+
+    public void setKandunganObats(List<KandunganObat> kandunganObats) {
+        this.kandunganObats = kandunganObats;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getNamaPelayanan() {
         return namaPelayanan;

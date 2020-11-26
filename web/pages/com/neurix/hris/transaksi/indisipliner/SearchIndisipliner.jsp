@@ -319,6 +319,11 @@
                                                                     </s:if>
                                                                 </display:column>
                                                             </s:else>
+                                                                        <display:setProperty name="paging.banner.item_name">Indisipliner</display:setProperty>
+                                                                        <display:setProperty name="paging.banner.items_name">Indisipliner</display:setProperty>
+                                                                        <display:setProperty name="export.excel.filename">Indisipliner.xls</display:setProperty>
+                                                                        <display:setProperty name="export.csv.filename">Indisipliner.csv</display:setProperty>
+                                                                        <display:setProperty name="export.pdf.filename">Indisipliner.pdf</display:setProperty>
                                                         </display:table>
                                                     </td>
                                                 </tr>

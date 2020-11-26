@@ -134,6 +134,34 @@ public class CheckupController implements ModelDriven<Object> {
 
     private String flagCall;
     private String jenisResep;
+    private String idJenisObat;
+
+    private String idTindakan;
+    private String keterangan;
+
+    public String getIdTindakan() {
+        return idTindakan;
+    }
+
+    public void setIdTindakan(String idTindakan) {
+        this.idTindakan = idTindakan;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getIdJenisObat() {
+        return idJenisObat;
+    }
+
+    public void setIdJenisObat(String idJenisObat) {
+        this.idJenisObat = idJenisObat;
+    }
 
     public String getJenisResep() {
         return jenisResep;
@@ -516,12 +544,20 @@ public class CheckupController implements ModelDriven<Object> {
                 return listOfObatPoli;
             case "getObatPoliGroup":
                 return listOfObatPoli;
+            case "getObatPoliGroupSerupa":
+                return listOfObatPoli;
             case "getPermintaanResep":
                 return listOfPermintaanResep;
             case "saveKeteranganRawatJalan":
                 return crudResponse;
             case "getDokterByIdPelayanan":
                 return listOfDokter;
+            case "getHistoryPasien":
+                return listOfHeaderCheckup;
+            case "getDetailHistoryPasien":
+                return listOfHeaderCheckup;
+            case "getListAntrian":
+                return listOfCheckup;
             default:
                 return model;
         }
@@ -681,7 +717,7 @@ public class CheckupController implements ModelDriven<Object> {
             List<ObatPoli> result = new ArrayList<>();
 
             try{
-               result = obatPoliBoProxy.getListObatGroupPoli(idPelayanan, branchId, jenisPasien);
+               result = obatPoliBoProxy.getListObatGroupPoli(idPelayanan, branchId, jenisPasien, idJenisObat);
             } catch (GeneralBOException e){
                 logger.error("CheckupController.create] Error when get obat poli group",e);
             }
@@ -697,6 +733,7 @@ public class CheckupController implements ModelDriven<Object> {
                     obatPoliMobile.setQtyBox(item.getQtyBox() != null ? item.getQtyBox().toString() : "");
                     obatPoliMobile.setQtyLembar(item.getQtyLembar() != null ? item.getQtyLembar().toString() : "");
                     obatPoliMobile.setQtyBiji(item.getQtyBiji() != null ? item.getQtyLembar().toString() : "");
+                    obatPoliMobile.setIdJenisObat(item.getIdJenisObat());
 
                     listOfObatPoli.add(obatPoliMobile);
                 }
@@ -898,6 +935,105 @@ public class CheckupController implements ModelDriven<Object> {
                 checkupDetailBoProxy.editFlagCall(idDetailCheckup, flagCall);
             } catch (GeneralBOException e) {
                 logger.error("[DokterController.create] Error, " + e.getMessage());
+            }
+        } else if (action.equalsIgnoreCase("getObatPoliGroupSerupa")) {
+            List<ObatPoli> result = new ArrayList<>();
+
+            try{
+                result = obatPoliBoProxy.getListObatGroupPoliSerupa(idPelayanan, branchId, jenisPasien, idObat);
+            } catch (GeneralBOException e){
+                logger.error("CheckupController.create] Error when get obat poli group",e);
+            }
+
+            if (result != null && result.size() > 0) {
+                for (ObatPoli item : result){
+                    ObatPoliMobile obatPoliMobile = new ObatPoliMobile();
+                    obatPoliMobile.setIdObat(item.getIdObat());
+                    obatPoliMobile.setNamaObat(item.getNamaObat());
+                    obatPoliMobile.setLembarPerBox(item.getLembarPerBox() != null ? item.getLembarPerBox().toString() : "");
+                    obatPoliMobile.setBijiPerLembar(item.getBijiPerLembar() != null ? item.getBijiPerLembar().toString() : "");
+                    obatPoliMobile.setFlagKronis(item.getFlagKronis());
+                    obatPoliMobile.setQtyBox(item.getQtyBox() != null ? item.getQtyBox().toString() : "");
+                    obatPoliMobile.setQtyLembar(item.getQtyLembar() != null ? item.getQtyLembar().toString() : "");
+                    obatPoliMobile.setQtyBiji(item.getQtyBiji() != null ? item.getQtyLembar().toString() : "");
+                    obatPoliMobile.setIdJenisObat(item.getIdJenisObat());
+
+                    listOfObatPoli.add(obatPoliMobile);
+                }
+            }
+        } else if(action.equalsIgnoreCase("getHistoryPasien")) {
+            List<HeaderCheckup> result = new ArrayList<>();
+
+            try {
+               result = checkupBoProxy.getHistoryPasien(idPasien, branchId);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0) {
+                for (HeaderCheckup item : result){
+                    HeaderDetailCheckupMobile headerCheckupMobile = new HeaderDetailCheckupMobile();
+                    headerCheckupMobile.setIdRiwayatTindakan(item.getIdRiwayatTindakan());
+                    headerCheckupMobile.setNoCheckup(item.getNoCheckup());
+                    headerCheckupMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+                    headerCheckupMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    headerCheckupMobile.setKeteranganKeluar(item.getKeteranganKeluar());
+                    headerCheckupMobile.setTglTindakan(item.getTglTindakan());
+                    headerCheckupMobile.setNamaTindakan(item.getNamaTindakan());
+                    headerCheckupMobile.setKeterangan(item.getKeterangan());
+                    headerCheckupMobile.setVideoRm(item.getVideoRm());
+                    headerCheckupMobile.setIdTindakan(item.getIdTindakan());
+
+                    listOfHeaderCheckup.add(headerCheckupMobile);
+                }
+            }
+        } else if(action.equalsIgnoreCase("getDetailHistoryPasien")) {
+            List<HeaderCheckup> result = new ArrayList<>();
+            try {
+               result = checkupBoProxy.getListDetailHistory(idTindakan, keterangan);
+            } catch (GeneralBOException e){
+                logger.error("[CheckupController.create] Error, " + e.getMessage());
+            }
+
+            if (result.size() > 0) {
+                for (HeaderCheckup item : result){
+                    HeaderDetailCheckupMobile headerDetailCheckupMobile = new HeaderDetailCheckupMobile();
+                    headerDetailCheckupMobile.setIdDetailTindakan(item.getIdDetailTindakan());
+                    headerDetailCheckupMobile.setNamaDetailLab(item.getNamaDetailLab());
+                    headerDetailCheckupMobile.setSatuan(item.getSatuan());
+                    headerDetailCheckupMobile.setAcuan(item.getAcuan());
+                    headerDetailCheckupMobile.setKesimpulan(item.getKesimpulan());
+                    headerDetailCheckupMobile.setKeterangan(item.getKeterangan());
+                    headerDetailCheckupMobile.setNamaObat(item.getNamaObat());
+                    headerDetailCheckupMobile.setQty(item.getQty());
+
+                    listOfHeaderCheckup.add(headerDetailCheckupMobile);
+                }
+            }
+        } else if(action.equalsIgnoreCase("getListAntrian")) {
+            List<HeaderCheckup> result = new ArrayList<>();
+
+            try{
+               result = checkupBoProxy.getListAntrian(branchId, idPoli);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupController.create] Error, " + e.getMessage());
+            }
+
+            if(result.size() > 0) {
+                for (HeaderCheckup item : result) {
+                    CheckupMobile checkupMobile = new CheckupMobile();
+                    checkupMobile.setIdPasien(item.getIdPasien());
+                    checkupMobile.setNamaPasien(item.getNama());
+                    checkupMobile.setDesa(item.getNamaDesa());
+                    checkupMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    checkupMobile.setIdDetailCheckup(item.getIdDetailCheckup());
+                    checkupMobile.setBelumBayarUangMuka(item.getBelumBayarUangMuka());
+                    checkupMobile.setNoAntrian(item.getNoAntrian().toString());
+
+                    listOfCheckup.add(checkupMobile);
+                }
+
+
             }
         }
 

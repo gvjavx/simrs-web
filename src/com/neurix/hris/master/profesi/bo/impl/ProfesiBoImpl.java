@@ -3,8 +3,11 @@ package com.neurix.hris.master.profesi.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.profesi.bo.ProfesiBo;
 import com.neurix.hris.master.profesi.dao.ProfesiDao;
+import com.neurix.hris.master.profesi.model.ImProfesiHistoryEntity;
 import com.neurix.hris.master.profesi.model.Profesi;
 import com.neurix.hris.master.profesi.model.ImProfesiEntity;
+import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
+import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -24,6 +27,15 @@ public class ProfesiBoImpl implements ProfesiBo {
 
     protected static transient Logger logger = Logger.getLogger(ProfesiBoImpl.class);
     private ProfesiDao profesiDao;
+    private PersonilPositionDao personilPositionDao;
+
+    public PersonilPositionDao getPersonilPositionDao() {
+        return personilPositionDao;
+    }
+
+    public void setPersonilPositionDao(PersonilPositionDao personilPositionDao) {
+        this.personilPositionDao = personilPositionDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -49,18 +61,36 @@ public class ProfesiBoImpl implements ProfesiBo {
         if (bean!=null) {
 
             String profesiId = bean.getProfesiId();
-
+            String profesiHistoryId = "";
             ImProfesiEntity imProfesiEntity = null;
+            ImProfesiHistoryEntity historyEntity = new ImProfesiHistoryEntity();
+
+            //validasi
+            List<ItPersonilPositionEntity> personilPositionEntityList= personilPositionDao.getListPersonilPositionByProfesiId(profesiId);
+
+            if (personilPositionEntityList.size()>0){
+                String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
 
             try {
                 // Get data from database by ID
                 imProfesiEntity = profesiDao.getById("profesiId", profesiId);
+                profesiHistoryId = profesiDao.getNextProfesiHistoryId();
             } catch (HibernateException e) {
                 logger.error("[ProfesiBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
             }
 
             if (imProfesiEntity != null) {
+                historyEntity.setIdHistoryProfesi(profesiHistoryId);
+                historyEntity.setProfesiId(imProfesiEntity.getProfesiId());
+                historyEntity.setProfesiName(imProfesiEntity.getProfesiName());
+                historyEntity.setCreatedDate(imProfesiEntity.getCreatedDate());
+                historyEntity.setCreatedWho(imProfesiEntity.getCreatedWho());
+                historyEntity.setLastUpdate(imProfesiEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imProfesiEntity.getLastUpdateWho());
 
                 // Modify from bean to entity serializable
                 imProfesiEntity.setProfesiId(bean.getProfesiId());
@@ -73,6 +103,7 @@ public class ProfesiBoImpl implements ProfesiBo {
                 try {
                     // Delete (Edit) into database
                     profesiDao.updateAndSave(imProfesiEntity);
+                    profesiDao.addAndSaveHistory(historyEntity);
                 } catch (HibernateException e) {
                     logger.error("[ProfesiBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data Profesi, please info to your admin..." + e.getMessage());
@@ -101,15 +132,25 @@ public class ProfesiBoImpl implements ProfesiBo {
                 String profesiId = bean.getProfesiId();
 
                 ImProfesiEntity imProfesiEntity = null;
+                ImProfesiHistoryEntity historyEntity = new ImProfesiHistoryEntity();
                 try {
                     // Get data from database by ID
                     imProfesiEntity = profesiDao.getById("profesiId", profesiId);
+                    historyId = profesiDao.getNextProfesiHistoryId();
                 } catch (HibernateException e) {
                     logger.error("[ProfesiBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data Profesi by Kode Profesi, please inform to your admin...," + e.getMessage());
                 }
 
                 if (imProfesiEntity != null) {
+                    historyEntity.setIdHistoryProfesi(historyId);
+                    historyEntity.setProfesiId(imProfesiEntity.getProfesiId());
+                    historyEntity.setProfesiName(imProfesiEntity.getProfesiName());
+                    historyEntity.setCreatedDate(imProfesiEntity.getCreatedDate());
+                    historyEntity.setCreatedWho(imProfesiEntity.getCreatedWho());
+                    historyEntity.setLastUpdate(imProfesiEntity.getLastUpdate());
+                    historyEntity.setLastUpdateWho(imProfesiEntity.getLastUpdateWho());
+
                     imProfesiEntity.setProfesiId(bean.getProfesiId());
                     imProfesiEntity.setProfesiName(bean.getProfesiName());
                     imProfesiEntity.setFlag(bean.getFlag());
@@ -121,6 +162,7 @@ public class ProfesiBoImpl implements ProfesiBo {
                     try {
                         // Update into database
                         profesiDao.updateAndSave(imProfesiEntity);
+                        profesiDao.addAndSaveHistory(historyEntity);
 //                    condition = "Data SuccessFully Updated";
                     } catch (HibernateException e) {
                         logger.error("[ProfesiBoImpl.saveEdit] Error, " + e.getMessage());

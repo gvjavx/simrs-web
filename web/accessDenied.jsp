@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="id" dir="ltr">
-<TITLE>e-HEALTH</TITLE>
+<TITLE>GO-MEDSYS</TITLE>
 <link rel="shortcut icon" href="../pages/images/logo-nmu.webp"/>
 <head>
     <meta charset="utf-8" />

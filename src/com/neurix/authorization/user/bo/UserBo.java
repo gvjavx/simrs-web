@@ -22,6 +22,7 @@ public interface UserBo extends GeneralBo {
 
     public User getUserById(String userId, String flag) throws GeneralBOException;
     public User getUserByIdDevice(String idDevice) throws GeneralBOException;
+    public User getUserByIdPelayanan(String idPelayanan) throws GeneralBOException;
     public List<User> getByCriteria(User searchUser) throws GeneralBOException;
     public List<User> getUserSameBranchByCriteria(User searchUsers) throws GeneralBOException;
     public List<User> getUserSamePositionByCriteria(User searchUsers) throws GeneralBOException;
@@ -58,4 +59,6 @@ public interface UserBo extends GeneralBo {
     public UserDetailsLogin retrievePhotoUser(String path, String username) throws HibernateException,IOException;
     public List getMenuUser(UserDetailsLogin userDetailsLogin, String contextPath) throws HibernateException;
     public List<User> getUserLLByCriteria(User searchUsers) throws GeneralBOException;
+    List<User> getUserByRoleAndBranch(String roleId, String branchId) throws GeneralBOException;
+    public ImUsers getUserByEmailId(String email) throws GeneralBOException;
 }

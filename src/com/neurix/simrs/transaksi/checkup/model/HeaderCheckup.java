@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.checkup.model;
 
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -77,7 +78,8 @@ public class HeaderCheckup {
     private String noSep;
     private String jenisTransaksi;
     private BigDecimal tarifBpjs;
-    private List<Tindakan> tindakanList;
+    private List<Tindakan> tindakanList = new ArrayList<>();
+    private List<DokterTeam> dokterTeamList = new ArrayList<>();
     private List<Asesmen> asesmenList = new ArrayList<>();
 
     private String ketKeyakinan;
@@ -135,6 +137,418 @@ public class HeaderCheckup {
     private String namaObat;
     private String namaDetailLab;
     private String idDetailTindakan;
+    private String idAntrianOnline;
+    private String idTransaksiOnline;
+    private String tipePelayanan;
+
+    private String idLab;
+    private String isOrderLab;
+    private String lastIdDetailCheckup;
+    private String isStay;
+
+    private String penunjangMedis;
+    private String keluhanUtama;
+    private String suhu;
+    private String tensi;
+    private String nadi;
+    private String pernafasan;
+    private String kategoriPelayanan;
+
+    private String autoanamnesis;
+    private String heteroanamnesis;
+    private String catatan;
+    private String anamnese;
+    private String flagCloseTransaksi;
+    private String flagCover;
+    private String urlLab;
+    private String ketAcuanP;
+    private String ketAcuanL;
+    private Boolean rawatInap;
+
+    private String jmlRJ;
+    private String jmlRI;
+    private String jmlIGD;
+    private String jmlTelemedic;
+
+    private String imgKtp;
+    private String jamAwal;
+    private String jamAkhir;
+    private String tglDaftar;
+    private String tglCheckupOnline;
+    private String stTglAntrian;
+
+    private String pendidikan;
+    private String statusPerkawinan;
+    private String kunjunganPoli;
+
+    private String kodePoliVclaim;
+    private String branchName;
+    private String total;
+    private Date tanggal;
+    private String all;
+    private String tahun;
+
+    public String getAll() {
+        return all;
+    }
+
+    public void setAll(String all) {
+        this.all = all;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public Date getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(Date tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getKodePoliVclaim() {
+        return kodePoliVclaim;
+    }
+
+    public void setKodePoliVclaim(String kodePoliVclaim) {
+        this.kodePoliVclaim = kodePoliVclaim;
+    }
+
+    public String getPendidikan() {
+        return pendidikan;
+    }
+
+    public void setPendidikan(String pendidikan) {
+        this.pendidikan = pendidikan;
+    }
+
+    public String getStatusPerkawinan() {
+        return statusPerkawinan;
+    }
+
+    public void setStatusPerkawinan(String statusPerkawinan) {
+        this.statusPerkawinan = statusPerkawinan;
+    }
+
+    public String getKunjunganPoli() {
+        return kunjunganPoli;
+    }
+
+    public void setKunjunganPoli(String kunjunganPoli) {
+        this.kunjunganPoli = kunjunganPoli;
+    }
+
+    public String getStTglAntrian() {
+        return stTglAntrian;
+    }
+
+    public void setStTglAntrian(String stTglAntrian) {
+        this.stTglAntrian = stTglAntrian;
+    }
+
+    public String getTglCheckupOnline() {
+        return tglCheckupOnline;
+    }
+
+    public void setTglCheckupOnline(String tglCheckupOnline) {
+        this.tglCheckupOnline = tglCheckupOnline;
+    }
+
+    public String getJamAwal() {
+        return jamAwal;
+    }
+
+    public void setJamAwal(String jamAwal) {
+        this.jamAwal = jamAwal;
+    }
+
+    public String getJamAkhir() {
+        return jamAkhir;
+    }
+
+    public void setJamAkhir(String jamAkhir) {
+        this.jamAkhir = jamAkhir;
+    }
+
+    public String getTglDaftar() {
+        return tglDaftar;
+    }
+
+    public void setTglDaftar(String tglDaftar) {
+        this.tglDaftar = tglDaftar;
+    }
+
+    public String getImgKtp() {
+        return imgKtp;
+    }
+
+    public void setImgKtp(String imgKtp) {
+        this.imgKtp = imgKtp;
+    }
+
+    public String getJmlRJ() {
+        return jmlRJ;
+    }
+
+    public void setJmlRJ(String jmlRJ) {
+        this.jmlRJ = jmlRJ;
+    }
+
+    public String getJmlRI() {
+        return jmlRI;
+    }
+
+    public void setJmlRI(String jmlRI) {
+        this.jmlRI = jmlRI;
+    }
+
+    public String getJmlIGD() {
+        return jmlIGD;
+    }
+
+    public void setJmlIGD(String jmlIGD) {
+        this.jmlIGD = jmlIGD;
+    }
+
+    public String getJmlTelemedic() {
+        return jmlTelemedic;
+    }
+
+    public void setJmlTelemedic(String jmlTelemedic) {
+        this.jmlTelemedic = jmlTelemedic;
+    }
+
+    public Boolean getRawatInap() {
+        return rawatInap;
+    }
+
+    public void setRawatInap(Boolean rawatInap) {
+        this.rawatInap = rawatInap;
+    }
+
+    public List<DokterTeam> getDokterTeamList() {
+        return dokterTeamList;
+    }
+
+    public void setDokterTeamList(List<DokterTeam> dokterTeamList) {
+        this.dokterTeamList = dokterTeamList;
+    }
+
+    public String getKetAcuanP() {
+        return ketAcuanP;
+    }
+
+    public void setKetAcuanP(String ketAcuanP) {
+        this.ketAcuanP = ketAcuanP;
+    }
+
+    public String getKetAcuanL() {
+        return ketAcuanL;
+    }
+
+    public void setKetAcuanL(String ketAcuanL) {
+        this.ketAcuanL = ketAcuanL;
+    }
+
+    private String isRekananWithBpjs;
+
+    public String getIsRekananWithBpjs() {
+        return isRekananWithBpjs;
+    }
+
+    public void setIsRekananWithBpjs(String isRekananWithBpjs) {
+        this.isRekananWithBpjs = isRekananWithBpjs;
+    }
+
+    public String getUrlLab() {
+        return urlLab;
+    }
+
+    public void setUrlLab(String urlLab) {
+        this.urlLab = urlLab;
+    }
+
+    public String getFlagCloseTransaksi() {
+        return flagCloseTransaksi;
+    }
+
+    public void setFlagCloseTransaksi(String flagCloseTransaksi) {
+        this.flagCloseTransaksi = flagCloseTransaksi;
+    }
+
+    public String getFlagCover() {
+        return flagCover;
+    }
+
+    public void setFlagCover(String flagCover) {
+        this.flagCover = flagCover;
+    }
+
+    public String getAnamnese() {
+        return anamnese;
+    }
+
+    public void setAnamnese(String anamnese) {
+        this.anamnese = anamnese;
+    }
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
+    }
+
+    public String getAutoanamnesis() {
+        return autoanamnesis;
+    }
+
+    public void setAutoanamnesis(String autoanamnesis) {
+        this.autoanamnesis = autoanamnesis;
+    }
+
+    public String getHeteroanamnesis() {
+        return heteroanamnesis;
+    }
+
+    public void setHeteroanamnesis(String heteroanamnesis) {
+        this.heteroanamnesis = heteroanamnesis;
+    }
+
+    public String getIsStay() {
+        return isStay;
+    }
+
+    public void setIsStay(String isStay) {
+        this.isStay = isStay;
+    }
+
+    public String getIsOrderLab() {
+        return isOrderLab;
+    }
+
+    public void setIsOrderLab(String isOrderLab) {
+        this.isOrderLab = isOrderLab;
+    }
+
+    public String getLastIdDetailCheckup() {
+        return lastIdDetailCheckup;
+    }
+
+    public void setLastIdDetailCheckup(String lastIdDetailCheckup) {
+        this.lastIdDetailCheckup = lastIdDetailCheckup;
+    }
+
+    public String getIdLab() {
+        return idLab;
+    }
+
+    public void setIdLab(String idLab) {
+        this.idLab = idLab;
+    }
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
+    public String getIdTransaksiOnline() {
+        return idTransaksiOnline;
+    }
+
+    public void setIdTransaksiOnline(String idTransaksiOnline) {
+        this.idTransaksiOnline = idTransaksiOnline;
+    }
+
+    public String getIdAntrianOnline() {
+        return idAntrianOnline;
+    }
+
+    public void setIdAntrianOnline(String idAntrianOnline) {
+        this.idAntrianOnline = idAntrianOnline;
+    }
+
+    public String getKategoriPelayanan() {
+        return kategoriPelayanan;
+    }
+
+    public void setKategoriPelayanan(String kategoriPelayanan) {
+        this.kategoriPelayanan = kategoriPelayanan;
+    }
+
+    public String getPenunjangMedis() {
+        return penunjangMedis;
+    }
+
+    public void setPenunjangMedis(String penunjangMedis) {
+        this.penunjangMedis = penunjangMedis;
+    }
+
+    public String getKeluhanUtama() {
+        return keluhanUtama;
+    }
+
+    public void setKeluhanUtama(String keluhanUtama) {
+        this.keluhanUtama = keluhanUtama;
+    }
+
+    public String getSuhu() {
+        return suhu;
+    }
+
+    public void setSuhu(String suhu) {
+        this.suhu = suhu;
+    }
+
+    public String getTensi() {
+        return tensi;
+    }
+
+    public void setTensi(String tensi) {
+        this.tensi = tensi;
+    }
+
+    public String getNadi() {
+        return nadi;
+    }
+
+    public void setNadi(String nadi) {
+        this.nadi = nadi;
+    }
+
+    public String getPernafasan() {
+        return pernafasan;
+    }
+
+    public void setPernafasan(String pernafasan) {
+        this.pernafasan = pernafasan;
+    }
 
     public String getIdDetailTindakan() {
         return idDetailTindakan;

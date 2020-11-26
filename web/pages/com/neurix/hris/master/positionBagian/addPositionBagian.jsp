@@ -17,10 +17,10 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var bagianName = document.getElementById("bagianName1").value;
-            var kodering = document.getElementById("kodering1").value;
+            var divisiId = document.getElementById("divisiId1").value;
 
 
-            if (bagianName != '' && kodering != '') {
+            if (bagianName != ''&& divisiId != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -29,8 +29,6 @@
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
                 }
-
-
             } else {
 
                 event.originalEvent.options.submit = false;
@@ -38,12 +36,11 @@
                 var msg = "";
 
                 if (bagianName == '') {
-                    msg += 'Field <strong>Bagian Name</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Sub Bidang/Divisi Name</strong> is required.' + '<br/>';
                 }
-                if (kodering == '') {
-                    msg += 'Field <strong>Kodering</strong> is required.' + '<br/>';
+                if (divisiId == '') {
+                    msg += 'Field <strong>Bidang/Divisi</strong> is required.' + '<br/>';
                 }
-
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
@@ -98,7 +95,7 @@
 
 
 
-                <legend align="left">Add Bagian</legend>
+                <legend align="left">Add Sub Bidang/Divisi</legend>
 
 
                 <table>
@@ -112,22 +109,23 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Bagian Name :</small></label>
+                            <label class="control-label"><small>Bidang/Devisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboMasaTanam" namespace="/department" name="initDepartment_department"/>
+                                <s:select list="#session.listOfResultDepartment" id="divisiId1" name="positionBagian.divisiId"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Nama :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:textfield id="bagianName1" name="positionBagian.bagianName" required="true" disabled="false" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Kodering :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="kodering1" name="positionBagian.kodering" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

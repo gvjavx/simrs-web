@@ -20,6 +20,15 @@ public class MtSimrsItemPaketEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private BigInteger harga;
+    private String idPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public BigInteger getHarga() {
         return harga;

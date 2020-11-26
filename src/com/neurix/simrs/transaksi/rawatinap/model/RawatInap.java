@@ -87,6 +87,282 @@ public class RawatInap {
 
     private String isLaka;
 
+    private String anamnese;
+    private String alergi;
+    private String penunjangMedis;
+    private String keluhanUtama;
+    private String suhu;
+    private String tensi;
+    private String nadi;
+    private String pernafasan;
+    private String alamatLengkap;
+    private String umur;
+    private String namaDiagnosa;
+    private String berat;
+    private String tinggi;
+
+    private String tindakLanjut;
+    private String catatan;
+    private String flagTppri;
+
+    private String isStay;
+    private String isOrderLab;
+    private String rsRujukan;
+
+    private String kategoriRuangan;
+    private String idKelasRuangan;
+
+    private String idRuangLama;
+    private String status;
+    private BigInteger lamakamar;
+    private String isKasir;
+    private String isBayar;
+    private String namaTempatTidur;
+    private String idTempatTidur;
+
+    private String jenisDiet;
+    private String bentukGizi;
+
+    public String getBentukGizi() {
+        return bentukGizi;
+    }
+
+    public void setBentukGizi(String bentukGizi) {
+        this.bentukGizi = bentukGizi;
+    }
+
+    public String getJenisDiet() {
+        return jenisDiet;
+    }
+
+    public void setJenisDiet(String jenisDiet) {
+        this.jenisDiet = jenisDiet;
+    }
+
+    public String getIdTempatTidur() {
+        return idTempatTidur;
+    }
+
+    public void setIdTempatTidur(String idTempatTidur) {
+        this.idTempatTidur = idTempatTidur;
+    }
+
+    public String getNamaTempatTidur() {
+        return namaTempatTidur;
+    }
+
+    public void setNamaTempatTidur(String namaTempatTidur) {
+        this.namaTempatTidur = namaTempatTidur;
+    }
+
+    public String getIsBayar() {
+        return isBayar;
+    }
+
+    public void setIsBayar(String isBayar) {
+        this.isBayar = isBayar;
+    }
+
+    public String getIsKasir() {
+        return isKasir;
+    }
+
+    public void setIsKasir(String isKasir) {
+        this.isKasir = isKasir;
+    }
+
+    public BigInteger getLamakamar() {
+        return lamakamar;
+    }
+
+    public void setLamakamar(BigInteger lamakamar) {
+        this.lamakamar = lamakamar;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getIdRuangLama() {
+        return idRuangLama;
+    }
+
+    public void setIdRuangLama(String idRuangLama) {
+        this.idRuangLama = idRuangLama;
+    }
+
+    public String getIdKelasRuangan() {
+        return idKelasRuangan;
+    }
+
+    public void setIdKelasRuangan(String idKelasRuangan) {
+        this.idKelasRuangan = idKelasRuangan;
+    }
+
+    public String getKategoriRuangan() {
+        return kategoriRuangan;
+    }
+
+    public void setKategoriRuangan(String kategoriRuangan) {
+        this.kategoriRuangan = kategoriRuangan;
+    }
+
+    public String getRsRujukan() {
+        return rsRujukan;
+    }
+
+    public void setRsRujukan(String rsRujukan) {
+        this.rsRujukan = rsRujukan;
+    }
+
+    public String getIsOrderLab() {
+        return isOrderLab;
+    }
+
+    public void setIsOrderLab(String isOrderLab) {
+        this.isOrderLab = isOrderLab;
+    }
+
+    public String getIsStay() {
+        return isStay;
+    }
+
+    public void setIsStay(String isStay) {
+        this.isStay = isStay;
+    }
+
+    public String getFlagTppri() {
+        return flagTppri;
+    }
+
+    public void setFlagTppri(String flagTppri) {
+        this.flagTppri = flagTppri;
+    }
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
+    }
+
+    public String getTindakLanjut() {
+        return tindakLanjut;
+    }
+
+    public void setTindakLanjut(String tindakLanjut) {
+        this.tindakLanjut = tindakLanjut;
+    }
+
+    public String getBerat() {
+        return berat;
+    }
+
+    public void setBerat(String berat) {
+        this.berat = berat;
+    }
+
+    public String getTinggi() {
+        return tinggi;
+    }
+
+    public void setTinggi(String tinggi) {
+        this.tinggi = tinggi;
+    }
+
+    public String getNamaDiagnosa() {
+        return namaDiagnosa;
+    }
+
+    public void setNamaDiagnosa(String namaDiagnosa) {
+        this.namaDiagnosa = namaDiagnosa;
+    }
+
+    public String getAnamnese() {
+        return anamnese;
+    }
+
+    public void setAnamnese(String anamnese) {
+        this.anamnese = anamnese;
+    }
+
+    public String getAlergi() {
+        return alergi;
+    }
+
+    public void setAlergi(String alergi) {
+        this.alergi = alergi;
+    }
+
+    public String getPenunjangMedis() {
+        return penunjangMedis;
+    }
+
+    public void setPenunjangMedis(String penunjangMedis) {
+        this.penunjangMedis = penunjangMedis;
+    }
+
+    public String getKeluhanUtama() {
+        return keluhanUtama;
+    }
+
+    public void setKeluhanUtama(String keluhanUtama) {
+        this.keluhanUtama = keluhanUtama;
+    }
+
+    public String getSuhu() {
+        return suhu;
+    }
+
+    public void setSuhu(String suhu) {
+        this.suhu = suhu;
+    }
+
+    public String getTensi() {
+        return tensi;
+    }
+
+    public void setTensi(String tensi) {
+        this.tensi = tensi;
+    }
+
+    public String getNadi() {
+        return nadi;
+    }
+
+    public void setNadi(String nadi) {
+        this.nadi = nadi;
+    }
+
+    public String getPernafasan() {
+        return pernafasan;
+    }
+
+    public void setPernafasan(String pernafasan) {
+        this.pernafasan = pernafasan;
+    }
+
+    public String getAlamatLengkap() {
+        return alamatLengkap;
+    }
+
+    public void setAlamatLengkap(String alamatLengkap) {
+        this.alamatLengkap = alamatLengkap;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
+
     public BigDecimal getCoverBiaya() {
         return coverBiaya;
     }

@@ -118,13 +118,15 @@ public class UserSessionLogDao  extends GenericDao<ItUserSessionLog,Long> {
 
         ItUserSessionLog resultReport;
         for(Object[] rows: results){
-            resultReport = new ItUserSessionLog();
-            resultReport.setUserName(rows[0].toString());
-            resultReport.setName(rows[1].toString());
-            resultReport.setJumlah(rows[2].toString());
-            resultReport.setDateFrom(rows[3].toString());
+            if (rows[1] !=  null){
+                resultReport = new ItUserSessionLog();
+                resultReport.setUserName(rows[0].toString());
+                resultReport.setName(rows[1].toString());
+                resultReport.setJumlah(rows[2].toString());
+                resultReport.setDateFrom(rows[3].toString());
 
-            listOfResult.add(resultReport);
+                listOfResult.add(resultReport);
+            }
         }
         return listOfResult;
     }

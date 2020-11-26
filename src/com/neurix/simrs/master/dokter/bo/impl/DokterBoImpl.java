@@ -236,7 +236,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                 }
                 Map map = new HashMap<>();
                 map.put("position_id", bean.getPositionId());
-                String koderingPosition = positionDao.getKodringPosition(map);
+                String koderingPosition = positionDao.getKodringPosition(map).split("\\.")[2];
 
                 String branchId = CommonUtil.userBranchLogin();
                 Map map1 = new HashMap<>();
@@ -326,6 +326,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
             dokter.setIdDokter(entity.getIdDokter());
             dokter.setNamaDokter(entity.getNamaDokter());
             dokter.setKuota(entity.getKuota());
+            dokter.setKuotaTele(entity.getKuotaTele());
             dokter.setFlag(entity.getFlag());
             dokter.setAction(entity.getAction());
             dokter.setCreatedDate(entity.getCreatedDate());
@@ -336,6 +337,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
             dokter.setLon(entity.getLon());
             dokter.setKodeDpjp(entity.getKodeDpjp());
             dokter.setFlagCall(entity.getFlagCall());
+            dokter.setFlagTele(entity.getFlagTele());
             results.add(dokter);
         }
 
@@ -393,7 +395,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     }
 
     @Override
-    public boolean editKuota(String idDokter, String kuota) throws GeneralBOException {
+    public boolean editKuota(String idDokter, String kuota, String kuotaTele) throws GeneralBOException {
         logger.info("[DokterBoImpl.editKuota] Start <<<<<<<<");
 
         ImSimrsDokterEntity dokter = null;
@@ -407,6 +409,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
 
         if (dokter != null) {
             dokter.setKuota(kuota);
+            dokter.setKuotaTele(kuotaTele);
             try {
                 dokterDao.updateAndSave(dokter);
                 isSuccess = true;
@@ -472,13 +475,53 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
         return isSuccess;
     }
 
+    public boolean editFlagTele(String idDokter, String flagTele) {
+        logger.info("[DokterBoImpl.editFlagCall] Start <<<<<<<<");
+
+        ImSimrsDokterEntity dokter = null;
+        boolean isSuccess = false;
+
+        try {
+            dokter = dokterDao.getById("idDokter", idDokter, "Y");
+        } catch (GeneralBOException e) {
+            logger.info("[DokterBoImpl.editKuota] Error when editKuota ", e);
+        }
+
+        if (dokter != null) {
+            dokter.setFlagTele(flagTele);
+            try {
+                dokterDao.updateAndSave(dokter);
+                isSuccess = true;
+            } catch (GeneralBOException e) {
+                logger.info("[DokterBoImpl.editKuota] Error when editKuota ", e);
+            }
+        }
+
+        logger.info("[DokterBoImpl.editFlagCall] End <<<<<<<<");
+        return isSuccess;
+    }
+
     @Override
-    public List<Dokter> getDokterByPelayanan(String idPelayanan) throws GeneralBOException {
+    public List<Dokter> getDokterByPelayanan(String idPelayanan, String notLike) throws GeneralBOException {
         List<Dokter> dokterList = new ArrayList<>();
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             try {
-                dokterList = dokterDao.getListDokterByPelayanan(idPelayanan);
+                dokterList = dokterDao.getListDokterByPelayanan(idPelayanan, notLike);
+            } catch (HibernateException e) {
+                logger.error("Found Error when search " + e.getMessage());
+            }
+        }
+        return dokterList;
+    }
+
+    @Override
+    public List<Dokter> getDokterById(String idDokter) throws GeneralBOException {
+        List<Dokter> dokterList = new ArrayList<>();
+
+        if (idDokter != null && !"".equalsIgnoreCase(idDokter)) {
+            try {
+                dokterList = dokterDao.getListDokterById(idDokter);
             } catch (HibernateException e) {
                 logger.error("Found Error when search " + e.getMessage());
             }
@@ -537,6 +580,11 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                     dokter.setKuota(entity.getKuota());
                     dokter.setKodeDpjp(entity.getKodeDpjp());
                     dokter.setKodering(entity.getKodering());
+                    dokter.setKuotaTele(entity.getKuotaTele());
+                    dokter.setFlagTele(entity.getFlagTele());
+                    dokter.setLat(entity.getLat());
+                    dokter.setLon(entity.getLon());
+                    dokter.setKuotaBpjs(entity.getKuotaBpjs());
 
                     if (entity.getIdPelayanan() != null){
                         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
@@ -594,6 +642,16 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
         logger.info("[KodeRekeningBoImpl.typeaheadKodeRekening] end process <<<");
 
         return listOfResult;
+    }
+
+    @Override
+    public List<Dokter> getListDokterByBranchId(String branchId, String idDokter) throws GeneralBOException {
+        return dokterDao.getListDokterByBranchId(branchId, idDokter);
+    }
+
+    @Override
+    public List<Dokter> getListDokterByIdDetailCheckup(String idDetailChekcup, String approve) throws GeneralBOException {
+        return dokterDao.getListDokterByIdDetailCheckup(idDetailChekcup, approve);
     }
 
     public void setDokterDao(DokterDao dokterDao) {

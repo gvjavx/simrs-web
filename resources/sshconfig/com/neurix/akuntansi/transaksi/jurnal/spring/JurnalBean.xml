@@ -12,6 +12,9 @@
           p:jurnalDao-ref="jurnalDao"
           p:jurnalDetailDao-ref="jurnalDetailDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:positionDao-ref="positionDao"
+          p:pengajuanBiayaDetailDao-ref="pengajuanBiayaDetailDao"
+          p:pengajuanBiayaDao-ref="pengajuanBiayaDao"
     />
 
     <bean id="jurnalBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -39,6 +42,11 @@
     <bean id="jurnalDetailDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="jurnalDetailActivityDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailActivityDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="jurnalAkhirTahunDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.JurnalAkhirTahunDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="jurnalDetailAkhirTahunDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.JurnalDetailAkhirTahunDao"
           p:sessionFactory-ref="sessionFactory" />
 
     <bean id="jurnalPendingDao" class="com.neurix.akuntansi.transaksi.jurnal.dao.pending.JurnalPendingDao"

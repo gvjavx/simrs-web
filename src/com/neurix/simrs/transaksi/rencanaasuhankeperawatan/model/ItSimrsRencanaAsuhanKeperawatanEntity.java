@@ -8,10 +8,12 @@ public class ItSimrsRencanaAsuhanKeperawatanEntity implements Serializable {
 
     private String idRencanaAsuhanKeperawatan;
     private String idDetailCheckup;
-    private Timestamp waktu;
+    private String waktu;
     private String diagnosa;
-    private String tujuan;
+    private String hasil;
     private String intervensi;
+    private String implementasi;
+    private String evaluasi;
     private String ttdPerawat;
     private String keterangan;
     private String flag;
@@ -20,6 +22,42 @@ public class ItSimrsRencanaAsuhanKeperawatanEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String namaTerang;
+    private String namaDokter;
+    private String sip;
+    private String ttdDokter;
+
+    public String getTtdDokter() {
+        return ttdDokter;
+    }
+
+    public void setTtdDokter(String ttdDokter) {
+        this.ttdDokter = ttdDokter;
+    }
+
+    public String getNamaDokter() {
+        return namaDokter;
+    }
+
+    public void setNamaDokter(String namaDokter) {
+        this.namaDokter = namaDokter;
+    }
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
+
+    public String getNamaTerang() {
+        return namaTerang;
+    }
+
+    public void setNamaTerang(String namaTerang) {
+        this.namaTerang = namaTerang;
+    }
 
     public String getIdRencanaAsuhanKeperawatan() {
         return idRencanaAsuhanKeperawatan;
@@ -37,11 +75,11 @@ public class ItSimrsRencanaAsuhanKeperawatanEntity implements Serializable {
         this.idDetailCheckup = idDetailCheckup;
     }
 
-    public Timestamp getWaktu() {
+    public String getWaktu() {
         return waktu;
     }
 
-    public void setWaktu(Timestamp waktu) {
+    public void setWaktu(String waktu) {
         this.waktu = waktu;
     }
 
@@ -53,12 +91,12 @@ public class ItSimrsRencanaAsuhanKeperawatanEntity implements Serializable {
         this.diagnosa = diagnosa;
     }
 
-    public String getTujuan() {
-        return tujuan;
+    public String getHasil() {
+        return hasil;
     }
 
-    public void setTujuan(String tujuan) {
-        this.tujuan = tujuan;
+    public void setHasil(String hasil) {
+        this.hasil = hasil;
     }
 
     public String getIntervensi() {
@@ -67,6 +105,22 @@ public class ItSimrsRencanaAsuhanKeperawatanEntity implements Serializable {
 
     public void setIntervensi(String intervensi) {
         this.intervensi = intervensi;
+    }
+
+    public String getImplementasi() {
+        return implementasi;
+    }
+
+    public void setImplementasi(String implementasi) {
+        this.implementasi = implementasi;
+    }
+
+    public String getEvaluasi() {
+        return evaluasi;
+    }
+
+    public void setEvaluasi(String evaluasi) {
+        this.evaluasi = evaluasi;
     }
 
     public String getTtdPerawat() {

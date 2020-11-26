@@ -22,6 +22,15 @@ public class LoginMobile implements Serializable {
     private String idPelayanan;
     private String idDevice;
     private String pin;
+    private String flagFingerMobile;
+
+    public String getFlagFingerMobile() {
+        return flagFingerMobile;
+    }
+
+    public void setFlagFingerMobile(String flagFingerMobile) {
+        this.flagFingerMobile = flagFingerMobile;
+    }
 
     public String getPin() {
         return pin;

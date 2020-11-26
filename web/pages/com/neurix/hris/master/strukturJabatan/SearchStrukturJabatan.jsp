@@ -83,7 +83,11 @@
                     result = '';
                 }else{
                     if (confirm('Are you sure you want to save this Record?')) {
-                        StrukturJabatanAction.saveEdit(id, branch, position, parent,function(listdata) {
+                        console.log("Test1 "+id);
+                        console.log("Test2 "+branch);
+                        console.log("Test3 "+position);
+                        console.log("Test4 "+parent);
+                        StrukturJabatanAction.saveEditStruktur(id, branch, position, parent,function(listdata) {
                             alert('Record has been saved successfully.');
                             location.reload();
                         });
@@ -102,9 +106,13 @@
                     alert('Unit harus dipilih');
                 }else{
                     if (confirm('Are you sure you want to Delete this Record?')) {
-                        StrukturJabatanAction.saveDelete(id, branch, position, parent,function(listdata) {
-                            alert('Record has been Deleted successfully.');
-                            location.reload();
+                        StrukturJabatanAction.saveDelete(id, branch, position, parent,function(data) {
+                            if (data===""){
+                                alert('Record has been Deleted successfully.');
+                                location.reload();
+                            } else {
+                                alert(data);
+                            }
                         });
                     }
                 }
@@ -142,19 +150,25 @@
             $('.tree').on('click', '.item-delete', function(){
                 var id = $(this).attr('data');
                 var branch = $(this).attr('branch');
+                var nip =$(this).attr('nip');
+                console.log(nip);
+                if (nip==="-"){
+                    StrukturJabatanAction.initStrukturJabatanSearch(id, function(item) {
+                        selectParent(branch, 'Delete');
+                        $('#strukturJabatanIdDelete').val(item.strukturJabatanId);
+                        $('#branchIdDelete').val(item.branchId);
+                        $('#positionIdDelete').val(item.positionId);
+                        var level = parseInt(item.level) - 1;
+                        $('#levelDelete').val(level);
+                        $('#parentIdDelete').val(item.parentId + '-' + level).change();
+                    });
 
-                StrukturJabatanAction.initStrukturJabatanSearch(id, function(item) {
-                    selectParent(branch, 'Delete');
-                    $('#strukturJabatanIdDelete').val(item.strukturJabatanId);
-                    $('#branchIdDelete').val(item.branchId);
-                    $('#positionIdDelete').val(item.positionId);
-                    var level = parseInt(item.level) - 1;
-                    $('#levelDelete').val(level);
-                    $('#parentIdDelete').val(item.parentId + '-' + level).change();
-                });
+                    $('#modal-delete').find('.modal-title').text('Delete Data');
+                    $('#modal-delete').modal('show');
+                } else{
+                    alert("Struktur Jabatan Masih Digunakan tidak bisa dihapus");
+                }
 
-                $('#modal-delete').find('.modal-title').text('Delete Data');
-                $('#modal-delete').modal('show');
                 //alert(id);
 
             });
@@ -272,7 +286,7 @@
                 for(i = 0 ; i < data2.length ; i++){
                     //data2.push([item.funcId, item.funcName, item.url, item.menu, item.parent, item.funcLevel, 'Y']);
                     if(data2[i].parent == "-"){
-                        tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                        tmp_table += '<tr style="font-size: 11px;" class=" treegrid-' + data2[i]._id+ '">' +
                                 '<td >' + data2[i]._id + '</td>' +
                                 '<td >' + data2[i].nama + '</td>' +
                                 '<td align="center">' + data2[i].level+ '</td>' +
@@ -284,13 +298,13 @@
                                     '</a>' +
                                 '</td>' +
                                 '<td align="center">' +
-                                    "<a href='javascript:;' class ='item-delete' branch='"+data2[i].branchId+"' data ='"+data2[i]._id+"' >" +
+                                    "<a href='javascript:;' class ='item-delete' branch='"+data2[i].branchId+"' data ='"+data2[i]._id+"' nip ='"+data2[i].nip+"' >" +
                                         "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
                                     '</a>' +
                                 '</td>' +
                                 "</tr>";
                     } else {
-                        tmp_table += '<tr style="font-size: 12px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
+                        tmp_table += '<tr style="font-size: 11px" class=" treegrid-' + data2[i]._id + ' treegrid-parent-' + data2[i].parent + '">' +
                                 + '<td style="border: 2px solid black;">' +
                                 '<td >' + data2[i]._id + '</td>' +
                                 '<td >' + data2[i].nama + '</td>' +
@@ -303,7 +317,7 @@
                                     '</a>' +
                                 '</td>' +
                                 '<td align="center">' +
-                                    "<a href='javascript:;' class ='item-delete' branch='"+data2[i].branchId+"' data ='"+data2[i]._id+"' >" +
+                                    "<a href='javascript:;' class ='item-delete' branch='"+data2[i].branchId+"' data ='"+data2[i]._id+"'  nip ='"+data2[i].nip+"' >" +
                                         "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
                                     '</a>' +
                                 '</td>' +
@@ -525,7 +539,7 @@
                                 </tr>
                             </table>
 
-                            <table style="width: 90%;" class="tree table table-bordered">
+                            <table style="width: 100%;" class="tree table table-bordered">
                             </table>
                         </center>
                     </s:form>
@@ -576,7 +590,7 @@
                             <label class="control-label col-sm-4" for="strukturJabatan.branchId">Unit Id :</label>
                             <div class="col-sm-6">
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                <s:select disabled="true" list="#initComboBranch.listOfComboBranch" id="branchIdDelete" name="strukturJabatan.branchId" onchange="selectParent(this.value, 'Edit')"
+                                <s:select disabled="true" list="#initComboBranch.listOfComboBranch" id="branchIdDelete" name="strukturJabatan.branchId" onchange="selectParent(this.value, 'Delete')"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </div>
                         </div>

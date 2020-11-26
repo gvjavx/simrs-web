@@ -21,6 +21,15 @@ public class ItemPaket {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private BigDecimal tarif;
+    private String idPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public BigDecimal getTarif() {
         return tarif;

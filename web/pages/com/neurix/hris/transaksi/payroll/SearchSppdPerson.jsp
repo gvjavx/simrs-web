@@ -292,6 +292,11 @@
                                             <display:column property="tanggalSppdBerangkat" sortable="true" title="Tanggal SPPD"
                                                             decorator="com.neurix.common.displaytag.LongDateWrapper"/>--%>
                                             <display:column property="noSurat" sortable="true" title="No Surat" />
+                                            <display:setProperty name="paging.banner.item_name">SppdPerson</display:setProperty>
+                                            <display:setProperty name="paging.banner.items_name">SppdPerson</display:setProperty>
+                                            <display:setProperty name="export.excel.filename">SppdPerson.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">SppdPerson.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">SppdPerson.pdf</display:setProperty>
 
                                         </display:table>
                                     </td>

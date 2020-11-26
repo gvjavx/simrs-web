@@ -8,6 +8,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -23,10 +24,20 @@ public class MasterVendorAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(MasterVendorAction.class);
     private MasterVendorBo masterVendorBoProxy;
     private MasterVendor masterVendor;
+    private String tipe;
+
     private List<MasterVendor> listOfComboVendor = new ArrayList<MasterVendor>();
 
     public List<MasterVendor> getListOfComboVendor() {
         return listOfComboVendor;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
     }
 
     public void setListOfComboVendor(List<MasterVendor> listOfComboVendor) {
@@ -64,6 +75,7 @@ public class MasterVendorAction extends BaseMasterAction {
         MasterVendor search = new MasterVendor();
         List<MasterVendor> vendorList = new ArrayList();
         search.setFlag("Y");
+        search.setTipeVendor(getTipe());
         try {
             vendorList = masterVendorBoProxy.getByCriteria(search);
         } catch (GeneralBOException e) {
@@ -406,6 +418,27 @@ public class MasterVendorAction extends BaseMasterAction {
         logger.info("[VendorAction.initForm] end process >>>");
         return INPUT;
     }
+
+    //untuk mengambil data dari tabel lain
+    public void getComboAsuransi() {
+
+        List<MasterVendor> asuransiList = new ArrayList<>();
+        MasterVendor asuransi = new MasterVendor();
+        //untukfilternya
+//        asuransi.setTipePelayanan("rawat_jalan");
+//        asuransi.setBranchId(CommonUtil.userBranchLogin());
+
+        try {
+            asuransiList = masterVendorBoProxy.getByCriteria(asuransi);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+            addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+        }
+
+        listOfComboVendor.addAll(asuransiList);
+//        return "init_add";
+    }
+
 
     public String paging(){
         return SUCCESS;

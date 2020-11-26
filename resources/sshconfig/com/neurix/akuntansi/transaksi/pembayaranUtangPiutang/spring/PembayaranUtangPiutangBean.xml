@@ -18,8 +18,11 @@
           p:jurnalDao-ref="jurnalDao"
           p:jurnalDetailDao-ref="jurnalDetailDao"
           p:transDao-ref="transDao"
+          p:positionDao-ref="positionDao"
           p:branchDao-ref="branchDao"
           p:mappingJurnalDao-ref="mappingJurnalDao"
+          p:lampiranDao-ref="lampiranDao"
+          p:userDao-ref="userDao"
     />
 
     <bean id="pembayaranUtangPiutangBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -45,6 +48,8 @@
     <bean id="pembayaranUtangPiutangDao" class="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.dao.PembayaranUtangPiutangDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="pembayaranUtangPiutangDetailDao" class="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.dao.PembayaranUtangPiutangDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="lampiranDao" class="com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.dao.LampiranDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

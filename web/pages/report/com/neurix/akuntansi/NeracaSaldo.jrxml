@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NeracaSaldo" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="84beb8d4-8de8-4367-9aeb-63471eea57d0">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.7715610000000035"/>
+	<property name="ireport.zoom" value="1.6105100000000037"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="91"/>
+	<property name="ireport.y" value="75"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -25,183 +25,10 @@
 	<parameter name="reportParams.alamatSurat" class="java.lang.String"/>
 	<parameter name="reportParams.reportName" class="java.lang.String"/>
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
+	<parameter name="judulGm" class="java.lang.String"/>
+	<parameter name="judulManagerKeu" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT
-  distinct
-  a.grup as grup,
-  a.nama_kode_rekening as namaRekening,
-  a.kode_rekening as kodeRekening,
-  c.jumlah_debit as lastDebit,
-  c.jumlah_kredit as lastKredit,
-  c.saldo as lastSaldo,
-  c.posisi as lastPosisi,
-  b.jumlah_debit as jumlahDebit,
-  b.jumlah_kredit as jumlahKredit,
-  (
-    (
-      CASE WHEN c.jumlah_debit IS NULL THEN 0 ELSE c.jumlah_debit END
-    ) + (
-      CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-    )
-  ) as currDebit,
-  (
-    (
-      CASE WHEN c.jumlah_kredit IS NULL THEN 0 ELSE c.jumlah_kredit END
-    ) + (
-      CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-    )
-  ) as currKredit,
-  (
-    CASE WHEN c.posisi = 'K' THEN abs(
-      (
-        (
-          CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
-        ) + (
-          CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-        )
-      ) - (
-        CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-      )
-    ) ELSE abs(
-      (
-        (
-          CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
-        ) + (
-          CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-        )
-      ) - (
-        CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-      )
-    ) END
-  ) as currSaldo,
-  (
-    CASE WHEN c.posisi = 'K' THEN CASE WHEN (
-      (
-        CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
-      ) + (
-        CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-      )
-    ) - (
-      CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-    ) > 0 THEN 'K' WHEN (
-      (
-        CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
-      ) + (
-        CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-      )
-    ) - (
-      CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-    ) < 0 THEN 'D' ELSE NULL END ELSE CASE WHEN (
-      (
-        CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
-      ) + (
-        CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-      )
-    ) - (
-      CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-    ) < 0 THEN 'K' WHEN (
-      (
-        CASE WHEN c.saldo IS NULL THEN 0 ELSE c.saldo END
-      ) + (
-        CASE WHEN b.jumlah_debit IS NULL THEN 0 ELSE b.jumlah_debit END
-      )
-    ) - (
-      CASE WHEN b.jumlah_kredit IS NULL THEN 0 ELSE b.jumlah_kredit END
-    ) > 0 THEN 'D' ELSE NULL END END
-  ) as currPosisi
-FROM
-  (
-    SELECT
-      rek.*,
-      kr.nama_kode_rekening as grup
-    FROM
-      (
-        select
-          kode.kode_rekening,
-          kode.rekening_id,
-          kode.nama_kode_rekening,
-          LEFT(kode_rekening, 1) as grup_id
-        from
-          im_akun_kode_rekening kode
-          INNER JOIN im_akun_report_detail rd ON rd.rekening_id = kode.rekening_id
-        where
-          rd.report_id = 'RPT01'
-	and rd.flag='Y'
-        group by
-          kode_rekening,
-          kode.nama_kode_rekening,
-          kode.rekening_id
-        order by
-          kode_rekening
-      ) rek
-      INNER JOIN im_akun_kode_rekening kr ON rek.grup_id = kr.kode_rekening
-  ) a
-  LEFT OUTER JOIN (
-    select
-      rekening_id_parent as rekening_id_parent,
-      sum(jumlah_debit) as jumlah_debit,
-      sum(jumlah_kredit) as jumlah_kredit
-    from
-      (
-        select
-          y.rekening_id as rekening_id,
-          rek.rekening_id_parent as rekening_id_parent,
-		  (y.jumlah_debit * x.kurs) as jumlah_debit,
-          (y.jumlah_kredit * x.kurs) as jumlah_kredit,
-          x.created_date as created_date,
-          x.registered_flag as registered_flag,
-          x.branch_id
-        from
-          it_akun_jurnal x
-          INNER JOIN it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
-          INNER JOIN (
-            SELECT
-              rekening_id_parent,
-              rekening_id
-            FROM
-              im_akun_kode_rekening kr
-              INNER JOIN (
-                SELECT
-                  kode_rekening as kode_rekening_parent,
-                  rd.rekening_id as rekening_id_parent
-                FROM
-                  im_akun_report_detail rd
-                  INNER JOIN im_akun_kode_rekening kr ON rd.rekening_id = kr.rekening_id
-                WHERE
-                  report_id = 'RPT01'
-		and rd.flag='Y'
-              ) a ON kr.kode_rekening ilike CONCAT(a.kode_rekening_parent, '%')
-          ) rek ON rek.rekening_id = y.rekening_id
-        where
-          to_char(x.tanggal_jurnal, 'MM-yyyy') = $P{reportParams.periode}
-          and x.registered_flag = 'Y'
-          and x.flag = 'Y'
-          AND y.rekening_id IN (rek.rekening_id)
-		  and branch_id IN ($P!{reportParams.branchId})
-      ) k
-    group by
-      rekening_id_parent
-  ) b ON b.rekening_id_parent = a.rekening_id
-  LEFT OUTER JOIN (
-    select
-      *
-    from
-      it_akun_saldo_akhir
-    where
-      to_date(periode, 'MM-yyyy') = to_date($P{reportParams.periode}, 'MM-yyyy') - Interval '1 month'
-      and branch_id IN ($P!{reportParams.branchId})
-      and rekening_id IN (
-        SELECT
-          rekening_id
-        FROM
-          im_akun_report_detail
-        WHERE
-          report_id = 'RPT01'
-	and flag='Y'
-      )
-  ) c ON a.rekening_id = c.rekening_id
-order by
-  a.kode_rekening]]>
+		<![CDATA[]]>
 	</queryString>
 	<field name="grup" class="java.lang.String"/>
 	<field name="namarekening" class="java.lang.String"/>
@@ -261,7 +88,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[]]></text>
 				</staticText>
@@ -274,7 +101,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[D]]></text>
 				</staticText>
@@ -287,7 +114,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[K]]></text>
 				</staticText>
@@ -300,7 +127,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_jml_debit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_jml_debit_1} )]]></textFieldExpression>
 				</textField>
@@ -313,7 +140,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_jml_kredit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_jml_kredit_1} )]]></textFieldExpression>
 				</textField>
@@ -326,7 +153,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[D]]></text>
 				</staticText>
@@ -339,7 +166,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[K]]></text>
 				</staticText>
@@ -352,7 +179,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[]]></text>
 				</staticText>
@@ -365,7 +192,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[]]></text>
 				</staticText>
@@ -378,25 +205,12 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[** Selesai **]]></text>
 				</staticText>
-				<staticText>
-					<reportElement key="staticText-25" x="21" y="90" width="86" height="13" uuid="a94a468e-caca-4522-a39a-77cb263c2cbb"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[GENERAL MANAGER]]></text>
-				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField" x="4" y="141" width="120" height="14" uuid="5389bf2b-29b5-4a23-89bd-712ec8f490ad"/>
+					<reportElement key="textField" x="4" y="141" width="173" height="14" uuid="5389bf2b-29b5-4a23-89bd-712ec8f490ad"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -404,12 +218,12 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{reportParams.namaGeneralManager}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField" x="4" y="155" width="120" height="14" uuid="9e430caf-f497-46ad-8884-41c6b6958f74"/>
+					<reportElement key="textField" x="4" y="155" width="173" height="14" uuid="9e430caf-f497-46ad-8884-41c6b6958f74"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -417,25 +231,12 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{reportParams.nipGeneralManager}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement key="staticText-26" x="460" y="90" width="91" height="13" uuid="7291df47-790c-4f8d-9025-2075d5e5161e"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<text><![CDATA[MANAGER KEUANGAN]]></text>
-				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-3" x="443" y="141" width="120" height="14" uuid="83eb8648-9f47-4e81-9281-df55eeee3978"/>
+					<reportElement key="textField-3" x="386" y="141" width="177" height="14" uuid="83eb8648-9f47-4e81-9281-df55eeee3978"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -443,12 +244,12 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{reportParams.namaManagerKeuangan}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-4" x="443" y="155" width="120" height="14" uuid="6287da28-6c2c-419d-b723-fba227ef818f"/>
+					<reportElement key="textField-4" x="386" y="155" width="177" height="14" uuid="6287da28-6c2c-419d-b723-fba227ef818f"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -456,7 +257,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{reportParams.nipManagerKeuangan}]]></textFieldExpression>
 				</textField>
@@ -469,7 +270,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_last_debit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_last_debit_1} )]]></textFieldExpression>
 				</textField>
@@ -482,7 +283,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_last_kredit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_last_kredit_1} )]]></textFieldExpression>
 				</textField>
@@ -495,7 +296,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_curr_debit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_curr_debit_1} )]]></textFieldExpression>
 				</textField>
@@ -508,9 +309,35 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_curr_kredit_1} == null ? BigDecimal.valueOf(0.0) : $V{SUM_curr_kredit_1} )]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="4" y="89" width="173" height="14" uuid="0989bb4c-fed5-47aa-adbe-744ad4686c7a"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{judulGm}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="386" y="89" width="177" height="14" uuid="8b509fc5-c4de-4cfd-b1a9-53489f831a25"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{judulManagerKeu}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -531,7 +358,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_jml_kredit_grp} == null ? BigDecimal.ZERO : $V{SUM_jml_kredit_grp} )]]></textFieldExpression>
 				</textField>
@@ -544,7 +371,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_jml_curr_debit_grp} == null ? BigDecimal.ZERO : $V{SUM_jml_curr_debit_grp} )]]></textFieldExpression>
 				</textField>
@@ -557,7 +384,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_jml_last_debit_grp} == null ? BigDecimal.ZERO : $V{SUM_jml_last_debit_grp} )]]></textFieldExpression>
 				</textField>
@@ -570,7 +397,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_jml_debit_grp} == null ? BigDecimal.ZERO : $V{SUM_jml_debit_grp} )]]></textFieldExpression>
 				</textField>
@@ -583,7 +410,7 @@ order by
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA["JUMLAH " + $F{grup}]]></textFieldExpression>
 				</textField>
@@ -607,7 +434,7 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[NERACA SALDO]]></text>
 			</staticText>
@@ -620,7 +447,7 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Periode : "+ $P{reportParams.periodeTitle}]]></textFieldExpression>
 			</textField>
@@ -633,7 +460,7 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -646,7 +473,7 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + " dari "]]></textFieldExpression>
 			</textField>
@@ -659,7 +486,7 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -672,7 +499,7 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Hal.       :"]]></textFieldExpression>
 			</textField>
@@ -685,7 +512,7 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Tanggal :"]]></textFieldExpression>
 			</textField>
@@ -698,7 +525,7 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Waktu   :"]]></textFieldExpression>
 			</textField>
@@ -711,7 +538,7 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
@@ -724,7 +551,7 @@ order by
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="9" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.kota}]]></textFieldExpression>
 			</textField>
@@ -744,7 +571,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 			<textField isBlankWhenNull="true">
 				<reportElement x="2" y="22" width="208" height="15" uuid="81172f77-c778-47cb-a256-2d1184e8eca3"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.areaId}]]></textFieldExpression>
 			</textField>
@@ -934,7 +761,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{grup}]]></textFieldExpression>
 			</textField>

@@ -12,11 +12,13 @@ import com.neurix.authorization.position.model.Position;
 import com.neurix.authorization.role.bo.RoleBo;
 import com.neurix.authorization.role.model.Roles;
 import com.neurix.authorization.user.bo.UserBo;
+import com.neurix.authorization.user.model.ImUsers;
 import com.neurix.authorization.user.model.User;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -267,7 +269,7 @@ public class UserAction extends BaseMasterAction {
         }
 
         for (Branch branch : listOfBranches){
-            if (!"KP".equalsIgnoreCase(branch.getBranchId())){
+            if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(branch.getBranchId())){
                 listOfResult.add(branch);
             }
         }
@@ -285,6 +287,33 @@ public class UserAction extends BaseMasterAction {
         List<Position> listOfPosition = new ArrayList<Position>();
         try {
             listOfPosition = positionBoProxy.getByCriteria(position);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[UserAction.initComboPosition] Error when saving error,", e1);
+            }
+            logger.error("[UserAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return "failure";
+        }
+
+        listOfComboPositions.addAll(listOfPosition);
+
+        return "init_combo_position";
+    }
+
+    public String initComboPositionBod() {
+
+//        Position position = new Position();
+//        position.setKelompokId("KL44");
+//        position.setFlag("Y");
+
+        List<Position> listOfPosition = new ArrayList<Position>();
+        try {
+//            listOfPosition = positionBoProxy.getByCriteria(position);
+            listOfPosition = positionBoProxy.getComboBodBoc();
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -986,5 +1015,51 @@ public class UserAction extends BaseMasterAction {
 
         logger.info("[UserAction.getUserData] end process <<<");
         return user;
+    }
+
+    public CrudResponse checkEmailAvailable(String email){
+        CrudResponse response = new CrudResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        UserBo userBo = (UserBo) ctx.getBean("userBoProxy");
+
+        try {
+            ImUsers users = userBo.getUserByEmailId(email);
+            if (users == null){
+                response.setStatus("success");
+            } else {
+                response.setStatus("error");
+                response.setMsg("Email Not Available");
+            }
+        } catch (GeneralBOException e){
+            logger.error("Error Where Search By Email Address");
+            response.setStatus("error");
+            response.setMsg("Error Where Search By Email Address");
+        }
+
+        return response;
+    }
+
+    public String getStringUrlPhotoProfile(){
+
+        String url = "";
+        String userId = CommonUtil.userIdLogin();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        UserBo userBo = (UserBo) ctx.getBean("userBoProxy");
+
+        User user = new User();
+
+        try {
+            user = userBo.getUserById(userId, "Y");
+        } catch (GeneralBOException e){
+            logger.error("[UserAction.getStringUrlPhotoProfile] Error Where Search User ID. "+e);
+            throw new GeneralBOException("[UserAction.getStringUrlPhotoProfile] Error Where Search User ID. "+e);
+        }
+
+        if (user != null && user.getUserId() != null && user.getPhotoUserUrl() != null)
+            url = ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD + user.getPhotoUserUrl();
+
+        return url;
     }
 }

@@ -17,7 +17,7 @@
     <script type='text/javascript'>
         function confirm() {
 
-            var tipeTransaksi          = $('#tipe_transaksi').val();
+            var tipeTransaksi          = $('#tipe_transaksi_add').val();
             var tanggal        = $('#tanggal').val();
             var metodeBayar           = $('#coa_asal').val();
             var bayar      = $('#bayar').val();
@@ -27,8 +27,11 @@
             var status ="";
             PembayaranUtangPiutangAction.cekBeforeSave(tipeTransaksi,tanggal,metodeBayar,bayar,keterangan,noslipBank,branchId,function (result) {
                 status=result;
-            })
-
+            });
+            var rowCount = $('.detailPembayaranTable tr').length;
+            if (rowCount<2){
+                status+="\n Detail pemasukan tidak boleh kosong";
+            }
             if (status=="") {
                 $('#confirm_dialog').dialog('open');
             } else {
@@ -128,6 +131,7 @@
                                                 <s:select list="#comboTrans.listOfComboTrans" id="tipe_transaksi" name="pembayaranUtangPiutang.tipeTransaksi"
                                                           cssStyle="margin-top: 7px" onchange="isiKeteterangan(),getTipeMaster(),getCoaLawan(),getCoaAsal()"
                                                           listKey="transId" listValue="transName" headerKey="" headerValue="" cssClass="form-control" />
+                                                <s:hidden id="tipe_transaksi_add" name="pembayaranUtangPiutang.tipeTransaksi" />
                                                 <s:hidden id="tipeMaster" />
                                             </div>
                                         </div>
@@ -138,7 +142,7 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <s:textfield id="tanggal" name="pembayaranUtangPiutang.stTanggal"
+                                                    <s:textfield id="tanggal" name="pembayaranUtangPiutang.stTanggal" cssStyle="background-color: #fff" readonly="true"
                                                                  cssClass="form-control datemask" onchange="$('#st_tgl').css('border','')"/>
                                                     <script>
                                                         $("#tanggal").datepicker({
@@ -183,6 +187,18 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-offset-3">
+                                    <button type="button" class="btn btn-warning" id="btnLampiran"><i
+                                            class="fa fa-file"></i> Lampiran
+                                    </button>
+                                    <script>
+                                        $('#btnLampiran').click(function () {
+                                            $('#modal-lampiran').modal('show');
+                                        })
+                                    </script>
                                 </div>
                             </div>
                             <div class="box-header with-border"></div>
@@ -243,7 +259,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4" style="margin-top: 7px">Kode Vendor</label>
+                                            <label class="col-md-4" style="margin-top: 7px">ID Vendor/Kary/Dokter/Pasien</label>
                                             <div class="col-md-3">
                                                 <s:textfield id="kode_vendor" onkeypress="$(this).css('border','')" wajib="Y"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" />
@@ -306,7 +322,7 @@
                                         <div class="form-group">
                                             <label class="col-md-4" style="margin-top: 7px">Jumlah Pembayaran</label>
                                             <div class="col-md-8">
-                                                <s:textfield id="jumlah_pembayaran" onkeypress="$(this).css('border','')" readonly="true"
+                                                <s:textfield id="jumlah_pembayaran" onkeypress="$(this).css('border','')" readonly="true" wajib="Y"
                                                              cssClass="form-control" cssStyle="margin-top: 7px" onkeyup="formatRupiah2(this)" />
                                             </div>
                                         </div>
@@ -444,14 +460,90 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" id="btnAddCheckedNota" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Add Checked
-                </button>
+                <%--<button type="button" class="btn btn-success" id="btnAddCheckedNota" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Add Checked--%>
+                <%--</button>--%>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-lampiran">
+    <div class="modal-dialog modal-flat modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Daftar Lampiran</h4>
+            </div>
+            <div class="modal-body">
+                <center class="box">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <label class="control-label col-sm-4">Nama Lampiran </label>
+                        <div class="col-sm-8">
+                            <s:textfield id="mod_nama_lampiran" onkeypress="$(this).css('border','')" cssClass="form-control modal_lampiran"/>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 7px">
+                        <label class="control-label col-sm-4">Lampiran (PDF/JPEG/PNG) </label>
+                        <div class="col-sm-8">
+                            <div class="input-group" id="img_file2"  style="margin-top: 7px">
+                                          <span class="input-group-btn">
+                                            <span class="btn btn-default btn-file btn-file-2">
+                                               Browse… <s:file id="imgInp2" accept=".jpg" name="fileUpload2"
+                                                               onchange="$('#img_file2').css('border','')"></s:file>
+                                            </span>
+                                            </span>
+                                <input type="text" class="form-control" readonly id="namaFile2">
+                            </div>
+                            <canvas id="img_faktur_canvas2" style="display: none"></canvas>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" style="margin-top: 7px">
+                        <center>
+                            <a id="btnAddLampiran" type="button" class="btn btn-default btn-success"><i class="fa fa-plus"></i> Tambah</a>
+                        </center>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table style="width: 100%;" class="tabelLampiran table table-bordered">
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </center>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-view-lampiran" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Lampiran</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-responsive" id="my-image">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
     function selectPembayaran(){
@@ -477,6 +569,7 @@
         $('#divisi_id').attr('wajib', "N");
         $('#kode_vendor').attr('wajib', "N");
         $('#no_nota').attr('wajib', "N");
+        $('#jumlah_pembayaran').attr('wajib', "N");
 
         selectPembayaran();
         $('#btnSearchNota').click(function () {
@@ -507,7 +600,7 @@
                     PembayaranUtangPiutangAction.searchNotaPembayaran(masterId,transaksiId,branchId,divisiId,coaLawan,function (listdata) {
                         tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 '>No</th>" +
-                            "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
+                            // "<th style='text-align: center; color: #fff; background-color:  #30d196'><input type='checkbox' id='checkAll'></th>"+
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 '>Kode Vendor</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>Rekening ID</th>" +
                             "<th style='text-align: center; color: #fff; background-color:  #30d196 ''>No. Nota</th>" +
@@ -516,10 +609,10 @@
                             "</tr></thead>";
                         var i = i;
                         $.each(listdata, function (i, item) {
-                            var combo = '<input type="checkbox" checked id="check_'+i+'">';
+                            // var combo = '<input type="checkbox" checked id="check_'+i+'">';
                             tmp_table += '<tr style="font-size: 12px;" ">' +
                                 '<td align="center">' + (i + 1) + '</td>' +
-                                '<td align="center">' + combo + '</td>' +
+                                // '<td align="center">' + combo + '</td>' +
                                 '<td align="center">' + item.masterId + '</td>' +
                                 '<td align="center">' + item.rekeningId + '</td>' +
                                 '<td align="center">' + item.noNota + '</td>' +
@@ -631,13 +724,16 @@
             var statusDivisi=$('#divisi_id').attr('wajib');
             var statusVendor=$('#kode_vendor').attr('wajib');
             var statusNota=$('#no_nota').attr('wajib');
+            var statusJumlahPembayaran=$('#jumlah_pembayaran').attr('wajib');
 
             if (statusDivisi=='Y'&& divisiId==""){
                 alert("belum memilih Divisi");
             } else if (statusVendor=='Y'&& kodeVendor==""){
                 alert("belum memilih Vendor");
             }else if (statusNota=='Y'&& noNota==""){
-                alert("belum memilih No. Nota");
+                alert("belum memilih/mengisi No. Nota");
+            }else if (statusJumlahPembayaran=='Y'&& jumlahPembayaran==""){
+                alert("jumlah pembayaran belum dimasukkan");
             }else{
                 PembayaranUtangPiutangAction.saveDetailPembayaran(kodeVendor,namaVendor,noNota,jumlahPembayaran,rekeningId,divisiId,divisiName,function (result) {
                     if (result==""){
@@ -654,6 +750,8 @@
                         totalBayar = intTotalBayar+intBayar;
                         var strTotalBayar = String(totalBayar);
                         $('#bayar').val(formatRupiahAngka(strTotalBayar));
+                        $('#tipe_transaksi').prop('disabled', 'true');
+                        $('#tipe_transaksi_add').val($('#tipe_transaksi').val());
                     } else{
                         alert(result);
                     }
@@ -662,31 +760,32 @@
 
         });
         $('.detailPembayaranTable').on('click', '.item-delete-data', function () {
-            var id = $(this).attr('data');
+            var rekeningId = $(this).attr('rekening');
+            var nonota = $(this).attr('data');
+            var vendor = $(this).attr('vendor');
+            var divisi = $(this).attr('divisi');
             var biaya = $(this).attr('biaya');
-            if (id!=''){
-                PembayaranUtangPiutangAction.deleteDetailPembayaran(id,function (result) {
-                    alert("data berhasil dihapus");
-                    loadDetailPembayaran();
-                    var totalBayar = $('#bayar').val();
-                    totalBayar=totalBayar.replace(/[.]/g,"");
-                    var strBayar=biaya.replace(/[.]/g,"");
-                    var intTotalBayar=0;
-                    if (totalBayar!=''){
-                        intTotalBayar = parseInt(totalBayar);
-                    }
-                    var intBayar = parseInt(strBayar);
-                    totalBayar = intTotalBayar-intBayar;
-                    var strTotalBayar = String(totalBayar);
-                    $('#bayar').val(formatRupiahAngka(strTotalBayar));
-                });
-            } else{
-                var msg="";
-                if (id==""){
-                    msg+="Kode vendor tidak ditemukan \n";
+            PembayaranUtangPiutangAction.deleteDetailPembayaran(rekeningId,divisi,vendor,nonota,biaya,function () {
+                alert("data berhasil dihapus");
+                loadDetailPembayaran();
+                var totalBayar = $('#bayar').val();
+                totalBayar=totalBayar.replace(/[.]/g,"");
+                var strBayar=biaya.replace(/[.]/g,"");
+                var intTotalBayar=0;
+                if (totalBayar!=''){
+                    intTotalBayar = parseInt(totalBayar);
                 }
-                alert(msg);
-            }
+                var intBayar = parseInt(strBayar);
+                totalBayar = intTotalBayar-intBayar;
+                var strTotalBayar = String(totalBayar);
+                $('#bayar').val(formatRupiahAngka(strTotalBayar));
+
+                var rowCount = $('.detailPembayaranTable tr').length;
+                if (rowCount===1){
+                    $('#tipe_transaksi').removeAttr('disabled');
+                    $('#tipe_transaksi_add').val();
+                }
+            });
         });
         window.loadDetailPembayaran = function () {
             $('.detailPembayaranTable').find('tbody').remove();
@@ -717,7 +816,7 @@
                         '<td align="center">' + item.noNota + '</td>' +
                         '<td align="center">' + item.stJumlahPembayaran+ '</td>' +
                         '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' biaya ='" + item.stJumlahPembayaran + "'>" +
+                        "<a href='javascript:;' class ='item-delete-data' data ='" + item.noNota + "' rekening ='" + item.rekeningId + "' vendor ='" + item.masterId + "' biaya ='" + item.stJumlahPembayaran + "' divisi ='" + item.divisiId + "'>" +
                         "<img border='0' src='<s:url value='/pages/images/delete_task.png'/>' name='icon_delete'>" +
                         '</a>' +
                         '</td>' +
@@ -792,6 +891,7 @@
         $('#divisi_id').attr('wajib', "N");
         $('#kode_vendor').attr('wajib', "N");
         $('#no_nota').attr('wajib', "N");
+        $('#jumlah_pembayaran').attr('wajib', "N");
 
         var tipeTransaksi = $('#tipe_transaksi option:selected').val();
         var coaLawan = $('#coa_lawan option:selected').val();
@@ -814,6 +914,11 @@
 
                 if (res.biaya=="Y"){
                     $('#jumlah_pembayaran').attr('readonly', false);
+                    $('#jumlah_pembayaran').attr('wajib', "Y");
+                    $('#btnSearchNota').hide();
+                    $('#no_nota').attr('readonly', false);
+                }else{
+                    $('#jumlah_pembayaran').attr('wajib', "N");
                 }
             });
         }else{
@@ -844,7 +949,120 @@
         return rupiah;
     }
 
+    $('#btnAddLampiran').click(function () {
+        var namaLampiran = $('#mod_nama_lampiran').val();
+        var canvas = document.getElementById('img_faktur_canvas2');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 
+        if (namaLampiran !=''&&canvas!=''){
+            PembayaranUtangPiutangAction.saveSessionLampiran(namaLampiran, dataURL, function (result) {
+                if (result == "") {
+                    loadLampiran();
+                    $('#mod_nama_lampiran').val("");
+                    $('#img_faktur_canvas2').val("");
+                } else {
+                    alert(result);
+                }
+            });
+        } else{
+            var msg="";
+            if (namaLampiran==""){
+                msg+="Nama Lampiran masih kosong. \n"
+            }
+            if (canvas==""){
+                msg+="Gambar belum diupload \n"
+            }
+            alert(msg);
+        }
+    });
+
+    $('.tabelLampiran').on('click', '.item-delete-lampiran', function () {
+        var nama = $(this).attr('nama');
+        if (nama != '') {
+            PembayaranUtangPiutangAction.deleteSessionLampiran(nama, function (result) {
+                alert("data berhasil dihapus");
+                loadLampiran();
+            });
+        };
+    });
+
+    window.loadLampiran = function () {
+        $('.tabelLampiran').find('tbody').remove();
+        $('.tabelLampiran').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        PembayaranUtangPiutangAction.loadSessionLampiran(function (listdata) {
+            tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
+                "<th style='text-align: center; background-color:  #30d196'>No</th>" +
+                "<th style='text-align: center; background-color:  #30d196'>Nama Lampiran</th>" +
+                "<th style='text-align: center; background-color:  #30d196'>View</th>" +
+                "<th style='text-align: center; background-color:  #30d196'>Delete</th>" +
+                "</tr></thead>";
+            var i = i;
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td align="center">' + item.namaLampiran + '</td>' +
+                    '<td align="center">' +
+                    "<a href='javascript:;' class ='item-view-lampiran' nama ='" + item.namaLampiran + "'>" +
+                    "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                    '</a>' +
+                    '</td>' +
+                    '<td align="center">' +
+                    "<a href='javascript:;' class ='item-delete-lampiran' nama ='" + item.namaLampiran + "' >" +
+                    "<img border='0' src='<s:url value='/pages/images/icons8-trash-can-25.png'/>'>" +
+                    '</a>' +
+                    '</td>' +
+                    "</tr>";
+            });
+            $('.tabelLampiran').append(tmp_table);
+        });
+    };
+
+    $('.tabelLampiran').on('click', '.item-view-lampiran', function(){
+        var judul = $(this).attr('nama');
+        dwr.engine.setAsync(false);
+        PembayaranUtangPiutangAction.loadImageSessionLaporan(judul,function (data) {
+            $("#my-image").attr("src", "data:image/png;base64,"+data);
+        });
+        $('#modal-view-lampiran').find('.modal-title').text(judul);
+        $('#modal-view-lampiran').modal('show');
+    });
+
+    $(document).ready(function () {
+        var canvas = document.getElementById('img_faktur_canvas2');
+        var ctx = canvas.getContext('2d');
+
+        $(document).on('change', '.btn-file-2 :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file-2 :file').on('fileselect', function (event, label) {
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var img = new Image();
+                    img.onload = function () {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0);
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                if (log) alert(log);
+            }
+        });
+    });
 </script>
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>

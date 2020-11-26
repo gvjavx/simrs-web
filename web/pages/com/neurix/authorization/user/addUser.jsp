@@ -30,6 +30,10 @@
     </style>
     <script type='text/javascript'>
 
+        var errEmail = "";
+        var userId = document.getElementById("userid").value;
+        var email = document.getElementById("email").value;
+
         $.subscribe('beforeProcessSave', function (event, data) {
 
             if (document.getElementById("userid").value != '' &&
@@ -41,7 +45,10 @@
                     document.getElementById("areaid").value != '' &&
                     document.getElementById("branchid").value != '' &&
                     //document.getElementById("fileUpload").value != '' &&
-                    document.getElementById("password").value == document.getElementById("confirmPassword").value) {
+                    document.getElementById("password").value == document.getElementById("confirmPassword").value &&
+                    errEmail == "" &&
+                    email != userId
+            ) {
 
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
@@ -91,6 +98,14 @@
 
                 if (document.getElementById("roleid").value == '') {
                     msg = msg + 'Field <strong>Role Id</strong> is required.' + '<br/>';
+                }
+
+                if (errEmail == "Y") {
+                    msg = msg + '<strong>Email</strong> is not available.' + '<br/>';
+                }
+
+                if (email == userId) {
+                    msg = msg + '<strong>Email</strong> must be different with <strong>User ID</strong>.' + '<br/>';
                 }
 
                 /*if (document.getElementById("fileUpload").value == '') {
@@ -151,7 +166,6 @@
     <section class="content-header">
         <h1>
             Add User Information
-            <small>HRIS</small>
         </h1>
     </section>
 
@@ -258,7 +272,8 @@
                                     <div class="form-group">
                                         <label class="control-label col-sm-5" for="users.email">Email :</label>
                                         <div class="col-sm-3">
-                                            <s:textfield id="email" name="users.email" required="true" cssClass="form-control"/>
+                                            <s:textfield id="email" name="users.email" required="true" cssClass="form-control" onchange="checkEmail()" />
+                                            <div class="alert alert-danger" id="err-email" style="display: none"></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -309,17 +324,35 @@
                                             <td>
                                                 <table>
 
-                                                    <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                                               resizable="false"
-                                                               height="250" width="600" autoOpen="false" title="Saving ...">
-                                                        Please don't close this window, server is processing your request ...
-                                                        </br>
-                                                        </br>
-                                                        </br>
-                                                        <center>
-                                                            <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
-                                                        </center>
-                                                    </sj:dialog>
+                                                    <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                                               <%--resizable="false"--%>
+                                                               <%--height="250" width="600" autoOpen="false" title="Saving ...">--%>
+                                                        <%--Please don't close this window, server is processing your request ...--%>
+                                                        <%--</br>--%>
+                                                        <%--</br>--%>
+                                                        <%--</br>--%>
+                                                        <%--<center>--%>
+                                                            <%--<img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">--%>
+                                                        <%--</center>--%>
+                                                    <%--</sj:dialog>--%>
+
+                                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                                   closeTopics="closeDialog" modal="true"
+                                                                   resizable="false"
+                                                                   height="250" width="600" autoOpen="false"
+                                                                   title="Save Data ...">
+                                                            Please don't close this window, server is processing your request ...
+                                                            <br>
+                                                            <center>
+                                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                     name="image_indicator_write">
+                                                                <br>
+                                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                     name="image_indicator_write">
+                                                            </center>
+                                                        </sj:dialog>
 
                                                     <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false" closeOnEscape="false"
                                                                height="200" width="400" autoOpen="false" title="Infomation Dialog"
@@ -472,6 +505,34 @@
             }
             $('#pelayananId').html(option);
         });
+    }
+
+    function checkEmail() {
+
+        var email = $("#email").val();
+        if (email == null || email == ""){
+            $("#err-email").show();
+            $("#err-email").html("Email Must Be Insert");
+            errEmail = "Y";
+        } else {
+            UserAction.checkEmailAvailable(email, function (res) {
+                if (res.status == "error"){
+                    $("#err-email").show();
+                    $("#err-email").html(res.msg);
+                    errEmail = "Y";
+                } else {
+                    $("#err-email").hide();
+                    errEmail = "";
+                }
+            });
+        }
+    }
+
+    function eraseInput(id) {
+        if (id == "email"){
+//            $("#email").val("");
+            $("#err-email").hide();
+        }
     }
 
 </script>

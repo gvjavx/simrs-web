@@ -31,7 +31,7 @@ import java.util.List;
 
 public class    LemburController implements ModelDriven<Object> {
     private static final transient Logger logger = Logger.getLogger(LemburController.class);
-    private List<Lembur> listOfLembur = new ArrayList<>();
+    private List<Lembur> listOfLembur;
     private Lembur model = new Lembur();
     private LemburBo lemburBoProxy;
     private LiburBo liburBoProxy;
@@ -51,6 +51,70 @@ public class    LemburController implements ModelDriven<Object> {
     private String tanggalAkhir;
     private String jamAwal;
     private String jamAkhir;
+    private String lamaJamLembur;
+    private String namaPegawai;
+    private String keterangan;
+    private String nipUserLogin;
+    private String nameUserLogin;
+
+    public String getNameUserLogin() {
+        return nameUserLogin;
+    }
+
+    public void setNameUserLogin(String nameUserLogin) {
+        this.nameUserLogin = nameUserLogin;
+    }
+
+    public String getNipUserLogin() {
+        return nipUserLogin;
+    }
+
+    public void setNipUserLogin(String nipUserLogin) {
+        this.nipUserLogin = nipUserLogin;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public String getWho() {
+        return who;
+    }
+
+    public String getStatusApprove() {
+        return statusApprove;
+    }
+
+    public String getConfirm() {
+        return confirm;
+    }
+
+
+
+    public String getNamaPegawai() {
+        return namaPegawai;
+    }
+
+    public void setNamaPegawai(String namaPegawai) {
+        this.namaPegawai = namaPegawai;
+    }
+
+    public String getLamaJamLembur() {
+        return lamaJamLembur;
+    }
+
+    public void setLamaJamLembur(String lamaJamLembur) {
+        this.lamaJamLembur = lamaJamLembur;
+    }
 
     public NotifikasiBo getNotifikasiBoProxy() {
         return notifikasiBoProxy;
@@ -121,6 +185,7 @@ public class    LemburController implements ModelDriven<Object> {
                 model.setJamLemburAkhir(obj[10].toString());
             }
         }
+        listOfLembur = null;
         logger.info("[LemburController.create] end process POST /lembur <<<");
         return new DefaultHttpHeaders("index").disableCaching();
     }
@@ -141,14 +206,22 @@ public class    LemburController implements ModelDriven<Object> {
                     editLembur.setApprovalFlag("N");
                 }
             }
-            if (!("").equalsIgnoreCase(model.getKeterangan())){
-                editLembur.setNotApprovalNote(model.getKeterangan());
+            if (!("").equalsIgnoreCase(keterangan)){
+                editLembur.setNotApprovalNote(keterangan);
             }
             editLembur.setTmpApprove(who);
-            editLembur.setNip(model.getNip());
+            editLembur.setNip(nip);
+            editLembur.setNipUserLogin(nipUserLogin);
+            editLembur.setLastUpdateWho(nameUserLogin);
+            editLembur.setApprovalName(nameUserLogin);
+            editLembur.setApprovalId(nipUserLogin);
+
+            editLembur.setJamAwal(jamAwal);
+            editLembur.setJamAkhir(jamAkhir);
+
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date tanggalAwalst = simpleDateFormat.parse(model.getTanggalAwal());
-            java.util.Date tanggalAkhirst = simpleDateFormat.parse(model.getTanggalAkhir());
+            java.util.Date tanggalAwalst = simpleDateFormat.parse(tanggalAwal);
+            java.util.Date tanggalAkhirst = simpleDateFormat.parse(tanggalAkhir);
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             String tangAwl = sdf.format(tanggalAwalst);
@@ -156,13 +229,16 @@ public class    LemburController implements ModelDriven<Object> {
 
             editLembur.setTanggalAwalSetuju(CommonUtil.convertToDate(tangAwl));
             editLembur.setTanggalAkhirSetuju(CommonUtil.convertToDate(tangAkh));
-            editLembur.setLamaJam(Double.valueOf(model.getLamaJamLembur()));
-            editLembur.setLastUpdateWho(model.getNamaPegawai());
+            editLembur.setLamaJam(Double.valueOf(lamaJamLembur));
+//            editLembur.setLastUpdateWho(namaPegawai);
+
             editLembur.setLastUpdate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
             editLembur.setAction("U");
             editLembur.setFlag("Y");
             editLembur.setApprovalId(id);
-            editLembur.setApprovalName(model.getNamaPegawai());
+//            editLembur.setApprovalName(namaPegawai);
+
+            editLembur.setMobile(true);
 
             List<Notifikasi> notifikasiList = lemburBoProxy.saveApprove(editLembur);
 
@@ -191,7 +267,7 @@ public class    LemburController implements ModelDriven<Object> {
 
     public String confirm(){
         logger.info("[LemburController.confirm] start proccess GET /lembur/{id}/confirm");
-
+        listOfLembur = new ArrayList<>();
         List<Object[]> lemburs = null;
         try {
             lemburs = lemburBoProxy.findAllConfirmByAtasan(id, confirm);
@@ -230,6 +306,7 @@ public class    LemburController implements ModelDriven<Object> {
     public String tanggal() {
         logger.info("[LemburController.confirm] start proccess GET /lembur/{id}/tanggal");
         String lemburs = null;
+        listOfLembur = new ArrayList<>();
 
         Date dateTanggalAwal = CommonUtil.convertToDate(tanggalAwal);
         Date dateTanggalAkhir = CommonUtil.convertToDate(tanggalAkhir);
@@ -262,7 +339,7 @@ public class    LemburController implements ModelDriven<Object> {
     // check off work by parameter start date and last date
     public String offwork() throws ParseException {
         logger.info("[LemburController.offwork] start proccess GET /lembur/{id}/offwork");
-
+        listOfLembur = new ArrayList<>();
         int jumlahHari = 0;
 
         Libur libur = new Libur();
@@ -299,6 +376,7 @@ public class    LemburController implements ModelDriven<Object> {
     // calculate time of lembur
     public String calculate() throws ParseException {
         logger.info("[LemburAction.calcJamLembur] start process >>>");
+        listOfLembur = null;
         String hariKerja ="hari_libur";
 
         Double hasil = (double) 0;
@@ -308,13 +386,21 @@ public class    LemburController implements ModelDriven<Object> {
         int iJamAkhirKerja=Integer.parseInt(jamAkhir.replace(":",""));
         int iJamAwalDb = 0,iJamAkhirDb=0;
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date tanggalAwalst = simpleDateFormat.parse(tanggalAwal);
-        java.util.Date tanggalAkhirst = simpleDateFormat.parse(tanggalAkhir);
+        String tangAwl = "";
+        String tangAkh = "";
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String tangAwl = sdf.format(tanggalAwalst);
-        String tangAkh = sdf.format(tanggalAkhirst);
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            java.util.Date tanggalAwalst = simpleDateFormat.parse(tanggalAwal);
+            java.util.Date tanggalAkhirst = simpleDateFormat.parse(tanggalAkhir);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            tangAwl = sdf.format(tanggalAwalst);
+            tangAkh = sdf.format(tanggalAkhirst);
+        } catch (ParseException e) {
+            logger.info(e.getMessage());
+            throw new GeneralBOException(e);
+        }
 
         Date startDate = CommonUtil.convertToDate(tangAwl);
         Date endDate = CommonUtil.convertToDate(tangAkh);
@@ -401,7 +487,7 @@ public class    LemburController implements ModelDriven<Object> {
     }
     @Override
     public Object getModel() {
-        return listOfLembur.size() > 0 ? listOfLembur: model;
+        return listOfLembur != null ? listOfLembur: model;
     }
 
     public String getIdLembur() {

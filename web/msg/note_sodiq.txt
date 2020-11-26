@@ -1,53 +1,1294 @@
-// 29-05-2020
-// ALTER TABLE
+ALTER TABLE it_simrs_hemodialisa
+ADD COLUMN is_ttd character varying(1);
+
+-- 16-07-2020
+CREATE TABLE public.it_simrs_status_pengisian_rekam_medis
+(
+  id_status_pengisian_rekam_medis character varying(30) NOT NULL,
+  no_checkup character varying(30),
+  id_detail_checkup character varying(30),
+  id_pasien character varying(30),
+  id_rekam_medis_pasien character varying(100),
+  is_pengisian character varying(1),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  jumlah_kategori character varying(100),
+  CONSTRAINT pk_id_status_pengisian_rekam_medis PRIMARY KEY (id_status_pengisian_rekam_medis)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_status_pengisian_rekam_medis
+  OWNER TO postgres;
+
+
+CREATE SEQUENCE public.seq_status_pengisiain_rm
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE public.seq_status_pengisiain_rm
+  OWNER TO postgres;
+
+-- 17-07-2020
+ALTER TABLE it_simrs_dokter_team
+ADD COLUMN id_pelayanan character varying(100);
+
+-- 20-07-2020
 ALTER TABLE it_simrs_periksa_lab
-ADD COLUMN ttd_dokter character varying(100),
-ADD COLUMN ttd_petugas character varying(100);
+ADD COLUMN keterangan character varying(100);
+
+CREATE TABLE public.it_simrs_order_periksa_lab
+(
+  id_order_periksa character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  id_lab character varying(30),
+  id_lab_detail character varying(30),
+  is_pemeriksaan character varying(1),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  keterangan character varying(100),
+  CONSTRAINT pk_id_order_periksa PRIMARY KEY (id_order_periksa)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_order_periksa_lab
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_order_periksa_lab;
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN no_checkup_ulang character varying(100);
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN is_order_lab character varying(100);
+
+ALTER TABLE it_simrs_checkup_alergi
+ADD COLUMN jenis character varying(100),
+ADD COLUMN id_pasien character varying(100);
+
+ALTER TABLE it_simrs_diagnosa_rawat
+ALTER COLUMN jenis_diagnosa TYPE character varying(100);
+
+-- 27-07-2020
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_close_traksaksi character varying(1),
+ADD COLUMN tindak_lanjut text,
+ADD COLUMN catatan text;
+
+-- 29-07-2020
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN rs_rujukan character varying (200);
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_tppri character varying(1);
+
+-- 30-07-2020
+ALTER TABLE im_simrs_kelas_ruangan
+ADD COLUMN kategori character varying (100);
+
+ALTER TABLE it_simrs_dokter_team
+ADD COLUMN jenis_dpjp character varying (100);
+
+ALTER TABLE it_simrs_rawat_inap
+ADD COLUMN status character varying(1);
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN is_stay character varying(1);
+
+-- 10-08-2020
+CREATE TABLE public.it_simrs_asesmen_keperawatan_rawat_jalan
+(
+  id_keperawatan_rawat_jalan character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  parameter text,
+  jawaban text,
+  keterangan character varying(1000),
+  jenis character varying(1000),
+  score integer,
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  tipe character varying(100),
+  CONSTRAINT pk_id_keperawatan_rawat_jalan PRIMARY KEY (id_keperawatan_rawat_jalan)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_asesmen_keperawatan_rawat_jalan
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_keperawatan_rawat_jalan;
 
 ALTER TABLE it_simrs_header_checkup
-ADD COLUMN Anamnese text;
+RENAME anamnese TO autoanamnesis;
 
-// CREATE TABLE
-CREATE TABLE public.im_simrs_diagnosa_asuhan_keperawatan
+ALTER TABLE it_simrs_header_checkup
+ADD COLUMN heteroanamnesis text;
+
+-- 11-08-2020
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_jalan
+ADD COLUMN nama_terang text;
+
+-- 12-08-2020
+ALTER TABLE im_simrs_dokter
+ADD COLUMN sip character varying (100);
+
+-- 14-08-2020
+ALTER TABLE it_simrs_asesmen_poli_spesialis
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100);
+
+ALTER TABLE it_simrs_hemodialisa
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100);
+
+ALTER TABLE it_simrs_catatan_terintegrasi
+RENAME COLUMN jenis TO subjective;
+
+ALTER TABLE it_simrs_catatan_terintegrasi
+ALTER subjective TYPE text;
+
+ALTER TABLE it_simrs_catatan_terintegrasi
+ADD COLUMN nadi VARCHAR(100),
+ADD COLUMN suhu VARCHAR(100),
+ADD COLUMN rr VARCHAR(100),
+ADD COLUMN tensi VARCHAR(100),
+ADD COLUMN objective text,
+ADD COLUMN assesment text,
+ADD COLUMN planning text,
+ADD COLUMN nama_dokter VARCHAR(100),
+ADD COLUMN nama_petugas VARCHAR(100),
+ADD COLUMN sip_dokter VARCHAR(100),
+ADD COLUMN sip_petugas VARCHAR(100);
+
+-- 15-08-2020
+CREATE TABLE public.it_simrs_observasi_tindakan_hd
 (
-  id_diagnosa_asuhan_keperawatan character varying(30) NOT NULL,
-  diagnosa text,
+  id_observasi_tindakan_hd character varying(30) NOT NULL,
+  id_detail_checkup character varying(100),
+  waktu character varying(100),
+  observasi character varying(100),
+  qb character varying(100),
+  tensi character varying(100),
+  nadi character varying(100),
+  suhu character varying(100),
+  rr character varying(100),
+  cairan_masuk character varying(100),
+  makan_minum character varying(100),
+  muntah character varying(100),
+  uf character varying(100),
+  jenis character varying(100),
+  keterangan character varying(100),
+  ttd character varying(100),
+  nama_terang character varying(100),
+  sip character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_observasi_tindakan_hd PRIMARY KEY (id_observasi_tindakan_hd)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_observasi_tindakan_hd
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_observasi_hd;
+
+-- 16-08-2020
+ALTER TABLE it_simrs_asesmen_ugd
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100);
+
+-- 17-08-2020
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_cover VARCHAR(1);
+
+-- 19-08-2020
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100);
+
+-- 20-08-2020
+ALTER TABLE it_simrs_rencana_asuhan_keperawatan
+ADD COLUMN nama_terang character varying(100);
+
+ALTER TABLE it_simrs_catatan_pemberian_obat
+ADD COLUMN nama_terang_dokter character varying(100),
+ADD COLUMN sip_dokter character varying(100),
+ADD COLUMN nama_terang_perawat character varying(100);
+
+ALTER TABLE it_simrs_asesmen_operasi
+ADD COLUMN nama_terang character varying(100),
+ADD COLUMN sip character varying(100);
+
+-- 21-08-2020
+ALTER TABLE it_simrs_asesmen_icu
+ADD COLUMN nama_terang character varying(100),
+ADD COLUMN sip character varying(100);
+
+ALTER TABLE it_simrs_rencana_asuhan_keperawatan
+ADD COLUMN nama_dokter character varying(100),
+ADD COLUMN sip character varying(100);
+
+ALTER TABLE it_simrs_rencana_asuhan_keperawatan
+ADD COLUMN ttd_dokter VARCHAR(100);
+
+ALTER TABLE it_simrs_asesmen_kandungan
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100);
+
+-- 26-08-2020
+CREATE TABLE public.it_simrs_partograf
+(
+  id_partograf character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  waktu character varying(100),
+  djj character varying(100),
+  air_ketuban character varying(100),
+  molase character varying(100),
+  pembukaan character varying(100),
+  kontraksi character varying(100),
+  oksitosin character varying(100),
+  tetes character varying(100),
+  obat_cairan character varying(100),
+  nadi character varying(100),
+  tensi character varying(100),
+  suhu character varying(100),
+  rr character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  nama_terang character varying(100),
+  sip character varying(100),
+  ttd character varying(100),
+  CONSTRAINT pk_id_partograf PRIMARY KEY (id_partograf)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_partograf
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_partograf;
+
+-- 30-08-2020
+ALTER TABLE it_simrs_tindakan_rawat
+ADD COLUMN id_pelayanan VARCHAR(100);
+
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN url_img VARCHAR(100);
+
+-- 31-08-2020
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_jalan
+ADD COLUMN sip VARCHAR(100);
+
+-- 01-09-2020
+ALTER TABLE it_simrs_fisioterapi
+ADD COLUMN skor VARCHAR (100),
+ADD COLUMN tipe VARCHAR (100);
+
+ALTER TABLE it_simrs_ringkasan_pasien
+ADD COLUMN tipe VARCHAR (100),
+ADD COLUMN nama_terang VARCHAR (100),
+ADD COLUMN sip VARCHAR (100);
+
+-- 03-09-2020
+ALTER TABLE it_simrs_detail_icu
+ADD COLUMN id_detail_checkup VARCHAR(50);
+
+-- 05-09-2020
+CREATE TABLE public.it_simrs_implementasi_perawat
+(
+  id_implementasi_perawat character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  waktu character varying(100),
+  keterangan text,
+  ttd character varying(100),
+  nama_terang character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_implementasi_perawat PRIMARY KEY (id_implementasi_perawat)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_implementasi_perawat
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_implementasi_perawat;
+
+-- 08-09-2020
+ALTER TABLE it_simrs_edukasi_pasien_teritegrasi
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100),
+ADD COLUMN nama_staf VARCHAR(100);
+
+-- 09-09-2020
+-- insert to table pelayanan
+INSERT INTO im_simrs_pelayanan VALUES
+('PYN00000033',
+'Ruang Bersalin',
+'Y',
+'C',
+now(),
+'migrasi',
+now(),
+'migrasi',
+null,
+null,
+'ruang_bersalin',
+'RS01',
+null,
+null,
+null),
+('PYN00000034',
+'ICU',
+'Y',
+'C',
+now(),
+'migrasi',
+now(),
+'migrasi',
+null,
+null,
+'rawat_intensif',
+'RS01',
+null,
+null,
+null),
+('PYN00000035',
+'Kamar Operasi',
+'Y',
+'C',
+now(),
+'migrasi',
+now(),
+'migrasi',
+null,
+null,
+'kamar_operasi',
+'RS01',
+null,
+null,
+null);
+
+-- insert to table kategori tindakan
+INSERT INTO im_simrs_kategori_tindakan VALUES
+('KAT00000041',
+'Kamar Operasi',
+'Y',
+now(),
+'migrasi',
+now(),
+'migrasi',
+'C');
+
+--insert to kategori tindakan pelayanan
+INSERT INTO im_simrs_kategori_tindakan_pelayanan VALUES
+('KTP00000037',
+'KAT00000027',
+'PYN00000031',
+'Y',
+'C',
+'migrasi',
+now(),
+'migrasi',
+now()),
+('KTP00000038',
+'KAT00000026',
+'PYN00000032',
+'Y',
+'C',
+'migrasi',
+now(),
+'migrasi',
+now()),
+('KTP00000039',
+'KAT00000002',
+'PYN00000033',
+'Y',
+'C',
+'migrasi',
+now(),
+'migrasi',
+now()),
+('KTP00000040',
+'KAT00000003',
+'PYN00000034',
+'Y',
+'C',
+'migrasi',
+now(),
+'migrasi',
+now()),
+('KTP00000041',
+'KAT00000041',
+'PYN00000035',
+'Y',
+'C',
+'migrasi',
+now(),
+'migrasi',
+now());
+
+ALTER TABLE im_simrs_kategori_lab
+ADD COLUMN kategori VARCHAR(100);
+
+UPDATE im_simrs_kategori_lab
+SET nama_kategori = 'Radiologi',
+kategori = 'radiologi'
+WHERE id_kategori_lab = 'KAL00000001';
+
+UPDATE im_simrs_kategori_lab
+SET nama_kategori = 'Laboratorium',
+kategori = 'lab'
+WHERE id_kategori_lab = 'KAL00000002';
+
+-- 14-09-2020
+ALTER TABLE it_simrs_paket_pasien
+ADD COLUMN flag_selesai VARCHAR(1);
+
+-- 15-09-2020
+ALTER TABLE it_simrs_tindakan_rawat
+ADD COLUMN id_ruangan VARCHAR(100);
+
+ALTER TABLE it_simrs_riwayat_tindakan
+ADD COLUMN id_ruangan VARCHAR(100);
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_sisa VARCHAR(1);
+
+INSERT INTO im_functions VALUES
+(2400, 'Pendaftaran', null, 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 2400),
+(2600, 'Ply. Rawat Inap', null, 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 2600),
+(2800, 'Penunjang Medis', null, 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 2800);
+INSERT INTO im_func_roles VALUES
+(2400, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2600, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2800, 32, 'Y', now(), now(), 'admin', 'admin');
+
+INSERT INTO im_functions VALUES
+(2500, 'Verifikasi BPJS / PTPN', null, 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 2500),
+(2700, 'Verifikasi Umum', null, 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 2700),
+(2900, 'Verifikasi Asuransi', null, 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 2900);
+INSERT INTO im_func_roles VALUES
+(2500, 38, 'Y', now(), now(), 'admin', 'admin'),
+(2700, 38, 'Y', now(), now(), 'admin', 'admin'),
+(2900, 38, 'Y', now(), now(), 'admin', 'admin');
+
+INSERT INTO im_functions VALUES
+(2310, 'Pendaftaran Rawat Inap', '/rawatinap/initTppri_rawatinap.action', 2400, 2, now(), 'admin', now(), 'admin', 'Y','C', 2310),
+(2311, 'init', '/rawatinap/initTppri_rawatinap.action', 2310, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2312, 'search', '/rawatinap/searchTppri_rawatinap.action', 2310, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+
+(2313, 'Rawat Intensif', '/rawatintensif/initForm_rawatintensif.action', 2600, 2, now(), 'admin', now(), 'admin', 'Y','C', 2313),
+(2314, 'init', '/rawatintensif/initForm_rawatintensif.action', 2313, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2315, 'search', '/rawatintensif/searchIntensif_rawatintensif.action', 2313, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2316, 'add', '/rawatintensif/add_rawatintensif.action', 2313, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+
+(2317, 'Rawat Isolasi', '/rawatisolasi/initForm_rawatisolasi.action', 2600, 2, now(), 'admin', now(), 'admin', 'Y','C', 2317),
+(2318, 'init', '/rawatisolasi/initForm_rawatisolasi.action', 2317, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2319, 'search', '/rawatisolasi/searchIsolasi_rawatisolasi.action', 2317, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2320, 'add', '/rawatisolasi/add_rawatisolasi.action', 2317, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+
+(2321, 'Rawat Operasi', '/rawatoperasi/initForm_rawatoperasi.action', 2600, 2, now(), 'admin', now(), 'admin', 'Y','C', 2321),
+(2322, 'init', '/rawatoperasi/initForm_rawatoperasi.action', 2321, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2323, 'search', '/rawatoperasi/searchOperasi_rawatoperasi.action', 2321, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2324, 'add', '/rawatoperasi/add_rawatoperasi.action', 2321, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+
+(2325, 'Rawat Bersalin', '/rawatbersalin/initForm_rawatbersalin.action', 2600, 2, now(), 'admin', now(), 'admin', 'Y','C', 2325),
+(2326, 'init', '/rawatbersalin/initForm_rawatbersalin.action', 2325, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2327, 'search', '/rawatbersalin/searchBersalin_rawatbersalin.action', 2325, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2328, 'add', '/rawatbersalin/add_rawatbersalin.action', 2325, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+
+(2329, 'Rawat Jalan', '/verifumumrj/initVerif_verifumumrj.action', 2700, 2, now(), 'admin', now(), 'admin', 'Y','C', 2329),
+(2330, 'init', '/verifumumrj/initVerif_verifumumrj.action', 2329, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2331, 'search', '/verifumumrj/searchVerif_verifumumrj.action', 2329, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+
+(2332, 'Rawat Inap', '/verifumumri/initVerif_verifumumri.action', 2700, 2, now(), 'admin', now(), 'admin', 'Y','C', 2332),
+(2333, 'init', '/verifumumri/initVerif_verifumumri.action', 2332, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2334, 'search', '/verifumumri/searchVerif_verifumumri.action', 2332, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+
+(2335, 'Rawat Jalan', '/verifasrj/initVerif_verifasrj.action', 2900, 2, now(), 'admin', now(), 'admin', 'Y','C', 2335),
+(2336, 'init', '/verifasrj/initVerif_verifasrj.action', 2335, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2337, 'search', '/verifasrj/searchVerifAs_verifasrj.action', 2335, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+
+(2338, 'Rawat Inap', '/verifasri/initVerif_verifasri.action', 2900, 2, now(), 'admin', now(), 'admin', 'Y','C', 2338),
+(2339, 'init', '/verifasri/initVerif_verifasri.action', 2338, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2340, 'search', '/verifasri/searchVerifAs_verifasri.action', 2338, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+
+INSERT INTO im_func_roles VALUES
+(2310, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2311, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2312, 32, 'Y', now(), now(), 'admin', 'admin'),
+
+(2313, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2314, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2315, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2316, 32, 'Y', now(), now(), 'admin', 'admin'),
+
+(2317, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2318, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2319, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2320, 32, 'Y', now(), now(), 'admin', 'admin'),
+
+(2321, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2322, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2323, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2324, 32, 'Y', now(), now(), 'admin', 'admin'),
+
+(2325, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2326, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2327, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2328, 32, 'Y', now(), now(), 'admin', 'admin'),
+
+(2329, 38, 'Y', now(), now(), 'admin', 'admin'),
+(2330, 38, 'Y', now(), now(), 'admin', 'admin'),
+(2331, 38, 'Y', now(), now(), 'admin', 'admin'),
+
+(2332, 38, 'Y', now(), now(), 'admin', 'admin'),
+(2333, 38, 'Y', now(), now(), 'admin', 'admin'),
+(2334, 38, 'Y', now(), now(), 'admin', 'admin'),
+
+(2335, 38, 'Y', now(), now(), 'admin', 'admin'),
+(2336, 38, 'Y', now(), now(), 'admin', 'admin'),
+(2337, 38, 'Y', now(), now(), 'admin', 'admin'),
+
+(2338, 38, 'Y', now(), now(), 'admin', 'admin'),
+(2339, 38, 'Y', now(), now(), 'admin', 'admin'),
+(2340, 38, 'Y', now(), now(), 'admin', 'admin');
+
+--master
+UPDATE im_functions
+SET parent = 3,
+func_level = 2
+WHERE func_id IN (1522, 1998, 2006);
+
+--pendaftaran
+UPDATE im_functions
+SET parent = 2400,
+func_level = 2
+WHERE func_id IN (1474, 2016);
+
+--rawat inap
+UPDATE im_functions
+SET parent = 2600,
+func_level = 2
+WHERE func_id IN (1485, 2025);
+
+--penunjang medis
+UPDATE im_functions
+SET parent = 2800,
+func_level = 2
+WHERE func_id IN (1487, 1489);
+
+--verifikasi BPJPS
+UPDATE im_functions
+SET parent = 2500,
+func_level = 2
+WHERE func_id IN (1669, 1678);
+
+UPDATE im_functions
+SET func_name = 'Rawat Jalan'
+WHERE func_id = 1669;
+
+UPDATE im_functions
+SET func_name = 'Rawat Inap'
+WHERE func_id = 1678;
+
+
+UPDATE im_functions
+SET func_name = 'Rawat Jalan'
+WHERE func_id = 1474;
+
+UPDATE im_functions
+SET func_name = 'Ply. Rawat Jalan'
+WHERE func_id = 1481;
+
+UPDATE im_functions
+SET func_name = 'Rawat Inap'
+WHERE func_id = 2310;
+
+UPDATE im_functions
+SET func_name = 'Peralihan Biaya'
+WHERE func_id = 2016;
+
+INSERT INTO im_simrs_kelas_ruangan VALUES
+('07', 'Kamar Intensif', 'Y', 'C', now(), 'adminrs', now(), 'adminrs', null, null, 'rawat_intensif'),
+('08', 'Kamar Operasi', 'Y', 'C', now(), 'adminrs', now(), 'adminrs', null, null, 'kamar_operasi'),
+('09', 'Kamar Isolasi', 'Y', 'C', now(), 'adminrs', now(), 'adminrs', null, null, 'rawat_isolasi'),
+('10', 'Kamar Bersalin', 'Y', 'C', now(), 'adminrs', now(), 'adminrs', null, null, 'ruang_bersalin');
+
+INSERT INTO mt_simrs_ruangan VALUES
+('13', 'Intensif A', 'KI01', 'Y', '07', null, 50000, 'RS01', 'Y', now(), 'adminrs', now(), 'adminrs', 'C', 1, 1),
+('14', 'Intensif B', 'KI01', 'Y', '07', null, 60000, 'RS01', 'Y', now(), 'adminrs', now(), 'adminrs', 'C', 1, 1),
+('15', 'Operasi A', 'KO01', 'Y', '08', null, 70000, 'RS01', 'Y', now(), 'adminrs', now(), 'adminrs', 'C', 1, 1),
+('16', 'Operasi B', 'KO01', 'Y', '08', null, 80000, 'RS01', 'Y', now(), 'adminrs', now(), 'adminrs', 'C', 1, 1),
+('17', 'Isolasi A', 'KS01', 'Y', '09', null, 90000, 'RS01', 'Y', now(), 'adminrs', now(), 'adminrs', 'C', 1, 1),
+('18', 'Isolasi B', 'KS01', 'Y', '09', null, 90000, 'RS01', 'Y', now(), 'adminrs', now(), 'adminrs', 'C', 1, 1),
+('19', 'Bersalin A', 'KB01', 'Y', '10', null, 60000, 'RS01', 'Y', now(), 'adminrs', now(), 'adminrs', 'C', 1, 1),
+('20', 'Bersalin B', 'KB01', 'Y', '10', null, 70000, 'RS01', 'Y', now(), 'adminrs', now(), 'adminrs', 'C', 1, 1);
+
+UPDATE im_simrs_kelas_ruangan
+SET kategori = 'rawat_inap'
+WHERE id_kelas_ruangan IN  ('01','02','03','04','05','06');
+
+UPDATE mt_simrs_ruangan
+SET branch_id = 'RS01';
+
+UPDATE im_simrs_tindakan
+SET created_date = now(),
+created_who = 'admin',
+last_update= now(),
+last_update_who = 'admin',
+flag = 'Y',
+action = 'C'
+WHERE id_kategori_tindakan = 'KAT00000041';
+
+
+UPDATE im_simrs_pelayanan
+SET nama_pelayanan = 'Farmasi RJ'
+WHERE id_pelayanan = 'PYN00000024';
+
+UPDATE im_simrs_pelayanan
+SET nama_pelayanan = 'Farmasi RI'
+WHERE id_pelayanan = 'PYN00000025';
+
+TRUNCATE TABLE im_simrs_keterangan_keluar;
+
+INSERT INTO im_simrs_keterangan_keluar VALUES
+('01','Sembuh','Y','C','2019-11-22 09:37:04.023','adminrs','2019-11-22 09:37:04.023','adminrs'),
+('02','Pulang Atas Pemintaan Sendiri','Y','C','2019-11-22 09:37:04.023','adminrs','2019-11-22 09:37:04.023','adminrs'),
+('03','Pulang Atas Persetujuan Dokter','Y','C','2019-11-22 09:37:04.023','adminrs','2019-11-22 09:37:04.023','adminrs'),
+('04','Pulang Karena Meninggal','Y','C','2019-11-22 09:37:04.023','adminrs','2019-11-22 09:37:04.023','adminrs');
+
+INSERT INTO im_simrs_dokter_pelayanan VALUES
+('DPL00000035','DKR00000018','PYN00000004','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000036','DKR00000018','PYN00000005','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000037','DKR00000018','PYN00000006','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000038','DKR00000018','PYN00000007','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000039','DKR00000018','PYN00000008','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000040','DKR00000018','PYN00000009','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000041','DKR00000018','PYN00000010','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000042','DKR00000018','PYN00000011','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000043','DKR00000018','PYN00000012','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000044','DKR00000018','PYN00000013','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000045','DKR00000018','PYN00000014','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000046','DKR00000018','PYN00000015','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000047','DKR00000018','PYN00000016','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000048','DKR00000018','PYN00000017','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000049','DKR00000018','PYN00000018','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000050','DKR00000018','PYN00000019','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000051','DKR00000018','PYN00000020','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000052','DKR00000018','PYN00000021','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000053','DKR00000018','PYN00000022','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00'),
+('DPL00000054','DKR00000018','PYN00000023','Y','C','migrasi','migrasi','2020-06-10 14:09:00','2020-06-10 14:09:00');
+
+UPDATE im_simrs_dokter
+SET sip = '01288898987890';
+
+---------- SUDAH DI PROD -----------
+====================================
+
+            /\   /\   /\
+           |__| |__| |__|
+            ||   ||   ||
+            ||   ||   ||
+            ||   ||   ||
+----------- ||   ||   || -----------
+---------- SUDAH DI PROD -----------
+----------- +++++++++++ ------------
+
+-- 2020-09-22
+CREATE TABLE public.im_simrs_rekanan_ops
+(
+  id_rekanan_ops character varying(50) NOT NULL,
+  nomor_master character varying(100),
+  nama_rekanan character varying(100),
   flag character varying(1),
   action character varying(1),
   created_date timestamp without time zone,
   created_who character varying(100),
   last_update timestamp without time zone,
   last_update_who character varying(100),
-  CONSTRAINT pk_id_diagnosa_asuhan_keperawatan PRIMARY KEY (id_diagnosa_asuhan_keperawatan)
+  tipe character varying(100),
+  CONSTRAINT im_simrs_rekanan_ops_pk PRIMARY KEY (id_rekanan_ops)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public.im_simrs_diagnosa_asuhan_keperawatan
+ALTER TABLE public.im_simrs_rekanan_ops
   OWNER TO postgres;
 
+CREATE SEQUENCE seq_rekanan_ops;
 
-CREATE TABLE public.im_simrs_detail_asuhan_keperawatan
+UPDATE im_simrs_rekanan_ops
+SET is_bpjs = 'Y',
+flag = 'Y',
+action = 'C',
+created_date = '2020-09-22 00:00:00',
+created_who = 'admin',
+last_update = '2020-09-22 00:00:00',
+last_update_who = 'admin',
+tipe = 'ptpn';
+
+-- 2020-09-24
+CREATE TABLE public.im_simrs_detail_rekanan_ops
 (
-  id_detail_asuhan_keperawatan character varying(30) NOT NULL,
-  id_diagnosa_asuhan_keperawatan character varying(30),
-  diagnosis text,
-  hasil text,
-  intervensi text,
-  implementasi text,
-  evaluasi text,
+  id_detail_rekanan_ops character varying(50) NOT NULL,
+  id_rekanan_ops character varying(50) NOT NULL,
+  diskon numeric,
+  is_bpjs character varying(1),
+  branch_id character varying(50),
   flag character varying(1),
   action character varying(1),
   created_date timestamp without time zone,
   created_who character varying(100),
   last_update timestamp without time zone,
   last_update_who character varying(100),
-  CONSTRAINT pk_id_detail_asuhan_keperawatan PRIMARY KEY (id_detail_asuhan_keperawatan)
+  CONSTRAINT im_simrs_detail_rekanan_ops_pk PRIMARY KEY (id_detail_rekanan_ops)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public.im_simrs_detail_asuhan_keperawatan
+ALTER TABLE public.im_simrs_detail_rekanan_ops
   OWNER TO postgres;
 
-// SEQUENCE
+CREATE SEQUENCE seq_detail_rekanan_ops;
+
+ALTER TABLE im_simrs_lab
+ADD COLUMN branch_id VARCHAR(100);
+
+-- 2020-09-25
+ALTER TABLE mt_simrs_item_paket_periksa
+ADD COLUMN id_pelayanan VARCHAR(100);
+
+CREATE TABLE public.mt_simrs_detail_paket
+(
+  id_detail_paket character varying(30) NOT NULL,
+  id_paket character varying(30),
+  id_pelayanan character varying(30),
+  urutan bigint,
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_detail_paket PRIMARY KEY (id_detail_paket)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.mt_simrs_detail_paket
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_detail_paket;
+
+CREATE TABLE public.it_simrs_pelayanan_paket
+(
+  id_pelayanan_paket character varying(50) NOT NULL,
+  no_checkup character varying(50),
+  id_paket character varying(50),
+  id_detail_checkup character varying(50),
+  id_pelayanan character varying(50),
+  urutan bigint,
+  is_periksa character varying(1),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_pelayanan_paket PRIMARY KEY (id_pelayanan_paket)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_pelayanan_paket
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_pelayanan_paket;
+
+--2020-09-27
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN ttd_pengirim VARCHAR(100);
+
+--2020-09-30
+ALTER TABLE im_simrs_dokter
+ADD COLUMN kuota_on_site bigint;
+
+CREATE TABLE public.mt_simrs_ruangan_tempat_tidur
+(
+  id_tempat_tidur character varying(30) NOT NULL,
+  id_ruangan character varying(30) NOT NULL,
+  nama_tempat_tidur character varying(100),
+  status character varying(1),
+  flag character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  action character varying(1),
+  CONSTRAINT pk_id_tempat_tidur PRIMARY KEY (id_tempat_tidur)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.mt_simrs_ruangan_tempat_tidur
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_tempat_tidur;
+
+ALTER TABLE im_simrs_header_tindakan
+RENAME id TO id_header_tindakan;
+
+ALTER TABLE im_simrs_header_tindakan
+DROP id_kategori_tindakan;
+
+ALTER TABLE im_simrs_header_tindakan
+ADD COLUMN kategori_ina_bpjs character varying(100);
+
+ALTER TABLE im_simrs_kategori_tindakan
+ADD COLUMN branch_id VARCHAR(50);
+
+--2020-10-01
+ALTER TABLE im_simrs_header_tindakan
+ADD COLUMN id_kategori_nota VARCHAR(100);
+
+INSERT INTO im_functions VALUES
+(2341, 'All Tindakan', '/headertindakan/initForm_headertindakan.action', 3, 2, now(), 'admin', now(), 'admin', 'Y','C', 2341),
+(2342, 'init', '/headertindakan/initForm_headertindakan.action', 2341, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2343, 'search', '/headertindakan/search_headertindakan.action', 2341, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2341, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2342, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2343, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_tindakan
+ADD COLUMN id_pelayanan VARCHAR(50);
+
+--2020-10-02
+ALTER TABLE im_simrs_header_tindakan
+DROP diskkon,
+DROP hargaDiskon;
+
+ALTER TABLE im_simrs_header_tindakan
+DROP id_kategori_nota;
+
+ALTER TABLE im_simrs_tindakan
+ADD COLUMN is_elektif VARCHAR(1);
+
+--2020-10-03
+CREATE TABLE public.im_simrs_parameter_pemeriksaan
+(
+    id_parameter_pemeriksaan character varying(50) NOT NULL,
+	id_kategori_lab character varying(50),
+    nama_pemeriksaan character varying(100),
+    keterangan_acuan_l character varying(50),
+	keterangan_acuan_p character varying(50),
+    satuan character varying(50),
+    tarif numeric,
+    flag character varying(1),
+    action character varying(1),
+    created_date timestamp without time zone,
+    created_who character varying(100),
+    last_update timestamp without time zone,
+    last_update_who character varying(100),
+    CONSTRAINT pk_id_parameter_pemeriksaan PRIMARY KEY (id_parameter_pemeriksaan)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+CREATE SEQUENCE seq_perameter_pemeriksaan;
+
+INSERT INTO im_functions VALUES
+(2344, 'All Parameter', '/pemeriksaan/initForm_pemeriksaan.action', 3, 2, now(), 'admin', now(), 'admin', 'Y','C', 2344),
+(2345, 'init', '/pemeriksaan/initForm_pemeriksaan.action', 2344, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2346, 'search', '/pemeriksaan/search_pemeriksaan.action', 2344, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2344, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2345, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2346, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_lab_detail
+DROP nama_detail_periksa,
+DROP satuan,
+DROP keterangan_acuan;
+
+ALTER TABLE im_simrs_lab_detail
+ADD COLUMN id_parameter_pemeriksaan VARCHAR(50);
+
+ALTER TABLE im_simrs_lab
+DROP COLUMN tarif;
+
+UPDATE im_functions
+SET func_name = 'Parameter'
+WHERE func_id = 2157;
+
+ALTER TABLE im_simrs_lab_detail
+ADD COLUMN branch_id VARCHAR(50);
+
+-- 2020-10-04
+INSERT INTO im_functions VALUES
+(2347, 'Tempat Tidur', '/tempattidur/initForm_tempattidur.action', 3, 2, now(), 'admin', now(), 'admin', 'Y','C', 2347),
+(2348, 'init', '/tempattidur/initForm_tempattidur.action', 2347, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2349, 'search', '/tempattidur/search_tempattidur.action', 2347, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2347, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2348, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2349, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_kelas_ruangan
+ALTER COLUMN id_kelas_ruangan TYPE VARCHAR(50);
+
+ALTER TABLE mt_simrs_ruangan
+ALTER COLUMN id_kelas_ruangan TYPE VARCHAR(50);
+
+ALTER TABLE mt_simrs_ruangan
+ALTER COLUMN id_ruangan TYPE VARCHAR(50);
+
+ALTER TABLE it_simrs_periksa_lab_detail
+RENAME keterangan_acuan TO keterangan_acuan_l;
+
+ALTER TABLE it_simrs_periksa_lab_detail
+RENAME harga TO tarif;
+
+ALTER TABLE it_simrs_periksa_lab_detail
+ADD COLUMN keterangan_acuan_p VARCHAR(100);
+
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN id_kategori_lab VARCHAR(50);
+
+ALTER TABLE it_simrs_rawat_inap
+ALTER COLUMN id_ruangan TYPE VARCHAR(50);
+
+ALTER TABLE it_simrs_tindakan_rawat
+ALTER COLUMN id_tindakan TYPE VARCHAR(50);
+
+-- 2020-10-09
+ALTER TABLE it_simrs_dokter_team
+ADD COLUMN flag_approve VARCHAR(1),
+ADD COLUMN keterangan VARCHAR(1000);
+
+ALTER TABLE im_simrs_tindakan
+DROP COLUMN tindakan;
+
+-- WEEKEND
+CREATE TABLE im_simrs_jenis_diet
+(
+	id_jenis_diet VARCHAR(50) PRIMARY KEY NOT NULL,
+	nama_jenis_diet VARCHAR(100),
+	action VARCHAR(1),
+	flag VARCHAR(1),
+	created_date TIMESTAMP WITHOUT TIME ZONE,
+	created_who VARCHAR(100),
+	last_update TIMESTAMP WITHOUT TIME ZONE,
+	last_update_who VARCHAR(100)
+)
+
+ALTER TABLE it_simrs_order_gizi
+DROP COLUMN diet_pagi,
+DROP COLUMN bentuk_makan_pagi,
+DROP COLUMN diet_siang,
+DROP COLUMN bentuk_makan_siang,
+DROP COLUMN diet_malam,
+DROP COLUMN bentuk_makan_malam;
+
+CREATE TABLE it_simrs_detail_jenis_diet
+(
+	id_detail_jenis_diet VARCHAR(50) PRIMARY KEY NOT NULL,
+	id_order_gizi VARCHAR(50),
+	id_jenis_diet VARCHAR(50),
+	nama_jenis_diet VARCHAR(100),
+	action VARCHAR(1),
+	flag VARCHAR(1),
+	created_date TIMESTAMP WITHOUT TIME ZONE,
+	created_who VARCHAR(100),
+	last_update TIMESTAMP WITHOUT TIME ZONE,
+	last_update_who VARCHAR(100)
+);
+
+ALTER TABLE it_simrs_order_gizi
+ALTER COLUMN tgl_order TYPE TIMESTAMP WITHOUT TIME ZONE;
+
+CREATE SEQUENCE seq_detail_jenis_diet;
+
+INSERT INTO im_simrs_jenis_diet VALUES
+('JDD00000001','Diet Vitamin', 'C', 'Y', now(), 'adminrs', now(), 'adminrs'),
+('JDD00000002','Diet Kalori', 'C', 'Y', now(), 'adminrs', now(), 'adminrs'),
+('JDD00000003','Diet Lemak', 'C', 'Y', now(), 'adminrs', now(), 'adminrs'),
+('JDD00000004','Diet Asam', 'C', 'Y', now(), 'adminrs', now(), 'adminrs'),
+('JDD00000005','Diet Gula', 'C', 'Y', now(), 'adminrs', now(), 'adminrs');
+
+INSERT INTO im_functions VALUES
+(2350, 'Recovery Room', '/recoveryroom/initForm_recoveryroom.action', 2600, 2, now(), 'admin', now(), 'admin', 'Y','C', 2350),
+(2351, 'init', '/recoveryroom/initForm_recoveryroom.action', 2350, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2352, 'search', '/recoveryroom/searchRR_recoveryroom.action', 2350, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2353, 'add', '/recoveryroom/add_recoveryroom.action', 2350, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2350, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2351, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2352, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2353, 32, 'Y', now(), now(), 'admin', 'admin');
+
+INSERT INTO im_functions VALUES
+(3100, 'Dashboard', '/initdashboard/initForm_initdashboard.action', 10, 1, now(), 'admin', now(), 'admin', 'Y','C', 3100),
+(2355, 'init dashboard', '/initdashboard/initForm_initdashboard.action', 3100, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(3100, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2355, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_kunjungan VARCHAR(1),
+ADD COLUMN berkas VARCHAR(100);
+
+ALTER TABLE it_simrs_order_gizi
+ADD COLUMN waktu VARCHAR(100);
+
+INSERT INTO im_simrs_kelas_ruangan VALUES
+('11','Recovery Room','Y','C',now(),'adminrs',now(),'adminrs','03.06.01','O065','rr');
+
+INSERT INTO mt_simrs_ruangan VALUES
+('21','RR','R001','Y','11',NULL,100000,'RS01','Y',now(),'adminrs',now(),'Ike Nurjanah','U',1,1);
+
+UPDATE im_simrs_jenis_periksa_pasien
+SET id_jenis_periksa_pasien = 'rekanan',
+keterangan = 'Rekanan'
+WHERE id_jenis_periksa_pasien = 'ptpn';
+
+UPDATE im_simrs_jenis_periksa_pasien
+SET keterangan = 'Medical Checkup'
+WHERE id_jenis_periksa_pasien = 'paket_perusahaan';
+
+UPDATE im_simrs_jenis_periksa_pasien
+SET keterangan = 'Promo'
+WHERE id_jenis_periksa_pasien = 'paket_individu';
+
+--WEEKEND
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
+ADD COLUMN nama_terang VARCHAR(100),
+ADD COLUMN sip VARCHAR(100);
+
+ALTER TABLE it_simrs_implementasi_perawat
+ADD COLUMN sip VARCHAR(100);
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000239','RMM00000098','rawat_inap','17','Y','C','migrasi',now(),now(),'migrasi');
+
+---------- SUDAH DI PROD -----------
+====================================
+
+            /\   /\   /\
+           |__| |__| |__|
+            ||   ||   ||
+            ||   ||   ||
+            ||   ||   ||
+----------- ||   ||   || -----------
+---------- SUDAH DI PROD -----------
+----------- +++++++++++ ------------
+
+--BARU BARU INI BELUM DI PROD
+--FRIDAY 23-10-2020
+SELECT * FROM im_simrs_pelayanan
+WHERE id_pelayanan = 'PYN00000010';
+
+SELECT * FROM im_simrs_pelayanan
+WHERE id_pelayanan = 'PYN00000011';
+
+UPDATE im_simrs_pelayanan
+SET kategori_pelayanan = 'spesialis_mata'
+WHERE id_pelayanan = 'PYN00000010';
+
+UPDATE im_simrs_pelayanan
+SET kategori_pelayanan = 'spesialis_kulit_kelamin'
+WHERE id_pelayanan = 'PYN00000011';
+
+SELECT * FROM im_simrs_rekam_medis_pasien ORDER BY id_rekam_medis_pasien DESC;
+INSERT INTO im_simrs_rekam_medis_pasien VALUES
+('RMM00000102','RJ 013','Asesmen Spesialis Mata','form','spesialis_mata','spesialis_mata','showModalSPS','Y','C','migrasi',now(),now(),'migrasi','2'),
+('RMM00000103','RJ 014','Asesmen Spesialis Mata Operasi','form','spesialis_mata','spesialis_mata_op','showModalSPS','Y','C','migrasi',now(),now(),'migrasi','2'),
+('RMM00000104','RJ 015','Asesmen Spesialis Kulit Kelamin','form','spesialis_kulit_kelamin','spesialis_kulit_kelamin','showModalSPS','Y','C','migrasi',now(),now(),'migrasi','3');
+
+SELECT * FROM im_simrs_rekam_medis_pelayanan ORDER BY id_rekam_medis_pelayanan DESC;
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000239','RMM00000102','rawat_jalan','1','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000240','RMM00000103','rawat_jalan','2','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000241','RMM00000104','rawat_jalan','1','Y','C','migrasi',now(),now(),'migrasi');
+
+--SELOSO
+ALTER TABLE it_simrs_hemodinamika
+ADD COLUMN sistole int,
+ADD COLUMN diastole int;
+
+ALTER TABLE it_simrs_hemodinamika
+ALTER COLUMN ekg TYPE VARCHAR(100);
+
+DROP TABLE it_simrs_respirasi;
+
+CREATE TABLE public.it_simrs_respirasi
+(
+  id_respirasi character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  waktu character varying(100),
+  tanggal date,
+  gcs character varying(100),
+  diameter_pupil character varying(100),
+  reflek_cahaya character varying(100),
+  tk character varying(100),
+  kk character varying(100),
+  O2 character varying(100),
+  tipe_ventilasi character varying(100),
+  peep character varying(100),
+  frekwensi character varying(100),
+  tv character varying(100),
+  mv character varying(100),
+  p_support_p_asb character varying(100),
+  p_ins_p_con character varying(100),
+  triger character varying(100),
+  ins_time character varying(100),
+  flow character varying(100),
+  fio_kon character varying(100),
+  ukuran_ett character varying(100),
+  kedalaman_ett character varying(100),
+  spo2 character varying(100),
+  secret character varying(100),
+  keterangan character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_respirasi PRIMARY KEY (id_respirasi)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_respirasi
+  OWNER TO postgres;
+
+--MALAM MALAM
+ALTER TABLE it_simrs_hemodialisa
+DROP is_ttd;
+
+ALTER TABLE it_simrs_hemodialisa
+ADD COLUMN tipe VARCHAR(100);
+
+--ABIS JUMATAN
+ALTER TABLE it_simrs_header_checkup
+ADD COLUMN pendidikan VARCHAR(100),
+ADD COLUMN status_perkawinan VARCHAR(100),
+ADD COLUMN kunjungan_poli VARCHAR(100);
+
+--HARI MINGGU MALAM SENIN
+ALTER TABLE it_simrs_monitoring_anestesi
+DROP COLUMN tensi,
+DROP COLUMN anest,
+DROP COLUMN ethran,
+DROP COLUMN sevo,
+DROP COLUMN infus;
+
+ALTER TABLE it_simrs_monitoring_anestesi
+ADD COLUMN sistole VARCHAR(100),
+ADD COLUMN diastole VARCHAR(100),
+ADD COLUMN inhalasi VARCHAR(100);
+
+ALTER TABLE im_simrs_pasien
+ADD COLUMN pendidikan VARCHAR(100),
+ADD COLUMN status_perkawinan VARCHAR(100);
+
+ALTER TABLE im_simrs_pasien
+ADD COLUMN pendidikan VARCHAR(100),
+ADD COLUMN status_perkawinan VARCHAR(100);
+
+
+--INI BELOM DI PROD
+--KEMMIS MALAM JUMAT
+ALTER TABLE im_simrs_pelayanan
+ADD COLUMN kode_poli_vclaim VARCHAR(100);
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN flag_send_klaim VARCHAR(1);
+
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN is_read VARCHAR(1);
+
+INSERT INTO im_simrs_rekam_medis_pasien VALUES
+('RMM00000105','SP 026','Surat Keterangan Cuti','surat','SP18','SP18','printPernyataan','Y','C','migrasi',now(),now(),'migrasi','1');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000243','RMM00000105','rawat_jalan','10','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000244','RMM00000105','igd','10','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000245','RMM00000105','rawat_inap','10','Y','C','migrasi',now(),now(),'migrasi');
+
+ALTER TABLE im_branches
+ADD COLUMN warna VARCHAR (100);
+
+-- UPDATE BRANCHES
+UPDATE im_branches
+SET warna = '#0000ff'
+WHERE branch_id = 'RS01';
+UPDATE im_branches
+SET warna = '#66ff66'
+WHERE branch_id = 'RS02';
+UPDATE im_branches
+SET warna = '#ff0000'
+WHERE branch_id = 'RS03';
+UPDATE im_branches
+SET warna = '#ff33cc'
+WHERE branch_id = 'RS04';
+UPDATE im_branches
+SET warna = '#ff9900'
+WHERE branch_id = 'RS05';
+UPDATE im_branches
+SET warna = '#00ffff'
+WHERE branch_id = 'RS06';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -44,6 +44,9 @@ public class PayrollSkalaGajiDao extends GenericDao<ImPayrollSkalaGajiEntity, St
             if (mapCriteria.get("tahun")!=null) {
                 criteria.add(Restrictions.eq("tahun", (String) mapCriteria.get("tahun")));
             }
+            if (mapCriteria.get("no_sk")!=null) {
+                criteria.add(Restrictions.eq("noSk", (String) mapCriteria.get("no_sk")));
+            }
             if (mapCriteria.get("point")!=null) {
                 criteria.add(Restrictions.eq("point",mapCriteria.get("point")));
             }
@@ -102,9 +105,10 @@ public class PayrollSkalaGajiDao extends GenericDao<ImPayrollSkalaGajiEntity, St
 
         return results;
     }
-    public List<ImPayrollSkalaGajiEntity> getDataSkalaGajiSimRs(String golonganId) throws HibernateException {
+    public List<ImPayrollSkalaGajiEntity> getDataSkalaGajiSimRs(String golonganId,String tahun) throws HibernateException {
         List<ImPayrollSkalaGajiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiEntity.class)
                 .add(Restrictions.eq("golonganId", golonganId))
+                .add(Restrictions.eq("tahun", tahun))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 

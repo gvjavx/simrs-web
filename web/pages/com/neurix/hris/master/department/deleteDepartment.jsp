@@ -18,12 +18,12 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var idDepartment = document.getElementById("departmentId").value;
+            var idDepartment = document.getElementById("departmentId4").value;
             var nameDepartment    = document.getElementById("departmentName1").value;
             var kodering          = document.getElementById("kodering1").value;
 
-
-            if (nameDepartment != '' && kodering) {
+            console.log("Tes "+idDepartment);
+            if (idDepartment != '') {
                 if (confirm('Do you want to Delete this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -43,6 +43,9 @@
                 if (nameDepartment == '') {
                     msg += 'Field <strong>Nama Devisi</strong> is required.' + '<br/>';
                 }
+                if (kodering == ''){
+                    msg += 'Field <strong>Kodering </strong> is required.' + '<br/>';
+                }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -51,16 +54,16 @@
             }
         });
 
-        $.subscribe('beforeProcessDelete', function (event, data) {
-            if (confirm('Do you want to delete this record ?')) {
-                event.originalEvent.options.submit = true;
-                $.publish('showDialog');
-
-            } else {
-                // Cancel Submit comes with 1.8.0
-                event.originalEvent.options.submit = false;
-            }
-        });
+//        $.subscribe('beforeProcessDelete', function (event, data) {
+//            if (confirm('Do you want to delete this record ?')) {
+//                event.originalEvent.options.submit = true;
+//                $.publish('showDialog');
+//
+//            } else {
+//                // Cancel Submit comes with 1.8.0
+//                event.originalEvent.options.submit = false;
+//            }
+//        });
 
 
         $.subscribe('successDialog', function (event, data) {
@@ -116,7 +119,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="departmentId" name="department.departmentId" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="departmentId4" name="department.departmentId" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -127,7 +130,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="departmentName1" name="department.departmentName" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="departmentName1" name="department.departmentName" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -138,7 +141,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="kodering1" name="department.kodering" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="kodering1" name="department.kodering" required="true" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

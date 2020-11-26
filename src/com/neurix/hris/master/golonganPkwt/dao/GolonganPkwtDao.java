@@ -2,6 +2,7 @@ package com.neurix.hris.master.golonganPkwt.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity;
+import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtHistoryEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -62,6 +63,14 @@ public class GolonganPkwtDao extends GenericDao<ImGolonganPkwtEntity, String> {
         return "G"+sId;
     }
 
+    public String getNextGolonganPkwtHistoryId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_golongan_pkwt_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%02d", iter.next());
+
+        return "GH"+sId;
+    }
+
     public List<ImGolonganPkwtEntity> getListGolongan(String term) throws HibernateException {
 
         List<ImGolonganPkwtEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImGolonganPkwtEntity.class)
@@ -80,6 +89,10 @@ public class GolonganPkwtDao extends GenericDao<ImGolonganPkwtEntity, String> {
                 .addOrder(Order.asc("golonganPkwtId"))
                 .list();
         return results;
+    }
+
+    public void addAndSaveHistory(ImGolonganPkwtHistoryEntity entity) throws HibernateException {
+        this.sessionFactory.getCurrentSession().save(entity);
     }
 
 }

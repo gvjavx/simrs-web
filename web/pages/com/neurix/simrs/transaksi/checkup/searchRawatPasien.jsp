@@ -15,7 +15,8 @@
     <script type='text/javascript'>
 
         $(document).ready(function () {
-            $('#pendaftaran').addClass('active');
+            $('#pendaftaran_active, #bayar_rawat_jalan').addClass('active');
+            $('#pendaftaran_open').addClass('menu-open');
         });
 
     </script>
@@ -32,7 +33,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pendaftaran Rawat Pasien
+            Pendaftaran Rawat Jalan Pasien
         </h1>
     </section>
 
@@ -43,21 +44,21 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Pasien</h3>
-                            </div>
-                            <div class="col-md-3 pull-right">
-                                <div class="input-group date">
-                                    <input class="form-control" id="id_antrian" placeholder="Antrian Online"
-                                           onchange="saveAntrian()">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-success"onclick="saveAntrian()" id="save_resep"><i class="fa fa-arrow-right"></i> Save</button>
-                                        <button class="btn btn-success" id="load_resep" style="cursor: no-drop; display: none"><i class="fa fa-spinner fa-spin"></i> Sedang mencari...</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Rawat Pasien</h3>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-4">--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-3 pull-right">--%>
+                                <%--<div class="input-group date">--%>
+                                    <%--<input class="form-control" id="id_antrian" placeholder="Antrian Online"--%>
+                                           <%--onchange="saveAntrian()">--%>
+                                    <%--<div class="input-group-btn">--%>
+                                        <%--<button class="btn btn-success"onclick="saveAntrian()" id="save_resep"><i class="fa fa-arrow-right"></i> Save</button>--%>
+                                        <%--<button class="btn btn-success" id="load_resep" style="cursor: no-drop; display: none"><i class="fa fa-spinner fa-spin"></i> Sedang mencari...</button>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
@@ -87,6 +88,7 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Poli</label>
                                     <div class="col-sm-4">
@@ -100,23 +102,17 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}"
-                                                  cssStyle="margin-top: 7px"
+                                                  cssStyle="margin-top: 7px; width: 100%"
                                                   id="status" name="headerCheckup.statusPeriksa"
                                                   headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4" for="headerCheckup.jalan">Alamat</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:textarea cssStyle="margin-top: 7px" id="alamat" name="headerCheckup.jalan"--%>
-                                                    <%--required="false" readonly="false" cssClass="form-control"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Tanggal Masuk</label>
                                     <div class="col-sm-2">
@@ -151,28 +147,29 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                    data-toggle="dropdown" style="height: 34px">
-                                                <span class="caret"></span>
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="add_checkup.action?tipe=umum">
-                                                    <i class="fa fa-user-plus"></i>Pasien Umum</a></li>
-                                                <li><a href="add_checkup.action?tipe=bpjs">
-                                                    <i class="fa fa-user-plus"></i>Pasien BPJS</a></li>
-                                                <li><a href="add_checkup.action?tipe=paket_perusahaan">
-                                                    <i class="fa fa-user-plus"></i>Pasien Paket Perusahaan</a></li>
-                                                <li><a href="add_checkup.action?tipe=paket_individu">
-                                                    <i class="fa fa-user-plus"></i>Pasien Paket Individu</a></li>
-                                                <li><a href="add_checkup.action?tipe=asuransi">
-                                                    <i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>
-                                                <li><a href="add_checkup.action?tipe=ptpn">
-                                                    <i class="fa fa-user-plus"></i>Pasien PTPN</a></li>
-                                            </ul>
-                                        </div>
+                                        <a href="add_checkup.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</a>
+                                        <%--<div class="btn-group">--%>
+                                            <%--<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>--%>
+                                            <%--<button type="button" class="btn btn-primary dropdown-toggle"--%>
+                                                    <%--data-toggle="dropdown" style="height: 34px">--%>
+                                                <%--<span class="caret"></span>--%>
+                                                <%--<span class="sr-only">Toggle Dropdown</span>--%>
+                                            <%--</button>--%>
+                                            <%--<ul class="dropdown-menu" role="menu">--%>
+                                                <%--<li><a href="add_checkup.action?tipe=umum">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Umum</a></li>--%>
+                                                <%--<li><a href="add_checkup.action?tipe=bpjs">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien BPJS</a></li>--%>
+                                                <%--<li><a href="add_checkup.action?tipe=paket_perusahaan">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Medical Checkup</a></li>--%>
+                                                <%--<li><a href="add_checkup.action?tipe=paket_individu">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Promo</a></li>--%>
+                                                <%--<li><a href="add_checkup.action?tipe=asuransi">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>--%>
+                                                <%--<li><a href="add_checkup.action?tipe=rekanan">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Rekanan</a></li>--%>
+                                            <%--</ul>--%>
+                                        <%--</div>--%>
                                         <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>
                                                 <%--class="fa fa-plus"></i> Tambah Rawat Pasien</a>--%>
                                         <a type="button" class="btn btn-warning" id="btnFingerPrint"><i

@@ -21,6 +21,10 @@
           p:biodataDao-ref="biodataDao"
           p:historyGolonganDao-ref="smkHistoryGolonganDao"
           p:skalaGajiDao-ref="skalaGajiDao"
+          p:cutiPegawaiDao-ref="cutiPegawaiDao"
+          p:lemburDao-ref="lemburDao"
+          p:statusMutasiDao-ref="statusMutasiDao"
+          p:ijinKeluarDao-ref="ijinKeluarDao"
     />
 
     <bean id="mutasiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

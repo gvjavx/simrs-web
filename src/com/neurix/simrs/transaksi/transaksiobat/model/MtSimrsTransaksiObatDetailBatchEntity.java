@@ -38,6 +38,60 @@ public class MtSimrsTransaksiObatDetailBatchEntity implements Serializable {
     private BigDecimal netto;
 
     private String urlDoc;
+    private String jenis;
+    private Date tglDo;
+    private Date tglInvoice;
+    private BigDecimal hargaJual;
+    private BigDecimal hargaRata;
+    private BigInteger qtyReture;
+
+    public BigInteger getQtyReture() {
+        return qtyReture;
+    }
+
+    public void setQtyReture(BigInteger qtyReture) {
+        this.qtyReture = qtyReture;
+    }
+
+    public BigDecimal getHargaJual() {
+        return hargaJual;
+    }
+
+    public void setHargaJual(BigDecimal hargaJual) {
+        this.hargaJual = hargaJual;
+    }
+
+    public BigDecimal getHargaRata() {
+        return hargaRata;
+    }
+
+    public void setHargaRata(BigDecimal hargaRata) {
+        this.hargaRata = hargaRata;
+    }
+
+    public Date getTglDo() {
+        return tglDo;
+    }
+
+    public void setTglDo(Date tglDo) {
+        this.tglDo = tglDo;
+    }
+
+    public Date getTglInvoice() {
+        return tglInvoice;
+    }
+
+    public void setTglInvoice(Date tglInvoice) {
+        this.tglInvoice = tglInvoice;
+    }
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
 
     public String getUrlDoc() {
         return urlDoc;

@@ -40,6 +40,9 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
             if (mapCriteria.get("bagian_id")!=null) {
                 criteria.add(Restrictions.eq("bagianId", (String) mapCriteria.get("bagian_id")));
             }
+            if (mapCriteria.get("divisi_id")!=null) {
+                criteria.add(Restrictions.eq("divisiId", (String) mapCriteria.get("divisi_id")));
+            }
             if (mapCriteria.get("bagian_name")!=null) {
                 criteria.add(Restrictions.ilike("bagianName", "%" + (String)mapCriteria.get("bagian_name") + "%"));
             }
@@ -542,4 +545,57 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         }
         return listOfResult;
     }
+
+    public String getNextPositionBagianHistoryId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_position_bagian_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%03d", iter.next());
+        return "PBS"+sId;
+    }
+
+    public List<ImPositionBagianEntity> getDataPosisiBagian(String divisiId){
+
+        String bagian = "";
+
+
+//        if(!divisiId.equalsIgnoreCase("")){
+//            bagian = " and department_id = '"+divisiId+"' ";
+//        }
+
+        List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select\n" +
+                " \n" +
+                "                bagian_id, \n" +
+                "                nama_bagian \n" +
+                "                from \n" +
+                "                im_hris_position_bagian \n" +
+                "                where \n" +
+                "                bagian_id is not null and divisi_id = '"+divisiId+"'  \n" +
+                "                order by \n" +
+                "                \tnama_bagian";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            result.setBagianId((String) row[0]);
+            result.setBagianName((String) row[1]);
+
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
+
+    public List<ImPositionBagianEntity> getListPositionBagianByDivisi(String id) throws HibernateException {
+
+        List<ImPositionBagianEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPositionBagianEntity.class)
+                .add(Restrictions.ilike("divisiId",id))
+                .list();
+
+        return results;
+    }
+
 }

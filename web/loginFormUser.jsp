@@ -37,6 +37,10 @@
                 -webkit-transform: rotate(359deg);
             }
         }
+        .ui-widget-overlay {
+            background: black !important;
+            opacity: .5 !important;
+        }
     </style>
 </head>
 <script type="text/javascript">
@@ -136,10 +140,17 @@
         <div class="errorblock">
 	            <span id="messageError" class="note-errorblock">
                     <br><br>
-                    <div style="background-color: #edcccc; min-width: 400px; max-width: 500px; padding: 10px; text-align: center;font-size: 12px; border-radius: 10px;margin: auto">
+                  <div style="background-color: #edcccc; min-width: 400px; max-width: 500px; padding: 10px; text-align: center;font-size: 12px; border-radius: 10px;margin: auto">
                         Your login attempt was not successful, try again. Caused :
-                        </br>
-                        <s:property value="%{messageError}"/>
+
+                      </br>
+                      <s:if test='messageError=="Maximum sessions of 1 for this principal exceeded"'>
+                          User yang anda masukkan sudah login pada device lain
+                      </s:if>
+
+                        <s:else>
+                            <s:property value="%{messageError}"/>
+                        </s:else>
                     </div>
                      <%--Your login attempt was not successful, try again. Caused :--%>
                     <%--</br>--%>
@@ -178,16 +189,15 @@
                     <div class="icon">
                         <i class="icon-user icon-large"></i>
                     </div>
-                    <s:textfield name="j_username" value="%{userName}" cssClass="input" placeholder="User id or email"/>
+                    <s:textfield name="j_username" value="%{userName}" cssClass="input" placeholder="User id or email" autocomplete="off"/>
                 </div>
                 <br>
                 <div>
                     <div class="icon">
                         <i class="icon-lock icon-large"></i>
                     </div>
-                    <s:password name="j_password" cssClass="input" placeholder="Password"/>
+                    <s:password name="j_password" cssClass="input" placeholder="Password" autocomplete="off"/>
                 </div>
-
 
                 <div id="waiting_dialog" style="font-size:14px;font-family: Arial, Helvetica, sans-serif;text-align : center;background-color: rgba(255, 255, 255, 1);">
                     Please wait a moment, server is loging in your account ...

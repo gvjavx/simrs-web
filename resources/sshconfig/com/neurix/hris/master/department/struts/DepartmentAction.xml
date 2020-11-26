@@ -81,6 +81,8 @@
 
             <result name="success_save_delete">/pages/com/neurix/hris/master/department/deleteDepartment.jsp</result>
             <result name="init_delete">/pages/com/neurix/hris/master/department/deleteDepartment.jsp</result>
+            <!--<result name="success_save_delete1">/pages/com/neurix/hris/master/department/deleteDepartment1.jsp</result>-->
+            <!--<result name="init_delete1">/pages/com/neurix/hris/master/department/deleteDepartment1.jsp</result>-->
             <result name="init_edit">/pages/com/neurix/hris/master/department/editDepartment.jsp</result>
             <result name="success_save_edit">/pages/com/neurix/hris/master/department/editDepartment.jsp</result>
             <result name="failure">/pages/com/neurix/hris/master/department/editDepartment.jsp</result>

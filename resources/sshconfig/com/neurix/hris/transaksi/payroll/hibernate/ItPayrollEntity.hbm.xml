@@ -204,6 +204,32 @@
             <column name="approval_unit_name" sql-type="varchar" length="100" not-null="false" />
         </property>
 
+        <property name="approvalSdmFlag">
+            <column name="approval_sdm_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="approvalSdmDate">
+            <column name="approval_sdm_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="approvalSdmId">
+            <column name="approval_sdm_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="approvalSdmName">
+            <column name="approval_sdm_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="approvalAksFlag">
+            <column name="approval_aks_flag" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="approvalAksDate">
+            <column name="approval_aks_date" sql-type="date" not-null="false" />
+        </property>
+        <property name="approvalAksId">
+            <column name="approval_aks_id" sql-type="varchar" length="20" not-null="false" />
+        </property>
+        <property name="approvalAksName">
+            <column name="approval_aks_name" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
         <property name="flagPayroll">
             <column name="flag_payroll" sql-type="varchar" length="1" not-null="false" />
         </property>
@@ -294,8 +320,6 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
-
-
 
         <!--Tambahan Irfan-->
         <!--Data Pegawai-->
@@ -431,6 +455,20 @@
         </property>
         <property name="totalLain11Bulan">
             <column name="total_lain_11_bulan" sql-type="numeric" length="15" precision="2" not-null="false" />
+        </property>
+        <property name="proporsiGaji">
+            <column name="proporsi_gaji" />
+        </property>
+
+        <!--peralihan-->
+        <property name="peralihanGapok">
+            <column name="peralihan_gapok" sql-type="numeric" length="25" precision="2" not-null="false" />
+        </property>
+        <property name="peralihanSankhus">
+            <column name="peralihan_sankhus" sql-type="numeric" length="25" precision="2" not-null="false" />
+        </property>
+        <property name="peralihanTunjangan">
+            <column name="peralihan_tunjangan" sql-type="numeric" length="25" precision="2" not-null="false" />
         </property>
 
         <many-to-one name="imDepartmentEntity" class="com.neurix.hris.master.department.model.ImDepartmentEntity"

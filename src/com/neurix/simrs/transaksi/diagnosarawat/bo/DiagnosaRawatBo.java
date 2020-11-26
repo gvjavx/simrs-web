@@ -11,9 +11,10 @@ import java.util.List;
 public interface DiagnosaRawatBo {
     public List<DiagnosaRawat> getByCriteria(DiagnosaRawat bean) throws GeneralBOException;
     public List<ItSimrsDiagnosaRawatEntity> getListEntityDiagnosaRawat(DiagnosaRawat bean) throws GeneralBOException;
-    public void saveAdd(DiagnosaRawat bean) throws GeneralBOException;
+    public CrudResponse saveAdd(DiagnosaRawat bean) throws GeneralBOException;
 
-    public void saveEdit(DiagnosaRawat bean) throws GeneralBOException;
+    public CrudResponse saveEdit(DiagnosaRawat bean) throws GeneralBOException;
     public CrudResponse updateCoverBpjs(HeaderDetailCheckup bean) throws GeneralBOException;
+    public Boolean cekDiagnosa(DiagnosaRawat bean) throws GeneralBOException;
 
 }

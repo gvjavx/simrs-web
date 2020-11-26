@@ -20,6 +20,33 @@ public class AsesmenUgd extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String tipe;
+    private String namaTerang;
+    private String sip;
+
+    public String getNamaTerang() {
+        return namaTerang;
+    }
+
+    public void setNamaTerang(String namaTerang) {
+        this.namaTerang = namaTerang;
+    }
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public String getIdAsesmenUgd() {
         return idAsesmenUgd;

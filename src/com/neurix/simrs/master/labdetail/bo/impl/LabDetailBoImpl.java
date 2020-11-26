@@ -1,17 +1,17 @@
 package com.neurix.simrs.master.labdetail.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.common.util.CommonUtil;
-import com.neurix.simrs.master.lab.bo.LabBo;
-import com.neurix.simrs.master.lab.model.Lab;
+import com.neurix.simrs.master.lab.dao.LabDao;
+import com.neurix.simrs.master.lab.model.ImSimrsLabEntity;
 import com.neurix.simrs.master.labdetail.bo.LabDetailBo;
 import com.neurix.simrs.master.labdetail.dao.LabDetailDao;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
 import com.neurix.simrs.master.labdetail.model.LabDetail;
+import com.neurix.simrs.master.parampemeriksaan.dao.ParameterPemeriksaanDao;
+import com.neurix.simrs.master.parampemeriksaan.model.ImSimrsParameterPemeriksaanEntity;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.ContextLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,156 +20,172 @@ import java.util.Map;
 
 public class LabDetailBoImpl implements LabDetailBo {
 
-    protected static transient Logger logger = Logger.getLogger(LabDetailBoImpl.class);
+    protected static transient Logger logger = Logger.getLogger(com.neurix.simrs.master.labdetail.bo.impl.LabDetailBoImpl.class);
     private LabDetailDao labDetailDao;
-
-    public static Logger getLogger() {
-        return logger;
-    }
-
-    public void setLabDetailDao(LabDetailDao labDetailDao) {
-        this.labDetailDao = labDetailDao;
-    }
+    private ParameterPemeriksaanDao parameterPemeriksaanDao;
+    private LabDao labDao;
 
     @Override
-    public void saveDelete(LabDetail bean) throws GeneralBOException {
-        logger.info("[saveDelete.LabDetailBoImpl] start process >>>");
+    public CrudResponse saveEdit(LabDetail bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if (bean != null) {
+            ImSimrsLabDetailEntity entity = null;
+            ImSimrsLabEntity labEntity = new ImSimrsLabEntity();
+            try {
+                labEntity = labDao.getById("idLab", bean.getIdLab());
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+                response.setStatus("error");
+                response.setMsg("Mohon maaf error saat mencari ID lab, " +e.getMessage());
+            }
 
-        if (bean!=null) {
-            String idLabDetail = bean.getIdLabDetail();
-            String status = cekBeforeDelete(idLabDetail);
-            if (!status.equalsIgnoreCase("exist")){
-                ImSimrsLabDetailEntity entity = null;
+            if(labEntity != null){
+                labEntity.setNamaLab(bean.getNamaLab());
+                labEntity.setLastUpdate(bean.getLastUpdate());
+                labEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                labEntity.setAction("U");
+                try {
+                    labDao.updateAndSave(labEntity);
+                }catch (HibernateException e){
+                    logger.error(e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg("Mohon maaf error saat update database, " +e.getMessage());
+                }
 
                 try {
-                    // Get data from database by ID
-                    entity = labDetailDao.getById("idLabDetail", idLabDetail);
+                    entity = labDetailDao.getById("idLabDetail", bean.getIdLabDetail());
+                    response.setStatus("success");
+                    response.setMsg("success");
                 } catch (HibernateException e) {
-                    logger.error("[LabDetailBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when searching data Lab by IdLabDetail, please inform to your admin...," + e.getMessage());
+                    logger.error(e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg("Mohon maaf error saat mencari ID lab, " +e.getMessage());
                 }
 
                 if (entity != null) {
-                    // Modify from bean to entity serializable
-                    entity.setIdLabDetail(bean.getIdLabDetail());
+                    if(bean.getIdLab() != null){
+                        entity.setIdLab(bean.getIdLab());
+                    }
+                    if(bean.getIdParameterPemeriksaan() != null){
+                        entity.setIdParameterPemeriksaan(bean.getIdParameterPemeriksaan());
+                    }
+                    if(bean.getTarif() != null){
+                        entity.setTarif(bean.getTarif());
+                    }
                     entity.setFlag(bean.getFlag());
                     entity.setAction(bean.getAction());
                     entity.setLastUpdateWho(bean.getLastUpdateWho());
                     entity.setLastUpdate(bean.getLastUpdate());
-
                     try {
-                        // Delete (Edit) into database
                         labDetailDao.updateAndSave(entity);
+                        response.setStatus("success");
+                        response.setMsg("success");
                     } catch (HibernateException e) {
-                        logger.error("[LabDetailBoImpl.saveDelete] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when saving update data Lab Detail, please info to your admin..." + e.getMessage());
+                        logger.error(e.getMessage());
+                        response.setStatus("error");
+                        response.setMsg("Mohon maaf error saat update database, " +e.getMessage());
                     }
-
-
                 } else {
-                    logger.error("[LabDetailBoImpl.saveDelete] Error, not found data Lab Detail with request id, please check again your data ...");
-                    throw new GeneralBOException("Error, not found data Lab with request id, please check again your data ...");
+                    response.setStatus("error");
+                    response.setMsg("Mohon maaf error tidak menukan ID lab");
                 }
-            }else {
-                throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan pada data Transaksi");
             }
         }
-        logger.info("[LabDetailBoImpl.saveDelete] end process <<<");
+        return response;
     }
 
     @Override
-    public void saveEdit(LabDetail bean) throws GeneralBOException {
-        logger.info("[LabDetailBoImpl.saveEdit] start process >>>");
-        if (bean!=null) {
-            String labDetailId = bean.getIdLabDetail();
-
-            ImSimrsLabDetailEntity entity = null;
-            try {
-                // Get data from database by ID
-                entity = labDetailDao.getById("idLabDetail", labDetailId);
-                //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
-            } catch (HibernateException e) {
-                logger.error("[LabDetailBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data Lab Detail by IdLabDetail, please inform to your admin...," + e.getMessage());
-            }
-
-            if (entity != null) {
-                entity.setIdLabDetail(bean.getIdLabDetail());
-                entity.setIdLab(bean.getIdLab());
-                entity.setNamaDetailPeriksa(bean.getNamaDetailPeriksa());
-                entity.setSatuan(bean.getSatuan());
-                entity.setKetentuanAcuan(bean.getKetentuanAcuan());
-                entity.setTarif(bean.getTarif());
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setLastUpdate(bean.getLastUpdate());
-
+    public CrudResponse saveAdd(List<LabDetail> list, String isNew) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if (list.size() > 0) {
+            String idLab = null;
+            LabDetail labDetail = list.get(0);
+            if("Y".equalsIgnoreCase(isNew)){
+                String id = null;
                 try {
-                    // Update into database
-                    labDetailDao.updateAndSave(entity);
-                    //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                    id = labDao.getNextLabId();
+                    response.setStatus("success");
+                    response.setMsg("success");
                 } catch (HibernateException e) {
-                    logger.error("[LabDetailBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Lab Detail, please info to your admin..." + e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg("Mohon maaf error saat mencari ID lab, " +e.getMessage());
                 }
-            } else {
-                logger.error("[LabDetailBoImpl.saveEdit] Error, not found data Lab Detail with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Lab with request id, please check again your data ...");
-            }
-        }
-        logger.info("[LabBoImpl.saveEdit] end process <<<");
-    }
-
-    @Override
-    public LabDetail saveAdd(LabDetail bean) throws GeneralBOException {
-        logger.info("[PayrollSkalaGajiBoImpl.saveAdd] start process >>>");
-        if (bean!=null) {
-            String status = cekStatus(bean.getNamaLab());
-            String labDetailId;
-            if (!status.equalsIgnoreCase("exist")){
-                try {
-                    // Generating ID, get from postgre sequence
-                    labDetailId = labDetailDao.getNextLabDetailId();
-                } catch (HibernateException e) {
-                    logger.error("[PayrollSkalaGajiBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiId id, please info to your admin..." + e.getMessage());
-                }
-                // creating object entity serializable
-                ImSimrsLabDetailEntity entity = new ImSimrsLabDetailEntity();
-                entity.setIdLabDetail(labDetailId);
-                entity.setIdLab(bean.getIdLab());
-                entity.setNamaDetailPeriksa(bean.getNamaDetailPeriksa());
-                entity.setSatuan(bean.getSatuan());
-                entity.setKetentuanAcuan(bean.getKetentuanAcuan());
-                entity.setTarif(bean.getTarif());
-                entity.setFlag(bean.getFlag());
-                entity.setAction(bean.getAction());
-                entity.setCreatedWho(bean.getCreatedWho());
-                entity.setLastUpdateWho(bean.getLastUpdateWho());
-                entity.setCreatedDate(bean.getCreatedDate());
-                entity.setLastUpdate(bean.getLastUpdate());
-
-                try {
-                    // insert into database
-                    labDetailDao.addAndSave(entity);
-                } catch (HibernateException e) {
-                    logger.error("[LabDetailBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data Lab, please info to your admin..." + e.getMessage());
+                if(id != null){
+                    ImSimrsLabEntity entity = new ImSimrsLabEntity();
+                    entity.setIdLab(id);
+                    entity.setNamaLab(labDetail.getNamaLab());
+                    entity.setIdKategoriLab(labDetail.getIdKategoriLab());
+                    entity.setFlag(labDetail.getFlag());
+                    entity.setAction(labDetail.getAction());
+                    entity.setCreatedWho(labDetail.getCreatedWho());
+                    entity.setLastUpdateWho(labDetail.getLastUpdateWho());
+                    entity.setCreatedDate(labDetail.getCreatedDate());
+                    entity.setLastUpdate(labDetail.getLastUpdate());
+                    try {
+                        labDao.addAndSave(entity);
+                        response.setStatus("success");
+                        response.setMsg("success");
+                        idLab = entity.getIdLab();
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Mohon maaf error saat mencari ID lab, " +e.getMessage());
+                    }
+                }else {
+                    response.setStatus("error");
+                    response.setMsg("Mohon maaf error saat mencari ID lab");
                 }
             }else{
-                throw new GeneralBOException("Maaf Data dengan Nama Detail Periksa Tersebut Sudah Ada");
+                response.setStatus("success");
+                response.setMsg("success");
+                idLab = labDetail.getIdLab();
+            }
+
+            if("success".equalsIgnoreCase(response.getStatus())){
+                for (LabDetail bean: list){
+                    String id = null;
+                    try {
+                        id = labDetailDao.getNextLabDetailId();
+                        response.setStatus("success");
+                        response.setMsg("success");
+                    } catch (HibernateException e) {
+                        response.setStatus("error");
+                        response.setMsg("Mohon maaf error saat mencari ID lab, " +e.getMessage());
+                    }
+                    if (id != null) {
+                        ImSimrsLabDetailEntity entity = new ImSimrsLabDetailEntity();
+                        entity.setIdLabDetail(id);
+                        entity.setIdLab(idLab);
+                        entity.setIdParameterPemeriksaan(bean.getIdParameterPemeriksaan());
+                        entity.setTarif(bean.getTarif());
+                        entity.setBranchId(bean.getBranchId());
+                        entity.setFlag(bean.getFlag());
+                        entity.setAction(bean.getAction());
+                        entity.setCreatedWho(bean.getCreatedWho());
+                        entity.setLastUpdateWho(bean.getLastUpdateWho());
+                        entity.setCreatedDate(bean.getCreatedDate());
+                        entity.setLastUpdate(bean.getLastUpdate());
+                        try {
+                            labDetailDao.addAndSave(entity);
+                            response.setStatus("success");
+                            response.setMsg("success");
+                        } catch (HibernateException e) {
+                            response.setStatus("error");
+                            response.setMsg("Mohon maaf error saat mencari ID lab, " +e.getMessage());
+                        }
+                    } else {
+                        response.setStatus("error");
+                        response.setMsg("Mohon maaf error saat mencari ID Lab");
+                    }
+                }
             }
         }
-
-        logger.info("[LabBoImpl.saveAdd] end process <<<");
-        return null;
+        return response;
     }
 
     @Override
     public List<LabDetail> getByCriteria(LabDetail bean) throws GeneralBOException {
-        logger.info("[LabDetailBoImpl.getByCriteria] Start >>>>>>>");
         List<LabDetail> result = new ArrayList<>();
+        List<ImSimrsLabDetailEntity> labDetailEntityList = new ArrayList<>();
         if (bean != null) {
             Map hsCriteria = new HashMap();
 
@@ -179,35 +195,26 @@ public class LabDetailBoImpl implements LabDetailBo {
             if (bean.getIdLab() != null && !"".equalsIgnoreCase(bean.getIdLab())) {
                 hsCriteria.put("id_lab", bean.getIdLab());
             }
-            if (bean.getNamaDetailPeriksa() != null && !"".equalsIgnoreCase(bean.getNamaDetailPeriksa())){
-                hsCriteria.put("nama_detail_periksa", bean.getNamaDetailPeriksa());
+            if (bean.getIdParameterPemeriksaan() != null && !"".equalsIgnoreCase(bean.getIdParameterPemeriksaan())) {
+                hsCriteria.put("id_parameter_pemeriksaan", bean.getIdParameterPemeriksaan());
             }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
-                if ("N".equalsIgnoreCase(bean.getFlag())) {
-                    hsCriteria.put("flag", "N");
-                } else {
-                    hsCriteria.put("flag", bean.getFlag());
-                }
+                hsCriteria.put("flag", bean.getFlag());
             } else {
                 hsCriteria.put("flag", "Y");
             }
-
-            List<ImSimrsLabDetailEntity> labDetailEntityList = new ArrayList<>();
             try {
                 labDetailEntityList = labDetailDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e){
-                logger.error("[LabDetailBoImpl.getByCriteria] error when get data lab detailt by get by criteria "+ e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("[LabDetailBoImpl.getByCriteria] error when get data lab detailt by get by criteria " + e.getMessage());
             }
 
-            if (!labDetailEntityList.isEmpty()){
+            if (labDetailEntityList.size() > 0) {
                 LabDetail labDetail;
-                for (ImSimrsLabDetailEntity labDetailEntity : labDetailEntityList){
+                for (ImSimrsLabDetailEntity labDetailEntity : labDetailEntityList) {
                     labDetail = new LabDetail();
                     labDetail.setIdLabDetail(labDetailEntity.getIdLabDetail());
                     labDetail.setIdLab(labDetailEntity.getIdLab());
-                    labDetail.setNamaDetailPeriksa(labDetailEntity.getNamaDetailPeriksa());
-                    labDetail.setSatuan(labDetailEntity.getSatuan());
-                    labDetail.setKetentuanAcuan(labDetailEntity.getKetentuanAcuan());
                     labDetail.setFlag(labDetailEntity.getFlag());
                     labDetail.setAction(labDetailEntity.getAction());
                     labDetail.setCreatedDate(labDetailEntity.getCreatedDate());
@@ -216,27 +223,21 @@ public class LabDetailBoImpl implements LabDetailBo {
                     labDetail.setStLastUpdate(labDetailEntity.getLastUpdate().toString());
                     labDetail.setLastUpdate(labDetailEntity.getLastUpdate());
                     labDetail.setLastUpdateWho(labDetailEntity.getLastUpdateWho());
-                    if (labDetailEntity.getTarif() != null){
-                        labDetail.setTarif(labDetailEntity.getTarif());
-                        labDetail.setStTarif(CommonUtil.numbericFormat(labDetailEntity.getTarif(), "###,###"));
+                    try {
+                        ImSimrsParameterPemeriksaanEntity pemeriksaanEntity = parameterPemeriksaanDao.getById("idParameterPemeriksaan", labDetailEntity.getIdParameterPemeriksaan());
+                        if(pemeriksaanEntity != null){
+                            labDetail.setNamaDetailPeriksa(pemeriksaanEntity.getNamaPemeriksaan());
+                            labDetail.setKeteranganAcuanL(pemeriksaanEntity.getKeteranganAcuanL());
+                            labDetail.setKeteranganAcuanP(pemeriksaanEntity.getKeteranganAcuanP());
+                            labDetail.setSatuan(pemeriksaanEntity.getSatuan());
+                        }
+                    }catch (HibernateException e){
+                        logger.error(e.getMessage());
                     }
-
-                    if (labDetailEntity.getIdLab() != null){
-                        ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-                        Lab lab = new Lab();
-                        LabBo labBo = (LabBo) context.getBean("labBoProxy");
-                        lab.setIdLab(labDetailEntity.getIdLab());
-                        lab.setFlag("Y");
-                        List<Lab> labs = labBo.getByCriteria(lab);
-                        String labName = labs.get(0).getNamaLab();
-                        labDetail.setNamaLab(labName);
-                    }
-
                     result.add(labDetail);
                 }
             }
         }
-        logger.info("[LabDetailBoImpl.getByCriteria] End <<<<<<<");
         return result;
     }
 
@@ -246,46 +247,43 @@ public class LabDetailBoImpl implements LabDetailBo {
     }
 
     @Override
-    public List<LabDetail> getAll() throws GeneralBOException {
-        return null;
+    public List<LabDetail> getDetaillab(String idLab, String branchId) throws GeneralBOException {
+        List<LabDetail> labDetails = new ArrayList<>();
+        logger.info("[LabDetailBoImpl.getDetaillab] Start <<<<<<<");
+        try {
+            labDetails = labDetailDao.getDetailLab(idLab, branchId);
+        } catch (HibernateException e) {
+            logger.error("[LabDetailBoImpl.getDetaillab] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        logger.info("[LabDetailBoImpl.getDetaillab] End <<<<<<<");
+        return labDetails;
     }
 
     @Override
-    public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
-        return null;
+    public List<LabDetail> getDataParameterPemeriksaan(LabDetail bean) throws GeneralBOException {
+        List<LabDetail> result = new ArrayList<>();
+        try {
+            result = labDetailDao.getDataParameterPemeriksaan(bean);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return result;
     }
 
-    public String cekStatus(String namaDetailPeriksa)throws GeneralBOException{
-        String status ="";
-        List<ImSimrsLabDetailEntity> entities = new ArrayList<>();
-        try {
-            entities = labDetailDao.getDataLabDetail(namaDetailPeriksa);
-        } catch (HibernateException e) {
-            logger.error("[LabDetailBoImpl.cekStatus] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-        }
-        if (entities.size()>0){
-            status = "exist";
-        }else{
-            status="notExits";
-        }
-        return status;
+    public static Logger getLogger() {
+        return logger;
     }
 
-    public String cekBeforeDelete(String idLabDetail)throws GeneralBOException{
-        String status ="";
-        List<ImSimrsLabDetailEntity> entities = new ArrayList<>();
-        try {
-            entities = labDetailDao.cekData(idLabDetail);
-        } catch (HibernateException e) {
-            logger.error("[LabDetailBoImpl.cekBeforeDelete] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
-        }
-        if (entities.size()>0){
-            status = "exist";
-        }else{
-            status="notExits";
-        }
-        return status;
+    public void setLabDetailDao(LabDetailDao labDetailDao) {
+        this.labDetailDao = labDetailDao;
+    }
+
+    public void setParameterPemeriksaanDao(ParameterPemeriksaanDao parameterPemeriksaanDao) {
+        this.parameterPemeriksaanDao = parameterPemeriksaanDao;
+    }
+
+    public void setLabDao(LabDao labDao) {
+        this.labDao = labDao;
     }
 }

@@ -25,7 +25,7 @@ public class ImPembayaranUtangPiutangEntity implements Serializable {
     private String branchId;
     private String noJurnal;
     private String registeredFlag;
-    private Date registeredDate;
+    private Timestamp registeredDate;
     private String registeredWho;
     private String tipePembayaran;
 
@@ -35,6 +35,83 @@ public class ImPembayaranUtangPiutangEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+
+    //approval
+    private String approvalKeuanganFlag;
+    private String approvalKeuanganId;
+    private String approvalKeuanganName;
+    private Timestamp approvalKeuanganDate;
+
+    private String approvalKasubKeuanganFlag;
+    private String approvalKasubKeuanganId;
+    private String approvalKasubKeuanganName;
+    private Timestamp approvalKasubKeuanganDate;
+
+
+    public String getApprovalKeuanganFlag() {
+        return approvalKeuanganFlag;
+    }
+
+    public void setApprovalKeuanganFlag(String approvalKeuanganFlag) {
+        this.approvalKeuanganFlag = approvalKeuanganFlag;
+    }
+
+    public String getApprovalKeuanganId() {
+        return approvalKeuanganId;
+    }
+
+    public void setApprovalKeuanganId(String approvalKeuanganId) {
+        this.approvalKeuanganId = approvalKeuanganId;
+    }
+
+    public String getApprovalKeuanganName() {
+        return approvalKeuanganName;
+    }
+
+    public void setApprovalKeuanganName(String approvalKeuanganName) {
+        this.approvalKeuanganName = approvalKeuanganName;
+    }
+
+    public Timestamp getApprovalKeuanganDate() {
+        return approvalKeuanganDate;
+    }
+
+    public void setApprovalKeuanganDate(Timestamp approvalKeuanganDate) {
+        this.approvalKeuanganDate = approvalKeuanganDate;
+    }
+
+    public String getApprovalKasubKeuanganFlag() {
+        return approvalKasubKeuanganFlag;
+    }
+
+    public void setApprovalKasubKeuanganFlag(String approvalKasubKeuanganFlag) {
+        this.approvalKasubKeuanganFlag = approvalKasubKeuanganFlag;
+    }
+
+    public String getApprovalKasubKeuanganId() {
+        return approvalKasubKeuanganId;
+    }
+
+    public void setApprovalKasubKeuanganId(String approvalKasubKeuanganId) {
+        this.approvalKasubKeuanganId = approvalKasubKeuanganId;
+    }
+
+    public String getApprovalKasubKeuanganName() {
+        return approvalKasubKeuanganName;
+    }
+
+    public void setApprovalKasubKeuanganName(String approvalKasubKeuanganName) {
+        this.approvalKasubKeuanganName = approvalKasubKeuanganName;
+    }
+
+    public Timestamp getApprovalKasubKeuanganDate() {
+        return approvalKasubKeuanganDate;
+    }
+
+    public void setApprovalKasubKeuanganDate(Timestamp approvalKasubKeuanganDate) {
+        this.approvalKasubKeuanganDate = approvalKasubKeuanganDate;
+    }
 
     public String getTipePembayaran() {
         return tipePembayaran;
@@ -68,11 +145,11 @@ public class ImPembayaranUtangPiutangEntity implements Serializable {
         this.registeredFlag = registeredFlag;
     }
 
-    public Date getRegisteredDate() {
+    public Timestamp getRegisteredDate() {
         return registeredDate;
     }
 
-    public void setRegisteredDate(Date registeredDate) {
+    public void setRegisteredDate(Timestamp registeredDate) {
         this.registeredDate = registeredDate;
     }
 

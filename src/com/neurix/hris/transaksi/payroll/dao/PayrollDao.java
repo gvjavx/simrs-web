@@ -1,6 +1,8 @@
 package com.neurix.hris.transaksi.payroll.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.transaksi.payroll.model.*;
 
@@ -12,7 +14,6 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.security.Timestamp;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
@@ -138,6 +139,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  ON danaPensiun.dana_pensiun_id = pegawai.dana_pensiun\n" +
                 "WHERE pegawai.flag = 'Y'\n" +
                 "AND posisi.flag = 'Y'\n" +
+                "AND pegawai.flag_dokter_kso = 'N'\n" +
                 "AND posisi.branch_id = '"+branchId+"'\n" +
                 strWhere+"\n" +
                 "ORDER BY position.kelompok_id";
@@ -145,7 +147,6 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
-
 
         for (Object[] row : results) {
             ItPayrollEntity result  = new ItPayrollEntity();
@@ -158,12 +159,27 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             result.setPositionId((String) row[6]);
             result.setPositionName((String) row[7]);
             result.setGolonganId((String) row[8]);
-            Integer level = (Integer) row[9];
+
+            Integer level = 0;
+            if (row[9]!=null){
+                level = (Integer) row[9];
+            }
+
             result.setGolonganName(String.valueOf(level));
             result.setKelompokId((String) row[10]);
-            result.setPoint(Integer.parseInt(row[11].toString()));
+            if (row[11]!=null){
+                result.setPoint(Integer.parseInt(row[11].toString()));
+            }else{
+                result.setPoint(0);
+            }
             result.setStatusKeluarga((String) row[12]);
-            result.setJumlahAnak(Integer.valueOf(row[13].toString()));
+
+            if (row[13]!=null){
+                result.setJumlahAnak(Integer.valueOf(row[13].toString()));
+            }else{
+                result.setJumlahAnak(0);
+            }
+
             if (row[14]!=null){
                 result.setMultifikator(Double.valueOf(row[14].toString()).intValue() + "");
             }
@@ -199,6 +215,155 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 result.setProfesiId((String) row[37]);
             }
             result.setBiodataGaji(BigDecimal.valueOf(Double.parseDouble(row[38].toString())));
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
+
+    public List<ItPayrollEntity> getDataEditPegawaiNonAktif(String branchId, String strWhere,String bulan,String tahun){
+        List<ItPayrollEntity> listOfResult = new ArrayList<ItPayrollEntity>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT DISTINCT \n" +
+                "  pegawai.nip,\n" +
+                "  pegawai.nama_pegawai,\n" +
+                "  posisi.branch_id,\n" +
+                "  branch.branch_name,\n" +
+                "  position.department_id,\n" +
+                "  department.department_name,\n" +
+                "  posisi.position_id,\n" +
+                "  position.position_name,\n" +
+                "  pegawai.golongan_id,\n" +
+                "  golongan.grade_level,\n" +
+                "  position.kelompok_id,\n" +
+                "  pegawai.point,\n" +
+                "  pegawai.status_keluarga,\n" +
+                "  pegawai.jumlah_anak,\n" +
+                "  branch.multifikator,\n" +
+                "  pegawai.zakat_profesi,\n" +
+                "  pegawai.jenis_kelamin,\n" +
+                "  pegawai.dana_pensiun, \n" +
+                "  pegawai.tanggal_aktif, \n" +
+                "  pegawai.tanggal_pensiun, \n" +
+                "  pegawai.tipe_pegawai, \n" +
+                "  pegawai.struktur_gaji, \n" +
+                "  pegawai.gaji, \n" +
+                "  tipePegawai.tipe_pegawai_name, \n" +
+                "  position.kelompok_id,\n" +
+                "  pegawai.status_giling,\n" +
+                "  danaPensiun.dana_pensiun as nama_dana_pensiun,\n" +
+                "  posisi.pjs_flag,\n" +
+                "  pegawai.npwp,\n" +
+                "  pegawai.status_pegawai, \n" +
+                "  pegawai.golongan_dapen, \n" +
+                "  pegawai.golongan_dapen_nusindo,  \n" +
+                "  pegawai.poin_lebih,  branch.umr, \n" +
+                "  pegawai.golongan_dapen_id, \n" +
+                "  pegawai.masa_kerja_gol, \n" +
+                "  pegawai.tgl_akhir_kontrak, \n" +
+                "  posisi.profesi_id,\n" +
+                "  pegawai.gaji,\n" +
+                "  mj.tanggal_efektif\n" +
+                "   FROM im_hris_pegawai pegawai\n" +
+                "LEFT JOIN it_hris_pegawai_position posisi\n" +
+                "  ON posisi.nip = pegawai.nip\n" +
+                "LEFT JOIN im_branches branch\n" +
+                "  ON branch.branch_id = posisi.branch_id\n" +
+                "LEFT JOIN im_position position\n" +
+                "  ON position.position_id = posisi.position_id\n" +
+                "LEFT JOIN im_hris_department department\n" +
+                "  ON department.department_id = position.department_id\n" +
+                "LEFT JOIN im_hris_golongan golongan\n" +
+                "  ON golongan.golongan_id = pegawai.golongan_id\n" +
+                "LEFT JOIN im_hris_tipe_pegawai tipePegawai\n" +
+                "  ON tipePegawai.tipe_pegawai_id = pegawai.tipe_pegawai\n" +
+                "LEFT JOIN im_hris_payroll_dana_pensiun danaPensiun\n" +
+                "  ON danaPensiun.dana_pensiun_id = pegawai.dana_pensiun\n" +
+                "LEFT JOIN it_hris_mutasi_jabatan mj ON mj.nip=pegawai.nip\n" +
+                "LEFT JOIN im_hris_status_mutasi sm ON sm.status_mutasi_id = mj.status\n" +
+                "WHERE pegawai.flag = 'N'\n" +
+                "AND posisi.flag = 'N'\n" +
+                "AND pegawai.flag_dokter_kso = 'N'\n" +
+                "AND posisi.branch_id = '"+branchId+"'\n" +
+                 strWhere +
+                "AND to_char(mj.tanggal_efektif, 'MM-YYYY') = '"+bulan+"-"+tahun+"'\n" +
+                "AND sm.flag_gaji_proporsional='Y'\n" +
+                "ORDER BY position.kelompok_id";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            ItPayrollEntity result  = new ItPayrollEntity();
+            result.setNip((String) row[0]);
+            result.setNama((String) row[1]);
+            result.setBranchId((String) row[2]);
+            result.setBranchName((String) row[3]);
+            result.setDepartmentId((String) row[4]);
+            result.setDepartmentName((String) row[5]);
+            result.setPositionId((String) row[6]);
+            result.setPositionName((String) row[7]);
+            result.setGolonganId((String) row[8]);
+
+            Integer level = 0;
+            if (row[9]!=null){
+                level = (Integer) row[9];
+            }
+
+            result.setGolonganName(String.valueOf(level));
+            result.setKelompokId((String) row[10]);
+            if (row[11]!=null){
+                result.setPoint(Integer.parseInt(row[11].toString()));
+            }else{
+                result.setPoint(0);
+            }
+            result.setStatusKeluarga((String) row[12]);
+
+            if (row[13]!=null){
+                result.setJumlahAnak(Integer.valueOf(row[13].toString()));
+            }else{
+                result.setJumlahAnak(0);
+            }
+
+            if (row[14]!=null){
+                result.setMultifikator(Double.valueOf(row[14].toString()).intValue() + "");
+            }
+            result.setFlagZakat((String) row[15]);
+            result.setGender((String) row[16]);
+            result.setDanaPensiun((String) row[17]);
+            result.setTanggalAktif((Date) row[18]);
+            result.setTanggalPensiun((Date) row[19]);
+            result.setTipePegawai((String) row[20]);
+            result.setStrukturGaji((String) row[21]);
+            if (row[22]!=null){
+                result.setBiodataGaji(BigDecimal.valueOf(Double.parseDouble(row[22].toString())));
+            }
+            result.setTipePegawaiName((String) row[23]);
+            result.setKelompokId((String) row[24]);
+            result.setStatusGiling((String) row[25]);
+            result.setDanaPensiunName((String) row[26]);
+            result.setFlagPjs((String) row[27]);
+            result.setNpwp((String) row[28]);
+            result.setStatusPegawai((String) row[29]);
+            result.setGolonganDapen((String) row[30]);
+            result.setGolonganDapenNusindo((String) row[31]);
+            result.setPointLebih(Integer.parseInt(row[32].toString()));
+            if (row[33]!=null){
+                result.setUmr(BigDecimal.valueOf(Double.parseDouble(row[33].toString())));
+            }
+            result.setGolonganDapenId((String) row[34]);
+            result.setMasaKerjaGol((Integer)row[35]);
+            if (row[36]!=null){
+                result.setTanggalAkhirKontrak((Date)row[36]);
+            }
+            if (row[37]!=null){
+                result.setProfesiId((String) row[37]);
+            }
+            result.setBiodataGaji(BigDecimal.valueOf(Double.parseDouble(row[38].toString())));
+            Timestamp tanggalEfektif =(Timestamp) row[39];
+            result.setTanggalEfektif(new Date (tanggalEfektif.getTime()));
+
             listOfResult.add(result);
         }
         return listOfResult;
@@ -454,6 +619,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  SUM(payroll.total_a) as gaji_kotor,\n" +
                 "  payroll.approval_flag,\n" +
                 "  payroll.approval_unit_flag,\n" +
+                "  payroll.approval_sdm_flag,\n" +
                 "  payroll.approval_date,\n" +
                 "  payroll.branch_id,\n" +
                 "  payroll.flag_payroll,\n" +
@@ -463,7 +629,10 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "  payroll.flag_jasprod,\n" +
                 "  payroll.flag_jubileum,\n" +
                 "  payroll.flag_pensiun,\n" +
-                "  payroll.flag_insentif\n" +
+                "  payroll.flag_insentif,\n" +
+                "  payroll.approval_aks_flag,\n" +
+                "  SUM(payroll.total_b) as rlab, \n" +
+                "  SUM(payroll.lain_lain) as lain_lain \n" +
                 "FROM it_hris_payroll payroll\n" +
                 "LEFT JOIN im_branches branch\n" +
                 "  ON branch.branch_id = payroll.branch_id\n" +
@@ -479,6 +648,8 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 "         branch.branch_name,\n" +
                 "         payroll.approval_flag,\n" +
                 "         payroll.approval_unit_flag,\n" +
+                "         payroll.approval_sdm_flag,\n" +
+                "         payroll.approval_aks_flag,\n" +
                 "         payroll.approval_date," +
                 "         payroll.branch_id,\n" +
                 "         payroll.flag_payroll,\n" +
@@ -505,16 +676,20 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             result.setTotalA(BigDecimal.valueOf(Double.valueOf(row[5].toString())));
             result.setApprovalFlag((String) row[6]);
             result.setApprovalUnitFlag((String) row[7]);
-            result.setApprovalDate((java.sql.Timestamp) row[8]);
-            result.setBranchId((String) row[9]);
-            result.setFlagPayroll((String) row[10]);
-            result.setFlagThr((String) row[11]);
-            result.setFlagCutiTahunan((String) row[12]);
-            result.setFlagCutiPanjang((String) row[13]);
-            result.setFlagJasprod((String) row[14]);
-            result.setFlagJubileum((String) row[15]);
-            result.setFlagPensiun((String) row[16]);
-            result.setFlagInsentif((String) row[17]);
+            result.setApprovalSdmFlag((String) row[8]);
+            result.setApprovalDate((java.sql.Timestamp) row[9]);
+            result.setBranchId((String) row[10]);
+            result.setFlagPayroll((String) row[11]);
+            result.setFlagThr((String) row[12]);
+            result.setFlagCutiTahunan((String) row[13]);
+            result.setFlagCutiPanjang((String) row[14]);
+            result.setFlagJasprod((String) row[15]);
+            result.setFlagJubileum((String) row[16]);
+            result.setFlagPensiun((String) row[17]);
+            result.setFlagInsentif((String) row[18]);
+            result.setApprovalAksFlag((String) row[19]);
+            result.setTotalB(BigDecimal.valueOf(Double.valueOf(row[20].toString())));
+            result.setLainLain(BigDecimal.valueOf(Double.valueOf(row[21].toString())));
 
             listOfResult.add(result);
         }
@@ -873,6 +1048,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 .add(Restrictions.eq("bulan", bulan))
                 .add(Restrictions.eq("tahun", tahun))
                 .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("flagPayroll", "Y"))
                 .add(Restrictions.eq("approvalFlag", "Y"))
                 .list();
 
@@ -1142,22 +1318,293 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
             tipeWhere = "and flag_payroll = 'Y' ";
         }else if(tipe.equalsIgnoreCase("T")){
             tipeWhere = "and flag_thr = 'Y' ";
-        }else if(tipe.equalsIgnoreCase("PD")){
-            tipeWhere = "and flag_pendidikan = 'Y' ";
-        }else if(tipe.equalsIgnoreCase("R")){
-            tipeWhere = "and flag_rapel= 'Y' ";
         }else if(tipe.equalsIgnoreCase("JP")){
             tipeWhere = "and flag_jasprod = 'Y' ";
         }else if(tipe.equalsIgnoreCase("JB")){
             tipeWhere = "and flag_jubileum = 'Y' ";
         }else if(tipe.equalsIgnoreCase("PN")){
-            tipeWhere = "and flag_pensiun= 'Y' ";
+            tipeWhere = "and flag_pensiun = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("IN")){
+            tipeWhere = "and flag_insentif = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("CP")){
+            tipeWhere = "and flag_cuti_panjang = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("CT")){
+            tipeWhere = "and flag_cuti_tahunan = 'Y' ";
+        }else{
+            throw new GeneralBOException("ERROR : tidak ditemukan tipe Payroll");
+        }
+        String query ="";
+        if ("Y".equalsIgnoreCase(statusApprove)){
+            query = "UPDATE it_hris_payroll\n" +
+                    "SET approval_id = '"+id+"',\n" +
+                    "    approval_date = now(),\n" +
+                    "    approval_flag = '"+statusApprove+"'\n" +
+                    "WHERE bulan = '"+bulan+"'\n" +
+                    "AND tahun = '"+tahun+"'\n" +
+                    tipeWhere+
+                    "AND branch_id = '"+branchId+"'\n" +
+                    "AND flag = 'Y'";
+        }else{
+            query = "UPDATE it_hris_payroll\n" +
+                    "SET approval_id = '"+id+"',\n" +
+                    "    approval_date = now(),\n" +
+                    "    approval_flag = '"+statusApprove+"',\n" +
+                    "    approval_sdm_flag = null, \n" +
+                    "    approval_sdm_id = null,\n" +
+                    "    approval_sdm_date = null \n" +
+                    "WHERE bulan = '"+bulan+"'\n" +
+                    "AND tahun = '"+tahun+"'\n" +
+                    tipeWhere+
+                    "AND branch_id = '"+branchId+"'\n" +
+                    "AND flag = 'Y'";
         }
 
-        String query = "UPDATE it_hris_payroll\n" +
-                "SET approval_id = '"+id+"',\n" +
-                "    approval_date = now(),\n" +
-                "    approval_flag = '"+statusApprove+"'\n" +
+        this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .executeUpdate();
+    }
+
+    public void approvePayrollAks(String branchId, String bulan, String tahun, String statusApprove, String tipe){
+        String id = CommonUtil.userIdLogin();
+        String tipeWhere = "";
+        if(tipe.equalsIgnoreCase("PR")){
+            tipeWhere = "and flag_payroll = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("T")){
+            tipeWhere = "and flag_thr = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("JP")){
+            tipeWhere = "and flag_jasprod = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("JB")){
+            tipeWhere = "and flag_jubileum = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("PN")){
+            tipeWhere = "and flag_pensiun = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("IN")){
+            tipeWhere = "and flag_insentif = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("CP")){
+            tipeWhere = "and flag_cuti_panjang = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("CT")){
+            tipeWhere = "and flag_cuti_tahunan = 'Y' ";
+        }else{
+            throw new GeneralBOException("ERROR : tidak ditemukan tipe Payroll");
+        }
+
+        String query ="";
+
+        if ("Y".equalsIgnoreCase(statusApprove)){
+            query = "UPDATE it_hris_payroll\n" +
+                    "SET approval_aks_id = '"+id+"',\n" +
+                    "    approval_aks_date = now(),\n" +
+                    "    approval_aks_flag = '"+statusApprove+"'\n" +
+                    "WHERE bulan = '"+bulan+"'\n" +
+                    "AND tahun = '"+tahun+"'\n" +
+                    tipeWhere+
+                    "AND branch_id = '"+branchId+"'\n" +
+                    "AND flag = 'Y'";
+        }else{
+            query = "UPDATE it_hris_payroll\n" +
+                    "SET approval_aks_id = '"+id+"',\n" +
+                    "    approval_aks_date = now(),\n" +
+                    "    approval_aks_flag = '"+statusApprove+"',\n" +
+                    "    approval_sdm_date = null,\n" +
+                    "    approval_sdm_id = null,\n" +
+                    "    approval_sdm_flag = null\n" +
+                    "WHERE bulan = '"+bulan+"'\n" +
+                    "AND tahun = '"+tahun+"'\n" +
+                    tipeWhere+
+                    "AND branch_id = '"+branchId+"'\n" +
+                    "AND flag = 'Y'";
+        }
+
+        this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .executeUpdate();
+    }
+
+    public void approvePayrollUnit(String branchId, String bulan, String tahun, String statusApprove, String tipe){
+        String id = CommonUtil.userIdLogin();
+        String name = CommonUtil.userLogin();
+        String tipeWhere = "";
+        if(tipe.equalsIgnoreCase("PR")){
+            tipeWhere = "and flag_payroll = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("T")){
+            tipeWhere = "and flag_thr = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("JP")){
+            tipeWhere = "and flag_jasprod = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("JB")){
+            tipeWhere = "and flag_jubileum = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("PN")){
+            tipeWhere = "and flag_pensiun = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("IN")){
+            tipeWhere = "and flag_insentif = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("CP")){
+            tipeWhere = "and flag_cuti_panjang = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("CT")){
+            tipeWhere = "and flag_cuti_tahunan = 'Y' ";
+        }else{
+            throw new GeneralBOException("ERROR : tidak ditemukan tipe Payroll");
+        }
+
+        String query ="";
+        if (statusApprove.equalsIgnoreCase("Y")){
+            query = "UPDATE it_hris_payroll\n" +
+                    "SET approval_unit_id = '"+id+"',\n" +
+                    "    approval_unit_date = now(),\n" +
+                    "    approval_unit_name = '"+name+"',\n" +
+                    "    approval_unit_flag = '"+statusApprove+"'\n" +
+                    "WHERE bulan = '"+bulan+"'\n" +
+                    "AND tahun = '"+tahun+"'\n" +
+                    tipeWhere+
+                    "AND branch_id = '"+branchId+"'\n" +
+                    "AND flag = 'Y'";
+        }else{
+            if (CommonUtil.userBranchLogin().equalsIgnoreCase(CommonConstant.ID_KANPUS)){
+                query = "UPDATE it_hris_payroll\n" +
+                        "SET approval_unit_id = '"+id+"',\n" +
+                        "    approval_unit_date = now(),\n" +
+                        "    approval_unit_name = '"+name+"',\n" +
+                        "    approval_unit_flag = '"+statusApprove+"'\n" +
+                        "WHERE bulan = '"+bulan+"'\n" +
+                        "AND tahun = '"+tahun+"'\n" +
+                        tipeWhere+
+                        "AND branch_id = '"+branchId+"'\n" +
+                        "AND flag = 'Y'";
+            }else{
+                query = "UPDATE it_hris_payroll\n" +
+                        "SET approval_unit_id = '"+id+"',\n" +
+                        "    approval_unit_date = now(),\n" +
+                        "    approval_unit_name = '"+name+"',\n" +
+                        "    approval_unit_flag = '"+statusApprove+"',\n" +
+                        "    approval_id = '"+id+"',\n" +
+                        "    approval_date = now(),\n" +
+                        "    approval_name = '"+name+"', \n" +
+                        "    flag = '"+statusApprove+"', \n" +
+                        "    approval_flag = '"+statusApprove+"' \n" +
+                        "WHERE bulan = '"+bulan+"'\n" +
+                        "AND tahun = '"+tahun+"'\n" +
+                        tipeWhere+
+                        "AND branch_id = '"+branchId+"'\n" +
+                        "AND flag = 'Y'";
+            }
+
+        }
+
+        this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .executeUpdate();
+    }
+
+    public void approvePayrollSdm(String branchId, String bulan, String tahun, String statusApprove, String tipe){
+        String id = CommonUtil.userIdLogin();
+        String name = CommonUtil.userLogin();
+        String tipeWhere = "";
+        if(tipe.equalsIgnoreCase("PR")){
+            tipeWhere = "and flag_payroll = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("T")){
+            tipeWhere = "and flag_thr = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("JP")){
+            tipeWhere = "and flag_jasprod = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("JB")){
+            tipeWhere = "and flag_jubileum = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("PN")){
+            tipeWhere = "and flag_pensiun = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("IN")){
+            tipeWhere = "and flag_insentif = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("CP")){
+            tipeWhere = "and flag_cuti_panjang = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("CT")){
+            tipeWhere = "and flag_cuti_tahunan = 'Y' ";
+        }else{
+            throw new GeneralBOException("ERROR : tidak ditemukan tipe Payroll");
+        }
+
+        String query = "";
+
+        if (CommonConstant.ID_KANPUS.equalsIgnoreCase(branchId)){
+            if ("N".equalsIgnoreCase(statusApprove)){
+                query = "UPDATE it_hris_payroll\n" +
+                        "SET approval_sdm_id = '"+id+"',\n" +
+                        "    approval_sdm_date = now(),\n" +
+                        "    approval_sdm_name = '"+name+"',\n" +
+                        "    approval_sdm_flag = '"+statusApprove+"',\n" +
+                        "    flag = '"+statusApprove+"'\n" +
+                        "WHERE bulan = '"+bulan+"'\n" +
+                        "AND tahun = '"+tahun+"'\n" +
+                        tipeWhere+
+                        "AND branch_id = '"+branchId+"'\n" +
+                        "AND flag = 'Y'";
+            }else{
+                query = "UPDATE it_hris_payroll\n" +
+                        "SET approval_sdm_id = '"+id+"',\n" +
+                        "    approval_sdm_date = now(),\n" +
+                        "    approval_sdm_name = '"+name+"',\n" +
+                        "    approval_sdm_flag = '"+statusApprove+"'\n" +
+                        "WHERE bulan = '"+bulan+"'\n" +
+                        "AND tahun = '"+tahun+"'\n" +
+                        tipeWhere+
+                        "AND branch_id = '"+branchId+"'\n" +
+                        "AND flag = 'Y'";
+            }
+        }else{
+            if ("N".equalsIgnoreCase(statusApprove)){
+                query = "UPDATE it_hris_payroll\n" +
+                        "SET approval_sdm_id = '"+id+"',\n" +
+                        "    approval_sdm_date = now(),\n" +
+                        "    approval_sdm_name = '"+name+"',\n" +
+                        "    approval_sdm_flag = '"+statusApprove+"',\n" +
+                        "    approval_unit_id = null,\n" +
+                        "    approval_unit_date = null,\n" +
+                        "    approval_unit_name = null,\n" +
+                        "    approval_unit_flag = null\n" +
+                        "WHERE bulan = '"+bulan+"'\n" +
+                        "AND tahun = '"+tahun+"'\n" +
+                        tipeWhere+
+                        "AND branch_id = '"+branchId+"'\n" +
+                        "AND flag = 'Y'";
+            }else{
+                query = "UPDATE it_hris_payroll\n" +
+                        "SET approval_sdm_id = '"+id+"',\n" +
+                        "    approval_sdm_date = now(),\n" +
+                        "    approval_sdm_name = '"+name+"',\n" +
+                        "    approval_sdm_flag = '"+statusApprove+"'\n" +
+                        "WHERE bulan = '"+bulan+"'\n" +
+                        "AND tahun = '"+tahun+"'\n" +
+                        tipeWhere+
+                        "AND branch_id = '"+branchId+"'\n" +
+                        "AND flag = 'Y'";
+            }
+        }
+
+        this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .executeUpdate();
+    }
+
+
+    public void deleteTransaksiPayroll(String branchId, String bulan, String tahun, String tipe){
+        String tipeWhere = "";
+        if(tipe.equalsIgnoreCase("PR")){
+            tipeWhere = "and flag_payroll = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("T")){
+            tipeWhere = "and flag_thr = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("JP")){
+            tipeWhere = "and flag_jasprod = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("JB")){
+            tipeWhere = "and flag_jubileum = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("PN")){
+            tipeWhere = "and flag_pensiun = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("IN")){
+            tipeWhere = "and flag_insentif = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("CP")){
+            tipeWhere = "and flag_cuti_panjang = 'Y' ";
+        }else if(tipe.equalsIgnoreCase("CT")){
+            tipeWhere = "and flag_cuti_tahunan = 'Y' ";
+        }else{
+            throw new GeneralBOException("ERROR : tidak ditemukan tipe Payroll");
+        }
+
+        String query = "";
+
+        query = "UPDATE it_hris_payroll\n" +
+                "SET flag = 'N'\n" +
                 "WHERE bulan = '"+bulan+"'\n" +
                 "AND tahun = '"+tahun+"'\n" +
                 tipeWhere+
@@ -1169,34 +1616,12 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 .executeUpdate();
     }
 
-    public void approvePayrollUnit(String branchId, String bulan, String tahun, String statusApprove, String tipe){
-        String id = CommonUtil.userIdLogin();
-        String tipeWhere = "";
-        if(tipe.equalsIgnoreCase("PR")){
-            tipeWhere = "and flag_payroll = 'Y' ";
-        }else if(tipe.equalsIgnoreCase("T")){
-            tipeWhere = "and flag_thr = 'Y' ";
-        }else if(tipe.equalsIgnoreCase("PD")){
-            tipeWhere = "and flag_pendidikan = 'Y' ";
-        }else if(tipe.equalsIgnoreCase("R")){
-            tipeWhere = "and flag_rapel= 'Y' ";
-        }else if(tipe.equalsIgnoreCase("JP")){
-            tipeWhere = "and flag_jasprod = 'Y' ";
-        }else if(tipe.equalsIgnoreCase("JB")){
-            tipeWhere = "and flag_jubileum = 'Y' ";
-        }else if(tipe.equalsIgnoreCase("PN")){
-            tipeWhere = "and flag_pensiun= 'Y' ";
-        }
+    public void deleteTransaksiPayrollById(String payrollId){
+        String query = "";
 
-        String query = "UPDATE it_hris_payroll\n" +
-                "SET approval_unit_id = '"+id+"',\n" +
-                "    approval_unit_date = now(),\n" +
-                "    approval_unit_flag = '"+statusApprove+"'\n" +
-                "WHERE bulan = '"+bulan+"'\n" +
-                "AND tahun = '"+tahun+"'\n" +
-                tipeWhere+
-                "AND branch_id = '"+branchId+"'\n" +
-                "AND flag = 'Y'";
+        query = "UPDATE it_hris_payroll\n" +
+                "SET flag = 'N'\n" +
+                "WHERE payroll_id = '"+payrollId+"'\n";
 
         this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -3836,6 +4261,9 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 .add(Restrictions.eq("tahun", tahun))
                 .add(Restrictions.eq("flag", "Y"))
                 .add(Restrictions.eq("approvalFlag", "Y"))
+                .add(Restrictions.eq("flagPayroll", "Y"))
+                .addOrder(Order.desc("bulan"))
+                .setMaxResults(1)
                 .list();
 
         return results;
@@ -4125,7 +4553,25 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         return results;
     }
 
-    public List<ItPayrollEntity> getDataPayrollByBulanBranchApproveNull(String branchId) throws HibernateException {
+    public List<ItPayrollEntity> getDataPayrollByBulanBranchApproveNull(String branchId,String tipe) throws HibernateException {
+        String tipeWhere="";
+        switch (tipe) {
+            case "T":
+                tipeWhere = "flagThr";
+                break;
+            case "JP":
+                tipeWhere = "flagJasprod";
+                break;
+            case "IN":
+                tipeWhere = "flagInsentif";
+                break;
+            case "CP":
+                tipeWhere = "flagCutiPanjang";
+                break;
+            case "CT":
+                tipeWhere = "flagCutiTahunan";
+                break;
+        }
         List<ItPayrollEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPayrollEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
                 .add(Restrictions.eq("branchId", branchId))
@@ -4214,6 +4660,55 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
         }
         return total;
     }
+
+    public Integer getSelisihBulanPayroll(String tahun,String nip){
+        Integer jumlah = 0;
+        String query="select  \n" +
+                "                11-count( payroll_id ) as jumlah \n" +
+                "                from it_hris_payroll \n" +
+                "                where nip = '"+nip+"' \n" +
+                "                and tahun='"+tahun+"' \n" +
+                "                and bulan<>'12' \n" +
+                "                and flag='Y' \n" +
+                "                and flag_payroll='Y' \n" +
+                "                and approval_flag='Y'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            jumlah = (int)results;
+        }else{
+            jumlah = 0;
+        }
+        return jumlah;
+    }
+
+    public BigDecimal getLastBruto(String tahun,String nip){
+        BigDecimal total ;
+        String query="select\n" +
+                "  total_a + total_b as jumlah\n" +
+                "from\n" +
+                "  it_hris_payroll\n" +
+                "where\n" +
+                "  nip = '"+nip+"'\n" +
+                "  and tahun = '"+tahun+"'\n" +
+                "  and bulan <> '12'\n" +
+                "  and flag = 'Y'\n" +
+                "  and flag_payroll = 'Y'\n" +
+                "  and approval_flag = 'Y'\n" +
+                "order by\n" +
+                "  bulan desc\n" +
+                "limit\n" +
+                "  1";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
+
     public BigDecimal getPPhGaji12Bulan(String tahun,String nip){
         BigDecimal total = new BigDecimal(0);
         String query="select \n" +

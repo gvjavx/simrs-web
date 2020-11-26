@@ -21,6 +21,7 @@ public class Dispensasi {
     private String keterangan;
     private String tanggalAwal;
     private String tanggalAkhir;
+    private String tanggalAkhirBaru;
     private String unitName;
     private String unit;
     private String positionId;
@@ -28,8 +29,34 @@ public class Dispensasi {
     private String golonganId;
     private String golonganName;
     private String gender;
+    private String tanggalKelahiran;
 
     private String actionError;
+    private String message;
+
+    public String getTanggalAkhirBaru() {
+        return tanggalAkhirBaru;
+    }
+
+    public void setTanggalAkhirBaru(String tanggalAkhirBaru) {
+        this.tanggalAkhirBaru = tanggalAkhirBaru;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getTanggalKelahiran() {
+        return tanggalKelahiran;
+    }
+
+    public void setTanggalKelahiran(String tanggalKelahiran) {
+        this.tanggalKelahiran = tanggalKelahiran;
+    }
 
     public String getActionError() {
         return actionError;

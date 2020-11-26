@@ -23,6 +23,79 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private String lastUpdateWho;
     private String statusPeriksa;
     private String approveFlag;
+    private String keterangan;
+    private String urlImg;
+    private String ttdPengirim;
+    private String idKategoriLab;
+    private String ttdDokter;
+    private String ttdPetugas;
+    private String isPending;
+    private String isReading;
+
+    public String getIsReading() {
+        return isReading;
+    }
+
+    public void setIsReading(String isReading) {
+        this.isReading = isReading;
+    }
+
+    public String getIsPending() {
+        return isPending;
+    }
+
+    public void setIsPending(String isPending) {
+        this.isPending = isPending;
+    }
+
+    public String getTtdDokter() {
+        return ttdDokter;
+    }
+
+    public void setTtdDokter(String ttdDokter) {
+        this.ttdDokter = ttdDokter;
+    }
+
+    public String getTtdPetugas() {
+        return ttdPetugas;
+    }
+
+    public void setTtdPetugas(String ttdPetugas) {
+        this.ttdPetugas = ttdPetugas;
+    }
+
+    public String getIdKategoriLab() {
+        return idKategoriLab;
+    }
+
+    public void setIdKategoriLab(String idKategoriLab) {
+        this.idKategoriLab = idKategoriLab;
+    }
+
+    public String getTtdPengirim() {
+        return ttdPengirim;
+    }
+
+    public void setTtdPengirim(String ttdPengirim) {
+        this.ttdPengirim = ttdPengirim;
+    }
+
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
 
     public String getApproveFlag() {
         return approveFlag;

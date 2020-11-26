@@ -56,10 +56,10 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
     }
 
     @Override
-    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan) throws GeneralBOException {
+    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan, String kategori) throws GeneralBOException {
         List<KategoriTindakan> list = new ArrayList<>();
         try {
-            list = kategoriTindakanDao.getListKategoriTindakan(idPelayanan);
+            list = kategoriTindakanDao.getListKategoriTindakan(idPelayanan, kategori);
         }catch (HibernateException e){
             logger.error(e.getMessage());
         }
@@ -78,6 +78,9 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
             }
             if(bean.getKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getKategoriTindakan())){
                 hsCriteria.put("kategori_tindakan", bean.getKategoriTindakan());
+            }
+            if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+                hsCriteria.put("branch_id", bean.getBranchId());
             }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 if ("N".equalsIgnoreCase(bean.getFlag())) {
@@ -109,6 +112,7 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
                     kategoriTindakan.setStLastUpdate(entity.getLastUpdate().toString());
                     kategoriTindakan.setLastUpdate(entity.getLastUpdate());
                     kategoriTindakan.setLastUpdateWho(entity.getLastUpdateWho());
+                    kategoriTindakan.setBranchId(entity.getBranchId());
                     kategoriTindakanList.add(kategoriTindakan);
                 }
             }
@@ -125,6 +129,9 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
 
         if (bean.getIdKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakan())){
             hsCiteria.put("id_kategori_tindakan", bean.getIdKategoriTindakan());
+        }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            hsCiteria.put("branch_id", bean.getBranchId());
         }
         hsCiteria.put("flag", "Y");
 

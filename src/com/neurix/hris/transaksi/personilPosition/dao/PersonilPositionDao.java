@@ -78,6 +78,23 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
         return results;
     }
 
+    public List<ItPersonilPositionEntity> getListPersonilPositionByPositionId(String id) throws HibernateException {
+        List<ItPersonilPositionEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPersonilPositionEntity.class)
+                .add(Restrictions.eq("positionId", id))
+                .addOrder(Order.asc("personilPositionId"))
+                .list();
+        return results;
+    }
+
+    public List<ItPersonilPositionEntity> getListPersonilPositionByProfesiId(String id) throws HibernateException {
+        List<ItPersonilPositionEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPersonilPositionEntity.class)
+                .add(Restrictions.eq("profesiId", id))
+                .addOrder(Order.asc("personilPositionId"))
+                .list();
+        return results;
+    }
+
+
     public List<ItPersonilPositionEntity> getListNip(String nip) throws HibernateException {
         List<ItPersonilPositionEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItPersonilPositionEntity.class)
                 .add(Restrictions.eq("nip", nip))

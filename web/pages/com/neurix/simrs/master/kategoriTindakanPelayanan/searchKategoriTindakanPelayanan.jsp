@@ -56,7 +56,8 @@
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="tindakanPelayananForm" method="post"  theme="simple" namespace="/tindakanPelayanan" action="search_tindakanPelayanan.action" cssClass="form-horizontal">
+                                    <s:form id="tindakanPelayananForm" method="post"  theme="simple"
+                                            namespace="/tindakanPelayanan" action="search_tindakanPelayanan.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -66,12 +67,13 @@
                                         </table>
                                         <table>
                                             <tr>
-                                                <td>
+                                                <td width="22%">
                                                     <label class="control-label"><small>ID Kategori Pelayanan:</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="idKategoriPelayanan" name="kategoriTindakanPelayanan.idKategoriPelayanan" required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:textfield id="idKategoriPelayanan" name="kategoriTindakanPelayanan.idKategoriPelayanan"
+                                                                     required="true" disabled="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -83,7 +85,8 @@
                                                     <table>
                                                         <s:action id="initComboKategori" namespace="/tindakanPelayanan" name="initComboKategori_tindakanPelayanan"/>
                                                         <s:select list="#initComboKategori.listOfComboKategoriTindakan" id="idKategori" name="kategoriTindakanPelayanan.idKategori"
-                                                                  listKey="idKategoriTindakan" listValue="kategoriTindakan" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                  listKey="idKategoriTindakan" listValue="kategoriTindakan"
+                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -95,7 +98,8 @@
                                                     <table>
                                                         <s:action id="initComboPelayanan" namespace="/tindakanPelayanan" name="initComboPelayanan_tindakanPelayanan"/>
                                                         <s:select list="#initComboPelayanan.listOfComboPelayanan" id="idPelayanan" name="kategoriTindakanPelayanan.idPelayanan"
-                                                                  listKey="idPelayanan" listValue="namaPelayanan" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                  listKey="idPelayanan" listValue="namaPelayanan"
+                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -106,7 +110,7 @@
                                                 <td>
                                                     <table>
                                                         <s:select list="#{'N':'Non-Active'}" id="flag" name="kategoriTindakanPelayanan.flag"
-                                                                  headerKey="Y" headerValue="Active" cssClass="form-control" />
+                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
 
                                                 </td>
@@ -118,7 +122,7 @@
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="tindakanPelayananForm" id="search" name="search"
+                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary" formIds="tindakanPelayananForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
@@ -127,7 +131,7 @@
                                                     <td>
                                                         <s:url var="urlAdd" namespace="/tindakanPelayanan" action="add_tindakanPelayanan" escapeAmp="false">
                                                         </s:url>
-                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                        <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
                                                             Add Kategori Tindakan Pelayanan
                                                         </sj:a>
@@ -143,7 +147,7 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="80%">
+                                            <table id="showdata" width="90%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="waiting_dialog_loading" openTopics="showDialog"
@@ -164,7 +168,7 @@
                                                             </center>
                                                         </sj:dialog>
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="400" width="600" autoOpen="false"
+                                                                   height="350" width="600" autoOpen="false"
                                                                    title="Kategori Tindakan Pelayanan ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
@@ -180,7 +184,8 @@
 
                                                         <s:set name="listOfsearchTindakanPelayanan" value="#session.listOfTindakanPelayanan" scope="request" />
                                                         <display:table name="listOfsearchTindakanPelayanan" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_tindakanPelayanan.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                                       requestURI="paging_displaytag_tindakanPelayanan.action"
+                                                                       export="true" id="row" pagesize="14" style="font-size:12">
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
                                                                     <s:url var="urlEdit" namespace="/tindakanPelayanan" action="edit_tindakanPelayanan" escapeAmp="false">

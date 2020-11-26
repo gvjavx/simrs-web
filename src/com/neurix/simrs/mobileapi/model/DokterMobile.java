@@ -18,6 +18,149 @@ public class DokterMobile {
     private String lon;
 
     private String flagCall;
+    private String flagTele;
+
+    private String foto;
+
+    private String jumlahAntrian;
+    private String kuotaTele;
+
+    private String idPelayanan;
+    private String namaPelayanan;
+
+    private String jenisDpjp;
+    private String sip;
+    private String flagApprove;
+    private String keterangan;
+
+    private String idDokterDpjp1;
+    private String namaDokterDpjp1;
+
+    private String idDetailCheckup;
+
+    private String idDokterTeam;
+
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getIdDokterTeam() {
+        return idDokterTeam;
+    }
+
+    public void setIdDokterTeam(String idDokterTeam) {
+        this.idDokterTeam = idDokterTeam;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
+
+    public String getIdDokterDpjp1() {
+        return idDokterDpjp1;
+    }
+
+    public void setIdDokterDpjp1(String idDokterDpjp1) {
+        this.idDokterDpjp1 = idDokterDpjp1;
+    }
+
+    public String getNamaDokterDpjp1() {
+        return namaDokterDpjp1;
+    }
+
+    public void setNamaDokterDpjp1(String namaDokterDpjp1) {
+        this.namaDokterDpjp1 = namaDokterDpjp1;
+    }
+
+    public String getJenisDpjp() {
+        return jenisDpjp;
+    }
+
+    public void setJenisDpjp(String jenisDpjp) {
+        this.jenisDpjp = jenisDpjp;
+    }
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
+
+    public String getFlagApprove() {
+        return flagApprove;
+    }
+
+    public void setFlagApprove(String flagApprove) {
+        this.flagApprove = flagApprove;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getKuotaTele() {
+        return kuotaTele;
+    }
+
+    public void setKuotaTele(String kuotaTele) {
+        this.kuotaTele = kuotaTele;
+    }
+
+    public String getJumlahAntrian() {
+        return jumlahAntrian;
+    }
+
+    public void setJumlahAntrian(String jumlahAntrian) {
+        this.jumlahAntrian = jumlahAntrian;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public String getFlagTele() {
+        return flagTele;
+    }
+
+    public void setFlagTele(String flagTele) {
+        this.flagTele = flagTele;
+    }
 
     public String getFlagCall() {
         return flagCall;

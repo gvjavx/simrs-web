@@ -8,6 +8,8 @@ import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
 import com.neurix.hris.master.positionBagian.model.positionBagian;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -434,6 +436,31 @@ public class PositionBagianAction extends BaseMasterAction{
 
         return "";
     }
+
+    public List<positionBagian> searchPositionBagian(String divisiId) {
+        logger.info("[PositionAction.searchPositionBiodata] start process >>>");
+
+        List<positionBagian> listOfSearchPosition = new ArrayList();
+        try {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+
+            listOfSearchPosition = positionBagianBo.searchPositionBagian(divisiId);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = positionBagianBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[PositionAction.searchPositionBiodata] Error when saving error,", e1);
+            }
+            logger.error("[PositionAction.searchPositionBiodata] Error when searching position by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+
+        logger.info("[PositionAction.searchPositionBiodata] End process >>>");
+        return listOfSearchPosition;
+    }
+
     public String paging(){
         return SUCCESS;
     }

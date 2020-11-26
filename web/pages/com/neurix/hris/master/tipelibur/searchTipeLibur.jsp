@@ -90,7 +90,6 @@
     <section class="content-header">
         <h1>
             Tipe Libur
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -187,15 +186,32 @@
                                 <table id="showdata" width="40%">
                                     <tr>
                                         <td align="center">
-                                            <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                       height="500" width="900" autoOpen="false"
-                                                       title="Tipe Libur">
-                                                <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                            </sj:dialog>
+                                            <%--<sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"--%>
+                                                       <%--height="500" width="900" autoOpen="false"--%>
+                                                       <%--title="Tipe Libur">--%>
+                                                <%--<center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>--%>
+                                            <%--</sj:dialog>--%>
+                                                <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu"
+                                                           closeTopics="closeDialog" modal="true"
+                                                           resizable="false"
+                                                           height="350" width="600" autoOpen="false"
+                                                           title="Proses Tipe Lembur">
+                                                    Please don't close this window, server is processing your request ...
+                                                    <br>
+                                                    <center>
+                                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                             name="image_indicator_write">
+                                                        <br>
+                                                        <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                             name="image_indicator_write">
+                                                    </center>
+                                                </sj:dialog>
 
                                             <s:set name="listOfAlat" value="#session.listOfResult" scope="request" />
                                             <display:table name="listOfAlat" class="table table-condensed table-striped table-hover"
-                                                           requestURI="paging_displaytag_alat.action" export="true" id="row" pagesize="10" style="font-size:10">
+                                                           requestURI="paging_displaytag_tipelibur.action" export="true" id="row" pagesize="10" style="font-size:10">
                                                 <display:column media="html" title="Edit">
                                                     <s:if test="#attr.row.flagYes">
                                                         <s:url var="urlEdit" namespace="/tipelibur" action="edit_tipelibur" escapeAmp="false">
@@ -221,6 +237,11 @@
                                                 <display:column property="tipeLiburId" sortable="true" title="Tipe Libur Id" />
                                                 <display:column property="tipeLiburName" sortable="true" title="Tipe Libur Name"  />
                                                 <display:column property="flag" sortable="true" title="Flag" />
+                                                <display:column property="action" sortable="true" title="Action" />
+                                                <display:column property="stCreatedDate" sortable="true" title="Created Date" />
+                                                <display:column property="stLastUpdate" sortable="true" title="Last Update" />
+                                                <display:column property="createdWho" sortable="true" title="Created Who" />
+                                                <display:column property="lastUpdateWho" sortable="true" title="Last Update Who" />
                                                 <%--<display:column property="action" sortable="true" title="CreatedWho"/>--%>
 
                                             </display:table>

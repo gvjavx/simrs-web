@@ -1,6 +1,8 @@
 package com.neurix.hris.master.positionBagian.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.department.dao.DepartmentDao;
+import com.neurix.hris.master.department.model.ImDepartmentEntity;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
 import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
@@ -26,6 +28,15 @@ public class PositionBagianBoImpl implements PositionBagianBo {
 
     protected static transient Logger logger = Logger.getLogger(PositionBagianBoImpl.class);
     private PositionBagianDao positionBagianDao;
+    private DepartmentDao departmentDao;
+
+    public DepartmentDao getDepartmentDao() {
+        return departmentDao;
+    }
+
+    public void setDepartmentDao(DepartmentDao departmentDao) {
+        this.departmentDao = departmentDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -50,22 +61,33 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         if (bean!=null) {
 
             String kelompokPositionId = bean.getBagianId();
-
+            String idHistory = "";
             ImPositionBagianEntity imPositionBagianEntity = null;
-
+            ImPositionBagianHistoryEntity imPositionBagianHistoryEntity = new ImPositionBagianHistoryEntity();
             try {
                 // Get data from database by ID
                 imPositionBagianEntity = positionBagianDao.getById("bagianId", kelompokPositionId);
+                idHistory = positionBagianDao.getNextPositionBagianHistoryId();
             } catch (HibernateException e) {
                 logger.error("[PositionBagianBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
             }
 
             if (imPositionBagianEntity != null) {
+                imPositionBagianHistoryEntity.setIdHistory(idHistory);
+                imPositionBagianHistoryEntity.setBagianId(imPositionBagianEntity.getBagianId());
+                imPositionBagianHistoryEntity.setBagianName(imPositionBagianEntity.getBagianName());
+                imPositionBagianHistoryEntity.setBranchId(imPositionBagianEntity.getBranchId());
+//                    imPositionBagianHistoryEntity.setDivisiId(imPositionBagianEntity.getDivisiId());
+                imPositionBagianHistoryEntity.setKodering(imPositionBagianEntity.getKodering());
+                imPositionBagianHistoryEntity.setFlag(imPositionBagianEntity.getFlag());
+                imPositionBagianHistoryEntity.setAction(imPositionBagianEntity.getAction());
+                imPositionBagianHistoryEntity.setLastUpdateWho(imPositionBagianEntity.getLastUpdateWho());
+                imPositionBagianHistoryEntity.setLastUpdate(imPositionBagianEntity.getLastUpdate());
+                imPositionBagianHistoryEntity.setCreatedWho(imPositionBagianEntity.getCreatedWho());
+                imPositionBagianHistoryEntity.setCreatedDate(imPositionBagianEntity.getCreatedDate());
 
                 // Modify from bean to entity serializable
-                imPositionBagianEntity.setBagianId(bean.getBagianId());
-                imPositionBagianEntity.setBagianName(bean.getBagianName());
                 imPositionBagianEntity.setFlag(bean.getFlag());
                 imPositionBagianEntity.setAction(bean.getAction());
                 imPositionBagianEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -74,6 +96,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                 try {
                     // Delete (Edit) into database
                     positionBagianDao.updateAndSave(imPositionBagianEntity);
+                    positionBagianDao.addAndSaveHistory(imPositionBagianHistoryEntity);
                 } catch (HibernateException e) {
                     logger.error("[PositionBagianBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data PositionBagian, please info to your admin..." + e.getMessage());
@@ -106,26 +129,27 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                 try {
                     // Get data from database by ID
                     imPositionBagianEntity = positionBagianDao.getById("bagianId", kelompokPositionId);
-                    //idHistory = kelompokPositionDao.getNextPositionBagianHistoryId();
+                    idHistory = positionBagianDao.getNextPositionBagianHistoryId();
                 } catch (HibernateException e) {
                     logger.error("[PositionBagianBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data PositionBagian by Kode PositionBagian, please inform to your admin...," + e.getMessage());
                 }
 
                 if (imPositionBagianEntity != null) {
-                    imPositionBagianHistoryEntity.setId(idHistory);
+                    imPositionBagianHistoryEntity.setIdHistory(idHistory);
                     imPositionBagianHistoryEntity.setBagianId(imPositionBagianEntity.getBagianId());
                     imPositionBagianHistoryEntity.setBagianName(imPositionBagianEntity.getBagianName());
+                    imPositionBagianHistoryEntity.setBranchId(imPositionBagianEntity.getBranchId());
+//                    imPositionBagianHistoryEntity.setDivisiId(imPositionBagianEntity.getDivisiId());
+                    imPositionBagianHistoryEntity.setKodering(imPositionBagianEntity.getKodering());
                     imPositionBagianHistoryEntity.setFlag(imPositionBagianEntity.getFlag());
                     imPositionBagianHistoryEntity.setAction(imPositionBagianEntity.getAction());
-                    imPositionBagianHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                    imPositionBagianHistoryEntity.setLastUpdate(bean.getLastUpdate());
+                    imPositionBagianHistoryEntity.setLastUpdateWho(imPositionBagianEntity.getLastUpdateWho());
+                    imPositionBagianHistoryEntity.setLastUpdate(imPositionBagianEntity.getLastUpdate());
                     imPositionBagianHistoryEntity.setCreatedWho(imPositionBagianEntity.getCreatedWho());
                     imPositionBagianHistoryEntity.setCreatedDate(imPositionBagianEntity.getCreatedDate());
 
-                    imPositionBagianEntity.setBagianId(bean.getBagianId());
                     imPositionBagianEntity.setBagianName(bean.getBagianName());
-                    imPositionBagianEntity.setKodering(bean.getKodering());
                     imPositionBagianEntity.setFlag(bean.getFlag());
                     imPositionBagianEntity.setAction(bean.getAction());
                     imPositionBagianEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -135,6 +159,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                     try {
                         // Update into database
                         positionBagianDao.updateAndSave(imPositionBagianEntity);
+                        positionBagianDao.addAndSaveHistory(imPositionBagianHistoryEntity);
                     } catch (HibernateException e) {
                         logger.error("[PositionBagianBoImpl.saveEdit] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving update data PositionBagian, please info to your admin..." + e.getMessage());
@@ -156,7 +181,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         logger.info("[PositionBagianBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-            String status = cekStatus(bean.getBagianName(), bean.getKodering());
+            String status = cekStatus(bean.getBagianName());
             if (!status.equalsIgnoreCase("Exist")){
                 String kelompokPositionId = "";
                 try {
@@ -172,7 +197,12 @@ public class PositionBagianBoImpl implements PositionBagianBo {
 
                 imPositionBagianEntity.setBagianId(kelompokPositionId);
                 imPositionBagianEntity.setBagianName(bean.getBagianName());
-                imPositionBagianEntity.setKodering(bean.getKodering());
+                imPositionBagianEntity.setDivisiId(bean.getDivisiId());
+                ImDepartmentEntity departmentEntity = departmentDao.getById("departmentId",bean.getDivisiId());
+                List<ImPositionBagianEntity> positionBagianEntityList= positionBagianDao.getListPositionBagianByDivisi(bean.getDivisiId());
+                String sId = String.format("%02d", positionBagianEntityList.size()+1);
+
+                imPositionBagianEntity.setKodering(departmentEntity.getKodering()+"."+sId);
                 imPositionBagianEntity.setFlag(bean.getFlag());
                 imPositionBagianEntity.setAction(bean.getAction());
                 imPositionBagianEntity.setCreatedWho(bean.getCreatedWho());
@@ -213,7 +243,9 @@ public class PositionBagianBoImpl implements PositionBagianBo {
             if (searchBean.getBagianName() != null && !"".equalsIgnoreCase(searchBean.getBagianName())) {
                 hsCriteria.put("bagian_name", searchBean.getBagianName());
             }
-
+            if (searchBean.getDivisiId() != null && !"".equalsIgnoreCase(searchBean.getDivisiId())) {
+                hsCriteria.put("divisi_id", searchBean.getDivisiId());
+            }
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -241,6 +273,11 @@ public class PositionBagianBoImpl implements PositionBagianBo {
                     returnPositionBagian = new positionBagian();
                     returnPositionBagian.setBagianId(kelompokPositionEntity.getBagianId());
                     returnPositionBagian.setBagianName(kelompokPositionEntity.getBagianName());
+                    returnPositionBagian.setDivisiId(kelompokPositionEntity.getDivisiId());
+                    ImDepartmentEntity departmentEntity = departmentDao.getById("departmentId",kelompokPositionEntity.getDivisiId());
+                    if (departmentEntity!=null){
+                        returnPositionBagian.setDivisiName(departmentEntity.getDepartmentName());
+                    }
                     returnPositionBagian.setKodering(kelompokPositionEntity.getKodering());
                     returnPositionBagian.setCreatedWho(kelompokPositionEntity.getCreatedWho());
                     returnPositionBagian.setCreatedDate(kelompokPositionEntity.getCreatedDate());
@@ -327,13 +364,12 @@ public class PositionBagianBoImpl implements PositionBagianBo {
 
         return result;
     }
-    public String cekStatus(String bagianName, String kodering)throws GeneralBOException{
+    public String cekStatus(String bagianName)throws GeneralBOException{
         String status ="";
         List<ImPositionBagianEntity> skalaGajiEntity = new ArrayList<>();
         List<ImPositionBagianEntity> positionBagianEntities = new ArrayList<>();
         try {
             skalaGajiEntity = positionBagianDao.getListPositionBagian(bagianName);
-            positionBagianEntities = positionBagianDao.getListPositionBagianKodering(kodering);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -364,5 +400,21 @@ public class PositionBagianBoImpl implements PositionBagianBo {
             status="notExits";
         }
         return status;
+    }
+
+    public List<positionBagian> searchPositionBagian(String divisiId) throws GeneralBOException {
+        List<ImPositionBagianEntity> posisiList = null;
+        List<positionBagian> positions = new ArrayList<>();
+
+        posisiList = positionBagianDao.getDataPosisiBagian(divisiId);
+        if (posisiList != null) {
+            for (ImPositionBagianEntity imPositionBagianEntity : posisiList) {
+                positionBagian position1 = new positionBagian();
+                position1.setBagianId(imPositionBagianEntity.getBagianId());
+                position1.setBagianName(imPositionBagianEntity.getBagianName());
+                positions.add(position1);
+            }
+        }
+        return positions;
     }
 }

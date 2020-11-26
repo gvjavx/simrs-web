@@ -26,9 +26,15 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
     public List<MtSimrsHargaObatEntity> getByCriteria(Map mapCriteria) {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MtSimrsHargaObatEntity.class);
+
+        if (mapCriteria.get("id_harga_obat") != null){
+            criteria.add(Restrictions.eq("idHargaObat", mapCriteria.get("id_harga_obat").toString()));
+        }
+
         if (mapCriteria.get("id_obat") != null){
             criteria.add(Restrictions.eq("idObat", mapCriteria.get("id_obat").toString()));
         }
+
         if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         }
@@ -59,10 +65,13 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 "ho.harga_jual,\n" +
                 "ho.harga_net,\n" +
                 "ho.diskon,\n" +
-                "ob.id_barang\n" +
+                "ob.id_barang,\n" +
+                "mg.standar_margin\n" +
                 "FROM im_simrs_obat ob\n" +
-                "INNER JOIN (SELECT id_obat, MAX(id_barang) as id_barang FROM im_simrs_obat GROUP BY id_obat ) obb ON obb.id_obat = ob.id_obat AND obb.id_barang = ob.id_barang\n" +
-                "LEFT JOIN mt_simrs_harga_obat ho ON ho.id_obat = ob.id_obat\n" +
+                "INNER JOIN (SELECT id_obat, MAX(id_barang) as id_barang FROM im_simrs_obat WHERE branch_id = :branch GROUP BY id_obat ) \n" +
+                "obb ON obb.id_obat = ob.id_obat AND obb.id_barang = ob.id_barang\n" +
+                "LEFT JOIN ( SELECT * FROM mt_simrs_harga_obat WHERE branch_id = :branch ) ho ON ho.id_obat = ob.id_obat \n" +
+                "LEFT JOIN im_simrs_margin_obat mg ON mg.id_obat = ob.id_obat\n" +
                 "WHERE ob.id_obat LIKE :id \n" +
                 "AND ob.branch_id = :branch ";
 
@@ -88,8 +97,25 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 obat.setHargaNet(obj[9] == null ? new BigDecimal(0) : (BigDecimal) obj[9]);
                 obat.setDiskon(obj[10] == null ? new BigDecimal(0) : (BigDecimal) obj[10]);
                 obat.setIdBarang(obj[11].toString());
-                obats.add(obat);
+                obat.setStandarMargin(obj[12] == null ? null : (Integer) obj[12]);
 
+                BigDecimal hargaRata    = obat.getAverageHargaBiji();
+                BigDecimal hargaJual    = obat.getHargaJual();
+                BigDecimal selisih      = hargaJual.subtract(hargaRata);
+                BigDecimal margin       = hargaJual.intValue() != 0 ? selisih.divide(hargaRata, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100)) : new BigDecimal(0);
+                Integer intMargin       = margin.intValue();
+
+                obat.setMargin(intMargin);
+
+                if (obat.getStandarMargin() != null){
+                    if (obat.getStandarMargin().compareTo(intMargin) == 1){
+                        obat.setFlagKurangMargin("Y");
+                    }
+                } else {
+                    obat.setFlagKurangMargin("R");
+                }
+
+                obats.add(obat);
             }
         }
         return obats;

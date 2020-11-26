@@ -308,6 +308,7 @@ public class UserDao extends GenericDao<ImUsers,String> {
                 "\tLEFT JOIN im_areas_branches_users ub ON u.user_id = ub.user_id\n" +
                 "WHERE\n" +
                 "\tbranch_id='"+branchId+"' AND\n" +
+                "\tu.flag='Y' AND\n" +
                 "\trole_id = '"+roleId+"'\n" +
                 "ORDER BY\n" +
                 "\tu.user_id asc";
@@ -325,4 +326,79 @@ public class UserDao extends GenericDao<ImUsers,String> {
         return listOfResult;
     }
 
+    public List<User> getUserByBranchAndPositionAndRole(String branchId, String positionId,String roleId){
+        List<User> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select \n" +
+                "\tu.user_id,\n" +
+                "\tu.user_name,\n" +
+                "\tur.role_id,\n" +
+                "\tub.branch_id\n" +
+                "from \n" +
+                "\tim_users u \n" +
+                "\tLEFT JOIN im_users_roles ur ON u.user_id=ur.user_id \n" +
+                "\tLEFT JOIN im_areas_branches_users ub ON u.user_id = ub.user_id\n" +
+                "WHERE\n" +
+                "\tbranch_id='"+branchId+"' AND\n" +
+                "\tposition_id = '"+positionId+"' AND \n" +
+                "\tu.flag = 'Y' AND \n" +
+                "\trole_id = '"+roleId+"'\n" +
+                "ORDER BY\n" +
+                "\tu.user_id asc";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            User data= new User();
+            data.setUserId((String) row[0]);
+            data.setUsername((String) row[1]);
+            data.setBranchId((String) row[3]);
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    public List<User> getUserPegawaiByBranchAndPositionAndRole(String branchId, String positionId){
+        List<User> listOfResult = new ArrayList<>();
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT\n" +
+                "\tp.nip,\n" +
+                "\tp.nama_pegawai,\n" +
+                "\tpp.branch_id\n" +
+                "FROM\n" +
+                "\tim_hris_pegawai p\n" +
+                "\tINNER JOIN it_hris_pegawai_position pp ON p.nip = pp.nip\n" +
+                "WHERE\n" +
+                "\tbranch_id='"+branchId+"' AND\n" +
+                "\tp.flag='Y' AND\n" +
+                "\tpp.flag='Y' AND\n" +
+                "\tposition_id = '"+positionId+"' \n" +
+                "ORDER BY\n" +
+                "\tp.nip asc";
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            User data= new User();
+            data.setUserId((String) row[0]);
+            data.setUsername((String) row[1]);
+            data.setBranchId((String) row[2]);
+            listOfResult.add(data);
+        }
+        return listOfResult;
+    }
+
+    public ImUsers getUserByIdPelayanan (String idPelayanan) throws HibernateException {
+
+        List<ImUsers> results = this.sessionFactory.getCurrentSession().createCriteria(ImUsers.class)
+                .add(Restrictions.eq("idPelayanan", idPelayanan))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+
+        return results.size() > 0 ? (ImUsers) results.get(0) : null;
+    }
 }

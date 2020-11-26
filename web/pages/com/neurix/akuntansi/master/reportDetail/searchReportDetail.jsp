@@ -68,7 +68,6 @@
     <section class="content-header">
         <h1>
             Setting Report Akuntansi
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -95,7 +94,7 @@
                                 <div id="grup-tipe-laporan" class="form-group">
                                     <label class="control-label col-sm-4">Tipe Laporan</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'hutang_usaha':'Hutang Usaha', 'piutang_usaha' : 'Piutang Usaha', 'uang_muka':'Uang Muka','piutang_pasien':'Piutang Pasien','uang_muka_p':'Uang Muka Pasien'}"
+                                        <s:select list="#{'hutang_usaha':'Hutang Usaha', 'piutang_usaha' : 'Piutang Usaha', 'uang_muka':'Uang Muka','piutang_pasien':'Piutang Pasien','uang_muka_p':'Uang Muka Pasien','pph_dokter_kso':'PPH21 Dokter','pph_pegawai':'PPH21 Pegawai','pph_rekanan':'PPH21 Rekanan'}"
                                                   id="tipeLaporan" name="laporanAkuntansi.tipeLaporanId"
                                                   headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                     </div>

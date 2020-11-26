@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="KartuBukuBesarPerBukuBantu" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="bdaf2a17-1aac-4e49-a61a-b8cd35b24766">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="KartuBukuBesarPerBukuBantu" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" uuid="bdaf2a17-1aac-4e49-a61a-b8cd35b24766">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.464100000000001"/>
+	<property name="ireport.zoom" value="1.2100000000000013"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="60"/>
+	<property name="ireport.y" value="102"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -17,9 +17,6 @@
 	<parameter name="nomor_master" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["40023"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\tomcat\\webapps\\go-medsys\\pages\\report\\com\\neurix\\akuntansi\\"]]></defaultValueExpression>
-	</parameter>
 	<parameter name="kota" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="periodeTitle" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="rekening_id" class="java.lang.String"/>
@@ -31,33 +28,14 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="reportParams.areaId" class="java.lang.String"/>
+	<parameter name="saldoAwal" class="java.math.BigDecimal"/>
+	<parameter name="posisiSaldoAwal" class="java.lang.String"/>
+	<parameter name="saldoAkhir" class="java.math.BigDecimal"/>
+	<parameter name="posisiSaldoAkhir" class="java.lang.String"/>
+	<parameter name="nama_kode_rekening" class="java.lang.String"/>
+	<parameter name="nama_master" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select
-    x.tanggal_jurnal,
-    x.no_jurnal,
-    x.spum_id,
-    x.keterangan as keterangan,
-    rek.kode_rekening,
-    rek.nama_kode_rekening,
-    y.master_id as nomorMaster,
-    z.nama as namaMaster,
-    y.no_nota as nomor_nota,
-    y.jumlah_debit as jumlahDebit,
-    y.jumlah_kredit as jumlahKredit,
-    $P{periode} as periode
-from
-    it_akun_jurnal x
-    left outer join it_akun_jurnal_detail y on x.no_jurnal = y.no_jurnal
-    left outer join im_akun_master z on y.master_id = z.nomor_master
-    left outer join im_akun_kode_rekening rek on y.rekening_id = rek.rekening_id
-    left outer join im_akun_mata_uang mu ON (x.mata_uang_id = mu.mata_uang_id)
-where
-    to_char(x.tanggal_jurnal, 'MM-yyyy') = $P{periode}
-    and y.rekening_id = $P{rekening_id}
-    and y.master_id = $P{nomor_master}
-    and lower(mu.kode_mata_uang) = 'rph'
-    and x.registered_flag = 'Y'
-    and x.branch_id IN ($P!{reportParams.branchId})]]>
+		<![CDATA[]]>
 	</queryString>
 	<field name="tanggal_jurnal" class="java.sql.Date"/>
 	<field name="no_jurnal" class="java.lang.String"/>
@@ -93,10 +71,184 @@ where
 	<variable name="posisiSaldo" class="java.lang.String">
 		<variableExpression><![CDATA[$V{saldo}.compareTo(new BigDecimal(0))<0 ? "K" : "D"]]></variableExpression>
 	</variable>
-	<group name="rekening" isReprintHeaderOnEachPage="true">
-		<groupExpression><![CDATA[]]></groupExpression>
+	<group name="rekening" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{kode_rekening}]]></groupExpression>
 		<groupHeader>
-			<band splitType="Stretch"/>
+			<band height="72" splitType="Stretch">
+				<staticText>
+					<reportElement key="staticText-11" mode="Transparent" x="47" y="33" width="93" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="87e357d7-c464-44a2-a23d-ad3f216e22a0"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[No. Jurnal]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-14" mode="Transparent" x="382" y="33" width="92" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ec043a57-2a1c-477e-8db4-c2412b2c109d"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Debet]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-15" mode="Transparent" x="474" y="33" width="92" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e4558ba5-b329-4c17-8f0f-bf4e1b4958b2"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Kredit]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-27" mode="Transparent" x="-1" y="33" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="bbbd7cb9-cf15-49a6-b120-efd5126d9313"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Tanggal]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-30" x="330" y="52" width="52" height="20" uuid="21981a89-ae68-4302-844e-4b95b18c13b1"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+					<text><![CDATA[Saldo Awal : ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-32" mode="Transparent" x="140" y="33" width="73" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="50a806d2-e628-4d01-b1c9-13f21e2783b0"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Nomor Nota]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-33" mode="Transparent" x="213" y="33" width="168" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f4089002-2393-4395-a913-76978f7136f9"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Keterangan]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-3" x="0" y="52" width="567" height="1" uuid="5454fa83-a0a0-4578-ab3d-089ce94d6915"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement key="line-2" x="0" y="33" width="567" height="1" uuid="82249001-0935-41f5-866e-09634aaa7cab"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Dashed"/>
+					</graphicElement>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-5" x="55" y="12" width="187" height="12" uuid="82b073c5-2955-48a0-af51-c0630a2372fd">
+						<printWhenExpression><![CDATA[!$P{nomor_master}.equalsIgnoreCase("")]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[": " +  $P{nomor_master} + "    " + $P{nama_master}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-6" x="55" y="0" width="187" height="12" uuid="ff5b1f3b-1b92-4940-a339-bd74cefadc60"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[": " + $P{kode_rekening} + "    " + $P{nama_kode_rekening}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-34" mode="Transparent" x="0" y="0" width="55" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="6174535b-fb25-413a-b0ba-cc90a713d8b6"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Buku Besar]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-35" mode="Transparent" x="0" y="12" width="55" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="9a21fd3d-47c2-44a6-9fd6-cad1e0363e25">
+						<printWhenExpression><![CDATA[!$P{nomor_master}.equalsIgnoreCase("")]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Kartu]]></text>
+				</staticText>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="383" y="52" width="169" height="20" uuid="e40bffa2-93ab-4916-8b46-ac8855d5a324"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{saldoAwal}.abs()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="552" y="52" width="14" height="20" uuid="18e8ca0d-1938-4731-88db-9bc8d9c2f551"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{posisiSaldoAwal}]]></textFieldExpression>
+				</textField>
+			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="62" splitType="Stretch">
@@ -121,7 +273,7 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[** Selesai **]]></text>
 				</staticText>
@@ -140,7 +292,7 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_jumlahDebit_1}==null ? BigDecimal.valueOf(0.0) : $V{SUM_jumlahDebit_1} )]]></textFieldExpression>
 				</textField>
@@ -153,12 +305,12 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $V{SUM_jumlahKredit_1}==null ? BigDecimal.valueOf(0.0) : $V{SUM_jumlahKredit_1} )]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-28" x="324" y="2" width="59" height="18" uuid="84cdb308-423d-475b-9b01-a1751548c609"/>
+					<reportElement key="staticText-28" x="324" y="2" width="58" height="18" uuid="84cdb308-423d-475b-9b01-a1751548c609"/>
 					<box rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -166,12 +318,12 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[Jumlah Mutasi : ]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-29" x="324" y="21" width="59" height="18" uuid="27ea7544-4075-4bdf-ab51-c152b0c46729"/>
+					<reportElement key="staticText-29" x="324" y="21" width="58" height="18" uuid="27ea7544-4075-4bdf-ab51-c152b0c46729"/>
 					<box rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -179,7 +331,7 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[Saldo Akhir : ]]></text>
 				</staticText>
@@ -192,9 +344,9 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{saldo}.abs()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{saldoAkhir}.abs()]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement key="textField-9" x="553" y="21" width="14" height="18" uuid="0af43f39-26e4-4500-89aa-333f5f85e443"/>
@@ -205,9 +357,9 @@ where
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{posisiSaldo}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{posisiSaldoAkhir}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -219,7 +371,7 @@ where
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="86" splitType="Stretch">
+		<band height="64" splitType="Stretch">
 			<staticText>
 				<reportElement key="staticText-1" x="159" y="18" width="242" height="15" uuid="dbd69d55-da43-4f30-bcf0-c4d8970e39e4"/>
 				<box>
@@ -229,87 +381,22 @@ where
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[KARTU BUKU BESAR PER BUKU BANTU]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField-5" x="56" y="57" width="187" height="12" uuid="82b073c5-2955-48a0-af51-c0630a2372fd"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<textFieldExpression><![CDATA[": " +  $F{nomormaster} + "    " + $F{namamaster}]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-6" x="56" y="45" width="187" height="12" uuid="ff5b1f3b-1b92-4940-a339-bd74cefadc60"/>
+				<reportElement key="textField-11" x="159" y="33" width="242" height="13" uuid="d2594602-878f-45f5-93e1-dd1b87af9cbe"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<textFieldExpression><![CDATA[": " + $F{kode_rekening} + "    " + $F{nama_kode_rekening}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement key="staticText-34" mode="Transparent" x="1" y="45" width="55" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="6174535b-fb25-413a-b0ba-cc90a713d8b6"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<text><![CDATA[Buku Besar]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-35" mode="Transparent" x="1" y="57" width="55" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="9a21fd3d-47c2-44a6-9fd6-cad1e0363e25"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Kartu]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-36" mode="Transparent" x="1" y="69" width="55" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="bd50acbf-8046-430f-a133-888230f918c1"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Periode]]></text>
-			</staticText>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-11" x="56" y="69" width="210" height="13" uuid="d2594602-878f-45f5-93e1-dd1b87af9cbe"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<textFieldExpression><![CDATA[": "+ $P{periodeTitle}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Periode : "+ $P{periodeTitle}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-13" x="2" y="31" width="208" height="18" uuid="c5652fba-0d11-44b4-9064-a19bc2c869f9"/>
@@ -320,7 +407,7 @@ where
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="9" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{kota}]]></textFieldExpression>
 			</textField>
@@ -337,7 +424,7 @@ where
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Hal.       :"]]></textFieldExpression>
 			</textField>
@@ -350,7 +437,7 @@ where
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -363,7 +450,7 @@ where
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
@@ -385,7 +472,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Waktu   :"]]></textFieldExpression>
 			</textField>
@@ -398,7 +485,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -411,7 +498,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Tanggal :"]]></textFieldExpression>
 			</textField>
@@ -424,145 +511,19 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + " dari "]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="2" y="17" width="208" height="15" uuid="34df9284-d5d4-4a47-8fa6-7ce40c559ffd"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportParams.areaId}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
-	<columnHeader>
-		<band height="41" splitType="Stretch">
-			<staticText>
-				<reportElement key="staticText-11" mode="Transparent" x="48" y="2" width="93" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="87e357d7-c464-44a2-a23d-ad3f216e22a0"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[No. Jurnal]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-14" mode="Transparent" x="383" y="2" width="92" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ec043a57-2a1c-477e-8db4-c2412b2c109d"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Debet]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-15" mode="Transparent" x="475" y="2" width="92" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e4558ba5-b329-4c17-8f0f-bf4e1b4958b2"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Kredit]]></text>
-			</staticText>
-			<line>
-				<reportElement key="line-2" x="0" y="1" width="567" height="1" uuid="82249001-0935-41f5-866e-09634aaa7cab"/>
-				<graphicElement>
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
-				</graphicElement>
-			</line>
-			<line>
-				<reportElement key="line-3" x="0" y="22" width="567" height="1" uuid="5454fa83-a0a0-4578-ab3d-089ce94d6915"/>
-				<graphicElement>
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
-				</graphicElement>
-			</line>
-			<staticText>
-				<reportElement key="staticText-27" mode="Transparent" x="0" y="2" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="bbbd7cb9-cf15-49a6-b120-efd5126d9313"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Tanggal]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-30" x="332" y="23" width="51" height="18" uuid="21981a89-ae68-4302-844e-4b95b18c13b1"/>
-				<box rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Saldo Awal : ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-32" mode="Transparent" x="141" y="2" width="73" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="50a806d2-e628-4d01-b1c9-13f21e2783b0"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Nomor Nota]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-33" mode="Transparent" x="214" y="2" width="168" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f4089002-2393-4395-a913-76978f7136f9"/>
-				<box leftPadding="2" rightPadding="2">
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
-				</textElement>
-				<text><![CDATA[Keterangan]]></text>
-			</staticText>
-			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="383" y="23" width="184" height="18" uuid="4f87b79d-245a-423d-bba9-e003ed0fd7a2"/>
-				<subreportParameter name="nomor_master">
-					<subreportParameterExpression><![CDATA[$P{nomor_master}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="kode_rekening">
-					<subreportParameterExpression><![CDATA[$P{kode_rekening}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="periode">
-					<subreportParameterExpression><![CDATA[$P{periode}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="branch_id">
-					<subreportParameterExpression><![CDATA[$P{reportParams.branchId}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<returnValue subreportVariable="debit_awal" toVariable="debit_awal"/>
-				<returnValue subreportVariable="kredit_awal" toVariable="kredit_awal"/>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "KartuBukuBesarPerBukuBantu_subReport.jasper"]]></subreportExpression>
-			</subreport>
-		</band>
-	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
@@ -600,7 +561,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{keterangan}]]></textFieldExpression>
 			</textField>
@@ -613,7 +574,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tanggal_jurnal}]]></textFieldExpression>
 			</textField>
@@ -626,7 +587,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no_jurnal}]]></textFieldExpression>
 			</textField>
@@ -639,7 +600,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomor_nota}]]></textFieldExpression>
 			</textField>
@@ -654,4 +615,13 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 	<summary>
 		<band splitType="Stretch"/>
 	</summary>
+	<noData>
+		<band height="110">
+			<textField>
+				<reportElement x="95" y="45" width="364" height="20" uuid="3114acc0-565c-4087-90a9-3c2abcd98e9a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Tidak ada data pada Kode Rekening "+$P{kode_rekening}]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
 </jasperReport>

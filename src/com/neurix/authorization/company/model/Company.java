@@ -38,7 +38,61 @@ public class Company extends BaseModel implements Serializable {
     private BigDecimal maxBpjsPensiun;
     private BigDecimal maxBpjsKesehatan ;
     private String periodeGaji;
+    private BigDecimal paramDapen;
+    private BigDecimal paramDapenPegawai;
+    private BigDecimal biayaJabatan;
 
+    private BigInteger jarakAbsenMobile;
+    private Integer tanggalAwalLembur;
+    private Integer tanggalAkhirLembur;
+
+    public Integer getTanggalAkhirLembur() {
+        return tanggalAkhirLembur;
+    }
+
+    public void setTanggalAkhirLembur(Integer tanggalAkhirLembur) {
+        this.tanggalAkhirLembur = tanggalAkhirLembur;
+    }
+
+    public Integer getTanggalAwalLembur() {
+        return tanggalAwalLembur;
+    }
+
+    public void setTanggalAwalLembur(Integer tanggalAwalLembur) {
+        this.tanggalAwalLembur = tanggalAwalLembur;
+    }
+
+    public BigInteger getJarakAbsenMobile() {
+        return jarakAbsenMobile;
+    }
+
+    public void setJarakAbsenMobile(BigInteger jarakAbsenMobile) {
+        this.jarakAbsenMobile = jarakAbsenMobile;
+    }
+
+    public BigDecimal getParamDapenPegawai() {
+        return paramDapenPegawai;
+    }
+
+    public void setParamDapenPegawai(BigDecimal paramDapenPegawai) {
+        this.paramDapenPegawai = paramDapenPegawai;
+    }
+
+    public BigDecimal getBiayaJabatan() {
+        return biayaJabatan;
+    }
+
+    public void setBiayaJabatan(BigDecimal biayaJabatan) {
+        this.biayaJabatan = biayaJabatan;
+    }
+
+    public BigDecimal getParamDapen() {
+        return paramDapen;
+    }
+
+    public void setParamDapen(BigDecimal paramDapen) {
+        this.paramDapen = paramDapen;
+    }
 
     public String getPeriodeGaji() {
         return periodeGaji;

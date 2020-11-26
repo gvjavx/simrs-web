@@ -20,6 +20,51 @@ public class AsesmenRawatInap extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String tipe;
+    private String informasi;
+    private String namaTerang;
+    private String sip;
+    private String noCheckup;
+
+    public String getNoCheckup() {
+        return noCheckup;
+    }
+
+    public void setNoCheckup(String noCheckup) {
+        this.noCheckup = noCheckup;
+    }
+
+    public String getNamaTerang() {
+        return namaTerang;
+    }
+
+    public void setNamaTerang(String namaTerang) {
+        this.namaTerang = namaTerang;
+    }
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
+
+    public String getInformasi() {
+        return informasi;
+    }
+
+    public void setInformasi(String informasi) {
+        this.informasi = informasi;
+    }
 
     public String getIdAsesmenKeperawatanRawatInap() {
         return idAsesmenKeperawatanRawatInap;

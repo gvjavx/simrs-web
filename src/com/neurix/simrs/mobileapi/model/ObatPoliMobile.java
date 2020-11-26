@@ -35,6 +35,15 @@ public class ObatPoliMobile {
     private String flagKronis;
 
     private String namaObat;
+    private String idJenisObat;
+
+    public String getIdJenisObat() {
+        return idJenisObat;
+    }
+
+    public void setIdJenisObat(String idJenisObat) {
+        this.idJenisObat = idJenisObat;
+    }
 
     public String getNamaObat() {
         return namaObat;

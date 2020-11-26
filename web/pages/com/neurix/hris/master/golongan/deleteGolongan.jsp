@@ -30,14 +30,10 @@
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
                 }
-
-
             } else {
 
                 event.originalEvent.options.submit = false;
-
                 var msg = "";
-
                 if (nameGolongan == '') {
                     msg += 'Field <strong>Golongan Name</strong> is required.' + '<br/>';
                 }
@@ -53,7 +49,6 @@
             if (confirm('Do you want to delete this record ?')) {
                 event.originalEvent.options.submit = true;
                 $.publish('showDialog');
-
             } else {
                 // Cancel Submit comes with 1.8.0
                 event.originalEvent.options.submit = false;
@@ -68,11 +63,11 @@
             }
         });
 
-        $.subscribe('errorDialog', function (event, data) {
+        $.subscribe('errorDialogDelete', function (event, data) {
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
+            document.getElementById('errorMessageDelete').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            $.publish('showErrorDialogDelete');
         });
 
         function cancelBtn() {
@@ -151,7 +146,7 @@
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
-                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
+                                   onSuccessTopics="successDialog" onErrorTopics="errorDialogDelete" >
                             <i class="fa fa-trash"></i>
                             Delete
                         </sj:submit>
@@ -190,7 +185,6 @@
                                                    height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                               'OK':function() {
-                                                                    //$(this).dialog('close');
                                                                       callSearch();
                                                                    }
                                                             }"
@@ -199,15 +193,15 @@
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog_delete" openTopics="showErrorDialogDelete" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog_delete').dialog('close'); }
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessageDelete"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>

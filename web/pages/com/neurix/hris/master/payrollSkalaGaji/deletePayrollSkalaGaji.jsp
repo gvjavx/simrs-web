@@ -189,6 +189,29 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tahun :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll3"
+                                          name="payrollSkalaGaji.tahun" required="true" headerKey=""
+                                          headerValue="[Select one]"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>No. SK :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="noSk2" name="payrollSkalaGaji.noSk" required="true" cssClass="form-control" readonly="true"/>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
 
 

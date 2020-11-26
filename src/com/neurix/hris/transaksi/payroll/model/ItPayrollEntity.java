@@ -113,6 +113,12 @@ public class ItPayrollEntity implements Serializable {
     private Timestamp approvalSdmDate;
     private String approvalSdmName;
 
+    //approve AKS
+    private String approvalAksFlag;
+    private String approvalAksId;
+    private Timestamp approvalAksDate;
+    private String approvalAksName;
+
     private String flagPayroll;
     private String danaPensiun;
     private Date tanggalAktif;
@@ -279,6 +285,85 @@ public class ItPayrollEntity implements Serializable {
     private ImBiodataEntity imBiodataEntity;
     private ItPayrollPphEntity itPayrollPphEntity;
 
+    // macam peralihan;
+    private BigDecimal peralihanGapok;
+    private BigDecimal peralihanSankhus;
+    private BigDecimal peralihanTunjangan;
+
+    private Date tanggalEfektif;
+    private BigDecimal proporsiGaji;
+
+    public BigDecimal getProporsiGaji() {
+        return proporsiGaji;
+    }
+
+    public void setProporsiGaji(BigDecimal proporsiGaji) {
+        this.proporsiGaji = proporsiGaji;
+    }
+
+    public Date getTanggalEfektif() {
+        return tanggalEfektif;
+    }
+
+    public void setTanggalEfektif(Date tanggalEfektif) {
+        this.tanggalEfektif = tanggalEfektif;
+    }
+
+    public String getApprovalAksFlag() {
+        return approvalAksFlag;
+    }
+
+    public void setApprovalAksFlag(String approvalAksFlag) {
+        this.approvalAksFlag = approvalAksFlag;
+    }
+
+    public String getApprovalAksId() {
+        return approvalAksId;
+    }
+
+    public void setApprovalAksId(String approvalAksId) {
+        this.approvalAksId = approvalAksId;
+    }
+
+    public Timestamp getApprovalAksDate() {
+        return approvalAksDate;
+    }
+
+    public void setApprovalAksDate(Timestamp approvalAksDate) {
+        this.approvalAksDate = approvalAksDate;
+    }
+
+    public String getApprovalAksName() {
+        return approvalAksName;
+    }
+
+    public void setApprovalAksName(String approvalAksName) {
+        this.approvalAksName = approvalAksName;
+    }
+
+    public BigDecimal getPeralihanGapok() {
+        return peralihanGapok;
+    }
+
+    public void setPeralihanGapok(BigDecimal peralihanGapok) {
+        this.peralihanGapok = peralihanGapok;
+    }
+
+    public BigDecimal getPeralihanSankhus() {
+        return peralihanSankhus;
+    }
+
+    public void setPeralihanSankhus(BigDecimal peralihanSankhus) {
+        this.peralihanSankhus = peralihanSankhus;
+    }
+
+    public BigDecimal getPeralihanTunjangan() {
+        return peralihanTunjangan;
+    }
+
+    public void setPeralihanTunjangan(BigDecimal peralihanTunjangan) {
+        this.peralihanTunjangan = peralihanTunjangan;
+    }
 
     public String getApprovalSdmFlag() {
         return approvalSdmFlag;

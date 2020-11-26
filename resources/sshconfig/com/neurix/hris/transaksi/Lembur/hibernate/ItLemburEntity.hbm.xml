@@ -100,6 +100,19 @@
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
 
+        <property name="flagDirubahAtasan">
+            <column name="flag_dirubah_atasan" sql-type="varchar" length="1" not-null="false" />
+        </property>
+        <property name="jamAwalLama">
+            <column name="jam_awal_lama" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="jamAkhirLama">
+            <column name="jam_akhir_lama" sql-type="varchar" length="5" not-null="false" />
+        </property>
+        <property name="lamaJamLama">
+            <column name="lama_jam_lama" sql-type="numeric" length="5" precision="2" not-null="false" />
+        </property>
+
         <many-to-one name="imDepartmentEntity" class="com.neurix.hris.master.department.model.ImDepartmentEntity"
                      insert="false" update="false" fetch="select" cascade="all">
             <column name="divisi_id"/>

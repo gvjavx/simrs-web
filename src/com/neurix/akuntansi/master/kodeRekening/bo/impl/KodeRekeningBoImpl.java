@@ -6,6 +6,9 @@ import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.tipeRekening.dao.TipeRekeningDao;
 import com.neurix.akuntansi.master.tipeRekening.model.ImTipeRekeningEntity;
+import com.neurix.authorization.company.dao.BranchDao;
+import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.common.exception.GeneralBOException;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -27,6 +30,15 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
     protected static transient Logger logger = Logger.getLogger(KodeRekeningBoImpl.class);
     private KodeRekeningDao kodeRekeningDao;
     private TipeRekeningDao tipeRekeningDao;
+    private BranchDao branchDao;
+
+    public BranchDao getBranchDao() {
+        return branchDao;
+    }
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
 
     public TipeRekeningDao getTipeRekeningDao() {
         return tipeRekeningDao;
@@ -61,7 +73,8 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                  kodeRekeningEntity.setNamaKodeRekening(bean.getNamaKodeRekening());
                  kodeRekeningEntity.setTipeRekeningId(bean.getTipeRekeningId());
                  kodeRekeningEntity.setFlagDivisi(bean.getFlagDivisi());
-                 kodeRekeningEntity.setFlagMaster(bean.getFlagDivisi());
+                 kodeRekeningEntity.setFlagMaster(bean.getFlagMaster());
+                 kodeRekeningEntity.setTipeBudgeting(bean.getTipeBudgeting());
 
                     String[] coa = bean.getKodeRekening().split("\\.");
                     if (coa.length==1){
@@ -192,6 +205,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                     returnKodeRekening.setLastUpdate(kodeRekeningEntity.getLastUpdate());
                     returnKodeRekening.setAction(kodeRekeningEntity.getAction());
                     returnKodeRekening.setFlag(kodeRekeningEntity.getFlag());
+                    returnKodeRekening.setTipeBudgeting(kodeRekeningEntity.getTipeBudgeting());
                     listOfResult.add(returnKodeRekening);
                 }
             }
@@ -245,6 +259,7 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
             imKodeRekeningEntity.setLastUpdateWho(bean.getLastUpdateWho());
             imKodeRekeningEntity.setCreatedDate(bean.getCreatedDate());
             imKodeRekeningEntity.setLastUpdate(bean.getLastUpdate());
+            imKodeRekeningEntity.setTipeBudgeting(bean.getTipeBudgeting());
 
             try {
                 // insert into database
@@ -289,6 +304,8 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
                 returnKodeRekening.setLastUpdate(kodeRekeningEntity.getLastUpdate());
                 returnKodeRekening.setAction(kodeRekeningEntity.getAction());
                 returnKodeRekening.setFlag(kodeRekeningEntity.getFlag());
+                returnKodeRekening.setFlagDivisi(kodeRekeningEntity.getFlagDivisi());
+                returnKodeRekening.setFlagMaster(kodeRekeningEntity.getFlagMaster());
                 listOfResult.add(returnKodeRekening);
             }
         }
@@ -347,6 +364,11 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
     }
 
     @Override
+    public List<ImKodeRekeningEntity> getListKodeRekeningByLevelAndTipeBudgeting(String coa, Long level, String tipeBudgeting) throws GeneralBOException {
+        return kodeRekeningDao.getKodeRekeningListByLevelAndTipeBudgeting(coa, level, tipeBudgeting);
+    }
+
+    @Override
     public List<KodeRekening> getAll() throws GeneralBOException {
         return null;
     }
@@ -377,6 +399,43 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
         logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransId] end process <<<");
 
         return listOfResult;
+    }
+
+    @Override
+    public List<String> getListRekeningIdsByTipeBudgeting(String tipeBudgeting) throws GeneralBOException {
+        logger.info("[KodeRekeningBoImpl.getListKodeRekeningIdsByTipeBudgeting] start process >>>");
+        logger.info("[KodeRekeningBoImpl.getListKodeRekeningIdsByTipeBudgeting] end process <<<");
+        return kodeRekeningDao.getListRekeningIdsByTipeBudgeting(tipeBudgeting);
+    }
+
+    @Override
+    public List<KodeRekening> getKodeRekeningLawanByTransIdRk(String transId, String posisiLawan, String branchId) throws GeneralBOException {
+        logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransIdRk] start process >>>");
+
+        // Mapping with collection and put
+        List<KodeRekening> listOfResult = new ArrayList();
+        List<KodeRekening> listOfResultFinal = new ArrayList();
+        try {
+            listOfResult = kodeRekeningDao.getKodeRekeningLawanByTransId(transId,posisiLawan);
+        } catch (HibernateException e) {
+            logger.error("[KodeRekeningBoImpl.getKodeRekeningLawanByTransIdRk] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        ImBranchesPK imBranchesPK = new ImBranchesPK();
+        imBranchesPK.setId(branchId);
+        ImBranches branches = branchDao.getById("primaryKey",imBranchesPK);
+
+        for(KodeRekening kodeRekening : listOfResult){
+            if (branches.getCoaRk().equalsIgnoreCase(kodeRekening.getKodeRekening())){
+                listOfResultFinal.add(kodeRekening);
+                break;
+            }
+        }
+
+        logger.info("[KodeRekeningBoImpl.getKodeRekeningLawanByTransIdRk] end process <<<");
+
+        return listOfResultFinal;
     }
 
     public static Logger getLogger() {

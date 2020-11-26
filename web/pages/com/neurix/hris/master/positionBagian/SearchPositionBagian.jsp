@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Sub Divisi
+            Sub Bidang/Divisi
         </h1>
         <%--<ol class="breadcrumb">--%>
         <%--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>--%>
@@ -82,7 +82,7 @@
                         <table >
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Position Id :</small></label>
+                                    <label class="control-label"><small>Sub Bidang/Divisi Id :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -90,10 +90,21 @@
                                     </table>
                                 </td>
                             </tr>
-
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Bagian Name :</small></label>
+                                    <label class="control-label"><small>Bidang/Devisi :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:action id="comboMasaTanam" namespace="/department" name="initDepartment_department"/>
+                                        <s:select list="#session.listOfResultDepartment" id="departmentId" name="positionBagian.divisiId"
+                                                  listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Sub Bidang/Divisi Name :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -112,14 +123,9 @@
                                         <s:select list="#{'N':'Non-Active'}" id="flag" name="positionBagian.flag"
                                                   headerKey="Y" headerValue="Active" cssClass="form-control" />
                                     </table>
-
                                 </td>
                             </tr>
-
                         </table>
-
-
-
                         <br>
 
                         <div id="actions" class="form-actions">
@@ -152,7 +158,7 @@
                         <br>
                         <br>
                         <center>
-                            <table id="showdata" width="40%">
+                            <table id="showdata" width="80%">
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -187,8 +193,9 @@
                                                     </sj:a>
                                                 </s:if>
                                             </display:column>
-                                            <display:column property="bagianId" sortable="true" title="Bagian Id" />
-                                            <display:column property="bagianName" sortable="true" title="Bagian Name"  />
+                                            <display:column property="bagianId" sortable="true" title="Sub Bidang/Divisi Id" />
+                                            <display:column property="bagianName" sortable="true" title="Sub Bidang/Divisi Name"  />
+                                            <display:column property="divisiName" sortable="true" title="Bidang/Divisi"  />
                                             <display:column property="kodering" sortable="true" title="Kodering"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
@@ -196,7 +203,6 @@
                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
-
                                         </display:table>
                                     </td>
                                 </tr>

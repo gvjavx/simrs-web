@@ -43,6 +43,44 @@ public class BudgettingDTO {
     private BigDecimal nilaiTotalRealisasi;
     private BigDecimal nilaiTotalSisaBayar;
 
+    private BigDecimal nilaiAdendum1;
+    private BigDecimal nilaiAdendum2;
+    private BigDecimal nilaiAdendum3;
+
+    private boolean cetak=false;
+
+    public boolean isCetak() {
+        return cetak;
+    }
+
+    public void setCetak(boolean cetak) {
+        this.cetak = cetak;
+    }
+
+    public BigDecimal getNilaiAdendum1() {
+        return nilaiAdendum1;
+    }
+
+    public void setNilaiAdendum1(BigDecimal nilaiAdendum1) {
+        this.nilaiAdendum1 = nilaiAdendum1;
+    }
+
+    public BigDecimal getNilaiAdendum2() {
+        return nilaiAdendum2;
+    }
+
+    public void setNilaiAdendum2(BigDecimal nilaiAdendum2) {
+        this.nilaiAdendum2 = nilaiAdendum2;
+    }
+
+    public BigDecimal getNilaiAdendum3() {
+        return nilaiAdendum3;
+    }
+
+    public void setNilaiAdendum3(BigDecimal nilaiAdendum3) {
+        this.nilaiAdendum3 = nilaiAdendum3;
+    }
+
     public String getDivisiId() {
         return divisiId;
     }

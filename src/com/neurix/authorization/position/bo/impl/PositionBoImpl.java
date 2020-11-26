@@ -2,11 +2,18 @@ package com.neurix.authorization.position.bo.impl;
 
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.dao.PositionHistoryDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.ImPositionHistory;
 import com.neurix.authorization.position.model.Position;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.exception.GenerateBoLog;
+import com.neurix.hris.master.department.dao.DepartmentDao;
+import com.neurix.hris.master.department.model.ImDepartmentEntity;
+import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
+import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
+import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
+import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -21,6 +28,54 @@ public class PositionBoImpl implements PositionBo {
 
     protected static transient Logger logger = Logger.getLogger(PositionBoImpl.class);
     private PositionDao positionDao;
+    private PositionHistoryDao positionHistoryDao;
+    private DepartmentDao departmentDao;
+    private PositionBagianDao positionBagianDao;
+    private PersonilPositionDao personilPositionDao;
+
+    public PersonilPositionDao getPersonilPositionDao() {
+        return personilPositionDao;
+    }
+
+    public void setPersonilPositionDao(PersonilPositionDao personilPositionDao) {
+        this.personilPositionDao = personilPositionDao;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        PositionBoImpl.logger = logger;
+    }
+
+    public PositionDao getPositionDao() {
+        return positionDao;
+    }
+
+    public DepartmentDao getDepartmentDao() {
+        return departmentDao;
+    }
+
+    public void setDepartmentDao(DepartmentDao departmentDao) {
+        this.departmentDao = departmentDao;
+    }
+
+    public PositionBagianDao getPositionBagianDao() {
+        return positionBagianDao;
+    }
+
+    public void setPositionBagianDao(PositionBagianDao positionBagianDao) {
+        this.positionBagianDao = positionBagianDao;
+    }
+
+    public PositionHistoryDao getPositionHistoryDao() {
+        return positionHistoryDao;
+    }
+
+    public void setPositionHistoryDao(PositionHistoryDao positionHistoryDao) {
+        this.positionHistoryDao = positionHistoryDao;
+    }
 
     public void setPositionDao(PositionDao positionDao) {
         this.positionDao = positionDao;
@@ -200,7 +255,7 @@ public class PositionBoImpl implements PositionBo {
         logger.info("[PositionBoImpl.saveAdd] start process >>>");
 
         if (position != null) {
-            String status = cekStatus(position.getPositionName(), position.getKodering());
+            String status = cekStatus(position.getPositionName());
             if (!status.equalsIgnoreCase("Exist")){
                 ImPosition imPosition = new ImPosition();
 
@@ -210,7 +265,12 @@ public class PositionBoImpl implements PositionBo {
                 imPosition.setDepartmentId(position.getDepartmentId());
                 imPosition.setKelompokId(position.getKelompokId());
                 imPosition.setBagianId(position.getBagianId());
-                imPosition.setKodering(position.getKodering());
+
+                ImPositionBagianEntity positionBagianEntity = positionBagianDao.getById("bagianId",position.getBagianId());
+                List<ImPosition> positionList = positionDao.getListByBagianId(position.getBagianId());
+                String sId = String.format("%02d", positionList.size()+1);
+
+                imPosition.setKodering(positionBagianEntity.getKodering()+"."+sId);
 
                 imPosition.setCreatedDate(position.getCreatedDate());
                 imPosition.setLastUpdate(position.getLastUpdate());
@@ -229,15 +289,14 @@ public class PositionBoImpl implements PositionBo {
         }
 
         logger.info("[PositionBoImpl.saveAdd] end process <<<");
-
-        return position;
+        return null;
     }
 
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
 
-        Long result = GenerateBoLog.generateBoLog(positionDao, message, moduleMethod);
+//        Long result = GenerateBoLog.generateBoLog(positionDao, message, moduleMethod);
 
-        return result;
+        return null;
     }
 
     public void saveEdit(Position bean) throws GeneralBOException{
@@ -248,6 +307,7 @@ public class PositionBoImpl implements PositionBo {
             if (!status.equalsIgnoreCase("exist")){
                 String positionId = bean.getPositionId();
                 ImPosition imPosition = null;
+                ImPositionHistory historyEntity = new ImPositionHistory();
 
                 try{
                     imPosition = positionDao.getById("positionId", positionId);
@@ -257,6 +317,40 @@ public class PositionBoImpl implements PositionBo {
                 }
 
                 if (imPosition != null){
+                    //entity history
+                    String positionHistoryId;
+                    try {
+                        // Generating ID, get from postgre sequence
+                        positionHistoryId = positionHistoryDao.getNextPositionHistory();
+                    } catch (HibernateException e) {
+                        logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when getting sequence payrollTunjanganJabatanStruktural id, please info to your admin..." + e.getMessage());
+                    }
+
+                    historyEntity.setPositionIdHistory(positionHistoryId);
+                    historyEntity.setPositionName(imPosition.getPositionName());
+                    historyEntity.setDepartmentId(imPosition.getDepartmentId());
+                    historyEntity.setKelompokId(imPosition.getKelompokId());
+                    historyEntity.setBagianId(imPosition.getBagianId());
+                    historyEntity.setKodering(imPosition.getKodering());
+                    historyEntity.setPositionId(imPosition.getPositionId());
+                    historyEntity.setFlagDijabatSatuOrang(imPosition.getFlagDijabatSatuOrang());
+                    historyEntity.setKodering(imPosition.getKodering());
+                    historyEntity.setCreatedDate(imPosition.getLastUpdate());
+                    historyEntity.setCreatedWho(imPosition.getLastUpdateWho());
+                    historyEntity.setLastUpdate(imPosition.getLastUpdate());
+                    historyEntity.setLastUpdateWho(imPosition.getLastUpdateWho());
+                    historyEntity.setFlag("Y");
+                    historyEntity.setAction(imPosition.getAction());
+
+                    try {
+                        // insert into database
+                        positionHistoryDao.addAndSave(historyEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving new data PayrollTunjanganJabatanStruktural, please info to your admin..." + e.getMessage());
+                    }
+
                     imPosition.setPositionId(bean.getPositionId());
                     imPosition.setPositionName(bean.getPositionName());
                     imPosition.setKodering(bean.getKodering());
@@ -368,51 +462,113 @@ public class PositionBoImpl implements PositionBo {
 
             String positionId = position.getPositionId();
 
-            ImPosition imPositionOld = null;
+            //validasi
+            List<ItPersonilPositionEntity> personilPositionEntityList= personilPositionDao.getListPersonilPositionByPositionId(positionId);
+
+            if (personilPositionEntityList.size()>0){
+                String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
+
+            ImPosition imPosition = null;
+            ImPositionHistory historyEntity = new ImPositionHistory();
             try {
-                imPositionOld = positionDao.getById("positionId",positionId, "Y");
+                imPosition = positionDao.getById("positionId",positionId, "Y");
             } catch (HibernateException e) {
                 logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving delete data position, please info to your admin..." + e.getMessage());
             }
 
-            if (imPositionOld != null) {
-
-                Set listOfImUsers = imPositionOld.getImUserses();
-
-                if (imPositionOld != null) {
-
-                    ImPosition imPositionToDeactive = imPositionOld;
-
-                    /*try {
-                        BeanUtils.copyProperties(imPositionToDeactive, imPositionOld);
-                    } catch (IllegalAccessException e) {
-                        logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when coping data object position Will be Delete to ImPositionBeforeDeactive, please info to your admin..." + e.getMessage());
-                    } catch (InvocationTargetException e) {
-                        logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when coping data object position  Will be Delete to ImPositionBeforeDeactive, please info to your admin..." + e.getMessage());
-                    }*/
-
-                    //update data with flag=N
-                    imPositionToDeactive.setFlag("N");
-                    imPositionToDeactive.setAction(position.getAction());
-                    imPositionToDeactive.setLastUpdate(position.getLastUpdate());
-                    imPositionToDeactive.setLastUpdateWho(position.getLastUpdateWho());
-
-                    ImPosition imPositionDeactive = (ImPosition) positionDao.getSessionFactory().getCurrentSession().merge(imPositionToDeactive);
-
-                    try {
-                        positionDao.updateAndSave(imPositionDeactive);
-                    } catch (HibernateException e) {
-                        logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when saving delete data position, please info to your admin..." + e.getMessage());
-                    }
-
-                } else {
-                    logger.error("[PositionBoImpl.saveDelete] Unable to delete cause have reference data exist in user table.");
-                    throw new GeneralBOException("Found problem when saving delete data role cause have reference data exist in user table, please info to your admin...");
+            if (imPosition != null) {
+                //entity history
+                String positionHistoryId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    positionHistoryId = positionHistoryDao.getNextPositionHistory();
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence payrollTunjanganJabatanStruktural id, please info to your admin..." + e.getMessage());
                 }
+
+                historyEntity.setPositionIdHistory(positionHistoryId);
+                historyEntity.setPositionName(imPosition.getPositionName());
+                historyEntity.setDepartmentId(imPosition.getDepartmentId());
+                historyEntity.setKelompokId(imPosition.getKelompokId());
+                historyEntity.setBagianId(imPosition.getBagianId());
+                historyEntity.setKodering(imPosition.getKodering());
+                historyEntity.setPositionId(imPosition.getPositionId());
+                historyEntity.setFlagDijabatSatuOrang(imPosition.getFlagDijabatSatuOrang());
+                historyEntity.setKodering(imPosition.getKodering());
+                historyEntity.setCreatedDate(imPosition.getLastUpdate());
+                historyEntity.setCreatedWho(imPosition.getLastUpdateWho());
+                historyEntity.setLastUpdate(imPosition.getLastUpdate());
+                historyEntity.setLastUpdateWho(imPosition.getLastUpdateWho());
+                historyEntity.setFlag("Y");
+                historyEntity.setAction(imPosition.getAction());
+
+                try {
+                    // insert into database
+                    positionHistoryDao.addAndSave(historyEntity);
+                } catch (HibernateException e) {
+                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data PayrollTunjanganJabatanStruktural, please info to your admin..." + e.getMessage());
+                }
+
+                imPosition.setPositionId(position.getPositionId());
+//                imPosition.setPositionName(bean.getPositionName());
+//                imPosition.setKodering(bean.getKodering());
+//                imPosition.setDepartmentId(bean.getDepartmentId());
+//                imPosition.setKelompokId(bean.getKelompokId());
+//                imPosition.setBagianId(bean.getBagianId());
+                imPosition.setFlag(position.getFlag());
+                imPosition.setAction(position.getAction());
+                imPosition.setLastUpdateWho(position.getLastUpdateWho());
+                imPosition.setLastUpdate(position.getLastUpdate());
+
+                try{
+                    positionDao.updateAndSave(imPosition);
+                }catch (HibernateException e){
+                    logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data Position, please info to your admin..." + e.getMessage());
+                }
+
+
+
+//                Set listOfImUsers = imPositionOld.getImUserses();
+//                ImPosition imPositionToDeactive = imPositionOld;
+//
+//                    /*try {
+//                        BeanUtils.copyProperties(imPositionToDeactive, imPositionOld);
+//                    } catch (IllegalAccessException e) {
+//                        logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
+//                        throw new GeneralBOException("Found problem when coping data object position Will be Delete to ImPositionBeforeDeactive, please info to your admin..." + e.getMessage());
+//                    } catch (InvocationTargetException e) {
+//                        logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
+//                        throw new GeneralBOException("Found problem when coping data object position  Will be Delete to ImPositionBeforeDeactive, please info to your admin..." + e.getMessage());
+//                    }*/
+//
+//                //update data with flag=N
+//                imPositionToDeactive.setFlag("N");
+//                imPositionToDeactive.setAction(position.getAction());
+//                imPositionToDeactive.setLastUpdate(position.getLastUpdate());
+//                imPositionToDeactive.setLastUpdateWho(position.getLastUpdateWho());
+//
+//                ImPosition imPositionDeactive = (ImPosition) positionDao.getSessionFactory().getCurrentSession().merge(imPositionToDeactive);
+//
+//                try {
+//                    positionDao.updateAndSave(imPositionDeactive);
+//                } catch (HibernateException e) {
+//                    logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
+//                    throw new GeneralBOException("Found problem when saving delete data position, please info to your admin..." + e.getMessage());
+//                }
+
+//                if (imPositionOld != null) {
+//
+//                } else {
+//                    logger.error("[PositionBoImpl.saveDelete] Unable to delete cause have reference data exist in user table.");
+//                    throw new GeneralBOException("Found problem when saving delete data role cause have reference data exist in user table, please info to your admin...");
+//                }
             } else {
                 logger.error("[PositionBoImpl.saveDelete] Unable to delete cause no found position key.");
                 throw new GeneralBOException("Found problem when saving delete data role cause no found position key., please info to your admin...");
@@ -604,13 +760,12 @@ public class PositionBoImpl implements PositionBo {
         }
         return positions;
     }
-    public String cekStatus(String positionName, String kodering)throws GeneralBOException{
+    public String cekStatus(String positionName)throws GeneralBOException{
         String status ="";
         List<ImPosition> imPositions = new ArrayList<>();
         List<ImPosition> positionList = new ArrayList<>();
         try {
             imPositions = positionDao.getListPosition(positionName);
-            positionList = positionDao.getListPositionKodering(kodering);
         } catch (HibernateException e) {
             logger.error("[PositionBoImpl.cekStatus] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -680,6 +835,68 @@ public class PositionBoImpl implements PositionBo {
         logger.info("[PositionBoImpl.getPositionById] end process <<<");
 
         return positionList;
+    }
+
+    @Override
+    public List<Position> getComboBodBoc() throws GeneralBOException {
+        logger.info("[PositionBoImpl.getByCriteria] start process >>>");
+
+        List<Position> listOfResultPosition = new ArrayList();
+
+        List<ImPosition> listOfPosition = null;
+        try {
+            listOfPosition = positionDao.getPositionBodBoc();
+        } catch (HibernateException e) {
+            logger.error("[PositionBoImpl.getByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (listOfPosition != null) {
+            Position resultPosition;
+            for (ImPosition imPosition : listOfPosition) {
+                resultPosition = new Position();
+
+                resultPosition.setPositionId(imPosition.getPositionId());
+                resultPosition.setStPositionId(imPosition.getPositionId().toString());
+                resultPosition.setPositionName(imPosition.getPositionName());
+                resultPosition.setKodering(imPosition.getKodering());
+
+                resultPosition.setDepartmentId(imPosition.getDepartmentId());
+                if(imPosition.getImDepartmentEntity() != null){
+                    resultPosition.setDepartmentName(imPosition.getImDepartmentEntity().getDepartmentName());
+                }else{
+                    resultPosition.setDepartmentName("");
+                }
+
+                if(imPosition.getImKelompokPositionEntity() != null){
+                    resultPosition.setKelompokName(imPosition.getImKelompokPositionEntity().getKelompokName());
+                }else{
+                    resultPosition.setKelompokName("-");
+                }
+                resultPosition.setKelompokId(imPosition.getKelompokId());
+
+                if(imPosition.getImPositionBagianEntity() != null){
+                    resultPosition.setBagianName(imPosition.getImPositionBagianEntity().getBagianName());
+                }else{
+                    resultPosition.setBagianName("-");
+                }
+                resultPosition.setBagianId(imPosition.getBagianId());
+                resultPosition.setFlagDijabatSatuOrang(imPosition.getFlagDijabatSatuOrang());
+                resultPosition.setAction(imPosition.getAction());
+                resultPosition.setCreatedDate(imPosition.getCreatedDate());
+                resultPosition.setCreatedWho(imPosition.getCreatedWho());
+                resultPosition.setLastUpdate(imPosition.getLastUpdate());
+                resultPosition.setLastUpdateWho(imPosition.getLastUpdateWho());
+                resultPosition.setFlag(imPosition.getFlag());
+                resultPosition.setKategori(imPosition.getKategori());
+
+                listOfResultPosition.add(resultPosition);
+            }
+        }
+
+        logger.info("[PositionBoImpl.getByCriteria] end process <<<");
+
+        return listOfResultPosition;
     }
 
     public List<ImPosition> getPositionByString(String query) throws GeneralBOException {

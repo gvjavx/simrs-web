@@ -15,6 +15,7 @@
     <bean id="ijinBo" class="com.neurix.hris.master.ijin.bo.impl.IjinBoImpl"
           p:ijinDao-ref="ijinDao"
           p:biodataDao-ref="biodataDao"
+          p:ijinKeluarDao-ref="ijinKeluarDao"
     />
 
     <bean id="ijinBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

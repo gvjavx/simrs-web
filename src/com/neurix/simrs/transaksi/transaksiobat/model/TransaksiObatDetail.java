@@ -84,6 +84,80 @@ public class TransaksiObatDetail extends BaseModel {
     private String rekanan;
     private String jenisResep;
     private String idVendor;
+    private String idPelayananTujuan;
+
+    private String ttdDokter;
+    private BigInteger qtyAfter;
+    private BigInteger qtyReture;
+
+    private BigDecimal hargaRata;
+    private String branchAsal;
+    private BigDecimal hargaJual;
+    private String tipePermintaan;
+
+    public String getTipePermintaan() {
+        return tipePermintaan;
+    }
+
+    public void setTipePermintaan(String tipePermintaan) {
+        this.tipePermintaan = tipePermintaan;
+    }
+
+    public BigDecimal getHargaJual() {
+        return hargaJual;
+    }
+
+    public void setHargaJual(BigDecimal hargaJual) {
+        this.hargaJual = hargaJual;
+    }
+
+    public String getBranchAsal() {
+        return branchAsal;
+    }
+
+    public void setBranchAsal(String branchAsal) {
+        this.branchAsal = branchAsal;
+    }
+
+    public BigDecimal getHargaRata() {
+        return hargaRata;
+    }
+
+    public void setHargaRata(BigDecimal hargaRata) {
+        this.hargaRata = hargaRata;
+    }
+
+    public BigInteger getQtyReture() {
+        return qtyReture;
+    }
+
+    public void setQtyReture(BigInteger qtyReture) {
+        this.qtyReture = qtyReture;
+    }
+
+    public BigInteger getQtyAfter() {
+        return qtyAfter;
+    }
+
+    public void setQtyAfter(BigInteger qtyAfter) {
+        this.qtyAfter = qtyAfter;
+    }
+
+    public String getTtdDokter() {
+        return ttdDokter;
+    }
+
+    public void setTtdDokter(String ttdDokter) {
+        this.ttdDokter = ttdDokter;
+    }
+
+    public String getIdPelayananTujuan() {
+        return idPelayananTujuan;
+    }
+
+    public void setIdPelayananTujuan(String idPelayananTujuan) {
+        this.idPelayananTujuan = idPelayananTujuan;
+    }
 
     public String getIdVendor() {
         return idVendor;

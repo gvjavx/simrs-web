@@ -1,10 +1,13 @@
 package com.neurix.hris.master.golonganPkwt.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.golonganPkwt.bo.GolonganPkwtBo;
 import com.neurix.hris.master.golonganPkwt.dao.GolonganPkwtDao;
 import com.neurix.hris.master.golonganPkwt.model.GolonganPkwt;
 import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity;
+import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtHistoryEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -24,6 +27,15 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
 
     protected static transient Logger logger = Logger.getLogger(GolonganPkwtBoImpl.class);
     private GolonganPkwtDao golonganPkwtDao;
+    private BiodataDao biodataDao;
+
+    public BiodataDao getBiodataDao() {
+        return biodataDao;
+    }
+
+    public void setBiodataDao(BiodataDao biodataDao) {
+        this.biodataDao = biodataDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -48,18 +60,37 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
         if (bean!=null) {
 
             String golonganPkwtId = bean.getGolonganPkwtId();
-
+            String golonganIdHistory = "";
             ImGolonganPkwtEntity imGolonganPkwtEntity = null;
+            ImGolonganPkwtHistoryEntity historyEntity = new ImGolonganPkwtHistoryEntity();
+
+            List<ImBiodataEntity> biodataEntityList = biodataDao.getBiodataByGolonganId(golonganPkwtId);
+
+            if (biodataEntityList.size()>0){
+                String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
 
             try {
                 // Get data from database by ID
                 imGolonganPkwtEntity = golonganPkwtDao.getById("golonganPkwtId", golonganPkwtId);
+                golonganIdHistory = golonganPkwtDao.getNextGolonganPkwtHistoryId();
             } catch (HibernateException e) {
                 logger.error("[AlatBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
             }
 
             if (imGolonganPkwtEntity != null) {
+                historyEntity.setGolonganPkwtHistoryId(golonganIdHistory);
+                historyEntity.setGolonganPkwtId(imGolonganPkwtEntity.getGolonganPkwtId());
+                historyEntity.setGolonganPkwtName(imGolonganPkwtEntity.getGolonganPkwtName());
+                historyEntity.setFlag(imGolonganPkwtEntity.getFlag());
+                historyEntity.setAction(imGolonganPkwtEntity.getAction());
+                historyEntity.setCreatedDate(imGolonganPkwtEntity.getCreatedDate());
+                historyEntity.setCreatedWho(imGolonganPkwtEntity.getCreatedWho());
+                historyEntity.setLastUpdate(imGolonganPkwtEntity.getLastUpdate());
+                historyEntity.setLastUpdateWho(imGolonganPkwtEntity.getLastUpdateWho());
 
                 // Modify from bean to entity serializable
                 imGolonganPkwtEntity.setGolonganPkwtId(bean.getGolonganPkwtId());
@@ -72,6 +103,7 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
                 try {
                     // Delete (Edit) into database
                     golonganPkwtDao.updateAndSave(imGolonganPkwtEntity);
+                    golonganPkwtDao.addAndSaveHistory(historyEntity);
                 } catch (HibernateException e) {
                     logger.error("[GolonganPkwtBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data GolonganPkwt, please info to your admin..." + e.getMessage());
@@ -127,16 +159,27 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
                 String historyId = "";
 
                 ImGolonganPkwtEntity imGolonganPkwtEntity = null;
-
+                ImGolonganPkwtHistoryEntity historyEntity = new ImGolonganPkwtHistoryEntity();
                 try {
                     // Get data from database by ID
                     imGolonganPkwtEntity = golonganPkwtDao.getById("golonganPkwtId", golonganPkwtId);
+                    historyId = golonganPkwtDao.getNextGolonganPkwtHistoryId();
                 } catch (HibernateException e) {
                     logger.error("[GolonganPkwtBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data GolonganPkwt by Kode GolonganPkwt, please inform to your admin...," + e.getMessage());
                 }
 
                 if (imGolonganPkwtEntity != null) {
+                    historyEntity.setGolonganPkwtHistoryId(historyId);
+                    historyEntity.setGolonganPkwtId(imGolonganPkwtEntity.getGolonganPkwtId());
+                    historyEntity.setGolonganPkwtName(imGolonganPkwtEntity.getGolonganPkwtName());
+                    historyEntity.setFlag(imGolonganPkwtEntity.getFlag());
+                    historyEntity.setAction(imGolonganPkwtEntity.getAction());
+                    historyEntity.setCreatedDate(imGolonganPkwtEntity.getCreatedDate());
+                    historyEntity.setCreatedWho(imGolonganPkwtEntity.getCreatedWho());
+                    historyEntity.setLastUpdate(imGolonganPkwtEntity.getLastUpdate());
+                    historyEntity.setLastUpdateWho(imGolonganPkwtEntity.getLastUpdateWho());
+
                     //
                     imGolonganPkwtEntity.setGolonganPkwtId(bean.getGolonganPkwtId());
                     imGolonganPkwtEntity.setGolonganPkwtName(bean.getGolonganPkwtName());
@@ -149,6 +192,7 @@ public class GolonganPkwtBoImpl implements GolonganPkwtBo {
                     try {
                         // Update into database
                         golonganPkwtDao.updateAndSave(imGolonganPkwtEntity);
+                        golonganPkwtDao.addAndSaveHistory(historyEntity);
 //                    condition = "Data SuccessFully Updated";
                     } catch (HibernateException e) {
                         logger.error("[GolonganPkwtBoImpl.saveEdit] Error, " + e.getMessage());

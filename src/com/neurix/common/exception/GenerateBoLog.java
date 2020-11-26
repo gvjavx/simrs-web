@@ -1,6 +1,7 @@
 package com.neurix.common.exception;
 
 import com.neurix.authorization.user.model.ItBusinessObjectLog;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.util.CommonUtil;
 import org.hibernate.HibernateException;
 
@@ -43,6 +44,34 @@ public class GenerateBoLog<T> {
         } catch (NoSuchMethodException e) {
             throw new GeneralBOException("Found problem with data access, please inform to your admin...," + e.getMessage());
         } catch (HibernateException e) {
+            throw new GeneralBOException("Found problem with data access, please inform to your admin...," + e.getMessage());
+        }
+
+        return logId;
+    }
+
+    public static <T> Long generateBoLogCron(T dao, String message, String moduleMethod) throws GeneralBOException {
+
+        Class noParamsForId[] = {};
+        Class[] paramForSaveBoLog = new Class[1];
+        paramForSaveBoLog[0] = ItBusinessObjectLog.class;
+        Long logId= null;
+
+        try {
+
+            logId = (Long)(dao.getClass().getMethod("getNextBoLogging",noParamsForId)).invoke(dao,null);
+
+            ItBusinessObjectLog businessObjectLog=new ItBusinessObjectLog();
+            businessObjectLog.setId(logId);
+            businessObjectLog.setModuleMethod(moduleMethod);
+            businessObjectLog.setMessage(message);
+            businessObjectLog.setBranchId(CommonConstant.ID_KANPUS);
+            businessObjectLog.setUserId("Cron");
+            businessObjectLog.setErrorTimestamp(new Timestamp(System.currentTimeMillis()));
+
+            dao.getClass().getMethod("addAndSaveBoLog",paramForSaveBoLog).invoke(dao,businessObjectLog);
+
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | HibernateException e) {
             throw new GeneralBOException("Found problem with data access, please inform to your admin...," + e.getMessage());
         }
 

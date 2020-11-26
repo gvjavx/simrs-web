@@ -328,7 +328,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" >Tipe Pegawai: </label>
+                        <label class="control-label col-sm-3" >Status Pegawai: </label>
                         <div class="col-sm-9">
                             <input readonly type="text" class="form-control nip" id="detailTipePegawai" >
                         </div>
@@ -639,7 +639,7 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Tipe Pegawai :</small></label>
+                                    <label class="control-label"><small>Status Pegawai :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -680,8 +680,20 @@
                                         </sj:submit>
                                     </td>
                                     <td>
-
-                                        <a href="add_biodata.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Biodata</a>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Add Biodata</button>
+                                            <button type="button" class="btn btn-success dropdown-toggle"
+                                                    data-toggle="dropdown" style="height: 34px">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="add_biodata.action?tipe=karyawan">
+                                                    <i class="fa fa-user-plus"></i>Karyawan Kantor</a></li>
+                                                <li><a href="add_biodata.action?tipe=dokter">
+                                                    <i class="fa fa-user-plus"></i>Dokter Tamu</a></li>
+                                            </ul>
+                                        </div>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_biodata"/>'">
@@ -704,7 +716,7 @@
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
-                                        <s:set name="listOfbiodata" value="#session.listOfResult" scope="request" />
+                                        <s:set name="listOfbiodata" value="#session.listOfResultBiodata" scope="request" />
                                         <display:table name="listOfbiodata" class="table table-condensed table-striped table-hover listOfbiodata"
                                                        requestURI="paging_displaytag_biodata.action" export="true" id="row" pagesize="40" style="font-size:10">
                                             <display:column media="html" title="Edit">
@@ -727,11 +739,11 @@
                                                 <%--</s:if>--%>
                                             <%--</display:column>--%>
 
-                                            <display:column style="text-align:center;" media="html" title="Jabatan">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-jabatan">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>
+                                            <%--<display:column style="text-align:center;" media="html" title="Jabatan">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-jabatan">--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                            <%--</display:column>--%>
 
                                             <display:column style="text-align:center;" media="html" title="Payroll">
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">
@@ -739,11 +751,11 @@
                                                 </a>
                                             </display:column>
 
-                                            <display:column style="text-align:center;" media="html" title="Pendidikan">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-pendidikan">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>
+                                            <%--<display:column style="text-align:center;" media="html" title="Pendidikan">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-pendidikan">--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                            <%--</display:column>--%>
 
                                             <display:column style="text-align:center;" media="html" title="Absensi">
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">
@@ -788,13 +800,15 @@
 
                                             <display:column property="nip" sortable="true" title="NIP" />
                                             <display:column property="namaPegawai" sortable="true" title="Nama Pegawai" />
+                                            <display:column property="gender" sortable="true" title="Jenis Kelamin" />
                                             <display:column property="positionName" sortable="true" title="Jabatan" />
                                             <display:column property="profesiName" sortable="true" title="Profesi" />
                                             <display:column property="stTanggalLahir" sortable="true" title="Tanggal Lahir"/>
                                             <display:column property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>
                                             <display:column property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>
+                                            <display:column property="pendidikanTerakhir" sortable="true" title="Pendidikan Terakhir"/>
 
-                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                            <display:column property="strLastUpdate" sortable="true" title="Last update"  />
                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"/>
 
                                         </display:table>

@@ -2,6 +2,7 @@ package com.neurix.simrs.master.kelasruangan.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
+import com.neurix.simrs.master.kelasruangan.model.KelasRuangan;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -83,6 +84,37 @@ public class KelasRuanganDao extends GenericDao<ImSimrsKelasRuanganEntity, Strin
                 .createSQLQuery(query)
                 .list();
 
+        return results;
+    }
+
+    public List<KelasRuangan> getListKelasKamar(String kategori) throws HibernateException{
+        List<KelasRuangan> results = new ArrayList<>();
+        String kat = "%";
+        if(kategori != null && !"".equalsIgnoreCase(kategori)){
+            kat = kategori;
+        }
+        String query = "SELECT\n" +
+                "id_kelas_ruangan,\n" +
+                "nama_kelas_ruangan,\n" +
+                "kategori\n" +
+                "FROM im_simrs_kelas_ruangan\n" +
+                "WHERE kategori LIKE :kategori";
+
+        List<Object[]> objects = new ArrayList<>();
+
+        objects = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("kategori", kat)
+                .list();
+        if(objects.size() > 0){
+            for (Object[] obj: objects){
+                KelasRuangan kelasRuangan = new KelasRuangan();
+                kelasRuangan.setIdKelasRuangan(obj[0] == null ? null : obj[0].toString());
+                kelasRuangan.setNamaKelasRuangan(obj[1] == null ? null : obj[1].toString());
+                kelasRuangan.setKategori(obj[2] == null ? null : obj[2].toString());
+                results.add(kelasRuangan);
+            }
+        }
         return results;
     }
 }

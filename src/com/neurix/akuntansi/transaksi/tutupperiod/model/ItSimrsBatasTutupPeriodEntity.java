@@ -21,6 +21,33 @@ public class ItSimrsBatasTutupPeriodEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String flagTutup;
+    private String noJurnalKoreksi;
+    private String flagDesemberA;
+    private String flagDesemberB;
+
+    public String getNoJurnalKoreksi() {
+        return noJurnalKoreksi;
+    }
+
+    public void setNoJurnalKoreksi(String noJurnalKoreksi) {
+        this.noJurnalKoreksi = noJurnalKoreksi;
+    }
+
+    public String getFlagDesemberA() {
+        return flagDesemberA;
+    }
+
+    public void setFlagDesemberA(String flagDesemberA) {
+        this.flagDesemberA = flagDesemberA;
+    }
+
+    public String getFlagDesemberB() {
+        return flagDesemberB;
+    }
+
+    public void setFlagDesemberB(String flagDesemberB) {
+        this.flagDesemberB = flagDesemberB;
+    }
 
     public String getId() {
         return id;

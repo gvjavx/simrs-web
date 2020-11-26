@@ -7,6 +7,8 @@ import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.biodata.bo.BiodataBo;
+import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.dokterKso.bo.DokterKsoBo;
 import com.neurix.hris.master.dokterKso.model.DokterKso;
 import com.neurix.hris.master.dokterKsoTindakan.bo.DokterKsoTindakanBo;
@@ -106,18 +108,10 @@ public class DokterKsoAction extends BaseMasterAction {
             if (listOfResult != null){
                 for (DokterKso dokterKso : listOfResult){
                     if (kode.equalsIgnoreCase(dokterKso.getDokterKsoId()) && flag.equalsIgnoreCase(dokterKso.getFlag())){
-                        String kodering = dokterKso.getKodering();
-                        String[] arrOfStr = kodering.split("\\.");
-                        String kode1 = arrOfStr[1];String kode2 = arrOfStr[2];String kode3 = arrOfStr[3];
-                        String koder = kode1+"."+kode2+"."+kode3;
                         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-                        Position position = new Position();
-                        PositionBo positionBo = (PositionBo) context.getBean("positionBoProxy");
-                        position.setKodering(koder);
-                        position.setFlag("Y");
-                        List<Position> positions = positionBo.getByCriteria(position);
-                        String positionId = positions.get(0).getPositionId();
-                        dokterKso.setPositionId(positionId);
+                        BiodataBo biodataBo = (BiodataBo) context.getBean("biodataBoProxy");
+                        Biodata biodata = biodataBo.detailBiodataSys(dokterKso.getNip());
+                        dokterKso.setPositionId(biodata.getPositionId());
 
                         Dokter dokter = new Dokter();
                         DokterBo dokterBo = (DokterBo) context.getBean("dokterBoProxy");
@@ -204,18 +198,10 @@ public class DokterKsoAction extends BaseMasterAction {
             edit.setPersenKs(dokterKso.getPersenKs());
             edit.setTarifIna(dokterKso.getTarifIna());
 
-            String kodering = dokterKso.getKodering();
-            String[] arrOfStr = kodering.split("\\.");
-            String kode1 = arrOfStr[1];String kode2 = arrOfStr[2];String kode3 = arrOfStr[3];
-            String koder = kode1+"."+kode2+"."+kode3;
             ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-            Position position = new Position();
-            PositionBo positionBo = (PositionBo) context.getBean("positionBoProxy");
-            position.setKodering(koder);
-            position.setFlag("Y");
-            List<Position> positions = positionBo.getByCriteria(position);
-            String positionId = positions.get(0).getPositionId();
-            edit.setPositionId(positionId);
+            BiodataBo biodataBo = (BiodataBo) context.getBean("biodataBoProxy");
+            Biodata biodata = biodataBo.detailBiodataSys(dokterKso.getNip());
+            edit.setPositionId(biodata.getPositionId());
 
             break;
         }
@@ -268,18 +254,10 @@ public class DokterKsoAction extends BaseMasterAction {
             delete.setPersenKs(dokterKso.getPersenKs());
             delete.setTarifIna(dokterKso.getTarifIna());
 
-            String kodering = dokterKso.getKodering();
-            String[] arrOfStr = kodering.split("\\.");
-            String kode1 = arrOfStr[1];String kode2 = arrOfStr[2];String kode3 = arrOfStr[3];
-            String koder = kode1+"."+kode2+"."+kode3;
             ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-            Position position = new Position();
-            PositionBo positionBo = (PositionBo) context.getBean("positionBoProxy");
-            position.setKodering(koder);
-            position.setFlag("Y");
-            List<Position> positions = positionBo.getByCriteria(position);
-            String positionId = positions.get(0).getPositionId();
-            delete.setPositionId(positionId);
+            BiodataBo biodataBo = (BiodataBo) context.getBean("biodataBoProxy");
+            Biodata biodata = biodataBo.detailBiodataSys(dokterKso.getNip());
+            delete.setPositionId(biodata.getPositionId());
 
             break;
         }
@@ -333,18 +311,10 @@ public class DokterKsoAction extends BaseMasterAction {
             delete.setPersenKs(dokterKso.getPersenKs());
             delete.setTarifIna(dokterKso.getTarifIna());
 
-            String kodering = dokterKso.getKodering();
-            String[] arrOfStr = kodering.split("\\.");
-            String kode1 = arrOfStr[1];String kode2 = arrOfStr[2];String kode3 = arrOfStr[3];
-            String koder = kode1+"."+kode2+"."+kode3;
             ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-            Position position = new Position();
-            PositionBo positionBo = (PositionBo) context.getBean("positionBoProxy");
-            position.setKodering(koder);
-            position.setFlag("Y");
-            List<Position> positions = positionBo.getByCriteria(position);
-            String positionId = positions.get(0).getPositionId();
-            delete.setPositionId(positionId);
+            BiodataBo biodataBo = (BiodataBo) context.getBean("biodataBoProxy");
+            Biodata biodata = biodataBo.detailBiodataSys(dokterKso.getNip());
+            delete.setPositionId(biodata.getPositionId());
 
             break;
         }

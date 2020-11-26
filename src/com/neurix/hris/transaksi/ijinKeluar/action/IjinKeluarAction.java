@@ -18,11 +18,13 @@ import com.neurix.hris.master.positionBagian.model.positionBagian;
 import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
 import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
+import com.neurix.hris.transaksi.ijinKeluar.bo.impl.IjinKeluarBoImpl;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarAnggota;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -30,6 +32,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -48,6 +52,34 @@ public class IjinKeluarAction extends BaseMasterAction {
     private IjinKeluar ijinKeluar;
     private PositionBagianBo positionBagianBoProxy;
     private boolean admin = false;
+    private boolean dispenLahir = false;
+    private File fileUpload;
+    private String fileUploadContentType;
+    private String fileUploadFileName;
+
+    public String getFileUploadContentType() {
+        return fileUploadContentType;
+    }
+
+    public void setFileUploadContentType(String fileUploadContentType) {
+        this.fileUploadContentType = fileUploadContentType;
+    }
+
+    public String getFileUploadFileName() {
+        return fileUploadFileName;
+    }
+
+    public void setFileUploadFileName(String fileUploadFileName) {
+        this.fileUploadFileName = fileUploadFileName;
+    }
+
+    public File getFileUpload() {
+        return fileUpload;
+    }
+
+    public void setFileUpload(File fileUpload) {
+        this.fileUpload = fileUpload;
+    }
 
     public boolean isAdmin() {
         return admin;
@@ -99,6 +131,14 @@ public class IjinKeluarAction extends BaseMasterAction {
         this.initComboAlat = initComboAlat;
     }
 
+    public boolean isDispenLahir() {
+        return dispenLahir;
+    }
+
+    public void setDispenLahir(boolean dispenLahir) {
+        this.dispenLahir = dispenLahir;
+    }
+
     public IjinKeluar init(String kode, String flag){
         logger.info("[IjinKeluar.init] start process >>>");
         List<IjinKeluar> listOfResultIjinKeluar = new ArrayList<>();
@@ -112,7 +152,13 @@ public class IjinKeluarAction extends BaseMasterAction {
             if(listOfResultIjinKeluar != null){
                 for (IjinKeluar ijinKeluar: listOfResultIjinKeluar) {
                     if(kode.equalsIgnoreCase(ijinKeluar.getIjinKeluarId()) && flag.equalsIgnoreCase(ijinKeluar.getFlag())){
-                        setIjinKeluar(ijinKeluar);
+
+                        if (ijinKeluar.getIjinId().equalsIgnoreCase("IJ013")){
+                            setDispenLahir(true);
+                            setIjinKeluar(ijinKeluar);
+                        }else {
+                            setIjinKeluar(ijinKeluar);
+                        }
                         break;
                     }
                 }
@@ -435,15 +481,57 @@ public class IjinKeluarAction extends BaseMasterAction {
 
     public String saveEdit(){
         logger.info("[IjinKeluar.saveEdit] start process >>>");
-        try {
 
+        try {
             IjinKeluar editIjinKeluar = getIjinKeluar();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            java.sql.Date dateEnd = CommonUtil.convertToDate(editIjinKeluar.getStTanggalAkhir());
+            editIjinKeluar.setTanggalAkhir(dateEnd);
             editIjinKeluar.setLastUpdateWho(userLogin);
             editIjinKeluar.setLastUpdate(updateTime);
             editIjinKeluar.setAction("U");
             editIjinKeluar.setFlag("Y");
+            if (isDispenLahir())
+                editIjinKeluar.setDispenLahir(true);
+            else
+                editIjinKeluar.setDispenLahir(false);
+
+            if (this.fileUpload != null){
+                String idSuratDokter = ijinKeluarBoProxy.getNextSuratDokterId();
+                String fileName = idSuratDokter+"_"+this.fileUploadFileName;
+                String fileContentType = this.fileUploadContentType;
+                String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER;
+                File fileToCreate = new File(filePath, fileName);
+                String path = filePath+fileName;
+
+                byte[] contentFile = null;
+                try{
+                    FileUtils.copyFile(this.fileUpload, fileToCreate);
+                    contentFile = FileUtils.readFileToByteArray(this.fileUpload);
+                } catch (IOException e) {
+                    Long logId = null;
+                    try{
+                        logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "IjinKeluar.saveEdit");
+                    }catch (GeneralBOException e1){
+                        logger.error("[IjinKeluar.saveEdit] Error when saving error, ", e1);
+                    }
+                    logger.error("[IjinKeluar.saveEdit] Error when uploading and saving Study," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
+                    return ERROR;
+                }
+
+                if (contentFile != null){
+                    editIjinKeluar.setUploadFile(fileName);
+                    if ("image/jpeg".equalsIgnoreCase(fileContentType)) {
+                        editIjinKeluar.setFileType("IMG");
+                    }else if ("application/pdf".equalsIgnoreCase(fileContentType)){
+                        editIjinKeluar.setFileType("PDF");
+                    }
+                }
+                editIjinKeluar.setFilePath(path);
+            }
+
 //            String condition;
             ijinKeluarBoProxy.saveEdit(editIjinKeluar);
 
@@ -518,6 +606,43 @@ public class IjinKeluarAction extends BaseMasterAction {
         ijinKeluar.setAction("C");
         ijinKeluar.setFlag("Y");
         ijinKeluar.setApprovalFlag("N");
+        ijinKeluar.setRoleId(CommonUtil.roleIdAsLogin());
+
+        String path = null;
+        if (this.fileUpload != null){
+            String idSuratDokter = ijinKeluarBoProxy.getNextSuratDokterId();
+            String fileName = idSuratDokter+"_"+this.fileUploadFileName;
+            String fileContentType = this.fileUploadContentType;
+            String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER;
+            File fileToCreate = new File(filePath, fileName);
+            path = filePath+fileName;
+
+            byte[] contentFile = null;
+            try{
+                FileUtils.copyFile(this.fileUpload, fileToCreate);
+                contentFile = FileUtils.readFileToByteArray(this.fileUpload);
+            }catch (IOException e){
+                Long logId = null;
+                try{
+                    logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "IjinKeluarAction.saveAdd");
+                }catch (GeneralBOException e1){
+                    logger.error("[IjinKeluar.addIjinKeluar] Error when saving error, ", e1);
+                }
+                logger.error("[IjinKeluar.addIjinKeluar] Error when uploading and saving IjinKeluar," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
+                return ERROR;
+            }
+
+            if (contentFile != null){
+                ijinKeluar.setUploadFile(fileName);
+                if ("image/jpeg".equalsIgnoreCase(fileContentType)) {
+                    ijinKeluar.setFileType("IMG");
+                }else if ("application/pdf".equalsIgnoreCase(fileContentType)){
+                    ijinKeluar.setFileType("PDF");
+                }
+            }
+            ijinKeluar.setFilePath(path);
+        }
 
         try {
             notifikasiList = ijinKeluarBoProxy.saveAddIjinKeluar(ijinKeluar);
@@ -527,11 +652,11 @@ public class IjinKeluarAction extends BaseMasterAction {
                 logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "ijinKeluarBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[ijinKeluarAction.saveAdd] Error when saving error,", e1);
-                return ERROR;
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[ijinKeluarAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         for (Notifikasi notifikasi : notifikasiList){
@@ -597,6 +722,7 @@ public class IjinKeluarAction extends BaseMasterAction {
         IjinKeluar searchAlat = getIjinKeluar();
         List<IjinKeluar> listOfSearchIjinKeluar = new ArrayList();
         String role = CommonUtil.roleAsLogin();
+        searchAlat.setRoleId(CommonUtil.roleIdAsLogin());
         searchAlat.setFrom("ijinKeluar");
 
         if ("ADMIN".equalsIgnoreCase(role)){
@@ -1234,6 +1360,7 @@ public class IjinKeluarAction extends BaseMasterAction {
         List<IjinKeluar> ijinKeluarList= new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
+        ijinKeluar.setRoleId(CommonUtil.roleIdAsLogin());
         try {
             ijinKeluarList = ijinKeluarBo.getByCriteria(ijinKeluar);
         } catch (GeneralBOException e) {
@@ -1268,12 +1395,21 @@ public class IjinKeluarAction extends BaseMasterAction {
                 reportParams.put("nama",ijinKeluar1.getNamaPegawai());
                 reportParams.put("nip",ijinKeluar1.getNip());
                 reportParams.put("jabatan",ijinKeluar1.getPositionName());
-                reportParams.put("divisi",ijinKeluar1.getDivisiName());
+                if (ijinKeluar1.getDivisiName() != null)
+                    reportParams.put("divisi",ijinKeluar1.getDivisiName());
+                else
+                    reportParams.put("divisi","-");
                 reportParams.put("unit",ijinKeluar1.getUnitName());
                 reportParams.put("ijin",ijinKeluar1.getIjinName());
-                reportParams.put("lama",ijinKeluar1.getLamaIjin());
-                reportParams.put("tanggalDari",ijinKeluar1.getStTanggalAwal());
-                reportParams.put("tanggalSelesai",ijinKeluar1.getStTanggalAkhir());
+                if ("IJ013".equalsIgnoreCase(ijinKeluar1.getIjinId())){
+                    reportParams.put("lama",ijinKeluar1.getLamaIjinBaru());
+                    reportParams.put("tanggalDari",ijinKeluar1.getStTanggalAwal());
+                    reportParams.put("tanggalSelesai",ijinKeluar1.getTanggalAkhirBaru());
+                }else {
+                    reportParams.put("lama",ijinKeluar1.getLamaIjin());
+                    reportParams.put("tanggalDari",ijinKeluar1.getStTanggalAwal());
+                    reportParams.put("tanggalSelesai",ijinKeluar1.getStTanggalAkhir());
+                }
                 reportParams.put("date", stDate);
             }
             try {
@@ -1405,6 +1541,50 @@ public class IjinKeluarAction extends BaseMasterAction {
         logger.info("[AlatAction.delete] end process <<<");
         return "init_cancel";
     }
+
+    public String pengajuanBatal() {
+        logger.info("[IjinKeluarAction.delete] start process >>>");
+
+        String itemId = getId();
+        String itemFlag = getFlag();
+        IjinKeluar cancelIjinKeluar = new IjinKeluar();
+
+        if (itemFlag != null ) {
+            try {
+                cancelIjinKeluar = init(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "IjinKeluarAction.getAlatById");
+                } catch (GeneralBOException e1) {
+                    logger.error("[IjinKeluarAction.delete] Error when retrieving delete data,", e1);
+                }
+                logger.error("[IjinKeluarAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
+                return "failure";
+            }
+
+            if (cancelIjinKeluar != null) {
+                setIjinKeluar(cancelIjinKeluar);
+
+            } else {
+                cancelIjinKeluar.setIjinKeluarId(itemId);
+                cancelIjinKeluar.setFlag(itemFlag);
+                setIjinKeluar(cancelIjinKeluar);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            cancelIjinKeluar.setIjinKeluarId(itemId);
+            cancelIjinKeluar.setFlag(itemFlag);
+            setIjinKeluar(cancelIjinKeluar);
+            addActionError("Error, Unable to delete again with flag = N.");
+            return "failure";
+        }
+        logger.info("[AlatAction.delete] end process <<<");
+        return "init_pengajuan";
+    }
+
     public String cancelIjinKeluarKantor() {
         logger.info("[IjinKeluarKantorAction.cancelIjinKeluarKantor] start process >>>");
 
@@ -1453,6 +1633,8 @@ public class IjinKeluarAction extends BaseMasterAction {
             IjinKeluar cancelIjinKeluar = getIjinKeluar();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
             cancelIjinKeluar.setCancelFlag("Y");
             cancelIjinKeluar.setCancelDate(updateTime);
@@ -1462,7 +1644,11 @@ public class IjinKeluarAction extends BaseMasterAction {
             cancelIjinKeluar.setAction("U");
             cancelIjinKeluar.setFlag("Y");
 
-            ijinKeluarBoProxy.saveEdit(cancelIjinKeluar);
+            List<Notifikasi> notifikasiList = ijinKeluarBoProxy.saveCancel(cancelIjinKeluar);
+
+            for (Notifikasi notifikasi : notifikasiList){
+                notifikasiBo.sendNotif(notifikasi);
+            }
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -1480,6 +1666,82 @@ public class IjinKeluarAction extends BaseMasterAction {
 
         return "success_save_cancel";
     }
+
+    public String savePengajuanBatal(){
+        logger.info("[AlatAction.saveEdit] start process >>>");
+        try {
+            IjinKeluar cancelIjinKeluar = getIjinKeluar();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+
+            cancelIjinKeluar.setFlagPengajuanBatal("Y");
+            cancelIjinKeluar.setLastUpdateWho(userLogin);
+            cancelIjinKeluar.setLastUpdate(updateTime);
+            cancelIjinKeluar.setAction("U");
+            cancelIjinKeluar.setFlag("Y");
+
+            List<Notifikasi> notifikasiList = ijinKeluarBoProxy.savePengajuanBatal(cancelIjinKeluar);
+
+            for (Notifikasi notifikasi : notifikasiList){
+                notifikasiBo.sendNotif(notifikasi);
+            }
+
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "AlatBO.saveEdit");
+            } catch (GeneralBOException e1) {
+                logger.error("[CutiPegawaiAction.saveEdit] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[CutiPegawaiAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[CutiPegawaiAction.saveEdit] end process <<<");
+
+        return "success_save_pengajuan_batal";
+    }
+
+    public String saveTolakPengajuan(String ijinId){
+        logger.info("[AlatAction.saveEdit] start process >>>");
+        try {
+            IjinKeluar cancelIjinKeluar = new IjinKeluar();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            cancelIjinKeluar.setIjinKeluarId(ijinId);
+            cancelIjinKeluar.setFlagPengajuanBatal("N");
+            cancelIjinKeluar.setLastUpdateWho(userLogin);
+            cancelIjinKeluar.setLastUpdate(updateTime);
+            cancelIjinKeluar.setAction("U");
+            cancelIjinKeluar.setFlag("Y");
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
+
+            ijinKeluarBo.saveTolakPengajuanBatal(cancelIjinKeluar);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = ijinKeluarBoProxy.saveErrorMessage(e.getMessage(), "AlatBO.saveEdit");
+            } catch (GeneralBOException e1) {
+                logger.error("[CutiPegawaiAction.saveEdit] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[CutiPegawaiAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[CutiPegawaiAction.saveEdit] end process <<<");
+
+        return "success_save_cancel";
+    }
+
     public String saveCancelIjinKeluarKantor(){
         logger.info("[AlatAction.saveEdit] start process >>>");
         try {
@@ -1663,5 +1925,72 @@ public class IjinKeluarAction extends BaseMasterAction {
 
             logger.info("[ijinKeluarAction.listDispensasiMasal] end process <<<");
         }
+    }
+
+    public String cekIfAbsensi(String id,String nip, String tglDari, String tglSelesai){
+        String status ="";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
+
+        try{
+            status = ijinKeluarBo.cekIfAbsensi(id,nip, tglDari,tglSelesai);
+        }catch (GeneralBOException e1) {
+            logger.error("[TrainingAction.printSuratJaminan] Error when downloading ,", e1);
+        }
+        return status;
+    }
+
+    public String cekNipIjinKeluar(String nip) {
+        logger.info("[cutiPegawaiAction.cekNipCuti] start process >>>");
+
+        List<IjinKeluar> listOfIjinKeluar = new ArrayList();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
+        try {
+            listOfIjinKeluar = ijinKeluarBo.getListCekNipIjinKeluar(nip);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = ijinKeluarBo.saveErrorMessage(e.getMessage(), "IjinKeluarAction.cekNipIjinKeluar");
+            } catch (GeneralBOException e1) {
+                logger.error("[IjinKeluarAction.cekNipIjinKeluar] Error when saving error,", e1);
+            }
+            logger.error("[IjinKeluarAction.cekNipIjinKeluar] Error when search data," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+        }
+
+        logger.info("[IjinKeluarAction.cekNipIjinKeluar] end process <<<");
+
+        if (listOfIjinKeluar.size()!=0){
+            return "00";
+        }else{
+            return "";
+        }
+    }
+
+    public  Integer calculateLiburWeekend (String stTanggalAwal , String stTanggalAkhir) throws ParseException {
+        int jumlahHari = 0;
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+        java.sql.Date tanggalAwal = new java.sql.Date(sdf1.parse(stTanggalAwal).getTime());
+        java.sql.Date tanggalAkhir = new java.sql.Date(sdf1.parse(stTanggalAkhir).getTime());
+
+        Calendar start = Calendar.getInstance();
+        start.setTime(tanggalAwal);
+        Calendar end = Calendar.getInstance();
+        end.setTime(tanggalAkhir);
+        end.add(Calendar.DATE,1);
+        java.util.Date date;
+
+        for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+            Calendar tanggal = Calendar.getInstance();
+            tanggal.setTime(date);
+            int day = tanggal.get(Calendar.DAY_OF_WEEK);
+
+            if (day == 1||day==7){
+                jumlahHari++;
+            }
+        }
+        return jumlahHari;
     }
 }

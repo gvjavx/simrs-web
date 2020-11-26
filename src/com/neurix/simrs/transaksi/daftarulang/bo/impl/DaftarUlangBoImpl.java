@@ -136,6 +136,10 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
         detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
         detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
         detailCheckupEntity.setBranchId(CommonUtil.userBranchLogin());
+        if(bean.getRawatInap()){
+            detailCheckupEntity.setTindakLanjut(detail.getTindakLanjut());
+            detailCheckupEntity.setFlagTppri("Y");
+        }
 
         if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
             detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran());
@@ -158,7 +162,7 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
         if("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
             detailCheckupEntity.setIdAsuransi(bean.getIdAsuransi());
             detailCheckupEntity.setNoKartuAsuransi(bean.getNoKartuAsuransi());
-            detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
+//            detailCheckupEntity.setCoverBiaya(bean.getCoverBiaya());
         }
 
         try {
@@ -201,6 +205,8 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
                 dokterTeam.setIdDokter(dokTeam.getIdDokter());
                 dokterTeam.setCreatedWho(bean.getCreatedWho());
                 dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
+                dokterTeam.setIdPelayanan(dokTeam.getJenisDpjp());
+                dokterTeam.setJenisDpjp(dokTeam.getJenisDpjp());
                 response = saveTeamDokter(dokterTeam);
             }
 
@@ -220,6 +226,7 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
                     rawatInap.setNoCheckup(bean.getNoCheckup());
                     rawatInap.setCreatedDate(bean.getCreatedDate());
                     rawatInap.setCreatedWho(bean.getCreatedWho());
+                    rawatInap.setStatus("1");
                     response = saveRawatInap(rawatInap);
 
                     if (bean.getTindakanList() != null && bean.getTindakanList().size() > 0) {
@@ -327,6 +334,8 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
                 dokterTeam.setIdDokter(dokter.getIdDokter());
                 dokterTeam.setCreatedWho(bean.getCreatedWho());
                 dokterTeam.setLastUpdateWho(bean.getLastUpdateWho());
+                dokterTeam.setIdPelayanan(dokter.getIdPelayanan());
+                dokterTeam.setJenisDpjp(dokter.getJenisDpjp());
                 response = saveTeamDokter(dokterTeam);
             }
         }
@@ -504,6 +513,8 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
         entity.setCreatedWho(bean.getCreatedWho());
         entity.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         entity.setLastUpdateWho(bean.getLastUpdateWho());
+        entity.setIdPelayanan(bean.getIdPelayanan());
+        entity.setJenisDpjp(bean.getJenisDpjp());
 
         try {
             dokterTeamDao.addAndSave(entity);
@@ -599,6 +610,7 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
             entity.setCreatedWho(bean.getCreatedWho());
             entity.setLastUpdateWho(bean.getCreatedWho());
             entity.setTglMasuk(bean.getCreatedDate());
+            entity.setStatus(bean.getStatus());
 
             try {
                 rawatInapDao.addAndSave(entity);
@@ -677,10 +689,10 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
         if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())) {
             hsCriteria.put("id_ruangan", bean.getIdRuangan());
         }
-        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())) {
-            hsCriteria.put("status_ruangan", bean.getStatusRuangan());
-
-        }
+//        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())) {
+//            hsCriteria.put("status_ruangan", bean.getStatusRuangan());
+//
+//        }
         hsCriteria.put("flag", "Y");
 
         try {

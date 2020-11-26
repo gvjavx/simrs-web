@@ -34,5 +34,13 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
+
+        <property name="lastGet">
+            <column name="last_get" sql-type="date" not-null="false" />
+        </property>
+
+        <property name="branchId">
+            <column name="branch_id" />
+        </property>
     </class>
 </hibernate-mapping>

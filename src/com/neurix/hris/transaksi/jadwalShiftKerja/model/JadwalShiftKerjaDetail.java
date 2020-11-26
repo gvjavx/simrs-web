@@ -3,6 +3,7 @@ package com.neurix.hris.transaksi.jadwalShiftKerja.model;
 import com.neurix.common.model.BaseModel;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,12 +19,103 @@ public class JadwalShiftKerjaDetail extends BaseModel {
     private String namaPegawai;
     private String shiftId;
     private String shiftGroupId;
+    private String onCall;
+    private String flagLibur;
 
     private String positionName;
     private String shiftName;
     private String kelompokName;
     private String profesiName;
     private String profesiid;
+    private String flagPanggil;
+    private String panggilWho;
+    private Timestamp panggilDate;
+    private String keteranganPanggil;
+
+    public String getKeteranganPanggil() {
+        return keteranganPanggil;
+    }
+
+    public void setKeteranganPanggil(String keteranganPanggil) {
+        this.keteranganPanggil = keteranganPanggil;
+    }
+
+    public String getFlagLibur() {
+        return flagLibur;
+    }
+
+    public void setFlagLibur(String flagLibur) {
+        this.flagLibur = flagLibur;
+    }
+
+    public String getPanggilWho() {
+        return panggilWho;
+    }
+
+    public void setPanggilWho(String panggilWho) {
+        this.panggilWho = panggilWho;
+    }
+
+    public Timestamp getPanggilDate() {
+        return panggilDate;
+    }
+
+    public void setPanggilDate(Timestamp panggilDate) {
+        this.panggilDate = panggilDate;
+    }
+
+    public String getFlagPanggil() {
+        return flagPanggil;
+    }
+
+    public void setFlagPanggil(String flagPanggil) {
+        this.flagPanggil = flagPanggil;
+    }
+
+    public String getOnCall() {
+        return onCall;
+    }
+
+    public void setOnCall(String onCall) {
+        this.onCall = onCall;
+    }
+
+    private String jadwalName;
+    private String jamAwal;
+    private String jamAkhir;
+    private String branchId;
+
+    public String getJadwalName() {
+        return jadwalName;
+    }
+
+    public void setJadwalName(String jadwalName) {
+        this.jadwalName = jadwalName;
+    }
+
+    public String getJamAwal() {
+        return jamAwal;
+    }
+
+    public void setJamAwal(String jamAwal) {
+        this.jamAwal = jamAwal;
+    }
+
+    public String getJamAkhir() {
+        return jamAkhir;
+    }
+
+    public void setJamAkhir(String jamAkhir) {
+        this.jamAkhir = jamAkhir;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public String getProfesiid() {
         return profesiid;

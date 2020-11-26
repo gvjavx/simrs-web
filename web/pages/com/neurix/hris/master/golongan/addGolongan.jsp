@@ -42,6 +42,9 @@
                 if (nameGolongan == '') {
                     msg += 'Field <strong>Golongan Name</strong> is required.' + '<br/>';
                 }
+                if (level == '') {
+                    msg += 'Field <strong>Level</strong> is required.' + '<br/>';
+                }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 

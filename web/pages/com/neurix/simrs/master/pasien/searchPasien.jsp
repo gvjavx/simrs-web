@@ -12,19 +12,21 @@
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/PasienAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
+
     <script type='text/javascript'>
 
-        $( document ).ready(function() {
+        $(document).ready(function () {
             $('#pasien').addClass('active');
             searchPasien();
         });
 
-        function searchPasien(){
+        function searchPasien() {
             var url_string = window.location.href;
             var url = new URL(url_string);
             var idPasien = url.searchParams.get("id_pasien");
 
-            if(idPasien != null){
+            if (idPasien != null) {
                 $('#modal-success-pasien').modal('show');
                 $('#val_id_pasien').val(idPasien);
 
@@ -61,9 +63,10 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="pasienForm" method="post" namespace="/pasien" action="search_pasien.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="pasienForm" method="post" namespace="/pasien" action="search_pasien.action"
+                                    theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Pasien</label>
+                                    <label class="control-label col-sm-4">NO RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
                                                      name="pasien.idPasien" required="false"
@@ -81,15 +84,18 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-6" style="margin-top: 7px">
-                                        <sj:submit type="button" cssClass="btn btn-success" formIds="pasienForm" id="search" name="search"
-                                                   onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="pasienForm"
+                                                   id="search" name="search"
+                                                   onClickTopics="showDialogLoading"
+                                                   onCompleteTopics="closeDialogLoading">
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
                                         <a type="button" class="btn btn-danger" href="initForm_pasien.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-                                        <a href="add_pasien.action" class="btn btn-primary" ><i class="fa fa-plus"></i> Add Pasien</a>
+                                        <a href="add_pasien.action" class="btn btn-primary"><i class="fa fa-plus"></i>
+                                            Add Pasien</a>
                                         <button type="button" class="btn btn-primary" onclick="showModalUpload()">
                                             <i class="fa fa-plus"></i> Upload Rekam Medik Lama
                                         </button>
@@ -111,7 +117,8 @@
                                                      src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
                                                      name="image_indicator_write">
                                                 <br>
-                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                <img class="spin" border="0"
+                                                     style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
                                                      src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
                                                      name="image_indicator_write">
                                             </center>
@@ -132,26 +139,28 @@
                                                  name="icon_success">
                                             Record has been saved successfully.
                                         </sj:dialog>
-                                        <%--<sj:dialog id="success_dialog" openTopics="showInfoDialog" modal="true"--%>
-                                                   <%--resizable="false"--%>
-                                                   <%--closeOnEscape="false"--%>
-                                                   <%--height="200" width="400" autoOpen="false" title="Infomation Dialog"--%>
-                                                   <%--buttons="{--%>
-                                                                                <%--'OK':function() {--%>
-                                                                                         <%--$('#success_dialog').dialog('close');--%>
-                                                                                         <%--pasienSuccess();--%>
-                                                                                     <%--}--%>
-                                                                            <%--}"--%>
-                                        <%-->--%>
+                                            <%--<sj:dialog id="success_dialog" openTopics="showInfoDialog" modal="true"--%>
+                                            <%--resizable="false"--%>
+                                            <%--closeOnEscape="false"--%>
+                                            <%--height="200" width="400" autoOpen="false" title="Infomation Dialog"--%>
+                                            <%--buttons="{--%>
+                                            <%--'OK':function() {--%>
+                                            <%--$('#success_dialog').dialog('close');--%>
+                                            <%--pasienSuccess();--%>
+                                            <%--}--%>
+                                            <%--}"--%>
+                                            <%-->--%>
                                             <%--<s:hidden id="val_id_pasien"></s:hidden>--%>
                                             <%--<img border="0" src="<s:url value="/pages/images/icon_success.png"/>"--%>
-                                                 <%--name="icon_success">--%>
+                                            <%--name="icon_success">--%>
                                             <%--Record has been saved successfully.--%>
-                                        <%--</sj:dialog>--%>
-                                        <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true" resizable="false" cssStyle="text-align:left;"
+                                            <%--</sj:dialog>--%>
+                                        <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"
+                                                   resizable="false" cssStyle="text-align:left;"
                                                    height="650" width="900" autoOpen="false" title="View Detail"
                                         >
-                                            <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>
+                                            <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
+                                                         alt="Loading..."/></center>
                                         </sj:dialog>
                                     </div>
                                 </div>
@@ -164,9 +173,9 @@
                     </div>
                     <div class="box-body">
                         <table id="sortTable" class="table table-bordered table-striped tablePasien">
-                            <thead >
+                            <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID Pasien</td>
+                                <td>NO RM</td>
                                 <td>Nama</td>
                                 <td>Jenis Kelamin</td>
                                 <td>Tempat, Tgl Lahir</td>
@@ -188,26 +197,40 @@
                                         </s:else>
                                     </td>
                                     <td><s:property value="tempatLahir"/>, <s:property value="tglLahir"/></td>
-                                    <%--<td><s:property value="password"/></td>--%>
+                                        <%--<td><s:property value="password"/></td>--%>
                                     <td align="center">
-                                        <img id="t<s:property value="idPasien"/>" class="hvr-grow" onclick="detail('<s:property value="idPasien"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-view-25.png"/>">
+                                        <img id="t<s:property value="idPasien"/>" class="hvr-grow"
+                                             onclick="detail('<s:property value="idPasien"/>')" style="cursor: pointer"
+                                             src="<s:url value="/pages/images/icons8-view-25.png"/>">
                                         <s:if test='#row.password == null || #row.password == ""'>
-                                            <img class="hvr-grow" onclick="setPassword('<s:property value="idPasien"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-create-25.png"/>">
+                                            <img class="hvr-grow"
+                                                 onclick="setPassword('<s:property value="idPasien"/>')"
+                                                 style="cursor: pointer"
+                                                 src="<s:url value="/pages/images/icons8-create-25.png"/>">
                                         </s:if>
                                         <s:else>
-                                            <img class="hvr-grow" onclick="setPassword('<s:property value="idPasien"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-create-orange-25.png"/>">
+                                            <img class="hvr-grow"
+                                                 onclick="setPassword('<s:property value="idPasien"/>')"
+                                                 style="cursor: pointer"
+                                                 src="<s:url value="/pages/images/icons8-create-orange-25.png"/>">
                                         </s:else>
-                                        <s:url var="print_card" namespace="/pasien" action="printCard_pasien" escapeAmp="false">
+                                        <s:url var="print_card" namespace="/pasien" action="printCard_pasien"
+                                               escapeAmp="false">
                                             <s:param name="id"><s:property value="idPasien"/></s:param>
                                         </s:url>
                                         <s:a href="%{print_card}" target="_blank">
-                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                            <img class="hvr-grow" style="cursor: pointer"
+                                                 src="<s:url value="/pages/images/icons8-print-25.png"/>">
                                         </s:a>
                                         <s:if test='#row.disabledFingerData == true'>
-                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-fingerprint-accepted-25.png"/>" onclick="registrasiFinger('<s:property value="idPasien"/>')">
+                                            <img class="hvr-grow" style="cursor: pointer"
+                                                 src="<s:url value="/pages/images/icons8-fingerprint-accepted-25.png"/>"
+                                                 onclick="registrasiFinger('<s:property value="idPasien"/>')">
                                         </s:if>
                                         <s:else>
-                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-fingerprint-scan-25.png"/>" onclick="registrasiFinger('<s:property value="idPasien"/>')">
+                                            <img class="hvr-grow" style="cursor: pointer"
+                                                 src="<s:url value="/pages/images/icons8-fingerprint-scan-25.png"/>"
+                                                 onclick="registrasiFinger('<s:property value="idPasien"/>')">
                                         </s:else>
                                     </td>
                                 </tr>
@@ -228,19 +251,26 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span id="nama_medik"></span></h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span
+                        id="nama_medik"></span></h4>
             </div>
             <div class="modal-body">
-                <s:form id="uploadForm" method="post" enctype="multipart/form-data" theme="simple" namespace="/pasien" action="saveUploadRmLama_pasien.action" cssClass="form-horizontal">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_upload">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_upload"></p>
+                </div>
+                <%--<s:form id="uploadForm" method="post" enctype="multipart/form-data" theme="simple" namespace="/pasien" action="saveUploadRmLama_pasien.action" cssClass="form-horizontal">--%>
+                <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">ID Pasien</label>
+                        <label class="col-md-3" style="margin-top: 7px">No RM</label>
                         <div class="col-md-7">
                             <div class="input-group">
-                                <s:textfield id="upload_pasien" name="pasien.idPasien"
+                                <s:textfield id="upload_pasien"
                                              onkeypress="$(this).css('border','');"
                                              cssClass="form-control"/>
                                 <div class="input-group-btn">
-                                    <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i class="fa fa-plus"></i> Add Upload</a>
+                                    <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i
+                                            class="fa fa-plus"></i> Add Upload</a>
                                 </div>
                             </div>
                         </div>
@@ -248,17 +278,12 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Pasien</label>
                         <div class="col-md-7">
-                            <s:textfield id="upload_nama_pasien" name="pasien.idPasien"
+                            <s:textfield id="upload_nama_pasien"
                                          cssStyle="margin-top: 7px"
                                          onkeypress="$(this).css('border','');"
                                          cssClass="form-control" readonly="true"/>
                         </div>
                     </div>
-                    <script>
-                        function tesPasien(val) {
-                            $('#isi').html('<a href="#">Link 1</a><a href="#">Link 2</a><a href="#">Link 3</a>');
-                        }
-                    </script>
                     <script type="application/javascript">
                         var functions, mapped;
                         $('#upload_pasien').typeahead({
@@ -298,19 +323,27 @@
                             }
                         });
                     </script>
-                    <br/>
+                </div>
+                <div class="row">
                     <div id="body-rm">
                     </div>
-                </s:form>
+                </div>
+                <%--</s:form>--%>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <sj:submit type="button" cssClass="btn btn-success" formIds="uploadForm" id="save" name="save"
-                           onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >
-                    <i class="fa fa-arrow-right"></i>
-                    Save
-                </sj:submit>
+                <button type="button" class="btn btn-success pull-right" id="save_upload"><i
+                        class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success pull-right" id="load_upload"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+                <%--<sj:submit type="button" cssClass="btn btn-success" formIds="uploadForm" id="save" name="save"--%>
+                <%--onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >--%>
+                <%--<i class="fa fa-arrow-right"></i>--%>
+                <%--Save--%>
+                <%--</sj:submit>--%>
             </div>
         </div>
     </div>
@@ -337,7 +370,8 @@
                                    oninput="var warn =$('#war_set_id_pasien').is(':visible'); if (warn){$('#cor_set_id_pasien').show().fadeOut(3000);$('#war_set_id_pasien').hide()}">
                         </div>
                         <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_set_id_pasien">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_id_pasien">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_set_id_pasien"><i class="fa fa-check"></i> correct</p>
@@ -350,7 +384,8 @@
                                    oninput="var warn =$('#war_set_nama').is(':visible'); if (warn){$('#cor_set_nama').show().fadeOut(3000);$('#war_set_nama').hide()}">
                         </div>
                         <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_set_nama">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_nama">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_set_nama"><i class="fa fa-check"></i> correct</p>
@@ -368,7 +403,8 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_set_password">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_password">
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_set_password"><i class="fa fa-check"></i> correct</p>
@@ -382,8 +418,9 @@
                 <button type="button" class="btn btn-success" id="save_password"><i
                         class="fa fa-arrow-right"></i> Save
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_password"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_password">
+                    <i
+                            class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
         </div>
@@ -399,14 +436,27 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Detail Data Pasien</h4>
             </div>
             <div class="modal-body">
-                <div class="box-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_edit">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_war_edit"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_edit">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_suc_edit"></p>
+                </div>
+                <input type="hidden" id="h_id_pasien">
+                <div class="box-body" style="display:none;" id="form-detail">
                     <div class="row">
                         <div class="col-md-6">
                             <img id="img_ktp" style="height: 200px; width: 100%">
                             <table class="table table-striped" style="margin-top: 20px">
                                 <tr>
-                                    <td><b>ID Pasien</b></td>
+                                    <td><b>NO RM</b></td>
                                     <td><span id="an_id_pasien"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>NO Bpjs</b></td>
+                                    <td><span id="an_no_bpjs"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>NIK</b></td>
@@ -460,11 +510,137 @@
                                 </tr>
                             </table>
                         </div>
+                    </div>
+                </div>
+                <div class="box-body" style="display:none;" id="form-edit">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>NO RM</label>
+                                <input class="form-control" readonly id="add_no_rm" oninput="$(this).css('border','')">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">NO BPJS</label>
+                                <input class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">NIK</label>
+                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Nama</label>
+                                <input class="form-control" id="add_nama" oninput="$(this).css('border','')">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Jenis Kelamin</label>
+                                <select class="form-control" id="add_jk" onchange="$(this).css('border','')">
+                                    <option value="">[Select One]</option>
+                                    <option value="L">Laki-Laki</option>
+                                    <option value="P">Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Tempat Lahir</label>
+                                <input class="form-control" id="add_tempat_lahir" oninput="$(this).css('border','')">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Tanggal Lahir</label>
+                                <input class="form-control datepicker datemask" id="add_tanggal_lahir"
+                                       onchange="$(this).css('border','')">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Agama</label>
+                                <select class="form-control" id="add_agama" onchange="$(this).css('border','')">
+                                    <option value="">[Select One]</option>
+                                    <option value="Islam">Islam</option>
+                                    <option value="Kristen">Kristen</option>
+                                    <option value="Katolik">Katolik</option>
+                                    <option value="Hindu">Hindu</option>
+                                    <option value="Konguchu">Konguchu</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Profesi</label>
+                                <input class="form-control" id="add_profesi">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Suku</label>
+                                <input class="form-control" id="add_suku">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Alamat</label>
+                                <input class="form-control" id="add_alamat">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">No Telp</label>
+                                <input class="form-control" id="add_no_telp">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Provinsi</label>
+                                <input class="form-control" id="add_provinsi"
+                                       oninput="$(this).css('border',''); setProvAtas(this.id, 'add_id_provinsi')">
+                                <input type="hidden" id="add_id_provinsi">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Kota</label>
+                                <input class="form-control" id="add_kota"
+                                       oninput="$(this).css('border',''); setKabAtas(this.id, 'add_id_kota', 'add_id_provinsi')">
+                                <input type="hidden" id="add_id_kota">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Kecamatan</label>
+                                <input class="form-control" id="add_kecamatan"
+                                       oninput="$(this).css('border',''); setKecAtas(this.id, 'add_id_kecamatan', 'add_id_kota')">
+                                <input type="hidden" id="add_id_kecamatan">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Kelurahan/Desa</label>
+                                <input class="form-control" id="add_desa"
+                                       oninput="$(this).css('border',''); setDesAtas(this.id, 'add_id_desa', 'add_id_kecamatan')">
+                                <input type="hidden" id="add_id_desa">
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Flag</label>
+                                <select class="form-control" id="add_flag" onchange="$(this).css('border','')">
+                                    <option value="">[Select One]</option>
+                                    <option value="Y">Y</option>
+                                    <option value="N">N</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label style="margin-top: 7px">Foto Identitas</label>
+                                <div class="input-group" id="img_file">
+                              <span class="input-group-btn">
+                              <span class="btn btn-default btn-file">
+                               Browse… <s:file id="imgInp" accept=".jpg" name="fileUpload"
+                                               onchange="$('#img_file').css('border',''); setCanvas('img_ktp_canvas')"></s:file>
+                                                    </span>
+                                                    </span>
+                                    <input type="text" class="form-control" readonly>
+                                </div>
+                                <canvas id="img_ktp_canvas" style="border: solid 1px #ccc; width: 100%"></canvas>
+                                <input type="hidden" id="add_img_ktp">
+                            </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <button id="btn_edit" value="edit" type="button" onclick="setEdit()" class="btn btn-primary pull-left">
+                    <i class="fa fa-edit"></i> <span id="label_btn">Edit</span>
+                </button>
+                <button style="display: none" id="btn_save" type="button" onclick="conEdit()"
+                        class="btn btn-success pull-left"><i class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success pull-left"
+                        id="load_save"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
@@ -487,7 +663,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
+                </button>
             </div>
         </div>
     </div>
@@ -518,7 +695,7 @@
 
 <script type='text/javascript'>
 
-    function pasienSuccess(){
+    function pasienSuccess() {
         var idPasien = $('#val_id_pasien').val();
         $('#id_pasien').val(idPasien);
         document.pasienForm.action = 'search_pasien.action';
@@ -526,255 +703,425 @@
     }
 
     function detail(pasiendId) {
-
-        var table = "";
-        var nik = "";
-        var namaPasien = "";
-        var jenisKelamin = "";
-        var tglLahir = "";
-        var agama = "";
-        var suku = "";
-        var alamat = "";
-        var provinsi = "";
-        var kabupaten = "";
-        var kecamatan = "";
-        var desa = "";
-        var idPasien = "";
-
         var url = '<s:url value="/pages/images/spinner.gif"/>';
-        $('#t'+pasiendId).attr('src',url).css('width', '30px', 'height', '40px');
-
-
+        $('#t' + pasiendId).attr('src', url).css('width', '30px', 'height', '40px');
+        $('#btn_edit').val("edit");
+        $('#label_btn').text('Edit');
+        $('#btn_edit').removeClass("btn btn-warning pull-left");
+        $('#btn_edit').addClass("btn btn-primary pull-left");
+        $('#btn_save').hide();
+        $('#form-detail').show();
+        $('#form-edit').hide();
+        $('#load_save').hide();
         setTimeout(function () {
-
+            dataPasienSet(pasiendId);
             var url = '<s:url value="/pages/images/icons8-view-25.png"/>';
-            $('#t'+pasiendId).attr('src',url).css('width', '', 'height', '');
-
-            PasienAction.getDataPasien(pasiendId, function (response) {
-                console.log(response);
-                if (response != null) {
-
-                    nik = response.noKtp;
-                    namaPasien = response.nama;
-
-                    if (response.jenisKelamin == "L") {
-                        jenisKelamin = "Laki-Laki";
-                    } else {
-                        jenisKelamin = "Perempuan";
-                    }
-
-                    tglLahir = response.tempatLahir + ", " + formateDate(response.tglLahir);
-                    agama = response.agama;
-                    suku = response.suku;
-                    alamat = response.jalan;
-                    provinsi = response.provinsi;
-                    kabupaten = response.kota;
-                    kecamatan = response.kecamatan;
-                    desa = response.desa;
-                    idPasien = response.idPasien;
-                    $('#img_ktp').attr('src',response.urlKtp);
-                }
-            });
-
-            $('#an_id_pasien').html(idPasien);
-            $('#an_nik').html(nik);
-            $('#an_nama').html(namaPasien);
-            $('#an_jenis_kelamin').html(jenisKelamin);
-            $('#an_tgl').html(tglLahir);
-            $('#an_agama').html(agama);
-            $('#an_suku').html(suku);
-            $('#an_alamat').html(alamat);
-            $('#an_provinsi').html(provinsi);
-            $('#an_kabupaten').html(kabupaten);
-            $('#an_kecamatan').html(kecamatan);
-            $('#an_desa').html(desa);
-            $('#modal-detail').modal({show:true, backdrop:'static'});
+            $('#t' + pasiendId).attr('src', url).css('width', '', 'height', '');
+            $('#modal-detail').modal({show: true, backdrop: 'static'});
         }, 100);
     }
 
-    function formateDate(tanggal){
+    function dataPasienSet(pasiendId) {
+        PasienAction.getDataPasien(pasiendId, function (response) {
+            if (response != null) {
+                var jenisKelamin = "";
+                var tglLahir = "";
+
+                if (response.jenisKelamin == "L") {
+                    jenisKelamin = "Laki-Laki";
+                } else {
+                    jenisKelamin = "Perempuan";
+                }
+                tglLahir = response.tempatLahir + ", " + formateDate(response.tglLahir);
+
+                $('#h_id_pasien').val(response.idPasien);
+                $('#an_id_pasien').html(response.idPasien);
+                $('#an_no_bpjs').html(response.noBpjs);
+                $('#an_nik').html(response.noKtp);
+                $('#an_nama').html(response.nama);
+                $('#an_jenis_kelamin').html(jenisKelamin);
+                $('#an_tgl').html(tglLahir);
+                $('#an_agama').html(response.agama);
+                $('#an_suku').html(response.suku);
+                $('#an_alamat').html(response.jalan);
+                $('#an_provinsi').html(response.provinsi);
+                $('#an_kabupaten').html(response.kota);
+                $('#an_kecamatan').html(response.kecamatan);
+                $('#an_desa').html(response.desa);
+                $('#img_ktp').attr('src', response.urlKtp);
+
+                $('#add_no_rm').val(response.idPasien);
+                $('#add_no_bpjs').val(response.noBpjs);
+                $('#add_flag').val(response.flag);
+                $('#add_nik').val(response.noKtp);
+                $('#add_nama').val(response.nama);
+                $('#add_jk').val(response.jenisKelamin);
+                $('#add_tempat_lahir').val(response.tempatLahir);
+                $('#add_tanggal_lahir').val(response.tglLahir);
+                $('#add_agama').val(response.agama);
+                $('#add_profesi').val(response.profesi);
+                $('#add_suku').val(response.suku);
+                $('#add_alamat').val(response.jalan);
+                $('#add_no_telp').val(response.noTelp);
+                $('#add_provinsi').val(response.provinsi);
+                $('#add_id_provinsi').val(response.provinsiId);
+                $('#add_kota').val(response.kota);
+                $('#add_id_kota').val(response.kotaId);
+                $('#add_kecamatan').val(response.kecamatan);
+                $('#add_id_kecamatan').val(response.kecamatanId);
+                $('#add_desa').val(response.desa);
+                $('#add_id_desa').val(response.desaId);
+                $('#add_img_ktp').val(response.imgKtp);
+                if (response.urlKtp != null) {
+                    var canvas = document.getElementById('img_ktp_canvas');
+                    var ctx = canvas.getContext('2d');
+                    var img = new Image();
+                    img.src = response.urlKtp;
+                    img.onload = function (ev) {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0);
+                    }
+                }
+            }
+        });
+    }
+
+    function formateDate(tanggal) {
 
         var tgl = "";
-        if(tanggal != null && tanggal != ''){
+        if (tanggal != null && tanggal != '') {
             tgl = $.datepicker.formatDate("dd-mm-yy", new Date(tanggal));
         }
         return tgl;
     }
 
-    function setPassword(idPasien){
-        if(idPasien != ''){
-            $('#modal-password').modal({show:true, backdrop:'static'});
+    function setPassword(idPasien) {
+        if (idPasien != '') {
+            $('#modal-password').modal({show: true, backdrop: 'static'});
             PasienAction.getDataPasien(idPasien, function (response) {
-                if(response.idPasien != null){
+                if (response.idPasien != null) {
                     $('#set_id_pasien').val(response.idPasien);
                     $('#set_nama').val(response.nama);
                     $('#set_password').val(response.password);
-                }else{
+                } else {
 
                 }
             });
 
-            $('#save_password').attr('onclick','savePassword(\''+idPasien+'\')');
+            $('#save_password').attr('onclick', 'savePassword(\'' + idPasien + '\')');
         }
     }
 
-    function seePassword(){
+    function seePassword() {
         var type = $('#set_password').attr('type');
-        if(type == 'password'){
+        if (type == 'password') {
             $('#set_password').removeAttr('type');
-            $('#set_password').attr('type','text');
+            $('#set_password').attr('type', 'text');
             $('#btn_see').removeClass('btn btn-success').addClass('btn btn-warning');
             $('#fa_see').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
-        }else{
+        } else {
             $('#set_password').removeAttr('type');
-            $('#set_password').attr('type','password');
+            $('#set_password').attr('type', 'password');
             $('#btn_see').removeClass('btn btn-warning').addClass('btn btn-success');
             $('#fa_see').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
         }
     }
 
-    function savePassword(idPasien){
+    function savePassword(idPasien) {
         var password = $('#set_password').val();
-        if(password != ''){
+        if (password != '') {
 
             $('#save_password').hide();
             $('#load_password').show();
             dwr.engine.setAsync(true);
             PasienAction.setPasswordPasien(idPasien, password, function (response) {
-                if(response.status == "success"){
+                if (response.status == "success") {
                     $('#modal-password').modal('hide');
                     $('#info_dialog').dialog('open');
                     $('#save_password').show();
                     $('#load_password').hide();
-                }else{
+                } else {
                     $('#save_password').show();
                     $('#load_password').hide();
                     $('#warning_password').show().fadeOut(5000);
                     $('#msg_password').text(response.message);
                 }
             });
-        }else{
+        } else {
             $('#warning_password').show().fadeOut(5000);
             $('#msg_password').text('Silahkan cek kembali data inputan..!');
-            if(password == ''){
+            if (password == '') {
                 $('#war_set_password').show();
             }
         }
     }
 
-    $('.tablePasien').on('click', '.item-register-finger', function() {
+    $('.tablePasien').on('click', '.item-register-finger', function () {
         var idPasien = $(this).attr('data');
         var location = window.location.hostname;
-        console.log(location);
-        var url=btoa('http://192.168.43.222:8080/simrs/registerFinger.action?userId='+idPasien);
-        console.log(url);
-        var href ='finspot:FingerspotReg;'+url;
-        window.location.href =href ;
+        var url = btoa('http://192.168.43.222:8080/simrs/registerFinger.action?userId=' + idPasien);
+        var href = 'finspot:FingerspotReg;' + url;
+        window.location.href = href;
     });
 
-    function registrasiFinger(idPasien){
-        if(idPasien != ''){
-            console.log(idPasien);
+    function registrasiFinger(idPasien) {
+        if (idPasien != '') {
             var location = window.location.href;
-            console.log(location);
-            var url=btoa('http://192.168.43.222:8080/simrs/registerFinger.action?userId='+idPasien);
-            console.log(url);
-            var href ='finspot:FingerspotReg;'+url;
-            console.log(href);
-            window.location.href =href ;
+            var url = btoa('http://192.168.43.222:8080/simrs/registerFinger.action?userId=' + idPasien);
+            var href = 'finspot:FingerspotReg;' + url;
+            window.location.href = href;
         }
     }
 
-    function showModalUpload(){
-        $("#modal-upload").modal("show");
+    function showModalUpload() {
+        $('#save_upload').show();
+        $('#load_upload').hide();
+        $('#save_upload').attr('onclick', 'cekUpload()');
+        $('#upload_pasien, #upload_nama_pasien, #body_rm').val('');
+        $("#modal-upload").modal({show: true, backdrop: 'static'});
     }
 
-    var n = 0;
-    var i = 1;
-    function addInputUpload() {
-
-        var str = "";
-        str += '<div class="form-group">'+
-            '<label class="col-md-3" style="margin-top: 8px">Upload Foto Rekam Medik '+i+'</label>'+
-            '<div class="col-md-7">'+
-            '<input type="file" name="fileUploadImage" class="form form-control" style="margin-top: 7px">'+
-            <%--'<s:file id="upload-img" name="fileUploadImage" cssClass="form form-control"/>'+--%>
-            '</div>'+
-            '</div>';
-        if (n > 0){
-            $("#body-rekam-medic-"+n+"").html(str+'<div id="body-rekam-medic-'+i+'"></div>');
+    function cekUpload() {
+        var idPasien = $('#upload_pasien').val();
+        var img = $('.form-img-rm');
+        var cek = false;
+        $.each(img, function (i, item) {
+            if (item.value == '') {
+                cek = true;
+            }
+        });
+        if (idPasien != '' && !cek && img.length > 0) {
+            $('#modal-confirm-dialog').modal({show: true, backdrop: 'static'});
+            $('#save_con').attr('onclick', 'saveUpload()');
         } else {
-            $("#body-rm").html('<div id="body-rekam-medic-'+n+'">'+str+'</div><div id="body-rekam-medic-'+i+'"></div>');
+            $('#warning_upload').show().fadeOut(5000);
+            $('#msg_upload').text("Silahkan cek kembali inputan anda...!");
         }
-        n++;
-        i++;
     }
 
-    /*function user_register(user_id, user_name) {
-        regStats = 0;
-        regCt = -1;
-        try
-        {
-            timer_register.stop();
-        }
-        catch(err)
-        {
-            console.log('Registration timer has been init');
-        }
-        var limit = 4;
-        var ct = 1;
-        var timeout = 5000;
-
-        timer_register = $.timer(timeout, function() {
-            console.log("'"+user_name+"' registration checking...");
-            user_checkregister(user_id,$("#user_finger_"+user_id).html());
-            if (ct>=limit || regStats==1)
-            {
-                timer_register.stop();
-                console.log("'"+user_name+"' registration checking end");
-                if (ct>=limit && regStats==0)
-                {
-                    alert("'"+user_name+"' registration fail!");
-                }
-                if (regStats==1)
-                {
-                    $("#user_finger_"+user_id).html(regCt);
-                    alert("'"+user_name+"' registration success!");
-                    load('http://localhost:8080/simrs/');
+    function saveUpload() {
+        $('#modal-confirm-dialog').modal('hide');
+        var idPasien = $('#upload_pasien').val();
+        var img = $('.form-img-rm');
+        var data = [];
+        $.each(img, function (i, item) {
+            var canvas = document.getElementById('cav_' + i);
+            if (item.value != '') {
+                var url = convertToDataURLAtas(canvas);
+                data.push({
+                    'gambar': url
+                })
+            }
+        });
+        var result = JSON.stringify(data);
+        $('#save_upload').hide();
+        $('#load_upload').show();
+        dwr.engine.setAsync(true);
+        PasienAction.saveUploadRmLama(result, idPasien, {
+            callback: function (res) {
+                if(res.status == "success"){
+                    $('#save_upload').show();
+                    $('#load_upload').hide();
+                    $('#info_dialog').dialog('open');
+                    $('#modal-upload').modal('hide');
+                }else{
+                    $('#save_upload').show();
+                    $('#load_upload').hide();
+                    $('#warning_upload').show().fadeOut(5000);
+                    $('#msg_upload').text(res.msg);
                 }
             }
-            ct++;
         });
     }
 
-    function user_checkregister(user_id, current) {
-        $.ajax({
-            url			:	"user.php?action=checkreg&user_id="+user_id+"&current="+current,
-            type		:	"GET",
-            success		:	function(data)
-            {
-                try
-                {
-                    var res = jQuery.parseJSON(data);
-                    if (res.result)
-                    {
-                        regStats = 1;
-                        $.each(res, function(key, value){
-                            if (key=='current')
-                            {
-                                regCt = value;
-                            }
-                        });
+    function addInputUpload() {
+        var i = $('.img-upload').length;
+        var number = i + 1;
+        var str = '<div class="form-group img-upload" id="row_' + i + '">' +
+            '<label class="col-md-3" style="margin-top: 8px">Upload Foto Rekam Medik ' + number + '</label>' +
+            '<div class="col-md-7">' +
+            '<canvas id="cav_' + i + '" style="display: none"></canvas>' +
+            '<input id="text_' + i + '" onchange="setCanvasAtasWithText(\'cav_' + i + '\', \'text_' + i + '\')" type="file" name="fileUploadImage" class="form-control form-img-rm" style="margin-top: 7px">' +
+            <%--'<s:file id="upload-img" name="fileUploadImage" cssClass="form form-control"/>'+--%>
+            '</div>' +
+            '<div class="col-md-1" style="margin-left: -20px; margin-top: 10px">' +
+            '<a class="btn btn-danger" onclick="delUpload(\'row_' + i + '\')"><i class="fa fa-trash"></i></a>';
+        '</div>' +
+        '</div>';
+        $('#body-rm').append(str);
+    }
+
+    function delUpload(id) {
+        $('#' + id).remove();
+    }
+
+    function setEdit() {
+        var text = $('#btn_edit').val();
+        var idPasien = $('#h_id_pasien').val();
+        if (text == "edit") {
+            dataPasienSet(idPasien);
+            $('#btn_edit').val("batal_edit");
+            $('#label_btn').text('Batal Edit');
+            $('#btn_edit').removeClass("btn btn-primary pull-left");
+            $('#btn_edit').addClass("btn btn-warning pull-left");
+            $('#btn_save').show();
+            $('#form-detail').hide();
+            $('#form-edit').show();
+        } else {
+            $('#btn_edit').val("edit");
+            $('#label_btn').text('Edit');
+            $('#btn_edit').removeClass("btn btn-warning pull-left");
+            $('#btn_edit').addClass("btn btn-primary pull-left");
+            $('#btn_save').hide();
+            $('#form-detail').show();
+            $('#form-edit').hide();
+            $('#load_save').hide();
+        }
+    }
+
+    function setCanvas(canvas) {
+        var canvas = document.getElementById(canvas);
+        var ctx = canvas.getContext('2d');
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            var img = new Image();
+            img.onload = function () {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+        $('#add_img_ktp').val('ganti');
+    }
+
+    function conEdit() {
+        $('#modal-confirm-dialog').modal({show: true, backdrop: 'static'});
+        $('#save_con').attr('onclick', 'saveEditPasien()');
+    }
+
+    function saveEditPasien() {
+        $('#modal-confirm-dialog').modal('hide');
+        var data = "";
+        var idPasien = $('#add_no_rm').val();
+        var noTelp = $('#add_no_telp').val();
+        var noBpjs = $('#add_no_bpjs').val();
+        var nik = $('#add_nik').val();
+        var nama = $('#add_nama').val();
+        var jk = $('#add_jk').val();
+        var tempatLahir = $('#add_tempat_lahir').val();
+        var tanggalLahir = $('#add_tanggal_lahir').val();
+        var agama = $('#add_agama').val();
+        var profesi = $('#add_profesi').val();
+        var suku = $('#add_suku').val();
+        var alamat = $('#add_alamat').val();
+        var provinsi = $('#add_id_provinsi').val();
+        var kota = $('#add_id_kota').val();
+        var kecamatan = $('#add_id_kecamatan').val();
+        var desa = $('#add_id_desa').val();
+        var flag = $('#add_flag').val();
+        var canvas = document.getElementById('img_ktp_canvas');
+        var dataURL = canvas.toDataURL("image/png"),
+            dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+        var cekGanti = $('#add_img_ktp').val();
+        var images = "";
+        if (cekGanti == "ganti") {
+            images = dataURL;
+        } else {
+            images = '';
+        }
+
+        if (nik != '' && nama != '' && jk != '' && tempatLahir != '' && tanggalLahir != '' &&
+            agama != '' && provinsi != '' && kota != '' && kecamatan != '' && desa != '') {
+
+            data = {
+                'id_pasien': idPasien,
+                'nik': nik,
+                'no_bpjs': noBpjs,
+                'nama': nama,
+                'jk': jk,
+                'tempat_lahir': tempatLahir,
+                'tanggal_lahir': tanggalLahir,
+                'agama': agama,
+                'profesi': profesi,
+                'suku': suku,
+                'alamat': alamat,
+                'desa_id': desa,
+                'no_telp': noTelp,
+                'flag': flag,
+                'img_ktp': images
+            };
+
+            var objectString = JSON.stringify(data);
+            $('#btn_save').hide();
+            $('#load_save').show();
+            dwr.engine.setAsync(true);
+            PasienAction.saveEditPasien(objectString, {
+                callback: function (response) {
+                    if (response.status == "success") {
+                        dataPasienSet(idPasien);
+                        $('#success_edit').show().fadeOut(5000);
+                        $('#msg_suc_edit').text("Berhasil mengupdate data pasien....");
+                        $('#btn_edit').val("edit");
+                        $('#label_btn').text('Edit');
+                        $('#btn_edit').removeClass("btn btn-warning pull-left");
+                        $('#btn_edit').addClass("btn btn-primary pull-left");
+                        $('#btn_save').hide();
+                        $('#load_save').hide();
+                        $('#form-detail').show();
+                        $('#form-edit').hide();
+                    } else {
+                        $('#btn_save').show();
+                        $('#load_save').hide();
+                        $('#warning_edit').show().fadeOut(5000);
+                        $('#msg_war_edit').text(response.msg);
                     }
                 }
-                catch(err)
-                {
-                    alert(err.message);
-                }
+            });
+        } else {
+            $('#warning_edit').show().fadeOut(5000);
+            $('#msg_war_edit').text("Silahkan cek kembali data inputan anda...!");
+            if (nik == '') {
+                $('#add_nik').css('border', 'solid 1px red');
             }
-        });
-    }*/
+            if (nama == '') {
+                $('#add_nama').css('border', 'solid 1px red');
+            }
+            if (jk == '') {
+                $('#add_jk').css('border', 'solid 1px red');
+            }
+            if (tempatLahir == '') {
+                $('#add_tempat_lahir').css('border', 'solid 1px red');
+            }
+            if (tanggalLahir == '') {
+                $('#add_tanggal_lahir').css('border', 'solid 1px red');
+            }
+            if (agama == '') {
+                $('#add_agama').css('border', 'solid 1px red');
+            }
+            if (provinsi == '') {
+                $('#add_provinsi').css('border', 'solid 1px red');
+            }
+            if (kota == '') {
+                $('#add_kota').css('border', 'solid 1px red');
+            }
+            if (kecamatan == '') {
+                $('#add_kecamatan').css('border', 'solid 1px red');
+            }
+            if (desa == '') {
+                $('#add_desa').css('border', 'solid 1px red');
+            }
+            if (flag == '') {
+                $('#flag').css('border', 'solid 1px red');
+            }
+        }
 
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

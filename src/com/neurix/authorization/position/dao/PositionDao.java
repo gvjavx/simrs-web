@@ -3,6 +3,7 @@ package com.neurix.authorization.position.dao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.ImPositionHistory;
 import com.neurix.authorization.position.model.Position;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -350,7 +351,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
     public List<ImPosition> getListPositionDekom () throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(Restrictions.eq("bagianId", "PB02"))
+                .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
+                .add(Restrictions.eq("kelompokId", CommonConstant.KELOMPOK_ID_BOC))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("positionId"))
                 .list();
@@ -359,15 +361,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
     public List<ImPosition> getListPositionSelainDekomDanDirkom () throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(
-                        Restrictions.or(
-                                Restrictions.or(
-                                        Restrictions.ne("bagianId", "PB01"),
-                                        Restrictions.ne("bagianId", "PB02")
-                                ),
-                                Restrictions.ne("bagianId", "PB03")
-                                )
-                )
+                .add(Restrictions.ne("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("positionId"))
                 .list();
@@ -375,12 +369,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     }
     public List<ImPosition> getListPositionDireksi () throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
-                .add(
-                        Restrictions.or(
-                                Restrictions.eq("bagianId", "PB01"),
-                                Restrictions.eq("bagianId", "PB03")
-                        )
-                )
+                .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
+                .add(Restrictions.eq("kelompokId", CommonConstant.KELOMPOK_ID_BOD))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("positionId"))
                 .list();
@@ -420,5 +410,82 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         }
 
         return kode;
+    }
+
+    public List<ImPosition> getListPositionKoderingNKelompokPosition(String term,String kelompok) throws HibernateException {
+
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(Restrictions.ilike("kodering", term))
+                .add(Restrictions.eq("kelompokId", kelompok))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("positionId"))
+                .list();
+
+        return results;
+    }
+
+    public List<ImPosition> getDataKelompokId(String positionId){
+
+        List<ImPosition> listOfResult = new ArrayList<ImPosition>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "SELECT kelompok_id, position_id FROM im_position WHERE position_id = '"+positionId+"' AND flag = 'Y'";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            ImPosition result  = new ImPosition();
+            result.setKelompokId((String) row[0]);
+            result.setPositionId((String) row[1]);
+
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
+
+    public List<ImPosition> getPositionBodBoc() {
+        String idBod = "KL44";
+        String idBoc = "KL43";
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class);
+        criteria.add(
+                Restrictions.or(
+                        Restrictions.eq("kelompokId", "" + idBod + ""),
+                        Restrictions.eq("kelompokId", "" + idBoc + "")
+                )
+        );
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.addOrder(Order.asc("positionId"));
+
+        List<ImPosition> results = criteria.list();
+        return results;
+    }
+
+    public List<ImPosition> getListByKelompokId(String kelompok) throws HibernateException {
+
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(Restrictions.eq("kelompokId", kelompok))
+                .addOrder(Order.asc("positionId"))
+                .list();
+
+        return results;
+    }
+
+    public List<ImPosition> getListByBagianId(String id) throws HibernateException {
+
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(Restrictions.eq("bagianId", id))
+                .addOrder(Order.asc("positionId"))
+                .list();
+        return results;
+    }
+
+    public List<ImPosition> getListPositionBagianByDivisi(String id) throws HibernateException {
+
+        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+                .add(Restrictions.ilike("departmentId",id))
+                .list();
+
+        return results;
     }
 }

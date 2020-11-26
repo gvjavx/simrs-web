@@ -21,6 +21,7 @@ public class ImPayrollSkalaGajiPkwtEntity implements Serializable {
     private BigDecimal santunanKhusus;
     private BigDecimal tunjFunsional;
     private BigDecimal tunjtambahan;
+    private String tahun;
 
     private String flag;
     private String action;
@@ -28,6 +29,14 @@ public class ImPayrollSkalaGajiPkwtEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
 
     public String getAction() {
         return action;

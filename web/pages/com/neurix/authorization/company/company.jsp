@@ -34,18 +34,41 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
 
-            if (document.getElementById("companyId").value != '' &&
-                    document.getElementById("companyName").value != '' &&
-                    document.getElementById("address").value != '' &&
-                    document.getElementById("npwp").value != '') {
-
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
-
-                } else {
-                    // Cancel Submit comes with 1.8.0
+            //validasi form
+            if (document.getElementById("companyId").value != '' && document.getElementById("companyName").value != '' && document.getElementById("address").value != '' && document.getElementById("npwp").value != '') {
+                //validasi tanggal inputan
+                var tanggalAwalLembur = document.getElementById("tanggalAwalLembur").value;
+                var tanggalAkhirLembur = document.getElementById("tanggalAkhirLembur").value;
+                var iTanggalAwalLembur = 0;
+                var iTanggalAkhirLembur = 0;
+                if (tanggalAwalLembur!=""){
+                    iTanggalAwalLembur = parseInt(tanggalAwalLembur);
+                }
+                if (tanggalAkhirLembur!=""){
+                    iTanggalAkhirLembur = parseInt(tanggalAkhirLembur);
+                }
+                if (iTanggalAwalLembur>31||iTanggalAkhirLembur>31||iTanggalAwalLembur<1||iTanggalAkhirLembur<1){
                     event.originalEvent.options.submit = false;
+                    var msg = "";
+                    if (iTanggalAwalLembur>31||iTanggalAwalLembur<1) {
+                        msg = 'Field <strong>cut off tanggal awal Lembur</strong> harus berisi 1-31.' + '<br/>';
+                    }
+                    if (iTanggalAkhirLembur>31||iTanggalAkhirLembur<1) {
+                        msg += 'Field <strong>cut off tanggal akhir Lembur</strong> harus berisi 1-31.' + '<br/>';
+                    }
+
+                    document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                    $.publish('showErrorValidationDialog');
+                } else{
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
+
+                    } else {
+                        // Cancel Submit comes with 1.8.0
+                        event.originalEvent.options.submit = false;
+                    }
                 }
 
             } else {
@@ -112,10 +135,16 @@
             $('#remainderPensiun').prop('readonly', false);
             $('#kursDolar').prop('readonly', false);
             $('#stMinimumLuasan').prop('readonly', false);
+            $('#tanggalAwalLembur').prop('readonly', false);
+            $('#tanggalAkhirLembur').prop('readonly', false);
 
             $('#asumsiThr').prop('readonly', false);
             $('#asumsiPendidikan').prop('readonly', false);
             $('#asumsiJasprod').prop('readonly', false);
+            $('#periodeGaji').prop('disabled', false);
+            // $('#paramDapen').prop('readonly', false);
+            // $('#paramDapenPegawai').prop('readonly', false);
+            $('#biayaJabatan').prop('readonly', false);
 
             $('#maxBpjsTk').prop('readonly', false);
             $('#maxBpjsPensiun').prop('readonly', false);
@@ -141,7 +170,12 @@
             $('#remainderJubileum').prop('readonly', true);
             $('#remainderPensiun').prop('readonly', true);
             $('#kursDolar').prop('readonly', true);
-
+            $('#periodeGaji').prop('disabled', true);
+            // $('#paramDapen').prop('readonly', true);
+            // $('#paramDapenPegawai').prop('readonly', true);
+            $('#biayaJabatan').prop('readonly', true);
+            $('#tanggalAwalLembur').prop('readonly', true);
+            $('#tanggalAkhirLembur').prop('readonly', true);
             $('#asumsiThr').prop('readonly', true);
             $('#asumsiPendidikan').prop('readonly', true);
             $('#asumsiJasprod').prop('readonly', true);
@@ -169,7 +203,6 @@
     <section class="content-header">
         <h1>
             Company Information
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -189,7 +222,7 @@
                         <div class="box-body">
                                 <div class="container" style="margin: 0 auto; width: 80%">
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="companyId">Company Id :</label>
+                                        <label class="control-label col-sm-4" for="companyId">Company Id :</label>
                                         <div class="col-sm-8">
                                             <s:textfield id="companyId" cssClass="form-control" name="company.companyId" required="true" readonly="true"/>
                                             <%--<input type="email" class="form-control" id="email" placeholder="Enter email">--%>
@@ -197,166 +230,193 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="companyName">Company Name :</label>
+                                        <label class="control-label col-sm-4" for="companyName">Company Name :</label>
                                         <div class="col-sm-8">
                                             <s:textfield id="companyName" name="company.companyName" cssClass="form-control" required="true"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.address">Address :</label>
+                                        <label class="control-label col-sm-4" for="company.address">Address :</label>
                                         <div class="col-sm-8">
                                             <s:textfield id="address" name="company.address" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.npwp">NPWP :</label>
+                                        <label class="control-label col-sm-4" for="company.npwp">NPWP :</label>
                                         <div class="col-sm-8">
                                             <s:textfield id="npwp" name="company.npwp" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
 
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.serviceOnOff">Service On Off :</label>
+                                    <div class="form-group" style="display: none">
+                                        <label class="control-label col-sm-4" for="company.serviceOnOff">Service On Off :</label>
                                         <div class="col-sm-8">
                                             <s:textfield id="serviceOnOff" name="company.serviceOnOff" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.mailServer">Mail Server :</label>
+                                        <label class="control-label col-sm-4" for="company.mailServer">Mail Server :</label>
                                         <div class="col-sm-8">
                                             <s:textfield id="mailServer" name="company.mailServer" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.portServer">Port Server :</label>
+                                        <label class="control-label col-sm-4" for="company.portServer">Port Server :</label>
                                         <div class="col-sm-8">
                                             <s:textfield cssClass="form-control" id="portServer" name="company.portServer" required="true"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.userNameServer">Username Server :</label>
+                                        <label class="control-label col-sm-4" for="company.userNameServer">Username Server :</label>
                                         <div class="col-sm-8">
                                             <s:textfield id="userNameServer" name="company.userNameServer" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.passwordServer">Password Server :</label>
+                                        <label class="control-label col-sm-4" for="company.passwordServer">Password Server :</label>
                                         <div class="col-sm-8">
                                             <s:password id="passwordServer" name="company.passwordServer" required="true" showPassword="true" cssClass="form-control"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.defaultEmailSubject">Default Mail Subject :</label>
+                                        <label class="control-label col-sm-4" for="company.periodeGaji">Periode Gaji :</label>
+                                        <div class="col-sm-8">
+                                            <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                            <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="periodeGaji"
+                                                      name="company.periodeGaji" required="true" headerKey=""
+                                                      headerValue="[Select one]"/>
+                                        </div>
+                                    </div>
+                                    <%--<div class="form-group">--%>
+                                        <%--<label class="control-label col-sm-3" for="company.paramDapen">% Dapen Perusahaan:</label>--%>
+                                        <%--<div class="col-sm-8">--%>
+                                            <%--<s:textfield id="paramDapen" name="company.paramDapen" type="number" required="true" cssClass="form-control"/>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="form-group">--%>
+                                        <%--<label class="control-label col-sm-3" for="company.paramDapen">% Dapenbun Pegawai:</label>--%>
+                                        <%--<div class="col-sm-8">--%>
+                                            <%--<s:textfield id="paramDapenPegawai" name="company.paramDapenPegawai" type="number" required="true" cssClass="form-control"/>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4" for="company.biayaJabatan">Biaya Jabatan (bulan):</label>
+                                        <div class="col-sm-8">
+                                            <s:textfield id="biayaJabatan" name="company.biayaJabatan" type="number" required="true" cssClass="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="display: none">
+                                        <label class="control-label col-sm-4" for="company.defaultEmailSubject">Default Mail Subject :</label>
                                         <div class="col-sm-8">
                                             <s:textfield id="defaultMailSubject" name="company.defaultEmailSubject" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.defaultEmailSender">Default Mail Sender :</label>
+                                    <div class="form-group" style="display: none">
+                                        <label class="control-label col-sm-4" for="company.defaultEmailSender">Default Mail Sender :</label>
                                         <div class="col-sm-8">
                                             <s:textfield id="defaultMailSender" name="company.defaultEmailSender" cssClass="form-control" required="true"/>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.defaultEmailContent">Default Mail Content :</label>
+                                    <div class="form-group" style="display: none">
+                                        <label class="control-label col-sm-4" for="company.defaultEmailContent">Default Mail Content :</label>
                                         <div class="col-sm-8">
                                             <s:textarea cols="10" rows="5" id="defaultMailContent" name="company.defaultEmailContent" required="true" cssClass="
                                             form-control"/>
                                         </div>
                                     </div>
 
-                                    <%--<div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.defaultEmailSender">Persentase Biaya Jabatan:</label>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4" for="company.tanggalAwalLembur">Cut Off Tgl Lembur Awal ( >= ) :</label>
                                         <div class="col-sm-8">
-                                            <s:textfield id="biayaJabatanPersentase" name="company.biayaJabatanPersentase" cssClass="form-control" required="true"/>
+                                            <s:textfield id="tanggalAwalLembur" type="number" min="1" max="31" name="company.tanggalAwalLembur" cssClass="form-control" required="true"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.defaultEmailSender">Iuran Persusahaan Jkm Jkk:</label>
+                                        <label class="control-label col-sm-4" for="company.tanggalAkhirLembur">Cut Off Tgl Lembur Akhir ( < ) :</label>
                                         <div class="col-sm-8">
-                                            <s:textfield id="iuranPerusahaanJkmJkk" name="company.iuranPerusahaanJkmJkk" cssClass="form-control" required="true"/>
+                                            <s:textfield id="tanggalAkhirLembur" type="number" min="1" max="31" name="company.tanggalAkhirLembur" cssClass="form-control" required="true"/>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.defaultEmailSender">Remainder Yubilium :</label>
-                                        <div class="col-sm-8">
-                                            <s:textfield id="remainderJubileum" name="company.remainderJubileum" cssClass="form-control" required="true"/>
+                                        <%--<div class="form-group">
+                                            <label class="control-label col-sm-3" for="company.defaultEmailSender">Remainder Yubilium :</label>
+                                            <div class="col-sm-8">
+                                                <s:textfield id="remainderJubileum" name="company.remainderJubileum" cssClass="form-control" required="true"/>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.defaultEmailSender">Reminder Pensiun :</label>
-                                        <div class="col-sm-8">
-                                            <s:textfield id="remainderPensiun" name="company.remainderPensiun" cssClass="form-control" required="true"/>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" for="company.defaultEmailSender">Reminder Pensiun :</label>
+                                            <div class="col-sm-8">
+                                                <s:textfield id="remainderPensiun" name="company.remainderPensiun" cssClass="form-control" required="true"/>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" for="company.defaultEmailSender">Kurs Dolar: </label>
-                                        <div class="col-sm-8">
-                                            <s:textfield id="kursDolar" style="margin-bottom: 30px;" name="company.kursDolar" cssClass="form-control"
-                                                         required="true"/>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" for="company.defaultEmailSender">Kurs Dolar: </label>
+                                            <div class="col-sm-8">
+                                                <s:textfield id="kursDolar" style="margin-bottom: 30px;" name="company.kursDolar" cssClass="form-control"
+                                                             required="true"/>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" >Asumsi Persentase Thr:</label>
-                                        <div class="col-sm-8">
-                                            <s:textfield id="asumsiThr" name="company.payrollThrPersentase" cssClass="form-control" required="true"/>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" >Asumsi Persentase Thr:</label>
+                                            <div class="col-sm-8">
+                                                <s:textfield id="asumsiThr" name="company.payrollThrPersentase" cssClass="form-control" required="true"/>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3" >Asumsi Persentase Pendidikan:</label>
-                                        <div class="col-sm-8">
-                                            <s:textfield id="asumsiPendidikan" name="company.payrollPendidikanPersentase" cssClass="form-control" required="true"/>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" >Asumsi Persentase Pendidikan:</label>
+                                            <div class="col-sm-8">
+                                                <s:textfield id="asumsiPendidikan" name="company.payrollPendidikanPersentase" cssClass="form-control" required="true"/>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3">Asumsi Kali Jasprod: </label>
-                                        <div class="col-sm-8">
-                                            <s:textfield style="margin-bottom: 30px;" id="asumsiJasprod" name="company.payrollJasprodKali" cssClass="form-control" required="true"/>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Asumsi Kali Jasprod: </label>
+                                            <div class="col-sm-8">
+                                                <s:textfield style="margin-bottom: 30px;" id="asumsiJasprod" name="company.payrollJasprodKali" cssClass="form-control" required="true"/>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3">Max BPJS Ketenagakerjaan: </label>
-                                        <div class="col-sm-8">
-                                            <s:textfield id="maxBpjsTk" name="company.maxBpjsTk" cssClass="form-control" required="true"/>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Max BPJS Ketenagakerjaan: </label>
+                                            <div class="col-sm-8">
+                                                <s:textfield id="maxBpjsTk" name="company.maxBpjsTk" cssClass="form-control" required="true"/>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3">Max BPJS Pensiun: </label>
-                                        <div class="col-sm-8">
-                                            <s:textfield id="maxBpjsPensiun" name="company.maxBpjsPensiun" cssClass="form-control" required="true"/>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Max BPJS Pensiun: </label>
+                                            <div class="col-sm-8">
+                                                <s:textfield id="maxBpjsPensiun" name="company.maxBpjsPensiun" cssClass="form-control" required="true"/>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-3">Max BPJS Kesehatan: </label>
-                                        <div class="col-sm-8">
-                                            <s:textfield id="maxBpjsKesehatan" name="company.maxBpjsKesehatan" cssClass="form-control" required="true"/>
-                                        </div>
-                                    </div>--%>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Max BPJS Kesehatan: </label>
+                                            <div class="col-sm-8">
+                                                <s:textfield id="maxBpjsKesehatan" name="company.maxBpjsKesehatan" cssClass="form-control" required="true"/>
+                                            </div>
+                                        </div>--%>
 
                                     <script>onLoadPage()</script>
 
                                     <div class="form-group">
-                                        <div class="col-sm-offset-3 col-sm-10">
+                                        <div class="col-sm-offset-4 col-sm-10">
                                             <br>
                                             <button id="firstButton" type="button" class="btn btn-primary" onclick="onChangeButton();">
                                                 <i class="fa fa-edit"></i> Edit
@@ -434,17 +494,11 @@
                                                                 </label>
                                                             </div>
                                                         </sj:dialog>
-
                                                     </table>
                                                 </td>
-
-
                                             </div>
                                         </tr>
                                     </table>
-
-
-
                                 </div>
 
                             </div>

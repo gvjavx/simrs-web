@@ -148,7 +148,7 @@
                     <table width="100%" align="center">
                         <tr>
                             <td align="center">
-                                <s:form id="inquiryAbsensi" method="post" theme="simple" namespace="/absensi" action="inquiry_absensi" cssClass="form-horizontal">
+                                <s:form id="inquiryAbsensi" method="post" theme="simple" namespace="/absensi" action="cronInquiry_absensi" cssClass="form-horizontal">
                                     <s:hidden name="addOrEdit"/>
                                     <s:hidden name="delete"/>
                                     <table>
@@ -158,7 +158,28 @@
                                             </td>
                                         </tr>
                                     </table>
+
                                     <table >
+                                        <tr>
+                                            <td>
+                                                <label class="control-label"><small>Unit :</small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <s:if test='absensiPegawai.branchIdUser == "KP"'>
+                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="absensiPegawai.branchId"
+                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="absensiPegawai.branchId" disabled="true"
+                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
+                                                        <s:hidden id="branchId" name="pembayaranUtangPiutang.branchId" />
+                                                    </s:else>
+                                                </table>
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <td>
                                                 <label class="control-label"><small>Tanggal :</small></label>
@@ -183,17 +204,8 @@
                                                 </table>
                                             </td>
                                         </tr>
-                                        <tr style="display: none">
-                                            <td>
-                                                <label class="control-label"><small>Status Pegawai :</small></label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:select list="#{'Y':'Pegawai Shift','N':'Pegawai Kantor'}" id="statusPegawai" name="absensiPegawai.cekPegawaiStatus"
-                                                              headerKey="" headerValue="Semua Pegawai" cssClass="form-control" />
-                                                </table>
-                                            </td>
-                                        </tr>
+
+
                                     </table>
                                     <br>
                                     <div class="form-group">
@@ -296,11 +308,6 @@
 </body>
 </html>
 <script>
-    window.cekKoneksi = function(){
-        dwr.engine.setAsync(false);
-        AbsensiAction.cekKoneksi(function(listdata) {
-        })
-    };
     $(document).ready(function(){
         $('#tanggal1').datepicker({
             dateFormat: 'dd-mm-yy'

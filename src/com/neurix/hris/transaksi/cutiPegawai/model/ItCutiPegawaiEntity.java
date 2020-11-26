@@ -65,6 +65,11 @@ public class ItCutiPegawaiEntity implements Serializable {
     private String profesiId;
 
     private String flagPerbaikan;
+    private String jenisCuti;
+    private String flagPengajuanBatal;
+
+    private Timestamp tsTanggalDari;
+    private Timestamp tsTanggalSelesai;
 
     public String getProfesiId() {
         return profesiId;
@@ -400,5 +405,37 @@ public class ItCutiPegawaiEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getJenisCuti() {
+        return jenisCuti;
+    }
+
+    public void setJenisCuti(String jenisCuti) {
+        this.jenisCuti = jenisCuti;
+    }
+
+    public String getFlagPengajuanBatal() {
+        return flagPengajuanBatal;
+    }
+
+    public void setFlagPengajuanBatal(String flagPengajuanBatal) {
+        this.flagPengajuanBatal = flagPengajuanBatal;
+    }
+
+    public Timestamp getTsTanggalDari() {
+        return tsTanggalDari;
+    }
+
+    public void setTsTanggalDari(Timestamp tsTanggalDari) {
+        this.tsTanggalDari = tsTanggalDari;
+    }
+
+    public Timestamp getTsTanggalSelesai() {
+        return tsTanggalSelesai;
+    }
+
+    public void setTsTanggalSelesai(Timestamp tsTanggalSelesai) {
+        this.tsTanggalSelesai = tsTanggalSelesai;
     }
 }

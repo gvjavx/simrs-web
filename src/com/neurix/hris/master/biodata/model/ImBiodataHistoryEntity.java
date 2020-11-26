@@ -88,6 +88,37 @@ public class ImBiodataHistoryEntity implements Serializable {
     private BigDecimal gaji;
     private int poinLebih;
 
+    private String gender;
+    private String agama;
+    private String tglMasuk;
+    private String branchId;
+    private String posisiId;
+    private String npwp;
+    private String mt;
+    private String noAnggotaDapen;
+    private String noBpjsKetenagakerjaan;
+    private String noBpjsKetenagakerjaanPensiun;
+    private String noBpjsKesehatan;
+    private String namaBank;
+    private String noRekBank;
+    private String cabangBank;
+    private Date tanggalPraPensiun;
+    private Integer masaKerjaGolongan;
+    private String golonganDapenId;
+    private Date TanggalMasuk;
+    private String branchIdTerakhir;
+    private String flagMess;
+    private String flagPlt;
+    private String flagPjs;
+    private String flagFingerMobile;
+    private String flagTunjRumah;
+    private String flagTunjAir;
+    private String flagTunjListrik;
+    private String flagTunjBbm;
+    private String flagBpjsKs;
+    private String flagBpjsTk;
+    private String flagPercobaan;
+
     private ImProvinsiEntity imProvinsiEntity ;
     private ImPosition imPosition;
     private ImKotaEntity imKotaEntity;
@@ -610,5 +641,245 @@ public class ImBiodataHistoryEntity implements Serializable {
 
     public void setItPersonilPositionEntity(ItPersonilPositionEntity itPersonilPositionEntity) {
         this.itPersonilPositionEntity = itPersonilPositionEntity;
+    }
+
+    public String getFlagBpjsKs() {
+        return flagBpjsKs;
+    }
+
+    public void setFlagBpjsKs(String flagBpjsKs) {
+        this.flagBpjsKs = flagBpjsKs;
+    }
+
+    public String getFlagBpjsTk() {
+        return flagBpjsTk;
+    }
+
+    public void setFlagBpjsTk(String flagBpjsTk) {
+        this.flagBpjsTk = flagBpjsTk;
+    }
+
+    public String getFlagFingerMobile() {
+        return flagFingerMobile;
+    }
+
+    public void setFlagFingerMobile(String flagFingerMobile) {
+        this.flagFingerMobile = flagFingerMobile;
+    }
+
+    public String getFlagPercobaan() {
+        return flagPercobaan;
+    }
+
+    public void setFlagPercobaan(String flagPercobaan) {
+        this.flagPercobaan = flagPercobaan;
+    }
+
+    public String getFlagPjs() {
+        return flagPjs;
+    }
+
+    public void setFlagPjs(String flagPjs) {
+        this.flagPjs = flagPjs;
+    }
+
+    public String getFlagPlt() {
+        return flagPlt;
+    }
+
+    public void setFlagPlt(String flagPlt) {
+        this.flagPlt = flagPlt;
+    }
+
+    public String getFlagTunjAir() {
+        return flagTunjAir;
+    }
+
+    public void setFlagTunjAir(String flagTunjAir) {
+        this.flagTunjAir = flagTunjAir;
+    }
+
+    public String getFlagTunjBbm() {
+        return flagTunjBbm;
+    }
+
+    public void setFlagTunjBbm(String flagTunjBbm) {
+        this.flagTunjBbm = flagTunjBbm;
+    }
+
+    public String getFlagTunjListrik() {
+        return flagTunjListrik;
+    }
+
+    public void setFlagTunjListrik(String flagTunjListrik) {
+        this.flagTunjListrik = flagTunjListrik;
+    }
+
+    public String getFlagTunjRumah() {
+        return flagTunjRumah;
+    }
+
+    public void setFlagTunjRumah(String flagTunjRumah) {
+        this.flagTunjRumah = flagTunjRumah;
+    }
+
+    public String getFlagMess() {
+        return flagMess;
+    }
+
+    public void setFlagMess(String flagMess) {
+        this.flagMess = flagMess;
+    }
+
+    public String getAgama() {
+        return agama;
+    }
+
+    public void setAgama(String agama) {
+        this.agama = agama;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getCabangBank() {
+        return cabangBank;
+    }
+
+    public void setCabangBank(String cabangBank) {
+        this.cabangBank = cabangBank;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getGolonganDapenId() {
+        return golonganDapenId;
+    }
+
+    public void setGolonganDapenId(String golonganDapenId) {
+        this.golonganDapenId = golonganDapenId;
+    }
+
+    public Integer getMasaKerjaGolongan() {
+        return masaKerjaGolongan;
+    }
+
+    public void setMasaKerjaGolongan(Integer masaKerjaGolongan) {
+        this.masaKerjaGolongan = masaKerjaGolongan;
+    }
+
+    public String getMt() {
+        return mt;
+    }
+
+    public void setMt(String mt) {
+        this.mt = mt;
+    }
+
+    public String getNamaBank() {
+        return namaBank;
+    }
+
+    public void setNamaBank(String namaBank) {
+        this.namaBank = namaBank;
+    }
+
+    public String getNoAnggotaDapen() {
+        return noAnggotaDapen;
+    }
+
+    public void setNoAnggotaDapen(String noAnggotaDapen) {
+        this.noAnggotaDapen = noAnggotaDapen;
+    }
+
+    public String getNoBpjsKesehatan() {
+        return noBpjsKesehatan;
+    }
+
+    public void setNoBpjsKesehatan(String noBpjsKesehatan) {
+        this.noBpjsKesehatan = noBpjsKesehatan;
+    }
+
+    public String getNoBpjsKetenagakerjaan() {
+        return noBpjsKetenagakerjaan;
+    }
+
+    public void setNoBpjsKetenagakerjaan(String noBpjsKetenagakerjaan) {
+        this.noBpjsKetenagakerjaan = noBpjsKetenagakerjaan;
+    }
+
+    public String getNoBpjsKetenagakerjaanPensiun() {
+        return noBpjsKetenagakerjaanPensiun;
+    }
+
+    public void setNoBpjsKetenagakerjaanPensiun(String noBpjsKetenagakerjaanPensiun) {
+        this.noBpjsKetenagakerjaanPensiun = noBpjsKetenagakerjaanPensiun;
+    }
+
+    public String getNoRekBank() {
+        return noRekBank;
+    }
+
+    public void setNoRekBank(String noRekBank) {
+        this.noRekBank = noRekBank;
+    }
+
+    public String getNpwp() {
+        return npwp;
+    }
+
+    public void setNpwp(String npwp) {
+        this.npwp = npwp;
+    }
+
+    public String getPosisiId() {
+        return posisiId;
+    }
+
+    public void setPosisiId(String posisiId) {
+        this.posisiId = posisiId;
+    }
+
+    public Date getTanggalPraPensiun() {
+        return tanggalPraPensiun;
+    }
+
+    public void setTanggalPraPensiun(Date tanggalPraPensiun) {
+        this.tanggalPraPensiun = tanggalPraPensiun;
+    }
+
+    public String getTglMasuk() {
+        return tglMasuk;
+    }
+
+    public void setTglMasuk(String tglMasuk) {
+        this.tglMasuk = tglMasuk;
+    }
+
+    public Date getTanggalMasuk() {
+        return TanggalMasuk;
+    }
+
+    public void setTanggalMasuk(Date tanggalMasuk) {
+        TanggalMasuk = tanggalMasuk;
+    }
+
+    public String getBranchIdTerakhir() {
+        return branchIdTerakhir;
+    }
+
+    public void setBranchIdTerakhir(String branchIdTerakhir) {
+        this.branchIdTerakhir = branchIdTerakhir;
     }
 }

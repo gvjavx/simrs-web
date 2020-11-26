@@ -129,9 +129,8 @@
                                 <td>Nomor RM</td>
                                 <td>Nama</td>
                                 <td>Jenis Kelamin</td>
-                                <td>Tanggal Lahir</td>
-                                <td>Desa</td>
-                                <td align="center">Action</td>
+                                <td>Pemeriksaan Terakhir</td>
+                                <td align="center">Detail</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -140,11 +139,10 @@
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="jenisKelamin"/></td>
-                                    <td><s:property value="tempatTglLahir"/></td>
-                                    <td><s:property value="desa"/></td>
+                                    <td><s:property value="pemeriksaanTerakhir"/></td>
                                     <td align="center">
-                                        <a href="detail_rekammedis.action?idPasien=<s:property value="idPasien"/>">
-                                            <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                        <a href="detail_rekammedis.action?idPasien=<s:property value="idPasien"/>&id=<s:property value="idDetailCheckup"/>">
+                                            <img class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
                                         </a>
                                     </td>
                                 </tr>

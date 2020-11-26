@@ -2,22 +2,47 @@ package com.neurix.common.util;
 
 import com.neurix.authorization.role.model.Roles;
 import com.neurix.authorization.user.model.UserDetailsLogin;
+import com.neurix.common.constant.CommonConstant;
+import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.CrudResponse;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.*;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Properties;
+
+import static java.util.Calendar.DATE;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,7 +51,7 @@ import java.util.Properties;
  * Time: 21:18
  * To change this template use File | Settings | File Templates.
  */
-public class CommonUtil {
+public class  CommonUtil {
 
     protected static transient Logger logger = Logger.getLogger(CommonUtil.class);
 
@@ -105,7 +130,25 @@ public class CommonUtil {
             throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
         }
     }
+    public static String roleIdAsLogin() throws UsernameNotFoundException {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
+//                String username=userDetailsLogin.getUsername();
 
+                String roleId=String.valueOf(((Roles)userDetailsLogin.getRoles().get(0)).getRoleId());
+
+                return roleId;
+            } else {
+                throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+            }
+
+        } else {
+            throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+        }
+    }
     public static String userAreaId() throws UsernameNotFoundException {
         HttpSession session = ServletActionContext.getRequest().getSession();
         if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
@@ -161,6 +204,36 @@ public class CommonUtil {
                 throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
             }
 
+        } else {
+            throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+        }
+    }
+
+    public static String userBagianId() throws UsernameNotFoundException {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
+                return userDetailsLogin.getBagianId();
+            } else {
+                throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+            }
+        } else {
+            throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+        }
+    }
+
+    public static String userBagianName() throws UsernameNotFoundException {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
+                return userDetailsLogin.getBagianName();
+            } else {
+                throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+            }
         } else {
             throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
         }
@@ -333,8 +406,8 @@ public class CommonUtil {
     }
 
     public static String numbericFormat(BigDecimal number,String pattern) {
-        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
-//        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format
+//        NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMANY); //for indo money format
+        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US); //for international money format
         DecimalFormat df = (DecimalFormat)nf;
         df.applyPattern(pattern);
         return df.format(number);
@@ -375,12 +448,12 @@ public class CommonUtil {
 
         Integer[] elapsed = new Integer[6];
         Calendar clone = (Calendar) start.clone(); // Otherwise changes are been reflected.
-        elapsed[0] = elapsed(clone, end, Calendar.YEAR);
-        clone.add(Calendar.YEAR, elapsed[0]);
-        elapsed[1] = elapsed(clone, end, Calendar.MONTH);
-        clone.add(Calendar.MONTH, elapsed[1]);
-        elapsed[2] = elapsed(clone, end, Calendar.DATE);
-        clone.add(Calendar.DATE, elapsed[2]);
+        elapsed[0] = elapsed(clone, end, YEAR);
+        clone.add(YEAR, elapsed[0]);
+        elapsed[1] = elapsed(clone, end, MONTH);
+        clone.add(MONTH, elapsed[1]);
+        elapsed[2] = elapsed(clone, end, DATE);
+        clone.add(DATE, elapsed[2]);
         elapsed[3] = (int) (end.getTimeInMillis() - clone.getTimeInMillis()) / 3600000;
         clone.add(Calendar.HOUR, elapsed[3]);
         elapsed[4] = (int) (end.getTimeInMillis() - clone.getTimeInMillis()) / 60000;
@@ -430,7 +503,7 @@ public class CommonUtil {
             prop.load(input);
 
             // get the property value and print it out
-            value = prop.getProperty("upload.folder");
+            value = prop.getProperty("upload.folder2");
             input.close();
             logger.info("success to load simrs.properties");
         } catch (IOException ex) {
@@ -519,6 +592,23 @@ public class CommonUtil {
 
     }
 
+    public static String addJamBayar(Timestamp date) {
+        String jam = "null";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        java.util.Date createdDate = date;
+        java.util.Date newJam = DateUtils.addMinutes(createdDate, CommonConstant.ADD_JAM_BAYAR);
+        jam = dateFormat.format(newJam);
+
+        return jam;
+    }
+
+    public static String getLastDayOfMonth() {
+        Calendar cal = Calendar.getInstance();
+        int res = cal.getActualMaximum(DATE);
+
+        return String.valueOf(res);
+    }
+
     public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
@@ -569,6 +659,16 @@ public class CommonUtil {
         return tanggal;
     }
 
+    public static String convertTimestampToStringLengkap(Timestamp date){
+        String tanggal = "";
+        String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        java.util.Date tanggalApp = date;
+        tanggal = sdf.format(tanggalApp);
+
+        return tanggal;
+    }
+
     public static String convertDateToDay(Date tanggal){
         Calendar cal = Calendar.getInstance();
         cal.setTime(tanggal);
@@ -603,7 +703,7 @@ public class CommonUtil {
     public static String convertDateToMonth(Date tanggal){
         Calendar cal = Calendar.getInstance();
         cal.setTime(tanggal);
-        int month = cal.get(Calendar.MONTH);
+        int month = cal.get(MONTH);
         String stBulan = "";
         switch (month){
             case 0 :
@@ -648,7 +748,7 @@ public class CommonUtil {
     public static String convertDateToYearTerbilang(Date tanggal){
         Calendar cal = Calendar.getInstance();
         cal.setTime(tanggal);
-        int year = cal.get(Calendar.YEAR);
+        int year = cal.get(YEAR);
 
         return angkaToTerbilang((long) year);
     }
@@ -724,6 +824,49 @@ public class CommonUtil {
                 break;
             case "12" :
                 stBulan = "Desember";
+                break;
+        }
+        return stBulan;
+    }
+
+    public static String convertStringBulanToNumber(String bulan){
+        String stBulan = "";
+        switch (bulan.toLowerCase()){
+            case "januari" :
+                stBulan = "1";
+                break;
+            case "februari" :
+                stBulan = "2";
+                break;
+            case "maret" :
+                stBulan = "3";
+                break;
+            case "april" :
+                stBulan = "4";
+                break;
+            case "mei" :
+                stBulan = "5";
+                break;
+            case "juni" :
+                stBulan = "6";
+                break;
+            case "juli" :
+                stBulan = "7";
+                break;
+            case "agustus" :
+                stBulan = "8";
+                break;
+            case "september" :
+                stBulan = "9";
+                break;
+            case "oktober" :
+                stBulan = "10";
+                break;
+            case "november" :
+                stBulan = "11";
+                break;
+            case "desember" :
+                stBulan = "12";
                 break;
         }
         return stBulan;
@@ -833,6 +976,9 @@ public class CommonUtil {
             case "15":
                 status="Masuk saat Libur";
                 break;
+            case "16":
+                status="On Call";
+                break;
         }
         return status;
     }
@@ -921,7 +1067,7 @@ public class CommonUtil {
                 workingDays++;
             }
             // increment start date, otherwise while will give infinite loop
-            startdate.add(Calendar.DATE, 1);
+            startdate.add(DATE, 1);
         }
         return workingDays;
     }
@@ -938,7 +1084,7 @@ public class CommonUtil {
         while (!startdate.after(enddate)) {
             days++;
             // increment start date, otherwise while will give infinite loop
-            startdate.add(Calendar.DATE, 1);
+            startdate.add(DATE, 1);
         }
         return days;
     }
@@ -949,12 +1095,12 @@ public class CommonUtil {
         if (birthDate.after(today)) {
             throw new IllegalArgumentException("You don't exist yet");
         }
-        int todayYear = today.get(Calendar.YEAR);
-        int birthDateYear = birthDate.get(Calendar.YEAR);
+        int todayYear = today.get(YEAR);
+        int birthDateYear = birthDate.get(YEAR);
         int todayDayOfYear = today.get(Calendar.DAY_OF_YEAR);
         int birthDateDayOfYear = birthDate.get(Calendar.DAY_OF_YEAR);
-        int todayMonth = today.get(Calendar.MONTH);
-        int birthDateMonth = birthDate.get(Calendar.MONTH);
+        int todayMonth = today.get(MONTH);
+        int birthDateMonth = birthDate.get(MONTH);
         int todayDayOfMonth = today.get(Calendar.DAY_OF_MONTH);
         int birthDateDayOfMonth = birthDate.get(Calendar.DAY_OF_MONTH);
         int age = todayYear - birthDateYear;
@@ -991,19 +1137,20 @@ public class CommonUtil {
     public static java.util.Date addMonth(java.util.Date date, int i) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.MONTH, i);
+        cal.add(MONTH, i);
         return cal.getTime();
     }
 
     public static java.util.Date addYear(java.util.Date date, int i) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.YEAR, i);
+        cal.add(YEAR, i);
         return cal.getTime();
     }
     public static BigDecimal percentage(BigDecimal base, BigDecimal pct){
-        return base.multiply(pct).divide(new BigDecimal(100));
+        return base.multiply(pct).divide(new BigDecimal(100),5, RoundingMode.HALF_UP);
     }
+
     public static String cekDateBeforeNow(String tglAwal){
         String status = "";
         //mengambil Tanggal Sekarang
@@ -1040,24 +1187,277 @@ public class CommonUtil {
                 return "Biaya Pindah";
             case "bPis":
                 return "Biaya Pisah";
-                default:
-                    return "";
+            default:
+                return "";
+        }
+    }
+
+    public static String convertTipePayroll(String tipePayroll){
+        switch (tipePayroll){
+            case "PR":
+                return "Payroll";
+            case "T":
+                return "THR";
+            case "JP":
+                return "Jasa Operasional";
+            case "JB":
+                return "Jubileum";
+            case "PN":
+                return "Pensiun";
+            case "IN":
+                return "Insentif";
+            case "CP":
+                return "Cuti Panjang";
+            case "CT":
+                return "Cuti Tahunan";
+            default:
+                return "";
         }
     }
 
     public static String getDateParted(Date date, String tipe){
         //create calander instance and get required params
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-
         switch (tipe){
             case "YEAR":
-                int year = cal.get(Calendar.YEAR); return String.valueOf(year);
+                SimpleDateFormat y = new SimpleDateFormat("yyyy");
+                return y.format(date);
             case "MONTH":
-                int month = cal.get(Calendar.MONTH); return String.valueOf(month);
+                SimpleDateFormat m = new SimpleDateFormat("M");
+                return m.format(date);
             case "DAY":
-                int day = cal.get(Calendar.DAY_OF_MONTH); return String.valueOf(day);
+                SimpleDateFormat d = new SimpleDateFormat("d");
+                return d.format(date);
             default: return "";
         }
+    }
+
+    public static String stDateSeq(){
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        return df.format(date);
+    }
+
+    public static String ddMMyyyyFormat(Date date){
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        return df.format(date);
+    }
+
+    public static String yyyyMMddFormat(Date date){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        return df.format(date);
+    }
+
+
+    public static Timestamp getCurrentDateTimes(){
+        return new Timestamp(System.currentTimeMillis());
+    }
+
+    public static String bulanSebelumnya (String bulan){
+        switch (bulan){
+            case "01":
+                return "";
+            case "02":
+                return "01";
+            case "03":
+                return "02";
+            case "04":
+                return "03";
+            case "05":
+                return "04";
+            case "06":
+                return "05";
+            case "07":
+                return "06";
+            case "08":
+                return "07";
+            case "09":
+                return "08";
+            case "10":
+                return "09";
+            case "11":
+                return "10";
+            case "12":
+                return "11";
+            default:
+                return "";
+        }
+    }
+
+    public static String periodeBulanSebelumnya (String bulan,String tahun){
+        String tahunSebelumnya = String.valueOf(Integer.parseInt(tahun)-1);
+
+        switch (bulan){
+            case "01":
+                return tahunSebelumnya+"-12";
+            case "02":
+                return tahun+"-01";
+            case "03":
+                return tahun+"-02";
+            case "04":
+                return tahun+"-03";
+            case "05":
+                return tahun+"-04";
+            case "06":
+                return tahun+"-05";
+            case "07":
+                return tahun+"-06";
+            case "08":
+                return tahun+"-07";
+            case "09":
+                return tahun+"-08";
+            case "10":
+                return tahun+"-09";
+            case "11":
+                return tahun+"-10";
+            case "12":
+                return tahun+"-11";
+            default:
+                return "";
+        }
+    }
+
+    public static Integer getLastDateOfMonth(String dateString){
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("MM-yyyy");
+        YearMonth yearMonth = YearMonth.parse(dateString, pattern);
+        LocalDate date = yearMonth.atEndOfMonth();
+        return date.lengthOfMonth();
+    }
+
+    public static Double SubtractJamAwalDanJamAkhir(String jamAwal, String jamAkhir, String status) throws ParseException {
+        java.text.DateFormat df = new java.text.SimpleDateFormat("dd:MM:yyyy HH:mm");
+        java.util.Date date1 = df.parse("01:01:2000 "+jamAwal);
+        java.util.Date date2 = df.parse("01:01:2000 "+jamAkhir);
+        long diff = date2.getTime() - date1.getTime();
+        if (diff<0&&status.equalsIgnoreCase("positif")){
+            date2 = df.parse("02:01:2000 "+jamAkhir);
+            diff = date2.getTime() - date1.getTime();
+        }
+        int timeInSeconds = (int) (diff / 1000);
+        int hours, minutes;
+        hours = timeInSeconds / 3600;
+        timeInSeconds = timeInSeconds - (hours * 3600);
+        minutes = timeInSeconds / 60;
+        double hasil=hours;
+        if (minutes<15){hasil=hasil+0;}
+        else if (minutes<30){hasil=hasil+0;}
+        else if (minutes<45){hasil=hasil+0.5;}
+        else if (minutes<60){hasil=hasil+0.5;}
+        return hasil;
+    }
+
+    public static Double SubtractJam(String jamAwal, String jamAkhir) throws ParseException {
+        java.text.DateFormat df = new java.text.SimpleDateFormat("dd:MM:yyyy HH:mm");
+        java.util.Date date1 = df.parse("01:01:2000 "+jamAwal);
+        java.util.Date date2 = df.parse("01:01:2000 "+jamAkhir);
+        long diff = date2.getTime() - date1.getTime();
+        int timeInSeconds = (int) (diff / 1000);
+        int hours, minutes;
+        hours = timeInSeconds / 3600;
+        timeInSeconds = timeInSeconds - (hours * 3600);
+        minutes = timeInSeconds / 60;
+        double hasil=hours;
+        if (minutes<15){hasil=hasil+0;}
+        else if (minutes<30){hasil=hasil+0;}
+        else if (minutes<45){hasil=hasil+0.5;}
+        else if (minutes<60){hasil=hasil+0.5;}
+        return hasil;
+    }
+
+    public static int getRandomNumberInts(int min, int max){
+        Random random = new Random();
+        return random.ints(min,(max+1)).findFirst().getAsInt();
+    }
+
+    //Convert Date to Calendar
+    public static Calendar dateToCalendar(java.util.Date date) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+
+    }
+
+    //Convert Calendar to Date
+    public static java.util.Date calendarToDate(Calendar calendar) {
+        return calendar.getTime();
+    }
+
+    public static long compareTwoTimeStamps(java.sql.Timestamp currentTime, java.sql.Timestamp oldTime,String get) {
+        long milliseconds1 = oldTime.getTime();
+        long milliseconds2 = currentTime.getTime();
+
+        long diff = milliseconds2 - milliseconds1;
+        long diffSeconds = diff / 1000;
+        long diffMinutes = diff / (60 * 1000);
+        long diffHours = diff / (60 * 60 * 1000);
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        if ("menit".equalsIgnoreCase(get)){
+            return diffMinutes;
+        }else if ("jam".equalsIgnoreCase(get)){
+            return diffHours;
+        }else if ("detik".equalsIgnoreCase(get)){
+            return diffSeconds;
+        }else if ("hari".equalsIgnoreCase(get)){
+            return diffDays;
+        }else{
+            return diff;
+        }
+    }
+
+    public static Calendar getCalendar(Date date) {
+        Calendar cal = Calendar.getInstance(Locale.US);
+        cal.setTime(date);
+        return cal;
+    }
+    public static int getDiffYears(Date first, Date last) {
+        Calendar a = getCalendar(first);
+        Calendar b = getCalendar(last);
+        int diff = b.get(YEAR) - a.get(YEAR);
+        if (a.get(MONTH) > b.get(MONTH) ||
+                (a.get(MONTH) == b.get(MONTH) && a.get(DATE) > b.get(DATE))) {
+            diff--;
+        }
+        return diff;
+    }
+
+    public static int getMonthsDifference(Date date1, Date date2) {
+        int m1 = date1.getYear() * 12 + date1.getMonth();
+        int m2 = date2.getYear() * 12 + date2.getMonth();
+        return m2 - m1 + 1;
+    }
+
+    public static BigDecimal StringDenganFormatToBigDecimal(String number){
+        number = number.replace(".","");
+
+        return BigDecimal.valueOf(Double.valueOf(number));
+    }
+
+    public static CrudResponse compresing(BufferedImage image, String url) {
+        CrudResponse response = new CrudResponse();
+        try {
+            ImageOutputStream out = ImageIO.createImageOutputStream(Files.newOutputStream(Paths.get(url)));
+            ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
+            ImageWriteParam param = writer.getDefaultWriteParam();
+            if(param.canWriteCompressed()){
+                param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                param.setCompressionQuality(0.1f);
+                writer.setOutput(out);
+                writer.write(null, new IIOImage(image, null, null), param);
+            }
+            File f = new File(url);
+            ImageIO.write(image, "png", f);
+            response.setStatus("success");
+            response.setMsg("Berhasil");
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setStatus("error");
+            response.setMsg("Found problem when upload images, "+e.getMessage());
+            throw new GeneralBOException("Found problem when upload images, " + e.getMessage());
+
+        }
+        return response;
     }
 }

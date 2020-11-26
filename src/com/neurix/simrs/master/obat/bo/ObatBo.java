@@ -1,9 +1,11 @@
 package com.neurix.simrs.master.obat.bo;
 
+import com.neurix.akuntansi.master.reportDetail.model.ReportDetail;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
-import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity;
+import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
@@ -42,4 +44,16 @@ public interface ObatBo{
     public ImSimrsObatEntity getObatEntityByKodeBarang(String id) throws GeneralBOException;
     public List<TransaksiStok> getListReporTransaksiObat(String idPelayanan, String tahun, String bulan, String idObat) throws GeneralBOException;
     public void saveTransaksiStokOpname(Obat bean) throws GeneralBOException;
+    public List<TransaksiStok> getListReportSumaryTransaksiObat(String idPelayanan, String tahun, String bulan) throws GeneralBOException;
+
+    public List<TransaksiStok> getListSummaryStok(String branchId,String idPelayanan, String tahun, String bulan,String namaObat) throws GeneralBOException;
+    public List<KandunganObat> getListKandunganObatDetail(String idObat) throws GeneralBOException;
+    public ImSimrsKandunganObatEntity getMasterKandunganObatById(String idKandunganObat) throws GeneralBOException;
+    public ImSimrsObatEntity getObatByIdObat(String idObat) throws GeneralBOException;
+    public List<ImSimrsKandunganObatEntity> getListAllKandunganObat() throws GeneralBOException;
+    public String generateIdKandungan() throws GeneralBOException;
+    public List<ImSimrsBentukBarangEntity> getLitBentukBarangByFlag(String flag) throws GeneralBOException;
+    public ImSimrsBentukBarangEntity getBentukBarangById(String idBentuk) throws GeneralBOException;
+    public List<Aging> getListAging(String branchId, String idPelayanan, String periode) throws GeneralBOException;
+    public List<ImSimrsKategoriPersediaanEntity> getAllKategoriPersediaan() throws GeneralBOException;
 }

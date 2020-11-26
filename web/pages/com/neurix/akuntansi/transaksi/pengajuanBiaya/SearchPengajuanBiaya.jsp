@@ -82,8 +82,7 @@
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="pengajuanBiayaForm" method="post"  theme="simple" namespace="/pengajuanBiaya" action="search_pengajuanBiaya.action" cssClass="form-horizontal">
-                                        <s:hidden name="pengajuanBiaya.tipePembayaran" value="KK" />
+                                    <s:form id="pengajuanBiayaForm" method="post"  theme="simple" namespace="/pengajuanBiaya" action="searchPengajuan_pengajuanBiaya.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -108,13 +107,14 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Transaksi :</small></label>
+                                                    <label class="control-label"><small>Divisi :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'PDU':'Penarikan Pendapatan Unit','SMK':'Setoran Modal Kerja ke Unit'}"
-                                                                  id="transaksi" name="pengajuanBiaya.transaksi"
-                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control" />
+                                                        <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
+                                                        <s:select cssClass="form-control" list="#comboPosition.listOfComboPositions" id="divisiIdView" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
+                                                                  listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
+                                                        <s:hidden  id="divisiId" name="pengajuanBiaya.divisiId" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -125,16 +125,6 @@
                                                 <td>
                                                     <table>
                                                         <s:textfield  id="pengajuanBiayaId" name="pengajuanBiaya.pengajuanBiayaId" cssClass="form-control"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Nomor Jurnal :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield  id="nomorJurnal" name="pengajuanBiaya.noJurnal" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -159,13 +149,33 @@
                                                                      required="false"/>
                                                     </div>
                                                     <script>
-                                                        $('#tgl1').datepicker({
-                                                            dateFormat: 'dd-mm-yy'
+                                                        $("#tgl1").datepicker({
+                                                            setDate: new Date(),
+                                                            autoclose: true,
+                                                            changeMonth: true,
+                                                            changeYear:true,
+                                                            dateFormat:'dd-mm-yy'
                                                         });
-                                                        $('#tgl2').datepicker({
-                                                            dateFormat: 'dd-mm-yy'
+                                                        $("#tgl1").datepicker("setDate", new Date());
+                                                        $("#tgl2").datepicker({
+                                                            setDate: new Date(),
+                                                            autoclose: true,
+                                                            changeMonth: true,
+                                                            changeYear:true,
+                                                            dateFormat:'dd-mm-yy'
                                                         });
+                                                        $("#tgl2").datepicker("setDate", new Date());
                                                     </script>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Keterangan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:textfield  id="keterangan" name="pengajuanBiaya.keterangan" cssClass="form-control"/>
+                                                    </table>
                                                 </td>
                                             </tr>
                                         </table>
@@ -194,36 +204,57 @@
 
                                         <br>
                                         <br>
-                                        <center>
-                                            <table id="showdata" width="80%">
-                                                <tr>
-                                                    <td align="center">
-                                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="500" width="600" autoOpen="false"
-                                                                   title="Pembayaran Hutang Piutang ">
-                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                                        </sj:dialog>
-
-                                                        <s:set name="listOfPengajuanBiaya" value="#session.listOfResult" scope="request" />
-                                                        <display:table name="listOfPengajuanBiaya" class="table table-condensed table-striped table-hover tablePengajuanBiaya"
-                                                                       requestURI="paging_displaytag_pengajuanBiaya.action" export="true" id="row" pagesize="20" style="font-size:10">
-                                                            <display:column media="html" title="View">
+                                        <div style="text-align: left !important;">
+                                            <div class="box-header with-border"></div>
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pengajuan Biaya</h3>
+                                            </div>
+                                            <div class="box-body">
+                                                <table id="myTable" class="tablePengajuanBiaya table table-bordered table-striped">
+                                                    <thead >
+                                                    <tr bgcolor="#90ee90">
+                                                        <td>ID Pengajuan Biaya</td>
+                                                        <td>Nama Unit</td>
+                                                        <td>Nama Divisi</td>
+                                                        <td>Tanggal Pengajuan</td>
+                                                        <td>Total Biaya (RP)</td>
+                                                        <td>Keterangan</td>
+                                                        <td>Status Saat Ini</td>
+                                                        <td align="center">View</td>
+                                                        <td align="center">Batal</td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <s:iterator value="#session.listOfResult" var="row">
+                                                        <tr>
+                                                            <td><s:property value="pengajuanBiayaId"/></td>
+                                                            <td><s:property value="branchName"/></td>
+                                                            <td><s:property value="divisiName"/></td>
+                                                            <td><s:property value="stTanggal"/></td>
+                                                            <td style="text-align: right"><s:property value="stTotalBiaya"/></td>
+                                                            <td><s:property value="keterangan"/></td>
+                                                            <td><s:property value="statusSaatIni"/></td>
+                                                            <td align="center">
                                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaId}"/>" class="item-view">
-                                                                    <img border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_view">
+                                                                    <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
                                                                 </a>
-                                                            </display:column>
-                                                            <display:column property="pengajuanBiayaId" sortable="true" title="Pengajuan Biaya ID" />
-                                                            <display:column property="tanggal" sortable="true" title="Tanggal" />
-                                                            <display:column property="noJurnal" sortable="true" title="No. Jurnal" />
-                                                            <display:column property="keterangan" sortable="true" title="Keterangan" />
-                                                            <display:column property="stTotalBiaya" sortable="true" title="Total Biaya" />
-                                                            <display:column property="coaAjuan" sortable="true" title="Coa Ajuan" />
-                                                            <display:column property="coaTarget" sortable="true" title="Coa Target" />
-                                                        </display:table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </center>
+                                                            </td>
+                                                            <td align="center">
+                                                                <s:if test='#row.aprovalFlag == null && #row.flagBatal == "N"'>
+                                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.pengajuanBiayaId}"/>" class="item-batal">
+                                                                        <img border="0" src="<s:url value="/pages/images/icons8-trash-can-25.png"/>" name="icon_batal">
+                                                                    </a>
+                                                                </s:if>
+                                                                <s:elseif test='#row.flagBatal == "Y"'>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_batal">
+                                                                </s:elseif>
+                                                            </td>
+                                                        </tr>
+                                                    </s:iterator>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </s:form>
                                 </td>
                             </tr>
@@ -240,97 +271,263 @@
 <%@ include file="/pages/common/lastScript.jsp" %>
 </body>
 </html>
-
-<div class="modal fade" id="modal-posting-jurnal">
-    <div class="modal-dialog modal-flat modal-lg">
+<div class="modal fade" id="modal-view-pengajuan">
+    <div class="modal-dialog modal-flat" style="width: 1200px">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Posting Jurnal</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> View Pengajuan Biaya</h4>
             </div>
             <div class="modal-body">
                 <div class="box">
+                    <br>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="col-md-4" style="margin-top: 7px">Pengeluaran Kas/Bank Id</label>
+                                <label class="col-md-4" style="margin-top: 7px">Pengajuan Biaya ID</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="mod_pembayaran_id" onkeypress="$(this).css('border','')" readonly="true" cssStyle="margin-top: 7px"
-                                                 cssClass="form-control" />
+                                    <s:textfield id="mod_pengajuan_biaya" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control" />
                                     <br>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4" >No. Jurnal</label>
+                                <label class="col-md-4" style="margin-top: 7px">Unit</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="mod_no_jurnal" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control" />
+                                    <s:textfield id="mod_branch" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control" />
                                     <br>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Tipe Transaksi</label>
+                                <label class="col-md-4" >Divisi</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="mod_tipe_transaksi" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control" />
+                                    <s:textfield id="mod_divisi" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control" />
                                     <br>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4" >Tanggal</label>
+                                <label class="col-md-4">Tanggal</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="mod_tanggal" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control"  />
+                                    <s:textfield id="mod_tanggal" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control" />
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="form-group" id="mod_tanggal_realisasi_view">
+                                <label class="col-md-4">Tanggal Realisasi</label>
+                                <div class="col-md-6">
+                                    <s:textfield id="mod_tanggal_realisasi" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control" />
                                     <br>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Metode Pembayaran</label>
+                                <label class="col-md-4" >Keterangan</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="mod_metode_bayar" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control"/>
+                                    <s:textfield id="mod_keterangan" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"  />
                                     <br>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">Total Bayar</label>
+                                <label class="col-md-4">Status Saat Ini</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="mod_total_bayar" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control"/>
+                                    <s:textfield id="mod_status_saat_ini" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
                                     <br>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4">No. Referensi</label>
+                                <label class="col-md-4">Total Biaya ( RP )</label>
                                 <div class="col-md-6">
-                                    <s:textfield id="mod_no_slip_bank" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control" />
+                                    <s:textfield id="mod_total" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
                                     <br>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-4">Keterangan</label>
+                            <div class="form-group" id="mod_keterangan_batal_view_grp">
+                                <label class="col-md-4">Keterangan Batal</label>
                                 <div class="col-md-6">
-                                    <s:textarea id="mod_keterangan" onkeypress="$(this).css('border','')" readonly="true"
-                                                 cssClass="form-control"/>
+                                    <s:textfield id="mod_keterangan_batal_view" onkeypress="$(this).css('border','')" readonly="true" cssClass="form-control"/>
                                     <br>
                                 </div>
                             </div>
                             <br>
                             <div class="form-group">
-                                <div class="col-md-offset-1 col-md-10">
-                                    <table style="width: 100%;"
-                                           class="pembayaranTable table table-bordered">
-                                    </table>
-                                </div>
+                                <table style="width: 100%;"
+                                       class="pengajuanTable table table-bordered">
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" id="btnPostingJurnal" data-dismiss="modal"><i class="fa fa-arrow-right"></i> Posting</button>
+                <a id="btnBatalPengajuan" type="button" class="btn btn-default btn-danger"><i class="fa fa-trash"></i> Batalkan</a>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-batal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-flat modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Batalkan Pengajuan Biaya</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="formBatal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >ID : </label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="modPengajuanBiayaIdBatal">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Keterangan : </label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="mod_keterangan_batal" rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <a id="btnBatal" type="button" class="btn btn-default btn-danger"><i class="fa fa-close"></i> Batalkan</a>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-detail" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-flat modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Pengajuan Biaya</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="formDetail">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >ID : </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="modPengajuanBiayaDetailIdDetail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Unit : </label>
+                        <div class="col-sm-7">
+                            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                            <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="mod_branch_id_detail" required="true" disabled="true"
+                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Divisi : </label>
+                        <div class="col-sm-7">
+                            <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
+                            <s:select cssClass="form-control" list="#comboPosition.listOfComboPositions" id="mod_divisi_id_detail" disabled="true" name="pengajuanBiaya.divisiId" required="false" readonly="true"
+                                      listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Tanggal Pengajuan: </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_tanggal_detail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Tanggal Realisasi: </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_tanggal_realisasi_detail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >No. Budgetting : </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_no_budgetting_detail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Jumlah ( RP ) : </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="mod_jumlah_detail" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Budget RKAP ( RP ) : </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_budget_detail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Keterangan : </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_keterangan_detail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Status : </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_status_detail">
+                        </div>
+                    </div>
+                    <div class="form-group view-ipa">
+                        <label class="control-label col-sm-3" >Ijin Prinsip Atasan : </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" readonly id="namaFileUpload">
+                        </div>
+                        <div class="col-sm-1">
+                            <a href="javascript:;" id="btnViewIpaUploaded">
+                                <img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_view">
+                            </a>
+                        </div>
+                        <script>
+                            $('#btnViewIpaUploaded').click(function () {
+                                dwr.engine.setAsync(false);
+                                var pengajuanId = $('#modPengajuanBiayaDetailIdDetail').val();
+                                PengajuanBiayaAction.searchPengajuanDetailImage(pengajuanId,function(data){
+                                    $("#my-image").attr("src", data);
+                                });
+                                $('#modal-view-ipa').modal('show');
+                            })
+                        </script>
+                    </div>
+                    <div class="form-group" id="not_approval_note_detail">
+                        <label class="control-label col-sm-3" >Keterangan Not Approve : </label>
+                        <div class="col-sm-7">
+                            <input type="text" readonly class="form-control" id="mod_not_approval_note_detail">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view-ipa">
+    <div class="modal-dialog modal-flat modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Ijin Prinsip Atasan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <img src="" class="img-responsive" id="my-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
             </div>
         </div>
@@ -338,89 +535,166 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        $('.tablePengajuanBiaya').on('click', '.item-view', function() {
-            var pembayaranId = $(this).attr('data');
-            $('#mod_pembayaran_id').val(pembayaranId);
-            PengajuanBiayaAction.getForModalPopUp(pembayaranId,function (data) {
-                $('#mod_no_jurnal').val(data.noJurnal);
-                $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
-                $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_metode_bayar').val(data.metodePembayaranName);
-                $('#mod_no_slip_bank').val(data.noSlipBank);
-                $('#mod_keterangan').val(data.keterangan);
-                $('#mod_total_bayar').val(data.stBayar);
-            });
-            loadPembayaran();
-            $("#btnPostingJurnal").hide();
-            $("#modal-posting-jurnal").find('.modal-title').text('View Pembayaran Hutang Piutang');
-            $("#modal-posting-jurnal").modal('show');
-        });
-
-        $('.tablePengajuanBiaya').on('click', '.item-posting', function() {
-            var pembayaranId = $(this).attr('data');
-            $('#mod_pembayaran_id').val(pembayaranId);
-            PengajuanBiayaAction.getForModalPopUp(pembayaranId,function (data) {
-                $('#mod_no_jurnal').val(data.noJurnal);
-                $('#mod_tipe_transaksi').val(data.stTipeTransaksi);
-                $('#mod_tanggal').val(data.stTanggal);
-                $('#mod_metode_bayar').val(data.metodePembayaranName);
-                $('#mod_no_slip_bank').val(data.noSlipBank);
-                $('#mod_keterangan').val(data.keterangan);
-                $('#mod_total_bayar').val(data.stBayar);
-            });
-            loadPembayaran();
-            $("#modal-posting-jurnal").find('.modal-title').text('Posting Jurnal');
-            $("#modal-posting-jurnal").modal('show');
-            $("#btnPostingJurnal").show();
-
-        });
-        $('.tablePengajuanBiaya').on('click', '.item-cetak-bukti', function() {
-            var noJurnal = $(this).attr('data');
-            var branchId = $(this).attr('unit');
-            var pembayaranId = $(this).attr('pembayaranId');
-            var url = "printReportBuktiPosting_pengajuanBiaya.action?pengajuanBiaya.noJurnal="+noJurnal+"&pengajuanBiaya.branchId="+branchId+"&pengajuanBiaya.pengajuanBiayaId="+pembayaranId;
-            window.open(url,'_blank');
-        });
-        $('#btnPostingJurnal').click(function () {
-            var pembayaranId =  $('#mod_pembayaran_id').val();
-            if (confirm("apakah anda ingin memposting pengeluaran dengan pembayaran id "+pembayaranId +" ?")){
-                PengajuanBiayaAction.postingJurnal(pembayaranId,function (listdata) {
-                    alert(listdata);
-                    window.location.reload();
-                })
-            }
-        })
-    });
-</script>
-<script>
-    window.loadPembayaran = function () {
-        $('.pembayaranTable').find('tbody').remove();
-        $('.pembayaranTable').find('thead').remove();
+    window.loadDetailPengajuan = function () {
+        $('.pengajuanTable').find('tbody').remove();
+        $('.pengajuanTable').find('thead').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
-        PengajuanBiayaAction.searchPembayaranDetail(function (listdata) {
-            tmp_table = "<thead style='font-size: 14px' ><tr class='active'>" +
+        PengajuanBiayaAction.detailPengajuanBiayaSession(function (listdata) {
+            tmp_table = "<thead style='font-size: 12px' ><tr class='active'>" +
                 "<th style='text-align: center; color: #fff; background-color:  #30d196'>No</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Detail ID</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Vendor</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Divisi ID</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Nota</th>" +
-                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jml Pembayaran</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>ID</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>No. Budgeting</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Tanggal</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Tipe Budget</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Keperluan</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Jumlah ( RP )</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Status</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Detail</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Print</th>" +
+                "<th style='text-align: center; color: #fff; background-color:  #30d196''>Dibayar</th>" +
                 "</tr></thead>";
             var i = i;
             $.each(listdata, function (i, item) {
-                tmp_table += '<tr style="font-size: 12px;" ">' +
+                var view ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'"  fileName="'+item.fileName+'" status="'+item.statusApproval+'" unit="'+item.branchId+'" divisi="'+item.divisiId+'"  keterangan="'+item.keterangan+'"  jumlah="'+item.stJumlah+'" budget="'+item.stBudgetBiaya+'" noBudgetting="'+item.noBudgeting+'" notApprovalNote="'+item.notApprovalNote+'" statusSaatIni="'+item.statusSaatIni+'" tanggal="'+item.stTanggal+'" tanggalRealisasi="'+item.stTanggalRealisasi+'" class="item-detail" >\n' +
+                    '<img border="0" src="<s:url value="/pages/images/icons8-search-25.png"/>" name="icon_edit">\n' +
+                    '</a></td>';
+                var print ='<td></td>';
+                if (item.canPrint){
+                    print ='<td align="center"><a href="javascript:;" data="'+item.pengajuanBiayaDetailId+'" class="item-print" >\n' +
+                        '<img border="0" src="<s:url value="/pages/images/icons8-print-25.png"/>" name="icon_edit">\n' +
+                        '</a></td>';
+                }
+                var dibayar ='<td></td>';
+                if (item.sudahDibayar){
+                    dibayar ='<td align="center"><img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit"></td>';
+                }
+                tmp_table += '<tr style="font-size: 11px;" ">' +
                     '<td align="center">' + (i + 1) + '</td>' +
                     '<td align="center">' + item.pengajuanBiayaDetailId + '</td>' +
-                    '<td align="center">' + item.masterId + '</td>' +
-                    '<td align="center">' + item.divisiId + '</td>' +
-                    '<td align="center">' + item.noNota + '</td>' +
-                    '<td align="center">' + item.stJumlahPembayaran + '</td>' +
+                    '<td align="center">' + item.noBudgeting + '</td>' +
+                    '<td align="center">' + item.stTanggal + '</td>' +
+                    '<td align="center">' + item.transaksiName + '</td>' +
+                    '<td align="center">' + item.keperluanName + '</td>' +
+                    '<td align="center">' + item.stJumlah + '</td>' +
+                    '<td align="center">' + item.statusSaatIni + '</td>' +
+                        view+
+                        print+
+                        dibayar+
                     "</tr>";
             });
-            $('.pembayaranTable').append(tmp_table);
+            $('.pengajuanTable').append(tmp_table);
         });
     };
-</script>
 
+    $(document).ready(function () {
+        $('.tablePengajuanBiaya').on('click', '.item-view', function() {
+            var pengajuanBiayaId = $(this).attr('data');
+            $('#mod_pengajuan_biaya').val(pengajuanBiayaId);
+            PengajuanBiayaAction.getForModalPopUp(pengajuanBiayaId,function (data) {
+                $('#mod_branch').val(data.branchName);
+                $('#mod_divisi').val(data.divisiName);
+                $('#mod_tanggal').val(data.stTanggal);
+                $('#mod_keterangan').val(data.keterangan);
+                $('#mod_status_saat_ini').val(data.statusSaatIni);
+                $('#mod_total').val(data.stTotalBiaya);
+                if (data.stTanggalRealisasi!=null){
+                    $('#mod_tanggal_realisasi').val(data.stTanggalRealisasi);
+                } else{
+                    $('#mod_tanggal_realisasi_view').hide();
+                }
+                if (data.flagBatal=="Y"){
+                    $('#mod_keterangan_batal_view').val(data.keteranganBatal);
+                } else{
+                    $('#mod_keterangan_batal_view_grp').hide();
+                }
+            });
+            loadDetailPengajuan();
+            $('#btnBatalPengajuan').hide();
+            $("#modal-view-pengajuan").modal('show');
+        });
+        $('.tablePengajuanBiaya').on('click', '.item-batal', function() {
+            var pengajuanBiayaId = $(this).attr('data');
+            $('#mod_pengajuan_biaya').val(pengajuanBiayaId);
+            PengajuanBiayaAction.getForModalPopUp(pengajuanBiayaId,function (data) {
+                $('#mod_branch').val(data.branchName);
+                $('#mod_divisi').val(data.divisiName);
+                $('#mod_tanggal').val(data.stTanggal);
+                $('#mod_keterangan').val(data.keterangan);
+                $('#mod_status_saat_ini').val(data.statusSaatIni);
+                $('#mod_total').val(data.stTotalBiaya);
+            });
+            loadDetailPengajuan();
+            $('#btnBatalPengajuan').show();
+            $("#modal-view-pengajuan").modal('show');
+        });
+        $('#btnBatalPengajuan').click(function() {
+            $('#modPengajuanBiayaIdBatal').val($('#mod_pengajuan_biaya').val());
+            $('#modal-batal').modal('show');
+        });
+        $('#btnBatal').click(function() {
+            var pengajuanId = $('#modPengajuanBiayaIdBatal').val();
+            var keterangan = $('#mod_keterangan_batal').val();
+
+            if (keterangan==""){
+                alert("Keterangan masih kosong");
+            } else{
+                if (confirm("Apakah anda ingin membatalkan pengajuan ini ?")){
+                    PengajuanBiayaAction.batalkanPengajuanBiaya(pengajuanId,keterangan,function(result) {
+                        if (result==""){
+                            alert("Dibatalkan");
+                            window.location.reload();
+                        } else{
+                            alert(result)
+                        }
+                    });
+                }
+            }
+        });
+        $('.pengajuanTable').on('click', '.item-detail', function() {
+            var jumlah = $(this).attr('jumlah');
+            jumlah = jumlah.replace(",",".");
+            $('#mod_jumlah_detail').val(jumlah);
+            $('#modPengajuanBiayaDetailIdDetail').val($(this).attr('data'));
+            $('#mod_status_approve_detail').val($(this).attr('status'));
+            $('#mod_branch_id_detail').val($(this).attr('unit'));
+            $('#mod_divisi_id_detail').val($(this).attr('divisi'));
+            $('#mod_keterangan_detail').val($(this).attr('keterangan'));
+            $('#mod_no_budgetting_detail').val($(this).attr('noBudgetting'));
+            $('#mod_tanggal_detail').val($(this).attr('tanggal'));
+            $('#mod_tanggal_realisasi_detail').val($(this).attr('tanggalRealisasi'));
+            $('#mod_budget_detail').val($(this).attr('budget'));
+            $('#mod_status_detail').val($(this).attr('statusSaatIni'));
+            $('#namaFileUpload').val($(this).attr('fileName'));
+
+            if ($(this).attr('notApprovalNote')!="null"){
+                $('#mod_not_approval_note_detail').val($(this).attr('notApprovalNote'));
+            } else{
+                $('#not_approval_note_detail').hide();
+            }
+
+            $('#modal-detail').modal('show');
+
+        });
+        function formatRupiahAngka(angka) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? ',' : '';
+                rupiah += separator + ribuan.join(',');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return rupiah;
+        }
+        $('.pengajuanTable').on('click', '.item-print', function() {
+            var id = $(this).attr('data');
+            var url = "cetakSurat_pengajuanBiaya.action?id="+id;
+            window.open(url,'_blank');
+        });
+    });
+</script>

@@ -47,6 +47,62 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private String payorCd;
     private String coderNik;
 
+    private BigDecimal maxPengajuanBiaya;
+    private String coaRk;
+
+    private String lat;
+    private String lon;
+    private String notLike;
+    private String warna;
+
+    public String getWarna() {
+        return warna;
+    }
+
+    public void setWarna(String warna) {
+        this.warna = warna;
+    }
+
+    public String getNotLike() {
+        return notLike;
+    }
+
+    public void setNotLike(String notLike) {
+        this.notLike = notLike;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getCoaRk() {
+        return coaRk;
+    }
+
+    public void setCoaRk(String coaRk) {
+        this.coaRk = coaRk;
+    }
+
+    public BigDecimal getMaxPengajuanBiaya() {
+        return maxPengajuanBiaya;
+    }
+
+    public void setMaxPengajuanBiaya(BigDecimal maxPengajuanBiaya) {
+        this.maxPengajuanBiaya = maxPengajuanBiaya;
+    }
+
     public void setAreaId(String areaId) {
         this.areaId = areaId;
     }

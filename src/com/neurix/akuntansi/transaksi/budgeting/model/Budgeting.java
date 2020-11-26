@@ -69,8 +69,143 @@ public class Budgeting {
     private String branchName;
     private String divisi;
     private String coa;
+    private String idPengadaan;
+    private String bulan;
+
+    private BigDecimal saldoAkhir;
+    private BigDecimal selisihSaldoAkhir;
+    private String noTrans;
+
+    //for pengajuan biaya
+    private BigDecimal budgetSaatIni;
+    private BigDecimal budgetSdSaatIni;
+    private String stBudgetSaatIni;
+    private String stBudgetSdSaatIni;
+    private String tipeBudgeting;
+    private List<String> rekeningIdList;
+    private String flagKp;
+    private String flagNilaiTotal = "N";
+    private String idKategoriBudgeting;
+    private String namaKategori;
+    private String jenis;
+    private String namaPengadaan;
+
+    private BigDecimal realisasi;
+
+    public String getNamaPengadaan() {
+        return namaPengadaan;
+    }
+
+    public void setNamaPengadaan(String namaPengadaan) {
+        this.namaPengadaan = namaPengadaan;
+    }
+
+    public BigDecimal getRealisasi() {
+        return realisasi;
+    }
+
+    public void setRealisasi(BigDecimal realisasi) {
+        this.realisasi = realisasi;
+    }
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
+
+    public String getNamaKategori() {
+        return namaKategori;
+    }
+
+    public void setNamaKategori(String namaKategori) {
+        this.namaKategori = namaKategori;
+    }
+
+    public String getIdKategoriBudgeting() {
+        return idKategoriBudgeting;
+    }
+
+    public void setIdKategoriBudgeting(String idKategoriBudgeting) {
+        this.idKategoriBudgeting = idKategoriBudgeting;
+    }
+
+    public String getFlagNilaiTotal() {
+        return flagNilaiTotal;
+    }
+
+    public void setFlagNilaiTotal(String flagNilaiTotal) {
+        this.flagNilaiTotal = flagNilaiTotal;
+    }
+
+    public String getFlagKp() {
+        return flagKp;
+    }
+
+    public void setFlagKp(String flagKp) {
+        this.flagKp = flagKp;
+    }
+
+    public List<String> getRekeningIdList() {
+        return rekeningIdList;
+    }
+
+    public void setRekeningIdList(List<String> rekeningIdList) {
+        this.rekeningIdList = rekeningIdList;
+    }
+
+    public String getTipeBudgeting() {
+        return tipeBudgeting;
+    }
+
+    public void setTipeBudgeting(String tipeBudgeting) {
+        this.tipeBudgeting = tipeBudgeting;
+    }
+
+    public BigDecimal getBudgetSaatIni() {
+        return budgetSaatIni;
+    }
+
+    public void setBudgetSaatIni(BigDecimal budgetSaatIni) {
+        this.budgetSaatIni = budgetSaatIni;
+    }
+
+    public BigDecimal getBudgetSdSaatIni() {
+        return budgetSdSaatIni;
+    }
+
+    public void setBudgetSdSaatIni(BigDecimal budgetSdSaatIni) {
+        this.budgetSdSaatIni = budgetSdSaatIni;
+    }
+
+    public String getStBudgetSaatIni() {
+        return stBudgetSaatIni;
+    }
+
+    public void setStBudgetSaatIni(String stBudgetSaatIni) {
+        this.stBudgetSaatIni = stBudgetSaatIni;
+    }
+
+    public String getStBudgetSdSaatIni() {
+        return stBudgetSdSaatIni;
+    }
+
+    public void setStBudgetSdSaatIni(String stBudgetSdSaatIni) {
+        this.stBudgetSdSaatIni = stBudgetSdSaatIni;
+    }
+
+    public String getNoTrans() {
+        return noTrans;
+    }
+
+    public void setNoTrans(String noTrans) {
+        this.noTrans = noTrans;
+    }
 
     private List<BudgetingPeriode> listPeriode = new ArrayList<>();
+    private List<BudgetingDetail> budgetingDetailList = new ArrayList<>();
 
     public static Comparator<Budgeting> kodeRekeningSorting = new Comparator<Budgeting>() {
 
@@ -84,6 +219,22 @@ public class Budgeting {
             //descending order
 //            return kdRekening2.compareTo(kdRekening1);
         }};
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public String getIdPengadaan() {
+        return idPengadaan;
+    }
+
+    public void setIdPengadaan(String idPengadaan) {
+        this.idPengadaan = idPengadaan;
+    }
 
     public String getDivisi() {
         return divisi;
@@ -547,5 +698,29 @@ public class Budgeting {
 
     public void setListPeriode(List<BudgetingPeriode> listPeriode) {
         this.listPeriode = listPeriode;
+    }
+
+    public List<BudgetingDetail> getBudgetingDetailList() {
+        return budgetingDetailList;
+    }
+
+    public void setBudgetingDetailList(List<BudgetingDetail> budgetingDetailList) {
+        this.budgetingDetailList = budgetingDetailList;
+    }
+
+    public BigDecimal getSaldoAkhir() {
+        return saldoAkhir;
+    }
+
+    public void setSaldoAkhir(BigDecimal saldoAkhir) {
+        this.saldoAkhir = saldoAkhir;
+    }
+
+    public BigDecimal getSelisihSaldoAkhir() {
+        return selisihSaldoAkhir;
+    }
+
+    public void setSelisihSaldoAkhir(BigDecimal selisihSaldoAkhir) {
+        this.selisihSaldoAkhir = selisihSaldoAkhir;
     }
 }

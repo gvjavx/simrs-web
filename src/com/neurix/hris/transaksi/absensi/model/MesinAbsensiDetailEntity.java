@@ -26,6 +26,16 @@ public class MesinAbsensiDetailEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    private String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
     public String getWorkCode() {
         return workCode;
     }

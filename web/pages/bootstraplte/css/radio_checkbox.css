@@ -153,8 +153,117 @@
 .paint-canvas-ttd {
     border: 1px black solid;
     margin: 1rem;
+    cursor: pointer;
 }
 
 .garis{
-    border: solid 0.5px #ddd;
+   color: #ddd;
+}
+.jarak{
+    margin-top: 7px;
+}
+
+.hvr-grow{
+    cursor: pointer;
+}
+
+.form-check02 {
+    display: inline-block;
+    padding-left: 2px;
+}
+
+.form-check02 input {
+    padding: 0;
+    height: initial;
+    width: initial;
+    margin-bottom: 0;
+    display: none;
+    cursor: pointer;
+}
+
+.form-check02 label {
+    position: relative;
+    cursor: pointer;
+}
+
+.form-check02 label:before {
+    content:'';
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 2px solid #0079bf;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 7px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 5px;
+    margin-left: 13px;
+}
+
+.form-check02 input:checked + label:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -2px;
+    left: 20px;
+    width: 6px;
+    height: 14px;
+    border: solid #0079bf;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.notification.icon {
+    position: absolute;
+    text-align: center;
+}
+
+.notification.icon .notification-number {
+    position: absolute;
+    right: -5px;
+    top: -10px;
+    z-index: 1;
+    background: #cc2311;
+    border: 1px solid #FFF;
+    border-radius: 50%;
+    padding-top: 5px;
+    height: 21px;
+    width: 23px;
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 10px;
+    color: #FFF;
+    -webkit-animation: bounce 1s infinite;
+}
+
+@-webkit-keyframes bounce {
+    0%, 100%, 20%, 53%, 80% {
+        -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        -webkit-transform: translate3d(0, 0, 0);
+        -ms-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    40%, 43% {
+        -webkit-transition-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        transition-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        -webkit-transform: translate3d(0, -30px, 0);
+        -ms-transform: translate3d(0, -30px, 0);
+        transform: translate3d(0, -30px, 0);
+    }
+    70% {
+        -webkit-transition-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        transition-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        -webkit-transform: translate3d(0, -15px, 0);
+        -ms-transform: translate3d(0, -15px, 0);
+        transform: translate3d(0, -15px, 0);
+    }
+    90% {
+        -webkit-transform: translate3d(0, -4px, 0);
+        -ms-transform: translate3d(0, -4px, 0);
+        transform: translate3d(0, -4px, 0);
+    }
 }

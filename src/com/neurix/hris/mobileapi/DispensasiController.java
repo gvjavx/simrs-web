@@ -1,23 +1,23 @@
 package com.neurix.hris.mobileapi;
 
-import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.ijin.bo.IjinBo;
 import com.neurix.hris.master.ijin.model.Ijin;
-import com.neurix.hris.mobileapi.model.Branch;
 import com.neurix.hris.mobileapi.model.Dispensasi;
-import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
 import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.opensymphony.xwork2.ModelDriven;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
-import java.math.BigInteger;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,9 +36,68 @@ public class DispensasiController implements ModelDriven<Object> {
     private NotifikasiBo notifikasiBoProxy;
     private List<Dispensasi> listOfDispensasi = null;
     private Dispensasi model = new Dispensasi();
+    private String roleId;
 
     private String id;
     private String statusApprove;
+
+    private String gender;
+
+    private String action;
+
+    private String nip;
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    private File fileSurat;
+    private String fileNameSurat;
+
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public File getFileSurat() {
+        return fileSurat;
+    }
+
+    public void setFileSurat(File fileSurat) {
+        this.fileSurat = fileSurat;
+    }
+
+    public String getFileNameSurat() {
+        return fileNameSurat;
+    }
+
+    public void setFileNameSurat(String fileNameSurat) {
+        this.fileNameSurat = fileNameSurat;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     public void setIjinBoProxy(IjinBo ijinBoProxy) {
         this.ijinBoProxy = ijinBoProxy;
@@ -52,43 +111,126 @@ public class DispensasiController implements ModelDriven<Object> {
         this.notifikasiBoProxy = notifikasiBoProxy;
     }
 
-    public HttpHeaders index() {
+
+
+    public HttpHeaders create() {
 
         logger.info("[DispensasiController.index] end process POST /branch <<<");
-
-        List<Ijin> modelIjin = null;
-        try {
-            Ijin search = new Ijin();
+        //edit
+        if  (action.equalsIgnoreCase("edit")) {
+            com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar search = new IjinKeluar();
+            search.setIjinKeluarId(model.getIjinKeluarId());
             search.setFlag("Y");
+            search.setFrom("ijinKeluar");
+            search.setMobile(true);
+            search.setRoleId("");
 
-            modelIjin = ijinBoProxy.getByCriteria(search);
-        } catch (GeneralBOException e) {
-            Long logId = null;
+            List<IjinKeluar> listOfIjinKeluar = null;
+
             try {
-                logId = ijinBoProxy.saveErrorMessage(e.getMessage(), "DispensasiController.isFoundOtherSessionActiveUserSessionLog");
-            } catch (GeneralBOException e1) {
-                logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                listOfIjinKeluar = ijinKeluarBoProxy.getByCriteria(search);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = ijinBoProxy.saveErrorMessage(e.getMessage(), "DispensasiController.isFoundOtherSessionActiveUserSessionLog");
+                } catch (GeneralBOException e1) {
+                    logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                }
+                logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
             }
-            logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            throw new GeneralBOException(e);
+
+            //save image from update pegawai melahirkan
+            String path = null;
+            if (fileSurat != null) {
+                String idSuratDokter = ijinKeluarBoProxy.getNextSuratDokterId();
+
+                String fileNamePhoto = idSuratDokter+"_"+fileNameSurat+".jpg";
+                String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER;
+                File fileCreate = new File(filePath, fileNamePhoto);
+                path = filePath+fileNamePhoto;
+                try {
+                    FileUtils.copyFile(fileSurat, fileCreate);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                listOfIjinKeluar.get(0).setFileType("IMG");
+                listOfIjinKeluar.get(0).setFilePath(path);
+                listOfIjinKeluar.get(0).setUploadFile(fileNamePhoto);
+
+            }
+            listOfIjinKeluar.get(0).setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            listOfIjinKeluar.get(0).setLastUpdateWho(model.getNamaPegawai());
+            listOfIjinKeluar.get(0).setFlag("Y");
+            listOfIjinKeluar.get(0).setAction("U");
+            listOfIjinKeluar.get(0).setDispenLahir(true);
+            listOfIjinKeluar.get(0).setStTglMelahirkan(model.getTanggalKelahiran());
+            listOfIjinKeluar.get(0).setStTanggalAkhir(model.getTanggalAkhir());
+            listOfIjinKeluar.get(0).setTanggalAkhir(CommonUtil.convertToDate(model.getTanggalAkhir()));
+            listOfIjinKeluar.get(0).setLamaIjinBaru(model.getLamaIjin());
+
+            try{
+                ijinKeluarBoProxy.saveEdit(listOfIjinKeluar.get(0));
+            } catch (GeneralBOException e) {
+                logger.error("[DispensasiController.saveEdit] Error when saving dispen,", e);
+            }
+
+        } else if (action.equalsIgnoreCase("cekHajiZiarah")) {
+            String result = "";
+            try {
+                result  = ijinKeluarBoProxy.cekStatusIjin(nip);
+            } catch (GeneralBOException e) {
+                logger.error("[DispensasiController.saveEdit] Error when saving dispen,", e);
+            }
+
+            model.setMessage(result);
+
+        } else if (action.equalsIgnoreCase("validate")){
+            String result = "";
+            try{
+                result = ijinKeluarBoProxy.cekPengajuanIjinKeluar(nip);
+            }catch (GeneralBOException e){
+                logger.error("[CutiFormPegawaiController.created] Error when search by criteria,",e);
+            }
+            model.setMessage(result);
+        }else {
+            List<Ijin> modelIjin = null;
+            try {
+                Ijin search = new Ijin();
+                search.setFlag("Y");
+                search.setGender("L");
+
+                modelIjin = ijinBoProxy.getComboIjinIdWithKelamin(nip,"N");
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = ijinBoProxy.saveErrorMessage(e.getMessage(), "DispensasiController.isFoundOtherSessionActiveUserSessionLog");
+                } catch (GeneralBOException e1) {
+                    logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                }
+                logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
+            }
+
+            listOfDispensasi = new ArrayList<>();
+
+            if(modelIjin != null){
+                for(Ijin item : modelIjin){
+                    Dispensasi dispensasi = new Dispensasi();
+                    dispensasi.setNamaIjin(item.getIjinName());
+                    dispensasi.setMaksimalIjin(item.getJumlahIjin());
+                    dispensasi.setIjinId(item.getIjinId());
+                    dispensasi.setGender(item.getGender());
+
+                    listOfDispensasi.add(dispensasi);
+                }
+            }
         }
 
-        listOfDispensasi = new ArrayList<>();
-
-        if(modelIjin != null){
-            for(Ijin item : modelIjin){
-                Dispensasi dispensasi = new Dispensasi();
-                dispensasi.setNamaIjin(item.getIjinName());
-                dispensasi.setMaksimalIjin(item.getJumlahIjin());
-                dispensasi.setIjinId(item.getIjinId());
-                dispensasi.setGender(item.getGender());
-
-                listOfDispensasi.add(dispensasi);
-            }
-        }
         logger.info("[DispensasiController.index] end process POST /branch <<<");
         return new DefaultHttpHeaders("index").disableCaching();
     }
+
 
     public HttpHeaders update() {
         logger.info("[DispensasiController.update] end process POST /pengajuancuti/{id} <<<");
@@ -126,6 +268,25 @@ public class DispensasiController implements ModelDriven<Object> {
 
             ijinKeluar.setOs(model.getOs());
 
+            String path = null;
+            if (fileSurat != null) {
+                String idSuratDokter = ijinKeluarBoProxy.getNextSuratDokterId();
+
+                String fileNamePhoto = idSuratDokter+"_"+fileNameSurat+".jpg";
+                String filePath = CommonConstant.RESOURCE_PATH_USER_UPLOAD_SURAT_DOKTER;
+                File fileCreate = new File(filePath, fileNamePhoto);
+                path = filePath+fileNamePhoto;
+                try {
+                    FileUtils.copyFile(fileSurat, fileCreate);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                ijinKeluar.setFileType("IMG");
+                ijinKeluar.setFilePath(path);
+                ijinKeluar.setUploadFile(fileNamePhoto);
+            }
+
+
             List<Notifikasi> notifikasiList = ijinKeluarBoProxy.saveAddIjinKeluar(ijinKeluar);
 
             for ( Notifikasi notifikasi : notifikasiList){
@@ -152,6 +313,7 @@ public class DispensasiController implements ModelDriven<Object> {
 
         return new DefaultHttpHeaders("update").disableCaching();
     }
+
     public String status() {
         logger.info("[DispensasiController.update] end process POST /dispensasi/{nip}/status <<<");
         String nip = getId();
@@ -161,6 +323,7 @@ public class DispensasiController implements ModelDriven<Object> {
         search.setFlag("Y");
         search.setFrom("ijinKeluar");
         search.setMobile(true);
+        search.setRoleId(roleId);
 
         List<IjinKeluar> listOfIjinKeluar = null;
 
@@ -224,6 +387,7 @@ public class DispensasiController implements ModelDriven<Object> {
                     model.setKeterangan(dispensasi.getKeterangan());
                     model.setTanggalAwal(dispensasi.getStTanggalAwal());
                     model.setTanggalAkhir(dispensasi.getStTanggalAkhir());
+                    model.setTanggalAkhirBaru(dispensasi.getTanggalAkhirBaru());
                     model.setUnitName(dispensasi.getUnitName());
                     model.setUnit(dispensasi.getUnitId());
                     model.setPositionId(dispensasi.getPositionId());
@@ -247,6 +411,7 @@ public class DispensasiController implements ModelDriven<Object> {
                     model.setKeterangan(dispensasi.getKeterangan());
                     model.setTanggalAwal(dispensasi.getStTanggalAwal());
                     model.setTanggalAkhir(dispensasi.getStTanggalAkhir());
+                    model.setTanggalAkhirBaru(dispensasi.getTanggalAkhirBaru());
                     model.setUnitName(dispensasi.getUnitName());
                     model.setUnit(dispensasi.getUnitId());
                     model.setPositionId(dispensasi.getPositionId());

@@ -2,6 +2,7 @@ package com.neurix.hris.master.ijin.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.ijin.bo.IjinBo;
@@ -259,16 +260,7 @@ public class IjinAction extends BaseMasterAction {
 
             ijinBoProxy.saveDelete(deleteIjin);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = ijinBoProxy.saveErrorMessage(e.getMessage(), "IjinBO.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[IjinAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[IjinAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[IjinAction.saveDelete] end process <<<");
@@ -408,6 +400,12 @@ public class IjinAction extends BaseMasterAction {
         Ijin searchIjin = new Ijin();
         List<Ijin> listOfSearchIjin = new ArrayList();
         searchIjin.setFlag("Y");
+        if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+            searchIjin.setFlagDiajukanAdmin(null);
+        }else{
+            searchIjin.setFlagDiajukanAdmin("N");
+        }
+
         try {
             listOfSearchIjin = ijinBoProxy.getByCriteria(searchIjin);
         } catch (GeneralBOException e) {
@@ -473,13 +471,22 @@ public class IjinAction extends BaseMasterAction {
         logger.info("[IjinAction.initComboIjin] end process <<<");
         return listOfIjin;
     }
+
     public List searchIjin(String nip) {
         logger.info("[UserAction.searchIjin] start process >>>");
         List<Ijin> listOfIjin = new ArrayList();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         IjinBo ijinBo = (IjinBo) ctx.getBean("ijinBoProxy");
+        String flagDiajukanAdmin;
+        String agama;
+        if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+            flagDiajukanAdmin=null;
+        }else{
+            flagDiajukanAdmin="N";
+        }
+
         try {
-            listOfIjin = ijinBo.getComboIjinIdWithKelamin(nip);
+            listOfIjin = ijinBo.getComboIjinIdWithKelamin(nip,flagDiajukanAdmin);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

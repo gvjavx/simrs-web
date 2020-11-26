@@ -85,8 +85,13 @@
                         }
                     }});
             }else{
-                $('#warning_ttd').show().fadeOut(5000);
-                $('#msg_ttd').text("Silahkan lakukan ttd pada canvas berikut...!");
+                $('#waiting_dialog').dialog('close');
+                $('#info_dialog').dialog('open');
+                $('#ref').val(1);
+                $('#modal-ttd').modal('hide');
+                $('body').scrollTop(0);
+                // $('#warning_ttd').show().fadeOut(5000);
+                // $('#msg_ttd').text("Silahkan lakukan ttd pada canvas berikut...!");
             }
         }
 
@@ -255,20 +260,24 @@
                                                 <s:label name="permintaanResep.idPermintaanResep"></s:label></table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td width="45%"><b>No Checkup</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="permintaanResep.noCheckup"></s:label></table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>No Checkup Detail</b></td>
-                                        <td>
-                                            <table><s:label
-                                                    name="permintaanResep.idDetailCheckup"></s:label></table>
-                                        </td>
-                                    </tr>
+
+                                    <s:if test='permintaanResep.flagEresep != "Y"'>
+                                        <tr>
+                                            <td width="45%"><b>No Checkup</b></td>
+                                            <td>
+                                                <table>
+                                                    <s:label name="permintaanResep.noCheckup"></s:label></table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>No Checkup Detail</b></td>
+                                            <td>
+                                                <table><s:label
+                                                        name="permintaanResep.idDetailCheckup"></s:label></table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
+
                                     <tr>
                                         <td><b>NIK</b></td>
                                         <td>
@@ -311,13 +320,15 @@
                                          style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
                                 </div>
                                 <table class="table table-striped">
-                                    <tr>
-                                        <td><b>Poli</b></td>
-                                        <td>
-                                            <table>
-                                                <s:label name="permintaanResep.namaPelayanan"></s:label></table>
-                                        </td>
-                                    </tr>
+                                    <s:if test='permintaanResep.flagEresep != "Y"'>
+                                        <tr>
+                                            <td><b>Poli</b></td>
+                                            <td>
+                                                <table>
+                                                    <s:label name="permintaanResep.namaPelayanan"></s:label></table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                     <tr>
                                         <td><b>Alamat</b></td>
                                         <td>
@@ -348,6 +359,16 @@
                                             <table><s:label name="permintaanResep.provinsi"></s:label></table>
                                         </td>
                                     </tr>
+                                    <s:if test='permintaanResep.flagEresep == "Y"'>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <table>
+                                                    <label class="label label-success">E-Obat Telemedic</label>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </s:if>
                                 </table>
                             </div>
                         </div>
@@ -617,8 +638,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
+                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
+                <%--</button>--%>
                 <button class="btn btn-success pull-right" onclick="uploadCanvas()"><i class="fa fa-check"></i> Save</button>
             </div>
         </div>
@@ -766,6 +787,7 @@
         if (idObatVal != "") {
             TransaksiObatAction.listObatPoliEntity(idObatVal, {
                 callback: function (response) {
+                    console.log(" response length = " + response.length + ", id obat = " + idObat + ", id obat val = " + idObatVal);
                     if (response.length > 0 && idObat == idObatVal) {
 
                         $('#loading_data').show();

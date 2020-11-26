@@ -1,6 +1,7 @@
 package com.neurix.hris.master.biodata.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.biodata.model.ImBiodataHistoryEntity;
@@ -165,7 +166,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t( SELECT * FROM im_hris_pegawai ) pegawai LEFT JOIN\n" +
                 "\t( SELECT * FROM it_hris_pegawai_position ) posisi ON pegawai.nip=posisi.nip\n" +
                 "WHERE\n" +
-                "\tpegawai.flag='Y' AND tanggal_pensiun<='"+tanggal6Bulan+"' AND tanggal_pensiun>='"+tanggalSekarang+"' AND posisi.flag='Y'";
+                "\tpegawai.flag='Y' AND tanggal_pra_pensiun<='"+tanggal6Bulan+"' AND tanggal_pensiun>='"+tanggalSekarang+"' AND posisi.flag='Y'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -183,15 +184,13 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public List<ImBiodataEntity> getPegawaiCutiTahunan() throws HibernateException {
         List<ImBiodataEntity> listOfResult = new ArrayList<ImBiodataEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "SELECT pegawai.nip,pegawai.nama_pegawai,pegawai.tanggal_aktif\n" +
+        String query = "SELECT pegawai.nip,pegawai.nama_pegawai,pegawai.tanggal_masuk\n" +
                 "FROM \n" +
                 "( SELECT * FROM im_hris_pegawai) pegawai LEFT JOIN \n" +
                 "( SELECT * FROM it_hris_pegawai_position) posisi ON pegawai.nip=posisi.nip\n" +
                 "WHERE pegawai.flag='Y' \n" +
-                "\tAND pegawai.tipe_pegawai='TP01'\n" +
-//                "\tAND pegawai.tanggal_aktif+ interval '1 year'<NOW()\n" +
-                "\tAND date_part('year', pegawai.tanggal_aktif+ interval '1 year')=date_part('year', CURRENT_DATE)\n" +
-                "\tAND posisi.branch_id='KD01'" +
+                "\tAND date_part('year', pegawai.tanggal_masuk+ interval '1 year')=date_part('year', CURRENT_DATE)\n" +
+                "\tAND posisi.branch_id='"+ CommonUtil.userBranchLogin() +"'" +
                 "\tAND posisi.flag='Y'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -221,7 +220,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tAND MOD(CAST(((SELECT date_part('year', CURRENT_DATE))-(SELECT date_part('year', pegawai.tanggal_aktif)))as bigint),5)=0\n" +
                 "\tAND CAST(((SELECT date_part('month', CURRENT_DATE))-(SELECT date_part('month', pegawai.tanggal_aktif)))as bigint)>=0\n" +
                 "\tAND CAST(((SELECT date_part('day', CURRENT_DATE))-(SELECT date_part('day', pegawai.tanggal_aktif)))as bigint)>=0\n" +
-                "\tAND posisi.branch_id='KD01'" +
+                "\tAND posisi.branch_id='"+ CommonUtil.userBranchLogin() +"'" +
                 "\tAND posisi.flag='Y'";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -242,6 +241,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
                 .add(Restrictions.isNotNull("pin"))
+                .add(Restrictions.ne("pin",""))
                 .list();
         return results;
     }
@@ -559,6 +559,41 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\torder by \n" +
                 "\titPosisi.position_id";
 
+//        String query = "select DISTINCT \n" +
+//                "\titPosisi.branch_id,\n" +
+//                "\tdivisi.department_id,\n" +
+//                "\titPosisi.position_id,\n" +
+//                "\tprovinsi_name,\n" +
+//                "\tkabupaten.kota_name,\n" +
+//                "\tkecamatan.kecamatan_name,\n" +
+//                "\tdesa.desa_name,\n" +
+//                "\ttipePegawai.tipe_pegawai_name,\n" +
+//                "\tdivisi.department_id,\n" +
+//                "\tdivisi.department_name,\n" +
+//                "\titPosisi.pjs_flag,\n" +
+//                "\tpegawai.*,\n" +
+//                "\tbagian.bagian_id,\n" +
+//                "\tbagian.nama_bagian,\n" +
+//                "\titPosisi.profesi_id,\n" +
+//                "\thistory.profesi_id AS history_profesi \n" +
+//                "from\n" +
+//                "\tim_hris_pegawai pegawai \n" +
+//                "\tleft join it_hris_pegawai_position itPosisi on itPosisi.nip = pegawai.nip \n" +
+//                "\tleft join im_hris_provinsi provinsi on provinsi.provinsi_id = pegawai.provinsi\n" +
+//                "\tleft join im_hris_kota kabupaten on kabupaten.kota_id = pegawai.kabupaten\n" +
+//                "\tleft join im_hris_kecamatan kecamatan on kecamatan.kecamatan_id = pegawai.kecamatan\n" +
+//                "\tleft join im_hris_desa desa on desa.desa_id= pegawai.desa\n" +
+//                "\tleft join im_hris_tipe_pegawai tipePegawai on tipePegawai.tipe_pegawai_id = pegawai.tipe_pegawai\n" +
+//                "\tleft join im_position posisi on posisi.position_id = itPosisi.position_id\n" +
+//                "\tleft join im_hris_department divisi on divisi.department_id = posisi.department_id\n" +
+//                "\tleft join im_hris_position_bagian bagian on bagian.bagian_id = posisi.bagian_id\n" +
+//                "\tleft join imt_hris_history_jabatan_pegawai history on history.nip = pegawai.nip\n" +
+//                "where " +
+//                "\t itPosisi.flag='"+flag+"' AND" +
+//                "\tpegawai.flag = '"+flag+"'\n" + searchNip + searchNama + searchBranchId + searchDivisiId + searchTipePegawai +
+//                "\torder by \n" +
+//                "\titPosisi.position_id";
+
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
@@ -597,13 +632,17 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setFlag((String) row[29]);
             result.setAction((String) row[30]);
 
+            result.setShift((String)row[60]);
             result.setCreatedWho((String) row[31]);
             result.setLastUpdateWho((String) row[32]);
             result.setTanggalAktif((Date) row[33]);
             result.setGolongan((String) row[34]);
             result.setStatusPegawai((String) row[35]);
             result.setStatusKeluarga((String) row[36]);
-            result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
+            if (row[37] != null)
+                result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
+            else
+                result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(0)));
             result.setGender((String) row[38]);
             result.setStatusGiling((String) row[39]);
             result.setNoSkAktif((String) row[40]);
@@ -650,10 +689,38 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             if (row[78] != null){
                 result.setTanggalPraPensiun((Date) row[78]);
             }
-            result.setBagianId((String) row[79]);
-            result.setBagianName((String) row[80]);
-            result.setProfesiId((String)row[81]);
 
+            result.setFlagMess((String) row[67]);
+            result.setFlagPlt((String) row[79]);
+            result.setFlagPjs((String) row[80]);
+            result.setFlagFingerMobile((String) row[81]);
+            result.setFlagTunjRumah((String) row[82]);
+            result.setFlagTunjAir((String) row[83]);
+            result.setFlagTunjListrik((String) row[84]);
+            result.setFlagTunjBbm((String) row[85]);
+            result.setFlagBpjsKs((String) row[86]);
+            result.setFlagBpjsTk((String) row[87]);
+            result.setFlagPercobaan((String) row[88]);
+            result.setPositionPltId((String) row[89]);
+            result.setNipLama((String) row[90]);
+            result.setFlagDokterKso((String) row[91]);
+            result.setJenisPegawai((String) row[92]);
+
+            if(row[93] != null){
+                result.setPeralihanGapok(BigDecimal.valueOf(Double.parseDouble(row[93].toString())));
+            }
+            if(row[94] != null){
+                result.setPeralihanSankhus(BigDecimal.valueOf(Double.parseDouble(row[94].toString())));
+            }
+            if(row[95] != null){
+                result.setPeralihanTunjangan(BigDecimal.valueOf(Double.parseDouble(row[95].toString())));
+            }
+
+            result.setBagianId((String) row[96]);
+            result.setBagianName((String) row[97]);
+            result.setProfesiId((String)row[98]);
+
+            result.setDivisiName((String)row[9]);
             listOfResult.add(result);
         }
         return listOfResult;
@@ -909,8 +976,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     //for Cuti
     public List<ImBiodataEntity> findAllUserCuti() throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
-                .add(Restrictions.eq("tipePegawai","TP01"))
-                .add(Restrictions.isNotNull("pin"))
+//                .add(Restrictions.eq("tipePegawai","TP01"))
+//                .add(Restrictions.isNotNull("pin"))
                 .add(Restrictions.eq("flag","Y"))
                 .addOrder(Order.asc("nip"))
                 .list();
@@ -920,9 +987,20 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public List<ImBiodataEntity> findUserCuti(String nip) throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
                 .add(Restrictions.eq("nip",nip))
-                .add(Restrictions.eq("tipePegawai","TP01"))
-                .add(Restrictions.isNotNull("pin"))
+//                .add(Restrictions.eq("tipePegawai","TP01"))
+//                .add(Restrictions.isNotNull("pin"))
                 .add(Restrictions.eq("flag","Y"))
+                .addOrder(Order.asc("nip"))
+                .list();
+        return results;
+    }
+
+    public List<ImBiodataEntity> getByNip(String nip) throws  HibernateException{
+        List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("tipePegawai", "TP01"))
+                .add(Restrictions.isNotNull("tanggalAktif"))
+                .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("nip"))
                 .list();
         return results;
@@ -994,6 +1072,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tpegawai.nama_pegawai, \n" +
                 "\tposition.position_name, \n" +
                 "\tpegawai.tipe_pegawai, \n" +
+                "\tpegawai.tanggal_masuk, \n" +
                 "\tposisi.profesi_id\n" +
                 "\n" +
                 "\tFROM im_hris_pegawai pegawai\n" +
@@ -1020,7 +1099,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setNamaPegawai((String) row[1]);
             result.setPositionName((String) row[2]);
             result.setTipePegawai((String) row[3]);
-            result.setProfesiId((String)row[4]);
+            result.setTanggalMasuk((Date) row[4]);
+            result.setProfesiId((String)row[5]);
 
             listOfResult.add(result);
         }
@@ -1173,7 +1253,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         }
         if (bagianId!=null){
             if(!bagianId.equalsIgnoreCase("")){
-                searchBagianId = " AND position.bagian_id = '" + bagianId + "' OR position.bagian_asli_id = '" + bagianId + "' " ;
+                searchBagianId = " AND position.bagian_id = '" + bagianId + "' OR position.bagian_id = '" + bagianId + "' " ;
             }
         }
         if (nip!=null){
@@ -1194,7 +1274,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                   bagian.nama_bagian, \n" +
                 "                   divisi.department_id, \n" +
                 "                   divisi.department_name,\n" +
-                "                   position.bagian_asli_id,\n" +
+                "                   position.bagian_id,\n" +
                 "                   bagian2.nama_bagian\n" +
                 "                                FROM im_hris_pegawai pegawai  \n" +
                 "                                LEFT JOIN it_hris_pegawai_position posisi   \n" +
@@ -1208,7 +1288,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                                LEFT JOIN im_hris_department divisi \n" +
                 "                                ON position.department_id = divisi.department_id \n" +
                 "                                LEFT JOIN im_hris_position_bagian bagian2 \n" +
-                "                                ON position.bagian_asli_id = bagian2.bagian_id\n" +
+                "                                ON position.bagian_id = bagian2.bagian_id\n" +
                 "                                WHERE pegawai.flag = 'Y'  \n" +
                 "                                AND posisi.flag = 'Y'  \n" +searchBranchId+searchDivisiId+searchBagianId+searchNip+" ORDER BY posisi.branch_id ASC,position.department_id ASC,position.bagian_id ASC,position.position_id ASC";
         results = this.sessionFactory.getCurrentSession()
@@ -1266,6 +1346,41 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             }
         }
 
+//        String query = "SELECT   \n" +
+//                "                   pegawai.nip,   \n" +
+//                "                   pegawai.nama_pegawai,   \n" +
+//                "                   position.position_id,   \n" +
+//                "                   position.position_name,   \n" +
+//                "                   pegawai.tipe_pegawai, \n" +
+//                "                   branch.branch_id, \n" +
+//                "                   branch.branch_name, \n" +
+//                "                   bagian.bagian_id, \n" +
+//                "                   bagian.nama_bagian, \n" +
+//                "                   divisi.department_id, \n" +
+//                "                   divisi.department_name,\n" +
+//                "                   position.bagian_id,\n" +
+//                "                   bagian2.nama_bagian,\n" +
+//                "                   position.bagian_uang_makan,\n" +
+//                "                   bagian3.nama_bagian,\n" +
+//                "                   pegawai.shift\n" +
+//                "                                FROM im_hris_pegawai pegawai  \n" +
+//                "                                LEFT JOIN it_hris_pegawai_position posisi   \n" +
+//                "                                ON posisi.nip = pegawai.nip  \n" +
+//                "                                LEFT JOIN im_branches branch   \n" +
+//                "                                ON branch.branch_id = posisi.branch_id   \n" +
+//                "                                LEFT JOIN im_position position   \n" +
+//                "                                ON position.position_id = posisi.position_id \n" +
+//                "                                LEFT JOIN im_hris_position_bagian bagian \n" +
+//                "                                ON position.bagian_id = bagian.bagian_id \n" +
+//                "                                LEFT JOIN im_hris_department divisi \n" +
+//                "                                ON position.department_id = divisi.department_id \n" +
+//                "                                LEFT JOIN im_hris_position_bagian bagian2 \n" +
+//                "                                ON position.bagian_id = bagian2.bagian_id\n" +
+//                "                                LEFT JOIN im_hris_position_bagian bagian3 \n" +
+//                "                                ON position.bagian_uang_makan = bagian3.bagian_id\n" +
+//                "                                WHERE pegawai.flag = 'Y'  \n" +
+//                "                                AND posisi.flag = 'Y'  \n" +searchBranchId+searchDivisiId+searchBagianId+searchNip+" ORDER BY posisi.branch_id ASC,position.department_id ASC,position.bagian_id ASC,position.position_id ASC";
+
         String query = "SELECT   \n" +
                 "                   pegawai.nip,   \n" +
                 "                   pegawai.nama_pegawai,   \n" +
@@ -1278,26 +1393,18 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                   bagian.nama_bagian, \n" +
                 "                   divisi.department_id, \n" +
                 "                   divisi.department_name,\n" +
-                "                   position.bagian_asli_id,\n" +
+                "                   position.bagian_id,\n" +
                 "                   bagian2.nama_bagian,\n" +
-                "                   position.bagian_uang_makan,\n" +
-                "                   bagian3.nama_bagian,\n" +
-                "                   pegawai.shift\n" +
-                "                                FROM im_hris_pegawai pegawai  \n" +
-                "                                LEFT JOIN it_hris_pegawai_position posisi   \n" +
-                "                                ON posisi.nip = pegawai.nip  \n" +
-                "                                LEFT JOIN im_branches branch   \n" +
-                "                                ON branch.branch_id = posisi.branch_id   \n" +
-                "                                LEFT JOIN im_position position   \n" +
-                "                                ON position.position_id = posisi.position_id \n" +
-                "                                LEFT JOIN im_hris_position_bagian bagian \n" +
-                "                                ON position.bagian_id = bagian.bagian_id \n" +
-                "                                LEFT JOIN im_hris_department divisi \n" +
-                "                                ON position.department_id = divisi.department_id \n" +
-                "                                LEFT JOIN im_hris_position_bagian bagian2 \n" +
-                "                                ON position.bagian_asli_id = bagian2.bagian_id\n" +
-                "                                LEFT JOIN im_hris_position_bagian bagian3 \n" +
-                "                                ON position.bagian_uang_makan = bagian3.bagian_id\n" +
+                "                   pegawai.shift,\n" +
+                "                   pegawai.tanggal_aktif \n" +
+                "                                FROM im_hris_pegawai pegawai\n" +
+                "                                LEFT JOIN it_hris_pegawai_position posisi ON posisi.nip = pegawai.nip  \n" +
+                "                                LEFT JOIN im_branches branch ON branch.branch_id = posisi.branch_id   \n" +
+                "                                LEFT JOIN im_position position ON position.position_id = posisi.position_id \n" +
+                "                                LEFT JOIN im_hris_position_bagian bagian ON position.bagian_id = bagian.bagian_id \n" +
+                "                                LEFT JOIN im_hris_department divisi ON position.department_id = divisi.department_id \n" +
+                "                                LEFT JOIN im_hris_position_bagian bagian2 ON position.bagian_id = bagian2.bagian_id\n" +
+                "                                LEFT JOIN im_hris_position_bagian bagian3 ON position.bagian_id = bagian3.bagian_id\n" +
                 "                                WHERE pegawai.flag = 'Y'  \n" +
                 "                                AND posisi.flag = 'Y'  \n" +searchBranchId+searchDivisiId+searchBagianId+searchNip+" ORDER BY posisi.branch_id ASC,position.department_id ASC,position.bagian_id ASC,position.position_id ASC";
         results = this.sessionFactory.getCurrentSession()
@@ -1323,13 +1430,17 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setBagianId((String) row[11]);
                 result.setBagianName((String) row[12]);
             }
+//            if (row[13] !=null){
+//                result.setBagianId((String) row[13]);
+//                result.setBagianName((String) row[14]);
+//            }
             if (row[13] !=null){
-                result.setBagianId((String) row[13]);
-                result.setBagianName((String) row[14]);
+                result.setShift((String) row[13]);
             }
-            if (row[15] !=null){
-                result.setShift((String) row[15]);
+            if (row[14] != null){
+                result.setTanggalAktif((Date) row[14]);
             }
+
             if (!bagianId.equalsIgnoreCase((""))){
                 if (result.getBagianId().equalsIgnoreCase(bagianId)){
                     add=true;
@@ -1541,7 +1652,10 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setGolongan((String) row[34]);
             result.setStatusPegawai((String) row[35]);
             result.setStatusKeluarga((String) row[36]);
-            result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
+            if (row[37] != null)
+                result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
+            else
+                result.setJumlahAnak(BigInteger.valueOf(0));
             result.setGender((String) row[38]);
             result.setStatusGiling((String) row[39]);
             result.setNoSkAktif((String) row[40]);
@@ -1602,6 +1716,69 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         criteria.addOrder(Order.asc("nip"));
 
         List<ImBiodataEntity> results = criteria.list();
+        return results;
+    }
+
+    //tambahan reza
+    public List<Biodata> searchBiodataUser(String positionId) throws HibernateException{
+        List<Biodata> biodataList = new ArrayList<>();
+
+        String query = "SELECT nip, position_plt_id FROM im_hris_pegawai WHERE position_plt_id = :positionPltId AND flag = 'Y'";
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("positionPltId", positionId)
+                .list();
+
+
+        for (Object[] row : results) {
+            Biodata result  = new Biodata();
+            result.setNip((String) row[0]);
+            result.setPositionPltId((String) row[1]);
+
+            biodataList.add(result);
+        }
+        return biodataList;
+    }
+
+
+    //tambahan reza
+    public List<Biodata> searchBiodataByCriteria(String nip) throws HibernateException{
+        List<Biodata> biodataList = new ArrayList<>();
+
+        String query = "SELECT nip, position_plt_id FROM im_hris_pegawai WHERE nip = :nip AND flag = 'Y'";
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("nip", nip)
+                .list();
+
+
+        for (Object[] row : results) {
+            Biodata result  = new Biodata();
+            result.setNip((String) row[0]);
+            result.setPositionPltId((String) row[1]);
+
+            biodataList.add(result);
+        }
+        return biodataList;
+    }
+
+    public List<ImBiodataEntity> getBiodataByGolonganId(String id) throws HibernateException {
+        List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
+                .add(Restrictions.eq("golongan", id))
+                .addOrder(Order.asc("nip"))
+                .list();
+        return results;
+    }
+
+    public List<ImBiodataEntity> getBiodataByTipePegawai(String id) throws HibernateException {
+        List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
+                .add(Restrictions.eq("tipePegawai", id))
+                .addOrder(Order.asc("nip"))
+                .list();
         return results;
     }
 }

@@ -15,8 +15,13 @@ public class JamKerja extends BaseModel implements Serializable {
     private String jamAwalKerja;
     private String jamAkhirKerja;
     private String branchId;
+    private String branchName;
     private String istirahatAwal;
     private String istirahatAkhir;
+
+    private String stCreatedDate;
+    private String stLastUpdate;
+    private String tipePegawaiName;
 
     private String hariName;
 
@@ -98,5 +103,39 @@ public class JamKerja extends BaseModel implements Serializable {
 
     public void setJamAkhirKerja(String jamAkhirKerja) {
         this.jamAkhirKerja = jamAkhirKerja;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    @Override
+    public String getStCreatedDate() {
+        return stCreatedDate;
+    }
+
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    @Override
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
+    public String getTipePegawaiName() {
+        return tipePegawaiName;
+    }
+
+    public void setTipePegawaiName(String tipePegawaiName) {
+        this.tipePegawaiName = tipePegawaiName;
     }
 }

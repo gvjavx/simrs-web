@@ -10,7 +10,9 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -60,9 +62,7 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
             }
-            if (mapCriteria.get("sisa_kuota") != null) {
-                criteria.add(Restrictions.gt("sisaKuota", Integer.parseInt(mapCriteria.get("sisa_kuota").toString())));
-            }
+
 
         }
 
@@ -110,20 +110,28 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     "b.status_ruangan,\n" +
                     "c.id_detail_checkup, \n" +
                     "c.tgl_masuk, \n" +
-                    "b.sisa_kuota, \n" +
-                    "b.kuota \n" +
+                    "tt.id_tempat_tidur, \n" +
+                    "tt.nama_tempat_tidur,\n" +
+                    "c.cover_biaya,\n" +
+                    "c.id_jenis_periksa_pasien,\n" +
+                    "c.nama,\n" +
+                    "c.id_pasien\n" +
                     "FROM im_simrs_kelas_ruangan a\n" +
                     "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
+                    "INNER JOIN mt_simrs_ruangan_tempat_tidur tt ON b.id_ruangan = tt.id_ruangan\n" +
                     "LEFT JOIN (\n" +
-                    "SELECT * \n" +
+                    "SELECT a.id_detail_checkup, a.id_ruangan, a.tgl_masuk, c.cover_biaya, c.id_jenis_periksa_pasien, b.nama, b.id_pasien\n" +
                     "FROM it_simrs_rawat_inap a\n" +
-                    "INNER JOIN it_simrs_header_checkup b \n" +
+                    "INNER JOIN it_simrs_header_checkup b\n" +
                     "ON a.no_checkup = b.no_checkup\n" +
-                    "WHERE a.flag = 'Y'\n" +
-                    "AND b.branch_id LIKE :branchId) c On b.id_ruangan = c.id_ruangan\n" +
-                    "WHERE a.id_kelas_ruangan LIKE :idKelas\n" +
-                    "AND b.id_ruangan LIKE :idRuang\n" +
-                    "AND b.nama_ruangan LIKE :namaRuang\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup c \n" +
+                    "ON a.id_detail_checkup = c.id_detail_checkup\n" +
+                    "AND a.status = '1' \n" +
+                    "WHERE a.flag = 'Y' \n" +
+                    "AND b.branch_id LIKE :branchId) c ON tt.id_tempat_tidur = c.id_ruangan\n" +
+                    "WHERE a.id_kelas_ruangan LIKE :idKelas \n" +
+                    "AND b.id_ruangan LIKE :idRuang \n" +
+                    "AND b.nama_ruangan LIKE :namaRuang \n" +
                     "ORDER BY a.id_kelas_ruangan ASC";
 
             List<Object[]> results = new ArrayList<>();
@@ -135,34 +143,76 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     .setParameter("branchId", CommonUtil.userBranchLogin())
                     .list();
 
-            if (results != null) {
-
-                Ruangan ruangan;
+            if (results.size() > 0) {
                 for (Object[] obj : results) {
-
-                    ruangan = new Ruangan();
+                    Ruangan ruangan = new Ruangan();
                     ruangan.setIdKelasRuangan(obj[0] == null ? "" : obj[0].toString());
                     ruangan.setIdRuangan(obj[1] == null ? "" : obj[1].toString());
                     ruangan.setNamaRuangan(obj[2] == null ? "" : obj[2].toString());
                     ruangan.setNoRuangan(obj[3] == null ? "" : obj[3].toString());
-                    ruangan.setStatusRuangan(obj[4] == null ? "" : obj[4].toString());
+//                ruangan.setStatusRuangan(obj[4] == null ? "" : obj[4].toString());
                     ruangan.setIdDetailCheckup(obj[5] == null ? "" : obj[5].toString());
                     ruangan.setTglMasuk(obj[6] == null ? "" : obj[6].toString());
-
                     if(obj[7] != null){
-                        ruangan.setSisaKuota((Integer) obj[7]);
+                        ruangan.setIdTempatTidur(obj[7].toString());
                     }
                     if(obj[8] != null){
-                        ruangan.setKuota((Integer) obj[8]);
+                        ruangan.setNamaTempatTidur(obj[8].toString());
                     }
-
+                    if(obj[5] != null && !"".equalsIgnoreCase(obj[5].toString())){
+                        ruangan.setTarifTindakan(getSumAllTarifTindakan(obj[5].toString()));
+                    }
+                    if(obj[9] != null && !"".equalsIgnoreCase(obj[9].toString())){
+                        ruangan.setTarifBpjs((BigDecimal) obj[9]);
+                    }
+                    if(obj[10] != null && !"".equalsIgnoreCase(obj[10].toString())){
+                        ruangan.setTipeTransaksi(obj[10].toString());
+                        if("bpjs".equalsIgnoreCase(ruangan.getTipeTransaksi())){
+                            if(ruangan.getTarifBpjs() != null && ruangan.getTarifTindakan() != null && ruangan.getTarifTindakan().intValue() > 0){
+                                BigDecimal hasilKali = new BigDecimal(0);
+                                BigDecimal hasilBagi = new BigDecimal(0);
+                                hasilKali = ruangan.getTarifTindakan().divide(ruangan.getTarifBpjs(), 2, RoundingMode.HALF_UP);
+                                hasilBagi = hasilKali.multiply(new BigDecimal(100));
+                                ruangan.setNilaiPersen(hasilBagi);
+                            }
+                        }
+                    }
+                    ruangan.setNamaPasien(obj[11] == null ? null : obj[11].toString());
+                    ruangan.setIdPasien(obj[12] == null ? "" : obj[12].toString());
                     ruanganList.add(ruangan);
-
                 }
             }
         }
-
         return ruanganList;
+    }
+
+    public BigDecimal getSumAllTarifTindakan(String idDetail) {
+        BigDecimal jumlah = new BigDecimal(0);
+        if(idDetail != null && !"".equalsIgnoreCase(idDetail)){
+            String SQL = "SELECT \n" +
+                    "id_detail_checkup,\n" +
+                    "SUM(total_tarif) as total_tarif\n" +
+                    "FROM\n" +
+                    "it_simrs_riwayat_tindakan\n" +
+                    "WHERE \n" +
+                    "id_detail_checkup = :idDetail\n" +
+                    "AND id_riwayat_tindakan NOT IN (\n" +
+                    "\tSELECT id_riwayat_tindakan \n" +
+                    "\tFROM it_simrs_tindakan_transitoris\n" +
+                    "\tWHERE id_detail_checkup = :idDetail\n" +
+                    ")\n" +
+                    "GROUP BY id_detail_checkup";
+
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idDetail", idDetail)
+                    .list();
+            if (results.size() > 0) {
+                for (Object[] obj : results) {
+                    jumlah = (BigDecimal) obj[1];
+                }
+            }
+        }
+        return jumlah;
     }
 
     public List<MtSimrsRuanganEntity> getDataPelayanan(String namaRuangan) throws HibernateException {
@@ -186,6 +236,85 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                 .createSQLQuery(query)
                 .list();
 
+        return results;
+    }
+
+    public List<Ruangan> getListRuanganKamar(Ruangan bean) throws HibernateException{
+        List<Ruangan> results = new ArrayList<>();
+        String idKelas = "";
+        String status = "";
+        String kategori = "%";
+        if(bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
+            idKelas = "AND b.id_kelas_ruangan = '"+bean.getIdKelasRuangan()+"' \n";
+        }
+//        if("Y".equalsIgnoreCase(bean.getStatusRuangan())){
+//            status = "AND c.status = 'Y'\n";
+//        }
+        if(bean.getKategori() != null && !"".equalsIgnoreCase(bean.getKategori())){
+            kategori = bean.getKategori();
+        }
+        String query = "SELECT\n" +
+                "b.id_ruangan,\n" +
+                "b.nama_ruangan,\n" +
+                "b.no_ruangan,\n" +
+                "c.id_tempat_tidur,\n" +
+                "c.nama_tempat_tidur\n" +
+                "FROM im_simrs_kelas_ruangan a\n" +
+                "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
+                "INNER JOIN mt_simrs_ruangan_tempat_tidur c ON b.id_ruangan = c.id_ruangan\n" +
+                "WHERE a.kategori LIKE :kategori\n" + idKelas  +
+                "AND b.branch_id = :branchId\n" +
+                "ORDER BY b.nama_ruangan ASC";
+
+        List<Object[]> objects = new ArrayList<>();
+        objects = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("branchId", bean.getBranchId())
+                .setParameter("kategori", kategori)
+                .list();
+
+        if(objects.size() > 0){
+            for (Object[] obj: objects){
+                Ruangan ruangan = new Ruangan();
+                ruangan.setIdRuangan(obj[0] == null ? null : obj[0].toString());
+                ruangan.setNamaRuangan(obj[1] == null ? null : obj[1].toString());
+                ruangan.setNoRuangan(obj[2] == null ? null : obj[2].toString());
+                ruangan.setIdTempatTidur(obj[3] == null ? null : obj[3].toString());
+                ruangan.setNamaTempatTidur(obj[4] == null ? null : obj[4].toString());
+                results.add(ruangan);
+            }
+        }
+        return results;
+    }
+
+    public List<Ruangan> getListJustRuanganKamar(String idKelas, String branchId) throws HibernateException{
+        List<Ruangan> results = new ArrayList<>();
+        String query = "SELECT\n" +
+                "b.id_ruangan,\n" +
+                "b.nama_ruangan,\n" +
+                "b.no_ruangan\n" +
+                "FROM im_simrs_kelas_ruangan a\n" +
+                "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
+                "WHERE a.id_kelas_ruangan = :idKelas\n"+
+                "AND b.branch_id = :branchId\n" +
+                "ORDER BY b.nama_ruangan ASC";
+
+        List<Object[]> objects = new ArrayList<>();
+        objects = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("branchId",branchId)
+                .setParameter("idKelas", idKelas)
+                .list();
+
+        if(objects.size() > 0){
+            for (Object[] obj: objects){
+                Ruangan ruangan = new Ruangan();
+                ruangan.setIdRuangan(obj[0] == null ? null : obj[0].toString());
+                ruangan.setNamaRuangan(obj[1] == null ? null : obj[1].toString());
+                ruangan.setNoRuangan(obj[2] == null ? null : obj[2].toString());
+                results.add(ruangan);
+            }
+        }
         return results;
     }
 }

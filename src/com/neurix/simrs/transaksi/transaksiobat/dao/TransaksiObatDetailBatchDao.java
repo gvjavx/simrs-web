@@ -2,14 +2,17 @@ package com.neurix.simrs.transaksi.transaksiobat.dao;
 
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsTransaksiObatDetailBatchEntity;
+import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -56,6 +59,12 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
             }
             if (mapCriteria.get("id_barang") != null){
                 criteria.add(Restrictions.eq("idBarang", (String) mapCriteria.get("id_barang")));
+            }
+            if (mapCriteria.get("jenis") != null){
+                criteria.add(Restrictions.eq("jenis", (String) mapCriteria.get("jenis")));
+            }
+            if (mapCriteria.get("approve_flag") != null){
+                criteria.add(Restrictions.eq("approveFlag", (String) mapCriteria.get("approve_flag")));
             }
         }
 
@@ -109,11 +118,15 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
                 "no_faktur,\n" +
                 "tanggal_faktur,\n" +
                 "no_invoice,\n" +
-                "no_do\n" +
+                "no_do,\n" +
+                "odb.jenis ,\n" +
+                "odb.tgl_invoice,\n" +
+                "odb.tgl_do\n" +
                 "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
                 "WHERE od.id_approval_obat = :idApproval\n" +
-                "GROUP BY no_batch, od.id_approval_obat, url_doc, no_faktur, tanggal_faktur, no_invoice, no_do";
+//                "GROUP BY no_batch, od.id_approval_obat, url_doc, no_faktur, tanggal_faktur, no_invoice, no_do, odb.jenis";
+                "GROUP BY no_batch, od.id_approval_obat, url_doc, no_faktur, tanggal_faktur, no_invoice, no_do, odb.jenis, odb.tgl_invoice, odb.tgl_do";
 
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idApproval", idApproval)
@@ -138,6 +151,11 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
                 batchPermintaanObat.setTanggalFaktur(obj[5] != null ? Date.valueOf(obj[5].toString()) : null);
                 batchPermintaanObat.setNoInvoice(obj[6] == null ? "" : obj[6].toString());
                 batchPermintaanObat.setNoDo(obj[7] == null ? "" : obj[7].toString());
+                batchPermintaanObat.setJenis(obj[8] == null ? "" : obj[8].toString());
+                Date tglInvoice = obj[9] == null ? null : (Date) obj[9];
+                Date tglDo = obj[10] == null ? null : (Date) obj[10];
+                batchPermintaanObat.setStTglInvoice(tglInvoice != null ? CommonUtil.ddMMyyyyFormat(tglInvoice) : "");
+                batchPermintaanObat.setStTglDo(tglDo != null ? CommonUtil.ddMMyyyyFormat(tglDo) : "");
                 results.add(batchPermintaanObat);
             }
         }
@@ -188,6 +206,29 @@ public class TransaksiObatDetailBatchDao extends GenericDao<MtSimrsTransaksiObat
         }
     }
 
+    public BigInteger getJumlahApprove(String idTrans){
+
+        String SQL = "SELECT \n" +
+                "id_transaksi_obat_detail,\n" +
+                "SUM(qty_approve) qty_approve\n" +
+                "FROM mt_simrs_transaksi_obat_detail_batch\n" +
+                "WHERE id_transaksi_obat_detail = :id \n" +
+                "GROUP BY id_transaksi_obat_detail";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idTrans)
+                .list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                if (obj[1] != null){
+                    BigDecimal nilai = (BigDecimal) obj[1];
+                    return new BigInteger(nilai.toString());
+                }
+            }
+        }
+        return new BigInteger(String.valueOf(0));
+    }
 
 
     public String getNextId(){

@@ -13,6 +13,7 @@ import org.hibernate.HibernateException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -94,21 +95,72 @@ public class CompanyBoImpl implements CompanyBo {
                 imCompanyOld.setDefaultEmailSubject(companyNew.getDefaultEmailSubject());
                 imCompanyOld.setDefaultEmailContent(companyNew.getDefaultEmailContent());
                 imCompanyOld.setBiayaJabatanPersentase(new BigDecimal(companyNew.getBiayaJabatanPersentase()));
-                imCompanyOld.setIuranPerusahaanJkmJkk(companyNew.getIuranPerusahaanJkmJkk());
-                imCompanyOld.setBulanJubilium(companyNew.getRemainderJubileum());
-                imCompanyOld.setBulanPensiun(companyNew.getRemainderPensiun());
-                imCompanyOld.setKursDolar(companyNew.getKursDolar());
 
-                imCompanyOld.setPayrollThrPersentase(companyNew.getPayrollThrPersentase());
-                imCompanyOld.setPayrollPendidikanPersentase(companyNew.getPayrollPendidikanPersentase());
-                imCompanyOld.setPayrollJasprodKali(companyNew.getPayrollJasprodKali());
+                if (companyNew.getIuranPerusahaanJkmJkk() != null)
+                    imCompanyOld.setIuranPerusahaanJkmJkk(companyNew.getIuranPerusahaanJkmJkk());
+                else
+                    imCompanyOld.setIuranPerusahaanJkmJkk(BigDecimal.valueOf(0.0));
 
-                imCompanyOld.setMaxBpjsTk(companyNew.getMaxBpjsTk());
-                imCompanyOld.setMaxBpjsPensiun(companyNew.getMaxBpjsPensiun());
-                imCompanyOld.setMaxBpjsKesehatan(companyNew.getMaxBpjsKesehatan());
+//                if (companyNew.getParamDapen() != null)
+//                    imCompanyOld.setParamDapen(companyNew.getParamDapen());
+//                else
+//                    imCompanyOld.setParamDapen(BigDecimal.valueOf(0.0));
+//
+//                if (companyNew.getParamDapenPegawai() != null)
+//                    imCompanyOld.setParamDapenPegawai(companyNew.getParamDapenPegawai());
+//                else
+//                    imCompanyOld.setParamDapenPegawai(BigDecimal.valueOf(0.0));
+
+                if (companyNew.getBiayaJabatan() != null)
+                    imCompanyOld.setBiayaJabatan(companyNew.getBiayaJabatan());
+                else
+                    imCompanyOld.setBiayaJabatan(BigDecimal.valueOf(0.0));
+
+                if (companyNew.getRemainderJubileum() != null)
+                    imCompanyOld.setBulanJubilium(companyNew.getRemainderJubileum());
+                else
+                    imCompanyOld.setBulanJubilium(BigInteger.valueOf(0));
+                if (companyNew.getRemainderJubileum() != null)
+                    imCompanyOld.setBulanPensiun(companyNew.getRemainderPensiun());
+                else
+                    imCompanyOld.setBulanPensiun(BigInteger.valueOf(0));
+                if (companyNew.getKursDolar() != null)
+                    imCompanyOld.setKursDolar(companyNew.getKursDolar());
+                else
+                    imCompanyOld.setKursDolar(BigDecimal.valueOf(0.0));
+
+                if (companyNew.getPayrollThrPersentase() != null)
+                    imCompanyOld.setPayrollThrPersentase(companyNew.getPayrollThrPersentase());
+                else
+                    imCompanyOld.setPayrollThrPersentase(BigDecimal.valueOf(0.0));
+                if (companyNew.getPayrollPendidikanPersentase() != null)
+                    imCompanyOld.setPayrollPendidikanPersentase(companyNew.getPayrollPendidikanPersentase());
+                else
+                    imCompanyOld.setPayrollPendidikanPersentase(BigDecimal.valueOf(0.0));
+                if (companyNew.getPayrollJasprodKali() != null)
+                    imCompanyOld.setPayrollJasprodKali(companyNew.getPayrollJasprodKali());
+                else
+                    imCompanyOld.setPayrollJasprodKali(BigDecimal.valueOf(0.0));
+                if (companyNew.getMaxBpjsTk() != null)
+                    imCompanyOld.setMaxBpjsTk(companyNew.getMaxBpjsTk());
+                else
+                    imCompanyOld.setMaxBpjsTk(BigDecimal.valueOf(0.0));
+                if (companyNew.getMaxBpjsPensiun() != null)
+                    imCompanyOld.setMaxBpjsPensiun(companyNew.getMaxBpjsPensiun());
+                else
+                    imCompanyOld.setMaxBpjsPensiun(BigDecimal.valueOf(0.0));
+                if (companyNew.getMaxBpjsKesehatan() != null)
+                    imCompanyOld.setMaxBpjsKesehatan(companyNew.getMaxBpjsKesehatan());
+                else
+                    imCompanyOld.setMaxBpjsKesehatan(BigDecimal.valueOf(0.0));
+                imCompanyOld.setPeriodeGaji(companyNew.getPeriodeGaji());
 
                 imCompanyOld.setLastUpdateWho(companyNew.getLastUpdateWho());
                 imCompanyOld.setLastUpdate(companyNew.getLastUpdate());
+
+                //BARU
+                imCompanyOld.setTanggalAwalLembur(companyNew.getTanggalAwalLembur());
+                imCompanyOld.setTanggalAkhirLembur(companyNew.getTanggalAkhirLembur());
 
                 try {
                     companyDao.updateAndSave(imCompanyOld);
@@ -156,6 +208,13 @@ public class CompanyBoImpl implements CompanyBo {
             resultCompany.setStMinimumLuasan(imCompany.getMinimumLuasan().toPlainString());
             resultCompany.setRemainderJubileum(imCompany.getBulanJubilium());
             resultCompany.setRemainderPensiun(imCompany.getBulanPensiun());
+            resultCompany.setPeriodeGaji(imCompany.getPeriodeGaji());
+            resultCompany.setParamDapen(imCompany.getParamDapen());
+            resultCompany.setParamDapenPegawai(imCompany.getParamDapenPegawai());
+            resultCompany.setBiayaJabatan(imCompany.getBiayaJabatan());
+            resultCompany.setJarakAbsenMobile(imCompany.getJarakAbsenMobile());
+            resultCompany.setTanggalAwalLembur(imCompany.getTanggalAwalLembur());
+            resultCompany.setTanggalAkhirLembur(imCompany.getTanggalAkhirLembur());
         }
 
         logger.info("[CompanyBoImpl.getBranchById] end process <<<");

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.hris.transaksi.jadwalShiftKerja.model.ItHrisHistoryOnCallEntity">
+        <table name="it_hris_history_on_call" schema="public"/>
+        <attributes>
+            <id name="historyOnCallId">
+                <column name="history_on_call_id"/>
+            </id>
+            <basic name="jadwalShiftKerjaDetailId">
+                <column name="jadwal_shift_kerja_detail_id"/>
+            </basic>
+            <basic name="panggilDate">
+                <column name="panggil_date"/>
+            </basic>
+            <basic name="nip">
+                <column name="nip"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="keteranganPanggil">
+                <column name="keterangan_panggil"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

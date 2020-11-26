@@ -9,7 +9,9 @@
           p:profesiBoProxy-ref="profesiBoProxy" />
 
     <bean id="profesiBo" class="com.neurix.hris.master.profesi.bo.impl.ProfesiBoImpl"
-          p:profesiDao-ref="profesiDao" />
+          p:profesiDao-ref="profesiDao"
+          p:personilPositionDao-ref="personilPositionDao"
+    />
 
     <bean id="profesiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="profesiBo">

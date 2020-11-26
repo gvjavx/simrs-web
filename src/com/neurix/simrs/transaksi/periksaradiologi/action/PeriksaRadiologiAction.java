@@ -8,9 +8,11 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
@@ -22,8 +24,14 @@ import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -45,6 +53,15 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
     private PeriksaRadiologiBo periksaRadiologiBoProxy;
     private BranchBo branchBoProxy;
     private String idPeriksa;
+    private String ket;
+
+    public String getKet() {
+        return ket;
+    }
+
+    public void setKet(String ket) {
+        this.ket = ket;
+    }
 
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
@@ -129,6 +146,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
 
         String id = getId();
         String lab = getLab();
+        String ket = getKet();
         String userArea = CommonUtil.userBranchLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -175,6 +193,9 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 periksaLab.setUrlKtp(checkup.getUrlKtp());
                 periksaLab.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
                 periksaLab.setIdPeriksaLab(lab);
+                periksaLab.setKeterangan(ket);
+                periksaLab.setDiagnosa(checkup.getDiagnosa()+"-"+checkup.getNamaDiagnosa());
+                periksaLab.setMetodePembayaran(checkup.getMetodePembayaran());
 
                 PeriksaLab periksalb = new PeriksaLab();
                 try {
@@ -184,6 +205,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 }
                 if (periksalb.getIdPeriksaLab() != null) {
                     periksaLab.setKategoriLabName(periksalb.getKategoriLabName());
+                    periksaLab.setIdLab(periksalb.getIdLab());
                 }
 
                 setPeriksaLab(periksaLab);
@@ -235,28 +257,20 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
     @Override
     public String search() {
         logger.info("[PeriksaRadiologiAction.search] start process >>>");
-
         PeriksaLab periksaLab = getPeriksaLab();
         List<PeriksaLab> listPeriksaLabList = new ArrayList();
-
         // hanya kategori lab radiologi saja
-        periksaLab.setIdKategoriLab("KAL00000001");
+        periksaLab.setIdKategoriLab("radiologi");
         periksaLab.setBranchId(CommonUtil.userBranchLogin());
 
         try {
             listPeriksaLabList = periksaLabBoProxy.getSearchLab(periksaLab);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PeriksaRadiologiAction.search] Error when searching periksa radilogi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[PeriksaRadiologiAction.search] Error when searching periksa radilogi by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
         }
-
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listPeriksaLabList);
-
         logger.info("[PeriksaRadiologiAction.search] end process <<<");
         return "search";
     }
@@ -322,7 +336,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         return response;
     }
 
-    public CheckResponse saveDokterRadiologi(String idPeriksaLab, String idDokter) {
+    public CheckResponse saveDokterRadiologi(String idPeriksaLab, String idDokter, String urlImg, String keterangan, String data) {
 
         logger.info("[PeriksaRadiologiAction.saveRadiologi] start process >>>");
         CheckResponse response = new CheckResponse();
@@ -330,6 +344,8 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaRadiologiBo periksaRadiologiBo = (PeriksaRadiologiBo) ctx.getBean("periksaRadiologiBoProxy");
 
             PeriksaRadiologi periksaRadiologi = new PeriksaRadiologi();
             periksaRadiologi.setIdPeriksaLab(idPeriksaLab);
@@ -337,11 +353,48 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             periksaRadiologi.setLastUpdate(updateTime);
             periksaRadiologi.setLastUpdateWho(userLogin);
             periksaRadiologi.setAction("U");
+            periksaRadiologi.setIdPemeriksa(userLogin);
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            PeriksaRadiologiBo periksaRadiologiBo = (PeriksaRadiologiBo) ctx.getBean("periksaRadiologiBoProxy");
+            if(urlImg != null && !"".equalsIgnoreCase(urlImg)){
+                try {
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = decoder.decodeBuffer(urlImg);
+                    String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                    String fileName = idPeriksaLab+"-"+patten+".png";
+                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                        response.setStatus("error");
+                        response.setMessage("Buffered Image is null");
+                    } else {
+                        File f = new File(uploadFile);
+                        ImageIO.write(image, "png", f);
+                        periksaRadiologi.setUrlImg(fileName);
+                    }
+                }catch (IOException e){
+                    response.setStatus("error");
+                    response.setMessage("IO Error"+e.getMessage());
+                    return response;
+                }
+            }
+
             response = periksaRadiologiBo.saveDokterRadiologi(periksaRadiologi);
-
+            if ("just_lab".equalsIgnoreCase(keterangan)){
+                if("success".equalsIgnoreCase(response.getStatus())){
+                    CheckupDetailAction detailAction = new CheckupDetailAction();
+                    CrudResponse res = new CrudResponse();
+                    res = detailAction.closeTraksaksiPasien(data);
+                    if("success".equalsIgnoreCase(res.getStatus())){
+                        response.setStatus("success");
+                        response.setMessage("Berhasil");
+                    }else{
+                        response.setStatus("error");
+                        response.setMessage("Error"+res.getMsg());
+                    }
+                }
+            }
         } catch (GeneralBOException e) {
             logger.error("Found Error");
             response.setStatus("error");
@@ -416,18 +469,25 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             }
 
             if (periksalb.getIdPeriksaLab() != null) {
-                reportParams.put("title", "Hasil Periksa Lab " + periksalb.getKategoriLabName());
+                reportParams.put("title", "Hasil Periksa Radiologi " + periksalb.getLabName());
             }
 
             reportParams.put("area", CommonUtil.userAreaName());
             reportParams.put("unit", CommonUtil.userBranchNameLogin());
             reportParams.put("idPasien", checkup.getIdPasien());
             reportParams.put("idPeriksaLab", lab);
+            reportParams.put("id", lab);
             reportParams.put("logo", logo);
             reportParams.put("nik", checkup.getNoKtp());
             reportParams.put("nama", checkup.getNama());
-            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            if(checkup.getTglLahir() != null){
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            }
+            if(periksalb.getCreatedDate() != null){
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(periksalb.getCreatedDate());
+                reportParams.put("tglFoto", formatDate);
+            }
             if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
                 jk = "Laki-Laki";
             } else {
@@ -456,8 +516,11 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 return "search";
             }
         }
-
-        return "print_radiologi";
+        if("label".equalsIgnoreCase(getKet())){
+            return "print_label";
+        }else{
+            return "print_radiologi";
+        }
     }
 
     private String calculateAge(Date birthDate, boolean justTahun) {

@@ -4,12 +4,14 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
+import com.neurix.simrs.transaksi.tindakanrawaticd9.model.TindakanRawatICD9;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -114,6 +116,48 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
             }
         }
         return tindakanRawatList;
+    }
+
+    public List<TindakanRawat> getListTindakanRawat(String noCheckup){
+        List<TindakanRawat> rawatList = new ArrayList<>();
+        String SQL = "SELECT\n" +
+                "a.id_tindakan_rawat,\n" +
+                "a.id_tindakan,\n" +
+                "a.nama_tindakan,\n" +
+                "a.tarif,\n" +
+                "a.qty,\n" +
+                "a.tarif_total,\n" +
+                "a.id_detail_checkup,\n" +
+                "d.id_pelayanan,\n" +
+                "d.nama_pelayanan,\n" +
+                "a.created_date\n" +
+                "FROM it_simrs_tindakan_rawat a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
+                "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                "WHERE c.no_checkup = :id\n" +
+                "ORDER BY a.id_detail_checkup ASC;";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", noCheckup)
+                .list();
+        if(result.size() > 0){
+            for (Object[] obj: result){
+                TindakanRawat tindakanRawat = new TindakanRawat();
+                tindakanRawat.setIdTindakanRawat(obj[0] != null ? obj[0].toString() : "");
+                tindakanRawat.setIdTindakan(obj[1] != null ? obj[1].toString() : "");
+                tindakanRawat.setNamaTindakan(obj[2] != null ? obj[2].toString() : "");
+                tindakanRawat.setTarif(obj[3] != null ? (BigInteger) obj[3] : null);
+                tindakanRawat.setQty(obj[4] != null ? (BigInteger) obj[4] : null);
+                tindakanRawat.setTarifTotal(obj[5] != null ? (BigInteger) obj[5] : null);
+                tindakanRawat.setIdDetailCheckup(obj[6] != null ? obj[6].toString() : "");
+                tindakanRawat.setIdPelayanan(obj[7] != null ? obj[7].toString() : "");
+                tindakanRawat.setNamaPelayanan(obj[8] != null ? obj[8].toString() : "");
+                tindakanRawat.setCreatedDate(obj[9] != null ? (Timestamp) obj[9] : null);
+                rawatList.add(tindakanRawat);
+            }
+        }
+        return rawatList;
     }
 
     public String getNextTindakanRawatId(){

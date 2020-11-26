@@ -112,7 +112,7 @@
 
 
 
-                <legend align="left">Delete Skala Gaji Pensiun</legend>
+                <legend align="left">Delete Payroll Skala Gaji Pensiun</legend>
 
 
                 <table>
@@ -126,7 +126,7 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Id :</small></label>
+                            <label class="control-label"><small>ID :</small></label>
                         </td>
                         <td>
                             <table>
@@ -141,15 +141,21 @@
                         </td>
                         <td>
                             <table>
-                                <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGajiPensiunRni.golonganId" disabled="true"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
                                     <s:textfield  id="golonganId1" name="payrollSkalaGajiPensiunRni.golonganName" readonly="true" required="true"  cssClass="form-control"/>
-                                    <s:textfield cssStyle="display: none"  id="golonganId12" name="payrollSkalaGajiPensiunRni.golonganId" readonly="true" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tipe Dapen :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield  id="tipeDapenId1" name="payrollSkalaGajiPensiunRni.tipeDapenName" readonly="true" required="true"  cssClass="form-control"/>
 
+                            </table>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <label class="control-label"><small>Poin :</small></label>

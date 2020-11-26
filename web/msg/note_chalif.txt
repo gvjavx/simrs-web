@@ -1,0 +1,240 @@
+-- 2020-06-15
+    ALTER TABLE public.im_simrs_dokter ADD flag_tele VARCHAR(1) NULL;
+    ALTER TABLE public.it_simrs_antrian_telemedic ADD keluhan text NULL;
+
+-- 2020-06-16
+    CREATE SEQUENCE seq_kurir;
+
+
+    -- Table: public.im_simrs_kurir
+
+    -- DROP TABLE public.im_simrs_kurir;
+
+    CREATE TABLE public.im_simrs_kurir
+    (
+      id_kurir character varying(30) NOT NULL,
+      nama character varying(100),
+      no_ktp character varying(100),
+      no_polisi character varying(10),
+      flag character varying(1),
+      created_date timestamp without time zone,
+      created_who character varying(100),
+      last_update timestamp without time zone,
+      last_update_who character varying(100),
+      action character varying(1),
+      flag_ready character varying(1),
+      no_telp character varying(100),
+      password character varying(8),
+      branch_id character varying(5),
+      CONSTRAINT im_simrs_kurir_pkey PRIMARY KEY (id_kurir)
+    )
+    WITH (
+      OIDS=FALSE
+    );
+    ALTER TABLE public.im_simrs_kurir
+      OWNER TO postgres;
+
+
+
+-- 2020-06-18
+    ALTER TABLE public.it_simrs_pembayaran_online ADD alamat text NULL;
+
+
+-- 2020-06-23
+    ALTER TABLE public.it_simrs_pengiriman_obat ADD lat VARCHAR(200) NULL,
+                                                  ADD lon VARCHAR(200) NULL;
+
+    ALTER TABLE public.im_simrs_kurir ADD lat VARCHAR(200) NULL
+                                      ADD lon VARCHAR(200) NULL;
+
+   ALTER TABLE public.it_simrs_antrian_telemedic ADD lat VARCHAR(200) NULL,
+                                                ADD lon VARCHAR(200) NULL,
+                                                ADD alamat text NULL,
+                                                ADD jenis_pengambilan VARCHAR(15) NULL,
+                                                ADD no_telp VARCHAR(15) NULL;
+
+
+
+-- 2020-06-29
+    ALTER TABLE public.it_simrs_antrian_telemedic ADD jenis_pembayaran VARCHAR(50) NULL,
+
+
+-- 2020-06-29
+    ALTER TABLE public.it_simrs_antrian_telemedic ADD no_rujukan VARCHAR(100) NULL,
+                                                  ADD jenis_rujukan VARCHAR(10) NULL
+<<< //
+
+// 2020-07-03 >>>
+
+    ALTER TABLE public.mt_simrs_obat_poli ADD id_jenis_obat VARCHAR(10) NULL
+<<< //
+// 2020-07-07 >>>
+
+    ALTER TABLE public.it_simrs_pengiriman_obat ADD foto_kurir VARCHAR(100) NULL
+<<< //
+
+// 2020-07-09 >>>
+
+    INSERT INTO im_hris_tipe_notif (tipe_notif_id, tipe_notif_name, flag, action)
+    VALUES ('TN10', 'Telemedic', 'Y', 'C')
+
+    INSERT INTO im_hris_tipe_notif (tipe_notif_id, tipe_notif_name, flag, action)
+    VALUES ('TN11', 'E-Obat', 'Y', 'C')
+
+    INSERT INTO im_hris_tipe_notif (tipe_notif_id, tipe_notif_name, flag, action)
+    VALUES ('TN12', 'Pengiriman Obat', 'Y', 'C')
+<<< //
+
+// 2020-07-22 >>>
+
+  ALTER TABLE public.im_simrs_dokter ADD kuota_tele VARCHAR(5) NULL,
+  ALTER TABLE public.it_simrs_pengiriman_obat ADD keterangan TEXT NULL,
+
+<<< //
+
+// 2020-08-03 >>>
+
+-- Table: im_simrs_rekening_telemedic
+
+-- DROP TABLE im_simrs_rekening_telemedic;
+
+CREATE TABLE im_simrs_rekening_telemedic
+(
+  id_rekening character varying(20) NOT NULL,
+  pembayaran_id character varying(20),
+  pembayaran_name character varying(20),
+  no_rekening character varying(20),
+  nama_rekening character varying(100),
+  coa character varying(20),
+  branch_id character varying(10),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(20),
+  last_update timestamp without time zone,
+  last_update_who character varying(20),
+  CONSTRAINT im_simrs_rekening_telemedic_pkey PRIMARY KEY (id_rekening)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE im_simrs_rekening_telemedic
+  OWNER TO postgres;
+
+
+-- Sequence: public.seq_rekening_telemedic
+
+-- DROP SEQUENCE public.seq_rekening_telemedic;
+
+CREATE SEQUENCE public.seq_rekening_telemedic
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE public.seq_rekening_telemedic
+  OWNER TO postgres;
+
+ ALTER TABLE public.it_simrs_antrian_telemedic ADD id_rekening VARCHAR(20) NULL
+ ALTER TABLE public.it_simrs_pembayaran_online ADD id_rekening VARCHAR(20) NULL;
+ ALTER TABLE public.it_simrs_antrian_telemedic ADD keluhan TEXT NULL
+ ALTER TABLE public.it_simrs_antrian_telemedic ADD kode_bank VARCHAR(100) NULL
+ ALTER TABLE public.it_simrs_pengiriman_obat foto_kirim
+
+<<< //
+// 2020-08-03 >>>
+
+-- Table: public.it_simrs_video_rm
+
+-- DROP TABLE public.it_simrs_video_rm;
+
+CREATE TABLE public.it_simrs_video_rm
+(
+  id_video_rm character varying(20) NOT NULL,
+  path character varying(300),
+  id_antrian_telemedic character varying(20),
+  id_detail_checkup character varying(20),
+  tipe_video character varying(20),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying,
+  flag character varying(1),
+  action character varying(1),
+  CONSTRAINT it_simrs_video_rm_pkey PRIMARY KEY (id_video_rm)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_video_rm
+  OWNER TO postgres;
+
+
+  -- Sequence: public.seq_video_rm
+
+  -- DROP SEQUENCE public.seq_video_rm;
+
+  CREATE SEQUENCE public.seq_video_rm
+    INCREMENT 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1;
+  ALTER TABLE public.seq_video_rm
+    OWNER TO postgres;
+
+
+<<< //
+--2020-09-15
+-- Table: public.it_hris_mesin_absensi_detail
+
+-- DROP TABLE public.it_hris_mesin_absensi_detail;
+
+CREATE TABLE public.it_hris_mesin_absensi_detail_oncall
+(
+  oncall_mesin_absensi_detail_id character varying(20) NOT NULL,
+  nip character varying(20),
+  scan_date timestamp without time zone,
+  verify_mode character varying(2),
+  action character varying(1),
+  flag character varying(1),
+  last_update timestamp without time zone,
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update_who character varying(100),
+  CONSTRAINT oncall_mesin_absensi_detail_id_pkey PRIMARY KEY (oncall_mesin_absensi_detail_id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_hris_mesin_absensi_detail_oncall
+  OWNER TO postgres;
+
+--2020-09-21
+  ALTER TABLE public.im_branches ADD lat VARCHAR(100) NULL
+  ALTER TABLE public.im_branches ADD lon VARCHAR(100) NULL
+
+--2020-09-29
+  ALTER TABLE public.im_company ADD jarak_absen_mobile BIGINT NULL
+
+  UPDATE public.im_branches SET lat='-7.4580813' WHERE branch_id = 'KP';
+  UPDATE public.im_branches SET lon='112.436756' WHERE branch_id = 'KP';
+
+  UPDATE public.im_branches SET lat='-7.4809955' WHERE branch_id = 'RS01';
+  UPDATE public.im_branches SET lon='112.4328425' WHERE branch_id = 'RS01';
+
+  UPDATE public.im_branches SET lat='-7.7629538' WHERE branch_id = 'RS02';
+  UPDATE public.im_branches SET lon='112.1957391' WHERE branch_id = 'RS02';
+
+  UPDATE public.im_branches SET lat='-8.1681698' WHERE branch_id = 'RS03';
+  UPDATE public.im_branches SET lon='113.7028963' WHERE branch_id = 'RS03';
+
+  UPDATE public.im_branches SET lat='-8.1255408' WHERE branch_id = 'RS04';
+  UPDATE public.im_branches SET lon='112.2053721' WHERE branch_id = 'RS04';
+
+  UPDATE public.im_company SET jarak_absen_mobile = 300
+
+
+
+
+

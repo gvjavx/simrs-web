@@ -2,6 +2,7 @@ package com.neurix.hris.master.biodata.model;
 
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
+import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity;
 import com.neurix.hris.master.payrollDanaPensiun.model.ImPayrollDanaPensiunEntity;
 import com.neurix.hris.master.provinsi.model.ImDesaEntity;
 import com.neurix.hris.master.provinsi.model.ImKecamatanEntity;
@@ -72,6 +73,75 @@ public class ImBiodataEntity implements Serializable {
     private String flagTunjanganSiaga;
     private String flagTunjanganProfesional;
 
+    private String positionPltId;
+    private String flagPlt;
+    private String flagPjs;
+    private String flagFingerMobile;
+    private String flagTunjRumah;
+    private String flagTunjAir;
+    private String flagTunjListrik;
+    private String flagTunjBbm;
+    private String flagBpjsKs;
+    private String flagBpjsTk;
+    private String flagPercobaan;
+    private String nipLama;
+    private String flagDokterKso;
+
+    private String divisiName;
+    private String jenisPegawai;
+
+    //BARU
+    private BigDecimal peralihanGapok;
+    private BigDecimal peralihanSankhus;
+    private BigDecimal peralihanTunjangan;
+
+    public BigDecimal getPeralihanGapok() {
+        return peralihanGapok;
+    }
+
+    public void setPeralihanGapok(BigDecimal peralihanGapok) {
+        this.peralihanGapok = peralihanGapok;
+    }
+
+    public BigDecimal getPeralihanSankhus() {
+        return peralihanSankhus;
+    }
+
+    public void setPeralihanSankhus(BigDecimal peralihanSankhus) {
+        this.peralihanSankhus = peralihanSankhus;
+    }
+
+    public BigDecimal getPeralihanTunjangan() {
+        return peralihanTunjangan;
+    }
+
+    public void setPeralihanTunjangan(BigDecimal peralihanTunjangan) {
+        this.peralihanTunjangan = peralihanTunjangan;
+    }
+
+    public String getJenisPegawai() {
+        return jenisPegawai;
+    }
+
+    public void setJenisPegawai(String jenisPegawai) {
+        this.jenisPegawai = jenisPegawai;
+    }
+
+    public String getFlagDokterKso() {
+        return flagDokterKso;
+    }
+
+    public void setFlagDokterKso(String flagDokterKso) {
+        this.flagDokterKso = flagDokterKso;
+    }
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
+    }
 
     public String getFlagTunjanganSupervisi() {
         return flagTunjanganSupervisi;
@@ -335,6 +405,16 @@ public class ImBiodataEntity implements Serializable {
     private ImDesaEntity imDesaEntity ;
     private ImGolonganEntity imGolonganEntity;
     private ItPersonilPositionEntity itPersonilPositionEntity;
+
+    private ImGolonganPkwtEntity imGolonganPkwtEntity;
+
+    public ImGolonganPkwtEntity getImGolonganPkwtEntity() {
+        return imGolonganPkwtEntity;
+    }
+
+    public void setImGolonganPkwtEntity(ImGolonganPkwtEntity imGolonganPkwtEntity) {
+        this.imGolonganPkwtEntity = imGolonganPkwtEntity;
+    }
 
     public String getShift() {
         return shift;
@@ -950,4 +1030,99 @@ public class ImBiodataEntity implements Serializable {
         this.lastUpdateWho = lastUpdateWho;
     }
 
+    public String getFlagBpjsKs() {
+        return flagBpjsKs;
+    }
+
+    public void setFlagBpjsKs(String flagBpjsKs) {
+        this.flagBpjsKs = flagBpjsKs;
+    }
+
+    public String getFlagBpjsTk() {
+        return flagBpjsTk;
+    }
+
+    public void setFlagBpjsTk(String flagBpjsTk) {
+        this.flagBpjsTk = flagBpjsTk;
+    }
+
+    public String getFlagFingerMobile() {
+        return flagFingerMobile;
+    }
+
+    public void setFlagFingerMobile(String flagFingerMobile) {
+        this.flagFingerMobile = flagFingerMobile;
+    }
+
+    public String getFlagPercobaan() {
+        return flagPercobaan;
+    }
+
+    public void setFlagPercobaan(String flagPercobaan) {
+        this.flagPercobaan = flagPercobaan;
+    }
+
+    public String getFlagPjs() {
+        return flagPjs;
+    }
+
+    public void setFlagPjs(String flagPjs) {
+        this.flagPjs = flagPjs;
+    }
+
+    public String getFlagPlt() {
+        return flagPlt;
+    }
+
+    public void setFlagPlt(String flagPlt) {
+        this.flagPlt = flagPlt;
+    }
+
+    public String getFlagTunjAir() {
+        return flagTunjAir;
+    }
+
+    public void setFlagTunjAir(String flagTunjAir) {
+        this.flagTunjAir = flagTunjAir;
+    }
+
+    public String getFlagTunjBbm() {
+        return flagTunjBbm;
+    }
+
+    public void setFlagTunjBbm(String flagTunjBbm) {
+        this.flagTunjBbm = flagTunjBbm;
+    }
+
+    public String getFlagTunjListrik() {
+        return flagTunjListrik;
+    }
+
+    public void setFlagTunjListrik(String flagTunjListrik) {
+        this.flagTunjListrik = flagTunjListrik;
+    }
+
+    public String getFlagTunjRumah() {
+        return flagTunjRumah;
+    }
+
+    public void setFlagTunjRumah(String flagTunjRumah) {
+        this.flagTunjRumah = flagTunjRumah;
+    }
+
+    public String getPositionPltId() {
+        return positionPltId;
+    }
+
+    public void setPositionPltId(String positionPltId) {
+        this.positionPltId = positionPltId;
+    }
+
+    public String getNipLama() {
+        return nipLama;
+    }
+
+    public void setNipLama(String nipLama) {
+        this.nipLama = nipLama;
+    }
 }

@@ -40,6 +40,21 @@
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
 
+        <property name="idPelayanan">
+            <column name="id_pelayanan" sql-type="varchar" length="100" not-null="false" />
+        </property>
+
+        <property name="jenisDpjp">
+            <column name="jenis_dpjp"/>
+        </property>
+        <property name="flagApprove">
+            <column name="flag_approve"/>
+        </property>
+        <property name="keterangan">
+            <column name="keterangan"/>
+        </property>
+
+
 
     </class>
 </hibernate-mapping>

@@ -101,7 +101,6 @@
     <section class="content-header">
         <h1>
             Branch Information
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -440,16 +439,33 @@
                                                 Save
                                             </sj:submit>
 
-                                            <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                            <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                       closeTopics="closeDialog" modal="true"
                                                        resizable="false"
-                                                       height="250" width="600" autoOpen="false" title="Saving ...">
+                                                       height="250" width="600" autoOpen="false"
+                                                       title="Search Data ...">
                                                 Please don't close this window, server is processing your request ...
-                                                </br>
-                                                </br>
-                                                </br>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>"
-                                                     name="image_indicator_write">
+                                                <br>
+                                                <center>
+                                                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                         name="image_indicator_write">
+                                                    <br>
+                                                    <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                         name="image_indicator_write">
+                                                </center>
                                             </sj:dialog>
+                                            <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                                       <%--resizable="false"--%>
+                                                       <%--height="250" width="600" autoOpen="false" title="Saving ...">--%>
+                                                <%--Please don't close this window, server is processing your request ...--%>
+                                                <%--</br>--%>
+                                                <%--</br>--%>
+                                                <%--</br>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>"--%>
+                                                     <%--name="image_indicator_write">--%>
+                                            <%--</sj:dialog>--%>
 
                                             <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
                                                        height="200" width="400" autoOpen="false" title="Infomation Dialog"
@@ -507,16 +523,33 @@
                                                 Delete
                                             </sj:submit>
 
-                                            <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
+                                            <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                       closeTopics="closeDialog" modal="true"
                                                        resizable="false"
-                                                       height="250" width="600" autoOpen="false" title="Deleting ...">
+                                                       height="250" width="600" autoOpen="false"
+                                                       title="Search Data ...">
                                                 Please don't close this window, server is processing your request ...
-                                                </br>
-                                                </br>
-                                                </br>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-trash.gif"/>"
-                                                     name="image_indicator_trash">
+                                                <br>
+                                                <center>
+                                                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                         name="image_indicator_write">
+                                                    <br>
+                                                    <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                         name="image_indicator_write">
+                                                </center>
                                             </sj:dialog>
+                                            <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                                       <%--resizable="false"--%>
+                                                       <%--height="250" width="600" autoOpen="false" title="Deleting ...">--%>
+                                                <%--Please don't close this window, server is processing your request ...--%>
+                                                <%--</br>--%>
+                                                <%--</br>--%>
+                                                <%--</br>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/indicator-trash.gif"/>"--%>
+                                                     <%--name="image_indicator_trash">--%>
+                                            <%--</sj:dialog>--%>
 
                                             <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
                                                        height="200" width="400" autoOpen="false" title="Infomation Dialog"
@@ -547,17 +580,34 @@
                                         </s:elseif>
 
                                         <s:else>
-                                            <sj:dialog id="waiting_dialog" openTopics="showDialog1" closeTopics="closeDialog" modal="true"
+                                            <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                       closeTopics="closeDialog" modal="true"
                                                        resizable="false"
-                                                       height="250" width="600" autoOpen="false" title="Searching...">
+                                                       height="250" width="600" autoOpen="false"
+                                                       title="Search Data ...">
                                                 Please don't close this window, server is processing your request ...
-                                                </br>
-                                                </br>
-                                                </br>
+                                                <br>
                                                 <center>
-                                                    <img border="0" src="<s:url value="/pages/images/loading11.gif"/>" name="image_indicator_read">
+                                                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                         name="image_indicator_write">
+                                                    <br>
+                                                    <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                         name="image_indicator_write">
                                                 </center>
                                             </sj:dialog>
+                                            <%--<sj:dialog id="waiting_dialog" openTopics="showDialog1" closeTopics="closeDialog" modal="true"--%>
+                                                       <%--resizable="false"--%>
+                                                       <%--height="250" width="600" autoOpen="false" title="Searching...">--%>
+                                                <%--Please don't close this window, server is processing your request ...--%>
+                                                <%--</br>--%>
+                                                <%--</br>--%>
+                                                <%--</br>--%>
+                                                <%--<center>--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/loading11.gif"/>" name="image_indicator_read">--%>
+                                                <%--</center>--%>
+                                            <%--</sj:dialog>--%>
                                             <sj:submit type="button" cssClass="btn btn-primary" formIds="branchForm" id="search"
                                                        name="search"
                                                        onClickTopics="showDialog" onCompleteTopics="closeDialog">
@@ -585,62 +635,64 @@
 
                                 </div>
                                 <br>
-                                <s:if test="!isAddOrEdit() && !isDelete()">
-                                    <table align="center">
-                                        <tr>
-                                    <td align="center">
+                                <center>
+                                    <s:if test="!isAddOrEdit() && !isDelete()">
+                                        <table align="center">
+                                            <tr>
+                                                <td align="center">
 
-                                        <s:set name="listOfBranches" value="#session.listOfResult" scope="request"/>
-                                        <display:table name="listOfBranches" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag.action" id="row" export="true" pagesize="20" style="font-size:12">
+                                                    <s:set name="listOfBranches" value="#session.listOfResult" scope="request"/>
+                                                    <display:table name="listOfBranches" class="table table-condensed table-striped table-hover"
+                                                                   requestURI="paging_displaytag.action" id="row" export="true" pagesize="20" style="font-size:12">
 
-                                            <display:column media="html" title="Edit">
-                                                <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlView" namespace="/admin/branch" action="edit_branch" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="#attr.row.branchId"/></s:param>
-                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                    </s:url>
-                                                    <s:a href="%{urlView}">
-                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                    </s:a>
-                                                </s:if>
-                                            </display:column>
+                                                        <display:column media="html" title="Edit">
+                                                            <s:if test="#attr.row.flagYes">
+                                                                <s:url var="urlView" namespace="/admin/branch" action="edit_branch" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.branchId"/></s:param>
+                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                </s:url>
+                                                                <s:a href="%{urlView}">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
+                                                                </s:a>
+                                                            </s:if>
+                                                        </display:column>
 
-                                            <display:column media="html" title="Delete">
-                                                <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlView" namespace="/admin/branch" action="delete_branch" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="#attr.row.branchId"/></s:param>
-                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                    </s:url>
-                                                    <s:a href="%{urlView}">
-                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                    </s:a>
-                                                </s:if>
-                                            </display:column>
+                                                        <display:column media="html" title="Delete">
+                                                            <s:if test="#attr.row.flagYes">
+                                                                <s:url var="urlView" namespace="/admin/branch" action="delete_branch" escapeAmp="false">
+                                                                    <s:param name="id"><s:property value="#attr.row.branchId"/></s:param>
+                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                </s:url>
+                                                                <s:a href="%{urlView}">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                                </s:a>
+                                                            </s:if>
+                                                        </display:column>
 
-                                            <display:column property="branchId" sortable="true" title="Id"/>
-                                            <display:column property="branchName" sortable="true" title="Branch.Name"/>
-                                            <display:column property="branchAddress" sortable="true" title="Address"/>
-                                            <display:column property="stUmr" sortable="true" title="Umr"/>
-                                            <display:column property="stMinBpjsKs" sortable="true" title="Min BPJS Ks"/>
-                                            <display:column property="stMaxBpjsKs" sortable="true" title="Max BPJS Ks"/>
-                                            <display:column property="stMinBpjsTk" sortable="true" title="Min BPJS Tk"/>
-                                            <display:column property="stMaxBpjsTk" sortable="true" title="Min Bpjs Tk"/>
-                                            <display:column property="stPercentKsKary" sortable="true" title="Persen BPJS KS Kary"/>
-                                            <display:column property="stPercentKsPers" sortable="true" title="Persen BPJS KS Pers"/>
-                                            <display:column property="stPercentTkKary" sortable="true" title="Persen BPJS Tk Kary"/>
-                                            <display:column property="stPercentTkPers" sortable="true" title="Persen BPJS TK Pers"/>
+                                                        <display:column property="branchId" sortable="true" title="Id"/>
+                                                        <display:column property="branchName" sortable="true" title="Branch.Name"/>
+                                                        <display:column property="branchAddress" sortable="true" title="Address"/>
+                                                        <display:column property="stUmr" sortable="true" title="Umr"/>
+                                                        <display:column property="stMinBpjsKs" sortable="true" title="Min BPJS Ks"/>
+                                                        <display:column property="stMaxBpjsKs" sortable="true" title="Max BPJS Ks"/>
+                                                        <display:column property="stMinBpjsTk" sortable="true" title="Min BPJS Tk"/>
+                                                        <display:column property="stMaxBpjsTk" sortable="true" title="Min Bpjs Tk"/>
+                                                        <display:column property="stPercentKsKary" sortable="true" title="Persen BPJS KS Kary"/>
+                                                        <display:column property="stPercentKsPers" sortable="true" title="Persen BPJS KS Pers"/>
+                                                        <display:column property="stPercentTkKary" sortable="true" title="Persen BPJS Tk Kary"/>
+                                                        <display:column property="stPercentTkPers" sortable="true" title="Persen BPJS TK Pers"/>
 
-                                            <display:setProperty name="paging.banner.item_name">Branch</display:setProperty>
-                                            <display:setProperty name="paging.banner.items_name">Branches</display:setProperty>
-                                            <display:setProperty name="export.excel.filename">Branches.xls</display:setProperty>
-                                            <display:setProperty name="export.csv.filename">Branches.csv</display:setProperty>
-                                            <display:setProperty name="export.pdf.filename">Branches.pdf</display:setProperty>
-                                        </display:table>
-                                    </td>
-                                </tr>
-                                    </table>
-                                </s:if>
+                                                        <display:setProperty name="paging.banner.item_name">Branch</display:setProperty>
+                                                        <display:setProperty name="paging.banner.items_name">Branches</display:setProperty>
+                                                        <display:setProperty name="export.excel.filename">Branches.xls</display:setProperty>
+                                                        <display:setProperty name="export.csv.filename">Branches.csv</display:setProperty>
+                                                        <display:setProperty name="export.pdf.filename">Branches.pdf</display:setProperty>
+                                                    </display:table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </s:if>
+                                </center>
                             </s:form>
                         </div>
                     </div>

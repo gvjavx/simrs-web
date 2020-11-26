@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.jurnal.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.jurnal.bo.JurnalBo;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.jurnal.model.JurnalDetail;
@@ -15,9 +16,7 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Ferdi on 05/02/2015.
@@ -478,6 +477,28 @@ public class JurnalAction extends BaseMasterAction {
             }
         }
         return status;
+    }
+
+
+    public JurnalDetail getBudgetTerpakai(String branchId,String divisiId,String tanggal,String noBudgetting,String budget,String budgetSdBulanIni){
+        JurnalDetail data = new JurnalDetail();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JurnalBo jurnalBo = (JurnalBo) ctx.getBean("jurnalBoProxy");
+        String[] arrTanggal = tanggal.split("-");
+        String[] coa = noBudgetting.split("-");
+        data = jurnalBo.getBudgetTerpakai(branchId,divisiId,arrTanggal[2],arrTanggal[1],coa[3],budget,budgetSdBulanIni);
+
+        return data;
+    }
+
+    public JurnalDetail getBudgetInvestasiTerpakai(String branchId,String divisiId,String tanggal,String idInvestasi,String budget,String budgetSdBulanIni){
+        JurnalDetail data = new JurnalDetail();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        JurnalBo jurnalBo = (JurnalBo) ctx.getBean("jurnalBoProxy");
+        String[] arrTanggal = tanggal.split("-");
+        data = jurnalBo.getBudgetInvestasiTerpakai(branchId,divisiId,arrTanggal[0],arrTanggal[1],idInvestasi,budget,budgetSdBulanIni);
+
+        return data;
     }
 
     public String paging(){

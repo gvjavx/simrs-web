@@ -1,10 +1,12 @@
 package com.neurix.simrs.master.obat.dao;
 
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -76,6 +78,11 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 criteria.addOrder(Order.asc("expiredDate"));
             } else {
                 criteria.addOrder(Order.asc("idObat"));
+            }
+
+            // limit
+            if (mapCriteria.get("limit") != null){
+                criteria.setMaxResults(Integer.valueOf(mapCriteria.get("limit").toString()));
             }
         }
 
@@ -333,7 +340,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return listOfResults;
     }
 
-    public Obat getSumStockObatGudangById(String id, String ket) {
+    public Obat getSumStockObatGudangById(String id, String ket, String branchId) {
 
         Obat obat = new Obat();
 
@@ -352,7 +359,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", id)
-                    .setParameter("branchId", CommonUtil.userBranchLogin())
+                    .setParameter("branchId", branchId)
                     .list();
 
             if (results.size() > 0) {
@@ -391,12 +398,12 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             List<Object[]> results1 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLMaster)
                     .setParameter("id1", id)
-                    .setParameter("branchId1", CommonUtil.userBranchLogin())
+                    .setParameter("branchId1", branchId)
                     .list();
 
             List<Object[]> results2 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLPoli)
                     .setParameter("id2", id)
-                    .setParameter("branchId2", CommonUtil.userBranchLogin())
+                    .setParameter("branchId2", branchId)
                     .list();
 
             String idObat = "";
@@ -517,7 +524,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 flag = bean.getFlag();
             }
-            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId()) && !CommonConstant.BRANCH_KP.equalsIgnoreCase(bean.getBranchId())) {
                 branchId = bean.getBranchId();
             }
 
@@ -532,9 +539,16 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "SUM(a.qty_biji) as biji, \n" +
                     "a.merk, \n" +
                     "a.flag, \n" +
-                    "a.min_stok \n" +
+                    "c.min_stok, \n" +
+                    "c.flag_kronis, \n" +
+                    "c.flag_generic, \n" +
+                    "c.flag_bpjs, \n" +
+                    "d.standar_margin, \n" +
+                    "c.id_kategori_persediaan \n" +
                     "FROM im_simrs_obat a\n" +
-                    "INNER JOIN (SELECT id_obat FROM im_simrs_obat_gejala WHERE id_jenis_obat LIKE :idJenis GROUP BY id_obat) b ON a.id_obat = b.id_obat\n" +
+                    "LEFT JOIN (SELECT id_obat FROM im_simrs_obat_gejala WHERE id_jenis_obat LIKE :idJenis GROUP BY id_obat) b ON a.id_obat = b.id_obat\n" +
+                    "LEFT JOIN im_simrs_header_obat c ON a.id_obat = c.id_obat\n" +
+                    "LEFT JOIN im_simrs_margin_obat d ON a.id_obat = d.id_obat\n" +
                     "WHERE a.branch_id LIKE :branchId\n" +
                     "AND a.id_pabrik LIKE :idPabrik\n" +
                     "AND a.id_obat LIKE :idObat\n" +
@@ -546,7 +560,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "a.lembar_per_box,\n" +
                     "a.biji_per_lembar," +
                     "a.merk,\n" +
-                    "a.flag, a.min_stok\n";
+                    "a.flag, c.min_stok, c.flag_kronis, c.flag_generic, c.flag_bpjs, d.standar_margin, c.id_kategori_persediaan";
 
             List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("branchId", branchId)
@@ -570,6 +584,11 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     obat.setMerk(obj[8] == null ? "" : obj[8].toString());
                     obat.setFlag(obj[9] == null ? "" : obj[9].toString());
                     obat.setMinStok(obj[10] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[10].toString())));
+                    obat.setFlagKronis(obj[11] == null ? "N" : obj[11].toString());
+                    obat.setFlagGeneric(obj[12] == null ? "N" : obj[12].toString());
+                    obat.setFlagBpjs(obj[13] == null ? "N" : obj[13].toString());
+                    obat.setMargin(obj[14] == null ? 0 : (Integer) obj[14]);
+                    obat.setIdKategoriPersediaan(obj[15] == null ? "" : (String) obj[15]);
                     obat.setJenisObat(getObatGejalaByIdObat(obj[1].toString()));
 
                     if (obat.getQtyBox() != null && obat.getMinStok() != null) {
@@ -679,19 +698,33 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         List<Obat> obatList = new ArrayList<>();
         if (query != null && branch != null) {
             String param = "%" + query + "%";
-            String SQL = "SELECT id_obat, nama_obat, id_pabrik\n" +
-                    "FROM im_simrs_obat\n" +
-                    "WHERE nama_obat ILIKE :id AND branch_id = :branchId\n" +
-                    "GROUP BY id_obat, nama_obat, id_pabrik\n" +
-                    "UNION\n" +
-                    "SELECT id_obat, nama_obat, id_pabrik\n" +
-                    "FROM im_simrs_obat\n" +
-                    "WHERE id_pabrik ILIKE :id AND branch_id = :branchId\n" +
-                    "GROUP BY id_obat, nama_obat, id_pabrik\n";
+//            String SQL = "SELECT id_obat, nama_obat, id_pabrik\n" +
+//                    "FROM im_simrs_obat\n" +
+//                    "WHERE nama_obat ILIKE :id AND branch_id = :branchId\n" +
+//                    "GROUP BY id_obat, nama_obat, id_pabrik\n" +
+//                    "UNION\n" +
+//                    "SELECT id_obat, nama_obat, id_pabrik\n" +
+//                    "FROM im_simrs_obat\n" +
+//                    "WHERE id_pabrik ILIKE :id AND branch_id = :branchId\n" +
+//                    "GROUP BY id_obat, nama_obat, id_pabrik\n";
+
+            String SQL = "SELECT \n" +
+                    "id_obat,\n" +
+                    "nama_obat,\n" +
+                    "id_pabrik,\n" +
+                    "lembar_per_box,\n" +
+                    "biji_per_lembar,\n" +
+                    "flag_generic,\n" +
+                    "min_stok,\n" +
+                    "merk,\n" +
+                    "flag_bpjs\n" +
+                    "FROM im_simrs_header_obat WHERE flag = 'Y'\n" +
+                    "AND nama_obat ILIKE :id \n" +
+                    "OR id_pabrik ILIKE :id ";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", param)
-                    .setParameter("branchId", branch)
+//                    .setParameter("branchId", branch)
                     .list();
 
             if (results.size() > 0) {
@@ -700,11 +733,18 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     obat.setIdObat(obj[0] == null ? "" : obj[0].toString());
                     obat.setNamaObat(obj[1] == null ? "" : obj[1].toString());
                     obat.setIdPabrik(obj[2] == null ? "" : obj[2].toString());
-                    Obat obt = getEntityObatById(obj[0].toString());
-                    obat.setLembarPerBox(obt.getLembarPerBox());
-                    obat.setBijiPerLembar(obt.getBijiPerLembar());
-                    obat.setFlagKronis(obt.getFlagKronis());
-                    obat.setFlagBpjs(obt.getFlagBpjs());
+                    obat.setLembarPerBox(obj[3] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[3]);
+                    obat.setBijiPerLembar(obj[4] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[4]);
+                    obat.setFlagGeneric(obj[5] == null ? "" : obj[5].toString());
+                    obat.setMinStok(obj[6] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[6]);
+                    obat.setMerk(obj[7] == null ? "" : obj[7].toString());
+                    obat.setFlagBpjs(obj[8] == null ? "" : obj[8].toString());
+
+//                    Obat obt = getEntityObatById(obj[0].toString());
+//                    obat.setLembarPerBox(obt.getLembarPerBox());
+//                    obat.setBijiPerLembar(obt.getBijiPerLembar());
+//                    obat.setFlagKronis(obt.getFlagKronis());
+//                    obat.setFlagBpjs(obt.getFlagBpjs());
                     obatList.add(obat);
                 }
             }
@@ -784,5 +824,191 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             }
         }
         return obat;
+    }
+
+    public List<Aging> getAgingStokObat(String branchId, String idPelayanan, String periode){
+
+        if (idPelayanan == null || "".equalsIgnoreCase(idPelayanan)){
+            idPelayanan = "%";
+        }
+
+        String SQL = "SELECT\n" +
+                "br.branch_id,\n" +
+                "a.*,\n" +
+                "pl.nama_pelayanan,\n" +
+                "br.branch_name,\n" +
+                "ts.qty as qty_awal,\n" +
+                "ob.id_obat\n" +
+                "FROM\n" +
+                "(\n" +
+                "        SELECT \n" +
+                "        a.id_barang,\n" +
+                "        a.nama_obat,\n" +
+                "        CASE WHEN a.qty_d - a.qty_k <= 0 THEN 0 ELSE a.qty_d - a.qty_k END AS qty,\n" +
+                "        a.registered_date,\n" +
+                "        a.id_pelayanan\n" +
+                "        FROM\n" +
+                "        (\n" +
+                "                SELECT\n" +
+                "                tso.id_barang,\n" +
+                "                tso.nama_obat,\n" +
+                "                SUM(tso.qty_d) AS qty_d,\n" +
+                "                SUM(tso.qty_k) AS qty_k,\n" +
+                "                tso.registered_date,\n" +
+                "                tso.id_pelayanan\n" +
+                "                FROM \n" +
+                "                (\n" +
+                "                        SELECT \n" +
+                "                        ts.id_barang,\n" +
+                "                        ob.nama_obat,\n" +
+                "                        CASE WHEN ts.tipe = 'D' THEN SUM(ts.qty) ELSE 0 END AS qty_d,\n" +
+                "                        CASE WHEN ts.tipe = 'K' THEN SUM(ts.qty) ELSE 0 END AS qty_k,\n" +
+                "                        ts.registered_date,\n" +
+                "                        ts.id_pelayanan\n" +
+                "                        FROM it_simrs_transaksi_stok ts\n" +
+                "                        INNER JOIN im_simrs_obat ob ON ob.id_barang = ts.id_barang\n" +
+                "                        WHERE to_date( cast(ts.registered_date as TEXT), 'MM-yyyy') \n" +
+                "                        < ( to_date(:periode, 'MM-yyyy')+ Interval '1 month') \n" +
+                "                        GROUP BY \n" +
+                "                        ts.id_barang,\n" +
+                "                        ob.nama_obat,\n" +
+                "                        ts.tipe,\n" +
+                "                        ts.registered_date,\n" +
+                "                        ts.id_pelayanan\n" +
+                "                        ORDER BY ts.id_pelayanan, ob.nama_obat, ts.registered_date, ts.id_barang\n" +
+                "                ) tso\n" +
+                "                GROUP BY\n" +
+                "                tso.id_barang,\n" +
+                "                tso.nama_obat,\n" +
+                "                tso.registered_date,\n" +
+                "                tso.id_pelayanan\n" +
+                "                ORDER BY id_pelayanan, registered_date, id_barang\n" +
+                "        ) a\n" +
+                "        GROUP BY\n" +
+                "        a.id_barang,\n" +
+                "        a.nama_obat,\n" +
+                "        a.registered_date,\n" +
+                "        a.id_pelayanan,\n" +
+                "        a.qty_d,\n" +
+                "        a.qty_k\n" +
+                "        ORDER BY id_pelayanan, registered_date, id_barang\n" +
+                ") a \n" +
+                "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = a.id_pelayanan\n" +
+                "INNER JOIN im_branches br ON br.branch_id = pl.branch_id\n" +
+                "INNER JOIN im_simrs_obat ob ON ob.id_barang = a.id_barang \n" +
+                "INNER JOIN (\n" +
+                "        SELECT \n" +
+                "        id_barang,\n" +
+                "        registered_date,\n" +
+                "        id_pelayanan,\n" +
+                "        SUM(qty) as qty\n" +
+                "        FROM \n" +
+                "        it_simrs_transaksi_stok\n" +
+                "        WHERE tipe = 'D'\n" +
+                "        GROUP BY\n" +
+                "        id_barang,\n" +
+                "        registered_date,\n" +
+                "        id_pelayanan\n" +
+                ") ts ON ts.id_barang = a.id_barang AND ts.registered_date = a.registered_date AND ts.id_pelayanan = a.id_pelayanan\n" +
+                "WHERE a.qty > 0\n" +
+                "AND br.branch_id LIKE :unit \n" +
+                "AND pl.id_pelayanan LIKE :pelayanan \n" +
+                "ORDER BY \n" +
+                "pl.id_pelayanan DESC, ob.id_obat, a.nama_obat, a.registered_date, a.id_barang";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("pelayanan", idPelayanan)
+                .setParameter("periode", periode)
+                .list();
+
+        List<Aging> agingList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] row : results){
+                Aging data = new Aging();
+                data.setKodeRekening((String) row[0]);
+                data.setNoNota((String) row[1]);
+                data.setTotal(BigDecimal.valueOf(Double.parseDouble(row[3].toString())));
+                data.setTglJurnal((Date) row[4]);
+                data.setMasterId((String) row[5]);
+                data.setNamaMaster((String) row[6]);
+                data.setNamaRekening((String) row[7]);
+                data.setTotalAwal((BigDecimal) row[8]);
+                data.setIdItem((String) row[9]);
+                data.setNamaItem((String) row[2]);
+                agingList.add(data);
+            }
+        }
+        return agingList;
+    }
+
+    public TransaksiStok getSumKreditByPeriodeTransaksiStok(String branchId, String idPelayanan, String periode, String idBarang){
+
+        periode = periode + "%";
+
+        String SQL = "SELECT \n" +
+                "id_pelayanan,\n" +
+                "registered_date,\n" +
+                "tipe,\n" +
+                "id_barang,\n" +
+                "SUM(qty) as total_qty\n" +
+                "FROM it_simrs_transaksi_stok\n" +
+                "WHERE branch_id LIKE :unit \n" +
+                "AND tipe = 'K'\n" +
+                "AND id_pelayanan = :pelayanan \n" +
+                "AND id_barang LIKE :idbarang \n" +
+                "AND CAST(registered_date as VARCHAR) LIKE :periode \n" +
+                "GROUP BY \n" +
+                "id_pelayanan,\n" +
+                "registered_date,\n" +
+                "tipe,\n" +
+                "id_barang";
+
+        List<Object[]> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("pelayanan", idPelayanan)
+                .setParameter("periode", periode)
+                .setParameter("idbarang", idBarang)
+                .list();
+
+        TransaksiStok transaksiStok = new TransaksiStok();
+        if (objects != null && objects.size() > 0){
+            for (Object[] obj : objects){
+                transaksiStok.setIdPelayanan(obj[0].toString());
+                transaksiStok.setRegisteredDate((Date) obj[1]);
+                transaksiStok.setTipe(obj[2].toString());
+                transaksiStok.setIdPelayanan(obj[3].toString());
+                transaksiStok.setQty(obj[4] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(String.valueOf((BigDecimal) obj[4])));
+            }
+        }
+
+        return transaksiStok;
+    }
+
+    public Obat getLastEveragePricePerBiji(String idObat, String branchId){
+
+        String SQL = "SELECT a.id_obat, a.average_harga_biji, b.harga_jual \n" +
+                "FROM im_simrs_obat a \n" +
+                "INNER JOIN mt_simrs_harga_obat b ON b.id_obat = a.id_obat\n" +
+                "WHERE a.id_obat = :id \n" +
+                "AND a.branch_id = :unit \n" +
+                "ORDER BY a.created_date DESC LIMIT 1";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("id", idObat)
+                .list();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                Obat obat = new Obat();
+                obat.setIdObat(obj[0].toString());
+                obat.setAverageHargaBiji(obj[1] == null ? new BigDecimal(0) : (BigDecimal) obj[1]);
+                obat.setHargaJual(obj[2] == null ? new BigDecimal(0) : (BigDecimal) obj[2]);
+                return obat;
+            }
+        }
+
+        return null;
     }
 }

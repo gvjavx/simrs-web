@@ -1,7 +1,9 @@
 package com.neurix.hris.transaksi.cutiPegawai.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
@@ -67,6 +69,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        criteria.add(Restrictions.eq("flagPerbaikan", "N"));
 
         // Order by
         criteria.addOrder(Order.desc("cutiPegawaiId"));
@@ -84,7 +87,8 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 .add(Restrictions.eq("cutiId", cutiId))
                 .add(Restrictions.ne("cancelFlag", "Y"))
                 .add(Restrictions.eq("approvalFlag", "Y"))
-                .addOrder(Order.desc("createdDate"))
+//                .addOrder(Order.desc("createdDate"))
+                .addOrder(Order.desc("cutiPegawaiId"))
                 .setMaxResults(1)
                 .list();
         return results;
@@ -153,6 +157,29 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 .list();
         return results;
     }
+
+    public List<ItCutiPegawaiEntity> getListCekCutiTahunan(String nip, String keterangan) throws HibernateException {
+        List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("keterangan",keterangan))
+                .add(Restrictions.eq("flagPerbaikan","Y"))
+                .add(Restrictions.eq("approvalFlag","Y"))
+                .add(Restrictions.ne("cancelFlag", "Y"))
+                .addOrder(Order.desc("cutiPegawaiId"))
+                .setMaxResults(1)
+                .list();
+        return results;
+    }
+
+    public List<ItCutiPegawaiEntity> getCekCuti(String nip) throws HibernateException {
+        List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
+
     public List<ItCutiPegawaiEntity> getListCutiPegawai(String term) throws HibernateException {
         List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
@@ -177,7 +204,8 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 .add(Restrictions.eq("cutiId",cutiId))
                 .add(Restrictions.eq("approvalFlag","Y"))
                 .add(Restrictions.ne("cancelFlag","Y"))
-                .addOrder(Order.desc("createdDate"))
+//                .addOrder(Order.desc("createdDate"))
+                .addOrder(Order.desc("cutiPegawaiId"))
                 .setMaxResults(1)
                 .list();
         return results;
@@ -502,8 +530,6 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
     public List<Biodata> getBranchDivisiPosisi(String nip) throws HibernateException {
         List<Biodata> listOfResult = new ArrayList<Biodata>();
 
-
-
         String query = "select distinct it_hris_pegawai_position.branch_id, im_position.department_id, it_hris_pegawai_position.position_id,im_position.bagian_id \n" +
                 "from it_hris_pegawai_position\n" +
                 "inner join im_position on it_hris_pegawai_position.position_id = im_position.position_id\n" +
@@ -535,6 +561,27 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 "WHERE\n" +
                 "\tposisi.branch_id='"+branchId+"' AND\n" +
                 "\tcuti.approval_flag is null";
+
+        List<Object[]> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).list();
+        if (results.size()>0){
+            listOfResult="Masih ada "+results.size()+" Cuti yang Aktif";
+        } else {
+            listOfResult="N";
+        }
+        return listOfResult;
+
+    }
+
+    public String findCutiAktifNip(String nip){
+        String listOfResult="";
+        String query ="SELECT * FROM \n" +
+                "it_hris_cuti_pegawai cuti\n" +
+                "\tINNER JOIN it_hris_pegawai_position posisi ON cuti.nip=posisi.nip \n" +
+                "WHERE\n" +
+                "\tcuti.approval_flag is null AND \n"+
+                "\tcuti.nip='"+nip+"'";
 
         List<Object[]> results ;
         results = this.sessionFactory.getCurrentSession()
@@ -678,6 +725,27 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
         return result;
     }
 
+    public List<ItCutiPegawaiEntity> getLastCuti(String nip){
+        List<ItCutiPegawaiEntity> listOfResult = new ArrayList<ItCutiPegawaiEntity>();
+        List<Object[]> results = new ArrayList<Object[]>();
+
+        String query = "SELECT * FROM it_hris_cuti_pegawai WHERE nip = '"+nip+"' AND approval_flag = 'Y' ORDER BY tanggal_dari DESC LIMIT 1";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results){
+            ItCutiPegawaiEntity entity = new ItCutiPegawaiEntity();
+            entity.setNip((String) row[1]);
+            entity.setTsTanggalDari((Timestamp) row[11]);
+            entity.setTsTanggalSelesai((Timestamp) row[12]);
+            listOfResult.add(entity);
+        }
+
+        return listOfResult;
+    }
+
     public String getTanggalPensiun(String nip){
         String result="";
         String query ="select tanggal_pensiun from im_hris_pegawai where nip ='"+nip+"'";
@@ -703,4 +771,64 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
         return result;
     }
 
+    public List<ItCutiPegawaiEntity> getDataCuti(String nip) throws HibernateException {
+        List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("cutiId",  CommonConstant.CUTI_ID_DILUAR_TANGGUNJAWAB))
+                .list();
+        return results;
+
+    }
+
+    public List<ItCutiPegawaiEntity> getListCekCutiLuarTanggungan(String nip, String bulan,String tahun) throws HibernateException {
+        Date tanggal = CommonUtil.convertStringToDate2(tahun+"-"+bulan+"-"+"01");
+
+        List<ItCutiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip",nip))
+                .add(Restrictions.eq("cutiId", CommonConstant.CUTI_ID_DILUAR_TANGGUNJAWAB))
+                .add(Restrictions.le("tanggalDari",tanggal))
+                .add(Restrictions.ge("tanggalSelesai",tanggal))
+                .add(Restrictions.eq("approvalFlag","Y"))
+                .add(Restrictions.ne("cancelFlag","Y"))
+                .addOrder(Order.asc("nip"))
+                .list();
+        return results;
+    }
+
+    public List<Biodata> getPegawaiListForResetTahunan(String unit,String tahun) throws HibernateException {
+        List<Biodata> listOfResult = new ArrayList<Biodata>();
+
+        String query = "select\n" +
+                "\tb.nip,\n" +
+                "\tb.nama_pegawai,\n" +
+                "\tb.tanggal_masuk,\n" +
+                "\tcp.cuti_pegawai_id,\n" +
+                "\tdate_part('year', cp.tanggal_dari) as tahun_terakhir_cuti,\n" +
+                "\tDATE_PART('year', AGE(now(),b.tanggal_masuk)) AS selisih_tahun\n" +
+                "from\n" +
+                "\tim_hris_pegawai b\n" +
+                "\tleft join it_hris_pegawai_position pp ON b.nip=pp.nip\n" +
+                "\tleft join im_position p ON p.position_id = pp.position_id\n" +
+                "\tleft join (select * from it_hris_cuti_pegawai where cuti_id='"+CommonConstant.CUTI_TAHUNAN+"' and cancel_flag='N' order by tanggal_dari desc) cp ON cp.nip=b.nip AND cp.cuti_pegawai_id = (select cuti_pegawai_id from it_hris_cuti_pegawai where nip=b.nip and cuti_id='"+CommonConstant.CUTI_TAHUNAN+"' and cancel_flag='N' order by tanggal_dari desc limit 1)\n" +
+                "where\n" +
+                "\tpp.branch_id='"+unit+"'\n" +
+                "\tand b.flag='Y'\n" +
+                "\tand ( date_part('year', cp.tanggal_dari)<>'"+tahun+"' OR date_part('year', cp.tanggal_dari) is null )\n" +
+                "\tand DATE_PART('year', AGE(now(),b.tanggal_masuk)) > 0 \n" +
+                "order by \n" +
+                "\tp.kelompok_id asc\n";
+        List<Object[]> results ;
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        Biodata biodata;
+        for(Object[] rows: results){
+            biodata = new Biodata();
+            biodata.setNip(rows[0].toString());
+            biodata.setNamaPegawai(rows[1].toString());
+            listOfResult.add(biodata);
+        }
+        return listOfResult;
+    }
 }

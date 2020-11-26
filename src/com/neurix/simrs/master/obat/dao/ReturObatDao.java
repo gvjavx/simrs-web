@@ -68,7 +68,7 @@ public class ReturObatDao extends GenericDao<ItSimrsReturObatEntity, String> {
                 "INNER JOIN im_simrs_obat d ON c.id_barang = d.id_barang\n" +
                 "WHERE a.id_vendor = :id \n" +
                 "AND a.branch_id = :branch \n" +
-                "AND d.qty_box > 0 \n" +
+                "AND (d.qty_biji, d.qty_lembar, d.qty_box) != (0,0,0)\n" +
                 "ORDER BY d.expired_date ASC";
 
         List<Obat> obats = new ArrayList<>();

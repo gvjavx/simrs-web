@@ -1,0 +1,777 @@
+-- Table: public.it_akun_pengajuan_biaya
+
+-- DROP TABLE public.it_akun_pengajuan_biaya;
+
+CREATE TABLE public.it_akun_pengajuan_biaya
+(
+    pengajuan_biaya_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    divisi_id character varying(20) COLLATE pg_catalog."default",
+    coa_ajuan character varying(30) COLLATE pg_catalog."default",
+    coa_target character varying(30) COLLATE pg_catalog."default",
+    total_biaya numeric(25,2),
+    tanggal date,
+    aproval_id character varying(100) COLLATE pg_catalog."default",
+    aproval_date date,
+    aproval_flag character varying(1) COLLATE pg_catalog."default",
+    budget_saat_ini numeric(25,2),
+    branch_id character varying(5) COLLATE pg_catalog."default",
+    transaksi character varying(5) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    aproval_name character varying(100) COLLATE pg_catalog."default",
+    keterangan text COLLATE pg_catalog."default",
+    no_jurnal character varying(30) COLLATE pg_catalog."default",
+    rk_dikirim character varying(1) COLLATE pg_catalog."default",
+    flag_batal character varying(1) COLLATE pg_catalog."default",
+    keterangan_batal character varying(200) COLLATE pg_catalog."default",
+    tanggal_realisasi date,
+    CONSTRAINT it_akun_pengajuan_biaya_pkey PRIMARY KEY (pengajuan_biaya_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.it_akun_pengajuan_biaya
+    OWNER to postgres;
+
+<< 29-05-2020 >>
+    ALTER TABLE it_hris_payroll
+    ADD COLUMN approval_sdm_flag (1) VARCHAR,
+    ADD COLUMN approval_sdm_date timestamp without time zone,
+    ADD COLUMN approval_sdm_id (100) VARCHAR,
+    ADD COLUMN approval_sdm_name (100) VARCHAR;
+
+<< 03-06-2020 >>
+    insert into im_akun_trans values ('63','pembayaran pengajuan biaya','Y','C','admin','admin',NULL,NULL,NULL,'Y',NULL,NULL,NULL,NULL,NULL);
+    INSERT INTO im_akun_mapping_jurnal values ('MPJM0001','JKK','5','D','Y','C','admin','admin',NULL,NULL,'N','N','63','N','biaya','N','Y','N');
+    INSERT INTO im_akun_mapping_jurnal values ('MPJM0002','JKK','1','K','Y','C','admin','admin',NULL,NULL,'N','N','63','N','metode_bayar','N','N','N');
+
+    ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN approval_keuangan_kp_flag character varying(1);
+    ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN approval_keuangan_kp_id character varying(100);
+    ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN approval_keuangan_kp_date timestamp without time zone;
+
+    ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN status_keuangan character varying(1);
+
+<< 05-06-2020 >>
+    ALTER TABLE im_branches ADD COLUMN max_pengajuan_biaya NUMERIC(25,2);
+    update im_branches SET max_pengajuan_biaya=1000000;
+
+    ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN diterima_flag character varying (1);
+    ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN diterima_date timestamp without time zone;
+    ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN diterima_id character varying (100);
+    alter table it_akun_pengajuan_biaya_detail add column closed character varying (1);
+
+    update im_branches set coa_rk='2.1.11.01.01' WHERE branch_id='RS01';
+    alter table it_akun_pengajuan_biaya_detail add column no_jurnal character varying (30);
+
+    alter table it_akun_pengajuan_biaya_detail add column not_approval_note text;
+
+    alter table it_akun_pengajuan_biaya add column rk_dikirim character varying(1);
+
+    ALTER TABLE it_akun_pengajuan_biaya ADD COLUMN flag_batal character varying(1);
+    ALTER TABLE it_akun_pengajuan_biaya ADD COLUMN keterangan_batal character varying(200);
+    ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN tanggal_realisasi date;
+
+    ALTER TABLE im_akun_trans ADD COLUMN flag_pengajuan_biaya character varying(1);
+    update im_akun_trans set flag_pengajuan_biaya ='N';
+    update im_akun_trans set flag_pengajuan_biaya ='Y' where trans_id='47';
+
+    ALTER TABLE it_akun_jurnal ADD COLUMN pengajuan_biaya_id character varying(30);
+
+    ALTER TABLE im_hris_pegawai
+    ALTER COLUMN gelar_belakang type character varying (20);
+    ALTER TABLE im_hris_pegawai ADD COLUMN position_plt_id character varying(5);
+    ALTER TABLE im_hris_pegawai ADD COLUMN nip_lama character varying(15);
+    ALTER TABLE it_hris_ijin_keluar ADD COLUMN flag_pengajuan_batal character varying(1);
+    ALTER TABLE it_hris_cuti_pegawai ADD COLUMN flag_pengajuan_batal character varying(1);
+
+<< 06-07-2020 >>
+    ALTER TABLE it_akun_budgeting_pengadaan ADD COLUMN nama_kontrak character varying(100);
+    ALTER TABLE it_akun_budgeting_pengadaan ADD COLUMN realisasi_kontrak numeric(25,2);
+    ALTER TABLE it_akun_budgeting_pengadaan ADD COLUMN sisa_nilai_kontrak numeric(25,2);
+    ALTER TABLE it_akun_budgeting_pengadaan ADD COLUMN nilai_adendum_1 numeric(25,2);
+    ALTER TABLE it_akun_budgeting_pengadaan ADD COLUMN nilai_adendum_2 numeric(25,2);
+    ALTER TABLE it_akun_budgeting_pengadaan ADD COLUMN nilai_adendum_3 numeric(25,2);
+    ALTER TABLE it_akun_budgeting_pengadaan ADD COLUMN no_kontrak_adendum_1 character varying(100);
+    ALTER TABLE it_akun_budgeting_pengadaan ADD COLUMN no_kontrak_adendum_2 character varying(100);
+    ALTER TABLE it_akun_budgeting_pengadaan ADD COLUMN no_kontrak_adendum_3 character varying(100);
+    ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN no_kontrak character varying(30);
+    ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN nama_kontrak character varying(100);
+
+    CREATE TABLE it_akun_pengajuan_setor
+    (
+        pengajuan_setor_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+        branch_id character varying(5) COLLATE pg_catalog."default",
+        tahun character varying(5) COLLATE pg_catalog."default",
+        bulan character varying(5) COLLATE pg_catalog."default",
+        approval_flag character varying(1) COLLATE pg_catalog."default",
+        approval_id character varying(100) COLLATE pg_catalog."default",
+        approval_date timestamp without time zone,
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        action character varying(100) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        CONSTRAINT it_akun_pengajuan_setor_pkey PRIMARY KEY (pengajuan_setor_id)
+    );
+
+    CREATE TABLE it_akun_pengajuan_setor_detail
+    (
+        pengajuan_setor_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+        pengajuan_setor_id character varying(15) COLLATE pg_catalog."default",
+        branch_id character varying(5) COLLATE pg_catalog."default",
+        transaksi_id character varying(20) COLLATE pg_catalog."default",
+        person_id character varying(30) COLLATE pg_catalog."default",
+        tipe character varying(20),
+        note character varying(100),
+        jumlah numeric (25,2),
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        action character varying(100) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        CONSTRAINT it_akun_pengajuan_setor_detail_pkey PRIMARY KEY (pengajuan_setor_detail_id)
+    );
+
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN jumlah_pph21_payroll numeric(25,2);
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN jumlah_pph21_kso numeric(25,2);
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN jumlah_pph21_pengajuan numeric(25,2);
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN jumlah_seluruhnya numeric(25,2);
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN registered_date date;
+    ALTER TABLE it_akun_pengajuan_setor_detail ADD COLUMN divisi_id character varying (15);
+
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN no_jurnal character varying (30);
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN cancel_flag character varying(1);
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN cancel_id character varying(100);
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN cancel_date timestamp without time zone;
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN tipe_pengajuan_setor character varying(10);
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN keterangan character varying(200);
+
+    ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN ppn numeric(25,2);
+    ALTER TABLE it_akun_pengajuan_setor_detail ALTER COLUMN note type character varying (200);
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN jumlah_ppn_masukan numeric(25,2);
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN jumlah_ppn_keluaran numeric(25,2);
+    ALTER TABLE it_akun_pengajuan_setor ADD COLUMN jumlah_ppn_aset numeric(25,2);
+
+    ALTER TABLE it_akun_pengajuan_setor_detail ALTER COLUMN tipe type character varying (100);
+
+    ALTER TABLE it_akun_pengajuan_setor
+    RENAME COLUMN jumlah_ppn_masukan TO jumlah_ppn_masukan_b2;
+
+    ALTER TABLE it_akun_pengajuan_setor
+    RENAME COLUMN jumlah_ppn_aset TO jumlah_ppn_masukan_b3;
+    ALTER TABLE it_akun_pembayaran_utang_piutang_detail ADD COLUMN ppn numeric(25,2);
+    ALTER TABLE it_akun_pembayaran_utang_piutang_detail ADD COLUMN pph numeric(25,2);
+
+    CREATE TABLE public.it_akun_pengajuan_biaya
+    (
+        pengajuan_biaya_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+        divisi_id character varying(20) COLLATE pg_catalog."default",
+        coa_ajuan character varying(30) COLLATE pg_catalog."default",
+        coa_target character varying(30) COLLATE pg_catalog."default",
+        total_biaya numeric(25,2),
+        tanggal date,
+        aproval_id character varying(100) COLLATE pg_catalog."default",
+        aproval_date date,
+        aproval_flag character varying(1) COLLATE pg_catalog."default",
+        budget_saat_ini numeric(25,2),
+        branch_id character varying(5) COLLATE pg_catalog."default",
+        transaksi character varying(5) COLLATE pg_catalog."default",
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        last_update timestamp without time zone,
+        aproval_name character varying(100) COLLATE pg_catalog."default",
+        keterangan text COLLATE pg_catalog."default",
+        no_jurnal character varying(30) COLLATE pg_catalog."default",
+        rk_dikirim character varying(1) COLLATE pg_catalog."default",
+        flag_batal character varying(1) COLLATE pg_catalog."default",
+        keterangan_batal character varying(200) COLLATE pg_catalog."default",
+        tanggal_realisasi date,
+        CONSTRAINT it_akun_pengajuan_biaya_pkey PRIMARY KEY (pengajuan_biaya_id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.it_akun_pengajuan_biaya
+        OWNER to postgres;
+
+ --09/07/2020
+ ALTER TABLE it_akun_pengajuan_setor ADD COLUMN kas VARCHAR(30);
+
+ --17/07/2020
+ CREATE TABLE public.it_akun_perhitungan_ppn_kd
+ (
+     perhitungan_ppn_kd_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+     tahun character varying(5) COLLATE pg_catalog."default",
+     bulan character varying(5) COLLATE pg_catalog."default",
+     approval_flag character varying(1) COLLATE pg_catalog."default",
+     approval_id character varying(100) COLLATE pg_catalog."default",
+     approval_date timestamp without time zone,
+     cancel_flag character varying(1) COLLATE pg_catalog."default",
+     cancel_id character varying(100) COLLATE pg_catalog."default",
+     cancel_date timestamp without time zone,
+     ppn_masukan numeric(25,2),
+     total_ppn_masukan numeric(25,2),
+     ppn_keluaran numeric(25,2),
+     kurang_bayar numeric(25,2),
+     perhitungan_kembali numeric(25,2),
+     total_kurang_bayar numeric(25,2),
+     lb_bulan_yll numeric(25,2),
+     ppn_ekspor numeric(25,2),
+     dipungut_sendiri numeric(25,2),
+     dipungut_oleh_pemungut numeric(25,2),
+     tidak_dipungut numeric(25,2),
+     dibebaskan numeric(25,2),
+     jumlah_terutang_ppn numeric(25,2),
+     jasa_rs numeric(25,2),
+     obat_rawat_inap numeric(25,2),
+     jumlah_tidak_terutang numeric(25,2),
+     penyerahan_barang_dan_jasa numeric(25,2),
+     created_date timestamp without time zone,
+     created_who character varying(100) COLLATE pg_catalog."default",
+     last_update timestamp without time zone,
+     last_update_who character varying(100) COLLATE pg_catalog."default",
+     action character varying(100) COLLATE pg_catalog."default",
+     flag character varying(1) COLLATE pg_catalog."default",
+     CONSTRAINT it_akun_perhitungan_ppn_kd_pkey PRIMARY KEY (perhitungan_ppn_kd_id)
+ )
+
+ CREATE TABLE public.it_akun_proses_ppn_kd
+  (
+      proses_ppn_kd_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+      branch_id character varying(5) COLLATE pg_catalog."default",
+      branch_name character varying(100) COLLATE pg_catalog."default",
+      keluaran_unit numeric(25,2),
+      masukan_unit numeric(25,2),
+      keluaran_koreksi numeric(25,2),
+      masukan_koreksi numeric(25,2),
+      keluaran_diambil_kp numeric(25,2),
+      masukan_diambil_kp numeric(25,2),
+      b4 numeric(25,2),
+      created_date timestamp without time zone,
+      created_who character varying(100) COLLATE pg_catalog."default",
+      last_update timestamp without time zone,
+      last_update_who character varying(100) COLLATE pg_catalog."default",
+      action character varying(100) COLLATE pg_catalog."default",
+      flag character varying(1) COLLATE pg_catalog."default",
+      CONSTRAINT it_akun_proses_ppn_kd_pkey PRIMARY KEY (proses_ppn_kd_id)
+  )
+
+-- 20-07-2020
+ALTER TABLE it_akun_proses_ppn_kd ADD COLUMN perhitungan_ppn_kd_id character varying(15);
+ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN tipe character varying(10);
+CREATE SEQUENCE IF NOT EXISTS seq_perhitungan_ppn_kd INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+CREATE SEQUENCE IF NOT EXISTS seq_proses_ppn_kd INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+CREATE SEQUENCE IF NOT EXISTS seq_perhitungan_kembali INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+ALTER TABLE it_akun_proses_ppn_kd ALTER COLUMN branch_id type character varying (10);
+
+CREATE TABLE public.it_akun_ppn_perhitungan_kembali
+(
+    perhitungan_kembali_ppn_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    dpp_total_pendapatan_rumah_sakit numeric(25,2),
+    dpp_penyerahan_tidak_terutang_ppn numeric(25,2),
+    dpp_ppn_masukan_yang_telah_direditkan numeric(25,2),
+    ppn_total_pendapatan_rumah_sakit numeric(25,2),
+    ppn_penyerahan_tidak_terutang_ppn numeric(25,2),
+    ppn_penyerahan_terutang_ppn numeric(25,2),
+    ppn_ppn_masukan_yang_telah_dikreditkan numeric(25,2),
+    ppn_ppn_masukan_yang_tidak_dapat_dikreditkan numeric(25,2),
+    ppn_telah_diperhitungkan_kembali numeric(25,2),
+    ppn_hasil_perhitungan_kembali_ppn numeric(25,2),
+    bulan character varying(4) COLLATE pg_catalog."default",
+    tahun character varying(4) COLLATE pg_catalog."default",
+    proses_ppn_kd_id character varying(15) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_ppn_perhitungan_kembali_pkey PRIMARY KEY (perhitungan_kembali_ppn_id)
+)
+
+-- 21-07-2020
+
+ALTER TABLE it_akun_proses_ppn_kd ADD COLUMN no_urut INTEGER;
+
+-- 22-07-2020
+ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN status_b2 character varying(20);
+
+CREATE TABLE public.it_akun_penyewaan_lahan
+(
+    penyewaan_lahan_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    nama_penyewa character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    keterangan text COLLATE pg_catalog."default" NOT NULL,
+    tanggal_bayar date,
+    nilai numeric(25,2),
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_penyewaan_lahan_pkey PRIMARY KEY (penyewaan_lahan_id)
+)
+
+CREATE SEQUENCE IF NOT EXISTS seq_penyewaan_lahan INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN branch_id character varying (10);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN cancel_flag character varying (1);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN cancel_who character varying (100);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN cancel_date timestamp without time zone;
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN approval_flag character varying (1);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN approval_who character varying (100);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN approval_date timestamp without time zone;
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN metode_bayar character varying (30);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN bank character varying (20);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN nilai_ppn numeric (25,2);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN nilai_netto numeric (25,2);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN no_jurnal character varying (30);
+
+ALTER TABLE it_akun_pengajuan_setor ADD COLUMN posting_flag character varying (1);
+ALTER TABLE it_akun_pengajuan_setor ADD COLUMN posting_who character varying (100);
+ALTER TABLE it_akun_pengajuan_setor ADD COLUMN posting_date timestamp without time zone;
+
+-- 30-07-2020
+
+ALTER TABLE it_akun_pembayaran_utang_piutang_detail ALTER COLUMN no_nota type character varying (20);
+
+-- 02-08-2020
+--jika ingin mencoba proses PPN
+--insert into it_akun_pengajuan_setor values ('PSC001','KP','09','Y','admin','2020-08-02 00:00:00','2020-08-02 00:00:00','admin','2020-08-02 00:00:00','admin','U','Y',null,null,null,60000,'2020-08-02','2020',null,'N',null,null,'PPN',null,20000,50000,20000,null,'N',null,null);
+-- jika ingin clear data untuk akuntansi
+-- delete from it_hris_payroll;
+-- delete from it_hris_notifikasi;
+-- delete from it_hris_pendapatan_dokter;
+-- delete from it_hris_pendapatan_dokter_detail;
+-- delete from it_hris_pendapatan_dokter_pph_lebih;
+-- delete from it_akun_jurnal;
+-- delete from it_akun_jurnal_akhir_tahun;
+-- delete from it_akun_jurnal_detail;
+-- delete from it_akun_jurnal_detail_activity;
+-- delete from it_akun_pembayaran_utang_piutang;
+-- delete from it_akun_pembayaran_utang_piutang_detail;
+-- delete from it_akun_pengajuan_biaya;
+-- delete from it_akun_pengajuan_biaya_detail;
+-- delete from it_akun_pengajuan_setor;
+-- delete from it_akun_pengajuan_setor_detail;
+-- delete from it_akun_penyewaan_lahan;
+-- delete from it_akun_perhitungan_ppn_kd;
+-- delete from it_akun_ppn_perhitungan_kembali;
+-- delete from it_akun_proses_ppn_kd;
+
+-- 03-08-2020
+ALTER TABLE it_akun_pembayaran_utang_piutang_detail ADD COLUMN no_faktur_pajak character varying(30);
+ALTER TABLE it_akun_pembayaran_utang_piutang_detail ADD COLUMN url_faktur_image character varying(100);
+UPDATE im_simrs_dokter_kso SET flag='Y', action='C';
+INSERT INTO im_akun_mapping_jurnal VALUES ('IJ0062','JKR','2.1.03.00.02','K','Y','C','admin','admin','2020-08-03 00:00:00','2020-08-03 00:00:00','Y','Y','44','N','pph_dokter','N');
+INSERT INTO im_akun_mapping_jurnal VALUES ('IJ0063','JKR','2.1.03.00.99','K','Y','C','admin','admin','2020-08-03 00:00:00','2020-08-03 00:00:00','Y','Y','44','N','pot_ks','N');
+
+-- 12-08-2020
+ALTER TABLE it_hris_payroll
+ADD COLUMN approval_aks_flag character varying (1),
+ADD COLUMN approval_aks_date timestamp without time zone,
+ADD COLUMN approval_aks_id VARCHAR (100),
+ADD COLUMN approval_aks_name VARCHAR (100);
+
+update im_branches set coa_rk='2.1.11.01.01' where branch_id='RS01';
+update im_branches set coa_rk='2.1.11.01.02' where branch_id='RS02';
+update im_branches set coa_rk='2.1.11.01.03' where branch_id='RS03';
+
+update im_akun_mapping_jurnal set kirim_list='N' where mapping_jurnal_id='MPJ0000233';
+
+ALTER TABLE im_company ADD COLUMN param_dapen numeric (10,5);
+
+-- 18-08-2020
+update im_akun_trans set tipe_pembayaran=null where trans_id IN ('69','70','68','67','66');
+
+-- 21-08-2020
+ALTER TABLE im_mesin_absensi ADD COLUMN branch_id character varying (10);
+update im_mesin_absensi set mesin_address='10.88.70.232:8080',branch_id='KP';
+ALTER TABLE im_mesin_absensi ADD COLUMN last_get timestamp without time zone;
+
+update im_functions set func_name='Kas/Bank Masuk' where func_name='Kas Masuk';
+update im_functions set func_name='Kas/Bank Keluar' where func_name='Kas Keluar';
+
+-- 24-08-2020
+ALTER TABLE im_akun_master ADD COLUMN no_rekening character varying(50);
+ALTER TABLE im_akun_master ADD COLUMN tipe_vendor character varying(50);
+
+update im_akun_master set no_rekening='-';
+update im_akun_master set tipe_vendor='umum' where nomor_master ilike '01.%';
+update im_akun_master set tipe_vendor='bpjs' where nomor_master ilike '02.%';
+update im_akun_master set tipe_vendor='lain' where nomor_master ilike '03.%';
+
+CREATE SEQUENCE seq_master_bpjs INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 95;
+CREATE SEQUENCE seq_master_sewa INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+CREATE SEQUENCE seq_master_lain INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+SELECT setval('seq_master', 467, true);
+
+-- 26-08-2020
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN nilai_pph numeric(25,2);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN no_faktur character varying(50);
+ALTER TABLE it_akun_penyewaan_lahan ADD COLUMN url_faktur_image character varying(100);
+
+ALTER TABLE it_hris_payroll_cuti ADD COLUMN tunjangan_pph numeric(25,2);
+ALTER TABLE it_hris_payroll_jasopr ADD COLUMN tunjangan_pph numeric(25,2);
+ALTER TABLE it_hris_payroll_insentif ADD COLUMN tunjangan_pph numeric(25,2);
+
+
+-- 27-08-2020
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_keuangan_flag character varying(1);
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_keuangan_id character varying(100);
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_keuangan_name character varying(100);
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_keuangan_date timestamp without time zone;
+
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_kasub_keuangan_flag character varying(1);
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_kasub_keuangan_id character varying(100);
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_kasub_keuangan_name character varying(100);
+ALTER TABLE it_akun_pembayaran_utang_piutang ADD COLUMN approval_kasub_keuangan_date timestamp without time zone;
+
+ALTER TABLE im_company ADD COLUMN param_dapen_pegawai numeric (10,5);
+ALTER TABLE im_company ADD COLUMN param_biaya_jabatan numeric (20,0);
+
+update im_company set param_dapen_pegawai=6,param_biaya_jabatan=500000;
+
+CREATE TABLE public.it_akun_lampiran
+(
+    lampiran_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    nama_laporan character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    url character varying(100) COLLATE pg_catalog."default" NOT NULL,
+	transaksi_id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+	flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_lampiran_pkey PRIMARY KEY (lampiran_id)
+);
+CREATE SEQUENCE seq_lampiran INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+
+update im_hris_pegawai set golongan_id='APO' where golongan_id='APOAPO';
+
+ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN url_ipa character varying(100);
+
+-- 31-08-2020
+ALTER TABLE it_akun_pembayaran_utang_piutang_detail ALTER COLUMN no_nota type character varying (50);
+ALTER TABLE it_akun_pembayaran_utang_piutang_detail ALTER COLUMN master_id type character varying (30);
+
+-- 03-09-2020
+ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN rk_dikirim character varying(1);
+ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN coa_target character varying(30);
+ALTER TABLE it_akun_pengajuan_biaya_detail ADD COLUMN rk_id character varying(15);
+CREATE SEQUENCE seq_rk INCREMENT BY 1 MINVALUE 1 MAXVALUE 9999 START WITH 1 CYCLE;
+
+-- 04-09-2020
+-- jika coba ppn
+insert into it_akun_pengajuan_setor values ('PSC002','KP','10','Y','admin','2020-08-02 00:00:00','2020-08-02 00:00:00','admin','2020-08-02 00:00:00','admin','U','Y',null,null,null,0,'2020-08-02','2020',null,'N',null,null,'PPN',null,0,0,0,null,'N',null,null);
+
+--08-09-2020
+
+CREATE TABLE it_akun_perhitungan_kembali_unit
+(
+    perhitungan_kembali_unit_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    perhitungan_ppn_kd_id character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    branch_id character varying(4) COLLATE pg_catalog."default" NOT NULL,
+    pajak_masukan numeric(25,2) NOT NULL,
+    perhitungan_kembali_1 numeric(25,2) NOT NULL,
+    perhitungan_kembali_2 numeric(25,2) NOT NULL,
+    perhitungan_pm_sudah_dibuku numeric(25,2) NOT NULL,
+    perhitungan_pm_ymh_dibuku numeric(25,2) NOT NULL,
+    bulan character varying(2) COLLATE pg_catalog."default" NOT NULL,
+    tahun character varying(4) COLLATE pg_catalog."default" NOT NULL,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    CONSTRAINT it_akun_perhitungan_kembali_unit_pkey PRIMARY KEY (perhitungan_kembali_unit_id)
+);
+
+CREATE SEQUENCE IF NOT EXISTS seq_perhitungan_kembali_unit INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+
+--09-09-2020
+ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN piutang_pajak_keluaran numeric(25,2);
+ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN bukti_piutang_pajak_keluaran character varying(30);
+ALTER TABLE it_akun_perhitungan_ppn_kd ADD COLUMN keterangan character varying(200);
+
+CREATE SEQUENCE IF NOT EXISTS seq_pengajuan_biaya_rk INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+ppn_penyerahan_terutang
+
+--14-09-2020
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN gaji numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN sankhus numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN tunjangan_jabatan numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN tunjangan_fungsional numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN tunjangan_tambahan numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN pemondokan numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN komunikasi numeric(25,2);
+ALTER TABLE it_hris_payroll_jubileum ADD COLUMN keterangan_jubilium varchar(lel200);
+
+ALTER TABLE im_company ADD COLUMN jam_batas_absen integer;
+update im_company set jam_batas_absen=3;
+
+--22-09-2020
+ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN on_call character varying(1);
+ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN flag_panggil character varying(1);
+ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN panggil_who character varying(100);
+ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN panggil_date timestamp without time zone;
+
+--24-09-2020
+
+CREATE TABLE public.it_hris_mesin_absensi_detail_on_call
+(
+    mesin_absensi_detail_on_call_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    pin character varying(10) COLLATE pg_catalog."default",
+    status character varying(2) COLLATE pg_catalog."default",
+    scan_date timestamp without time zone,
+    action character varying(1) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    last_update timestamp without time zone,
+    created_date timestamp without time zone,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT mesin_absensi_detail_on_call_id_pk PRIMARY KEY (mesin_absensi_detail_on_call_id)
+);
+
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN status_absensi_2 character varying(2);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN status_absensi_on_call character varying(2);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_masuk_2 character varying(5);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_masuk_on_call character varying(5);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_keluar_2 character varying(5);
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN jam_pulang_on_call character varying(5);
+
+CREATE TABLE public.im_hris_status_mutasi
+(
+    status_mutasi_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    status_mutasi_name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT im_hris_status_mutasi_pkey PRIMARY KEY (status_mutasi_id)
+);
+
+insert into im_hris_status_mutasi values ('P','Pensiun','C','Y','admin','2020-01-03 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('M','Mutasi Tempat Kerja','C','Y','admin','2020-01-01 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('R','Mutasi Bidang/Divisi','C','Y','admin','2020-01-02 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('PH','PHK','C','Y','admin','2020-01-04 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('MD','Meninggal Dunia','C','Y','admin','2020-01-05 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('KB','Kontrak Berakhir','C','Y','admin','2020-01-06 00:00:00','2020-01-01 00:00:00','admin');
+insert into im_hris_status_mutasi values ('RS','Resign','C','Y','admin','2020-01-06 00:00:00','2020-01-01 00:00:00','admin');
+
+ALTER TABLE im_hris_pegawai ADD COLUMN flag_dokter_kso character varying(1);
+update im_hris_pegawai set flag_dokter_kso='N';
+
+CREATE TABLE public.im_hris_jenis_pegawai
+(
+    jenis_pegawai_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    jenis_pegawai_name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    CONSTRAINT im_hris_jenis_pegawai_pkey PRIMARY KEY (jenis_pegawai_id)
+);
+
+ALTER TABLE im_hris_pegawai ADD COLUMN jenis_pegawai character varying(20);
+insert into im_hris_jenis_pegawai values ('plt','Plt','Y','C','admin','admin','2020-01-03 00:00:00','2020-01-01 00:00:00');
+insert into im_hris_jenis_pegawai values ('pjt','PJS','Y','C','admin','admin','2020-01-03 00:00:00','2020-01-01 00:00:00');
+insert into im_hris_jenis_pegawai values ('percobaan','Percobaan','Y','C','admin','admin','2020-01-03 00:00:00','2020-01-01 00:00:00');
+insert into im_hris_jenis_pegawai values ('pegawai_baru','Pegawai Baru','Y','C','admin','admin','2020-01-03 00:00:00','2020-01-01 00:00:00');
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN flag_cuti_ganti_hari character varying(1);
+
+ALTER TABLE im_hris_ijin ADD COLUMN flag_diajukan_admin character varying(1);
+update im_hris_ijin set flag_diajukan_admin='N';
+
+ALTER TABLE im_hris_status_mutasi ADD COLUMN flag_gaji_proporsional character varying(1);
+update im_hris_status_mutasi set flag_gaji_proporsional='N';
+update im_hris_status_mutasi set flag_gaji_proporsional='Y' where status_mutasi_id='RS';
+update im_hris_status_mutasi set flag_gaji_proporsional='Y' where status_mutasi_id='KB';
+
+ALTER TABLE it_hris_payroll ADD COLUMN proporsi_gaji numeric(10,6);
+
+ALTER TABLE it_hris_jadwal_shift_kerja_detail ADD COLUMN flag_libur character varying(1);
+update it_hris_jadwal_shift_kerja_detail set flag_libur='N';
+
+ALTER TABLE im_hris_ijin ADD COLUMN agama character varying(100);
+update im_hris_ijin set agama='all';
+
+update im_functions set flag='Y' where func_id=1237;
+
+ALTER TABLE it_hris_absensi_pegawai ADD COLUMN telat bigint;
+update it_hris_absensi_pegawai set telat=0;
+
+CREATE SEQUENCE IF NOT EXISTS seq_history_on_call INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+CREATE SEQUENCE IF NOT EXISTS seq_absensi_on_call INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 1;
+
+
+CREATE TABLE public.it_hris_history_on_call
+(
+    history_on_call_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    jadwal_shift_kerja_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    panggil_date timestamp without time zone NOT NULL,
+    nip character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    created_who character varying COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying COLLATE pg_catalog."default" NOT NULL,
+    keterangan_panggil character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT it_hris_history_on_call_pkey PRIMARY KEY (history_on_call_id)
+);
+
+CREATE TABLE public.it_hris_absensi_on_call
+(
+    absensi_on_call_id character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    nip character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    tanggal date NOT NULL,
+    jam_masuk character varying(5) COLLATE pg_catalog."default",
+    jam_pulang character varying(5) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    lama_lembur numeric(10,2),
+    CONSTRAINT it_hris_absensi_on_call_pkey PRIMARY KEY (absensi_on_call_id)
+);
+-- tambahkan function /tipelibur/paging_displaytag_tipelibur.action
+
+update im_functions set func_name='Status Pegawai' WHERE func_id='601';
+update im_functions set func_name='Golongan PKWT' WHERE func_id='1776';
+
+CREATE SEQUENCE IF NOT EXISTS seq_kodering_department INCREMENT BY 1 MINVALUE 1 MAXVALUE 987654321 START WITH 16;
+update im_functions set func_name ='Sub Bidang/Divisi' where func_id=1378;
+
+
+-----------------------------------------
+insert into im_branches (branch_id,branch_name,branch_address,created_date,created_who,last_update,last_update_who,flag,action,max_jam_ijin_keluar,faktor_jubileum,area_id,min_bpjs_ks,max_bpjs_ks,percent_ks_kary,percent_ks_pers,percent_tk_kary,percent_tk_pers,min_bpjs_tk,max_bpjs_tk,alamat_surat,logo_name,kodering,max_pengajuan_biaya,coa_rk,lat,lon,umr) VALUES
+						( 'RS04','RS Medika Utama','Jl. Kusuma Bangsa No.1','2020-09-09 00:00:00','admin','2020-09-09 00:00:00','admin','Y','C',0,5,'0002',100000,100000,1,4,4,4,100000,100000,'Blitar','RS01.png','05',1000000,'2.1.11.01.04','-8.1681698','-8.1681698',3871052.00);
+
+insert into im_branches (branch_id,branch_name,branch_address,created_date,created_who,last_update,last_update_who,flag,action,max_jam_ijin_keluar,faktor_jubileum,area_id,min_bpjs_ks,max_bpjs_ks,percent_ks_kary,percent_ks_pers,percent_tk_kary,percent_tk_pers,min_bpjs_tk,max_bpjs_tk,alamat_surat,logo_name,kodering,max_pengajuan_biaya,coa_rk,lat,lon,umr) VALUES
+						( 'RS05','Estetika Meditama','Jl. Bratang Binangun No.33, Baratajaya','2020-09-09 00:00:00','admin','2020-09-09 00:00:00','admin','Y','C',0,5,'0002',100000,100000,1,4,4,4,100000,100000,'Surabaya','RS01.png','06',1000000,'2.1.11.01.98','-8.1681698','-8.1681698',3871052.00);
+
+insert into im_branches (branch_id,branch_name,branch_address,created_date,created_who,last_update,last_update_who,flag,action,max_jam_ijin_keluar,faktor_jubileum,area_id,min_bpjs_ks,max_bpjs_ks,percent_ks_kary,percent_ks_pers,percent_tk_kary,percent_tk_pers,min_bpjs_tk,max_bpjs_tk,alamat_surat,logo_name,kodering,max_pengajuan_biaya,coa_rk,lat,lon,umr) VALUES
+                        ( 'RS06','Unit Rawat Jalan','Jl. Hayam Wuruk No.88, Mergelo, Magersari','2020-09-09 00:00:00','admin','2020-09-09 00:00:00','admin','Y','C',0,5,'0002',100000,100000,1,4,4,4,100000,100000,'Mojokerto','RS01.png','07',1000000,'2.1.11.01.99','-8.1681698','-8.1681698',3871052.00);
+
+--======================================================
+
+delete from im_hris_cuti_panjang;
+update im_functions set flag='Y' where func_id =837;
+update im_functions set flag='Y' where func_id =14;
+update im_functions set flag='Y' where func_id =1182;
+update im_functions set func_name='Iuran Pegawai DPLK' where func_id =1182;
+update im_functions set func_name='Skala Gaji Pensiun' where func_id =1825;
+update im_functions set flag='N' where func_id =1835;
+ALTER TABLE im_hris_payroll_skala_gaji_dapenbun ADD COLUMN tipe_dapen_id character varying(20);
+update im_hris_payroll_skala_gaji_dapenbun set tipe_dapen_id='DP01';
+
+-- buatkan user super admin
+
+CREATE TABLE public.it_akun_pengajuan_biaya_rk
+(
+    pengajuan_biaya_rk_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    no_transaksi character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    master_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    jumlah numeric(25,2) NOT NULL,
+    status character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    jatuh_tempo date,
+    rk_id character varying(20) COLLATE pg_catalog."default",
+    approve_keu_flag character varying(1) COLLATE pg_catalog."default",
+    aprove_keu_id character varying(100) COLLATE pg_catalog."default",
+    approve_keu_date timestamp without time zone,
+    flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    action character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    last_update timestamp without time zone NOT NULL,
+    branch_id character varying(5) COLLATE pg_catalog."default" NOT NULL,
+    tanggal_pengajuan date NOT NULL,
+    no_faktur character varying(30) COLLATE pg_catalog."default",
+    no_invoice character varying(30) COLLATE pg_catalog."default",
+    tgl_faktur date,
+    tgl_do date,
+    metode_bayar character varying(100) COLLATE pg_catalog."default",
+    no_jurnal character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT it_akun_pengajuan_biaya_rk_pkey PRIMARY KEY (pengajuan_biaya_rk_id)
+);
+
+-- 23-10-2020
+update im_hris_payroll_skala_gaji_dapenbun set tipe_dapen_id='DP02';
+
+-------------------------------------------------------------------------------------------------------------
+ALTER TABLE public.im_company ADD COLUMN tanggal_awal_lembur integer;
+ALTER TABLE public.im_company ADD COLUMN tanggal_akhir_lembur integer;
+
+update im_company set tanggal_awal_lembur=21;
+update im_company set tanggal_akhir_lembur=21;
+
+ALTER TABLE im_hris_pegawai ADD COLUMN peralihan_sankhus numeric(25,0);
+ALTER TABLE im_hris_pegawai ADD COLUMN peralihan_gapok numeric(25,0);
+ALTER TABLE im_hris_pegawai ADD COLUMN peralihan_tunjangan numeric(25,0);
+
+update im_hris_pegawai set peralihan_sankhus=0;
+update im_hris_pegawai set peralihan_gapok=0;
+update im_hris_pegawai set peralihan_tunjangan=0;
+
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkk type numeric(10,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jkm type numeric(10,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN jpk_pers type numeric(10,4);
+ALTER TABLE im_hris_payroll_bpjs ALTER COLUMN iur_pers type numeric(10,4);
+
+update im_hris_pegawai set jumlah_anak=0 where jumlah_anak is null;
+
+
+-- =====================================================================================================================
+
+ALTER TABLE it_hris_mesin_absensi_detail ADD COLUMN branch_id character varying(5);
+update it_hris_mesin_absensi_detail set branch_id='KP';
+update im_mesin_absensi set mesin_sn='66686019380589',branch_id='KP';
+
+CREATE TABLE public.im_akun_setting_report_arus_kas
+(
+    setting_report_arus_kas_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    kode_rekening_alias character varying(15) COLLATE pg_catalog."default",
+    nama_kode_rekening_alias character varying(100) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    flag_label character varying(1) COLLATE pg_catalog."default",
+    CONSTRAINT im_akun_setting_report_arus_kas_pkey PRIMARY KEY (setting_report_arus_kas_id)
+);
+
+CREATE TABLE public.im_akun_setting_report_arus_kas_detail
+(
+    setting_report_arus_kas_detail_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    setting_report_arus_kas_id character varying(20) COLLATE pg_catalog."default",
+    rekening_id character varying(15) COLLATE pg_catalog."default",
+    operator character varying(1) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    created_who character varying(100) COLLATE pg_catalog."default",
+    last_update_who character varying(100) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    CONSTRAINT im_akun_setting_report_arus_kas_detail_pkey PRIMARY KEY (setting_report_arus_kas_detail_id)
+);
+
+-----------------------------------------------------------------------------------
+ALTER TABLE it_akun_pembayaran_utang_piutang ALTER COLUMN registered_date type timestamp without time zone;

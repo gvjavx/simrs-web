@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="pengajuanSetorAction" class="com.neurix.akuntansi.transaksi.pengajuanSetor.action.PengajuanSetorAction"
+          p:pengajuanSetorBoProxy-ref="pengajuanSetorBoProxy"
+    />
+
+    <bean id="pengajuanSetorBo" class="com.neurix.akuntansi.transaksi.pengajuanSetor.bo.impl.PengajuanSetorBoImpl"
+          p:pengajuanSetorDao-ref="pengajuanSetorDao"
+          p:payrollDao-ref="payrollDao"
+          p:positionDao-ref="positionDao"
+          p:branchDao-ref="branchDao"
+          p:departmentDao-ref="departmentDao"
+          p:pengajuanSetorDetailDao-ref="pengajuanSetorDetailDao"
+          p:positionBagianDao-ref="positionBagianDao"
+          p:biodataDao-ref="biodataDao"
+          p:dokterDao-ref="dokterDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
+          p:masterVendorDao-ref="masterVendorDao"
+          p:perhitunganPpnKdDao-ref="perhitunganPpnKdDao"
+          p:prosesPpnKdDao-ref="prosesPpnKdDao"
+          p:perhitunganKembaliPpnDao-ref="perhitunganKembaliPpnDao"
+          p:perhitunganKembaliUnitDao-ref="perhitunganKembaliUnitDao"
+    />
+
+    <bean id="pengajuanSetorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="pengajuanSetorBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="pengajuanSetorDao" class="com.neurix.akuntansi.transaksi.pengajuanSetor.dao.PengajuanSetorDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="pengajuanSetorDetailDao" class="com.neurix.akuntansi.transaksi.pengajuanSetor.dao.PengajuanSetorDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="prosesPpnKdDao" class="com.neurix.akuntansi.transaksi.pengajuanSetor.dao.ProsesPpnKdDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="perhitunganPpnKdDao" class="com.neurix.akuntansi.transaksi.pengajuanSetor.dao.PerhitunganPpnKdDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="perhitunganKembaliPpnDao" class="com.neurix.akuntansi.transaksi.pengajuanSetor.dao.PerhitunganKembaliPpnDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="perhitunganKembaliUnitDao" class="com.neurix.akuntansi.transaksi.pengajuanSetor.dao.PerhitunganKembaliUnitDao"
+          p:sessionFactory-ref="sessionFactory" />
+</beans>

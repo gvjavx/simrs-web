@@ -104,10 +104,9 @@ public class LabBoImpl implements LabBo {
                 if (bean.getNamaLab().equalsIgnoreCase(imSimrsLabEntity.getNamaLab())){
                     imSimrsLabEntity.setIdLab(bean.getIdLab());
                     imSimrsLabEntity.setNamaLab(bean.getNamaLab());
-                    imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
+//                    imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
                     imSimrsLabEntity.setIdDokter(bean.getIdDokter());
                     imSimrsLabEntity.setIdKategoriLab(bean.getIdKategoriLab());
-                    imSimrsLabEntity.setTarif(bean.getTarif());
                     imSimrsLabEntity.setFlag(bean.getFlag());
                     imSimrsLabEntity.setAction(bean.getAction());
                     imSimrsLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -127,10 +126,9 @@ public class LabBoImpl implements LabBo {
                     if (!status.equalsIgnoreCase("exist")){
                         imSimrsLabEntity.setIdLab(bean.getIdLab());
                         imSimrsLabEntity.setNamaLab(bean.getNamaLab());
-                        imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
+//                        imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
                         imSimrsLabEntity.setIdDokter(bean.getIdDokter());
                         imSimrsLabEntity.setIdKategoriLab(bean.getIdKategoriLab());
-                        imSimrsLabEntity.setTarif(bean.getTarif());
                         imSimrsLabEntity.setFlag(bean.getFlag());
                         imSimrsLabEntity.setAction(bean.getAction());
                         imSimrsLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -175,10 +173,9 @@ public class LabBoImpl implements LabBo {
                 ImSimrsLabEntity imSimrsLabEntity = new ImSimrsLabEntity();
                 imSimrsLabEntity.setIdLab(labId);
                 imSimrsLabEntity.setNamaLab(bean.getNamaLab());
-                imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
+//                imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
                 imSimrsLabEntity.setIdDokter(bean.getIdDokter());
                 imSimrsLabEntity.setIdKategoriLab(bean.getIdKategoriLab());
-                imSimrsLabEntity.setTarif(bean.getTarif());
                 imSimrsLabEntity.setFlag(bean.getFlag());
                 imSimrsLabEntity.setAction(bean.getAction());
                 imSimrsLabEntity.setCreatedWho(bean.getCreatedWho());
@@ -214,14 +211,17 @@ public class LabBoImpl implements LabBo {
             if (bean.getNamaLab() != null && !"".equalsIgnoreCase(bean.getNamaLab())) {
                 hsCriteria.put("nama_lab", bean.getNamaLab());
             }
-            if (bean.getIdOperatorLab() != null && !"".equalsIgnoreCase(bean.getIdOperatorLab())) {
-                hsCriteria.put("id_operator_lab", bean.getIdOperatorLab());
-            }
+//            if (bean.getIdOperatorLab() != null && !"".equalsIgnoreCase(bean.getIdOperatorLab())) {
+//                hsCriteria.put("id_operator_lab", bean.getIdOperatorLab());
+//            }
             if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())) {
                 hsCriteria.put("id_dokter", bean.getIdDokter());
             }
             if (bean.getIdKategoriLab() != null && !"".equalsIgnoreCase(bean.getIdKategoriLab())) {
                 hsCriteria.put("id_kategori_lab", bean.getIdKategoriLab());
+            }
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+                hsCriteria.put("branch_id", bean.getBranchId());
             }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 if ("N".equalsIgnoreCase(bean.getFlag())) {
@@ -247,7 +247,7 @@ public class LabBoImpl implements LabBo {
                     lab = new Lab();
                     lab.setIdLab(labEntity.getIdLab());
                     lab.setNamaLab(labEntity.getNamaLab());
-                    lab.setIdOperatorLab(labEntity.getIdOperatorLab());
+//                    lab.setIdOperatorLab(labEntity.getIdOperatorLab());
                     lab.setIdDokter(labEntity.getIdDokter());
                     lab.setIdKategoriLab(labEntity.getIdKategoriLab());
                     lab.setFlag(labEntity.getFlag());
@@ -259,26 +259,18 @@ public class LabBoImpl implements LabBo {
                     lab.setLastUpdate(labEntity.getLastUpdate());
                     lab.setLastUpdateWho(labEntity.getLastUpdateWho());
 
-                    if (labEntity.getTarif() != null){
-                        lab.setTarif(labEntity.getTarif());
-                        lab.setStTarif(CommonUtil.numbericFormat(labEntity.getTarif(), "###,###"));
-                    }else {
-                        lab.setTarif(labEntity.getTarif());
-                        lab.setStTarif("-");
-                    }
-
-                    if (labEntity.getIdOperatorLab() != null){
-                        ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-                        OperatorLab operatorLab = new OperatorLab();
-                        OperatorLabBo operatorLabBo = (OperatorLabBo) context.getBean("operatorLabBoProxy");
-                        operatorLab.setIdOperatorLab(labEntity.getIdOperatorLab());
-                        operatorLab.setFlag("Y");
-                        List<OperatorLab> operatorLabs = operatorLabBo.getByCriteria(operatorLab);
-                        String operatorLabName = operatorLabs.get(0).getNamaOperator();
-                        lab.setNamaOperatorLab(operatorLabName);
-                    }else {
-                        lab.setNamaOperatorLab("-");
-                    }
+//                    if (labEntity.getIdOperatorLab() != null){
+//                        ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
+//                        OperatorLab operatorLab = new OperatorLab();
+//                        OperatorLabBo operatorLabBo = (OperatorLabBo) context.getBean("operatorLabBoProxy");
+//                        operatorLab.setIdOperatorLab(labEntity.getIdOperatorLab());
+//                        operatorLab.setFlag("Y");
+//                        List<OperatorLab> operatorLabs = operatorLabBo.getByCriteria(operatorLab);
+//                        String operatorLabName = operatorLabs.get(0).getNamaOperator();
+//                        lab.setNamaOperatorLab(operatorLabName);
+//                    }else {
+//                        lab.setNamaOperatorLab("-");
+//                    }
 
                     if (labEntity.getIdDokter() != null){
                         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
@@ -315,6 +307,17 @@ public class LabBoImpl implements LabBo {
         }
         logger.info("[LabBoImpl.getByCriteria] End <<<<<<<");
         return null;
+    }
+
+    @Override
+    public List<Lab> getDataLab(String id, String branch) throws GeneralBOException {
+        List<Lab> labList = new ArrayList<>();
+        try {
+            labList = labDao.getListDataLab(id, branch);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return labList;
     }
 
     @Override

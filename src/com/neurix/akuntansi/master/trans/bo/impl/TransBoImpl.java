@@ -7,6 +7,7 @@ import com.neurix.akuntansi.master.trans.dao.TransDao;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.master.trans.model.Trans;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -122,7 +123,6 @@ public class TransBoImpl implements TransBo {
                 imTransEntity.setTransName(bean.getTransName());
                 imTransEntity.setMaster(bean.getMaster());
                 imTransEntity.setTipePembayaran(bean.getTipePembayaran());
-                imTransEntity.setFlagSumberBaru(bean.getFlagSumberBaru());
                 imTransEntity.setFlag(bean.getFlag());
                 imTransEntity.setAction(bean.getAction());
                 imTransEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -162,7 +162,6 @@ public class TransBoImpl implements TransBo {
             imTransEntity.setTransName(bean.getTransName());
             imTransEntity.setMaster(bean.getMaster());
             imTransEntity.setTipePembayaran(bean.getTipePembayaran());
-            imTransEntity.setFlagSumberBaru(bean.getFlagSumberBaru());
             imTransEntity.setFlag(bean.getFlag());
             imTransEntity.setAction(bean.getAction());
             imTransEntity.setCreatedWho(bean.getCreatedWho());
@@ -232,26 +231,31 @@ public class TransBoImpl implements TransBo {
                     if (transEntity.getMaster() != null){
                         if ("vendor".equalsIgnoreCase(transEntity.getMaster()))
                             returnTrans.setMasterName("Vendor");
-                        if ("dokter".equalsIgnoreCase(transEntity.getMaster()))
+                        else if ("dokter".equalsIgnoreCase(transEntity.getMaster()))
                             returnTrans.setMasterName("Dokter");
+                        else if ("pengajuan_biaya".equalsIgnoreCase(transEntity.getMaster()))
+                            returnTrans.setMasterName("Pengajuan Biaya");
+                        else if ("pasien".equalsIgnoreCase(transEntity.getMaster()))
+                            returnTrans.setMasterName("Pasien");
+                        else if ("karyawan".equalsIgnoreCase(transEntity.getMaster()))
+                            returnTrans.setMasterName("Karyawan");
                     }
 
                     returnTrans.setTipePembayaran(transEntity.getTipePembayaran());
-                    returnTrans.setFlagSumberBaru(transEntity.getFlagSumberBaru());
                     returnTrans.setTipePembayaran(transEntity.getTipePembayaran());
                     if (transEntity.getTipePembayaran() != null){
                         if ("KM".equalsIgnoreCase(transEntity.getTipePembayaran()))
                             returnTrans.setTipePembayaranName("Kas Masuk");
-                        if ("KK".equalsIgnoreCase(transEntity.getTipePembayaran()))
+                        else if ("KK".equalsIgnoreCase(transEntity.getTipePembayaran()))
                             returnTrans.setTipePembayaranName("Kas Keluar");
-                        if ("KR".equalsIgnoreCase(transEntity.getTipePembayaran()))
+                        else if ("KR".equalsIgnoreCase(transEntity.getTipePembayaran()))
                             returnTrans.setTipePembayaranName("Koreksi");
                     }
 
                     returnTrans.setCreatedWho(transEntity.getCreatedWho());
                     returnTrans.setCreatedDate(transEntity.getCreatedDate());
-                    returnTrans.setStCreatedDate(transEntity.getCreatedDate().toString());
-                    returnTrans.setStLastUpdate(transEntity.getLastUpdate().toString());
+                    returnTrans.setStCreatedDate(CommonUtil.convertTimestampToStringLengkap(transEntity.getCreatedDate()));
+                    returnTrans.setStLastUpdate(CommonUtil.convertTimestampToStringLengkap(transEntity.getLastUpdate()));
                     returnTrans.setLastUpdate(transEntity.getLastUpdate());
                     returnTrans.setAction(transEntity.getAction());
                     returnTrans.setFlag(transEntity.getFlag());

@@ -76,7 +76,7 @@
                         <table >
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Devisi Id :</small></label>
+                                    <label class="control-label"><small>Bidang/Divisi Id :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -87,7 +87,7 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Nama Devisi :</small></label>
+                                    <label class="control-label"><small>Nama Bidang/Divisi :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -131,7 +131,7 @@
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
-                                            Add Department
+                                            Add Bidang/Divisi
                                         </sj:a>
                                     </td>
                                     <td>
@@ -146,7 +146,7 @@
                         <br>
                         <br>
                         <center>
-                            <table id="showdata" width="40%">
+                            <table id="showdata" width="80%">
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -182,7 +182,7 @@
                                                 </s:if>
                                             </display:column>
                                             <display:column property="departmentId" sortable="true" title="Devisi ID" />
-                                            <display:column property="departmentName" sortable="true" title="Nama Devisi"  />
+                                            <display:column property="departmentName" sortable="true" title="Nama Bidang/Divisi"  />
                                             <display:column property="kodering" sortable="true" title="Kodering"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />

@@ -23,8 +23,9 @@
             var listrik = document.getElementById("listrik1").value;
             var air = document.getElementById("air1").value;
             var bbm = document.getElementById("bbm1").value;
+            var tahun = document.getElementById("tahunPayroll1").value;
 
-            if (golonganId != ''&& nilai != '' && santunanKhusus != '' && rumah != '' && listrik != '' && air != '' && bbm != '' ) {
+            if (golonganId != ''&& nilai != '' && santunanKhusus != '' && rumah != '' && listrik != '' && air != '' && bbm != '' && tahun != '') {
                 if(isNaN(nilai) == false){
                     /*PayrollSkalaGajiAction.cekIfExistDwr(golonganId, function(data){
                         if(data != 'exist'){*/
@@ -76,6 +77,25 @@
 
                 if (nilai == '') {
                     msg += 'Field <strong>Gaji Level</strong> is required.' + '<br/>';
+                }
+                if (santunanKhusus == '') {
+                    msg += 'Field <strong>Santunan Khusus </strong> is required.' + '<br/>';
+                }
+                if (rumah == '') {
+                    msg += 'Field <strong>Tunj. Rumah</strong> is required.' + '<br/>';
+                }
+
+                if (listrik == '') {
+                    msg += 'Field <strong>Tunj. Listrik </strong> is required.' + '<br/>';
+                }
+                if (air == '') {
+                    msg += 'Field <strong>Tunj. Air</strong> is required.' + '<br/>';
+                }
+                if (bbm == '') {
+                    msg += 'Field <strong>Tunj. Bbm</strong> is required.' + '<br/>';
+                }
+                if (tahun == '') {
+                    msg += 'Field <strong>Tahun</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -215,6 +235,30 @@
                         <td>
                             <table>
                                 <s:textfield type="number" min="0" id="bbm1" name="payrollSkalaGaji.bbm" required="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tahun :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunSekarang10_rekruitmen"/>
+                                <s:select cssClass="form-control" list="#comboPeriode.listOfComboPeriode" id="tahunPayroll1"
+                                          name="payrollSkalaGaji.tahun" required="true" headerKey=""
+                                          headerValue="[Select one]"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>No. SK :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="noSk" name="payrollSkalaGaji.noSk" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

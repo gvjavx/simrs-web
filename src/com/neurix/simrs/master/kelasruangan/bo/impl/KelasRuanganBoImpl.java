@@ -103,8 +103,10 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                 position.setPositionId(listEntity.getDivisiId());
                 position.setFlag("Y");
                 List<Position> positions = positionBo.getByCriteria(position);
-                String positionName = positions.get(0).getPositionName();
-                kelasRuangan.setDivisiName(positionName);
+                if(positions.size() > 0){
+                    String positionName = positions.get(0).getPositionName();
+                    kelasRuangan.setDivisiName(positionName);
+                }
 
                 result.add(kelasRuangan);
             }
@@ -128,8 +130,10 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                     seqKodering = kelasRuanganDao.getNextKodering();
                 } catch (HibernateException e) {
                     logger.error("[PayrollSkalaGajiBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiId id, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiId id, please info to your admin..."
+                            + e.getMessage());
                 }
+
                 Map map = new HashMap<>();
                 map.put("position_id", kelasRuangan.getPositionId());
                 String koderingPosition = positionDao.getKodringPosition(map);
@@ -339,6 +343,11 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
     @Override
     public ImSimrsKelasRuanganEntity getKelasRuanganById(String id) throws GeneralBOException {
         return kelasRuanganDao.getById("idKelasRuangan", id);
+    }
+
+    @Override
+    public List<KelasRuangan> getListKelasKamar(String kategori) throws GeneralBOException {
+        return kelasRuanganDao.getListKelasKamar(kategori);
     }
 
     @Override

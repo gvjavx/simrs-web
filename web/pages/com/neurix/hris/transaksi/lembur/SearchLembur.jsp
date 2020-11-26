@@ -117,17 +117,6 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Status Giling :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:select list="#{'DMG':'Dalam Masa Giling','LMG':'Luar Masa Giling'}" id="statusGiling" name="lembur.statusGiling"
-                                                                  headerKey="" headerValue="" cssClass="form-control" />
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
                                                     <label class="control-label"><small>Tanggal :</small></label>
                                                 </td>
                                                 <td>
@@ -251,7 +240,7 @@
                                                         </sj:dialog>
 
                                                         <sj:dialog id="dialog_menu_lembur" openTopics="showDialogMenu" modal="true"
-                                                                   height="670" width="700" autoOpen="false"
+                                                                   height="670" width="900" autoOpen="false"
                                                                    title="Lembur">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
@@ -266,13 +255,18 @@
                                                                 <s:if test="#attr.row.terRealisasi">
                                                                 </s:if>
                                                                 <s:else>
-                                                                    <s:url var="urlEdit" namespace="/lembur" action="delete_lembur" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.lemburId"/></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                    </s:url>
-                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_edit">
-                                                                    </sj:a>
+                                                                    <s:if test="#attr.row.lemburApprove">
+                                                                    </s:if>
+                                                                    <s:else>
+                                                                        <s:url var="urlEdit" namespace="/lembur" action="delete_lembur" escapeAmp="false">
+                                                                            <s:param name="id"><s:property value="#attr.row.lemburId"/></s:param>
+                                                                            <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
+                                                                        </s:url>
+                                                                        <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_edit">
+                                                                        </sj:a>
+                                                                    </s:else>
+
                                                                 </s:else>
                                                             </display:column>
                                                             <display:column media="html" title="Edit">
@@ -300,8 +294,9 @@
                                                             <display:column property="stTanggalAwal" sortable="true" title="Tanggal"  />
                                                             <display:column property="jamAwal" sortable="true" title="Jam Awal"  />
                                                             <display:column property="jamAkhir" sortable="true" title="Jam Akhir"  />
-                                                            <display:column property="lamaJam" sortable="true" title="Pengajuan"  />
-                                                            <display:column property="jamRealisasi" sortable="true" title="Realisasi"  />
+                                                            <display:column property="lamaJam" sortable="true" title="Pengajuan (Jam)"  />
+                                                            <display:column property="jamRealisasi" sortable="true" title="Absensi (Jam)"  />
+                                                            <display:column property="lamaHitungan" sortable="true" title="Realisasi (Jam)"  />
                                                             <display:column media="html" title="Approve Atasan">
                                                                 <s:if test="#attr.row.lemburApprove">
                                                                     <img border="0" src="<s:url value="/pages/images/icon_success.ico"/>" name="icon_edit">
@@ -312,7 +307,7 @@
                                                                 <s:else>
                                                                 </s:else>
                                                             </display:column>
-                                                            <display:column media="html" title="Refresh">
+                                                            <display:column media="html" title="Absensi">
                                                                 <s:if test="#attr.row.lemburApprove">
                                                                     <s:if test="#attr.row.adaAbsen">
                                                                         <s:if test="#attr.row.terRealisasi">
@@ -352,6 +347,11 @@
                                                                     </s:if>
                                                                 </display:column>
                                                             </s:if>--%>
+                                                            <display:setProperty name="paging.banner.item_name">Lembur</display:setProperty>
+                                                            <display:setProperty name="paging.banner.items_name">Lembur</display:setProperty>
+                                                            <display:setProperty name="export.excel.filename">Lembur.xls</display:setProperty>
+                                                            <display:setProperty name="export.csv.filename">Lembur.csv</display:setProperty>
+                                                            <display:setProperty name="export.pdf.filename">Lembur.pdf</display:setProperty>
                                                         </display:table>
                                                     </td>
                                                 </tr>

@@ -24,6 +24,54 @@ public class PelayananMobile implements Serializable {
     private String jumlahAntrian;
     private String kuota;
 
+    private String idJenisObat;
+    private String namaJenisObat;
+
+    private String username;
+    private String userId;
+
+    private String flagLibur;
+
+    public String getFlagLibur() {
+        return flagLibur;
+    }
+
+    public void setFlagLibur(String flagLibur) {
+        this.flagLibur = flagLibur;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getIdJenisObat() {
+        return idJenisObat;
+    }
+
+    public void setIdJenisObat(String idJenisObat) {
+        this.idJenisObat = idJenisObat;
+    }
+
+    public String getNamaJenisObat() {
+        return namaJenisObat;
+    }
+
+    public void setNamaJenisObat(String namaJenisObat) {
+        this.namaJenisObat = namaJenisObat;
+    }
+
     public String getKuota() {
         return kuota;
     }

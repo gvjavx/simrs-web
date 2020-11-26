@@ -227,7 +227,7 @@ public class StrukturJabatanAction extends BaseMasterAction{
         return null;
     }
 
-    public Boolean saveEdit(String strukturId, String Branch, Long position, String Parent){
+    public String saveEditStruktur(String strukturId, String Branch, String position, String Parent){
         logger.info("[StrukturJabatanAction.saveEdit] start process >>>");
         try {
 
@@ -255,27 +255,33 @@ public class StrukturJabatanAction extends BaseMasterAction{
                 logId = strukturJabatanBoProxy.saveErrorMessage(e.getMessage(), "StrukturJabatanBO.saveEdit");
             } catch (GeneralBOException e1) {
                 logger.error("[StrukturJabatanAction.saveEdit] Error when saving error,", e1);
-                return false;
+//                return false;
+                return ERROR;
             }
             logger.error("[StrukturJabatanAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return false;
+//            return false;
+            return ERROR;
         }
 
         logger.info("[StrukturJabatanAction.saveEdit] end process <<<");
 
-        return true;
+//        return true;
+        return "success_save_add";
     }
 
-    public String saveDelete(String strukturId, String Branch, Long position, String Parent){
+
+
+    public String saveDelete(String strukturId, String Branch, String position, String Parent){
         logger.info("[StrukturJabatanAction.saveDelete] start process >>>");
+        String status;
         try {
 
             StrukturJabatan deleteStrukturJabatan = new StrukturJabatan();
 
             deleteStrukturJabatan.setStrukturJabatanId(strukturId);
             deleteStrukturJabatan.setBranchId(Branch);
-            deleteStrukturJabatan.setPositionId(position.toString());
+            deleteStrukturJabatan.setPositionId(position);
             deleteStrukturJabatan.setParentId(Parent);
 
             String userLogin = CommonUtil.userLogin();
@@ -288,7 +294,7 @@ public class StrukturJabatanAction extends BaseMasterAction{
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             StrukturJabatanBo strukturBo = (StrukturJabatanBo) ctx.getBean("strukturJabatanBoProxy");
-            strukturBo.saveDelete(deleteStrukturJabatan);
+            status = strukturBo.saveDeleteStruktur(deleteStrukturJabatan);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -304,7 +310,7 @@ public class StrukturJabatanAction extends BaseMasterAction{
 
         logger.info("[StrukturJabatanAction.saveDelete] end process <<<");
 
-        return "success_save_delete";
+        return status;
     }
 
     public String saveAdd(){

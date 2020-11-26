@@ -13,7 +13,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#periksa_lab').addClass('active');
+            $('#penunjang_active, #periksa_lab').addClass('active');
+            $('#penunjang_open').addClass('menu-open');
         });
 
     </script>
@@ -47,6 +48,14 @@
                         <div class="form-group">
                             <s:form id="periksaLabForm" method="post" namespace="/periksalab" action="search_periksalab.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Periksa Lab</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_periksa_lab" cssStyle="margin-top: 7px"
+                                                     name="periksaLab.idPeriksaLab" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">ID Detail Checkup</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_detail_checkup" cssStyle="margin-top: 7px"
@@ -70,19 +79,19 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Labotarium</label>
-                                    <div class="col-sm-4">
-                                        <s:action id="initLab" namespace="/lab"
-                                                  name="getListLab_lab"/>
-                                        <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initLab.listOfLab" id="lab"
-                                                  name="periksaLab.idLab" listKey="idLab"
-                                                  listValue="namaLab"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2" theme="simple"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Labotarium</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:action id="initLab" namespace="/lab"--%>
+                                                  <%--name="getListLab_lab"/>--%>
+                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                  <%--list="#initLab.listOfLab" id="lab"--%>
+                                                  <%--name="periksaLab.idLab" listKey="idLab"--%>
+                                                  <%--listValue="namaLab"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2" theme="simple"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
@@ -188,13 +197,31 @@
                                             </a>
                                         </s:if>
                                         <s:else>
-                                            <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
-                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{add_periksa_lab}">
-                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">
-                                            </s:a>
+                                            <s:if test='#row.idJenisPeriksa == "umum"'>
+                                                <s:if test='#row.statusBayar == "Y"'>
+                                                    <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                        <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
+                                                        <s:param name="ket"><s:property value="keterangan"/></s:param>
+                                                    </s:url>
+                                                    <s:a href="%{add_periksa_lab}">
+                                                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">
+                                                    </s:a>
+                                                </s:if>
+                                                <s:else>
+                                                    <span class="span-warning">Uang muka belum bayar</span>
+                                                </s:else>
+                                            </s:if>
+                                            <s:else>
+                                                <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
+                                                    <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                    <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
+                                                    <s:param name="ket"><s:property value="keterangan"/></s:param>
+                                                </s:url>
+                                                <s:a href="%{add_periksa_lab}">
+                                                    <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">
+                                                </s:a>
+                                            </s:else>
                                         </s:else>
                                     </td>
                                 </tr>

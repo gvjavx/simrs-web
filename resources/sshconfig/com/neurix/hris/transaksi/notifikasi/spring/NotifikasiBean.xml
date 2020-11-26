@@ -11,6 +11,9 @@
     <bean id="notifikasiController" class="com.neurix.hris.mobileapi.NotifikasiController"
           p:notifikasiBoProxy-ref="notifikasiBoProxy" />
 
+    <bean id="cutiFormPegawaiController" class="com.neurix.hris.mobileapi.CutiFormPegawaiController"
+          p:notifikasiBoProxy-ref="notifikasiBoProxy" />
+
     <bean id="notifikasiAction" class="com.neurix.hris.transaksi.notifikasi.action.NotifikasiAction"
           p:notifikasiBoProxy-ref="notifikasiBoProxy"
           p:sppdBoProxy-ref="sppdBoProxy"
@@ -36,6 +39,7 @@
           p:notifikasiFcmDao-ref="notifikasiFcmDao"
           p:tipeNotifDao-ref="tipeNotifDao"
           p:pengajuanBiayaDao-ref="pengajuanBiayaDao"
+          p:pengajuanBiayaDetailDao-ref="pengajuanBiayaDetailDao"
 
 
     />

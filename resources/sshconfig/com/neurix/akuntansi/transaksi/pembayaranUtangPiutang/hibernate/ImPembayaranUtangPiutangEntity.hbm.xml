@@ -69,5 +69,30 @@
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
 
+        <property name="approvalKeuanganFlag">
+            <column name="approval_keuangan_flag"/>
+        </property>
+        <property name="approvalKeuanganId">
+            <column name="approval_keuangan_id"/>
+        </property>
+        <property name="approvalKeuanganName">
+            <column name="approval_keuangan_name"/>
+        </property>
+        <property name="approvalKeuanganDate">
+            <column name="approval_keuangan_date"/>
+        </property>
+
+        <property name="approvalKasubKeuanganFlag">
+            <column name="approval_kasub_keuangan_flag"/>
+        </property>
+        <property name="approvalKasubKeuanganId">
+            <column name="approval_kasub_keuangan_id"/>
+        </property>
+        <property name="approvalKasubKeuanganName">
+            <column name="approval_kasub_keuangan_name"/>
+        </property>
+        <property name="approvalKasubKeuanganDate">
+            <column name="approval_kasub_keuangan_date"/>
+        </property>
     </class>
 </hibernate-mapping>

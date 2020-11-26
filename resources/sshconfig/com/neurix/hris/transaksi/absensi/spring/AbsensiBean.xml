@@ -11,6 +11,9 @@
     <bean id="absensiOnine" class="com.neurix.hris.mobileapi.AbsensiOnlineController"
           p:absensiBoProxy-ref="absensiBoProxy" />
 
+    <bean id="historyPegawaiController" class="com.neurix.hris.mobileapi.HistoryPegawaiController"
+          p:absensiBoProxy-ref="absensiBoProxy" />
+
     <bean id="absensiBo" class="com.neurix.hris.transaksi.absensi.bo.impl.AbsensiBoImpl"
           p:absensiPegawaiDao-ref="absensiPegawaiDao"
           p:biodataDao-ref="biodataDao"
@@ -42,6 +45,9 @@
           p:pegawaiTambahanDao-ref="pegawaiTambahanDao"
           p:absensiDashboardDao-ref="absensiDashboardDao"
           p:shiftDao-ref="shiftDao"
+          p:companyDao-ref="companyDao"
+          p:mesinAbsensiDetailOnCallDao-ref="mesinAbsensiDetailOnCallDao"
+          p:absensiOnCallDao-ref="absensiOnCallDao"
     />
 
     <bean id="absensiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -96,6 +102,9 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="absensiDashboardDao" class="com.neurix.hris.transaksi.absensi.dao.AbsensiDashboardDao"
           p:sessionFactory-ref="sessionFactory" />
-
+    <bean id="mesinAbsensiDetailOnCallDao" class="com.neurix.hris.transaksi.absensi.dao.MesinAbsensiDetailOnCallDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="absensiOnCallDao" class="com.neurix.hris.transaksi.absensi.dao.AbsensiOnCallDao"
+          p:sessionFactory-ref="sessionFactory" />
 
 </beans>

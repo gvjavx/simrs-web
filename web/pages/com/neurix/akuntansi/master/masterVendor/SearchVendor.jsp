@@ -105,6 +105,17 @@
                                             </tr>
                                             <tr>
                                                 <td>
+                                                    <label class="control-label"><small>Tipe Vendor :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:select list="#{'umum':'Rekanan/Swasta/Vendor/Asuransi','bpjs':'Perusahaan yg berelasi/kerjasama/mitra','lahan':'Penyewa Lahan','lain':'Lain - Lain'}" id="tipeVendor" name="masterVendor.tipeVendor"
+                                                                  headerKey="" headerValue="" cssClass="form-control" />
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
                                                     <label class="control-label"><small>Nama Vendor :</small></label>
                                                 </td>
                                                 <td>
@@ -157,11 +168,11 @@
                                         <br>
                                         <br>
                                         <center>
-                                            <table id="showdata" width="70%">
+                                            <table id="showdata" width="90%">
                                                 <tr>
                                                     <td align="center">
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="500" width="600" autoOpen="false"
+                                                                   height="600" width="600" autoOpen="false"
                                                                    title="Vendor ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
@@ -206,10 +217,11 @@
                                                             <display:column property="nama" sortable="true" title="Nama Vendor"  />
                                                             <display:column property="alamat" sortable="true" title="Alamat"  />
                                                             <display:column property="npwp" sortable="true" title="NPWP"  />
+                                                            <display:column property="noRekening" sortable="true" title="No. Rekening"  />
                                                             <display:column property="email" sortable="true" title="email"  />
                                                             <display:column property="noTelp" sortable="true" title="No. Telp."  />
                                                             <display:column property="vendorObat" sortable="true" title="Vendor Obat"  />
-                                                            <display:column property="flag" sortable="true" title="Flag" />
+                                                            <display:column property="tipeVendorName" sortable="true" title="Tipe Vendor"  />
                                                             <display:column property="createdWho" sortable="true" title="Created Who"/>
                                                             <display:column property="lastUpdate" sortable="true" title="Last Update"/>
                                                         </display:table>

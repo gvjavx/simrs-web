@@ -2,6 +2,7 @@ package com.neurix.hris.master.studyJurusan.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.studyJurusan.model.ImStudyJurusanEntity;
+import com.neurix.hris.master.studyJurusan.model.ImStudyJurusanHistoryEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -61,6 +62,13 @@ public class StudyJurusanDao extends GenericDao<ImStudyJurusanEntity, String> {
         return "J"+sId;
     }
 
+    public String getNextStudyJurusanHistoryId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_study_jurusan_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%03d", iter.next());
+        return "JH"+sId;
+    }
+
     public List<ImStudyJurusanEntity> getListStudyJurusan(String term) throws HibernateException {
 
         List<ImStudyJurusanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImStudyJurusanEntity.class)
@@ -70,6 +78,10 @@ public class StudyJurusanDao extends GenericDao<ImStudyJurusanEntity, String> {
                 .list();
 
         return results;
+    }
+
+    public void addAndSaveHistory(ImStudyJurusanHistoryEntity entity) throws HibernateException {
+        this.sessionFactory.getCurrentSession().save(entity);
     }
 
 }

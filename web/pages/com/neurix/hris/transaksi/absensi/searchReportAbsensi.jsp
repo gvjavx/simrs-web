@@ -46,7 +46,6 @@
     <section class="content-header">
         <h1>
             Report Absensi
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -78,15 +77,28 @@
                                     </table>
                                 </td>
                             </tr>
+                            <%--<tr>--%>
+                                <%--<td>--%>
+                                    <%--<label class="control-label"><small>Bagian :</small></label>--%>
+                                <%--</td>--%>
+                                <%--<td>--%>
+                                    <%--<table>--%>
+                                            <%--<s:action id="comboBagian" namespace="/strukturJabatan" name="searchBagian_strukturJabatan"/>--%>
+                                            <%--<s:select cssClass="form-control" list="#comboBagian.listComboStrukturJabatan" id="bagian" required="true"--%>
+                                                      <%--listKey="bagian" listValue="bagianName" headerKey="" headerValue="[Select one]" name="absensiPegawai.bagian" />--%>
+                                    <%--</table>--%>
+                                <%--</td>--%>
+                            <%--</tr>--%>
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Bagian :</small></label>
+                                    <label class="control-label"><small>Sub Bidang/Divisi :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                            <s:action id="comboBagian" namespace="/strukturJabatan" name="searchBagian_strukturJabatan"/>
-                                            <s:select cssClass="form-control" list="#comboBagian.listComboStrukturJabatan" id="bagian" required="true"
-                                                      listKey="bagian" listValue="bagianName" headerKey="" headerValue="[Select one]" name="absensiPegawai.bagian" />
+                                        <s:action id="comboBagian" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
+                                        <s:select list="#comboBagian.comboListOfPositionBagian" id="bagian" name="absensiPegawai.bagian"
+                                                  listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]"
+                                                  cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -186,11 +198,11 @@
                                         </button>
                                     </td>
                                     <td width="2%"></td>--%>
-                                    <%--<td>
+                                    <td>
                                         <button type="button" class="btn btn-success" id="btnPrintTriwulan">
                                             <i class="fa fa-print"></i> Cetak Evaluasi
                                         </button>
-                                    </td>--%>
+                                    </td>
                                     <%--<td width="2%"></td>
                                     <td>
                                         <div class="btn-group">

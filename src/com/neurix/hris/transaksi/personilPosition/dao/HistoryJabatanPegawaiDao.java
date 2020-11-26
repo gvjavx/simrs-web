@@ -255,7 +255,16 @@ public class HistoryJabatanPegawaiDao extends GenericDao<ImtHrisHistoryJabatanPe
 
         Object results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query).uniqueResult();
-        Result = results.toString();
+
+        if (results == null){
+            String queryPkwt = "select golongan_pkwt_name from im_hris_golongan_pkwt where golongan_pkwt_id ='"+golonganId+"'";
+            Object resultsPkwt = this.sessionFactory.getCurrentSession()
+                    .createSQLQuery(queryPkwt).uniqueResult();
+            Result = resultsPkwt.toString();
+        }else {
+            Result = results.toString();
+        }
+
         return Result;
     }
     public String getGolonganPkwtById(String golonganId) throws HibernateException {

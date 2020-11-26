@@ -72,7 +72,11 @@ public class ProfilBiodataController implements ModelDriven<Object> {
             model.setTipePegawai(bio.getTipePegawaiName());
             model.setStatusGiling(bio.getStatusGiling());
             model.setZakatProfesi(bio.getFlagZakat());
-
+            model.setNipLama(bio.getNipLama());
+            model.setPathFoto(bio.getPathFoto());
+            model.setFotoUpload(bio.getFotoUpload());
+            model.setNoTelp(bio.getNoTelp());
+            model.setFlagShift(bio.getShift());
         }
         logger.info("[BiodataController.create] end process POST /activity <<<");
         return new DefaultHttpHeaders("success").disableCaching();

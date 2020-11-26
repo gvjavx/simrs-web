@@ -49,13 +49,18 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -81,6 +86,15 @@ public class BiodataAction extends BaseMasterAction{
     private Reward reward;
     private Sertifikat sertifikat;
     private PelatihanJabatanUser pelatihanJabatanUser;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public PelatihanJabatanUser getPelatihanJabatanUser() {
         return pelatihanJabatanUser;
@@ -223,23 +237,21 @@ public class BiodataAction extends BaseMasterAction{
 
     public Biodata init(String kode, String flag){
         logger.info("[BiodataAction.init] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<Biodata> listOfResult = (List<Biodata>) session.getAttribute("listOfResult");
 
-        if(kode != null && !"".equalsIgnoreCase(kode)){
-            if(listOfResult != null){
-                for (Biodata biodata : listOfResult) {
-                    if(kode.equalsIgnoreCase(biodata.getNip()) && flag.equalsIgnoreCase(biodata.getFlag())){
-                        setBiodata(biodata);
-                        break;
-                    }
-                }
-            } else {
-                setBiodata(new Biodata());
+        Biodata searchBiodata = new Biodata();
+        searchBiodata.setFlag(flag);
+        searchBiodata.setNip(kode);
+        List<Biodata> listOfsearchBiodata = new ArrayList();
+
+        try {
+            listOfsearchBiodata = biodataBoProxy.getByCriteria(searchBiodata);
+            for (Biodata biodata : listOfsearchBiodata){
+                setBiodata(biodata);
             }
-
-            logger.info("[BiodataAction.init] end process >>>");
+        }catch (GeneralBOException e){
+            throw new GeneralBOException(e.getMessage());
         }
+
         return getBiodata();
     }
 
@@ -312,7 +324,11 @@ public class BiodataAction extends BaseMasterAction{
         session.removeAttribute("positionIdForSmk");
 
         logger.info("[BiodataAction.add] stop process >>>");
-        return "init_add_user";
+        if ("dokter".equalsIgnoreCase(getTipe())){
+            return "init_add_dokter";
+        }else{
+            return "init_add_user";
+        }
     }
 
     @Override
@@ -356,8 +372,18 @@ public class BiodataAction extends BaseMasterAction{
         }
 
         setAddOrEdit(true);
+
+        //remove session
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listSertifikat");
+
         logger.info("[BiodataAction.edit] end process >>>");
-        return "init_add_user";
+
+        if ("N".equalsIgnoreCase(editBiodata.getFlagDokterKso())){
+            return "init_add_user";
+        }else{
+            return "init_add_dokter";
+        }
     }
 
     @Override
@@ -404,7 +430,11 @@ public class BiodataAction extends BaseMasterAction{
         setDelete(true);
         logger.info("[BiodataAction.delete] end process <<<");
 
-        return "init_add_user";
+        if ("N".equalsIgnoreCase(deleteBiodata.getFlagDokterKso())){
+            return "init_add_user";
+        }else{
+            return "init_add_dokter";
+        }
     }
 
     @Override
@@ -623,7 +653,6 @@ public class BiodataAction extends BaseMasterAction{
             if (!isAdd()) {
                 logger.info("[BiodataAction.saveEdit] start process >>>");
                 try {
-
                     Biodata editBiodata = getBiodata();
                     String golonganId = editBiodata.getGolongan().replace(",","");
                     editBiodata.setGolongan(golonganId);
@@ -635,28 +664,46 @@ public class BiodataAction extends BaseMasterAction{
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
                     if (editBiodata.getStTanggalLahir() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalLahir())) {
-                        editBiodata.setTanggalLahir(CommonUtil.convertToDate(editBiodata.getStTanggalLahir()));
+                        editBiodata.setTanggalLahir(CommonUtil.convertToDate(editBiodata.getStTanggalLahir().replace(",","").replace(" ","")));
                     }
 
                     if (editBiodata.getStTanggalPensiun() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalPensiun())) {
-                        editBiodata.setTanggalPensiun(CommonUtil.convertToDate(editBiodata.getStTanggalPensiun()));
+                        editBiodata.setTanggalPensiun(CommonUtil.convertToDate(editBiodata.getStTanggalPensiun().replace(",","").replace(" ","")));
                     }
 
                     if (editBiodata.getStTanggalMasuk() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalMasuk())) {
-                        editBiodata.setTanggalMasuk(CommonUtil.convertToDate(editBiodata.getStTanggalMasuk()));
+                        editBiodata.setTanggalMasuk(CommonUtil.convertToDate(editBiodata.getStTanggalMasuk().replace(",","").replace(" ","")));
                     }
 
                     if (editBiodata.getStTanggalAktif() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalAktif())) {
-                        editBiodata.setTanggalAktif(CommonUtil.convertToDate(editBiodata.getStTanggalAktif()));
+                        editBiodata.setTanggalAktif(CommonUtil.convertToDate(editBiodata.getStTanggalAktif().replace(",","").replace(" ","")));
                     }
 
                     if (editBiodata.getStTanggalPraPensiun() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalPraPensiun())){
                         editBiodata.setTanggalPraPensiun(CommonUtil.convertToDate(editBiodata.getStTanggalPraPensiun()));
                     }
 
+//                    //BARU
+//                    if (editBiodata.getStPeralihanGapok() != null && !"".equalsIgnoreCase(editBiodata.getStPeralihanGapok())){
+//                        editBiodata.setPeralihanGapok(CommonUtil.StringDenganFormatToBigDecimal(editBiodata.getStPeralihanGapok()));
+//                    }else{
+//                        editBiodata.setPeralihanGapok(BigDecimal.ZERO);
+//                    }
+//                    if (editBiodata.getStPeralihanSankhus() != null && !"".equalsIgnoreCase(editBiodata.getStPeralihanSankhus())){
+//                        editBiodata.setPeralihanSankhus(CommonUtil.StringDenganFormatToBigDecimal(editBiodata.getStPeralihanSankhus()));
+//                    }else{
+//                        editBiodata.setPeralihanGapok(BigDecimal.ZERO);
+//                    }
+//                    if (editBiodata.getStPeralihanTunjangan() != null && !"".equalsIgnoreCase(editBiodata.getStPeralihanTunjangan())){
+//                        editBiodata.setPeralihanTunjangan(CommonUtil.StringDenganFormatToBigDecimal(editBiodata.getStPeralihanTunjangan()));
+//                    }else{
+//                        editBiodata.setPeralihanGapok(BigDecimal.ZERO);
+//                    }
+
                     if (this.fileUpload!=null) {
 
-                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_PHOTO_PROFILE;
                         String fileName = editBiodata.getNip() + ".jpg";
                         File fileToCreate = new File(filePath, fileName);
 
@@ -709,12 +756,13 @@ public class BiodataAction extends BaseMasterAction{
                 //add
                 try {
                     Biodata biodata = getBiodata();
-                    String golonganId = biodata.getGolongan().replace(",","");
+                    String golonganId ="";
+                    if ("N".equalsIgnoreCase(biodata.getFlagDokterKso())){
+                        golonganId = biodata.getGolongan().replace(",","");
+                    }
+
                     biodata.setGolongan(golonganId);
                     biodata.setGolonganId(golonganId);
-                    String golonganId2 = biodata.getGolongan().replace(" ","");
-                    biodata.setGolongan(golonganId2);
-                    biodata.setGolonganId(golonganId2);
                     String userLogin = CommonUtil.userLogin();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -734,8 +782,26 @@ public class BiodataAction extends BaseMasterAction{
                         biodata.setTanggalPraPensiun(CommonUtil.convertToDate(biodata.getStTanggalPraPensiun()));
                     }
 
+//                    //BARU
+//                    if (biodata.getStPeralihanGapok() != null && !"".equalsIgnoreCase(biodata.getStPeralihanGapok())){
+//                        biodata.setPeralihanGapok(CommonUtil.StringDenganFormatToBigDecimal(biodata.getStPeralihanGapok()));
+//                    }else{
+//                        biodata.setPeralihanGapok(BigDecimal.ZERO);
+//                    }
+//                    if (biodata.getStPeralihanSankhus() != null && !"".equalsIgnoreCase(biodata.getStPeralihanSankhus())){
+//                        biodata.setPeralihanSankhus(CommonUtil.StringDenganFormatToBigDecimal(biodata.getStPeralihanSankhus()));
+//                    }else{
+//                        biodata.setPeralihanGapok(BigDecimal.ZERO);
+//                    }
+//                    if (biodata.getStPeralihanTunjangan() != null && !"".equalsIgnoreCase(biodata.getStPeralihanTunjangan())){
+//                        biodata.setPeralihanTunjangan(CommonUtil.StringDenganFormatToBigDecimal(biodata.getStPeralihanTunjangan()));
+//                    }else{
+//                        biodata.setPeralihanGapok(BigDecimal.ZERO);
+//                    }
+
                     if (this.fileUpload!=null) {
-                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
+//                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_PHOTO_PROFILE;
                         String fileName = biodata.getNip() + ".jpg";
                         File fileToCreate = new File(filePath, fileName);
 
@@ -765,7 +831,6 @@ public class BiodataAction extends BaseMasterAction{
                     biodata.setCreatedWho(userLogin);
                     biodata.setLastUpdate(updateTime);
                     biodata.setCreatedDate(updateTime);
-//                    biodata.setTanggalAktif(CommonUtil.convertTimestampToDate(updateTime));
                     biodata.setLastUpdateWho(userLogin);
                     biodata.setAction("C");
                     biodata.setStatusCaption("Online");
@@ -787,7 +852,7 @@ public class BiodataAction extends BaseMasterAction{
 
 
                 HttpSession session = ServletActionContext.getRequest().getSession();
-                session.removeAttribute("listOfResult");
+                session.removeAttribute("listOfResultBiodata");
                 session.removeAttribute("listKeluarga");
                 session.removeAttribute("listStudy");
                 session.removeAttribute("listPengalamanKerja");
@@ -968,7 +1033,7 @@ public class BiodataAction extends BaseMasterAction{
 
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultBiodata");
 
         logger.info("[pengalamanKerjaAction.saveAdd] end process >>>");
         return "success_save_add";
@@ -1008,8 +1073,8 @@ public class BiodataAction extends BaseMasterAction{
 
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-        session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult", listOfsearchBiodata);
+        session.removeAttribute("listOfResultBiodata");
+        session.setAttribute("listOfResultBiodata", listOfsearchBiodata);
 
         logger.info("[BiodataAction.search] end process <<<");
 
@@ -1041,7 +1106,7 @@ public class BiodataAction extends BaseMasterAction{
 
         biodata = data;
 
-        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultBiodata");
         logger.info("[BiodataAction.initForm] end process >>>");
         return INPUT;
     }
@@ -1078,7 +1143,7 @@ public class BiodataAction extends BaseMasterAction{
         HttpSession session = ServletActionContext.getRequest().getSession();
 
         session.removeAttribute("listKeluarga");
-        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultBiodata");
         session.removeAttribute("listSppdPersonAnggota");
         session.setAttribute("listSppdPersonAnggota", sppdRerouteList);
 
@@ -1725,26 +1790,28 @@ public class BiodataAction extends BaseMasterAction{
         return getSertifikat();
     }
 
-    public PelatihanJabatanUser initSearchPelatihan(String kode){
+    public Sertifikat initSearchPelatihan(String kode){
         logger.info("[BiodataAction.initSearchPelatihan] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Sertifikat> listOfResult = (List<Sertifikat>) session.getAttribute("listSertifikat");
-
+        Sertifikat data= new Sertifikat();
         if(kode != null && !"".equalsIgnoreCase(kode)){
             if(listOfResult != null){
                 for (Sertifikat sertifikat: listOfResult) {
                     if(kode.equalsIgnoreCase(sertifikat.getSertifikatId())){
                         setSertifikat(sertifikat);
+                        data=sertifikat;
                         break;
                     }
                 }
             } else {
                 setSertifikat(new Sertifikat());
+                data=new Sertifikat();
             }
         }
 
         logger.info("[BiodataAction.initSearchSertifikat] start process >>>");
-        return getPelatihanJabatanUser();
+        return data;
     }
 
     public PengalamanKerja searchDataEditPengalamanKerja(String id) {
@@ -2133,38 +2200,52 @@ public class BiodataAction extends BaseMasterAction{
         }
     }
 
-    public void saveAddSertifikat(String nip, String jenis, String tanggalPengesahan, String masaBerlaku, String masaBerakhir, String nama, String lembaga, String tempatPelaksana,
-                                  String nilai, String lulus, String prestasi){
+    public void saveAddSertifikat(String nip, String namaPelatihan, String judulPelatihan, String penyelenggara, String jumlahJamPelatihan,
+                                  String sertifikatPelatihan,String tanggalPelatihan,String masaBerlakuSertifikat,String gambar){
         logger.info("[BiodataAction.saveAddSertifikat] start process >>>");
 
         try {
             Sertifikat sertifikat = new Sertifikat();
             sertifikat.setNip(nip);
-            sertifikat.setJenis(jenis);
-            sertifikat.setStTanggalPengesahan(tanggalPengesahan);
-            sertifikat.setStMasaBerlaku(masaBerlaku);
-            sertifikat.setStMasaBerakhir(masaBerakhir);
-            sertifikat.setNama(nama);
-            sertifikat.setLembaga(lembaga);
-            sertifikat.setTempatPelaksana(tempatPelaksana);
-            sertifikat.setNilai(Double.parseDouble(nilai));
-            sertifikat.setLulus(lulus);
-            sertifikat.setPrestasiGrade(prestasi);
-
-            if(tanggalPengesahan != null && !"".equalsIgnoreCase(tanggalPengesahan)){
-                sertifikat.setTanggalPengesahan(CommonUtil.convertStringToDate(tanggalPengesahan));
-            }
-
-            if(masaBerlaku != null && !"".equalsIgnoreCase(masaBerlaku)){
-                sertifikat.setMasaBerlaku(CommonUtil.convertStringToDate(masaBerlaku));
-            }
-
-            if(masaBerakhir!= null && !"".equalsIgnoreCase(masaBerakhir)){
-                sertifikat.setMasaBerakhir(CommonUtil.convertStringToDate(masaBerakhir));
-            }
+            sertifikat.setJenis(namaPelatihan);
+            sertifikat.setNama(judulPelatihan);
+            sertifikat.setLembaga(penyelenggara);
+            sertifikat.setJumlahHari(Integer.parseInt(jumlahJamPelatihan));
+            sertifikat.setLulus(sertifikatPelatihan);
+            sertifikat.setTanggalPengesahan(CommonUtil.convertStringToDate(tanggalPelatihan));
+            sertifikat.setStTanggalPengesahan(tanggalPelatihan);
+            sertifikat.setPrestasiGrade(masaBerlakuSertifikat);
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            try {
+                String fileName1 = "";
+                if (judulPelatihan.length()>20){
+                    fileName1=judulPelatihan.replace(" ","").substring(0,19);
+                }else{
+                    fileName1=judulPelatihan.replace(" ","");
+                }
+
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(gambar);
+                logger.info("Decoded upload data : " + decodedBytes.length);
+                String fileName = fileName1+"-"+dateFormater("dd")+dateFormater("MM")+dateFormater("yy")+".png";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_SERTIFIKAT+fileName;
+                logger.info("File save path : " + uploadFile);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                if (image == null) {
+                    logger.error("Buffered Image is null");
+                }else{
+                    File f = new File(uploadFile);
+                    // write the image
+                    ImageIO.write(image, "png", f);
+                    sertifikat.setTempatPelaksana(fileName);
+                }
+            }catch (Exception e){
+                logger.error(e);
+            }
 
             sertifikat.setCreatedWho(userLogin);
             sertifikat.setLastUpdate(updateTime);
@@ -2316,32 +2397,46 @@ public class BiodataAction extends BaseMasterAction{
         session.setAttribute("listReward", listReward);
     }
 
-    public void initEditSertifikat(String id, String nip, String jenis, String tanggalPengesahan, String masaBerlaku, String masaBerakhir, String nama, String lembaga,
-                                   String tempatPelaksana, String nilai, String lulus, String prestasi){
+    public void initEditSertifikat(String id, String nip, String namaPelatihan, String judulPelatihan, String penyelenggara, String jumlahJamPelatihan,
+                                   String sertifikatPelatihan,String tanggalPelatihan,String masaBerlakuSertifikat,String gambar){
         logger.info("[BiodataAction.saveEditSertifikat] start process >>>");
         Sertifikat sertifikat = new Sertifikat();
         sertifikat.setNip(nip);
-        sertifikat.setJenis(jenis);
-        sertifikat.setStTanggalPengesahan(tanggalPengesahan);
-        sertifikat.setStMasaBerlaku(masaBerlaku);
-        sertifikat.setStMasaBerakhir(masaBerakhir);
-        sertifikat.setNama(nama);
-        sertifikat.setLembaga(lembaga);
-        sertifikat.setTempatPelaksana(tempatPelaksana);
-        sertifikat.setNilai(Double.parseDouble(nilai));
-        sertifikat.setLulus(lulus);
-        sertifikat.setPrestasiGrade(prestasi);
+        sertifikat.setJenis(namaPelatihan);
+        sertifikat.setNama(judulPelatihan);
+        sertifikat.setLembaga(penyelenggara);
+        sertifikat.setJumlahHari(Integer.parseInt(jumlahJamPelatihan));
+        sertifikat.setLulus(sertifikatPelatihan);
+        sertifikat.setTanggalPengesahan(CommonUtil.convertStringToDate(tanggalPelatihan));
+        sertifikat.setStTanggalPengesahan(tanggalPelatihan);
+        sertifikat.setPrestasiGrade(masaBerlakuSertifikat);
 
-        if(tanggalPengesahan != null && !"".equalsIgnoreCase(tanggalPengesahan)){
-            sertifikat.setTanggalPengesahan(CommonUtil.convertStringToDate(tanggalPengesahan));
-        }
+        try {
+            String fileName1 = "";
+            if (judulPelatihan.length()>20){
+                fileName1=judulPelatihan.replace(" ","").substring(0,19);
+            }else{
+                fileName1=judulPelatihan.replace(" ","");
+            }
 
-        if(masaBerlaku != null && !"".equalsIgnoreCase(masaBerlaku)){
-            sertifikat.setMasaBerlaku(CommonUtil.convertStringToDate(masaBerlaku));
-        }
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] decodedBytes = decoder.decodeBuffer(gambar);
+            logger.info("Decoded upload data : " + decodedBytes.length);
+            String fileName = fileName1+"-"+dateFormater("dd")+dateFormater("MM")+dateFormater("yy")+".png";
+            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_SERTIFIKAT+fileName;
+            logger.info("File save path : " + uploadFile);
+            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-        if(masaBerakhir!= null && !"".equalsIgnoreCase(masaBerakhir)){
-            sertifikat.setMasaBerakhir(CommonUtil.convertStringToDate(masaBerakhir));
+            if (image == null) {
+                logger.error("Buffered Image is null");
+            }else{
+                File f = new File(uploadFile);
+                // write the image
+                ImageIO.write(image, "png", f);
+                sertifikat.setTempatPelaksana(fileName);
+            }
+        }catch (Exception e){
+            logger.error(e);
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -2527,37 +2622,63 @@ public class BiodataAction extends BaseMasterAction{
         }
     }
 
-    public void saveAddDataPelatihan(String nip, String jenis, String lembaga, String angkatan, String tahun, String status, String nilai){
+    public void saveAddDataPelatihan(String nip, String namaPelatihan, String judulPelatihan, String penyelenggara, String jumlahJamPelatihan,
+                                     String sertifikatPelatihan,String tanggalPelatihan,String masaBerlakuSertifikat,String gambar){
         logger.info("[BiodataAction.saveAddDataPelatihan] start process >>>");
 
         try {
-            PelatihanJabatanUser pelatihanJabatanUser = new PelatihanJabatanUser();
-            pelatihanJabatanUser.setNip(nip);
-            pelatihanJabatanUser.setPelatihanJabatanId(jenis);
-            pelatihanJabatanUser.setLembaga(lembaga);
-            pelatihanJabatanUser.setAngkatan(angkatan);
-            pelatihanJabatanUser.setTahun(tahun);
-            pelatihanJabatanUser.setStatus(status);
-
-            if(nilai != null && !nilai.equalsIgnoreCase("")){
-                pelatihanJabatanUser.setNilai(Double.parseDouble(nilai));
-            }else{
-                pelatihanJabatanUser.setNilai(0);
-            }
+            Sertifikat sertifikat = new Sertifikat();
+            sertifikat.setNip(nip);
+            sertifikat.setJenis(namaPelatihan);
+            sertifikat.setNama(judulPelatihan);
+            sertifikat.setLembaga(penyelenggara);
+            sertifikat.setJumlahHari(Integer.parseInt(jumlahJamPelatihan));
+            sertifikat.setLulus(sertifikatPelatihan);
+            sertifikat.setTanggalPengesahan(CommonUtil.convertStringToDate(tanggalPelatihan));
+            sertifikat.setStTanggalPengesahan(tanggalPelatihan);
+            sertifikat.setPrestasiGrade(masaBerlakuSertifikat);
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            pelatihanJabatanUser.setCreatedWho(userLogin);
-            pelatihanJabatanUser.setLastUpdate(updateTime);
-            pelatihanJabatanUser.setCreatedDate(updateTime);
-            pelatihanJabatanUser.setLastUpdateWho(userLogin);
-            pelatihanJabatanUser.setAction("C");
-            pelatihanJabatanUser.setFlag("Y");
+            try {
+                String fileName1 = "";
+                if (judulPelatihan.length()>20){
+                    fileName1=judulPelatihan.replace(" ","").substring(0,19);
+                }else{
+                    fileName1=judulPelatihan.replace(" ","");
+                }
+
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(gambar);
+                logger.info("Decoded upload data : " + decodedBytes.length);
+                String fileName = fileName1+"-"+dateFormater("dd")+dateFormater("MM")+dateFormater("yy")+".png";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_SERTIFIKAT+fileName;
+                logger.info("File save path : " + uploadFile);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                if (image == null) {
+                    logger.error("Buffered Image is null");
+                }else{
+                    File f = new File(uploadFile);
+                    // write the image
+                    ImageIO.write(image, "png", f);
+                    sertifikat.setTempatPelaksana(fileName);
+                }
+            }catch (Exception e){
+                logger.error(e);
+            }
+
+            sertifikat.setCreatedWho(userLogin);
+            sertifikat.setLastUpdate(updateTime);
+            sertifikat.setCreatedDate(updateTime);
+            sertifikat.setLastUpdateWho(userLogin);
+            sertifikat.setAction("C");
+            sertifikat.setFlag("Y");
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BiodataBo userBo = (BiodataBo) ctx.getBean("biodataBoProxy");
-            userBo.addPelatihan(pelatihanJabatanUser);
+            userBo.addSertifikat(sertifikat);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -2570,38 +2691,64 @@ public class BiodataAction extends BaseMasterAction{
         }
     }
 
-    public void saveEditPelatihan(String id, String nip, String jenis, String lembaga, String angkatan, String tahun, String status, String nilai){
+    public void saveEditPelatihan(String id, String nip, String namaPelatihan, String judulPelatihan, String penyelenggara, String jumlahJamPelatihan,
+                                  String sertifikatPelatihan,String tanggalPelatihan,String masaBerlakuSertifikat,String gambar){
         logger.info("[BiodataAction.saveAddDataPelatihan] start process >>>");
 
         try {
-            PelatihanJabatanUser pelatihanJabatanUser = new PelatihanJabatanUser();
-            pelatihanJabatanUser.setPelatihanUserId(id);
-            pelatihanJabatanUser.setNip(nip);
-            pelatihanJabatanUser.setPelatihanJabatanId(jenis);
-            pelatihanJabatanUser.setLembaga(lembaga);
-            pelatihanJabatanUser.setAngkatan(angkatan);
-            pelatihanJabatanUser.setTahun(tahun);
-            pelatihanJabatanUser.setStatus(status);
-
-            if(nilai != null && !nilai.equalsIgnoreCase("")){
-                pelatihanJabatanUser.setNilai(Double.parseDouble(nilai));
-            }else{
-                pelatihanJabatanUser.setNilai(0);
-            }
+            Sertifikat sertifikat = new Sertifikat();
+            sertifikat.setSertifikatId(id);
+            sertifikat.setNip(nip);
+            sertifikat.setJenis(namaPelatihan);
+            sertifikat.setNama(judulPelatihan);
+            sertifikat.setLembaga(penyelenggara);
+            sertifikat.setJumlahHari(Integer.parseInt(jumlahJamPelatihan));
+            sertifikat.setLulus(sertifikatPelatihan);
+            sertifikat.setTanggalPengesahan(CommonUtil.convertStringToDate(tanggalPelatihan));
+            sertifikat.setStTanggalPengesahan(tanggalPelatihan);
+            sertifikat.setPrestasiGrade(masaBerlakuSertifikat);
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            pelatihanJabatanUser.setCreatedWho(userLogin);
-            pelatihanJabatanUser.setLastUpdate(updateTime);
-            pelatihanJabatanUser.setCreatedDate(updateTime);
-            pelatihanJabatanUser.setLastUpdateWho(userLogin);
-            pelatihanJabatanUser.setAction("C");
-            pelatihanJabatanUser.setFlag("Y");
+            try {
+                String fileName1 = "";
+                if (judulPelatihan.length()>20){
+                    fileName1=judulPelatihan.replace(" ","").substring(0,19);
+                }else{
+                    fileName1=judulPelatihan.replace(" ","");
+                }
+
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(gambar);
+                logger.info("Decoded upload data : " + decodedBytes.length);
+                String fileName = fileName1+"-"+dateFormater("dd")+dateFormater("MM")+dateFormater("yy")+".png";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_SERTIFIKAT+fileName;
+                logger.info("File save path : " + uploadFile);
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                if (image == null) {
+                    logger.error("Buffered Image is null");
+                }else{
+                    File f = new File(uploadFile);
+                    // write the image
+                    ImageIO.write(image, "png", f);
+                    sertifikat.setTempatPelaksana(fileName);
+                }
+            }catch (Exception e){
+                logger.error(e);
+            }
+
+            sertifikat.setCreatedWho(userLogin);
+            sertifikat.setLastUpdate(updateTime);
+            sertifikat.setCreatedDate(updateTime);
+            sertifikat.setLastUpdateWho(userLogin);
+            sertifikat.setAction("C");
+            sertifikat.setFlag("Y");
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BiodataBo userBo = (BiodataBo) ctx.getBean("biodataBoProxy");
-            userBo.saveEditPelatihan(pelatihanJabatanUser);
+            userBo.saveEditSertifikat(sertifikat);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -2615,7 +2762,7 @@ public class BiodataAction extends BaseMasterAction{
     }
 
     public String saveEditPengalamanKerja(String id,String nip, String branchId, String divisiId, String positionId, String tanggal, String tanggalKeluar,
-                                          String tipePegawaiId, String golonganId, String perusahaanLain, String bidangLain, String jabatanLain, String flagAktif){
+                                          String tipePegawaiId, String golonganId, String perusahaanLain, String bidangLain, String jabatanLain, String flagAktif, String profesiId, String pjsFlag){
         logger.info("[PengalamanKerjaAction.saveEdit] start process >>>");
         try {
 
@@ -2653,6 +2800,15 @@ public class BiodataAction extends BaseMasterAction{
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
+            historyJabatanPegawai.setDivisiId(divisiId);
+            historyJabatanPegawai.setPositionId(positionId);
+            historyJabatanPegawai.setProfesiId(profesiId);
+            historyJabatanPegawai.setTanggal(tanggal);
+            historyJabatanPegawai.setTanggalKeluar(tanggalKeluar);
+            historyJabatanPegawai.setTipePegawaiId(tipePegawaiId);
+            historyJabatanPegawai.setGolonganId(golonganId);
+            historyJabatanPegawai.setPjsFlag(pjsFlag);
+            historyJabatanPegawai.setFlagJabatanAktif(flagAktif);
 
             historyJabatanPegawai.setCreatedWho(userLogin);
             historyJabatanPegawai.setLastUpdate(updateTime);
@@ -2943,7 +3099,7 @@ public class BiodataAction extends BaseMasterAction{
         logger.info("[BiodataAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-        session.removeAttribute("listOfResult");
+        session.removeAttribute("listOfResultBiodata");
         logger.info("[BiodataAction.initForm] end process >>>");
         return "bidataDanBatih";
     }
@@ -3096,6 +3252,16 @@ public class BiodataAction extends BaseMasterAction{
         logger.info("[PermohonanLahanAction.initComboLokasiKebun] end process <<<");
 
         return listOfUser;
+    }
+
+    public String loadImageSertifikat(String sertifikat){
+        return CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_SERTIFIKAT+sertifikat;
+    }
+
+    private String dateFormater(String type) {
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+        DateFormat df = new SimpleDateFormat(type);
+        return df.format(date);
     }
 
     public String paging(){

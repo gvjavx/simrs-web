@@ -136,6 +136,10 @@ public class BranchBoImpl implements BranchBo {
                 hsCriteria.put("area_id", searchBranch.getAreaId());
             }
 
+            if (searchBranch.getNotLike() != null && !"".equalsIgnoreCase(searchBranch.getNotLike())) {
+                hsCriteria.put("not_like", searchBranch.getNotLike());
+            }
+
             if (searchBranch.getFlag() != null && !"".equalsIgnoreCase(searchBranch.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBranch.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -248,6 +252,9 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setTarifPayorId(imBranches.getTarifPayorId());
                     resultBranch.setPayorCd(imBranches.getTarifPayorId());
                     resultBranch.setCoderNik(imBranches.getCoderNik());
+                    resultBranch.setLat(imBranches.getLat());
+                    resultBranch.setLon(imBranches.getLon());
+                    resultBranch.setWarna(imBranches.getWarna());
 
                     listOfResultBranch.add(resultBranch);
                 }
@@ -525,6 +532,9 @@ public class BranchBoImpl implements BranchBo {
             resultBranch.setPercentTkPers(imBranches.getPercentTkPers());
             resultBranch.setUmr(imBranches.getUmr());
 
+            resultBranch.setCoaRk(imBranches.getCoaRk());
+            resultBranch.setMaxPengajuanBiaya(imBranches.getMaxPengajuanBiaya());
+
             /*resultBranch.setStatusPabrik(imBranches.getStatusPabrik());
             resultBranch.setMultifikator(imBranches.getMultifikator());
             resultBranch.setMaxJamIjinKeluar(imBranches.getMaxJamIjinKeluar());
@@ -551,6 +561,8 @@ public class BranchBoImpl implements BranchBo {
             resultBranch.setTarifPayorId(imBranches.getTarifPayorId());
             resultBranch.setPayorCd(imBranches.getTarifPayorId());
             resultBranch.setCoderNik(imBranches.getCoderNik());
+            resultBranch.setAreaId(imBranches.getAreaId());
+            resultBranch.setCoaRk(imBranches.getCoaRk());
         }
 
         logger.info("[BranchBoImpl.getBranchById] end process <<<");

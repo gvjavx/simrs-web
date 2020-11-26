@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.checkup.bo;
 
 import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.pasien.model.RekamMedicLama;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.*;
@@ -18,6 +19,7 @@ import com.neurix.simrs.transaksi.psikososial.model.ItSimrsDataPsikososialEntity
 import com.neurix.simrs.transaksi.rekonsiliasiobat.model.ItSimrsRekonsiliasiObatEntity;
 import com.neurix.simrs.transaksi.rencanarawat.model.ItSimrsRencanaRawatEntity;
 import com.neurix.simrs.transaksi.resikojatuh.model.*;
+import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
@@ -89,8 +91,30 @@ public interface CheckupBo {
     public ItSimrsHeaderChekupEntity getEntityCheckupById(String id) throws GeneralBOException;
 
     public HeaderCheckup getLastDataPasienByIdPasien(String idPasien) throws GeneralBOException;
-    public List<HeaderCheckup> getHistoryPasien(String idPasien) throws GeneralBOException;
+    public List<HeaderCheckup> getHistoryPasien(String idPasien, String branchId) throws GeneralBOException;
     public List<HeaderCheckup> getListDetailHistory(String id, String keterangan) throws GeneralBOException;
     public List<HeaderCheckup> getListVedioRm(String id) throws GeneralBOException;
+    public ItSimrsHeaderChekupEntity getById(String columnName, String id) throws GeneralBOException;
+
+    public CrudResponse updateAnamnese(HeaderCheckup bean) throws GeneralBOException;
+    public String getDiagnosaPasien(String idDetailCheckup) throws GeneralBOException;
+    public String getTindakanRawat(String idDetailCheckup) throws GeneralBOException;
+    public String getTindakanRawatICD9(String idDetailCheckup) throws GeneralBOException;
+    public String getDiagnosaPrimer(String idDetailCheckup) throws GeneralBOException;
+    public String getDiagnosaSekunder(String idDetailCheckup) throws GeneralBOException;
+    public String getPenunjangMedis(String idDetailCheckup, String tipe) throws GeneralBOException;
+    public String getResepPasien(String idDetailCheckup) throws GeneralBOException;
+    public String getAlergi(String noCheckup) throws GeneralBOException;
+
+    public HeaderCheckup getDataPemeriksaanFisik(String noCheckup) throws GeneralBOException;
+    public List<HeaderCheckup> getRiwayatPemeriksaan(String idPasien) throws GeneralBOException;
+
+    public Dokter getNamaSipDokter(String id, String tipe) throws GeneralBOException;
+    public List<PelayananPaket> getListPelayananPaket(String noCheckup) throws GeneralBOException;
+    public CrudResponse nextItemPaketToPeriksa(PelayananPaket bean, HeaderDetailCheckup detail) throws GeneralBOException;
+
+    public CrudResponse saveAddWithResponse(HeaderCheckup checkup) throws GeneralBOException;
+    public List<HeaderCheckup> cekKunjunganPoliPasien(String idPasien, String idPelayanan) throws GeneralBOException;
+    public List<HeaderCheckup> daftarPasienOnline(String branchId, String idPelayanan) throws GeneralBOException;
 
 }

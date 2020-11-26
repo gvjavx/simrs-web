@@ -2,6 +2,7 @@ package com.neurix.hris.transaksi.absensi.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.transaksi.absensi.model.ImMesinAbsensiEntity;
+import com.neurix.hris.transaksi.absensi.model.ImMesinAbsensiHistoryEntity;
 import com.neurix.hris.transaksi.absensi.model.MesinAbsensiEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -46,6 +47,9 @@ public class MesinDao extends GenericDao<ImMesinAbsensiEntity, String> {
             if (mapCriteria.get("mesin_sn") != null) {
                 criteria.add(Restrictions.eq("mesinSn", (String) mapCriteria.get("mesin_sn")));
             }
+            if (mapCriteria.get("branch_id") != null) {
+                criteria.add(Restrictions.eq("branchId", (String) mapCriteria.get("branch_id")));
+            }
         }
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
@@ -55,5 +59,25 @@ public class MesinDao extends GenericDao<ImMesinAbsensiEntity, String> {
         List<ImMesinAbsensiEntity> results = criteria.list();
 
         return results;
+    }
+
+    public void addAndSaveHistory(ImMesinAbsensiHistoryEntity entity) throws HibernateException {
+        this.sessionFactory.getCurrentSession().save(entity);
+    }
+
+    public String getNextMesinAbsensiId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_master_mesin_absensi')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%02d", iter.next());
+
+        return "MA" + sId;
+    }
+
+    public String getNextMesinAbsensiIdHistory() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_master_mesin_absensi_history')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%02d", iter.next());
+
+        return "MH" + sId;
     }
 }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.transaksi.respirasi.model.ItSimrsRespirasiEntity">
+        <table name="it_simrs_respirasi" schema="public"/>
+        <attributes>
+            <id name="idRespirasi">
+                <column name="id_respirasi"/>
+            </id>
+            <basic name="idDetailCheckup">
+                <column name="id_detail_checkup"/>
+            </basic>
+            <basic name="waktu">
+                <column name="waktu"/>
+            </basic>
+            <basic name="tanggal">
+                <column name="tanggal"/>
+            </basic>
+            <basic name="gcs">
+                <column name="gcs"/>
+            </basic>
+            <basic name="diameterPupil">
+                <column name="diameter_pupil"/>
+            </basic>
+            <basic name="reflekCahaya">
+                <column name="reflek_cahaya"/>
+            </basic>
+            <basic name="tk">
+                <column name="tk"/>
+            </basic>
+            <basic name="kk">
+                <column name="kk"/>
+            </basic>
+            <basic name="o2">
+                <column name="o2"/>
+            </basic>
+            <basic name="tipeVentilasi">
+                <column name="tipe_ventilasi"/>
+            </basic>
+            <basic name="peep">
+                <column name="peep"/>
+            </basic>
+            <basic name="frekwensi">
+                <column name="frekwensi"/>
+            </basic>
+            <basic name="tv">
+                <column name="tv"/>
+            </basic>
+            <basic name="mv">
+                <column name="mv"/>
+            </basic>
+            <basic name="pSupportPAsb">
+                <column name="p_support_p_asb"/>
+            </basic>
+            <basic name="pInsPCon">
+                <column name="p_ins_p_con"/>
+            </basic>
+            <basic name="triger">
+                <column name="triger"/>
+            </basic>
+            <basic name="insTime">
+                <column name="ins_time"/>
+            </basic>
+            <basic name="flow">
+                <column name="flow"/>
+            </basic>
+            <basic name="fioKon">
+                <column name="fio_kon"/>
+            </basic>
+            <basic name="ukuranEtt">
+                <column name="ukuran_ett"/>
+            </basic>
+            <basic name="kedalamanEtt">
+                <column name="kedalaman_ett"/>
+            </basic>
+            <basic name="spo2">
+                <column name="spo2"/>
+            </basic>
+            <basic name="secret">
+                <column name="secret"/>
+            </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

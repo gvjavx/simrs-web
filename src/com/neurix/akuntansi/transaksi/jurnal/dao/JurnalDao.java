@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -70,5 +71,68 @@ public class JurnalDao extends GenericDao<ItJurnalEntity, String> {
     }
     public void addAndSavePending(ItJurnalPendingEntity entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);
+    }
+
+    public BigDecimal getBudgetTerpakai (String branchId,String koderingPosisi,String bulan , String tahun , String rekeningId){
+        BigDecimal total = new BigDecimal(0);
+        String periode = bulan+"-"+tahun;
+        String query="SELECT\n" +
+                "\tsum(jumlah_debit)\n" +
+                "FROM\n" +
+                "\tit_akun_jurnal j LEFT JOIN\n" +
+                "\tit_akun_jurnal_detail jd ON j.no_jurnal = jd.no_jurnal\n" +
+                "WHERE\n" +
+                "\trekening_id='"+rekeningId+"'\n" +
+                "\tAND branch_id='"+branchId+"'\n" +
+                "\tAND divisi_id='"+koderingPosisi+"'\n" +
+                "\tAND registered_flag='Y'\n" +
+                "\tAND j.flag='Y'\n" +
+                "\tAND to_char(tanggal_jurnal, 'MM-yyyy') = '"+periode+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
+    public BigDecimal getBudgetTerpakaiSdBulanIni (String branchId,String koderingPosisi,String bulan , String tahun , String rekeningId){
+        BigDecimal total = new BigDecimal(0);
+        Integer tahunSekarang = Integer.valueOf(tahun);
+        String periode = bulan+"-"+tahun;
+        String periodeSebelumnya = "12-"+String.valueOf(tahunSekarang-1);
+        String query="SELECT\n" +
+                "\tsum(jumlah_debit)\n" +
+                "FROM\n" +
+                "\tit_akun_jurnal j LEFT JOIN\n" +
+                "\tit_akun_jurnal_detail jd ON j.no_jurnal = jd.no_jurnal\n" +
+                "WHERE\n" +
+                "\trekening_id='"+rekeningId+"'\n" +
+                "\tAND branch_id='"+branchId+"'\n" +
+                "\tAND divisi_id='"+koderingPosisi+"'\n" +
+                "\tAND registered_flag='Y'\n" +
+                "\tAND j.flag='Y'\n" +
+                "\tAND to_char(tanggal_jurnal, 'MM-yyyy') <= '"+periode+"'\n" +
+                "\tAND to_char(tanggal_jurnal, 'MM-yyyy') > '"+periodeSebelumnya+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            total = BigDecimal.valueOf(Double.parseDouble(results.toString()));
+        }else{
+            total = BigDecimal.valueOf(0);
+        }
+        return total;
+    }
+
+    public List<ItJurnalEntity> getListJurnalByPengajuanId(String pengajuanId) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ItJurnalEntity.class);
+        criteria.add(Restrictions.eq("flag", "Y"));
+        criteria.add(Restrictions.eq("pengajuanBiayaId", pengajuanId));
+        criteria.add(Restrictions.eq("registeredFlag", "Y"));
+        // Order by
+        criteria.addOrder(Order.desc("noJurnal"));
+        List<ItJurnalEntity> results = criteria.list();
+        return results;
     }
 }

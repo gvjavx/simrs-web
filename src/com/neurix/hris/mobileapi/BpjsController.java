@@ -1,10 +1,19 @@
 package com.neurix.hris.mobileapi;
 
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.authorization.user.bo.UserBo;
+import com.neurix.authorization.user.model.ImUsers;
+import com.neurix.authorization.user.model.User;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.mobileapi.model.FingerPrintResponse;
 import com.neurix.hris.mobileapi.model.simrs.Poli;
+import com.neurix.hris.transaksi.absensi.bo.AbsensiBo;
+import com.neurix.hris.transaksi.absensi.model.AbsensiOnCall;
+import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
+import com.neurix.hris.transaksi.absensi.model.MesinAbsensi;
+import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
 import com.neurix.simrs.bpjs.eklaim.model.DataPerKlaimResponse;
 import com.neurix.simrs.bpjs.eklaim.model.KlaimRequest;
@@ -12,20 +21,19 @@ import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
 import com.neurix.simrs.bpjs.vclaim.model.*;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import com.neurix.simrs.bpjs.BpjsService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 /**
@@ -63,6 +71,33 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     private BpjsBo bpjsBoProxy;
     private EklaimBo eklaimBoProxy;
     private BillingSystemBo billingSystemBoProxy;
+    private AbsensiBo absensiBoProxy;
+    private UserBo userBoProxy;
+    private NotifikasiBo notifikasiBoProxy;
+
+    public UserBo getUserBoProxy() {
+        return userBoProxy;
+    }
+
+    public void setUserBoProxy(UserBo userBoProxy) {
+        this.userBoProxy = userBoProxy;
+    }
+
+    public NotifikasiBo getNotifikasiBoProxy() {
+        return notifikasiBoProxy;
+    }
+
+    public void setNotifikasiBoProxy(NotifikasiBo notifikasiBoProxy) {
+        this.notifikasiBoProxy = notifikasiBoProxy;
+    }
+
+    public AbsensiBo getAbsensiBoProxy() {
+        return absensiBoProxy;
+    }
+
+    public void setAbsensiBoProxy(AbsensiBo absensiBoProxy) {
+        this.absensiBoProxy = absensiBoProxy;
+    }
 
     public BillingSystemBo getBillingSystemBoProxy() {
         return billingSystemBoProxy;
@@ -210,6 +245,12 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                 break;
             case "create-jurnal-bpjs-7":
                 createJurnalBillingCase7();
+                break;
+            case "cron-mesin-absensi":
+                cronJobMesinAbsensi();
+                break;
+            case "cron-absensi-pegawai":
+                cronJobAbsensiPegawai();
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -631,24 +672,63 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         }
     }
 
-    //case 4
-    // untuk Pembuatan Hutang Usaha
-    public void createJurnalBillingCase8 (){
-        Map piutangPasienBpjs = new HashMap();
-        piutangPasienBpjs.put("bukti","INVHU000001");
-        piutangPasienBpjs.put("nilai",new BigDecimal(10000000));
+    public void cronJobMesinAbsensi (){
+        String metode = CommonConstant.METODE_MESIN_ABSENSI;
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        Date tanggalSekarang = new Date();
+        String branchId=CommonConstant.ID_KANPUS;
+        MesinAbsensi mesinAbsensi = new MesinAbsensi();
+        mesinAbsensi.setCreatedWho("cron");
+        mesinAbsensi.setLastUpdate(updateTime);
 
-        Map data = new HashMap();
-        data.put("pasien_id","RS0103200013");
-        data.put("piutang_pasien_bpjs",piutangPasienBpjs);
-        data.put("pendapatan_rawat_jalan_bpjs", new BigDecimal(10000000));
-        data.put("metode_bayar", "transfer");
-        data.put("bank", "mandiri");
+        if ("all".equalsIgnoreCase(metode)){
+            try {
+                absensiBoProxy.getAllDataFromMesin(mesinAbsensi);
+            }catch (Exception e){
+                String error = "ERROR WHEN GET MESIN: " + "[" + e + "]";
+                absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
 
-        try {
-            billingSystemBoProxy.createJurnal("04",data,"RS01","TEST 7 : Pembayaran uang muka","Y");
-        }catch (Exception e){
-            logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
+                //Kirim Notif
+                List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
+                for (User user : usersList){
+                    Notifikasi notif = new Notifikasi();
+                    notif.setNip(user.getUserId());
+                    notif.setNoRequest("");
+                    notif.setTipeNotifId("umum");
+                    notif.setTipeNotifName(("Pemberitahuan"));
+                    notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual");
+                    notif.setCreatedWho("Cron");
+                    notif.setTo("self");
+
+                    notifikasiBoProxy.sendNotif(notif);
+                }
+
+                logger.error(error);
+            }
+        }else {
+            try {
+                absensiBoProxy.getDataFromMesin(mesinAbsensi);
+            }catch (Exception e){
+                String error = "ERROR WHEN GET MESIN: " + "[" + e + "]";
+                absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
+
+                //Kirim Notif
+                List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
+                for (User user : usersList){
+                    Notifikasi notif = new Notifikasi();
+                    notif.setNip(user.getUserId());
+                    notif.setNoRequest("");
+                    notif.setTipeNotifId("umum");
+                    notif.setTipeNotifName(("Pemberitahuan"));
+                    notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual");
+                    notif.setCreatedWho("Cron");
+                    notif.setTo("self");
+
+                    notifikasiBoProxy.sendNotif(notif);
+                }
+
+                logger.error(error);
+            }
         }
     }
 
@@ -684,6 +764,27 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         }
     }
 
+    //case 4
+    // untuk Pembuatan Hutang Usaha
+    public void createJurnalBillingCase8 (){
+        Map piutangPasienBpjs = new HashMap();
+        piutangPasienBpjs.put("bukti","INVHU000001");
+        piutangPasienBpjs.put("nilai",new BigDecimal(10000000));
+
+        Map data = new HashMap();
+        data.put("pasien_id","RS0103200013");
+        data.put("piutang_pasien_bpjs",piutangPasienBpjs);
+        data.put("pendapatan_rawat_jalan_bpjs", new BigDecimal(10000000));
+        data.put("metode_bayar", "transfer");
+        data.put("bank", "mandiri");
+
+        try {
+            billingSystemBoProxy.createJurnal("04",data,"RS01","TEST 7 : Pembayaran uang muka","Y");
+        }catch (Exception e){
+            logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
+        }
+    }
+
     @Override
     public Object getModel() {
         switch (data){
@@ -692,6 +793,66 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             case "bpjs-tindakan":
                 return listOfTindakanResponse;
             default: return null;
+        }
+    }
+
+    public void cronJobAbsensiPegawai (){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        List<AbsensiPegawai> absensiPegawaiList= new ArrayList<>();
+        List<AbsensiOnCall> listOfResultOnCall = new ArrayList<>();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        String branchId=CommonConstant.ID_KANPUS;
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, -1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        Date tanggalSekarang = new Date(cal.getTimeInMillis());
+
+        AbsensiPegawai search = new AbsensiPegawai();
+        search.setCreatedWho("cron");
+        search.setLastUpdate(updateTime);
+        search.setLastUpdateWho("cron");
+        search.setCreatedDate(updateTime);
+        search.setFlag("Y");
+        search.setAction("U");
+
+        AbsensiPegawai data = new AbsensiPegawai();
+        data.setBranchId(branchId);
+        data.setTanggalUtil(tanggalSekarang);
+
+        try {
+            absensiPegawaiList = absensiBoProxy.cronInquiry(data);
+            listOfResultOnCall = (List<AbsensiOnCall>) session.getAttribute("listOfResultOnCall");
+            if (listOfResultOnCall==null){
+                listOfResultOnCall = new ArrayList<>();
+            }
+            absensiBoProxy.saveAddAbsensi(absensiPegawaiList,listOfResultOnCall,search);
+        }catch (Exception e){
+            String error = "ERROR WHEN GET ABSENSI PEGAWAI : " + "[" + e + "]";
+            absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
+
+            //Kirim Notif
+            List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
+            for (User user : usersList){
+                Notifikasi notif = new Notifikasi();
+                notif.setNip(user.getUserId());
+                notif.setNoRequest("");
+                notif.setTipeNotifId("umum");
+                notif.setTipeNotifName(("Pemberitahuan"));
+                notif.setNote("Data absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa diinquiry secara otomatis lakukan inquiry manual");
+                notif.setCreatedWho("Cron");
+                notif.setTo("self");
+
+                notifikasiBoProxy.sendNotif(notif);
+            }
+
+            logger.error(error);
         }
     }
 

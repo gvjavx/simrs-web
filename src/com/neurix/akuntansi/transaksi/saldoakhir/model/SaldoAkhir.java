@@ -27,6 +27,51 @@ public class SaldoAkhir {
     private String pasienId;
     private String divisiId;
     private Integer bulan;
+    private String kdBarang;
+    private String namaKodeRekening;
+    private String flagMaster;
+    private String flagDivisi;
+    private String tipeCoa;
+
+    public String getTipeCoa() {
+        return tipeCoa;
+    }
+
+    public void setTipeCoa(String tipeCoa) {
+        this.tipeCoa = tipeCoa;
+    }
+
+    public String getFlagMaster() {
+        return flagMaster;
+    }
+
+    public void setFlagMaster(String flagMaster) {
+        this.flagMaster = flagMaster;
+    }
+
+    public String getFlagDivisi() {
+        return flagDivisi;
+    }
+
+    public void setFlagDivisi(String flagDivisi) {
+        this.flagDivisi = flagDivisi;
+    }
+
+    public String getNamaKodeRekening() {
+        return namaKodeRekening;
+    }
+
+    public void setNamaKodeRekening(String namaKodeRekening) {
+        this.namaKodeRekening = namaKodeRekening;
+    }
+
+    public String getKdBarang() {
+        return kdBarang;
+    }
+
+    public void setKdBarang(String kdBarang) {
+        this.kdBarang = kdBarang;
+    }
 
     public Integer getBulan() {
         return bulan;

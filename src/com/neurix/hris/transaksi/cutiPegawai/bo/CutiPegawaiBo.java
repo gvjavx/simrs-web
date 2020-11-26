@@ -7,6 +7,7 @@ import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -20,6 +21,12 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
     public void saveDelete(CutiPegawai bean) throws GeneralBOException;
     public void saveEdit(CutiPegawai bean) throws GeneralBOException;
 
+    public List<Notifikasi> saveCancel(CutiPegawai bean) throws GeneralBOException;
+
+    public List<Notifikasi> savePengajuanBatal(CutiPegawai bean) throws GeneralBOException;
+
+    public void saveTolakPengajuanBatal(CutiPegawai bean) throws GeneralBOException;
+
     List<Notifikasi> saveAddCuti(CutiPegawai bean) throws GeneralBOException;
 
     CutiPegawai saveCutiBersama(CutiPegawai bean) throws GeneralBOException;
@@ -30,6 +37,13 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
     public List<CutiPegawai> getBiodatawithCriteria(String query) throws GeneralBOException;
 
     List<CutiPegawai> getListCekNipCuti(String query) throws GeneralBOException;
+
+    List<CutiPegawai> getListNipCuti(String query) throws GeneralBOException;
+
+//    List<CutiPegawai> getListCekTahunCuti(String query) throws GeneralBOException;
+    String getListCekTahunCuti(Date tanggalAwal, Date tanggalAkhir, String nip);
+
+    String cekCutiTahunan(String nip, String keterangan);
 
     List<CutiPegawai> getHistoryCuti(String nip, String cutiId) throws GeneralBOException;
 
@@ -65,6 +79,8 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
 
     List<CutiPegawai> getListSetCuti(String nip);
 
+    List<CutiPegawai> getListSetCuti2(String nip, String jenisCuti);
+
     List getListCutiForView(String nip) throws GeneralBOException;
     public String findCutiAktif(String branchId);
     public String getBagianPegawai(String positionId);
@@ -72,4 +88,10 @@ public interface CutiPegawaiBo extends BaseMasterBo<CutiPegawai> {
     public void editSisaCuti(CutiPegawai bean);
     public String getKabidSdmUmum(String branchId);
     public String getTanggalPensiun(String nip);
+    public String cekStatusCuti(String nip, String cutiId, String jenisCuti);
+    public String cekPengajuanCuti(String nip);
+
+    List<CutiPegawai> searchApprovalByCriteria(CutiPegawai bean) throws GeneralBOException;
+
+    List<CutiPegawai> getCriteriaForResetCutiTahunan(String unit) throws GeneralBOException;
 }

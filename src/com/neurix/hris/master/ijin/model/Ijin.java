@@ -15,6 +15,33 @@ public class Ijin extends BaseModel {
     private Long jumlahIjin;
     private String gender;
     private String tipeHari;
+    private String flagDiajukanAdmin;
+    private String agama;
+    private String agamaName;
+
+    public String getAgamaName() {
+        return agamaName;
+    }
+
+    public void setAgamaName(String agamaName) {
+        this.agamaName = agamaName;
+    }
+
+    public String getAgama() {
+        return agama;
+    }
+
+    public void setAgama(String agama) {
+        this.agama = agama;
+    }
+
+    public String getFlagDiajukanAdmin() {
+        return flagDiajukanAdmin;
+    }
+
+    public void setFlagDiajukanAdmin(String flagDiajukanAdmin) {
+        this.flagDiajukanAdmin = flagDiajukanAdmin;
+    }
 
     public String getGender() {
         return gender;

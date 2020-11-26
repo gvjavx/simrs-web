@@ -12,43 +12,61 @@
         </id>
 
         <property name="idDetailCheckup">
-            <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="false"/>
+            <column name="id_detail_checkup"/>
         </property>
         <property name="waktu">
-            <column name="waktu" sql-type="timestamp" not-null="false"/>
+            <column name="waktu"/>
         </property>
         <property name="diagnosa">
-            <column name="diagnosa" sql-type="text" not-null="false"/>
+            <column name="diagnosa"/>
         </property>
-        <property name="tujuan">
-            <column name="tujuan" sql-type="text" not-null="false"/>
+        <property name="hasil">
+            <column name="hasil"/>
         </property>
         <property name="intervensi">
-            <column name="intervensi" sql-type="text" not-null="false"/>
+            <column name="intervensi"/>
+        </property>
+        <property name="implementasi">
+            <column name="implementasi"/>
+        </property>
+        <property name="evaluasi">
+            <column name="evaluasi"/>
         </property>
         <property name="ttdPerawat">
-            <column name="ttd_perawat" sql-type="varchar" length="100" not-null="false"/>
+            <column name="ttd_perawat"/>
         </property>
         <property name="keterangan">
-            <column name="keterangan" sql-type="varchar" length="1000" not-null="false"/>
+            <column name="keterangan"/>
         </property>
         <property name="flag">
-            <column name="flag" sql-type="varchar" length="1" not-null="false" />
+            <column name="flag"/>
         </property>
         <property name="action">
-            <column name="action" sql-type="varchar" length="1" not-null="false" />
+            <column name="action"/>
         </property>
         <property name="createdDate">
-            <column name="created_date" sql-type="timestamp" not-null="false" />
+            <column name="created_date"/>
         </property>
         <property name="createdWho">
-            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
+            <column name="created_who"/>
         </property>
         <property name="lastUpdate">
-            <column name="last_update" sql-type="timestamp" not-null="false" />
+            <column name="last_update"/>
         </property>
         <property name="lastUpdateWho">
-            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
+            <column name="last_update_who"/>
+        </property>
+        <property name="namaTerang">
+            <column name="nama_terang"/>
+        </property>
+        <property name="ttdDokter">
+            <column name="ttd_dokter"/>
+        </property>
+        <property name="namaDokter">
+            <column name="nama_dokter"/>
+        </property>
+        <property name="sip">
+            <column name="sip"/>
         </property>
 
     </class>

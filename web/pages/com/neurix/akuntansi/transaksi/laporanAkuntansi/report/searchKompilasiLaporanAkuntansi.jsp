@@ -114,7 +114,7 @@
                                                 <td>
                                                     <table>
                                                         <s:if test='laporanAkuntansi.unit == "KP"'>
-                                                            <s:select list="#{'U':'Per Unit', 'K' : 'Kompilasi'}" onchange="changeTipe()"
+                                                            <s:select list="#{'U':'Posisi Keuangan ( per unit )', 'K' : 'Posisi Keuangan ( Konsolidasi )'}" onchange="changeTipe()"
                                                                       id="tipePendapatan" name="laporanAkuntansi.tipeLaporan"
                                                                       headerKey="" headerValue="[Select One]" cssClass="form-control" />
                                                         </s:if>

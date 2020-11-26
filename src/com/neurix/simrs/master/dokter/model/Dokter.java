@@ -31,6 +31,95 @@ public class Dokter {
     private String kode;
 
     private String flagCall;
+    private String flagTele;
+    private String kuotaTele;
+    private String idTeamDokter;
+    private String sip;
+    private BigInteger kuotaOnSite;
+    private String flagApprove;
+    private String jenisDpjp;
+    private String keterangan;
+    private BigInteger kuotaBpjs;
+
+    public BigInteger getKuotaBpjs() {
+        return kuotaBpjs;
+    }
+
+    public void setKuotaBpjs(BigInteger kuotaBpjs) {
+        this.kuotaBpjs = kuotaBpjs;
+    }
+
+    public String getFlagApprove() {
+        return flagApprove;
+    }
+
+    public void setFlagApprove(String flagApprove) {
+        this.flagApprove = flagApprove;
+    }
+
+    public String getJenisDpjp() {
+        return jenisDpjp;
+    }
+
+    public void setJenisDpjp(String jenisDpjp) {
+        this.jenisDpjp = jenisDpjp;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public BigInteger getKuotaOnSite() {
+        return kuotaOnSite;
+    }
+
+    public void setKuotaOnSite(BigInteger kuotaOnSite) {
+        this.kuotaOnSite = kuotaOnSite;
+    }
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
+
+    public String getIdTeamDokter() {
+        return idTeamDokter;
+    }
+
+    public void setIdTeamDokter(String idTeamDokter) {
+        this.idTeamDokter = idTeamDokter;
+    }
+
+    public String getKode() {
+        return kode;
+    }
+
+    public void setKode(String kode) {
+        this.kode = kode;
+    }
+
+    public String getKuotaTele() {
+        return kuotaTele;
+    }
+
+    public void setKuotaTele(String kuotaTele) {
+        this.kuotaTele = kuotaTele;
+    }
+
+    public String getFlagTele() {
+        return flagTele;
+    }
+
+    public void setFlagTele(String flagTele) {
+        this.flagTele = flagTele;
+    }
 
     public String getFlagCall() {
         return flagCall;

@@ -50,7 +50,6 @@
     <section class="content-header">
         <h1>
             Notifikasi
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -230,6 +229,11 @@
                                             <display:column property="read" sortable="true" title="Read"  />
                                             <display:column property="fromPerson" sortable="true" title="From Person"  />
                                             <display:column property="noRequest" sortable="true" title="No Request"  />
+                                            <display:setProperty name="paging.banner.item_name">Notifikasi</display:setProperty>
+                                            <display:setProperty name="paging.banner.items_name">Notifikasi</display:setProperty>
+                                            <display:setProperty name="export.excel.filename">Notifikasi.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">Notifikasi.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">Notifikasi.pdf</display:setProperty>
                                         </display:table>
                                     </td>
                                 </tr>

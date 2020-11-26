@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.transaksiobat.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
@@ -69,6 +70,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         String idPermintaanResep    = "%";
         String flag                 = "%";
         String branchId             = "%";
+        String tipePermintaan       = "001";
 
         if (bean.getIdTransaksiObatDetail() != null && !"".equalsIgnoreCase(bean.getIdTransaksiObatDetail())){
             idTransaksi = bean.getIdTransaksiObatDetail();
@@ -88,6 +90,10 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
         if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
             branchId = bean.getBranchId();
+        }
+
+        if (bean.getTipePermintaan() != null && !"".equalsIgnoreCase(bean.getTipePermintaan())){
+            tipePermintaan = bean.getTipePermintaan();
         }
 
         String SQL = "\n" +
@@ -110,7 +116,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "\tid_approval_obat,\n" +
                 "\tbranch_id \n" +
                 "\tFROM mt_simrs_approval_transaksi_obat \n" +
-                "\tWHERE tipe_permintaan = '001' \n" +
+//                "\tWHERE tipe_permintaan = '001' \n" +
+                "\tWHERE tipe_permintaan = :tipe \n" +
 //                "\tAND flag = 'Y'\n" +
                 ") ato ON ato.id_approval_obat = tod.id_approval_obat\n" +
                 "INNER JOIN mt_simrs_permintaan_resep pr ON pr.id_approval_obat = ato.id_approval_obat\n" +
@@ -126,6 +133,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 .setParameter("idPermintaanResep", idPermintaanResep)
                 .setParameter("flag", flag)
                 .setParameter("branchId", branchId)
+                .setParameter("tipe", tipePermintaan)
                 .list();
 
         List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = new ArrayList<>();
@@ -154,6 +162,154 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
         return obatDetailEntities;
     }
+
+    public List<ImtSimrsTransaksiObatDetailEntity> getListEntityTransObatDetailsReqUnit(TransaksiObatDetail bean){
+
+        String idTransaksi          = "%";
+        String idApprovalObat       = "%";
+        String idPermintaanResep    = "%";
+        String flag                 = "%";
+        String branchId             = "%";
+        String tipePermintaan       = "%";
+
+        if (bean.getIdTransaksiObatDetail() != null && !"".equalsIgnoreCase(bean.getIdTransaksiObatDetail())){
+            idTransaksi = bean.getIdTransaksiObatDetail();
+        }
+
+        if (bean.getIdApprovalObat() != null && !"".equalsIgnoreCase(bean.getIdApprovalObat())){
+            idApprovalObat = bean.getIdApprovalObat();
+        }
+
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            flag = bean.getFlag();
+        }
+
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            branchId = bean.getBranchId();
+        }
+
+        if (bean.getTipePermintaan() != null && !"".equalsIgnoreCase(bean.getTipePermintaan())){
+            tipePermintaan = bean.getTipePermintaan();
+        }
+
+        String SQL = "\n" +
+                "SELECT \n" +
+                "tod.id_transaksi_obat_detail,\n" +
+                "tod.id_approval_obat,\n" +
+                "tod.id_obat,\n" +
+                "tod.qty,\n" +
+                "tod.flag,\n" +
+                "tod.action,\n" +
+                "tod.created_date,\n" +
+                "tod.created_who,\n" +
+                "tod.last_update,\n" +
+                "tod.last_update_who,\n" +
+                "tod.jenis_satuan, tod.flag_verifikasi\n" +
+                "FROM mt_simrs_transaksi_obat_detail tod\n" +
+                "INNER JOIN \n" +
+                "(\n" +
+                "\tSELECT \n" +
+                "\tid_approval_obat,\n" +
+                "\tbranch_id \n" +
+                "\tFROM mt_simrs_approval_transaksi_obat \n" +
+//                "\tWHERE tipe_permintaan = '001' \n" +
+                "\tWHERE tipe_permintaan LIKE :tipe \n" +
+//                "\tAND flag = 'Y'\n" +
+                ") ato ON ato.id_approval_obat = tod.id_approval_obat\n" +
+                "INNER JOIN mt_simrs_permintaan_obat_poli pr ON pr.id_approval_obat = ato.id_approval_obat\n" +
+                "WHERE tod.flag LIKE :flag \n" +
+                "AND ato.branch_id LIKE :branchId \n" +
+                "AND tod.id_approval_obat LIKE :idApprovalObat \n" +
+                "AND tod.id_transaksi_obat_detail LIKE :idTransaksi";
+//                "AND pr.id_permintaan_resep LIKE :idPermintaanResep ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idTransaksi", idTransaksi)
+                .setParameter("idApprovalObat", idApprovalObat)
+//                .setParameter("idPermintaanResep", idPermintaanResep)
+                .setParameter("flag", flag)
+                .setParameter("branchId", branchId)
+                .setParameter("tipe", tipePermintaan)
+                .list();
+
+        List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = new ArrayList<>();
+
+        if (results.size() > 0)
+        {
+            ImtSimrsTransaksiObatDetailEntity obatDetailEntity;
+            for (Object[] obj : results)
+            {
+                obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
+                obatDetailEntity.setIdTransaksiObatDetail(obj[0].toString());
+                obatDetailEntity.setIdApprovalObat(obj[1].toString());
+                obatDetailEntity.setIdObat(obj[2].toString());
+                obatDetailEntity.setQty((BigInteger) obj[3]);
+                obatDetailEntity.setFlag(obj[4].toString());
+                obatDetailEntity.setAction(obj[5].toString());
+                obatDetailEntity.setCreatedDate((Timestamp) obj[6]);
+                obatDetailEntity.setCreatedWho(obj[7].toString());
+                obatDetailEntity.setLastUpdate((Timestamp)obj[8]);
+                obatDetailEntity.setLastUpdateWho(obj[9].toString());
+                obatDetailEntity.setJenisSatuan(obj[10].toString());
+                obatDetailEntity.setFlagVerifikasi(obj[11] == null ? "" : obj[11].toString());
+                obatDetailEntities.add(obatDetailEntity);
+            }
+        }
+
+        return obatDetailEntities;
+    }
+
+    public List<TransaksiObatDetail> getListTransaksiObatDetailBatchByIdResep(String idPermintaanResep, String idBarang){
+
+        idBarang = idBarang == null || "".equalsIgnoreCase(idBarang) ? "%" : idBarang;
+        idPermintaanResep = idPermintaanResep == null || "".equalsIgnoreCase(idPermintaanResep) ? "%" : idPermintaanResep;
+
+        String SQL = "SELECT\n" +
+                "a.id_barang,\n" +
+                "a.id_transaksi_obat_detail,\n" +
+                "b.id_approval_obat,\n" +
+                "b.id_obat, \n" +
+                "a.qty_approve,\n" +
+                "b.jenis_satuan,\n" +
+                "b.flag_verifikasi, \n" +
+                "a.harga_rata,\n" +
+                "a.qty_reture,\n" +
+                "a.harga_jual\n" +
+                "FROM (SELECT * FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y') a \n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail b ON b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n" +
+                "INNER JOIN mt_simrs_permintaan_resep c ON c.id_approval_obat = b.id_approval_obat\n" +
+                "WHERE c.id_permintaan_resep LIKE :idPermintaanResep \n" +
+                "AND a.id_barang LIKE :idbarang ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idPermintaanResep", idPermintaanResep)
+                .setParameter("idbarang", idBarang)
+                .list();
+
+        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+
+        if (results.size() > 0)
+        {
+            for (Object[] obj : results)
+            {
+                TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+                obatDetail.setIdBarang(obj[0].toString());
+                obatDetail.setIdTransaksiObatDetail(obj[1].toString());
+                obatDetail.setIdApprovalObat(obj[2].toString());
+                obatDetail.setIdObat(obj[3].toString());
+                obatDetail.setQty((BigInteger) obj[4]);
+                obatDetail.setJenisSatuan(obj[5].toString());
+                obatDetail.setFlagVerifikasi(obj[6] == null ? "" : obj[6].toString());
+                obatDetail.setHargaRata(obj[7] == null ? new BigDecimal(0) : (BigDecimal) obj[7]);
+                obatDetail.setQtyReture(obj[8] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[8]);
+                obatDetail.setHargaJual(obj[9] == null ? new BigDecimal(0) : (BigDecimal) obj[9]);
+                obatDetailList.add(obatDetail);
+            }
+        }
+
+        return obatDetailList;
+    }
+
 
     public List<PermintaanResep> getListResepPasien(PermintaanResep bean){
 
@@ -187,11 +343,25 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
             status = bean.getStatus();
         }
-//        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
-//            flag = bean.getFlag();
-//        }
+        String telemdic = "";
+        if (bean.getIsTelemedic() != null && "Y".equalsIgnoreCase(bean.getIsTelemedic())){
+            telemdic = " AND b.id_transaksi_online is NOT NULL \n";
+        } else if (bean.getIsTelemedic() != null && "N".equalsIgnoreCase(bean.getIsTelemedic())){
+            telemdic = " AND b.id_transaksi_online is NULL \n";
+        }
 
-        String SQL = "SELECT a.id_permintaan_resep, a.id_detail_checkup, c.nama, d.keterangan, a.id_approval_obat, b.id_jenis_periksa_pasien, a.flag FROM mt_simrs_permintaan_resep a\n" +
+        String SQL = "SELECT \n" +
+                "a.id_permintaan_resep, \n" +
+                "a.id_detail_checkup, \n" +
+                "c.nama, \n" +
+                "d.keterangan, \n" +
+                "a.id_approval_obat, \n" +
+                "b.id_jenis_periksa_pasien, \n" +
+                "a.flag, \n" +
+                "a.id_transaksi_online, \n" +
+                "a.ttd_pasien, \n" +
+                "a.ttd_apoteker \n" +
+                "FROM mt_simrs_permintaan_resep a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
@@ -202,7 +372,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "AND a.id_detail_checkup LIKE :idDetail\n" +
                 "AND c.nama LIKE :nama\n" +
                 "AND a.status LIKE :status\n" +
-                "AND a.tujuan_pelayanan LIKE :idTujuan\n" +
+                "AND a.tujuan_pelayanan LIKE :idTujuan\n" + telemdic +
                 "ORDER BY a.tgl_antrian DESC";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -238,9 +408,120 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 permintaanResep.setNamaPasien(obj[2].toString());
                 permintaanResep.setIdApprovalObat(obj[4].toString());
                 permintaanResep.setStatus(statusName);
-                permintaanResep.setIdApprovalObat(obj[4].toString());
                 permintaanResep.setIdJenisPeriksa(obj[5].toString());
                 permintaanResep.setFlag(obj[6].toString());
+                permintaanResep.setKetJenisAntrian(obj[7] == null ? "Resep RS" : "Telemedic");
+                if(obj[8] != null){
+                    permintaanResep.setTtdPasien(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_PASIEN+obj[8].toString());
+                }
+                if(obj[9] != null){
+                    permintaanResep.setTtdApoteker(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_APOTEKER+obj[9].toString());
+                }
+                permintaanResepList.add(permintaanResep);
+            }
+        }
+
+        return permintaanResepList;
+    }
+
+    public List<PermintaanResep> getListResepPasienEresep(PermintaanResep bean){
+
+        String isUmum        = "%";
+        String idTujuan      = "%";
+        String branchId      = "%";
+        String idResep       = "%";
+        String idDetil       = "";
+        String nama          = "%";
+        String status        = "%";
+        String flag          = "%";
+
+        if (bean.getIsUmum() != null && !"".equalsIgnoreCase(bean.getIsUmum())){
+            isUmum = bean.getIsUmum();
+        }
+        if (bean.getTujuanPelayanan() != null && !"".equalsIgnoreCase(bean.getTujuanPelayanan())){
+            idTujuan = bean.getTujuanPelayanan();
+        }
+        if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+            branchId = bean.getBranchId();
+        }
+        if (bean.getIdPermintaanResep() != null && !"".equalsIgnoreCase(bean.getIdPermintaanResep())){
+            idResep = bean.getIdPermintaanResep();
+        }
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
+            idDetil = "AND a.id_detail_checkup LIKE '"+bean.getIdDetailCheckup()+"'\n";
+        }
+        if (bean.getNamaPasien() != null && !"".equalsIgnoreCase(bean.getNamaPasien())){
+            nama = "%"+bean.getNamaPasien()+"%";
+        }
+        if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
+            status = bean.getStatus();
+        }
+//        String telemdic = "";
+//        if (bean.getIsTelemedic() != null && "Y".equalsIgnoreCase(bean.getIsTelemedic())){
+//            telemdic = " AND b.id_transaksi_online is NOT NULL \n";
+//        } else if (bean.getIsTelemedic() != null && "N".equalsIgnoreCase(bean.getIsTelemedic())){
+//            telemdic = " AND b.id_transaksi_online is NULL \n";
+//        }
+
+        String SQL = "SELECT \n" +
+                "a.id_permintaan_resep, \n" +
+                "a.id_detail_checkup, \n" +
+                "f.nama, \n" +
+                "d.keterangan, \n" +
+                "a.id_approval_obat, \n" +
+                "e.id_jenis_periksa_pasien, \n" +
+                "a.flag, \n" +
+                "a.id_transaksi_online  \n" +
+                "FROM mt_simrs_permintaan_resep a\n" +
+                "--LEFT JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_pembayaran_online c ON c.id = a.id_transaksi_online\n" +
+                "INNER JOIN im_simrs_status_pasien d ON a.status = d.id_status_pasien\n" +
+                "INNER JOIN it_simrs_antrian_telemedic e ON e.id = c.id_antrian_telemedic\n" +
+                "INNER JOIN im_simrs_pasien f ON f.id_pasien = e.id_pasien\n" +
+                "WHERE a.flag LIKE :flag\n" +
+                "AND a.branch_id LIKE :branchId\n" +
+                "AND a.is_umum LIKE :isUmum\n" +
+                "AND a.id_permintaan_resep LIKE :idResep\n" + idDetil +
+                "AND f.nama LIKE :nama\n" +
+                "AND a.status LIKE :status\n" +
+                "AND a.tujuan_pelayanan LIKE :idTujuan\n" +
+                "ORDER BY a.tgl_antrian DESC";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("isUmum", isUmum)
+                .setParameter("idTujuan", idTujuan)
+                .setParameter("branchId", branchId)
+                .setParameter("idResep", idResep)
+                .setParameter("nama", nama)
+                .setParameter("status", status)
+                .setParameter("flag", flag)
+                .list();
+
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+
+        String statusName = "";
+        if ("0".equalsIgnoreCase(status)){
+            statusName = "Antrian";
+        } else if ("1".equalsIgnoreCase(status)){
+            statusName = "Proses";
+        } else if ("3".equalsIgnoreCase(status)){
+            statusName = "Selesai";
+        }
+
+        if (results.size() > 0)
+        {
+            PermintaanResep permintaanResep;
+            for (Object[] obj : results)
+            {
+                permintaanResep = new PermintaanResep();
+                permintaanResep.setIdPermintaanResep(obj[0].toString());
+                permintaanResep.setIdDetailCheckup(obj[1] == null ? "" : obj[1].toString());
+                permintaanResep.setNamaPasien(obj[2].toString());
+                permintaanResep.setIdApprovalObat(obj[4].toString());
+                permintaanResep.setStatus(statusName);
+                permintaanResep.setIdJenisPeriksa(obj[5].toString());
+                permintaanResep.setFlag(obj[6].toString());
+                permintaanResep.setKetJenisAntrian(obj[7] == null ? "Resep RS" : "Telemedic");
                 permintaanResepList.add(permintaanResep);
             }
         }
@@ -326,7 +607,9 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "odb.id_barang,\n" +
                 "odb.qty_approve,\n" +
                 "odb.jenis_satuan,\n" +
-                "CASE WHEN odb.jenis_satuan = 'box' THEN od.average_harga_box WHEN odb.jenis_satuan = 'lembar' THEN od.average_harga_lembar WHEN odb.jenis_satuan = 'biji' THEN od.average_harga_biji ELSE 0 END as harga\n" +
+                "CASE WHEN odb.jenis_satuan = 'box' THEN od.average_harga_box WHEN odb.jenis_satuan = 'lembar' THEN od.average_harga_lembar WHEN odb.jenis_satuan = 'biji' THEN od.average_harga_biji ELSE 0 END as harga ,\n" +
+                "odb.qty_reture,\n" +
+                "odb.harga_rata\n" +
                 "FROM mt_simrs_transaksi_obat_detail_batch odb\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail od ON od.id_transaksi_obat_detail = odb.id_transaksi_obat_detail\n" +
                 "WHERE od.id_approval_obat = :idApprove\n" +
@@ -341,13 +624,15 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
             TransaksiObatDetail obatDetail;
             for (Object[] obj : results){
-                BigDecimal harga = obj[5] == null ? new BigDecimal(0) : (BigDecimal) obj[5];
                 obatDetail = new TransaksiObatDetail();
                 obatDetail.setIdApprovalObat(obj[0].toString());
                 obatDetail.setIdTransaksiObatDetail(obj[1].toString());
                 obatDetail.setIdBarang(obj[2].toString());
                 obatDetail.setQtyApprove(obj[3] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[3]);
                 obatDetail.setJenisSatuan(obj[4].toString());
+                BigDecimal harga = obj[5] == null ? new BigDecimal(0) : (BigDecimal) obj[5];
+                obatDetail.setQtyReture(obj[6] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[6]);
+                obatDetail.setHargaRata(obj[7] == null ? new BigDecimal(0) : (BigDecimal) obj[7]);
                 obatDetail.setHarga(new BigInteger(harga.toString()));
                 trans.add(obatDetail);
             }
@@ -411,7 +696,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "\te.id_pelayanan,\n" +
                     "\tf.no_checkup,\n" +
                     "\tf.id_pasien,\n" +
-                    "\te.id_jenis_periksa_pasien\n" +
+                    "\te.id_jenis_periksa_pasien,\n" +
+                    "\ta.jenis_resep\n" +
                     "\tFROM mt_simrs_permintaan_resep a\n" +
                     "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
@@ -543,8 +829,8 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "INNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y'  GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
                     "INNER JOIN mt_simrs_harga_obat d ON b.id_obat = d.id_obat\n" +
-                    "INNER JOIN it_simrs_header_detail_checkup e ON a.id_detail_checkup = e.id_detail_checkup\n" +
-                    "INNER JOIN it_simrs_header_checkup f ON e.no_checkup = f.no_checkup\n" +
+                    "LEFT JOIN it_simrs_header_detail_checkup e ON a.id_detail_checkup = e.id_detail_checkup\n" +
+                    "LEFT JOIN it_simrs_header_checkup f ON e.no_checkup = f.no_checkup\n" +
                     "INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) g ON b.id_obat = g.id_obat\n" +
                     "WHERE a.id_approval_obat = :idApp \n";
 

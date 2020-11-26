@@ -92,6 +92,37 @@
         <property name="tglKeluar">
             <column name="tgl_keluar" sql-type="timestamp" not-null="false" />
         </property>
+        <property name="idAntrianOnline">
+            <column name="id_antrian_online" sql-type="varchar" />
+        </property>
+
+        <property name="tensi">
+            <column name="tensi" sql-type="varchar" />
+        </property>
+        <property name="suhu">
+            <column name="suhu" sql-type="varchar" />
+        </property>
+        <property name="nadi">
+            <column name="nadi" sql-type="varchar" />
+        </property>
+        <property name="rr">
+            <column name="rr" sql-type="varchar" />
+        </property>
+        <property name="autoanamnesis">
+            <column name="autoanamnesis" />
+        </property>
+        <property name="heteroanamnesis">
+            <column name="heteroanamnesis" />
+        </property>
+        <property name="pendidikan">
+            <column name="pendidikan" />
+        </property>
+        <property name="statusPerkawinan">
+            <column name="status_perkawinan" />
+        </property>
+        <property name="kunjunganPoli">
+            <column name="kunjungan_poli" />
+        </property>
 
     </class>
 </hibernate-mapping>

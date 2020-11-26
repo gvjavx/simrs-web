@@ -8,6 +8,8 @@ import com.neurix.hris.master.ijin.dao.IjinDao;
 import com.neurix.hris.master.ijin.model.Ijin;
 import com.neurix.hris.master.ijin.model.ImIjinEntity;
 import com.neurix.hris.master.ijin.model.ImIjinHistoryEntity;
+import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao;
+import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -25,6 +27,15 @@ public class IjinBoImpl implements IjinBo {
     protected static transient Logger logger = Logger.getLogger(IjinBoImpl.class);
     private IjinDao ijinDao;
     private BiodataDao biodataDao;
+    private IjinKeluarDao ijinKeluarDao;
+
+    public IjinKeluarDao getIjinKeluarDao() {
+        return ijinKeluarDao;
+    }
+
+    public void setIjinKeluarDao(IjinKeluarDao ijinKeluarDao) {
+        this.ijinKeluarDao = ijinKeluarDao;
+    }
 
     public BiodataDao getBiodataDao() {
         return biodataDao;
@@ -50,6 +61,8 @@ public class IjinBoImpl implements IjinBo {
         this.ijinDao = ijinDao;
     }
 
+
+
     @Override
     public void saveDelete(Ijin bean) throws GeneralBOException {
         logger.info("[saveDelete.saveDelete] start process >>>");
@@ -58,17 +71,38 @@ public class IjinBoImpl implements IjinBo {
 
             String ijinId = bean.getIjinId();
 
-            ImIjinEntity imIjinEntity = null;
+            List<IjinKeluarEntity> ijinKeluarEntityList = ijinKeluarDao.getListIjinKeluarByIjinId(ijinId);
 
+            if (ijinKeluarEntityList.size()>0){
+                String status = "ERROR : tidak bisa menghapus data karena sudah dipakai di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
+
+            ImIjinEntity imIjinEntity = null;
+            ImIjinHistoryEntity imIjinHistoryEntity = new ImIjinHistoryEntity();
+            String idHistory = "";
             try {
                 // Get data from database by ID
                 imIjinEntity = ijinDao.getById("ijinId", ijinId);
+                idHistory = ijinDao.getNextIjinHistoryId();
             } catch (HibernateException e) {
                 logger.error("[IjinBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
             }
 
             if (imIjinEntity != null) {
+                imIjinHistoryEntity.setId(idHistory);
+                imIjinHistoryEntity.setIjinId(bean.getIjinId());
+                imIjinHistoryEntity.setIjinName(imIjinEntity.getIjinName());
+                imIjinEntity.setGender(bean.getGender());
+                imIjinHistoryEntity.setJumlahIjin(imIjinEntity.getJumlahIjin());
+                imIjinHistoryEntity.setFlag(imIjinEntity.getFlag());
+                imIjinHistoryEntity.setAction(imIjinEntity.getAction());
+                imIjinHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imIjinHistoryEntity.setLastUpdate(bean.getLastUpdate());
+                imIjinHistoryEntity.setCreatedWho(imIjinEntity.getCreatedWho());
+                imIjinHistoryEntity.setCreatedDate(imIjinEntity.getCreatedDate());
 
                 // Modify from bean to entity serializable
                 imIjinEntity.setIjinId(bean.getIjinId());
@@ -85,6 +119,7 @@ public class IjinBoImpl implements IjinBo {
                 try {
                     // Delete (Edit) into database
                     ijinDao.updateAndSave(imIjinEntity);
+                    ijinDao.addAndSaveHistory(imIjinHistoryEntity);
                 } catch (HibernateException e) {
                     logger.error("[IjinBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data Ijin, please info to your admin..." + e.getMessage());
@@ -127,7 +162,6 @@ public class IjinBoImpl implements IjinBo {
                 imIjinHistoryEntity.setId(idHistory);
                 imIjinHistoryEntity.setIjinId(bean.getIjinId());
                 imIjinHistoryEntity.setIjinName(imIjinEntity.getIjinName());
-                imIjinEntity.setGender(bean.getGender());
                 imIjinHistoryEntity.setJumlahIjin(imIjinEntity.getJumlahIjin());
                 imIjinHistoryEntity.setFlag(imIjinEntity.getFlag());
                 imIjinHistoryEntity.setAction(imIjinEntity.getAction());
@@ -136,8 +170,11 @@ public class IjinBoImpl implements IjinBo {
                 imIjinHistoryEntity.setCreatedWho(imIjinEntity.getCreatedWho());
                 imIjinHistoryEntity.setCreatedDate(imIjinEntity.getCreatedDate());
 
+                imIjinEntity.setGender(bean.getGender());
+                imIjinEntity.setAgama(bean.getAgama());
                 imIjinEntity.setIjinId(bean.getIjinId());
                 imIjinEntity.setIjinName(bean.getIjinName());
+                imIjinEntity.setTipeHari(bean.getTipeHari());
                 imIjinEntity.setJumlahIjin(bean.getJumlahIjin());
                 imIjinEntity.setFlag(bean.getFlag());
                 imIjinEntity.setAction(bean.getAction());
@@ -186,12 +223,14 @@ public class IjinBoImpl implements IjinBo {
                 imIjinEntity.setJumlahIjin(bean.getJumlahIjin());
                 imIjinEntity.setGender(bean.getGender());
                 imIjinEntity.setTipeHari(bean.getTipeHari());
+                imIjinEntity.setFlagDiajukanAdmin("N");
                 imIjinEntity.setFlag(bean.getFlag());
                 imIjinEntity.setAction(bean.getAction());
                 imIjinEntity.setCreatedWho(bean.getCreatedWho());
                 imIjinEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 imIjinEntity.setCreatedDate(bean.getCreatedDate());
                 imIjinEntity.setLastUpdate(bean.getLastUpdate());
+                imIjinEntity.setAgama(bean.getAgama());
 
                 try {
                     // insert into database
@@ -229,8 +268,14 @@ public class IjinBoImpl implements IjinBo {
             if (searchBean.getGender() != null && !"".equalsIgnoreCase(searchBean.getGender())) {
                 hsCriteria.put("gender", searchBean.getGender());
             }
+            if (searchBean.getAgama() != null && !"".equalsIgnoreCase(searchBean.getAgama())) {
+                hsCriteria.put("agama", searchBean.getAgama());
+            }
             if (searchBean.getTipeHari() != null && !"".equalsIgnoreCase(searchBean.getTipeHari())) {
                 hsCriteria.put("tipeHari", searchBean.getTipeHari());
+            }
+            if (searchBean.getFlagDiajukanAdmin() != null && !"".equalsIgnoreCase(searchBean.getFlagDiajukanAdmin())) {
+                hsCriteria.put("flag_diajukan_admin", searchBean.getFlagDiajukanAdmin());
             }
 
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
@@ -264,6 +309,32 @@ public class IjinBoImpl implements IjinBo {
 
                     returnIjin.setGender(ijinEntity.getGender());
                     returnIjin.setTipeHari(ijinEntity.getTipeHari());
+                    returnIjin.setAgama(ijinEntity.getAgama());
+                    returnIjin.setFlagDiajukanAdmin(ijinEntity.getFlagDiajukanAdmin());
+
+                    switch (ijinEntity.getAgama()){
+                        case "all":
+                            returnIjin.setAgamaName("Semua");
+                            break;
+                        case "islam":
+                            returnIjin.setAgamaName("Islam");
+                            break;
+                        case "kristen":
+                            returnIjin.setAgamaName("Kristen");
+                            break;
+                        case "katolik":
+                            returnIjin.setAgamaName("Katolik");
+                            break;
+                        case "hindu":
+                            returnIjin.setAgamaName("Hindu");
+                            break;
+                        case "budha":
+                            returnIjin.setAgamaName("Buddha");
+                            break;
+                        case "kong hu cu":
+                            returnIjin.setAgamaName("Kong Hu Cu");
+                            break;
+                    }
 
                     returnIjin.setCreatedWho(ijinEntity.getCreatedWho());
                     returnIjin.setCreatedDate(ijinEntity.getCreatedDate());
@@ -299,7 +370,7 @@ public class IjinBoImpl implements IjinBo {
 
         List<ImIjinEntity> listIjin = null;
         try {
-            listIjin = ijinDao.getListIjin(criteria);
+            listIjin = ijinDao.getListIjin(criteria,"N");
         } catch (HibernateException e) {
             logger.error("[UserBoImpl.getComboUserWithCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
@@ -389,7 +460,7 @@ public class IjinBoImpl implements IjinBo {
     }
 
     @Override
-    public List<Ijin> getComboIjinIdWithKelamin(String nip) throws GeneralBOException {
+    public List<Ijin> getComboIjinIdWithKelamin(String nip,String flagDiajukanAdmin) throws GeneralBOException {
         logger.info("[IjinBoImpl.getComboIjinIdWithKelamin] start process >>>");
         List<Ijin> listComboIjin = new ArrayList();
         List<ImIjinEntity> listIjin = null;
@@ -402,7 +473,7 @@ public class IjinBoImpl implements IjinBo {
         }
         if (biodataEntity.getGender()!=null){
             try {
-                listIjin = ijinDao.getListIjin("%");
+                listIjin = ijinDao.getListIjin("%",flagDiajukanAdmin);
             } catch (HibernateException e) {
                 logger.error("[IjinBoImpl.getComboIjinIdWithKelamin] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
@@ -415,10 +486,20 @@ public class IjinBoImpl implements IjinBo {
                     else if (!imIjinEntity.getGender().equalsIgnoreCase(biodataEntity.getGender())){
                         bisa=false;
                     }
+
+                    if (imIjinEntity.getAgama()==null){}
+                    else if(("all").equalsIgnoreCase(imIjinEntity.getAgama())){}
+                    else if (!imIjinEntity.getAgama().equalsIgnoreCase(biodataEntity.getAgama())){
+                        bisa=false;
+                    }
+
                     if (bisa){
                         Ijin itemComboIjin = new Ijin();
                         itemComboIjin.setIjinId(imIjinEntity.getIjinId());
                         itemComboIjin.setIjinName(imIjinEntity.getIjinName());
+                        itemComboIjin.setJumlahIjin(imIjinEntity.getJumlahIjin());
+
+                        itemComboIjin.setGender(imIjinEntity.getGender());
                         listComboIjin.add(itemComboIjin);
                     }
                 }

@@ -83,7 +83,15 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
     public String getDirektur() throws GeneralBOException;
     public String getKabidSdm() throws GeneralBOException;
 
+    void approvePayrollAks(Payroll bean) throws GeneralBOException;
+
     void approvePayrollUnit(Payroll bean) throws GeneralBOException;
+
+    void approvePayrollSdm(Payroll bean) throws GeneralBOException;
+
+    void deleteTransaksiPayroll(Payroll bean) throws GeneralBOException;
+
+    void deleteTransaksiPayrollById(Payroll bean) throws GeneralBOException;
 
     public PayrollKonsistensi showKonsistensiGaji(String nip, String bulan, String tahun) throws GeneralBOException;
     public List<Payroll> printReportPayrollBulanSys(String bulan1, String tahun1, String unit, String status) throws GeneralBOException;
@@ -136,10 +144,10 @@ public interface PayrollBo extends BaseMasterBo<Payroll>{
     void saveEditPayrollPphSessionDataUsingPayrollId(Payroll payroll) throws GeneralBOException;
 
     void saveEditDataTambahanD(Payroll payroll) throws GeneralBOException;
-    public BigDecimal getSkalaGaji(String golonganId);
+    public BigDecimal getSkalaGaji(String golonganId,String tahun);
     public ImPayrollTunjanganJabatanStrukturalEntity getTunjanganJabatanStrukturalSimRs(String kelompokId);
-    public ImPayrollSkalaGajiEntity getSkalaGajiSimRs(String golonganId);
-    public ImPayrollSkalaGajiPkwtEntity getSkalaGajiSimRsPkwt(String golonganId);
+    public ImPayrollSkalaGajiEntity getSkalaGajiSimRs(String golonganId,String tahun);
+    public ImPayrollSkalaGajiPkwtEntity getSkalaGajiSimRsPkwt(String golonganId,String tahun);
 
     public BigDecimal hitungIuranBpjs(BigDecimal dasarPerhitunganBpjs, Double percent);
 

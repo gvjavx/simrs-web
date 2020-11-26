@@ -1,8 +1,13 @@
 package com.neurix.hris.transaksi.ijinKeluar.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
+import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
+import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarEntity;
+import com.neurix.hris.transaksi.lembur.model.LemburEntity;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -264,12 +269,29 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
                 .list();
         return results;
     }
+
+    public List<IjinKeluarEntity> getListIjinGantiHariByNipAndTanggal(String nip , Date tanggal) throws HibernateException {
+        List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("approvalFlag", "Y"))
+                .add(Restrictions.ne("cancelFlag","Y"))
+                .add(Restrictions.eq("ijinId", CommonConstant.IJIN_GANTI_HARI))
+                .add(Restrictions.ge("tanggalAkhir",tanggal))
+                .add(Restrictions.le("tanggalAwal",tanggal))
+                .list();
+        return results;
+    }
+
     public List<IjinKeluarEntity> getListTestTanggal(Date tanggal,String nip) throws HibernateException {
         List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
                 .add(Restrictions.eq("nip", nip))
                 .add(Restrictions.eq("approvalFlag", "Y"))
-                .add(Restrictions.eq("approvalSdmFlag", "Y"))
-                .add(Restrictions.ne("cancelFlag","Y"))
+//                .add(Restrictions.eq("approvalSdmFlag", "Y"))
+//                .add(Restrictions.ne("cancelFlag","Y"))
+                .add(Restrictions.or(
+                        Restrictions.isNull("cancelFlag"),
+                        Restrictions.ne("cancelFlag", "Y")
+                ))
                 .add(Restrictions.ne("ijinId","IJ001"))
                 .add(Restrictions.le("tanggalAwal",tanggal))
                 .add(Restrictions.ge("tanggalAkhir",tanggal))
@@ -390,5 +412,158 @@ public class IjinKeluarDao extends GenericDao<IjinKeluarEntity, String> {
             result="";
         }
         return result;
+    }
+
+    public List<ItCutiPegawaiEntity> cekData(String nip, Date tglAwal, Date tglAkhir) throws HibernateException{
+        List<ItCutiPegawaiEntity> results = new ArrayList<>();
+
+        String query = "SELECT * FROM it_hris_cuti_pegawai \n" +
+                "\tWHERE \n" +
+                "\t(nip = '"+nip+"' AND approval_flag = 'Y' AND action = 'U') AND \n" +
+                "\t(tanggal_selesai >= '"+tglAwal+"' AND tanggal_selesai <= '"+tglAkhir+"')";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
+    }
+
+    public String getNextSuratDokteId() throws HibernateException {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_surat_dokter')");
+        Iterator<BigInteger> iter=query.list().iterator();
+        String sId = String.format("%03d", iter.next());
+
+        return "SD"+sId;
+    }
+
+    public List<IjinKeluarEntity> cekHajiZiarah(String nip){
+        List<IjinKeluarEntity> results = new ArrayList<>();
+
+        String query = "SELECT * FROM it_hris_ijin_keluar \n" +
+                "\tWHERE nip = '"+nip+"' AND approval_flag = 'Y' AND\n" +
+                "\tcancel_flag = 'N' AND (ijin_id = 'IJ010' OR ijin_id = 'IJ032')";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        return results;
+    }
+
+    public String cekIfAbsensi(String nip, Date tgl){
+        String result="";
+        String query ="select absensi_pegawai_id from it_hris_absensi_pegawai where nip = '"+nip+"' and tanggal = '"+tgl+"'";
+        Object results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query).uniqueResult();
+        if (results!=null){
+            result = "ya";
+        }else {
+            result="tidak";
+        }
+        return result;
+    }
+
+    public List<IjinKeluarEntity> getListCekIjinKeluar(String nip) throws HibernateException {
+        List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.isNull("approvalFlag"))
+                .add(Restrictions.ne("cancelFlag", "Y"))
+                .list();
+        return results;
+    }
+
+    public List<IjinKeluar> getHistoryIjinKeluarByMonth(String nip, String branchId, String firstDate, String lastDate){
+
+        List<IjinKeluar> ijinKeluarList = new ArrayList<>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        Date dtFirst = CommonUtil.convertStringToDate(firstDate);
+        Date dtLast = CommonUtil.convertStringToDate(lastDate);
+
+        String query = "SELECT ijin_name, lama_ijin, tanggal_awal, tanggal_akhir, ijin_keluar_id FROM it_hris_ijin_keluar\n" +
+                "WHERE nip = :nip\n" +
+                "AND (tanggal_awal BETWEEN :firstDate AND :lastDate OR tanggal_akhir BETWEEN :firstDate AND :lastDate)\n" +
+                "AND approval_flag = 'Y'\n" +
+                "AND cancel_flag = 'N'\n" +
+                "AND unit_id = :branchId";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("nip", nip)
+                .setParameter("branchId", branchId)
+                .setParameter("firstDate", dtFirst)
+                .setParameter("lastDate", dtLast)
+                .list();
+
+        if (results != null) {
+            for (Object[] item : results) {
+                IjinKeluar ijinKeluar = new IjinKeluar();
+                ijinKeluar.setIjinName(item[0] != null ? (String) item[0].toString() : "");
+                ijinKeluar.setLamaIjin(item[1] != null ? (BigInteger) item[1] : new BigInteger("0"));
+                ijinKeluar.setTanggalAwal(item[2] != null ? (Date) item[2] : null);
+                ijinKeluar.setTanggalAkhir(item[3] != null ? (Date) item[3] : null);
+                ijinKeluar.setIjinKeluarId(item[4] != null ? (String) item[4].toString() : "");
+
+                ijinKeluarList.add(ijinKeluar);
+            }
+        }
+
+        return ijinKeluarList;
+    }
+
+    public String cekPengajuanDiTanggalYangSama(Date tanggal,String nip) throws HibernateException {
+        String results = "";
+
+        List<IjinKeluarEntity> ijinKeluarEntityList = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
+                .add(Restrictions.eq("nip", nip))
+//                .add(Restrictions.or(
+//                        Restrictions.isNull("approvalFlag"),
+//                        Restrictions.eq("approvalFlag", "Y")
+//                ))
+                .add(Restrictions.eq("cancelFlag", "N"))
+                .add(Restrictions.le("tanggalAwal",tanggal))
+                .add(Restrictions.ge("tanggalAkhir",tanggal))
+                .list();
+
+        List<LemburEntity> lemburEntityList = this.sessionFactory.getCurrentSession().createCriteria(LemburEntity.class)
+                .add(Restrictions.eq("nip", nip))
+//                .add(Restrictions.or(
+//                        Restrictions.isNull("approvalFlag"),
+//                        Restrictions.eq("approvalFlag", "Y")
+//                ))
+                .add(Restrictions.le("tanggalAwalSetuju",tanggal))
+                .add(Restrictions.ge("tanggalAkhirSetuju",tanggal))
+                .list();
+
+        List<ItCutiPegawaiEntity> cutiPegawaiEntityList = this.sessionFactory.getCurrentSession().createCriteria(ItCutiPegawaiEntity.class)
+                .add(Restrictions.eq("nip", nip))
+//                .add(Restrictions.or(
+//                        Restrictions.isNull("approvalFlag"),
+//                        Restrictions.eq("approvalFlag", "Y")
+//                ))
+                .add(Restrictions.eq("cancelFlag", "N"))
+                .add(Restrictions.le("tanggalDari",tanggal))
+                .add(Restrictions.ge("tanggalSelesai",tanggal))
+                .add(Restrictions.eq("flagPerbaikan","N"))
+                .list();
+
+        if (ijinKeluarEntityList.size()>0){
+            results = "ERROR : sudah pernah mengajukan dispensasi di tanggal ini ( di approve / not approve )";
+        } else if (lemburEntityList.size()>0) {
+            results = "ERROR : sudah pernah mengajukan lembur di tanggal ini ( di approve / not approve )";
+        } else if (cutiPegawaiEntityList.size()>0) {
+            results = "ERROR : sudah pernah mengajukan cuti di tanggal ini ( di approve / not approve )";
+        }
+        return results;
+    }
+
+    public List<IjinKeluarEntity> getListIjinKeluarByIjinId(String id) throws HibernateException {
+
+        List<IjinKeluarEntity> results = this.sessionFactory.getCurrentSession().createCriteria(IjinKeluarEntity.class)
+                .add(Restrictions.eq("ijinId", id))
+                .list();
+
+        return results;
     }
 }

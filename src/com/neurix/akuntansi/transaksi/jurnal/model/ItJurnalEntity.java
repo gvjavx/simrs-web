@@ -44,12 +44,21 @@ public class ItJurnalEntity implements Serializable {
     private BigDecimal dppDipungut;
     private BigDecimal dppDitanggung;
 
+    private String pengajuanBiayaId;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    public String getPengajuanBiayaId() {
+        return pengajuanBiayaId;
+    }
+
+    public void setPengajuanBiayaId(String pengajuanBiayaId) {
+        this.pengajuanBiayaId = pengajuanBiayaId;
+    }
 
     public String getRegisteredFlag() {
         return registeredFlag;

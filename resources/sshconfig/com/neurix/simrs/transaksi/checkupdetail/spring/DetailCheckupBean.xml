@@ -16,6 +16,7 @@
           p:branchBoProxy-ref="branchBoProxy"
           p:billingSystemBoProxy-ref="billingSystemBoProxy"
           p:periksaLabBoProxy-ref="periksaLabBoProxy"
+          p:teamDokterBoProxy-ref="teamDokterBoProxy"
     />
 
     <bean id="checkupDetailBo" class="com.neurix.simrs.transaksi.checkupdetail.bo.impl.CheckupDetailBoImpl"
@@ -36,6 +37,8 @@
           p:uangMukaDao-ref="uangMukaDao"
           p:dokterDao-ref="dokterDao"
           p:diagnosaRawatDao-ref="diagnosaRawatDao"
+          p:paketPasienDao-ref="paketPasienDao"
+          p:tempatTidurDao-ref="tempatTidurDao"
     />
 
     <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
@@ -43,6 +46,10 @@
     />
 
     <bean id="antrianOnlineController" class="com.neurix.simrs.mobileapi.AntrianOnlineController"
+          p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
+    />
+
+    <bean id="telemedicineController" class="com.neurix.simrs.mobileapi.TelemedicineController"
           p:checkupDetailBoProxy-ref="checkupDetailBoProxy"
     />
 
@@ -64,6 +71,8 @@
                 <prop key="getByCriteria">readOnly</prop>
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
                 <prop key="saveEdit">PROPAGATION_REQUIRED</prop>
+                <prop key="updateDetailCheckup">PROPAGATION_REQUIRED</prop>
+                <prop key="updateRuanganInap">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

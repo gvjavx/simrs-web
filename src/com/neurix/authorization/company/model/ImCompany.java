@@ -140,6 +140,70 @@ public class ImCompany implements Serializable {
     private BigDecimal maxBpjsKesehatan ;
 
     private String periodeGaji;
+    private BigDecimal paramDapen;
+    private BigDecimal paramDapenPegawai;
+    private BigDecimal biayaJabatan;
+
+    private Integer jamBatasAbsen;
+    private BigInteger jarakAbsenMobile;
+    private Integer tanggalAwalLembur;
+    private Integer tanggalAkhirLembur;
+
+    public Integer getTanggalAwalLembur() {
+        return tanggalAwalLembur;
+    }
+
+    public void setTanggalAwalLembur(Integer tanggalAwalLembur) {
+        this.tanggalAwalLembur = tanggalAwalLembur;
+    }
+
+    public Integer getTanggalAkhirLembur() {
+        return tanggalAkhirLembur;
+    }
+
+    public void setTanggalAkhirLembur(Integer tanggalAkhirLembur) {
+        this.tanggalAkhirLembur = tanggalAkhirLembur;
+    }
+
+    public BigInteger getJarakAbsenMobile() {
+        return jarakAbsenMobile;
+    }
+
+    public void setJarakAbsenMobile(BigInteger jarakAbsenMobile) {
+        this.jarakAbsenMobile = jarakAbsenMobile;
+    }
+
+    public Integer getJamBatasAbsen() {
+        return jamBatasAbsen;
+    }
+
+    public void setJamBatasAbsen(Integer jamBatasAbsen) {
+        this.jamBatasAbsen = jamBatasAbsen;
+    }
+
+    public BigDecimal getParamDapenPegawai() {
+        return paramDapenPegawai;
+    }
+
+    public void setParamDapenPegawai(BigDecimal paramDapenPegawai) {
+        this.paramDapenPegawai = paramDapenPegawai;
+    }
+
+    public BigDecimal getBiayaJabatan() {
+        return biayaJabatan;
+    }
+
+    public void setBiayaJabatan(BigDecimal biayaJabatan) {
+        this.biayaJabatan = biayaJabatan;
+    }
+
+    public BigDecimal getParamDapen() {
+        return paramDapen;
+    }
+
+    public void setParamDapen(BigDecimal paramDapen) {
+        this.paramDapen = paramDapen;
+    }
 
     public String getPeriodeGaji() {
         return periodeGaji;

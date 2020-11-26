@@ -1,0 +1,68 @@
+.toast-container {
+    width: 90%;
+    max-width: 580px;
+    margin: 0 auto;
+}
+
+[class*="toast-pos-"] {
+    position: absolute;
+    padding: 10px;
+}
+
+.toast-pos-top {
+    top: 0;
+}
+
+.toast-pos-right {
+    right: 0;
+}
+
+.toast-pos-bottom {
+    bottom: 0;
+}
+
+.toast-pos-left {
+    left: 0;
+}
+
+.toast {
+    display: none;
+    padding: 20px;
+    margin: 20px 0;
+    background: #eeeeee;
+    color: #333333;
+}
+
+.close-toast {
+    float: right;
+    text-decoration: none;
+    color: #ffffff;
+    vertical-align: middle;
+}
+
+.toast-trigger {
+    color: #ffffff;
+}
+
+.toast {
+    background: rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+}
+
+.toast-trigger {
+    display: inline-block;
+    top: 50%;
+    left: 50%;
+    margin: 10px;
+    padding: 20px 40px;
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    text-decoration: none;
+    transition: ease 0.2s;
+}
+
+.toast-trigger:hover {
+    background: #ffffff;
+    color: #009688;
+}

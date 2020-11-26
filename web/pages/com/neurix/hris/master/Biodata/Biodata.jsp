@@ -47,6 +47,8 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BiodataAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/StudyJurusanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
+
     <script type="text/javascript">
 
         function callSearch2() {
@@ -69,12 +71,9 @@
             var statusPegawai       = document.getElementById("statusPegawai1").value;
             var flag                = document.getElementById("flagAktif").value;
             var masaGolongan        = document.getElementById("poinLebih").value;
+            var shift               = document.getElementById("shift").value;
 
             if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '') {
-                if(flag == 'N'){
-                    alert("Non Aktifkan User");
-                }
-
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -82,9 +81,7 @@
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
                 }
-
             } else {
-
                 event.originalEvent.options.submit = false;
 
                 var msg = "";
@@ -119,7 +116,6 @@
                 if (masaGolongan == '') {
                     msg += 'Field <strong>Masa Kerja Golongan</strong> is required.' + '<br/>';
                 }
-
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
@@ -173,22 +169,49 @@
         });
 
         $.subscribe('beforeProcessSaveStudy', function (event, data){
-            if (confirm('Do you want to save this record?')){
-                event.originalEvent.options.submit = true;
-                $('#modal-edit').modal('hide');
-                $('#myFormDocument')[0].reset();
-                alert('Record has been Saved successfully.');
+            var studyName = document.getElementById("studyName").value;
+            var programStudy = document.getElementById("pendidikanProgramStudi").value;
+            var tahunAwal = document.getElementById("studyTahunAwal").value;
+            var tahunAkhir = document.getElementById("studyTahunAkhir").value;
+            dwr.engine.setAsync(false);
+            if( studyName != ''|| programStudy != ''|| tahunAwal != ''|| tahunAkhir !=''){
+                if (confirm('Do you want to save this record?')){
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
+                    $('#modal-edit').modal('hide');
+                    $('#myFormDocument')[0].reset();
+                    alert('Record has been Saved successfully.');
 //                loadSessionStudy();
 
-                <s:if test="isAdd()">
+                    <s:if test="isAdd()">
                     loadSessionStudy();
-                </s:if>
-                <s:else>
+                    </s:if>
+                    <s:else>
                     var nip = document.getElementById("nip1").value;
                     loadStudy(nip);
-                </s:else>
+                    </s:else>
+                } else{
+                    event.originalEvent.options.submit = false;
+                }
             } else{
                 event.originalEvent.options.submit = false;
+                var msg = "";
+                if (studyName == '') {
+                    msg += 'Field <strong>Study Name</strong> is required.' + '<br/>';
+                }
+                if (programStudy == '') {
+                    msg += 'Field <strong>Program Studi</strong> is required.' + '<br/>';
+                }
+                if (tahunAwal == '') {
+                    msg += 'Field <strong>Tahun Awal</strong> is required.' + '<br/>';
+                }
+                if (tahunAkhir == '') {
+                    msg += 'Field <strong>Tahun Akhir</strong> is required.' + '<br/>';
+                }
+                document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                $("#modal-edit").modal('hide');
+                $.publish('showErrorValidationDialog');
             }
         });
 
@@ -248,7 +271,6 @@
     <section class="content-header">
         <h1>
             Biodata Form
-            <small>GO-MEDSYS</small>
         </h1>
     </section>
 
@@ -263,10 +285,11 @@
                     <li class="active"><a href="#biodata">Biodata</a></li>
                     <li><a tes = 'work' href="#keluarga">Keluarga</a></li>
                     <li><a href="#RiwayatPendidikan">Riwayat Pendidikan</a></li>
+                    <li><a href="#pelatihanJabatan">Riwayat Pelatihan</a></li>
+
                     <li><a href="#pengalamanKerja">Riwayat Kerja</a></li>
                     <%--<li><a href="#reward">Reward</a></li>
-                    <li><a href="#sertifikat">Sertifikat</a></li>
-                    <li><a href="#pelatihanJabatan">Pelatihan Jabatan</a></li>--%>
+                    <li><a href="#sertifikat">Sertifikat</a></li>--%>
 
                 </ul>
 
@@ -331,7 +354,7 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Gender :</small></label>
+                                        <label class="control-label"><small>Gender * :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -353,12 +376,12 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:select list="#{'islam':'Islam', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
+                                                <s:select list="#{'islam':'Islam', 'kristen' : 'Kristen', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
                                             'budha' : 'Buddha', 'kong hu cu' : 'Kong Hu Cu'}" id="agama" name="biodata.agama"
                                                           cssClass="form-control" disabled="true" />
                                             </s:if>
                                             <s:else>
-                                                <s:select list="#{'islam':'Islam', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
+                                                <s:select list="#{'islam':'Islam', 'kristen' : 'Kristen', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
                                             'budha' : 'Buddha', 'kong hu cu' : 'Kong Hu Cu'}" id="agama" name="biodata.agama"
                                                           cssClass="form-control" />
                                             </s:else>
@@ -385,6 +408,18 @@
                                 </tr>
 
                                 <s:if test="isDelete()">
+                                    <tr>
+                                        <td>
+                                            <label class="control-label"><small>Jumlah Anak :</small></label>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <s:textfield type="number" id="jumlahAnak" name="biodata.jumlahAnak" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </s:if>
+                                <s:if test="isEdit()">
                                     <tr>
                                         <td>
                                             <label class="control-label"><small>Jumlah Anak :</small></label>
@@ -444,52 +479,9 @@
                                                 <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value)"
                                                              cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                             </s:else>
-
-                                        </table>
-
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Tanggal Pra Pensiun :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield cssStyle="text-align: left;" readonly="true"
-                                                             cssClass="form-control" id="tanggalPraPensiun" name="biodata.stTanggalPraPensiun" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield cssStyle="text-align: left;"
-                                                             cssClass="form-control" id="tanggalPraPensiun" name="biodata.stTanggalPraPensiun" />
-                                            </s:else>
-
-                                        </table>
-
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Tanggal Pensiun :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield cssStyle="text-align: left;" readonly="true"
-                                                             cssClass="form-control" id="tanggalPensiun" name="biodata.stTanggalPensiun" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield cssStyle="text-align: left;"
-                                                             cssClass="form-control" id="tanggalPensiun" name="biodata.stTanggalPensiun" />
-                                            </s:else>
                                         </table>
                                     </td>
                                 </tr>
-
                                 <s:if test="isDelete()">
                                     <tr>
                                         <td>
@@ -633,17 +625,24 @@
                                 </s:else>
 
                                 <s:if test="isDelete()">
-                                    <tr>
-                                        <td>
-                                            <label class="control-label"><small>PJS :</small></label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
-                                                <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
-                                            </table>
-                                        </td>
-                                    </tr>
+                                    <%--<tr>--%>
+                                        <%--<td>--%>
+                                            <%--<label class="control-label"><small>PJS :</small></label>--%>
+                                        <%--</td>--%>
+                                        <%--<td>--%>
+                                            <%--<table>--%>
+                                                <%--<input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />--%>
+                                                <%--<s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />--%>
+                                            <%--</table>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                    <div style="display: none" class="form-group">
+                                        <label class="control-label"><small>PJS :</small></label>
+                                        <div class="col-sm-8">
+                                            <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
+                                            <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
+                                        </div>
+                                    </div>
                                 </s:if>
                                 <s:elseif test="isAdd()">
                                     <div style="display: none" class="form-group">
@@ -664,30 +663,6 @@
                                         </div>
                                     </div>
                                 </s:else>
-
-                                <%--<tr>--%>
-                                    <%--<td>--%>
-                                        <%--<label class="control-label"><small>PJS :</small></label>--%>
-                                    <%--</td>--%>
-                                    <%--<td>--%>
-                                        <%--<table>--%>
-                                            <%--<s:if test="isDelete()">--%>
-                                                <%--<input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />--%>
-                                                <%--<s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />--%>
-                                            <%--</s:if>--%>
-                                            <%--<s:elseif test="isAdd()">--%>
-                                                <%--<input type="checkbox" id="pjs" class="checkZakat" onchange="cekPjs()" />--%>
-                                                <%--<s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />--%>
-                                            <%--</s:elseif>--%>
-                                            <%--<s:else>--%>
-                                                <%--<input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />--%>
-                                                <%--<s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />--%>
-                                                <%--&lt;%&ndash;<s:hidden name="biodata.pjs"/>&ndash;%&gt;--%>
-                                            <%--</s:else>--%>
-                                        <%--</table>--%>
-                                    <%--</td>--%>
-                                <%--</tr>--%>
-
                                 <tr>
                                     <td>
                                         <label class="control-label"><small>NPWP :</small></label>
@@ -988,7 +963,7 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Rt / Rw :</small></label>
+                                        <label class="control-label"><small>RT / RW :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -1012,12 +987,17 @@
                                             <s:if test="isDelete()">
                                                 <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" disabled="true"
                                                           listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                <s:hidden name="biodata.tipePegawai" />
                                             </s:if>
+                                            <s:elseif test='biodata.tipePegawai=="TP01"'>
+                                                <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" disabled="true"
+                                                          listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                <s:hidden name="biodata.tipePegawai" />
+                                            </s:elseif>
                                             <s:else>
-                                                <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" onchange="changePegawai(this.value)"
+                                                <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" onchange="changePegawai(this.value),loadStatusPegawai()"
                                                           listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:else>
-
                                         </table>
                                     </td>
                                 </tr>
@@ -1033,7 +1013,14 @@
                                                 <s:select list="#{'KNS' : 'Pelaksana', 'KS':'Pimpinan'}"
                                                           id="statusPegawai1" name="biodata.statusPegawai" disabled="true"
                                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                <s:hidden name="biodata.statusPegawai" />
                                             </s:if>
+                                            <s:elseif test='biodata.statusPegawai=="KS"'>
+                                                <s:select list="#{'KNS' : 'Pelaksana', 'KS':'Pimpinan'}"
+                                                          id="statusPegawai1" name="biodata.statusPegawai" disabled="true"
+                                                          headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                <s:hidden name="biodata.statusPegawai" />
+                                            </s:elseif>
                                             <s:else>
                                                 <s:select list="#{'KNS' : 'Pelaksana', 'KS':'Pimpinan'}"
                                                           id="statusPegawai1" name="biodata.statusPegawai"
@@ -1053,11 +1040,15 @@
                                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                             <s:if test="isDelete()">
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan" disabled="true"
-                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
+                                            <s:elseif test="isAdd()">
+                                                <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
+                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            </s:elseif>
                                             <s:else>
                                                 <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
-                                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:else>
 
                                         </table>
@@ -1067,7 +1058,7 @@
                                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
                                             <s:if test="isDelete()">
                                                 <%--Untuk list Golongan PKWT--%>
-                                                <s:select list="#initComboTipe.listComboGolongan" id="golongan3" name="biodata.golongan" disabled="true"
+                                                <s:select list="#initComboTipe.listComboGolonganPkwt" id="golongan3" name="biodata.golongan" disabled="true"
                                                           listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
@@ -1079,26 +1070,106 @@
                                         </table>
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Masa Kerja Golongan*:</small></label>
+                                        <label class="control-label label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
                                     </td>
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="poinLebih" type="number" name="biodata.stMasaKerjaGol" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield cssStyle="text-align: left;" readonly="true"
+                                                             cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="poinLebih"  type="number" name="biodata.stMasaKerjaGol" required="true" cssClass="form-control"/>
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label label-tanggal-aktif"><small>Tanggal Aktif :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isAdd()">
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" />
+                                            </s:if>
+                                            <s:elseif test="isDelete()">
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true" readonly="true"/>
+                                            </s:elseif>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
+                                                <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
+                                                <s:hidden id="tanggalAktifTmp"/>
+                                            </s:else>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label label-prapensiun"><small>Tanggal MBT :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield cssStyle="text-align: left;" readonly="true"
+                                                             cssClass="form-control" id="tanggalPraPensiun" name="biodata.stTanggalPraPensiun" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalPraPensiun" name="biodata.stTanggalPraPensiun" />
                                             </s:else>
                                         </table>
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Golongan Dapen :</small></label>
+                                        <label class="control-label label-pensiun"><small>Tanggal Pensiun :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield cssStyle="text-align: left;" readonly="true"
+                                                             cssClass="form-control" id="tanggalPensiun" name="biodata.stTanggalPensiun" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield cssStyle="text-align: left;"
+                                                             cssClass="form-control" id="tanggalPensiun" name="biodata.stTanggalPensiun" />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Dana Pensiun :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:action id="listComboDanaPensiun" namespace="/payrollDanaPensiun" name="searchPayrollDanaPensiun_payrollDanaPensiun"/>
+                                            <s:if test="isDelete()">
+                                                <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
+                                                          id="danaPensiun" name="biodata.danaPensiun" disabled="true"
+                                                          listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                <s:hidden id="danaPensiunHid" name="biodata.danaPensiun"/>
+                                            </s:if>
+                                            <s:else>
+                                                <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
+                                                          id="danaPensiun" name="biodata.danaPensiun" listKey="danaPensiunId"
+                                                          listValue="danaPensiun" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Golongan Pensiun :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -1118,28 +1189,21 @@
                                         </table>
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Dana Pensiun :</small></label>
+                                        <label class="control-label"><small>Ms. Kerja Gol. Pensiun*:</small></label>
                                     </td>
                                     <td>
                                         <table>
-                                            <s:action id="listComboDanaPensiun" namespace="/payrollDanaPensiun" name="searchPayrollDanaPensiun_payrollDanaPensiun"/>
                                             <s:if test="isDelete()">
-                                                <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
-                                                          id="danaPensiun" name="biodata.danaPensiun" disabled="true"
-                                                          listKey="danaPensiunId" listValue="danaPensiun" headerValue="[Select one]" cssClass="form-control" readonly="true" />
+                                                <s:textfield id="poinLebih" type="number" name="biodata.stMasaKerjaGol" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:select list="#listComboDanaPensiun.listComboPayrollDanaPensiun"
-                                                          id="danaPensiun" name="biodata.danaPensiun" listKey="danaPensiunId"
-                                                          listValue="danaPensiun" disabled="true" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                <s:textfield id="poinLebih"  type="number" name="biodata.stMasaKerjaGol" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
                                         <label class="control-label"><small>No. Anggota Dapen :</small></label>
@@ -1147,10 +1211,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noAnggotaDapen" type="number" name="biodata.noAnggotaDapen" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noAnggotaDapen" type="text" name="biodata.noAnggotaDapen" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noAnggotaDapen"  type="number" name="biodata.noAnggotaDapen" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noAnggotaDapen"  type="text" name="biodata.noAnggotaDapen" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1163,10 +1227,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noBpjsKetenagakerjaan" type="number" name="biodata.noBpjsKetenagakerjaan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noBpjsKetenagakerjaan" type="text" name="biodata.noBpjsKetenagakerjaan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noBpjsKetenagakerjaan"  type="number" name="biodata.noBpjsKetenagakerjaan" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noBpjsKetenagakerjaan"  type="text" name="biodata.noBpjsKetenagakerjaan" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1179,10 +1243,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="number" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="text" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="number" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noBpjsKetenagakerjaanPensiun" type="text" name="biodata.noBpjsKetenagakerjaanPensiun" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1195,10 +1259,10 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noBpjsKesehatan" type="number" name="biodata.noBpjsKesehatan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noBpjsKesehatan" type="text" name="biodata.noBpjsKesehatan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noBpjsKesehatan" type="number" name="biodata.noBpjsKesehatan" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noBpjsKesehatan" type="text" name="biodata.noBpjsKesehatan" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
@@ -1220,6 +1284,24 @@
                                     </td>
                                 </tr>
 
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>NIP Lama :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:textfield  id="nipLama" name="biodata.nipLama" required="true" readonly="true" cssClass="form-control"/>
+                                            </s:if>
+                                            <s:else>
+                                                <s:textfield  id="nipLama" name="biodata.nipLama" required="true" cssClass="form-control"/>
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+
+
                                 <tr>
                                     <td>
                                         <label class="control-label"><small>Pin :</small></label>
@@ -1235,63 +1317,98 @@
                                         </table>
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Tanggal Masuk :</small></label>
+                                        <label class="control-label"><small>Kelompok Pegawai :</small></label>
                                     </td>
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield cssStyle="text-align: left;" readonly="true"
-                                                             cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
+                                                <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
+                                                <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai" disabled="true"
+                                                          listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield cssStyle="text-align: left;"
-                                                             cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
+                                                <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
+                                                <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai"
+                                                          listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Jabatan PLT :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
+                                                <s:select list="#comboPosition.listOfComboPosition" id="positionPltId" name="biodata.positionPltId" disabled="true"
+                                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
+                                            </s:if>
+                                            <s:else>
+                                                <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
+                                                <s:select list="#comboPosition.listOfComboPosition" id="positionPltId" name="biodata.positionPltId"
+                                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Shift * :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <s:select list="#{'Y':'Y'}" id="shift" name="biodata.shift" disabled="true"
+                                                          headerKey="N" headerValue="N" cssClass="form-control" />
+                                            </s:if>
+                                            <s:else>
+                                                <s:select list="#{'Y':'Y'}" id="shift" name="biodata.shift"
+                                                          headerKey="N" headerValue="N" cssClass="form-control" />
                                             </s:else>
 
                                         </table>
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Tanggal Aktif :</small></label>
+                                        <label class="control-label"><small>Dokter Tamu * :</small></label>
                                     </td>
                                     <td>
                                         <table>
                                             <s:if test="isAdd()">
-                                                <s:textfield cssStyle="text-align: left;"
-                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" />
+                                                <s:textfield id="dokterKso" name="biodata.flagDokterKso" value="N" readonly="true"  cssClass="form-control"/>
                                             </s:if>
+                                            <s:elseif test="isDelete()">
+                                                <s:textfield id="dokterKso" name="biodata.flagDokterKso" readonly="true" cssClass="form-control" />
+                                            </s:elseif>
                                             <s:else>
-                                                <s:textfield cssStyle="text-align: left;" readonly="true"
-                                                             cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
-                                                <s:hidden name="biodata.stTanggalAktif"/>
+                                                <s:textfield id="dokterKso" name="biodata.flagDokterKso" readonly="true" cssClass="form-control" />
                                             </s:else>
 
                                         </table>
                                     </td>
                                 </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Zakat Profesi :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <input type="checkbox" id="zakatProfesi" class="checkZakat" disabled onchange="cekZakat()" />
-                                                <s:textfield cssStyle="display: none" id="flagZakat" name="biodata.flagZakat"  />
-                                            </s:if>
-                                            <s:else>
-                                                <input type="checkbox" id="zakatProfesi" class="checkZakat" onchange="cekZakat()" />
-                                                <s:textfield cssStyle="display: none" id="flagZakat" name="biodata.flagZakat"  />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
+                                <%--<tr>--%>
+                                    <%--<td>--%>
+                                        <%--<label class="control-label"><small>Zakat Profesi :</small></label>--%>
+                                    <%--</td>--%>
+                                    <%--<td>--%>
+                                        <%--<table>--%>
+                                            <%--<s:if test="isDelete()">--%>
+                                                <%--<input type="checkbox" id="zakatProfesi" class="checkZakat" disabled onchange="cekZakat()" />--%>
+                                                <%--<s:textfield cssStyle="display: none" id="flagZakat" name="biodata.flagZakat"  />--%>
+                                            <%--</s:if>--%>
+                                            <%--<s:else>--%>
+                                                <%--<input type="checkbox" id="zakatProfesi" class="checkZakat" onchange="cekZakat()" />--%>
+                                                <%--<s:textfield cssStyle="display: none" id="flagZakat" name="biodata.flagZakat"  />--%>
+                                            <%--</s:else>--%>
+                                        <%--</table>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
 
                                 <tr>
                                     <td>
@@ -1365,14 +1482,33 @@
                                     <td>
                                         <table>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="noRekBank" type="number" name="biodata.noRekBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <s:textfield id="noRekBank" type="text" name="biodata.noRekBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="noRekBank" type="number" name="biodata.noRekBank" required="true" cssClass="form-control"/>
+                                                <s:textfield id="noRekBank" type="text" name="biodata.noRekBank" required="true" cssClass="form-control"/>
                                             </s:else>
                                         </table>
                                     </td>
                                 </tr>
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Finger Mobile :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="fingerMobile" class="checkZakat" disabled onchange="cekFingerMobile()" />
+                                                <s:textfield cssStyle="display: none" id="flagFingerMobile" name="biodata.flagFingerMobile"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="fingerMobile" class="checkZakat" onchange="cekFingerMobile()" />
+                                                <s:hidden id="flagFingerMobile" name="biodata.flagFingerMobile"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+
                                 <tr>
                                     <td>
                                         <label class="control-label"><small>Tunjangan Supervisi :</small></label>
@@ -1390,6 +1526,7 @@
                                         </table>
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td>
                                         <label class="control-label"><small>Tunjangan Lokasi :</small></label>
@@ -1442,18 +1579,131 @@
                                     </td>
                                 </tr>
 
-                                <%--<s:if test="isDelete()">--%>
-                                    <%--<tr>--%>
-                                        <%--<td>--%>
-                                            <%--<label class="control-label"><small>Keterangan :</small></label>--%>
-                                        <%--</td>--%>
-                                        <%--<td>--%>
-                                            <%--<table>--%>
-                                                <%--<s:textarea id="keterangan1" rows="3" name="biodata.keterangan" required="true" disabled="false" cssClass="form-control" />--%>
-                                            <%--</table>--%>
-                                        <%--</td>--%>
-                                    <%--</tr>--%>
-                                <%--</s:if>--%>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunj.Rumah :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="tunjRumah" class="checkZakat" disabled onchange="cekTunjRumah()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjRumah" name="biodata.flagTunjRumah"  />
+                                            </s:if>
+                                            <s:elseif test="isAdd()">
+                                                <input type="checkbox" id="tunjRumah" class="checkZakat" onchange="cekTunjRumah()" />
+                                                <s:hidden id="flagTunjRumah" name="biodata.flagTunjRumah"/>
+                                            </s:elseif>
+                                            <s:else>
+                                                <input type="checkbox" id="tunjRumah" class="checkZakat" onchange="cekTunjRumah()" />
+                                                <s:hidden id="flagTunjRumah" name="biodata.flagTunjRumah"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunj.Air :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="tunjAir" class="checkZakat" disabled onchange="cekTunjAir()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjAir" name="biodata.flagTunjAir"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="tunjAir" class="checkZakat" onchange="cekTunjAir()" />
+                                                <s:hidden id="flagTunjAir" name="biodata.flagTunjAir"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunj.Listrik :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="tunjListrik" class="checkZakat" disabled onchange="cekTunjListrik()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjListrik" name="biodata.flagTunjListrik"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="tunjListrik" class="checkZakat" onchange="cekTunjListrik()" />
+                                                <s:hidden id="flagTunjListrik" name="biodata.flagTunjListrik"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Tunj.Bbm :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="tunjBbm" class="checkZakat" disabled onchange="cekTunjBbm()" />
+                                                <s:textfield cssStyle="display: none" id="flagTunjBbm" name="biodata.flagTunjBbm"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="tunjBbm" class="checkZakat" onchange="cekTunjBbm()" />
+                                                <s:hidden id="flagTunjBbm" name="biodata.flagTunjBbm"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>BPJS KS :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="bpjsKs" class="checkZakat" disabled onchange="cekBpjsKs()" />
+                                                <s:textfield cssStyle="display: none" id="flagBpjsKs" name="biodata.flagBpjsKs"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="bpjsKs" class="checkZakat" onchange="cekBpjsKs()" />
+                                                <s:hidden id="flagBpjsKs" name="biodata.flagBpjsKs"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>BPJS TK :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="bpjsTk" class="checkZakat" disabled onchange="cekBpjsTk()" />
+                                                <s:textfield cssStyle="display: none" id="flagBpjsTk" name="biodata.flagBpjsTk"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="bpjsTk" class="checkZakat" onchange="cekBpjsTk()" />
+                                                <s:hidden id="flagBpjsTk" name="biodata.flagBpjsTk"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label class="control-label"><small>Mess :</small></label>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <s:if test="isDelete()">
+                                                <input type="checkbox" id="mess" class="checkZakat" disabled onchange="cekMess()" />
+                                                <s:textfield cssStyle="display: none" id="flagMess" name="biodata.flagMess"  />
+                                            </s:if>
+                                            <s:else>
+                                                <input type="checkbox" id="mess" class="checkZakat" onchange="cekMess()" />
+                                                <s:hidden id="flagMess" name="biodata.flagMess"  />
+                                            </s:else>
+                                        </table>
+                                    </td>
+                                </tr>
                             </table>
 
                         </div>
@@ -1507,7 +1757,7 @@
                         </div>
 
                         <div id="pelatihanJabatan" class="tab-pane fade">
-                            <h3>Pelatihan Jabatan
+                            <h3>Pelatihan
                                 <s:if test="isAddOrEdit()">
                                     <button id="btnAddPelatihanJabatan" type="button" class="btn btn-default btn-success" data-toggle="modal" ><i class="fa fa-plus"></i> </button>
                                 </s:if>
@@ -1639,111 +1889,111 @@
 </body>
 
 
-<div id="modal-edit-study" class="modal fade" role="dialog">
-    <div class="modal-dialog" style="width: 450px">
+<%--<div id="modal-edit-study" class="modal fade" role="dialog">--%>
+    <%--<div class="modal-dialog" style="width: 450px">--%>
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Edit Study</h4>
-            </div>
-            <div class="modal-body">
-                <s:url id="urlProcess" namespace="/study" action="editStudy_study"
-                       includeContext="false"/>
-                <s:form id="myFormDocument1" enctype="multipart/form-data" method="post" action="%{urlProcess}"
-                        theme="simple" cssClass="form-horizontal">
-                    <s:hidden name="addOrEdit"/>
-                    <s:hidden id="add" name="add"/>
-                    <s:hidden name="delete"/>
+        <%--<!-- Modal content-->--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header">--%>
+                <%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+                <%--<h4 class="modal-title">Edit Study</h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body">--%>
+                <%--<s:url id="urlProcess" namespace="/study" action="editStudy_study"--%>
+                       <%--includeContext="false"/>--%>
+                <%--<s:form id="myFormDocument1" enctype="multipart/form-data" method="post" action="%{urlProcess}"--%>
+                        <%--theme="simple" cssClass="form-horizontal">--%>
+                    <%--<s:hidden name="addOrEdit"/>--%>
+                    <%--<s:hidden id="add" name="add"/>--%>
+                    <%--<s:hidden name="delete"/>--%>
 
-                    <s:if test="isAddOrEdit()">
-                    <div style="display: none" class="form-group">
-                        <label class="control-label col-sm-3" >Id : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyId" name="study.studyId">
-                        </div>
-                    </div>
+                    <%--<s:if test="isAddOrEdit()">--%>
+                    <%--<div style="display: none" class="form-group">--%>
+                        <%--<label class="control-label col-sm-3" >Id : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="studyId" name="study.studyId">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="gender">Type Study :</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" id="studyTypeStudy" name="study.typeStudy">
-                                <option value="SD">SD</option>
-                                <option value="SMP">SMP</option>
-                                <option value="SMA">SMA</option>
-                                <option value="D1">Diploma D1</option>
-                                <option value="D2">Diploma D2</option>
-                                <option value="D3">Diploma D3</option>
-                                <option value="S1">Sarjana (S1)</option>
-                                <option value="S2">Sarjana (S2)</option>
-                                <option value="S3">Sarjana (S3)</option>
-                            </select>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" for="gender">Type Study :</label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<select class="form-control" id="studyTypeStudy" name="study.typeStudy">--%>
+                                <%--<option value="SD">SD</option>--%>
+                                <%--<option value="SMP">SMP</option>--%>
+                                <%--<option value="SMA">SMA</option>--%>
+                                <%--<option value="D1">Diploma D1</option>--%>
+                                <%--<option value="D2">Diploma D2</option>--%>
+                                <%--<option value="D3">Diploma D3</option>--%>
+                                <%--<option value="S1">Sarjana (S1)</option>--%>
+                                <%--<option value="S2">Sarjana (S2)</option>--%>
+                                <%--<option value="S3">Sarjana (S3)</option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Study Name : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyName" name="study.studyName">
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Study Name : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="studyName" name="study.studyName">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="gender">Fakultas :</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" id="studyFakultas1" name="study.studyFakultas" >
-                            </select>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" for="gender">Fakultas :</label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<select class="form-control" id="studyFakultas1" name="study.studyFakultas" >--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Program Studi : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Program Studi : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Tahun Awal : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Tahun Awal : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Tahun Lulus : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Tahun Lulus : </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4">Ijazah (Jpeg) : </label>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4">Ijazah (Jpeg) : </label>--%>
 
-                        <div class="col-sm-8">
-                            <input type="file" id="file" class="form-control" name="fileUpload"/>
-                            <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
-                                   name="study.uploadFile" readonly />
-                        </div>
-                    </div>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<input type="file" id="file" class="form-control" name="fileUpload"/>--%>
+                            <%--<input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"--%>
+                                   <%--name="study.uploadFile" readonly />--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="modal-footer">
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="myFormDocument1"
-                                   id="saveDocument1" name="save" onBeforeTopics="beforeProcessSaveStudy1"
-                                   onCompleteTopics="closeDialog,successDialogDocument1"
-                                   onSuccessTopics="successDialogDocument1" onErrorTopics="errorDialog">
-                            <i class="fa fa-check"></i>
-                            Save
-                        </sj:submit>
-                        <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
-                    </div>
-                    </s:if>
-                </s:form>
-            </div>
-        </div>
-    </div>
-</div>
+                    <%--<div class="modal-footer">--%>
+                        <%--<sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="myFormDocument1"--%>
+                                   <%--id="saveDocument1" name="save" onBeforeTopics="beforeProcessSaveStudy1"--%>
+                                   <%--onCompleteTopics="closeDialog,successDialogDocument1"--%>
+                                   <%--onSuccessTopics="successDialogDocument1" onErrorTopics="errorDialog">--%>
+                            <%--<i class="fa fa-check"></i>--%>
+                            <%--Save--%>
+                        <%--</sj:submit>--%>
+                        <%--<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>--%>
+                    <%--</div>--%>
+                    <%--</s:if>--%>
+                <%--</s:form>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
 
 
 <!-- Modal Edit-->
@@ -1908,21 +2158,14 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="gender">Nama Perusahaan :</label>
+                        <label class="control-label col-sm-4" for="gender">Nama Cabang :</label>
                         <div class="col-sm-8">
-                            <s:action id="initComboBranch2" namespace="/admin/branch"
-                                      name="initComboBranch2_branch"/>
-                            <s:select list="#initComboBranch2.listOfComboBranch" id="branchIdRiwayatKerja"
-                                      name="biodata.branchId" onchange="listDivisiHistory();cekPerusahaanLain()"
+                            <s:action id="initComboBranch" namespace="/admin/branch"
+                                      name="initComboBranch_branch"/>
+                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdRiwayatKerja"
+                                      name="biodata.branchId" onchange="listDivisiHistory()"
                                       listKey="branchId" listValue="branchName" headerKey=""
                                       headerValue="[Select one]" cssClass="form-control"/>
-                        </div>
-                    </div>
-                    <div id="namaPerusahaanLain" class="form-group" style="display: none">
-                        <label class="control-label col-sm-4" for="gender">Nama Perusahaan Lain: </label>
-                        <div class="col-sm-8">
-                            <%--<input type="text" class="form-control" id="perusahaanLain">--%>
-                                <input type="text" class="form-control" id="pengalamanPerusahaan">
                         </div>
                     </div>
 
@@ -1932,7 +2175,7 @@
                             <s:action id="comboDivisi" namespace="/department"
                                       name="searchDepartment2_department"/>
                             <s:select list="#comboDivisi.listComboDepartment" id="departmentId"
-                                      name="biodata.departmentId" onchange="listPosisiHistory(); cekBidangLain()"
+                                      name="biodata.departmentId" onchange="listPosisiHistory()"
                                       listKey="departmentId" listValue="departmentName"
                                       headerKey="" headerValue="[Select one]"
                                       cssClass="form-control"/>
@@ -2194,71 +2437,77 @@
 
 <div id="modal-pelatihanJabatan" class="modal fade" role="dialog">
     <div class="modal-dialog" style="width: 500px">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Pelatihan Jabatan</h4>
+                <h4 class="modal-title">Pelatihan</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="myFormPelatihanJabatan">
-
                     <div style="display: none" class="form-group">
                         <label class="control-label col-sm-3" >Id : </label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="pelatihanId" >
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Jenis :</label>
+                        <label class="control-label col-sm-4" >Nama Pelatihan :</label>
                         <div class="col-sm-8">
-                            <%--<input type="text" class="form-control" id="pelatihanJenis">--%>
-                                <s:action id="initComboJenis" namespace="/pelatihanJabatan" name="searchKelompok_pelatihanJabatan"/>
-                                <s:select list="#initComboJenis.comboListOfPelatihanJabatan" id="pelatihanJenis"
-                                          listKey="pelatihanId" listValue="pelatihanName" cssClass="form-control"/>
+                            <input type="text" class="form-control" id="namaPelatihan">
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Lembaga :</label>
+                        <label class="control-label col-sm-4" >Judul Pelatihan :</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="judulPelatihan">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Penyelenggara :</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="pelatihanLembaga">
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Angkatan :</label>
+                        <label class="control-label col-sm-4" >Lama Pelatihan :</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pelatihanAngkatan">
+                            <input type="number" class="form-control" id="jumlahJamPelatihan">
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Tahun :</label>
+                        <label class="control-label col-sm-4" >Sertifikasi :</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pelatihanTahun">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Status:</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" id="pelatihanStatus">
-                                <option value="lulus">Lulus</option>
-                                <option value="tidak">Tidak</option>
+                            <select class="form-control" id="sertifikasiPelatihan">
+                                <option value="Y">Ya</option>
+                                <option value="N">Tidak</option>
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Nilai:</label>
+                        <label class="control-label col-sm-4" >Tanggal Pelatihan :</label>
                         <div class="col-sm-8">
-                            <input onkeyup="checkDec(this);" type="text" class="form-control" id="pelatihanNilai">
+                            <input type="text" class="form-control" id="tanggalPelatihan" readonly style="background-color: #fff">
+                            <script>
+                                $('#tanggalPelatihan').datepicker({
+                                    dateFormat: 'dd-mm-yy'
+                                });
+                            </script>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Masa Berlaku Sert.:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="masaBerlakuSertifikat">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Sertifikat (Jpeg) : </label>
+                        <div class="col-sm-8">
+                            <input type="file" id="fileSertifikat"  accept=".jpg" class="form-control" name="fileUpload"/>
+                            <input type="hidden" id="base64sertifikat" />
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -2276,65 +2525,58 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Pelatihan Jabatan</h4>
+                <h4 class="modal-title">Pelatihan</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="myFormDeletePelatihanJabatan">
-
                     <div style="display: none" class="form-group">
                         <label class="control-label col-sm-3" >Id : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="deletePelatihanId" >
+                            <input type="text" class="form-control" id="delpelatihanId" readonly >
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Jenis :</label>
+                        <label class="control-label col-sm-4" >Nama Pelatihan :</label>
                         <div class="col-sm-8">
-                            <s:action id="initComboJenis" namespace="/pelatihanJabatan" name="searchKelompok_pelatihanJabatan"/>
-                            <s:select list="#initComboJenis.comboListOfPelatihanJabatan" id="deletePelatihanJenis" disabled="true"
-                                      listKey="pelatihanId" listValue="pelatihanName" cssClass="form-control"/>
+                            <input type="text" class="form-control" id="delnamaPelatihan" readonly>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Lembaga :</label>
+                        <label class="control-label col-sm-4" >Judul Pelatihan :</label>
                         <div class="col-sm-8">
-                            <input type="text" disabled class="form-control" id="deletePelatihanLembaga">
+                            <input type="text" class="form-control" id="deljudulPelatihan" readonly>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Angkatan :</label>
+                        <label class="control-label col-sm-4" >Penyelenggara :</label>
                         <div class="col-sm-8">
-                            <input type="text" disabled class="form-control" id="deletePelatihanAngkatan">
+                            <input type="text" class="form-control" id="delpelatihanLembaga" readonly>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Tahun :</label>
+                        <label class="control-label col-sm-4" >Lama Pelatihan :</label>
                         <div class="col-sm-8">
-                            <input type="text" disabled class="form-control" id="deletePelatihanTahun">
+                            <input type="number" class="form-control" id="deljumlahJamPelatihan" readonly>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Status:</label>
+                        <label class="control-label col-sm-4" >Sertifikasi :</label>
                         <div class="col-sm-8">
-                            <select class="form-control" disabled id="deletePelatihanStatus">
-                                <option value="lulus">Lulus</option>
-                                <option value="tidak">Tidak</option>
-                            </select>
+                            <input type="text" class="form-control" id="delsertifikasiPelatihan" readonly>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Nilai:</label>
+                        <label class="control-label col-sm-4" >Tanggal Pelatihan :</label>
                         <div class="col-sm-8">
-                            <input onkeyup="checkDec(this);" type="text" disabled class="form-control" id="deletePelatihanNilai">
+                            <input type="text" class="form-control" id="deltanggalPelatihan" readonly>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Masa Berlaku Sert.:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="delmasaBerlakuSertifikat" readonly>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -2365,7 +2607,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="gender">Nama Perusahaan :</label>
+                        <label class="control-label col-sm-4" for="gender">Nama Cabang :</label>
                         <div class="col-sm-8">
                             <input type="text" readonly class="form-control" id="deletePengalamanPerusahaan">
                         </div>
@@ -2732,6 +2974,24 @@
     </div>
 </div>
 
+<div id="modal-view-lampiran" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Sertifikat</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-responsive" id="my-image2">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>
 
 <script>
@@ -2842,38 +3102,16 @@
         if (id == "TP01") {
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
-            $('#point').removeAttr('disabled');
-            $('#danaPensiun').removeAttr('disabled');
-//            $('#masaTanam').prop('disabled', 'true');
-            /*$('#statusGiling').prop('disabled', 'true');
-            $('#strukturGaji').empty();
-            $('#strukturGaji').append($("<option></option>")
-                    .attr("value", 'G')
-                    .text('Golongan'));
-            $('#strukturGaji').append($("<option></option>")
-                    .attr("value", 'D')
-                    .text('Direksi'));
-            $('#strukturGaji').append($("<option></option>")
-                    .attr("value", 'K')
-                    .text('Komisaris'));*/
+            $('#golongan3').val("");
+           $('#tanggalAktif').removeAttr('disabled');
+           $('tanggalAktifTmp').val($('#tanggalAktifHid').val());
+           $('#tanggalAktifHid').val("");
         } else {
             $('#golongan1Group').hide();
             $('#golongan2Group').show();
-            /*$('#strukturGaji').empty();
-            $('#strukturGaji').append($("<option></option>")
-                    .attr("value", 'G')
-                    .text('Golongan (PKWT Golongan)'));
-            $('#strukturGaji').append($("<option></option>")
-                    .attr("value", 'H')
-                    .text('Harian (PKWT Harian)'));
-            $('#strukturGaji').append($("<option></option>")
-                    .attr("value", 'L')
-                    .text('Lumsum (PKWT Lumsum)'));
-            $('#statusGiling').removeAttr('disabled');
-            $('#masaTanam').removeAttr('disabled');*/
-//            $('#golongan1').prop('disabled', 'true');
             $('#point').prop('disabled', 'true');
-            $('#danaPensiun').prop('disabled', 'true');
+            $('#tanggalAktif').prop('disabled', 'true');
+            $('tanggalAktifHid').val($('#tanggalAktifTmp').val());
         }
     }
     window.changePegawaiHistory = function (id) {
@@ -2886,7 +3124,24 @@
         }
     }
 
+    function loadStatusPegawai(){
+        var statusPegawai = $('#tipePegawai1').val();
+        if (statusPegawai=="TP03"){
+            $('.label-prapensiun').html("<small>Tgl Pra Kontak Berakhir</small>");
+            $('.label-pensiun').html("<small>Tgl Kontrak Berakhir</small>");
+            $('.label-tanggal-masuk').html("<small>Tanggal Kontrak</small>");
+            $('.label-tanggal-aktif').html("<small>Tanggal Aktif</small>");
+        } else{
+            $('.label-prapensiun').html("<small>Tanggal MBT</small>");
+            $('.label-pensiun').html("<small>Tanggal Pensiun</small>");
+            $('.label-tanggal-masuk').html("<small>Tanggal Masuk</small>");
+            $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan</small>");
+        }
+    }
+
     $(document).ready(function() {
+        loadStatusPegawai();
+
         window.checkDec = function(el){
             var ex = /^[0-9]+\.?[0-9]*$/;
             if(ex.test(el.value)==false){
@@ -2894,16 +3149,16 @@
             }
         }
 
-        BranchAction.getDataBranch(function (listdata) {
-            $.each(listdata, function (i, item) {
-                $('#branchIdRiwayatKerja').append($("<option></option>")
-                        .attr("value", item.branchId)
-                        .text(item.branchName));
-            });
-            $('#branchIdRiwayatKerja').append($("<option></option>")
-                    .attr("value", "lain")
-                    .text("Lain"));
-        });
+        // BranchAction.getDataBranch(function (listdata) {
+        //     $.each(listdata, function (i, item) {
+        //         $('#branchIdRiwayatKerja').append($("<option></option>")
+        //                 .attr("value", item.branchId)
+        //                 .text(item.branchName));
+        //     });
+        //     $('#branchIdRiwayatKerja').append($("<option></option>")
+        //             .attr("value", "lain")
+        //             .text("Lain"));
+        // });
 
         window.cekPerusahaan = function(){
             var branch = document.getElementById("branchIdRiwayatKerja").value;
@@ -2951,7 +3206,6 @@
         var pathFoto = document.getElementById("pathFoto").value;
         var nama = document.getElementById("namaPegawai1").value;
         var jenis = document.getElementById("gender").value;
-        console.log(jenis);
         if (pathFoto != '') {
             if (pathFoto == 'null') {
                 $('#detailImg').attr('src', '/go-medsys/pages/upload/image/profile/man_employee.png');
@@ -2964,12 +3218,12 @@
             $('#detailImg').attr('src', '/go-medsys/pages/upload/image/profile/man_employee.png');
             $('#detailImg').attr('alt', nama);
         }
-        var zakat = document.getElementById("flagZakat").value;
-        if (zakat == "Y") {
-            document.getElementById("zakatProfesi").checked = true;
-        } else {
-            document.getElementById("zakatProfesi").checked = false;
-        }
+//        var zakat = document.getElementById("flagZakat").value;
+//        if (zakat == "Y") {
+//            document.getElementById("zakatProfesi").checked = true;
+//        } else {
+//            document.getElementById("zakatProfesi").checked = false;
+//        }
 
         var pjs = document.getElementById("flagPjs").value;
         if (pjs == "Y") {
@@ -3015,12 +3269,67 @@
             document.getElementById("profesional").checked = false;
         }
 
+        var flagMess = document.getElementById("flagMess").value;
+        if (flagMess == "Y") {
+            document.getElementById("mess").checked = true;
+        } else {
+            document.getElementById("mess").checked = false;
+        }
+//        var flagPLT = document.getElementById("flagPLT").value;
+//        if (flagPLT == "Y") {
+//            document.getElementById("plt").checked = true;
+//        } else {
+//            document.getElementById("plt").checked = false;
+//        }
+        var flagFingerMobile = document.getElementById("flagFingerMobile").value;
+        if (flagFingerMobile == "Y") {
+            document.getElementById("fingerMobile").checked = true;
+        } else {
+            document.getElementById("fingerMobile").checked = false;
+        }
+        var flagTunjRumah = document.getElementById("flagTunjRumah").value;
+        if (flagTunjRumah == "Y") {
+            document.getElementById("tunjRumah").checked = true;
+        } else {
+            document.getElementById("tunjRumah").checked = false;
+        }
+        var flagTunjAir = document.getElementById("flagTunjAir").value;
+        if (flagTunjAir == "Y") {
+            document.getElementById("tunjAir").checked = true;
+        } else {
+            document.getElementById("tunjAir").checked = false;
+        }
+        var flagTunjListrik = document.getElementById("flagTunjListrik").value;
+        if (flagTunjListrik == "Y") {
+            document.getElementById("tunjListrik").checked = true;
+        } else {
+            document.getElementById("tunjListrik").checked = false;
+        }
+        var flagTunjBbm = document.getElementById("flagTunjBbm").value;
+        if (flagTunjBbm == "Y") {
+            document.getElementById("tunjBbm").checked = true;
+        } else {
+            document.getElementById("tunjBbm").checked = false;
+        }
+
+        var flagBpjsKs = document.getElementById("flagBpjsKs").value;
+        if (flagBpjsKs == "Y") {
+            document.getElementById("bpjsKs").checked = true;
+        } else {
+            document.getElementById("bpjsKs").checked = false;
+        }
+        var flagBpjsTk = document.getElementById("flagBpjsTk").value;
+        if (flagBpjsTk == "Y") {
+            document.getElementById("bpjsTk").checked = true;
+        } else {
+            document.getElementById("bpjsTk").checked = false;
+        }
+
         window.loadStudy= function(nip){
             $('.studyTable').find('tbody').remove();
             $('.studyTable').find('thead').remove();
             dwr.engine.setAsync(false);
             var tmp_table = "";
-            console.log("Tes");
             StudyAction.searchData(nip, function (listdata) {
 
                 <s:if test="isAddOrEdit()">
@@ -3054,7 +3363,6 @@
                 var i = i;
                 $.each(listdata, function (i, item) {
                     <s:if test="isAddOrEdit()">
-                    console.log("Tes 2 "+item.studyName);
                     tmp_table += '<tr style="font-size: 12px;" ">' +
                             '<td >' + (i + 1) + '</td>' +
                             '<td >' + item.typeStudy + '</td>' +
@@ -3104,8 +3412,6 @@
             dwr.engine.setAsync(false);
             var tmp_table = "";
             StudyAction.searchData(nip, function (listdata) {
-                console.log("Tes1");
-
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
@@ -3196,7 +3502,7 @@
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Perusahaan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cabang</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
 //                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
@@ -3212,7 +3518,7 @@
                 <s:else>
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Perusahaan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cabang</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
 //                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
@@ -3330,8 +3636,8 @@
         }
 
         function loadSertifikat(nip) {
-            $('.sertifikatTable').find('tbody').remove();
-            $('.sertifikatTable').find('thead').remove();
+            $('.pelatihanJabatanTable').find('tbody').remove();
+            $('.pelatihanJabatanTable').find('thead').remove();
             dwr.engine.setAsync(false);
             var tmp_table = "";
             BiodataAction.searchDataSertifikat(nip, function (listdata) {
@@ -3339,36 +3645,30 @@
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Pengesahan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Masa Berlaku</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Masa Berakhir</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Sertifikat</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Lembaga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tempat Pelaksana</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jumlah Hari</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nilai</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Prestasi</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
+                        "<th style='text-align: center; background-color:  #3c8dbc'>View</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                 "</tr></thead>";
                 </s:if>
                 <s:else>
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Pengesahan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Masa Berlaku</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Masa Berakhir</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Sertifikat</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Lembaga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tempat Pelaksana</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jumlah Hari</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nilai</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Prestasi</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml. Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>View</th>" +
+                    "</tr></thead>";
                 </s:else>
 
 
@@ -3376,18 +3676,19 @@
                 $.each(listdata, function (i, item) {
                     <s:if test="isAddOrEdit()">
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
+                            '<td align="center" >' + (i + 1) + '</td>' +
                             '<td >' + item.jenis+ '</td>' +
-                            '<td >' + item.stTanggalPengesahan + '</td>' +
-                            '<td align="center">' + item.stMasaBerlaku+ '</td>' +
-                            '<td align="center">' + item.stMasaBerakhir+ '</td>' +
-                            '<td align="center">' + item.nama+ '</td>' +
+                            '<td >' + item.nama + '</td>' +
                             '<td align="center">' + item.lembaga+ '</td>' +
-                            '<td align="center">' + item.tempatPelaksana+ '</td>' +
                             '<td align="center">' + item.jumlahHari+ '</td>' +
-                            '<td align="center">' + item.nilai+ '</td>' +
                             '<td align="center">' + item.lulus+ '</td>' +
+                            '<td align="center">' + item.stTanggalPengesahan+ '</td>' +
                             '<td align="center">' + item.prestasiGrade+ '</td>' +
+                            '<td align="center">' +
+                            "<a href='javascript:;' class ='item-view-lampiran' sertifikat ='" + item.tempatPelaksana+ "' >" +
+                            "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                            '</a>' +
+                            '</td>' +
                             '<td align="center">' +
                             "<a href='javascript:;' class ='item-edit' data ='" + item.sertifikatId+ "' >" +
                             "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
@@ -3402,22 +3703,23 @@
                     </s:if>
                     <s:else>
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.jenis+ '</td>' +
-                            '<td >' + item.stTanggalPengesahan + '</td>' +
-                            '<td align="center">' + item.stMasaBerlaku+ '</td>' +
-                            '<td align="center">' + item.stMasaBerakhir+ '</td>' +
-                            '<td align="center">' + item.nama+ '</td>' +
-                            '<td align="center">' + item.lembaga+ '</td>' +
-                            '<td align="center">' + item.tempatPelaksana+ '</td>' +
-                            '<td align="center">' + item.jumlahHari+ '</td>' +
-                            '<td align="center">' + item.nilai+ '</td>' +
-                            '<td align="center">' + item.lulus+ '</td>' +
-                            '<td align="center">' + item.prestasiGrade+ '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.jenis+ '</td>' +
+                        '<td >' + item.nama + '</td>' +
+                        '<td align="center">' + item.lembaga+ '</td>' +
+                        '<td align="center">' + item.jumlahHari+ '</td>' +
+                        '<td align="center">' + item.lulus+ '</td>' +
+                        '<td align="center">' + item.stTanggalPengesahan+ '</td>' +
+                        '<td align="center">' + item.prestasiGrade+ '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-lampiran' sertifikat ='" + item.tempatPelaksana+ "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:else>
                 });
-                $('.sertifikatTable').append(tmp_table);
+                $('.pelatihanJabatanTable').append(tmp_table);
             });
 
         }
@@ -3427,31 +3729,35 @@
             $('.pelatihanJabatanTable').find('thead').remove();
             dwr.engine.setAsync(false);
             var tmp_table = "";
-            BiodataAction.searchDataPelatihanJabatan(nip, function (listdata) {
+            BiodataAction.searchDataSertifikat(nip, function (listdata) {
 
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Lembaga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Angkatan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tahun</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Status</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nilai</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>View</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 </s:if>
                 <s:else>
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Lembaga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Angkatan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tahun</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Status</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nilai</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>View</th>" +
+                    "</tr></thead>";
                 </s:else>
 
 
@@ -3459,40 +3765,51 @@
                 $.each(listdata, function (i, item) {
                     <s:if test="isAddOrEdit()">
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.pelatihanJabatanName+ '</td>' +
-                            '<td >' + item.lembaga + '</td>' +
-                            '<td align="center">' + item.angkatan+ '</td>' +
-                            '<td align="center">' + item.tahun+ '</td>' +
-                            '<td align="center">' + item.status+ '</td>' +
-                            '<td align="center">' + item.nilai+ '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.pelatihanUserId+ "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.pelatihanUserId+ "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td align="center" >' + (i + 1) + '</td>' +
+                        '<td >' + item.jenis + '</td>' +
+                        '<td >' + item.nama + '</td>' +
+                        '<td align="center">' + item.lembaga + '</td>' +
+                        '<td align="center">' + item.jumlahHari + '</td>' +
+                        '<td align="center">' + item.lulus + '</td>' +
+                        '<td align="center">' + item.stTanggalPengesahan + '</td>' +
+                        '<td align="center">' + item.prestasiGrade + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-lampiran' sertifikat ='" + item.tempatPelaksana+ "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.sertifikatId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.sertifikatId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:if>
                     <s:else>
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.pelatihanJabatanName+ '</td>' +
-                            '<td >' + item.lembaga + '</td>' +
-                            '<td align="center">' + item.angkatan+ '</td>' +
-                            '<td align="center">' + item.tahun+ '</td>' +
-                            '<td align="center">' + item.status+ '</td>' +
-                            '<td align="center">' + item.nilai+ '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.jenis + '</td>' +
+                        '<td >' + item.nama + '</td>' +
+                        '<td align="center">' + item.lembaga + '</td>' +
+                        '<td align="center">' + item.jumlahHari + '</td>' +
+                        '<td align="center">' + item.lulus + '</td>' +
+                        '<td align="center">' + item.stTanggalPengesahan + '</td>' +
+                        '<td align="center">' + item.prestasiGrade + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-lampiran' sertifikat ='" + item.tempatPelaksana+ "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:else>
                 });
-                $('.pelatihanJabatanTable').append(tmp_table);
-            });
-
+            })
+            $('.pelatihanJabatanTable').append(tmp_table);
         }
 
         function loadRiwayatPendidikan(nip) {
@@ -3734,23 +4051,18 @@
         }
 
         function loadSessionSertifikat() {
-            $('.sertifikatTable').find('tbody').remove();
-            $('.sertifikatTable').find('thead').remove();
+            $('.pelatihanJabatanTable').find('tbody').remove();
+            $('.pelatihanJabatanTable').find('thead').remove();
             dwr.engine.setAsync(false);
             var tmp_table = "";
             BiodataAction.searchDataSessionSertifikat(function (listdata) {
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Pengesahan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Masa Berlaku</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Masa Berakhir</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Nama Sertifikat</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Lembaga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tempat Pelaksana</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Nilai</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Prestasi</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
                         "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                         "</tr></thead>";
@@ -3759,15 +4071,10 @@
                     tmp_table += '<tr style="font-size: 12px;" ">' +
                             '<td >' + (i + 1) + '</td>' +
                             '<td >' + item.jenis+ '</td>' +
-                            '<td >' + item.stTanggalPengesahan + '</td>' +
-                            '<td align="center">' + item.stMasaBerlaku+ '</td>' +
-                            '<td align="center">' + item.stMasaBerakhir+ '</td>' +
                             '<td align="center">' + item.nama+ '</td>' +
                             '<td align="center">' + item.lembaga+ '</td>' +
-                            '<td align="center">' + item.tempatPelaksana+ '</td>' +
                             '<td align="center">' + item.nilai+ '</td>' +
                             '<td align="center">' + item.lulus+ '</td>' +
-                            '<td align="center">' + item.prestasiGrade+ '</td>' +
                             '<td align="center">' +
                             "<a href='javascript:;' class ='item-edit' data ='" + item.sertifikatId+ "' >" +
                             "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
@@ -3780,7 +4087,7 @@
                             '</td>' +
                             "</tr>";
                 });
-                $('.sertifikatTable').append(tmp_table);
+                $('.pelatihanJabatanTable').append(tmp_table);
             });
         }
 
@@ -4059,36 +4366,18 @@
 //            var jabatan = document.getElementById("pengalamanJabatan").value;
 
 //            var perusahaanLain = document.getElementById("perusahaanLain").value;
-            var perusahaanLain = document.getElementById("namaPerusahaanLain").value;
+//             var perusahaanLain = document.getElementById("namaPerusahaanLain").value;
 //            var bidangLain = document.getElementById("bidangLain").value;
             var bidangLain = document.getElementById("namaBidangLain").value;
 //            var jabatanLain = document.getElementById("jabatanLain").value;
             var jabatanLain = document.getElementById("namaJabatanLain").value;
 
-            if(branchId != 'lain'){
-                namaPerusahaan = $("#branchIdRiwayatKerja option:selected").text();
-            }
-
-            console.log(id);
-            console.log(nip);
-            console.log(branchId);
-            console.log(divisiId);
-            console.log(posisiId);
-            console.log(profesiId);
-            console.log(tanggal);
-            console.log(tanggalKeluar);
-            console.log(tipePegawaiId);
-            console.log(golonganId);
-            console.log(pjsFlag);
-            console.log(aktifFlag);
-//            console.log(perusahaanLain);
-//            console.log(bidangLain);
-//            console.log(jabatanLain);
-
+            // if(branchId != 'lain'){
+            //     namaPerusahaan = $("#branchIdRiwayatKerja option:selected").text();
+            // }
             var result = '';
             <s:if test="isAdd()">
             if (url == 'addPengalamanKerja') {
-                console.log('yayaya');
                 if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''|| tipePegawaiId =='' || profesiId =='') {
                     alert('Semua Field Harus Diisi !');
                 } else {
@@ -4162,7 +4451,6 @@
                         }
 
                     }else {
-                        console.log("Tes1"+tanggalKeluar+"Tes");
                         if (aktifFlag == 'Y'){
                             msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
                             alert(msg);
@@ -4252,7 +4540,6 @@
                             }
                         }
                     }else{
-                        console.log("Tes2"+tanggalKeluar+"Tes");
                         if (aktifFlag == 'Y'){
                             msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
                             alert(msg);
@@ -4344,7 +4631,6 @@
                         }
                     }
                     else{
-                        console.log("Tes3"+tanggalKeluar+"Tes");
                         if (aktifFlag == 'Y'){
                             msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
                             alert(msg);
@@ -4407,7 +4693,6 @@
                         alert(msg+"Harus Diisi\n"+msg2);
                     }
                     else{
-                        console.log("Tes4"+tanggalKeluar+"Tes");
                         if (aktifFlag == 'Y' && tanggalKeluar != ''){
                             msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
                             alert(msg);
@@ -4418,7 +4703,7 @@
                                 dwr.engine.setAsync(false);
                                 dwr.engine.beginBatch();
                                 BiodataAction.saveEditPengalamanKerja(id, nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
-                                        golonganId, perusahaanLain, bidangLain, jabatanLain, aktifFlag, function (listdata) {
+                                        golonganId, perusahaanLain, bidangLain, jabatanLain, aktifFlag, profesiId, pjsFlag, function (listdata) {
                                             alert('Data Successfully Updated');
                                             $('#modal-pengalamanKerja').modal('hide');
                                             $('#myFormPengalaman')[0].reset();
@@ -4584,76 +4869,135 @@
             </s:else>
         });
 
+        function handleFileSelect(evt) {
+            var f = evt.target.files[0]; // FileList object
+            var reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = (function(theFile) {
+                return function(e) {
+                    var binaryData = e.target.result;
+                    //Converting Binary Data to base 64
+                    var base64String = window.btoa(binaryData);
+                    //showing file converted to base64
+                    document.getElementById('base64sertifikat').value = base64String;
+                };
+            })(f);
+            // Read in the image file as a data URL.
+            reader.readAsBinaryString(f);
+        }
+
+        // Check for the File API support.
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            document.getElementById('fileSertifikat').addEventListener('change', handleFileSelect, false);
+        } else {
+            alert('The File APIs are not fully supported in this browser.');
+        }
+
         $('#btnSavePelatihan').click(function () {
             var url = $('#myFormPelatihanJabatan').attr('action');
             var data = $('#myFormPelatihanJabatan').serialize();
 
             var id = document.getElementById("pelatihanId").value;
             var nip = document.getElementById("nip1").value;
-            var jenis = document.getElementById("pelatihanJenis").value;
-            var lembaga = document.getElementById("pelatihanLembaga").value;
-            var angkatan = document.getElementById("pelatihanAngkatan").value;
-            var tahun = document.getElementById("pelatihanTahun").value;
-            var status = document.getElementById("pelatihanStatus").value;
-            var nilai = document.getElementById("pelatihanNilai").value;
+            var namaPelatihan = document.getElementById("namaPelatihan").value;
+            var judulPelatihan = document.getElementById("judulPelatihan").value;
+            var penyelenggara = document.getElementById("pelatihanLembaga").value;
+            var jumlahJamPelatihan = document.getElementById("jumlahJamPelatihan").value;
+            var sertifikatPelatihan = document.getElementById("sertifikasiPelatihan").value;
+            var tanggalPelatihan = document.getElementById("tanggalPelatihan").value;
+            var masaBerlakuSertifikat = document.getElementById("masaBerlakuSertifikat").value;
+            var gambar = document.getElementById("base64sertifikat").value;
 
-            var result = '';
-            <s:if test="isAdd()">
-            if (url == 'addPelatihanJabatan') {
-                if (jenis == '') {
-                    alert('Semua Field Harus Diisi !');
-                } else {
-                    if (confirm('Apakah anda yakin ingin menyimpan data?')) {
-                        dwr.engine.setAsync(false);
-                        BiodataAction.saveAddSertifikat(nip, jenis, tanggalPengesahan, masaBerlaku, masaBerakhir, nama, lembaga, tempatPelaksana,
-                                nilai, lulus, prestasi, function (listdata) {
-                            alert('Data Berhasil Disimpan');
-                            $('#modal-sertifikat').modal('hide');
-                            $('#myFormSertifikat')[0].reset();
-                            loadSessionSertifikat();
-                        });
-                    }
+            if (nip == ''||namaPelatihan==""||judulPelatihan==""||penyelenggara==""||jumlahJamPelatihan==""
+                ||sertifikatPelatihan==""||tanggalPelatihan==""||masaBerlakuSertifikat=="") {
+                var msg="Field \n"
+                if (nip==""){
+                    msg+="- NIP \n";
                 }
+                if (namaPelatihan==""){
+                    msg+="- Nama Pelatihan \n";
+                }
+                if (judulPelatihan==""){
+                    msg+="- Judul Pelatihan \n";
+                }
+                if (penyelenggara==""){
+                    msg+="- Penyelenggara \n";
+                }
+                if (jumlahJamPelatihan==""){
+                    msg+="- Jumlah Jam Pelatihan \n";
+                }
+                if (sertifikatPelatihan==""){
+                    msg+="- Sertifikat Pelatihan \n";
+                }
+                if (tanggalPelatihan==""){
+                    msg+="- TanggalPelatihan \n";
+                }
+                if (masaBerlakuSertifikat==""){
+                    msg+="- Masa Berlaku Sertifikat \n";
+                }
+                msg+="Wajib diisi";
+                alert(msg);
             } else {
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    BiodataAction.initEditSertifikat(id, nip, jenis, tanggalPengesahan, masaBerlaku, masaBerakhir, nama, lembaga, tempatPelaksana,
-                            nilai, lulus, prestasi, function (listdata) {
-                        alert('Data Successfully Updated');
-                        $('#modal-sertifikat').modal('hide');
-                        $('#myFormSertifikat')[0].reset();
-                        loadSessionSertifikat();
-                    });
-                }
-            }
-            </s:if>
-            <s:else>
-            if (url == 'addPelatihanJabatan') {
-                if (jenis == '') {
-                    alert('Jenis Pelatihan Harus Diisi');
+                var result = '';
+                <s:if test="isAdd()">
+                if (url == 'addPelatihanJabatan') {
+                    if (jenis == '') {
+                        alert('Semua Field Harus Diisi !');
+                    } else {
+                        if (confirm('Apakah anda yakin ingin menyimpan data?')) {
+                            dwr.engine.setAsync(false);
+                            BiodataAction.saveAddSertifikat(nip, namaPelatihan , judulPelatihan , penyelenggara , jumlahJamPelatihan ,
+                                sertifikatPelatihan , tanggalPelatihan , masaBerlakuSertifikat,gambar, function () {
+                                    alert('Data Berhasil Disimpan');
+                                    $('#modal-sertifikat').modal('hide');
+                                    $('#myFormSertifikat')[0].reset();
+                                    loadSessionSertifikat();
+                                });
+                        }
+                    }
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
-                        BiodataAction.saveAddDataPelatihan(nip, jenis, lembaga, angkatan, tahun, status, nilai, function (listdata) {
-                            alert('Data Successfully Added');
+                        BiodataAction.initEditSertifikat(id, nip, namaPelatihan , judulPelatihan , penyelenggara , jumlahJamPelatihan ,
+                            sertifikatPelatihan , tanggalPelatihan , masaBerlakuSertifikat,gambar, function () {
+                                alert('Data Successfully Updated');
+                                $('#modal-sertifikat').modal('hide');
+                                $('#myFormSertifikat')[0].reset();
+                                loadSessionSertifikat();
+                            });
+                    }
+                }
+                </s:if>
+                <s:else>
+                if (url == 'addPelatihanJabatan') {
+                    if (jenis == '') {
+                        alert('Jenis Pelatihan Harus Diisi');
+                    } else {
+                        if (confirm('Are you sure you want to save this Record?')) {
+                            dwr.engine.setAsync(false);
+                            BiodataAction.saveAddDataPelatihan(nip, namaPelatihan , judulPelatihan , penyelenggara , jumlahJamPelatihan ,
+                                sertifikatPelatihan , tanggalPelatihan , masaBerlakuSertifikat,gambar, function () {
+                                alert('Data Successfully Added');
+                                $('#modal-pelatihanJabatan').modal('hide');
+                                $('#myFormPelatihanJabatan')[0].reset();
+                                loadPelatihanJabatan(nip);
+                            });
+                        }
+                    }
+                } else {
+                    if (confirm('Are you sure you want to save this Record?')) {
+                        dwr.engine.setAsync(false);
+                        BiodataAction.saveEditPelatihan(id, nip, namaPelatihan , judulPelatihan , penyelenggara , jumlahJamPelatihan ,
+                            sertifikatPelatihan , tanggalPelatihan , masaBerlakuSertifikat,gambar, function () {
+                            alert('Data Successfully Updated');
                             $('#modal-pelatihanJabatan').modal('hide');
                             $('#myFormPelatihanJabatan')[0].reset();
                             loadPelatihanJabatan(nip);
                         });
                     }
                 }
-            } else {
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    BiodataAction.saveEditPelatihan(id, nip, jenis, lembaga, angkatan, tahun, status, nilai, function (listdata) {
-                        alert('Data Successfully Updated');
-                        $('#modal-pelatihanJabatan').modal('hide');
-                        $('#myFormPelatihanJabatan')[0].reset();
-                        loadPelatihanJabatan(nip);
-                    });
-                }
+                </s:else>
             }
-            </s:else>
         });
 
         $('#btnSaveKeluarga').click(function () {
@@ -4724,7 +5068,6 @@
                 }
             }
             </s:else>
-
         });
 
         $(".nav-tabs a").click(function () {
@@ -4769,10 +5112,10 @@
                 </s:else>
             }else if (target == "#pelatihanJabatan") {
                 <s:if test="isAdd()">
-                //loadSessionSertifikat();
+                loadSessionSertifikat();
                 </s:if>
                 <s:else>
-                loadPelatihanJabatan(nip);
+                loadSertifikat(nip);
                 </s:else>
             }
             $(this).tab('show');
@@ -4780,7 +5123,6 @@
 
         $('#btnAdd').click(function () {
             listPendidikanFakultas();
-
 //            $('#myForm')[0].reset();
             $('#modal-edit').modal('show');
             $('#myFormDocument').attr('proses', 'addStudy');
@@ -4805,7 +5147,7 @@
             $('#myFormPelatihanJabatan')[0].reset();
             $('#modal-pelatihanJabatan').modal('show');
             $('#myFormPelatihanJabatan').attr('action', 'addPelatihanJabatan');
-            $('#modal-pelatihanJabatan').find('.modal-title').text('Add Pelatihan Jabatan');
+            $('#modal-pelatihanJabatan').find('.modal-title').text('Add Pelatihan');
         });
 
         $('#btnAddPengalamanKerja').click(function () {
@@ -4829,7 +5171,6 @@
         $('.studyTable').on('click', '.item-view-document', function(){
             var id = $(this).attr('data');
             var judul = $(this).attr('judul');
-            console.log(id);
             dwr.engine.setAsync(false);
             $("#my-image").attr("src","/mnt/ijazah/" + id);
             $('#modal-view-document').find('.modal-title').text(judul);
@@ -4939,6 +5280,7 @@
 //                }else{
 //                    $('#flagAktif1').val("Y").change();
 //                }
+                $('#pjsFlag1').val(listdata.pjsFlag);
                 $('#flagAktif1').val(listdata.flagJabatanAktif);
                 $('#pengalamanId').val(listdata.pengalamanId);
                 $('#pengalamanGolonganName').val(listdata.golonganName);
@@ -5258,34 +5600,40 @@
             $('#myFormSertifikat').attr('action', 'editSertifikat');
         });
 
+        $('.pelatihanJabatanTable').on('click', '.item-view-lampiran', function(){
+            var data = $(this).attr('sertifikat');
+            dwr.engine.setAsync(false);
+            BiodataAction.loadImageSertifikat(data,function (result) {
+                $("#my-image2").attr("src", result);
+            });
+            $('#modal-view-lampiran').find('.modal-title').text("Sertifikat");
+            $('#modal-view-lampiran').modal('show');
+        });
+
         $('.pelatihanJabatanTable').on('click', '.item-edit', function () {
             var id = $(this).attr('data');
             <s:if test="isAdd()">
-            BiodataAction.initSearchPelatihan(id, function (listdata) {
-
-                $('#sertifikatId').val(listdata.sertifikatId);
-                $('#nip1').val(listdata.nip);
-                $('#sertifikatJenis').val(listdata.jenis);
-                $('#sertifikatTanggalPengesahan').val(listdata.stTanggalPengesahan);
-                $('#sertifikatMasaBerlaku').val(listdata.stMasaBerlaku);
-                $('#sertifikatMasaBerakhir').val(listdata.stMasaBerakhir);
-                $('#sertifikatNama').val(listdata.nama);
-                $('#sertifikatLembaga').val(listdata.lembaga);
-                $('#sertifikatTempatPelaksana').val(listdata.tempatPelaksana);
-                $('#sertifikatNilai').val(listdata.nilai);
-                $('#sertifikatLulus').val(listdata.lulus);
-                $('#sertifikatPrestasi').val(listdata.prestasiGrade);
+            BiodataAction.initSearchPelatihan(id, function (data) {
+                $('#pelatihanId').val(data.sertifikatId);
+                $('#namaPelatihan').val(data.jenis);
+                $('#judulPelatihan').val(data.nama);
+                $('#pelatihanLembaga').val(data.lembaga);
+                $('#jumlahJamPelatihan').val(data.jumlahHari);
+                $('#sertifikasiPelatihan').val(data.lulus);
+                $('#tanggalPelatihan').val(data.stTanggalPengesahan);
+                $('#masaBerlakuSertifikat').val(data.prestasiGrade);
             });
             </s:if>
             <s:else>
-            BiodataAction.searchDataEditPelatihan(id, function (listdata) {
-                $('#pelatihanId').val(listdata.pelatihanUserId);
-                $('#pelatihanJenis').val(listdata.pelatihanJabatanId);
-                $('#pelatihanLembaga').val(listdata.lembaga);
-                $('#pelatihanAngkatan').val(listdata.angkatan);
-                $('#pelatihanTahun').val(listdata.tahun);
-                $('#pelatihanStatus').val(listdata.status).change();
-                $('#pelatihanNilai').val(listdata.nilai);
+            BiodataAction.searchDataEditSertifikat(id, function (data) {
+                $('#pelatihanId').val(data.sertifikatId);
+                $('#namaPelatihan').val(data.jenis);
+                $('#judulPelatihan').val(data.nama);
+                $('#pelatihanLembaga').val(data.lembaga);
+                $('#jumlahJamPelatihan').val(data.jumlahHari);
+                $('#sertifikasiPelatihan').val(data.lulus);
+                $('#tanggalPelatihan').val(data.stTanggalPengesahan);
+                $('#masaBerlakuSertifikat').val(data.prestasiGrade);
             });
             </s:else>
 
@@ -5299,19 +5647,15 @@
             var nip = document.getElementById("nip1").value;
 
             <s:if test="isAdd()">
-            BiodataAction.initSearchSertifikat(id, function (listdata) {
-                $('#deleteSertifikatId').val(listdata.sertifikatId);
-                $('#deleteNip1').val(listdata.nip);
-                $('#deleteSertifikatJenis').val(listdata.jenis);
-                $('#deleteSertifikatTanggalPengesahan').val(listdata.stTanggalPengesahan);
-                $('#deleteSertifikatMasaBerlaku').val(listdata.stMasaBerlaku);
-                $('#deleteSertifikatMasaBerakhir').val(listdata.stMasaBerakhir);
-                $('#deleteSertifikatNama').val(listdata.nama);
-                $('#deleteSertifikatLembaga').val(listdata.lembaga);
-                $('#deleteSertifikatTempatPelaksana').val(listdata.tempatPelaksana);
-                $('#deleteSertifikatNilai').val(listdata.nilai);
-                $('#deleteSertifikatLulus').val(listdata.lulus);
-                $('#deleteSertifikatPrestasi').val(listdata.prestasiGrade);
+            BiodataAction.initSearchSertifikat(id, function (data) {
+                $('#delpelatihanId').val(data.sertifikatId);
+                $('#delnamaPelatihan').val(data.jenis);
+                $('#deljudulPelatihan').val(data.nama);
+                $('#delpelatihanLembaga').val(data.lembaga);
+                $('#deljumlahJamPelatihan').val(data.jumlahHari);
+                $('#delsertifikasiPelatihan').val(data.lulus);
+                $('#deltanggalPelatihan').val(data.stTanggalPengesahan);
+                $('#delmasaBerlakuSertifikat').val(data.prestasiGrade);
             });
 
             $('#deleteModalSertifikat').modal('show');
@@ -5327,20 +5671,21 @@
             });
             </s:if>
             <s:else>
-            BiodataAction.searchDataEditPelatihan(id, function (listdata) {
-                $('#deletePelatihanId').val(listdata.pelatihanUserId);
-                $('#deletePelatihanJenis').val(listdata.pelatihanJabatanId);
-                $('#deletePelatihanLembaga').val(listdata.lembaga);
-                $('#deletePelatihanAngkatan').val(listdata.angkatan);
-                $('#deletePelatihanTahun').val(listdata.tahun);
-                $('#deletePelatihanStatus').val(listdata.status).change();
-                $('#deletePelatihanNilai').val(listdata.nilai);
+            BiodataAction.searchDataEditSertifikat(id, function (data) {
+                $('#delpelatihanId').val(data.sertifikatId);
+                $('#delnamaPelatihan').val(data.jenis);
+                $('#deljudulPelatihan').val(data.nama);
+                $('#delpelatihanLembaga').val(data.lembaga);
+                $('#deljumlahJamPelatihan').val(data.jumlahHari);
+                $('#delsertifikasiPelatihan').val(data.lulus);
+                $('#deltanggalPelatihan').val(data.stTanggalPengesahan);
+                $('#delmasaBerlakuSertifikat').val(data.prestasiGrade);
             });
 
             $('#deleteModalPelatihan').modal('show');
             $('#btnDeletePelatihan').unbind().click(function () {
                 if (confirm('Are you sure you want to Delete this Record?')) {
-                    BiodataAction.saveDeletePelatihanJabatan(id, function (listdata) {
+                    BiodataAction.saveDeleteSertifikat(id, function (listdata) {
                         $('#deleteModalPelatihan').modal('hide');
                         $('#myFormDeletePelatihanJabatan')[0].reset();
                         alert('Record has been Deleted successfully.');
@@ -5506,21 +5851,14 @@
 
     });
 
-    window.cekZakat = function () {
-        if ($('#zakatProfesi').is(":checked")) {
-            $("#flagZakat").val("Y");
-        } else {
-            $("#flagZakat").val("N");
-        }
-    }
+//    window.cekZakat = function () {
+//        if ($('#zakatProfesi').is(":checked")) {
+//            $("#flagZakat").val("Y");
+//        } else {
+//            $("#flagZakat").val("N");
+//        }
+//    }
 
-    window.cekPjs = function () {
-        if ($('#pjs').is(":checked")) {
-            $("#flagPjs").val("Y");
-        } else {
-            $("#flagPjs").val("N");
-        }
-    }
 
     window.cekAktif = function () {
         if ($('#aktif').is(":checked")) {
@@ -5562,6 +5900,71 @@
         }
     }
 
+    window.cekMess = function () {
+        if (document.getElementById("mess").checked == true) {
+            $("#flagMess").val("Y");
+        } else {
+            $("#flagMess").val("N");
+        }
+    }
+//    window.cekPLT = function () {
+//        if (document.getElementById("plt").checked == true) {
+//            $("#flagPLT").val("Y");
+//        } else {
+//            $("#flagPLT").val("N");
+//        }
+//    }
+
+    window.cekFingerMobile = function () {
+        if (document.getElementById("fingerMobile").checked == true) {
+            $("#flagFingerMobile").val("Y");
+        } else {
+            $("#flagFingerMobile").val("N");
+        }
+    }
+    window.cekTunjRumah = function () {
+        if (document.getElementById("tunjRumah").checked == true) {
+            $("#flagTunjRumah").val("Y");
+        } else {
+            $("#flagTunjRumah").val("N");
+        }
+    }
+    window.cekTunjAir = function () {
+        if (document.getElementById("tunjAir").checked == true) {
+            $("#flagTunjAir").val("Y");
+        } else {
+            $("#flagTunjAir").val("N");
+        }
+    }
+    window.cekTunjListrik = function () {
+        if (document.getElementById("tunjListrik").checked == true) {
+            $("#flagTunjListrik").val("Y");
+        } else {
+            $("#flagTunjListrik").val("N");
+        }
+    }
+    window.cekTunjBbm = function () {
+        if (document.getElementById("tunjBbm").checked == true) {
+            $("#flagTunjBbm").val("Y");
+        } else {
+            $("#flagTunjBbm").val("N");
+        }
+    }
+    window.cekBpjsKs = function () {
+        if (document.getElementById("bpjsKs").checked == true) {
+            $("#flagBpjsKs").val("Y");
+        } else {
+            $("#flagBpjsKs").val("N");
+        }
+    }
+
+    window.cekBpjsTk = function () {
+        if (document.getElementById("bpjsTk").checked == true) {
+            $("#flagBpjsTk").val("Y");
+        } else {
+            $("#flagBpjsTk").val("N");
+        }
+    }
     window.cekDireksi = function () {
         if ($('#direksi').is(":checked")) {
             $("#flagTunjDireksi").val("Y");
@@ -5696,18 +6099,15 @@
         if (tanggalPraPensiun == ''){
             if  (res[1] > 06){
                 var bulan = parseInt(res[1] - 6);
-                console.log("test "+bulan);
                 $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun);
             }else {
                 if (res[1] == 06){
                     var bulan = parseInt(12);
                     var tahun1 = parseInt(tahun - 1);
-                    console.log("test2 "+bulan);
                     $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
                 }else{
                     var bulan = parseInt(12 - (6 - res[1]));
                     var tahun1 = parseInt(tahun - 1);
-                    console.log("test3 "+bulan);
                     if (bulan > 9){
                         $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
                     }else {
@@ -5718,18 +6118,15 @@
         }else{
             if  (res[1] > 06){
                 var bulan = parseInt(res[1] - 6);
-                console.log("test "+bulan);
                 $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun);
             }else {
                 if (res[1] == 06){
                     var bulan = parseInt(12);
                     var tahun1 = parseInt(tahun - 1);
-                    console.log("test2 "+bulan);
                     $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
                 }else{
                     var bulan = parseInt(12 - (6 - res[1]));
                     var tahun1 = parseInt(tahun - 1);
-                    console.log("test3 "+bulan);
                     if (bulan > 9){
                         $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
                     }else {

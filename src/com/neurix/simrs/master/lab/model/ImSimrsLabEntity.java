@@ -17,14 +17,14 @@ public class ImSimrsLabEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private BigDecimal tarif;
+    private String branchId;
 
-    public BigDecimal getTarif() {
-        return tarif;
+    public String getBranchId() {
+        return branchId;
     }
 
-    public void setTarif(BigDecimal tarif) {
-        this.tarif = tarif;
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 
     public String getIdLab() {

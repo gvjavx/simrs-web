@@ -9,6 +9,9 @@ import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -81,7 +84,6 @@ public class PelayananAction extends BaseMasterAction {
             } else {
                 setPelayanan(new Pelayanan());
             }
-
             logger.info("[PayrollSkalaGajiAction.init] end process >>>");
         }
         return getPelayanan();
@@ -91,10 +93,12 @@ public class PelayananAction extends BaseMasterAction {
     public String add() {
         logger.info("[PelayananAction.add] start process >>>");
         Pelayanan addPelayanan = new Pelayanan();
+        if(!"ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
+            addPelayanan.setBranchId(CommonUtil.userBranchLogin());
+        }
         setPelayanan(addPelayanan);
         setAddOrEdit(true);
         setAdd(true);
-
 //        HttpSession session = ServletActionContext.getRequest().getSession();
 //        session.removeAttribute("listOfResult");
 
@@ -315,7 +319,6 @@ public class PelayananAction extends BaseMasterAction {
 
         Pelayanan searchPelayanan = getPelayanan();
         List<Pelayanan> listOfsearchPelayanan = new ArrayList();
-
         try {
             listOfsearchPelayanan = pelayananBoProxy.getByCriteria(searchPelayanan);
         } catch (GeneralBOException e) {
@@ -330,7 +333,6 @@ public class PelayananAction extends BaseMasterAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
             return ERROR;
         }
-
         String branchId = CommonUtil.userBranchLogin();
         Pelayanan data = new Pelayanan();
         if (branchId != null){
@@ -386,7 +388,7 @@ public class PelayananAction extends BaseMasterAction {
 
         Position position = new Position();
         position.setFlag("Y");
-        position.setKategori("pelayanan");
+//        position.setKategori("pelayanan");
         List<Position> listOfPosition = new ArrayList<Position>();
         try {
             listOfPosition = positionBoProxy.getByCriteria(position);
@@ -421,5 +423,40 @@ public class PelayananAction extends BaseMasterAction {
 
         listOfComboFarmasi.addAll(pelayanans);
         return "init_combo_farmasi";
+    }
+
+    public Pelayanan getDataPelayanan(String idPelayanan) {
+
+        logger.info("[CheckupAction.getListDokterByBranchId] START process >>>");
+        Pelayanan response = new Pelayanan();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+            List<Pelayanan> pelayananList = new ArrayList<>();
+            Pelayanan pelayanan = new Pelayanan();
+            pelayanan.setIdPelayanan(idPelayanan);
+            pelayanan.setBranchId(CommonUtil.userBranchLogin());
+
+            try {
+                pelayananList = pelayananBo.getByCriteria(pelayanan);
+            } catch (HibernateException e) {
+                logger.error("[CheckupAction.saveAdd] Error when get data for pelayanan", e);
+                throw new GeneralBOException("Error when pasien id pelayanan", e);
+            }
+
+            Pelayanan poli = new Pelayanan();
+            if(pelayananList.size() > 0) {
+
+                poli = pelayananList.get(0);
+
+                if (poli.getIdPelayanan() != null) {
+                    response = poli;
+                }
+            }
+        }
+
+        logger.info("[CheckupAction.getListDokterByBranchId] END process >>>");
+        return response;
     }
 }

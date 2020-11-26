@@ -29,6 +29,50 @@ public class ProfilBiodata implements Serializable {
     private String statusGiling;
     private String zakatProfesi;
     private String flag;
+    private String nipLama;
+    private String fotoUpload;
+    private String pathFoto;
+    private String flagShift;
+
+    public String getPayrollId() {
+        return payrollId;
+    }
+
+    public void setPayrollId(String payrollId) {
+        this.payrollId = payrollId;
+    }
+
+    public String getFlagShift() {
+        return flagShift;
+    }
+
+    public void setFlagShift(String flagShift) {
+        this.flagShift = flagShift;
+    }
+
+    public String getFotoUpload() {
+        return fotoUpload;
+    }
+
+    public void setFotoUpload(String fotoUpload) {
+        this.fotoUpload = fotoUpload;
+    }
+
+    public String getPathFoto() {
+        return pathFoto;
+    }
+
+    public void setPathFoto(String pathFoto) {
+        this.pathFoto = pathFoto;
+    }
+
+    public String getNipLama() {
+        return nipLama;
+    }
+
+    public void setNipLama(String nipLama) {
+        this.nipLama = nipLama;
+    }
 
     public String getNip() {
         return nip;

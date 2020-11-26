@@ -59,7 +59,8 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
     }
 
     @Override
-    public void saveAdd(DiagnosaRawat bean) throws GeneralBOException {
+    public CrudResponse saveAdd(DiagnosaRawat bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
         logger.info("[DiagnosaRawatBoImpl.saveAdd] Start >>>>>>>>>");
 
         if (bean != null && bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
@@ -81,17 +82,23 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
 
             try {
                 diagnosaRawatDao.addAndSave(entity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
             } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg("Error When "+e.getMessage());
                 logger.error("[DiagnosaRawatBoImpl.saveAdd] Error when saving diagnosa ", e);
                 throw new GeneralBOException("Error when saving diagnosa " + e.getMessage());
             }
         }
 
         logger.info("[DiagnosaRawatBoImpl.saveAdd] End <<<<<<<<<");
+        return response;
     }
 
     @Override
-    public void saveEdit(DiagnosaRawat bean) throws GeneralBOException {
+    public CrudResponse saveEdit(DiagnosaRawat bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
         logger.info("[DiagnosaRawatBoImpl.saveEdit] Start >>>>>>>>>");
 
         if (bean != null){
@@ -100,7 +107,11 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
 
             try {
                 entity = diagnosaRawatDao.getById("idDiagnosaRawat", bean.getIdDiagnosaRawat());
+                response.setStatus("success");
+                response.setMsg("Berhasil");
             } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg("Error When "+e.getMessage());
                 logger.error("[TeamDokterBoImpl.saveEdit] Error when getById diagnosa rawat ",e);
                 throw new GeneralBOException("[TeamDokterBoImpl.savaAdd] Error when save edit diagnosa rawat "+e.getMessage());
             }
@@ -116,13 +127,18 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
 
             try {
                 diagnosaRawatDao.updateAndSave(entity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
             } catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg("Error When "+e.getMessage());
                 logger.error("[DiagnosaRawatBoImpl.saveEdit] Error when edit diagnosa ", e);
                 throw new GeneralBOException("Error when edit diagnosa " + e.getMessage());
             }
         }
 
         logger.info("[DiagnosaRawatBoImpl.saveEdit] End <<<<<<<<<");
+        return response;
     }
 
     @Override
@@ -145,6 +161,8 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
 
                 try {
                     checkupDetailDao.updateAndSave(detailCheckupEntity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
                 }catch (HibernateException e){
                     response.setStatus("error");
                     response.setMsg("Found Error when "+e.getMessage());
@@ -152,6 +170,11 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
             }
         }
         return response;
+    }
+
+    @Override
+    public Boolean cekDiagnosa(DiagnosaRawat bean) throws GeneralBOException {
+        return diagnosaRawatDao.cekDiagnosa(bean);
     }
 
     @Override
@@ -167,6 +190,9 @@ public class DiagnosaRawatBoImpl implements DiagnosaRawatBo {
         }
         if (bean.getOrderLastUpdate() != null && !"".equalsIgnoreCase(bean.getOrderLastUpdate())){
             hsCriteria.put("order_last", bean.getOrderLastUpdate());
+        }
+        if (bean.getOrderCreated() != null && !"".equalsIgnoreCase(bean.getOrderCreated())){
+            hsCriteria.put("order_created", bean.getOrderCreated());
         }
 
         List<ItSimrsDiagnosaRawatEntity> entities = new ArrayList<>();

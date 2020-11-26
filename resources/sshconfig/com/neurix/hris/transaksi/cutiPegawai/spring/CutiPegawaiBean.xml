@@ -8,6 +8,9 @@
     <bean id="historyCutiController" class="com.neurix.hris.mobileapi.HistoryCutiController"
           p:cutiPegawaiBoProxy-ref="cutiPegawaiBoProxy" />
 
+    <bean id="historyPegawaiController" class="com.neurix.hris.mobileapi.HistoryPegawaiController"
+          p:cutiPegawaiBoProxy-ref="cutiPegawaiBoProxy" />
+
     <bean id="cutiFormPegawaiController" class="com.neurix.hris.mobileapi.CutiFormPegawaiController"
           p:cutiPegawaiBoProxy-ref="cutiPegawaiBoProxy"
           p:biodataBoProxy-ref="biodataBoProxy"
@@ -35,6 +38,9 @@
           p:departmentDao-ref="departmentDao"
           p:positionDao-ref="positionDao"
           p:branchDao-ref="branchDao"
+          p:ijinKeluarDao-ref="ijinKeluarDao"
+          p:golonganDao-ref="golonganDao"
+          p:userDao-ref="userDao"
     />
 
     <bean id="cutiPegawaiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

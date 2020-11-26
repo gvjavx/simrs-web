@@ -3,10 +3,12 @@ package com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.bo;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.trans.model.ImTransEntity;
 import com.neurix.akuntansi.master.trans.model.Trans;
+import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.Lampiran;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutang;
 import com.neurix.akuntansi.transaksi.pembayaranUtangPiutang.model.PembayaranUtangPiutangDetail;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 
 import java.util.List;
 
@@ -26,9 +28,11 @@ public interface PembayaranUtangPiutangBo extends BaseMasterBo<PembayaranUtangPi
 
     void addPrintCount(String noJurnal) throws GeneralBOException;
 
-    String saveAddPembayaran(PembayaranUtangPiutang bean, List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList) throws GeneralBOException;
+    String saveAddPembayaran(PembayaranUtangPiutang bean, List<PembayaranUtangPiutangDetail> pembayaranUtangPiutangDetailList, List<Lampiran> lampiranList) throws GeneralBOException;
 
     List<PembayaranUtangPiutangDetail> getDetailPembayaran(String pembayaranId) throws GeneralBOException;
+
+    List<Lampiran> getLampiranList(String pembayaranId) throws GeneralBOException;
 
     String getKodeRekeningKasJurnal(String noJurnal) throws GeneralBOException;
 
@@ -39,4 +43,8 @@ public interface PembayaranUtangPiutangBo extends BaseMasterBo<PembayaranUtangPi
     Trans getDisableTrans(String transId,String coaLawan) throws GeneralBOException;
 
     String getPosisiCoaDiMappingJurnal(String transId, String coa) throws GeneralBOException;
+
+    List<Notifikasi> approvePembayaran(PembayaranUtangPiutang bean) throws GeneralBOException;
+
+    List<PembayaranUtangPiutangDetail> searchPengajuanBiaya(String branchId) throws GeneralBOException;
 }

@@ -15,6 +15,42 @@ public class ItSimrsDokterTeamEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idPelayanan;
+    private String jenisDpjp;
+    private String flagApprove;
+    private String keterangan;
+
+    public String getFlagApprove() {
+        return flagApprove;
+    }
+
+    public void setFlagApprove(String flagApprove) {
+        this.flagApprove = flagApprove;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getJenisDpjp() {
+        return jenisDpjp;
+    }
+
+    public void setJenisDpjp(String jenisDpjp) {
+        this.jenisDpjp = jenisDpjp;
+    }
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
 
     public String getIdTeamDokter() {
         return idTeamDokter;

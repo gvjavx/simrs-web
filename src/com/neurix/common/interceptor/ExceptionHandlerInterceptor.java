@@ -142,6 +142,34 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
             } else if ("/mobileapi/dokter".equalsIgnoreCase(namespace)) {
                 logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            }else if ("/mobileapi/kasir".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            } else if ("/mobileapi/telemedicine".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pelayanan] skiping token");
+            } else if ("/mobileapi/testelemedic".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.testelemedic] skiping token");
+            } else if ("/mobileapi/pembayaran".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.testelemedic] skiping token");
+            } else if ("/mobileapi/testnotif".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.testnotif] skiping token");
+            } else if ("/mobileapi/kurir".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.testnotif] skiping token");
+            } else if ("/mobileapi/reseponline".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.reseponline] skiping token");
+            } else if ("/mobileapi/pengiriman".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
+            } else if ("/mobileapi/asuransi".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
+            }  else if ("/mobileapi/rekening".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
+            } else if ("/mobileapi/historypegawai".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
+            } else if ("/mobileapi/jadwalshift".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
+            } else if ("/mobileapi/antrianpoli".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
+            } else if ("/mobileapi/company".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
             }
             else {
 

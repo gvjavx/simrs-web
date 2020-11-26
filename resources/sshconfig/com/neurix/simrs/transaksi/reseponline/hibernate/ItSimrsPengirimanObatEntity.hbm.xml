@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.transaksi.reseponline.model.ItSimrsPengirimanObatEntity">
+        <table name="it_simrs_pengiriman_obat" schema="public"/>
+        <attributes>
+            <id name="id">
+                <column name="id"/>
+            </id>
+            <basic name="idKurir">
+                <column name="id_kurir"/>
+            </basic>
+            <basic name="idResep">
+                <column name="id_resep"/>
+            </basic>
+            <basic name="flagPickup">
+                <column name="flag_pickup"/>
+            </basic>
+            <basic name="flagDiterimaPasien">
+                <column name="flag_diterima_pasien"/>
+            </basic>
+            <basic name="idPasien">
+                <column name="id_pasien"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="idPelayanan">
+                <column name="id_pelayanan"/>
+            </basic>
+            <basic name="branchId">
+                <column name="branch_id"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="desaId">
+                <column name="desa_id"/>
+            </basic>
+            <basic name="alamat">
+                <column name="alamat"/>
+            </basic>
+            <basic name="noTelp">
+                <column name="no_telp"/>
+            </basic>
+            <basic name="lat">
+                <column name="lat"/>
+            </basic>
+            <basic name="lon">
+                <column name="lon"/>
+            </basic>
+            <basic name="flagTerkirim">
+                <column name="flag_terkirim"/>
+            </basic>
+            <basic name="jenisPembayaran">
+                <column name="jenis_pembayaran"/>
+            </basic>
+            <basic name="fotoKirim">
+                <column name="foto_kirim"/>
+            </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

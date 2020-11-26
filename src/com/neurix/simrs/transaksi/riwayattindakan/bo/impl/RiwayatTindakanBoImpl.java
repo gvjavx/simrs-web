@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.riwayattindakan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.paketperiksa.dao.ItemPaketDao;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItemPaket;
 import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsItemPaketEntity;
@@ -72,6 +73,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
                     riwayatTindakan.setLastUpdateWho(entity.getLastUpdateWho());
                     riwayatTindakan.setFlagUpdateKlaim(entity.getFlagUpdateKlaim());
                     riwayatTindakan.setTanggalTindakan(entity.getTanggalTindakan());
+                    riwayatTindakan.setIdRuangan(entity.getIdRuangan());
                     result.add(riwayatTindakan);
                 }
             }
@@ -102,6 +104,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             if(bean.getIsKamar() != null && !"".equalsIgnoreCase(bean.getIsKamar())){
                 entity.setIsKamar(bean.getIsKamar());
             }
+            entity.setIdRuangan(bean.getIdRuangan());
 
             try {
                 riwayatTindakanDao.addAndSave(entity);
@@ -182,6 +185,9 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
             }
             if (bean.getNotResep() != null) {
                 hsCriteria.put("not_resep", bean.getNotResep());
+            }
+            if (bean.getIdRuangan() != null) {
+                hsCriteria.put("id_ruangan", bean.getIdRuangan());
             }
 
             hsCriteria.put("flag", "Y");
@@ -324,6 +330,11 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
     }
 
     @Override
+    public List<String> getListRuanganRiwayatTindakan(String idDetailCheckup, String keterangan) throws GeneralBOException {
+        return riwayatTindakanDao.listOfRuanganRiwayatTindakan(idDetailCheckup, keterangan);
+    }
+
+    @Override
     public MtSimrsItemPaketEntity getItemPaketEntity(String idPaket, String idItem) throws GeneralBOException{
 
         Map hsCriteria = new HashMap();
@@ -339,7 +350,12 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         }
 
         if (itemPaketEntities.size() > 0){
-            return itemPaketEntities.get(0);
+            MtSimrsItemPaketEntity entity = itemPaketEntities.get(0);
+            if(entity.getHarga() != null){
+                return entity;
+            }else{
+                return null;
+            }
         }
 
         return null;
@@ -348,5 +364,20 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
     @Override
     public ItemPaket getTarifPaketLab(String idPaket, String idLab) throws GeneralBOException{
         return itemPaketDao.getSumTarifPaketLab(idPaket, idLab);
+    }
+
+    @Override
+    public List<String> getListIdDetailCheckup(String noCheckup) throws GeneralBOException{
+        return riwayatTindakanDao.getListDetailCheckupByNoCheckup(noCheckup);
+    }
+
+    @Override
+    public List<UangMuka> getListUangMukaByNoCheckup(String noCheckup) throws GeneralBOException {
+        return riwayatTindakanDao.getListUangMukaByNoCheckup(noCheckup);
+    }
+
+    @Override
+    public Boolean CheckIsRawatJalanByIdDetailCheckup(String idDetail) throws GeneralBOException {
+        return riwayatTindakanDao.checkIsPelayananRawatJalan(idDetail);
     }
 }

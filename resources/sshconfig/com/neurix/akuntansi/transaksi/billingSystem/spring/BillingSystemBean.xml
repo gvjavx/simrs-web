@@ -8,10 +8,7 @@
     <bean id="billingSystemBo" class="com.neurix.akuntansi.transaksi.billingSystem.bo.impl.BillingSystemBoImpl"
           p:jurnalDao-ref="jurnalDao"
           p:jurnalDetailDao-ref="jurnalDetailDao"
-          p:mappingJurnalDao-ref="mappingJurnalDao"
           p:kodeRekeningDao-ref="kodeRekeningDao"
-          p:tipeJurnalDao-ref="tipeJurnalDao"
-          p:transDao-ref="transDao"
           p:jurnalDetailActivityDao-ref="jurnalDetailActivityDao"
           p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
 
@@ -35,6 +32,16 @@
           p:positionDao-ref="positionDao"
           p:kelasRuanganDao-ref="kelasRuanganDao"
           p:masterDao-ref="masterDao"
+          p:transaksiStokDao-ref="transaksiStokDao"
+          p:mappingJurnalDao-ref="mappingJurnalDao"
+          p:obatPoliDao-ref="obatPoliDao"
+          p:transDao-ref="transDao"
+          p:obatDao-ref="obatDao"
+          p:branchDao-ref="branchDao"
+          p:saldoAkhirHistoryDao-ref="saldoAkhirHistoryDao"
+          p:saldoAkhirDetailHistoryDao-ref="saldoAkhirDetailHistoryDao"
+          p:jurnalAkhirTahunDao-ref="jurnalAkhirTahunDao"
+          p:jurnalDetailAkhirTahunDao-ref="jurnalDetailAkhirTahunDao"
     />
 
     <bean id="billingSystemBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -56,7 +63,12 @@
                 <prop key="saveAdd">PROPAGATION_REQUIRED</prop>
                 <prop key="createJurnal">PROPAGATION_REQUIRED</prop>
                 <prop key="saveTutupPeriod">PROPAGATION_REQUIRED</prop>
+                <prop key="updateSaldoAkhirBulanBerjalan">PROPAGATION_REQUIRED</prop>
+                <!--<prop key="generateAndSaveCurrentSaldoPersediaanToNextMonth">readOnly</prop>-->
             </props>
         </property>
     </bean>
+
+
+
 </beans>

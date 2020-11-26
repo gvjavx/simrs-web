@@ -32,6 +32,34 @@ public class Pelayanan extends BaseModel implements Serializable {
     private String kodering;
     private String branchName;
     private String branchUser;
+    private String kategoriPelayanan;
+    private String notOwnBranch;
+
+    private String kodePoliVclaim;
+
+    public String getKodePoliVclaim() {
+        return kodePoliVclaim;
+    }
+
+    public void setKodePoliVclaim(String kodePoliVclaim) {
+        this.kodePoliVclaim = kodePoliVclaim;
+    }
+
+    public String getNotOwnBranch() {
+        return notOwnBranch;
+    }
+
+    public void setNotOwnBranch(String notOwnBranch) {
+        this.notOwnBranch = notOwnBranch;
+    }
+
+    public String getKategoriPelayanan() {
+        return kategoriPelayanan;
+    }
+
+    public void setKategoriPelayanan(String kategoriPelayanan) {
+        this.kategoriPelayanan = kategoriPelayanan;
+    }
 
     public String getKodering() {
         return kodering;

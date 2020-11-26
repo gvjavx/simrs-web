@@ -37,6 +37,125 @@ public class JadwalShiftKerja extends BaseModel {
     private String positionName;
     private String profesiName;
 
+    private String branchIdUser;
+    private String onCall;
+    private String jadwalShiftKerjaDetailId;
+    private boolean hariIni = false;
+    private String flagPanggil;
+    private String grupIdUser;
+    private boolean adminHcm=false;
+    private Integer jumlahJadwal;
+    private String statusSave;
+    private String shiftName2;
+    private String flagLibur;
+    private String flagDokterKso;
+
+    private boolean adaAbsen = false;
+
+    public boolean isAdaAbsen() {
+        return adaAbsen;
+    }
+
+    public void setAdaAbsen(boolean adaAbsen) {
+        this.adaAbsen = adaAbsen;
+    }
+
+    public String getFlagDokterKso() {
+        return flagDokterKso;
+    }
+
+    public void setFlagDokterKso(String flagDokterKso) {
+        this.flagDokterKso = flagDokterKso;
+    }
+
+    public String getFlagLibur() {
+        return flagLibur;
+    }
+
+    public void setFlagLibur(String flagLibur) {
+        this.flagLibur = flagLibur;
+    }
+
+    public String getShiftName2() {
+        return shiftName2;
+    }
+
+    public void setShiftName2(String shiftName2) {
+        this.shiftName2 = shiftName2;
+    }
+
+    public String getStatusSave() {
+        return statusSave;
+    }
+
+    public void setStatusSave(String statusSave) {
+        this.statusSave = statusSave;
+    }
+
+    public Integer getJumlahJadwal() {
+        return jumlahJadwal;
+    }
+
+    public void setJumlahJadwal(Integer jumlahJadwal) {
+        this.jumlahJadwal = jumlahJadwal;
+    }
+
+    public boolean isAdminHcm() {
+        return adminHcm;
+    }
+
+    public void setAdminHcm(boolean adminHcm) {
+        this.adminHcm = adminHcm;
+    }
+
+    public String getGrupIdUser() {
+        return grupIdUser;
+    }
+
+    public void setGrupIdUser(String grupIdUser) {
+        this.grupIdUser = grupIdUser;
+    }
+
+    public String getFlagPanggil() {
+        return flagPanggil;
+    }
+
+    public void setFlagPanggil(String flagPanggil) {
+        this.flagPanggil = flagPanggil;
+    }
+
+    public boolean isHariIni() {
+        return hariIni;
+    }
+
+    public void setHariIni(boolean hariIni) {
+        this.hariIni = hariIni;
+    }
+
+    public String getJadwalShiftKerjaDetailId() {
+        return jadwalShiftKerjaDetailId;
+    }
+
+    public void setJadwalShiftKerjaDetailId(String jadwalShiftKerjaDetailId) {
+        this.jadwalShiftKerjaDetailId = jadwalShiftKerjaDetailId;
+    }
+
+    public String getOnCall() {
+        return onCall;
+    }
+
+    public void setOnCall(String onCall) {
+        this.onCall = onCall;
+    }
+
+    public String getBranchIdUser() {
+        return branchIdUser;
+    }
+
+    public void setBranchIdUser(String branchIdUser) {
+        this.branchIdUser = branchIdUser;
+    }
+
     public String getProfesiName() {
         return profesiName;
     }

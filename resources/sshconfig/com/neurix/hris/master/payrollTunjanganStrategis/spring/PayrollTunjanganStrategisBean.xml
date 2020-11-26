@@ -13,6 +13,8 @@
           p:branchDao-ref="branchDao"
           p:positionDao-ref="positionDao"
           p:golonganDao-ref="golonganDao"
+          p:profesiDao-ref="profesiDao"
+          p:payrollTunjanganStrategisHistoryDao-ref="payrollTunjanganStrategisHistoryDao"
     />
 
     <bean id="payrollTunjanganStrategisBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -38,5 +40,7 @@
     <bean id="payrollTunjanganStrategisDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollTunjanganStrategisDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="branchDao" class="com.neurix.authorization.company.dao.BranchDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="payrollTunjanganStrategisHistoryDao" class="com.neurix.hris.transaksi.payroll.dao.PayrollTunjanganStrategisHistoryDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

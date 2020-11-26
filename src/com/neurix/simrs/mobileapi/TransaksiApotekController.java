@@ -509,7 +509,7 @@ public class TransaksiApotekController implements ModelDriven<Object> {
             List<ObatPoli> result = new ArrayList<>();
 
             try {
-                result = obatPoliBoProxy.getListObatGroupPoli(idPelayanan, branchId, jenisPasien);
+                result = obatPoliBoProxy.getListObatGroupPoli(idPelayanan, branchId, jenisPasien, "");
             } catch (GeneralBOException e){
                 logger.error("[TransaksiApotekController.create] Error, get list obat by jenis obat " + e.getMessage());
             }

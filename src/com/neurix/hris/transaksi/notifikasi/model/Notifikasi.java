@@ -34,6 +34,55 @@ public class Notifikasi extends BaseModel {
 
     private String stTglJubilium;
 
+    //for pengajuan biaya
+    private String pengajuanBiayaDetailId;
+    private String stTanggalRealisasi;
+    private String divisiName;
+    private String keperluan;
+
+    //for terima RK
+    private String rkId;
+
+    public String getRkId() {
+        return rkId;
+    }
+
+    public void setRkId(String rkId) {
+        this.rkId = rkId;
+    }
+
+    public String getPengajuanBiayaDetailId() {
+        return pengajuanBiayaDetailId;
+    }
+
+    public void setPengajuanBiayaDetailId(String pengajuanBiayaDetailId) {
+        this.pengajuanBiayaDetailId = pengajuanBiayaDetailId;
+    }
+
+    public String getStTanggalRealisasi() {
+        return stTanggalRealisasi;
+    }
+
+    public void setStTanggalRealisasi(String stTanggalRealisasi) {
+        this.stTanggalRealisasi = stTanggalRealisasi;
+    }
+
+    public String getDivisiName() {
+        return divisiName;
+    }
+
+    public void setDivisiName(String divisiName) {
+        this.divisiName = divisiName;
+    }
+
+    public String getKeperluan() {
+        return keperluan;
+    }
+
+    public void setKeperluan(String keperluan) {
+        this.keperluan = keperluan;
+    }
+
     public String getStTglJubilium() {
         return stTglJubilium;
     }

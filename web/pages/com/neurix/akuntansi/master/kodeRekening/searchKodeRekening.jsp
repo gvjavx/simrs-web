@@ -68,7 +68,6 @@
     <section class="content-header">
         <h1>
             Kode Rekening
-            <small>e-HEALTH</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -331,7 +330,7 @@
             var result              = '';
             var flagMaster          = $("#flag-master-edit").val();
             var flagDivisi          = $("#flag-divisi-edit").val();
-            var tipeRekening        = $("#tipeRekeningId").val();
+            var tipeRekening        = $("#tipeRekeningIdEdit").val();
 
             if(id != ''&&kodeRekeningName != ''&&kodeRekening != ''){
                 if (confirm('Are you sure you want to save this Record?')) {
@@ -472,7 +471,7 @@
                 "</tr></thead>";
             for(i = 0 ; i < data2.length ; i++){
                 if(data2[i].parent == "-"){
-                    tmp_table += 'tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
+                    tmp_table += '<tr style="font-size: 12px;" class=" treegrid-' + data2[i]._id+ '">' +
                         '<td >' + data2[i].coa + '</td>' +
                         '<td >' + data2[i].nama + '</td>' +
                         '<td align="center" class="ceknull">' + data2[i].level+ '</td>' +
@@ -510,7 +509,7 @@
             }
             $('.tree').append(tmp_table);
             $(".tree .ceknull:contains('null')").html("-");
-    });
+        });
     }
     function cekAvailableCoaEdit(nilai){
         var coa = nilai.value;

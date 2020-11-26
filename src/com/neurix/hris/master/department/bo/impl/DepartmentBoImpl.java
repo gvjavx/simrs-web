@@ -1,11 +1,15 @@
 package com.neurix.hris.master.department.bo.impl;
 
+import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.department.bo.DepartmentBo;
 import com.neurix.hris.master.department.dao.DepartmentDao;
 import com.neurix.hris.master.department.model.Department;
 import com.neurix.hris.master.department.model.ImDepartmentEntity;
 import com.neurix.hris.master.department.model.ImDepartmentHistoryEntity;
+import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
+import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -25,6 +29,24 @@ public class DepartmentBoImpl implements DepartmentBo {
 
     protected static transient Logger logger = Logger.getLogger(DepartmentBoImpl.class);
     private DepartmentDao departmentDao;
+    private PositionBagianDao positionBagianDao;
+    private PositionDao positionDao;
+
+    public PositionDao getPositionDao() {
+        return positionDao;
+    }
+
+    public void setPositionDao(PositionDao positionDao) {
+        this.positionDao = positionDao;
+    }
+
+    public PositionBagianDao getPositionBagianDao() {
+        return positionBagianDao;
+    }
+
+    public void setPositionBagianDao(PositionBagianDao positionBagianDao) {
+        this.positionBagianDao = positionBagianDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -52,6 +74,14 @@ public class DepartmentBoImpl implements DepartmentBo {
             String departmentId = bean.getDepartmentId();
 
             ImDepartmentEntity imDepartmentEntity = null;
+
+            List<ImPositionBagianEntity> positionBagianEntityList = positionBagianDao.getListPositionBagianByDivisi(bean.getDepartmentId());
+            List<ImPosition> positionList= positionDao.getListPositionBagianByDivisi(bean.getDepartmentId());
+            if (positionBagianEntityList.size()>0||positionList.size()>0){
+                String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
 
             try {
                 // Get data from database by ID
@@ -159,7 +189,7 @@ public class DepartmentBoImpl implements DepartmentBo {
         logger.info("[DepartmentBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-            String status = cekStatus(bean.getDepartmentName(), bean.getKodering());
+            String status = cekStatus(bean.getDepartmentName());
             if (!status.equalsIgnoreCase("Exist")){
                 String departmentId;
                 try {
@@ -175,7 +205,7 @@ public class DepartmentBoImpl implements DepartmentBo {
 
                 imDepartmentEntity.setDepartmentId(departmentId);
                 imDepartmentEntity.setDepartmentName(bean.getDepartmentName());
-                imDepartmentEntity.setKodering(bean.getKodering());
+                imDepartmentEntity.setKodering(departmentDao.getNextKodering());
                 imDepartmentEntity.setFlag(bean.getFlag());
                 imDepartmentEntity.setAction(bean.getAction());
                 imDepartmentEntity.setCreatedWho(bean.getCreatedWho());
@@ -295,13 +325,12 @@ public class DepartmentBoImpl implements DepartmentBo {
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboDepartment;
     }
-    public String cekStatus(String golonganName, String kodering)throws GeneralBOException{
+    public String cekStatus(String golonganName)throws GeneralBOException{
         String status ="";
         List<ImDepartmentEntity> skalaGajiEntity = new ArrayList<>();
         List<ImDepartmentEntity> departmentEntities = new ArrayList<>();
         try {
             skalaGajiEntity = departmentDao.getListDepartment(golonganName);
-            departmentEntities = departmentDao.getListKodering(kodering);
         } catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

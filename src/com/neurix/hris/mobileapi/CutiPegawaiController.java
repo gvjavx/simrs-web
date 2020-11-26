@@ -37,6 +37,15 @@ public class CutiPegawaiController implements ModelDriven<Object> {
     private String confirm;
     private String nipPengganti;
     private String namaPengganti;
+    private String nipUserLogin;
+
+    public String getNipUserLogin() {
+        return nipUserLogin;
+    }
+
+    public void setNipUserLogin(String nipUserLogin) {
+        this.nipUserLogin = nipUserLogin;
+    }
 
     public void setNotifikasiBoProxy(NotifikasiBo notifikasiBoProxy) {
         this.notifikasiBoProxy = notifikasiBoProxy;
@@ -132,7 +141,7 @@ public class CutiPegawaiController implements ModelDriven<Object> {
             editCutiPegawai.setCutiPegawaiId(idCutiPegawai);
             editCutiPegawai.setTmpApprove("atasan");
             String userLogin = user.getUsername();
-
+            editCutiPegawai.setNipUserLogin(nipUserLogin);
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
             editCutiPegawai.setLastUpdateWho(userLogin);
@@ -140,6 +149,7 @@ public class CutiPegawaiController implements ModelDriven<Object> {
             editCutiPegawai.setAction("U");
             editCutiPegawai.setFlag("Y");
             editCutiPegawai.setPegawaiPenggantiSementara(nipPengganti);
+            editCutiPegawai.setForMobile(true);
 
            List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.saveApprove(editCutiPegawai);
 

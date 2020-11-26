@@ -73,6 +73,127 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String ttdPetugas;
     private String namaPetugas;
 
+    private String keterangan;
+    private String metodePembayaran;
+
+    private String urlImg;
+    private String ttdPengirim;
+    private String kategori;
+    private String sipDokter;
+    private String sipPengirim;
+    private String idPengirim;
+    private String dokterPengirim;
+
+    private String isPending;
+    private String statusBayar;
+    private String diagnosa;
+
+    private String isRead;
+
+    public String getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(String isRead) {
+        this.isRead = isRead;
+    }
+
+    public String getDiagnosa() {
+        return diagnosa;
+    }
+
+    public void setDiagnosa(String diagnosa) {
+        this.diagnosa = diagnosa;
+    }
+
+    public String getStatusBayar() {
+        return statusBayar;
+    }
+
+    public void setStatusBayar(String statusBayar) {
+        this.statusBayar = statusBayar;
+    }
+
+    public String getIsPending() {
+        return isPending;
+    }
+
+    public void setIsPending(String isPending) {
+        this.isPending = isPending;
+    }
+
+    public String getDokterPengirim() {
+        return dokterPengirim;
+    }
+
+    public void setDokterPengirim(String dokterPengirim) {
+        this.dokterPengirim = dokterPengirim;
+    }
+
+    public String getIdPengirim() {
+        return idPengirim;
+    }
+
+    public void setIdPengirim(String idPengirim) {
+        this.idPengirim = idPengirim;
+    }
+
+    public String getSipDokter() {
+        return sipDokter;
+    }
+
+    public void setSipDokter(String sipDokter) {
+        this.sipDokter = sipDokter;
+    }
+
+    public String getSipPengirim() {
+        return sipPengirim;
+    }
+
+    public void setSipPengirim(String sipPengirim) {
+        this.sipPengirim = sipPengirim;
+    }
+
+    public String getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
+    }
+
+    public String getTtdPengirim() {
+        return ttdPengirim;
+    }
+
+    public void setTtdPengirim(String ttdPengirim) {
+        this.ttdPengirim = ttdPengirim;
+    }
+
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
+    }
+
+    public String getMetodePembayaran() {
+        return metodePembayaran;
+    }
+
+    public void setMetodePembayaran(String metodePembayaran) {
+        this.metodePembayaran = metodePembayaran;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
     public String getNamaPetugas() {
         return namaPetugas;
     }

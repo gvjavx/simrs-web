@@ -1,6 +1,8 @@
 package com.neurix.hris.master.golongan.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.golongan.bo.GolonganBo;
 import com.neurix.hris.master.golongan.dao.GolonganDao;
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
@@ -26,6 +28,15 @@ public class GolonganBoImpl implements GolonganBo {
 
     protected static transient Logger logger = Logger.getLogger(GolonganBoImpl.class);
     private GolonganDao golonganDao;
+    private BiodataDao biodataDao;
+
+    public BiodataDao getBiodataDao() {
+        return biodataDao;
+    }
+
+    public void setBiodataDao(BiodataDao biodataDao) {
+        this.biodataDao = biodataDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -50,18 +61,38 @@ public class GolonganBoImpl implements GolonganBo {
         if (bean!=null) {
 
             String golonganId = bean.getGolonganId();
-
+            String historyId = "";
             ImGolonganEntity imGolonganEntity = null;
+            ImGolonganHistoryEntity imGolonganHistoryEntity = new ImGolonganHistoryEntity();
+
+            List<ImBiodataEntity> biodataEntityList = biodataDao.getBiodataByGolonganId(bean.getGolonganId());
+
+            if (biodataEntityList.size()>0){
+                String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
 
             try {
                 // Get data from database by ID
                 imGolonganEntity = golonganDao.getById("golonganId", golonganId);
+                historyId = golonganDao.getNextGolonganHistoryId();
             } catch (HibernateException e) {
                 logger.error("[AlatBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
             }
 
             if (imGolonganEntity != null) {
+                imGolonganHistoryEntity.setId(historyId);
+                imGolonganHistoryEntity.setGolonganId(imGolonganEntity.getGolonganId());
+                imGolonganHistoryEntity.setGolonganName(imGolonganEntity.getGolonganName());
+                imGolonganHistoryEntity.setGolonganName(imGolonganEntity.getGolonganName());
+                imGolonganHistoryEntity.setFlag(imGolonganEntity.getFlag());
+                imGolonganHistoryEntity.setAction(imGolonganEntity.getAction());
+                imGolonganHistoryEntity.setLastUpdateWho(imGolonganEntity.getLastUpdateWho());
+                imGolonganHistoryEntity.setLastUpdate(imGolonganEntity.getLastUpdate());
+                imGolonganHistoryEntity.setCreatedWho(imGolonganEntity.getLastUpdateWho());
+                imGolonganHistoryEntity.setCreatedDate(imGolonganEntity.getLastUpdate());
 
                 // Modify from bean to entity serializable
                 imGolonganEntity.setGolonganId(bean.getGolonganId());
@@ -74,6 +105,7 @@ public class GolonganBoImpl implements GolonganBo {
                 try {
                     // Delete (Edit) into database
                     golonganDao.updateAndSave(imGolonganEntity);
+                    golonganDao.addAndSaveHistory(imGolonganHistoryEntity);
                 } catch (HibernateException e) {
                     logger.error("[GolonganBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data Golongan, please info to your admin..." + e.getMessage());
@@ -92,63 +124,67 @@ public class GolonganBoImpl implements GolonganBo {
     @Override
     public void saveEdit(Golongan bean) throws GeneralBOException {
         logger.info("[GolonganBoImpl.saveEdit] start process >>>");
+        String status = cekStatusName(bean.getGolonganName(), bean.getFlag());
 
-//        String condition = null;
+        if (!status.equalsIgnoreCase("Exist")){
+            if (bean!=null) {
 
-        if (bean!=null) {
+                String golonganId = bean.getGolonganId();
+                String historyId = "";
 
-            String golonganId = bean.getGolonganId();
-            String historyId = "";
+                ImGolonganEntity imGolonganEntity = null;
+                ImGolonganHistoryEntity imGolonganHistoryEntity = new ImGolonganHistoryEntity();
 
-            ImGolonganEntity imGolonganEntity = null;
-            ImGolonganHistoryEntity imGolonganHistoryEntity = new ImGolonganHistoryEntity();
-
-            try {
-                // Get data from database by ID
-                imGolonganEntity = golonganDao.getById("golonganId", golonganId);
-                historyId = golonganDao.getNextGolonganHistoryId();
-            } catch (HibernateException e) {
-                logger.error("[GolonganBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data Golongan by Kode Golongan, please inform to your admin...," + e.getMessage());
-            }
-
-            if (imGolonganEntity != null) {
-                //
-                imGolonganHistoryEntity.setId(historyId);
-                imGolonganHistoryEntity.setGolonganId(imGolonganEntity.getGolonganId());
-                imGolonganHistoryEntity.setGolonganName(imGolonganEntity.getGolonganName());
-                imGolonganHistoryEntity.setGolonganName(imGolonganEntity.getGolonganName());
-                imGolonganHistoryEntity.setFlag(imGolonganEntity.getFlag());
-                imGolonganHistoryEntity.setAction(imGolonganEntity.getAction());
-                imGolonganHistoryEntity.setLastUpdateWho(imGolonganEntity.getLastUpdateWho());
-                imGolonganHistoryEntity.setLastUpdate(imGolonganEntity.getLastUpdate());
-                imGolonganHistoryEntity.setCreatedWho(imGolonganEntity.getLastUpdateWho());
-                imGolonganHistoryEntity.setCreatedDate(imGolonganEntity.getLastUpdate());
-
-                imGolonganEntity.setGolonganId(bean.getGolonganId());
-                imGolonganEntity.setGolonganName(bean.getGolonganName());
-                imGolonganEntity.setLevel(Integer.parseInt(bean.getStLevel()));
-                imGolonganEntity.setFlag(bean.getFlag());
-                imGolonganEntity.setAction(bean.getAction());
-                imGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imGolonganEntity.setLastUpdate(bean.getLastUpdate());
-
-                String flag;
                 try {
-                    // Update into database
-                    golonganDao.updateAndSave(imGolonganEntity);
-                    golonganDao.addAndSaveHistory(imGolonganHistoryEntity);
-//                    condition = "Data SuccessFully Updated";
+                    // Get data from database by ID
+                    imGolonganEntity = golonganDao.getById("golonganId", golonganId);
+                    historyId = golonganDao.getNextGolonganHistoryId();
                 } catch (HibernateException e) {
                     logger.error("[GolonganBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data Golongan, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data Golongan by Kode Golongan, please inform to your admin...," + e.getMessage());
                 }
-            } else {
-                logger.error("[GolonganBoImpl.saveEdit] Error, not found data Golongan with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data Golongan with request id, please check again your data ...");
+
+                if (imGolonganEntity != null) {
+                    //
+                    imGolonganHistoryEntity.setId(historyId);
+                    imGolonganHistoryEntity.setGolonganId(imGolonganEntity.getGolonganId());
+                    imGolonganHistoryEntity.setGolonganName(imGolonganEntity.getGolonganName());
+                    imGolonganHistoryEntity.setGolonganName(imGolonganEntity.getGolonganName());
+                    imGolonganHistoryEntity.setFlag(imGolonganEntity.getFlag());
+                    imGolonganHistoryEntity.setAction(imGolonganEntity.getAction());
+                    imGolonganHistoryEntity.setLastUpdateWho(imGolonganEntity.getLastUpdateWho());
+                    imGolonganHistoryEntity.setLastUpdate(imGolonganEntity.getLastUpdate());
+                    imGolonganHistoryEntity.setCreatedWho(imGolonganEntity.getLastUpdateWho());
+                    imGolonganHistoryEntity.setCreatedDate(imGolonganEntity.getLastUpdate());
+
+                    imGolonganEntity.setGolonganId(bean.getGolonganId());
+                    imGolonganEntity.setGolonganName(bean.getGolonganName());
+                    imGolonganEntity.setLevel(Integer.parseInt(bean.getStLevel()));
+                    imGolonganEntity.setFlag(bean.getFlag());
+                    imGolonganEntity.setAction(bean.getAction());
+                    imGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imGolonganEntity.setLastUpdate(bean.getLastUpdate());
+
+                    String flag;
+                    try {
+                        // Update into database
+                        golonganDao.updateAndSave(imGolonganEntity);
+                        golonganDao.addAndSaveHistory(imGolonganHistoryEntity);
+//                    condition = "Data SuccessFully Updated";
+                    } catch (HibernateException e) {
+                        logger.error("[GolonganBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data Golongan, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[GolonganBoImpl.saveEdit] Error, not found data Golongan with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data Golongan with request id, please check again your data ...");
 //                condition = "Error, not found data Golongan with request id, please check again your data ...";
+                }
             }
+        }else{
+            throw new GeneralBOException("Maaf Data Dengan Grade/Nama Tersebut Sudah Ada");
         }
+
         logger.info("[GolonganBoImpl.saveEdit] end process <<<");
     }
 
@@ -157,7 +193,7 @@ public class GolonganBoImpl implements GolonganBo {
         logger.info("[GolonganBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-            String status = cekStatus(bean.getLevel(), bean.getFlag());
+            String status = cekStatus(bean.getLevel(),bean.getGolonganName(), bean.getFlag());
             if (!status.equalsIgnoreCase("Exist")){
                 String golonganId;
                 try {
@@ -189,7 +225,7 @@ public class GolonganBoImpl implements GolonganBo {
                     throw new GeneralBOException("Found problem when saving new data Golongan, please info to your admin..." + e.getMessage());
                 }
             }else{
-                throw new GeneralBOException("Maaf Data Dengan Level Tersebut Sudah Ada");
+                throw new GeneralBOException("Tidak boleh add dengan grade / nama yang sama ");
             }
         }
 
@@ -309,11 +345,11 @@ public class GolonganBoImpl implements GolonganBo {
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboGolongan;
     }
-    public String cekStatus(Integer level, String flag)throws GeneralBOException{
+    public String cekStatus(Integer level,String nama, String flag)throws GeneralBOException{
         String status ="";
         List<ImGolonganEntity> golonganEntityList = new ArrayList<>();
         try{
-            golonganEntityList = golonganDao.getDataGolongan(level, flag);
+            golonganEntityList = golonganDao.getDataGolongan(level,nama, flag);
         }catch (HibernateException e){
             logger.error("[GolonganBoImpl.cekStatus] Error, "+e.getMessage());
             throw new GeneralBOException("Found problem when saving data, please info to your admin..."+e.getMessage());
@@ -324,7 +360,22 @@ public class GolonganBoImpl implements GolonganBo {
             status = "notExist";
         }
         return status;
-//        status = golonganDao.getStatus(golonganId);
-//        return status;
+    }
+
+    public String cekStatusName(String nama, String flag)throws GeneralBOException{
+        String status ="";
+        List<ImGolonganEntity> golonganEntityList = new ArrayList<>();
+        try{
+            golonganEntityList = golonganDao.getDataGolonganName(nama, flag);
+        }catch (HibernateException e){
+            logger.error("[GolonganBoImpl.cekStatus] Error, "+e.getMessage());
+            throw new GeneralBOException("Found problem when saving data, please info to your admin..."+e.getMessage());
+        }
+        if (golonganEntityList.size() > 0){
+            status = "exist";
+        }else {
+            status = "notExist";
+        }
+        return status;
     }
 }

@@ -61,6 +61,9 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
                     catatan.setCreatedWho(entity.getCreatedWho());
                     catatan.setLastUpdate(entity.getLastUpdate());
                     catatan.setLastUpdateWho(entity.getLastUpdateWho());
+                    catatan.setNamaTerangDokter(entity.getNamaTerangDokter());
+                    catatan.setNamaTerangPerawat(entity.getNamaTerangPerawat());
+                    catatan.setSipDokter(entity.getSipDokter());
                     list.add(catatan);
                 }
             }
@@ -93,6 +96,9 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
             catatanPemberianObatEntity.setCreatedWho(bean.getCreatedWho());
             catatanPemberianObatEntity.setLastUpdate(bean.getLastUpdate());
             catatanPemberianObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            catatanPemberianObatEntity.setNamaTerangDokter(bean.getNamaTerangDokter());
+            catatanPemberianObatEntity.setNamaTerangPerawat(bean.getNamaTerangPerawat());
+            catatanPemberianObatEntity.setSipDokter(bean.getSipDokter());
 
             try {
                 catatanPemberianObatDao.addAndSave(catatanPemberianObatEntity);

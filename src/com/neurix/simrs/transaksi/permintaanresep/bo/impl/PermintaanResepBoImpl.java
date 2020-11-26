@@ -74,6 +74,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                         }
                     }
 
+                    permintaanResep.setStatus(resepEntity.getStatus());
                     listOfResults.add(permintaanResep);
                 }
             }
@@ -280,6 +281,11 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
     @Override
     public ImSimrsPermintaanResepEntity getEntityPermintaanResepById(String id) throws GeneralBOException {
         return permintaanResepDao.getById("idPermintaanResep", id);
+    }
+
+    @Override
+    public List<PermintaanResep> getListResepPasien(String noCheckup) throws GeneralBOException {
+        return permintaanResepDao.getListResepPasien(noCheckup);
     }
 
     private String getNextPermintaanResepId() throws GeneralBOException {

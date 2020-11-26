@@ -29,7 +29,7 @@
             var from = $('#loginTimestampFrom').val();
             var to = $('#loginTimestampTo').val();
             //alert(id + ' ' + from + ' ' + to);
-            var url = "searchCount_usersessionlog?userName="+id+"&stLoginTimestampFrom="+from+"&stLoginTimestampTo="+to ;
+            var url = "searchCount_usersessionlog.action?userName="+id+"&stLoginTimestampFrom="+from+"&stLoginTimestampTo="+to ;
             //alert(url);
             location.href = url;
         }
@@ -48,7 +48,6 @@
     <section class="content-header">
         <h1>
             User Session Log Information
-            <small>HRIS</small>
         </h1>
     </section>
 
@@ -167,14 +166,31 @@
                                 </div>
 
                                 <div id="actions" class="form-actions" align="center">
-                                    <sj:dialog id="waiting_dialog_search" openTopics="showDialogSearch1" closeTopics="closeDialogSearch" modal="true"
-                                               resizable="false" height="250" width="600" autoOpen="false" title="Searching...">
-                                        Please don't close this window, server is processing your request ...
-                                        </br>
-                                        </br>
-                                        </br>
-                                        <img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">
-                                    </sj:dialog>
+                                    <%--<sj:dialog id="waiting_dialog_search" openTopics="showDialogSearch1" closeTopics="closeDialogSearch" modal="true"--%>
+                                               <%--resizable="false" height="250" width="600" autoOpen="false" title="Searching...">--%>
+                                        <%--Please don't close this window, server is processing your request ...--%>
+                                        <%--</br>--%>
+                                        <%--</br>--%>
+                                        <%--</br>--%>
+                                        <%--<img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>" name="image_indicator_read">--%>
+                                    <%--</sj:dialog>--%>
+                                        <sj:dialog id="waiting_dialog_search" openTopics="showDialogSearch1"
+                                                   closeTopics="closeDialogSearch" modal="true"
+                                                   resizable="false"
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Searching ...">
+                                            Please don't close this window, server is processing your request ...
+                                            <br>
+                                            <center>
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
+                                            </center>
+                                        </sj:dialog>
                                 </div>
                             </s:form>
                             <br>
@@ -191,7 +207,11 @@
 
                                             <s:set name="listOfUserSessionLog" value="#session.listOfResult" scope="request"/>
                                             <display:table name="listOfUserSessionLog" class="table table-condensed table-striped table-hover"
-                                                           requestURI="paging_displaytag.action" id="row" pagesize="30" export="true" style="font-size:11">
+                                                           requestURI="paging_displaytag.action" id="row" pagesize="15" export="true" style="font-size:10">
+
+                                            <%--<display:table name="listOfsearchPelayanan" class="table table-condensed table-striped table-hover"--%>
+                                                           <%--requestURI="paging_displaytag_pelayanan.action" export="true" id="row" pagesize="14" style="font-size:10">    --%>
+
 
                                                 <display:column media="html" title="<small>Kill Session</small>" style="text-align:center;font-size:11">
                                                     <s:if test = "%{#attr.row.enabledKill}" >
@@ -211,9 +231,9 @@
                                                 <display:column property="stId" sortable="true" title="Id"/>
                                                 <display:column property="sessionId" sortable="true" title="Session.Id"/>
                                                 <display:column property="userName" sortable="true" title="User"/>
+                                                <display:column property="name" sortable="true" title="Nama"/>
                                                 <display:column property="companyName" sortable="true" title="Company"/>
                                                 <display:column property="branchName" sortable="true" title="Branch"/>
-                                                <display:column property="areaName" sortable="true" title="Area"/>
                                                 <display:column property="ipAddress" sortable="true" title="Ip.Address"/>
                                                 <display:column property="loginTimestamp" sortable="true" title="Login Time"
                                                                 decorator="com.neurix.common.displaytag.LongDateWrapper"/>

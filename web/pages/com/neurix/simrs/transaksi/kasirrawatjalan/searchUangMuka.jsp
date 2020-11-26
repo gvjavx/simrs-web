@@ -254,7 +254,7 @@
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
-                                <td>ID Pasien</td>
+                                <td>No RM</td>
                                 <td>Nama</td>
                                 <td>Nama Pelayanan</td>
                                 <td >Status</td>
@@ -272,17 +272,17 @@
                                     <td style="vertical-align: middle" align="center">
                                         <s:if test='#row.statusBayar == "Y"'>
                                             <s:if test='#row.flagRefund == "R"'>
-                                                <label class="label label-warning"> proses refund</label>
+                                                <span class="span-warning"> proses refund</span>
                                             </s:if>
                                             <s:elseif test='#row.flagRefund == "Y"'>
-                                                <label class="label label-info"> sudah refund</label>
+                                                <span class="span-primary"> sudah refund</span>
                                             </s:elseif>
                                             <s:else>
-                                                <label class="label label-success"> sudah bayar</label>
+                                                <span class="span-success"> sudah bayar</span>
                                             </s:else>
                                         </s:if>
                                         <s:else>
-                                            <label class="label label-warning"> belum bayar</label>
+                                            <span class="span-warning"> belum bayar</span>
                                         </s:else>
                                     </td>
                                     <%--<td><s:property value="keteranganSelesai"/></td>--%>
@@ -652,6 +652,7 @@
         var noSep;
         var cekTindakan = false;
         var jenisPasien = "";
+        var jenisPasienName = "";
         var total = 0;
         var idPasien = "";
         var id = "";
@@ -659,15 +660,11 @@
         var url = '<s:url value="/pages/images/spinner.gif"/>';
         $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
 
-
         setTimeout(function () {
-
             var url = '<s:url value="/pages/images/icon_payment.ico"/>';
             $('#t_'+idDetailCheckup).attr('src',url).css('width', '', 'height', '');
-
             CheckupAction.listDataPasien(idDetailCheckup, function (response) {
                 if (response != null) {
-                    // $.each(dataPasien, function (i, item) {
                         var tanggal = response.tglLahir;
                         var dateFormat = converterDate(new Date(tanggal));
                         noCheckup = response.noCheckup;
@@ -690,15 +687,15 @@
                         desa = response.namaDesa;
                         noSep = response.noSep;
                         jenisPasien = response.idJenisPeriksaPasien;
+                        jenisPasienName = response.statusPeriksaName;
                         $('#fin_no_rm').html(response.idPasien);
-                    // });
                 }
             });
 
-            KasirRawatJalanAction.getListUangMuka(idDetailCheckup, function (response) {
+            KasirRawatJalanAction.getListUangMuka(idDetailCheckup, null, function (response) {
                 dataTindakan = response;
-                console.log(response);
-                if (dataTindakan != null) {
+                if (dataTindakan.length > 0) {
+                    var totalUangMuka = 0;
                     $.each(dataTindakan, function (i, item) {
                         var tanggal = "";
                         var uangmuka    = 0;
@@ -720,10 +717,10 @@
                         id = item.id;
                         $("#jumlah_um").val(total);
                     });
+                    $('#nominal_uang_muka').val(formatRupiah(total));
+                    $('#val_uang_muka').val(total);
                 }
             });
-
-            console.log(total);
 
             if(jenisPasien == "bpjs"){
                 $('#no_sep_show').show();
@@ -731,7 +728,8 @@
                 $('#no_sep_show').hide();
             }
 
-            $('#fin_jenis_pasien').html(jenisPasien.toUpperCase());
+            $('#fin_jenis_pasien').html(jenisPasien);
+            setLabelJenisPasien('fin_jenis_pasien', jenisPasien);
             $('#fin_no_sep').html(noSep);
             $('#fin_no_checkup').html(idDetailCheckup);
             $('#fin_nik').html(nik);
@@ -794,6 +792,8 @@
         var metodeBayar = $('#metode_bayar').val();
         var kodeBank = $('#bank').val();
         var noRekening = $('#no_rekening').val();
+        var idDetailCheckup = $('#fin_id_detail_checkup').val();
+
         dwr.engine.setAsync(true);
         KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, metodeBayar, kodeBank, noRekening, {callback: function (response) {
             if(response.status == "success"){
@@ -804,6 +804,7 @@
                 $('#modal-invoice').modal('hide');
                 $('#info_dialog').dialog('open');
                 $('body').scrollTop(0);
+                printInvoice(idDetailCheckup);
             }else{
                 $('#save_fin').show();
                 $('#load_fin').hide();
@@ -848,7 +849,7 @@
                 $('#ref_desa').html(response.namaDesa);
             }
         });
-        KasirRawatJalanAction.getListUangMuka(idDetailCheckup, function (response) {
+        KasirRawatJalanAction.getListUangMuka(idDetailCheckup, null, function (response) {
             dataTindakan = response;
             if (dataTindakan != null) {
                 var table = "";
@@ -924,7 +925,6 @@
     }
 
     function hitungKembalian( jumlah ) {
-        console.log("hitungKembalian >>")
         var um = $("#jumlah_um").val();
         var total = jumlah - um;
         $("#kembalian").val(total);
@@ -942,6 +942,17 @@
                 $('#bank').html(option);
             }
         });
+    }
+
+    function printInvoice(id){
+        window.open('printBuktiUangMuka_uangmuka.action?id='+id,'_blank');
+    }
+
+    function closeOK(){
+        var pos = $('#h_ref').val();
+        if(pos == 1){
+
+        }
     }
 
 </script>

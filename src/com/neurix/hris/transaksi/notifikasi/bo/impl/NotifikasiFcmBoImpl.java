@@ -9,8 +9,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 public class NotifikasiFcmBoImpl implements NotifikasiFcmBo {
     protected static transient Logger logger = Logger.getLogger(NotifikasiFcmBoImpl.class);
@@ -67,7 +66,38 @@ public class NotifikasiFcmBoImpl implements NotifikasiFcmBo {
 
     @Override
     public List<NotifikasiFcm> getByCriteria(NotifikasiFcm searchBean) throws GeneralBOException {
-        return null;
+
+        List<ItNotifikasiFcmEntity> listOfResult = new ArrayList<>();
+        List<NotifikasiFcm> returnNotifFcm = new ArrayList<>();
+
+        if (searchBean != null) {
+            Map hsCriteria = new HashMap();
+
+            if (searchBean.getUserId() != null && !searchBean.getUserId().equalsIgnoreCase("")) {
+                hsCriteria.put("user_id", searchBean.getUserId());
+            }
+
+            try {
+               listOfResult = notifikasiFcmDao.getByCriteria(hsCriteria);
+            } catch (GeneralBOException e) {
+                logger.error("[NotifikasiFcmBoImpl.getByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when getByCriteria, please info to your admin..." + e.getMessage());
+            }
+
+            for (ItNotifikasiFcmEntity item : listOfResult) {
+                NotifikasiFcm notifikasiFcm = new NotifikasiFcm();
+                notifikasiFcm.setUserId(item.getUserId());
+                notifikasiFcm.setUserName(item.getUserName());
+                notifikasiFcm.setTokenFcm(item.getTokenFcm());
+                notifikasiFcm.setOs(item.getOs());
+
+                returnNotifFcm.add(notifikasiFcm);
+            }
+
+        }
+
+
+        return returnNotifFcm;
     }
 
     @Override

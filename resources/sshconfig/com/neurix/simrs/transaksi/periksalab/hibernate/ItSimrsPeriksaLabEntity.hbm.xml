@@ -57,7 +57,29 @@
         <property name="approveFlag">
             <column name="approve_flag" sql-type="varchar" length="1" not-null="false" />
         </property>
-
-
+        <property name="keterangan">
+            <column name="keterangan" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="urlImg">
+            <column name="url_img"/>
+        </property>
+        <property name="ttdPengirim">
+            <column name="ttd_pengirim"/>
+        </property>
+        <property name="idKategoriLab">
+            <column name="id_kategori_lab"/>
+        </property>
+        <property name="ttdDokter">
+            <column name="ttd_dokter"/>
+        </property>
+        <property name="ttdPetugas">
+            <column name="ttd_petugas"/>
+        </property>
+        <property name="isPending">
+            <column name="is_pending"/>
+        </property>
+        <property name="isReading">
+            <column name="is_read"/>
+        </property>
     </class>
 </hibernate-mapping>

@@ -246,6 +246,11 @@
                                             <display:column property="nip" sortable="true" title="NIP"  />
                                             <display:column property="nama" sortable="true" title="Nama"  />
                                             <display:column property="jumlahBiaya" sortable="true" title="Jumlah Biaya Medical" />
+                                            <display:setProperty name="paging.banner.item_name">ReportMedical</display:setProperty>
+                                            <display:setProperty name="paging.banner.items_name">ReportMedical</display:setProperty>
+                                            <display:setProperty name="export.excel.filename">ReportMedical.xls</display:setProperty>
+                                            <display:setProperty name="export.csv.filename">ReportMedical.csv</display:setProperty>
+                                            <display:setProperty name="export.pdf.filename">ReportMedical.pdf</display:setProperty>
                                         </display:table>
                                     </td>
                                 </tr>

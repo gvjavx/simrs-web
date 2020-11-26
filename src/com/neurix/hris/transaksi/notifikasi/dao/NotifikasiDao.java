@@ -90,6 +90,7 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 "  AND data.training is null then 'T' when data.tipe_notif_id = 'TN23' \n" +
                 "  AND data.trainingbos is null then 'B' when data.tipe_notif_id = 'TN44' \n" +
                 "  AND data.indisipliner is null then 'P' when data.tipe_notif_id = 'TN01' \n" +
+                "  AND data.pengajuanRk is null then 'PBRK' when data.tipe_notif_id = 'TN04' \n" +
                 "  AND data.pengajuan is null then 'PB' end as hasil \n" +
                 "from \n" +
                 "  (\n" +
@@ -105,7 +106,8 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 "      training.approval_flag as training, \n" +
                 "      training.approval_bos_flag as trainingBos, \n" +
                 "      indisipliner.approval_flag as indisipliner, \n" +
-                "      pengajuan.aproval_flag as pengajuan \n" +
+                "\t  pengajuan.aproval_flag as pengajuan,\n" +
+                "      pengajuanRk.aproval_flag as pengajuanRk\n" +
                 "    from \n" +
                 "      (\n" +
                 "        SELECT \n" +
@@ -182,18 +184,24 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 "        FROM \n" +
                 "          it_akun_pengajuan_biaya\n" +
                 "      ) pengajuan on pengajuan.pengajuan_biaya_id = notif.no_request\n" +
+                "\t  left join (\n" +
+                "        SELECT \n" +
+                "          * \n" +
+                "        FROM \n" +
+                "          it_akun_pengajuan_biaya\n" +
+                "      ) pengajuanRk on pengajuanRk.pengajuan_biaya_id = notif.no_request\n" +
                 "  ) as data \n" +
                 "WHERE \n" +
                 "  nip = '"+nip+"' \n" +
                 "ORDER BY \n" +
-                "  created_date DESC\n";
+                "  created_date DESC\n\n";
         resultQuery = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
                 .list();
         String notifId="";
         for (Object[] row : resultQuery) {
             ImNotifikasiEntity result  = new ImNotifikasiEntity();
-            if (row[25]!=null){
+            if (row[26]!=null){
                 result.setNotifId(row[0].toString());
                 result.setTipeNotifId(row[1].toString());
                 result.setNip(row[2].toString());
@@ -230,7 +238,8 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 criteria.add(Restrictions.ilike("notifName", "%" + (String)mapCriteria.get("notif_name") + "%"));
             }
             if (mapCriteria.get("nip")!=null) {
-                criteria.add(Restrictions.ilike("nip", "%" + (String)mapCriteria.get("nip") + "%"));
+//                criteria.add(Restrictions.eq("nip", "%" + (String)mapCriteria.get("nip") + "%"));
+                criteria.add(Restrictions.eq("nip", (String) mapCriteria.get("nip")));
             }
             if (mapCriteria.get("read")!=null) {
                 criteria.add(Restrictions.ilike("read", "%" + (String)mapCriteria.get("read") + "%"));
@@ -445,6 +454,29 @@ public class NotifikasiDao extends GenericDao<ImNotifikasiEntity, String> {
                 .add(Restrictions.eq("noRequest", id))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("noRequest"))
+                .list();
+        return results;
+    }
+
+    //digunakan untuk mencari notifikasi by nomor request
+    public List<ImNotifikasiEntity> getDataForCheck(String id,String nip) throws HibernateException {
+        List<ImNotifikasiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImNotifikasiEntity.class)
+                .add(Restrictions.eq("noRequest", id))
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("noRequest"))
+                .list();
+        return results;
+    }
+
+    public List<Object[]> findNotifikasiUmum(String nip, String typeNotifId) {
+
+        String SQL = "SELECT * FROM it_hris_notifikasi WHERE nip = :nip AND tipe_notif_id = :typeNotifId ORDER BY last_update DESC";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .setParameter("typeNotifId", typeNotifId)
                 .list();
         return results;
     }

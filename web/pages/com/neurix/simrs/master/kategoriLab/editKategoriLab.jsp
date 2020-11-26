@@ -77,7 +77,8 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="editkategoriLabForm" method="post" theme="simple" namespace="/kategorilab" action="saveEdit_kategorilab" cssClass="well form-horizontal">
+            <s:form id="editkategoriLabForm" method="post" theme="simple" namespace="/kategorilab"
+                    action="saveEdit_kategorilab" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -100,17 +101,19 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idKategoriLab2" name="kategoriLab.idKategoriLab" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="idKategoriLab2" name="kategoriLab.idKategoriLab" readonly="true"
+                                             required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td width="25%">
                             <label class="control-label"><small>Nama Kategori :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaKategori2" name="kategoriLab.namaKategori" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield cssStyle="margin-top: 5px" id="namaKategori2" name="kategoriLab.namaKategori"
+                                             required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -120,9 +123,12 @@
                         </td>
                         <td>
                             <table>
-                                <s:action id="initComboPosition" namespace="/kategorilab" name="initComboPosition_kategorilab"/>
-                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId2" name="kategoriLab.divisiId"
-                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:action id="initComboPosition" namespace="/kategorilab"
+                                          name="initComboPosition_kategorilab" />
+                                <s:select list="#initComboPosition.listOfComboPositions"
+                                          id="positionId2" name="kategoriLab.divisiId"
+                                          listKey="positionId" listValue="positionName"
+                                          headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -133,7 +139,8 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="editkategoriLabForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="editkategoriLabForm"
+                                   id="save" name="save"
                                    onBeforeTopics="beforeProcessSave2" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>

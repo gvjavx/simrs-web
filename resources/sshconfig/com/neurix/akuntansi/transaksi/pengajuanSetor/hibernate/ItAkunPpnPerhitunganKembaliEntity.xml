@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.akuntansi.transaksi.pengajuanSetor.model.ItAkunPpnPerhitunganKembaliEntity">
+        <table name="it_akun_ppn_perhitungan_kembali" schema="public"/>
+        <attributes>
+            <id name="perhitunganKembaliPpnId">
+                <column name="perhitungan_kembali_ppn_id"/>
+            </id>
+            <basic name="dppTotalPendapatanRumahSakit">
+                <column name="dpp_total_pendapatan_rumah_sakit"/>
+            </basic>
+            <basic name="dppPenyerahanTidakTerutangPpn">
+                <column name="dpp_penyerahan_tidak_terutang_ppn"/>
+            </basic>
+            <basic name="dppPpnMasukanYangTelahDireditkan">
+                <column name="dpp_ppn_masukan_yang_telah_direditkan"/>
+            </basic>
+            <basic name="ppnTotalPendapatanRumahSakit">
+                <column name="ppn_total_pendapatan_rumah_sakit"/>
+            </basic>
+            <basic name="ppnPenyerahanTidakTerutangPpn">
+                <column name="ppn_penyerahan_tidak_terutang_ppn"/>
+            </basic>
+            <basic name="ppnPenyerahanTerutangPpn">
+                <column name="ppn_penyerahan_terutang_ppn"/>
+            </basic>
+            <basic name="ppnPpnMasukanYangTelahDikreditkan">
+                <column name="ppn_ppn_masukan_yang_telah_dikreditkan"/>
+            </basic>
+            <basic name="ppnPpnMasukanYangTidakDapatDikreditkan">
+                <column name="ppn_ppn_masukan_yang_tidak_dapat_dikreditkan"/>
+            </basic>
+            <basic name="ppnTelahDiperhitungkanKembali">
+                <column name="ppn_telah_diperhitungkan_kembali"/>
+            </basic>
+            <basic name="ppnHasilPerhitunganKembaliPpn">
+                <column name="ppn_hasil_perhitungan_kembali_ppn"/>
+            </basic>
+            <basic name="bulan">
+                <column name="bulan"/>
+            </basic>
+            <basic name="tahun">
+                <column name="tahun"/>
+            </basic>
+            <basic name="prosesPpnKdId">
+                <column name="proses_ppn_kd_id"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

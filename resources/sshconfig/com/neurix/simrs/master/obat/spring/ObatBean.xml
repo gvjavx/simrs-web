@@ -28,6 +28,14 @@
           p:permintaanVendorDao-ref="permintaanVendorDao"
           p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
           p:transaksiStokDao-ref="transaksiStokDao"
+          p:batasTutupPeriodDao-ref="batasTutupPeriodDao"
+          p:pelayananDao-ref="pelayananDao"
+          p:kandunganObatDao-ref="kandunganObatDao"
+          p:kandunganObatDetailDao-ref="kandunganObatDetailDao"
+          p:bentukBarangDao-ref="bentukBarangDao"
+          p:headerObatDao-ref="headerObatDao"
+          p:kategoriPersedianDao-ref="kategoriPersedianDao"
+          p:marginObatDao-ref="marginObatDao"
     />
 
     <bean id="obatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -62,6 +70,24 @@
           p:sessionFactory-ref="sessionFactory" />
 
     <bean id="returObatDetailDao" class="com.neurix.simrs.master.obat.dao.ReturObatDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="kandunganObatDao" class="com.neurix.simrs.master.obat.dao.KandunganObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="kandunganObatDetailDao" class="com.neurix.simrs.master.obat.dao.KandunganObatDetailDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="bentukBarangDao" class="com.neurix.simrs.master.obat.dao.BentukBarangDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="headerObatDao" class="com.neurix.simrs.master.obat.dao.HeaderObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="kategoriPersedianDao" class="com.neurix.simrs.master.kategoripersediaan.dao.KategoriPersedianDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="marginObatDao" class="com.neurix.simrs.master.marginobat.dao.MarginObatDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

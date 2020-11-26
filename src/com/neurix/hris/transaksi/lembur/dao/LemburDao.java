@@ -116,6 +116,15 @@ public class LemburDao extends GenericDao<LemburEntity, String> {
         return results;
     }
 
+    public List<LemburEntity> getListLemburByNipAndTanggalForInquiry(String nip, Date tanggal) throws HibernateException {
+        List<LemburEntity> results = this.sessionFactory.getCurrentSession().createCriteria(LemburEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("approvalFlag", "Y"))
+                .add(Restrictions.ne("tanggalAwalSetuju", tanggal))
+                .list();
+        return results;
+    }
+
     public List<LemburEntity> getListLemburTestTanggal(Date tanggal, String nip) throws HibernateException {
         List<LemburEntity> results = this.sessionFactory.getCurrentSession().createCriteria(LemburEntity.class)
                 .add(Restrictions.eq("nip", nip))

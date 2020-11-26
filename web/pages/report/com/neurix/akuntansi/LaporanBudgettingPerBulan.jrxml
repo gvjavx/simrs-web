@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IkhtisarPendapatan" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="1ad74e3d-21c5-43ac-b65a-1f771461ad66">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.4641000000000135"/>
+	<property name="ireport.zoom" value="1.1000000000000107"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -61,9 +61,6 @@
 				</textField>
 			</band>
 		</groupHeader>
-		<groupFooter>
-			<band height="4" splitType="Stretch"/>
-		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
@@ -82,7 +79,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reportTitle}]]></textFieldExpression>
 			</textField>
@@ -95,7 +92,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + " dari "]]></textFieldExpression>
 			</textField>
@@ -108,7 +105,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Waktu   :"]]></textFieldExpression>
 			</textField>
@@ -125,7 +122,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Tanggal :"]]></textFieldExpression>
 			</textField>
@@ -138,7 +135,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Hal.       :"]]></textFieldExpression>
 			</textField>
@@ -151,7 +148,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -164,14 +161,14 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="9" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{kota}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="2" y="24" width="208" height="15" uuid="27cfbce7-a32f-437f-8e99-fb7f7e6473d1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{areaId}]]></textFieldExpression>
 			</textField>
@@ -184,7 +181,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
@@ -197,7 +194,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font size="6"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -219,7 +216,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Tahun : "+ $P{periodeTitle}]]></textFieldExpression>
 			</textField>
@@ -232,16 +229,16 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="9" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA[( $P{divisiName} == null ? "" : "Divisi : "+$P{divisiName} )]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="39" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-11" mode="Transparent" x="0" y="2" width="68" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2b034e0d-b675-47fa-8b70-38a9125e5fc3"/>
+				<reportElement key="staticText-11" mode="Transparent" x="0" y="2" width="54" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2b034e0d-b675-47fa-8b70-38a9125e5fc3"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -254,7 +251,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Kode Rekening]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-16" mode="Transparent" x="695" y="2" width="119" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="25555b6b-efc3-49a9-981f-b8e42632b4d0"/>
+				<reportElement key="staticText-16" mode="Transparent" x="731" y="2" width="83" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="25555b6b-efc3-49a9-981f-b8e42632b4d0"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -273,13 +270,13 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement key="line-3" x="0" y="38" width="814" height="1" uuid="50849c6a-caa6-4669-9735-1feaf363a243"/>
+				<reportElement key="line-3" x="0" y="21" width="814" height="1" uuid="50849c6a-caa6-4669-9735-1feaf363a243"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement key="staticText-26" mode="Transparent" x="68" y="2" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c7a7c493-7a48-48ac-9caa-47a3b4eea4ee"/>
+				<reportElement key="staticText-26" mode="Transparent" x="55" y="2" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c7a7c493-7a48-48ac-9caa-47a3b4eea4ee"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -292,7 +289,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Nama Rekening]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="212" y="2" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c81954e3-8e20-41ec-8589-135c79eddfb2"/>
+				<reportElement key="staticText-28" mode="Transparent" x="203" y="2" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c81954e3-8e20-41ec-8589-135c79eddfb2"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -305,7 +302,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Feb.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="168" y="2" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8e369d9e-ef3b-4f47-92f0-d0c6f6cec316"/>
+				<reportElement key="staticText-28" mode="Transparent" x="155" y="2" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8e369d9e-ef3b-4f47-92f0-d0c6f6cec316"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -318,7 +315,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Jan.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="256" y="2" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="4b65070c-cb77-4e7a-bfce-d1ec7865c9ab"/>
+				<reportElement key="staticText-28" mode="Transparent" x="251" y="2" width="49" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="4b65070c-cb77-4e7a-bfce-d1ec7865c9ab"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -331,7 +328,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Mar.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="300" y="2" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="cb7a7bac-6b86-44bf-af32-2ac9c187a00c"/>
+				<reportElement key="staticText-28" mode="Transparent" x="300" y="2" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="cb7a7bac-6b86-44bf-af32-2ac9c187a00c"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -344,7 +341,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Apr.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="344" y="2" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="278a0f3f-3958-4911-9163-3140309806cf"/>
+				<reportElement key="staticText-28" mode="Transparent" x="348" y="2" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="278a0f3f-3958-4911-9163-3140309806cf"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -357,7 +354,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Mei]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="388" y="2" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f4f35fe0-0fc6-4c1e-98c5-2888b40b6467"/>
+				<reportElement key="staticText-28" mode="Transparent" x="395" y="2" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f4f35fe0-0fc6-4c1e-98c5-2888b40b6467"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -370,7 +367,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Juni]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="431" y="2" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="6945cdd4-c848-4834-9dee-5f2964c52d92"/>
+				<reportElement key="staticText-28" mode="Transparent" x="443" y="2" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="6945cdd4-c848-4834-9dee-5f2964c52d92"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -383,7 +380,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Juli]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="475" y="2" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c3a825a6-4a65-421c-b4bc-b0b211f56de6"/>
+				<reportElement key="staticText-28" mode="Transparent" x="491" y="2" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c3a825a6-4a65-421c-b4bc-b0b211f56de6"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -396,7 +393,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Agus.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="519" y="2" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="12ddfb2f-4306-4988-b5a0-6c935388552d"/>
+				<reportElement key="staticText-28" mode="Transparent" x="539" y="2" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="12ddfb2f-4306-4988-b5a0-6c935388552d"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -409,7 +406,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Sept.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="563" y="2" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2306b25b-4835-4369-bbee-3a483f8a2ce0"/>
+				<reportElement key="staticText-28" mode="Transparent" x="587" y="2" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2306b25b-4835-4369-bbee-3a483f8a2ce0"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -422,7 +419,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Okt.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="607" y="2" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="7f052f00-355b-4afb-ac0f-a72f2356eec5"/>
+				<reportElement key="staticText-28" mode="Transparent" x="635" y="2" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="7f052f00-355b-4afb-ac0f-a72f2356eec5"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -435,7 +432,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<text><![CDATA[Nov.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-28" mode="Transparent" x="651" y="2" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9a5acf89-9507-4e91-9ced-814051988cc0"/>
+				<reportElement key="staticText-28" mode="Transparent" x="683" y="2" width="48" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9a5acf89-9507-4e91-9ced-814051988cc0"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -451,21 +448,8 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 	</columnHeader>
 	<detail>
 		<band height="17" splitType="Stretch">
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="168" y="0" width="44" height="15" uuid="1ddbcd29-e5d0-4a5a-b697-14fc33fed678"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{subTotalJanuari}]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField" mode="Transparent" x="0" y="0" width="68" height="15" uuid="42653c39-803d-4ccd-b9d3-6903229e0743"/>
+				<reportElement key="textField" mode="Transparent" x="0" y="0" width="54" height="15" uuid="42653c39-803d-4ccd-b9d3-6903229e0743"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -478,7 +462,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{kodeRekening}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" mode="Transparent" x="68" y="0" width="100" height="15" isPrintWhenDetailOverflows="true" uuid="79fd5edc-7d17-4151-b4ed-103ab95422eb"/>
+				<reportElement key="textField" mode="Transparent" x="55" y="0" width="100" height="15" isPrintWhenDetailOverflows="true" uuid="79fd5edc-7d17-4151-b4ed-103ab95422eb"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -490,8 +474,8 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{kodeRekeningName}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-18" x="695" y="0" width="119" height="15" uuid="3f136fc4-38a2-4184-95e8-ddc326e7322d"/>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-18" x="731" y="0" width="83" height="15" uuid="3f136fc4-38a2-4184-95e8-ddc326e7322d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -499,12 +483,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nilaiTotal}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-16" x="344" y="0" width="44" height="15" uuid="e54e06ea-bd3e-4c83-a7cf-d7cf40c95384"/>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-16" x="348" y="0" width="48" height="15" uuid="e54e06ea-bd3e-4c83-a7cf-d7cf40c95384"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -512,12 +496,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotalMei}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-16" x="300" y="0" width="44" height="15" uuid="28fd044a-58ff-40c9-b970-5d12549fa1e4"/>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-16" x="300" y="0" width="48" height="15" uuid="28fd044a-58ff-40c9-b970-5d12549fa1e4"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -525,12 +509,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotalApril}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-16" x="607" y="0" width="44" height="15" uuid="2e8d306d-42c9-431a-8bae-ceb7db0c9413"/>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-16" x="635" y="0" width="48" height="15" uuid="2e8d306d-42c9-431a-8bae-ceb7db0c9413"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -538,12 +522,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotalNovember}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="212" y="0" width="44" height="15" uuid="07c950da-36eb-4df7-8ffe-d422392cff2c"/>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-22" x="203" y="0" width="48" height="15" uuid="07c950da-36eb-4df7-8ffe-d422392cff2c"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -551,12 +535,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotalFebruari}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="256" y="0" width="44" height="15" uuid="0a606ad4-0d7e-44b4-98c3-3afa64b2b578"/>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-22" x="251" y="0" width="49" height="15" uuid="0a606ad4-0d7e-44b4-98c3-3afa64b2b578"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -564,12 +548,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotalMaret}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="388" y="0" width="44" height="15" uuid="645f270f-6fe1-4883-ae32-7c07b59059e8"/>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-22" x="395" y="0" width="48" height="15" uuid="645f270f-6fe1-4883-ae32-7c07b59059e8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -577,12 +561,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotalJuni}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="432" y="0" width="44" height="15" uuid="c2d9d81d-f61f-469f-b313-13f67fa59dcc"/>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-22" x="539" y="0" width="48" height="15" uuid="25ef7d61-e60d-4d0f-b10e-ed72cf176050"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -590,38 +574,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{subTotalJuli}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="475" y="0" width="44" height="15" uuid="c9dfdc19-2028-472a-abcc-9e93f80aaeb3"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{subTotalAgustus}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="519" y="0" width="44" height="15" uuid="25ef7d61-e60d-4d0f-b10e-ed72cf176050"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotalSeptember}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="563" y="0" width="44" height="15" uuid="58388018-da61-45a0-bcb7-5ad4c59d69a6"/>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-22" x="587" y="0" width="48" height="15" uuid="58388018-da61-45a0-bcb7-5ad4c59d69a6"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -629,12 +587,12 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotalOktober}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-22" x="651" y="0" width="44" height="15" uuid="8a24fe71-5492-49da-8e01-87a7421b33f5"/>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-22" x="683" y="0" width="48" height="15" uuid="8a24fe71-5492-49da-8e01-87a7421b33f5"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -642,14 +600,53 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subTotalDesember}]]></textFieldExpression>
 			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-22" x="155" y="0" width="48" height="15" uuid="1ddbcd29-e5d0-4a5a-b697-14fc33fed678"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subTotalJanuari}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-22" x="491" y="0" width="48" height="15" uuid="c9dfdc19-2028-472a-abcc-9e93f80aaeb3"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subTotalAgustus}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement key="textField-22" x="443" y="0" width="48" height="15" uuid="c2d9d81d-f61f-469f-b313-13f67fa59dcc"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subTotalJuli}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="17" splitType="Stretch">
+	<summary>
+		<band height="22" splitType="Stretch">
 			<staticText>
 				<reportElement key="staticText-24" positionType="Float" x="722" y="0" width="92" height="17" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="4d260316-528b-4988-83e4-bfab1fafe2a2"/>
 				<box leftPadding="2" rightPadding="4">
@@ -659,16 +656,10 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<text><![CDATA[** Selesai **]]></text>
 			</staticText>
 		</band>
-	</columnFooter>
-	<pageFooter>
-		<band splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>

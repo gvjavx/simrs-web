@@ -222,6 +222,8 @@ public class TipePegawaiAction extends BaseMasterAction {
     public String saveEdit(){
         logger.info("[TipePegawaiAction.saveEdit] start process >>>");
 
+
+
         try {
             TipePegawai tipePegawai = getTipePegawai();
             String userLogin = CommonUtil.userLogin();
@@ -237,16 +239,7 @@ public class TipePegawaiAction extends BaseMasterAction {
 
             tipePegawaiBoProxy.saveEdit(tipePegawai);
         }catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = tipePegawaiBoProxy.saveErrorMessage(e.getMessage(), "TipePegawaiBo.saveEdit");
-            } catch (GeneralBOException e1) {
-                logger.error("[TipePegawaiAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[TipePegawaiAction.saveEdit] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException(e.getMessage());
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -271,19 +264,9 @@ public class TipePegawaiAction extends BaseMasterAction {
             tipePegawai.setAction("U");
             tipePegawai.setFlag("N");
 
-
             tipePegawaiBoProxy.saveDelete(tipePegawai);
         }catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = tipePegawaiBoProxy.saveErrorMessage(e.getMessage(), "TipePegawaiBo.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[TipePegawaiAction.saveDelete] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[TipePegawaiAction.saveDelete] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            throw new GeneralBOException( e.getMessage());
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();

@@ -12,6 +12,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.model.Biodata;
+import com.neurix.hris.master.statusMutasi.bo.StatusMutasiBo;
+import com.neurix.hris.master.statusMutasi.model.StatusMutasi;
+import com.neurix.hris.transaksi.jadwalShiftKerja.bo.JadwalShiftKerjaBo;
 import com.neurix.hris.transaksi.mutasi.bo.MutasiBo;
 import com.neurix.hris.transaksi.mutasi.model.ItMutasiDocEntity;
 import com.neurix.hris.transaksi.mutasi.model.ItMutasiEntity;
@@ -375,6 +378,11 @@ public class MutasiAction extends BaseMasterAction{
             searchMutasi.setTanggalEfektif(CommonUtil.convertToTimestamp(searchMutasi.getStTanggalEfektif()));
         }
 
+        String branchId = CommonUtil.userBranchLogin();
+        if (branchId!=null){
+            searchMutasi.setBranchIdUser(branchId);
+        }
+
         try {
             listOfsearchMutasi = mutasiBoProxy.getByCriteria(searchMutasi);
         } catch (GeneralBOException e) {
@@ -442,7 +450,8 @@ public class MutasiAction extends BaseMasterAction{
             MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
             searchMutasi = mutasiBo.getDataReportMutasi(id);
             Branch branch = new Branch();
-            BigDecimal gajiPegawai = mutasiBo.getGajiPokok(searchMutasi.getLevelBaru());
+            String tahun ="";
+            BigDecimal gajiPegawai = mutasiBo.getGajiPokok(searchMutasi.getLevelBaru(),tahun);
             String stGajiPegawai = CommonUtil.numbericFormat(gajiPegawai,"###,###");
             try{
                 BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
@@ -513,62 +522,19 @@ public class MutasiAction extends BaseMasterAction{
         return SUCCESS;
     }
 
-    /*public String searchMutasiKualifikasi() {
-        logger.info("[MutasiAction.search] start process >>>");
-
-        Mutasi searchMutasi = getMutasi();
-        searchMutasi.setFlag("Y");
-        List<Mutasi> listOfsearchMutasi = new ArrayList();
-        List<Mutasi> finalSearchMutasi = new ArrayList();
-        try {
-            listOfsearchMutasi = mutasiBoProxy.getKualifikasi(searchMutasi);
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = mutasiBoProxy.saveErrorMessage(e.getMessage(), "MutasiBO.getByCriteria");
-            } catch (GeneralBOException e1) {
-                logger.error("[MutasiAction.search] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[MutasiAction.save] ," + "[" + logId + "] please inform to your admin.", e);
-            addActionError("Error, " + e + ", please inform to your admin" );
-            return ERROR;
-        }
-
-        if (listOfsearchMutasi.size()!=0){
-            Comparator<Mutasi> comparator = new Comparator<Mutasi>() {
-                @Override
-                public int compare(Mutasi left, Mutasi right) {
-                    String awal =left.getNip().replace("-","");
-                    String akhir =right.getNip().replace("-","");
-                    Long angka1 = Long.parseLong(awal);
-                    Long angka2 = Long.parseLong(akhir);
-                    return (int) (angka1-angka2);
-                }
-            };
-            Collections.sort(listOfsearchMutasi, comparator);
-            String nip="";
-            for (Mutasi mutasi:listOfsearchMutasi){
-                if (!mutasi.getNip().equalsIgnoreCase(nip)){
-                    finalSearchMutasi.add(mutasi);
-                    nip=mutasi.getNip();
-                }
-            }
-        }
-
-        HttpSession session = ServletActionContext.getRequest().getSession();
-
-        session.removeAttribute("listOfKualifikasi");
-        session.setAttribute("listOfKualifikasi", finalSearchMutasi);
-
-        return "input_kualifikasi";
-    }*/
-
     @Override
     public String initForm() {
         logger.info("[MutasiAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-
+        String branchId = CommonUtil.userBranchLogin();
+        Mutasi data = new Mutasi();
+        if (branchId!=null){
+            data.setBranchLamaId(branchId);
+            data.setBranchIdUser(branchId);
+        }else{
+            data.setBranchLamaId("");
+        }
+        setMutasi(data);
         session.removeAttribute("listOfResult");
         session.removeAttribute("listOfMutasi");
         logger.info("[MutasiAction.initForm] end process >>>");
@@ -673,8 +639,8 @@ public class MutasiAction extends BaseMasterAction{
 
     public String saveAnggotaAdd(String nip, String personName, String branchLamaId, String branchLamaName, String divisiLamaId, String divisiLamaName,
                                String positionLamaId, String positionLamaName, String pjsLama, String menggantikanId, String menggantikanNama, String branchBaruId, String branchBaruName,
-                               String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName, String pjsBaru, String status, String tipe, String levelLama,
-                                  String levelBaru, String levelLamaName, String levelBaruName){
+                               String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName, String pjsBaru, String status, String levelLama,
+                                  String levelBaru, String levelLamaName, String levelBaruName, String profesiLamaId, String profesiLamaName, String profesiBaruId, String profesiBaruName, String tipePegawai){
         logger.info("[SppdAction.saveAdd] start process >>>");
         String statusSave="";
         List<Mutasi> mutasiList = null;
@@ -682,6 +648,9 @@ public class MutasiAction extends BaseMasterAction{
         if(cekNip(nip)){
             try {
                 Mutasi mutasi = new Mutasi();
+                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                StatusMutasiBo statusMutasiBo = (StatusMutasiBo) ctx.getBean("statusMutasiBoProxy");
+
                 mutasi.setNip(nip);
                 mutasi.setNama(personName);
                 mutasi.setBranchLamaId(branchLamaId);
@@ -693,6 +662,8 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setLevelLama(levelLama);
                 mutasi.setLevelLamaName(levelLamaName);
                 mutasi.setPjsLama(pjsLama);
+                mutasi.setProfesiLamaId(profesiLamaId);
+                mutasi.setProfesiLamaName(profesiLamaName);
 
                 if (menggantikanId!=null){
                     if (!menggantikanId.equalsIgnoreCase("-")){
@@ -716,32 +687,28 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setLevelBaru(levelBaru);
                 mutasi.setLevelBaruName(levelBaruName);
                 mutasi.setPjs(pjsBaru);
+                mutasi.setProfesiBaruId(profesiBaruId);
+                mutasi.setProfesiBaruName(profesiBaruName);
+                mutasi.setTipePegawai(tipePegawai);
 
                 mutasi.setStatus(status);
 
-                if (!("").equalsIgnoreCase(status)){
-                    if ("M".equalsIgnoreCase(status)){
-                        mutasi.setStatusName("Move");
-                    }
-                    else if ("R".equalsIgnoreCase(status)){
-                        mutasi.setStatusName("Resign");
-                    }
-                    else if ("P".equalsIgnoreCase(status)){
-                        mutasi.setStatusName("Pensiun");
-                    }
-                    else{
-                        mutasi.setStatusName("Move Holding");
-                    }
+                if (("").equalsIgnoreCase(levelBaru)){
+                    mutasi.setLevelBaru(levelLama);
                 }
-                mutasi.setTipeMutasi(tipe);
-                if (!("").equalsIgnoreCase(tipe)){
-                    if ("MT".equalsIgnoreCase(tipe)){
-                        mutasi.setTipeMutasiName("Mutasi");
-                    }else if ("RT".equalsIgnoreCase(tipe)){
-                        mutasi.setTipeMutasiName("Rotasi");
-                    }
+                if (("").equalsIgnoreCase(levelBaruName)){
+                    mutasi.setLevelBaruName(levelLamaName);
                 }
 
+                if (!("").equalsIgnoreCase(status)){
+                    StatusMutasi search = new StatusMutasi();
+                    search.setFlag("Y");
+                    search.setStatusMutasiId(status);
+                    List<StatusMutasi> statusMutasiList = statusMutasiBo.getByCriteria(search);
+                    for (StatusMutasi statusMutasi : statusMutasiList){
+                        mutasi.setStatusName(statusMutasi.getStatusMutasiName());
+                    }
+                }
 
                 //save to session
                 if (!("").equalsIgnoreCase(status)){
@@ -791,7 +758,8 @@ public class MutasiAction extends BaseMasterAction{
 
     public boolean saveAnggotaEdit(String nipOld, String nip, String personName, String branchLamaId, String branchLamaName,String divisiLamaId, String divisiLamaName,
                                    String positionLamaId, String positionLamaName, String pjsLama, String menggantikanId, String menggantikanNama, String branchBaruId,
-                                   String branchBaruName, String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName,String pjsBaru, String status){
+                                   String branchBaruName, String divisiBaruId, String divisiBaruName, String positionBaruId, String positionBaruName,String pjsBaru, String status,
+                                   String levelLamaId, String levelBaruId, String levelLamaName, String levelBaruName, String profesiLamaId, String profesiLamName, String profesiBaruId, String profesiBaruName, String tipePegawai){
         logger.info("[KeluargaAction.search] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Mutasi> mutasiList = (List<Mutasi>) session.getAttribute("listOfMutasi");
@@ -825,6 +793,16 @@ public class MutasiAction extends BaseMasterAction{
                             mutasi.setPositionBaruName(positionBaruName);
                             mutasi.setPjs(pjsBaru);
                             mutasi.setStatus(status);
+
+                            mutasi.setLevelLama(levelLamaId);
+                            mutasi.setLevelLamaName(levelLamaName);
+                            mutasi.setLevelBaru(levelBaruId);
+                            mutasi.setLevelBaruName(levelBaruName);
+                            mutasi.setProfesiLamaId(profesiLamaId);
+                            mutasi.setProfesiLamaName(profesiLamName);
+                            mutasi.setProfesiBaruId(profesiBaruId);
+                            mutasi.setProfesiBaruName(profesiBaruName);
+                            mutasi.setTipePegawai(tipePegawai);
 
                             listHasil.add(mutasi);
                         }else{

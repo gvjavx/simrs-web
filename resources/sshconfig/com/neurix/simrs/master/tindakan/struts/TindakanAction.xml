@@ -73,31 +73,8 @@
                 class="com.neurix.simrs.master.tindakan.action.TindakanAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/master/tindakan/SearchTindakan.jsp</result>
-            <result name="success">/pages/com/neurix/simrs/master/tindakan/SearchTindakan.jsp</result>
-            <result name="input">/pages/com/neurix/simrs/master/tindakan/SearchTindakan.jsp</result>
-            <result name="init_combo">/pages/com/neurix/simrs/master/tindakan/SearchTindakan.jsp</result>
-            <result name="init_add">/pages/com/neurix/simrs/master/tindakan/addTindakan.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/simrs/master/tindakan/addTindakan.jsp</result>
-            <result name="error">/pages/com/neurix/simrs/master/tindakan/addTindakan.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/master/tindakan/searchTindakan.jsp</result>
 
-            <result name="init_edit">/pages/com/neurix/simrs/master/tindakan/editTindakan.jsp</result>
-            <result name="failure">/pages/com/neurix/simrs/master/tindakan/editTindakan.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/simrs/master/tindakan/editTindakan.jsp</result>
-
-            <result name="success_save_delete">/pages/com/neurix/simrs/master/tindakan/deleteTindakan.jsp</result>
-            <result name="init_delete">/pages/com/neurix/simrs/master/tindakan/deleteTindakan.jsp</result>
-            <!--<result name="error" type="httpheader">-->
-            <!--<param name="status">504</param>-->
-            <!--<param name="headers.message">${actionErrors}</param>-->
-            <!--</result>-->
-        </action>
-
-
-        <action name="paging_displaytag_tindakan"
-                class="com.neurix.simrs.master.tindakan.action.TindakanAction" method="paging">
-            <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/simrs/master/tindakan/SearchTindakan.jsp</result>
         </action>
 
     </package>

@@ -259,6 +259,67 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
         }
         return strukturJabatanList;
     }
+
+    //tambahan reza
+    public List<StrukturJabatan> searchStrukturRelationUser(String strukturJabatanid,String branchId) throws HibernateException{
+        List<StrukturJabatan> strukturJabatanList = new ArrayList<>();
+
+//        String query = "SELECT itPosisi.nip,\n" +
+//                "       pegawai.nama_pegawai,\n" +
+//                "       struktur.parent_id\n" +
+//                "FROM it_hris_pegawai_position itPosisi\n" +
+//                "LEFT JOIN im_hris_pegawai pegawai ON pegawai.nip = itPosisi.nip\n" +
+//                "LEFT JOIN im_hris_struktur_jabatan struktur ON struktur.position_id = itPosisi.position_id\n" +
+//                "AND struktur.branch_id = itPosisi.branch_id\n" +
+//                "WHERE itPosisi.branch_id = :branchId\n" +
+//                "  AND itPosisi.nip =:strukturId\n" +
+//                "  AND itPosisi.flag='Y'\n" +
+//                "  AND struktur.flag='Y'";
+
+        String query = "SELECT * FROM im_hris_struktur_jabatan WHERE struktur_jabatan_id = :strukturId AND branch_id = :branchId AND flag = 'Y'";
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("strukturId", strukturJabatanid)
+                .setParameter("branchId",branchId)
+                .list();
+
+
+        for (Object[] row : results) {
+            StrukturJabatan result  = new StrukturJabatan();
+            result.setParentId((String) row[2]);
+
+            strukturJabatanList.add(result);
+        }
+        return strukturJabatanList;
+    }
+
+
+    public List<StrukturJabatan> searchStruktur(String positionId,String branchId) throws HibernateException{
+        List<StrukturJabatan> strukturJabatanList = new ArrayList<>();
+
+        String query = "SELECT * FROM im_hris_struktur_jabatan WHERE position_Id = :positionId AND branch_id = :branchId AND flag = 'Y'";
+
+        List<Object[]> results = new ArrayList<Object[]>();
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .setParameter("positionId", positionId)
+                .setParameter("branchId",branchId)
+                .list();
+
+
+        for (Object[] row : results) {
+            StrukturJabatan result  = new StrukturJabatan();
+            result.setParentId((String) row[2]);
+            result.setPositionId((String) row[8]);
+
+            strukturJabatanList.add(result);
+        }
+        return strukturJabatanList;
+    }
+
+
     public List<ImStrukturJabatanEntity> getListStruktur(String Branch, String Posisi) throws HibernateException {
         List<ImStrukturJabatanEntity> results = new ArrayList<ImStrukturJabatanEntity>();
         if(Branch.equals("")){
@@ -506,6 +567,45 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
         return listOfResult;
     }
 
+    public List<ImStrukturJabatanEntity> getIdStrukturJabatanBawah(String idParent){
+        List<ImStrukturJabatanEntity> listOfResult = new ArrayList<ImStrukturJabatanEntity>();
+        List<Object[]> results = new ArrayList<Object[]>();
+        String query = "select \n" +
+                "\tjabatan.struktur_jabatan_id,\n" +
+                "\tjabatan.level,\n" +
+                "\tjabatan.parent_id,\n" +
+                "\tjabatan.branch_id,\n" +
+                "\tjabatan.position_id,\n" +
+                "\tposisi.position_name,\n" +
+                "\tposisiPegawai.nip,\n" +
+                "\tposisi.kelompok_id\n" +
+                "from\n" +
+                "\tim_hris_struktur_jabatan jabatan\n" +
+                "\tleft join im_position posisi on posisi.position_id = jabatan.position_id\n" +
+                "\tleft join it_hris_pegawai_position posisiPegawai on posisiPegawai.branch_id = jabatan.branch_id and posisiPegawai.position_id = jabatan.position_id\n" +
+                "where\n" +
+                "\tjabatan.parent_id ilike '"+idParent+"%'\n" +
+                "\tand jabatan.flag = 'Y'\n";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for (Object[] row : results) {
+            ImStrukturJabatanEntity result  = new ImStrukturJabatanEntity();
+            result.setStrukturJabatanId((String) row[0]);
+            result.setLevel(Long.valueOf(row[1].toString()));
+            result.setParentId((String) row[2]);
+            result.setBranchId((String) row[3]);
+            result.setPositionId((String) row[4]);
+            result.setPositionName((String) row[5]);
+            result.setNip((String) row[6]);
+            result.setKelompokId((String) row[7]);
+            listOfResult.add(result);
+        }
+        return listOfResult;
+    }
+
     public String getNamaDirektur(){
         String nama = "";
         List<Object[]> results = new ArrayList<Object[]>();
@@ -533,6 +633,7 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
     public List<ImStrukturJabatanEntity> getStrukturJabatanSearch(String branchId, String posisiId, String parentId, String nip){
         List<ImStrukturJabatanEntity> listOfResult = new ArrayList<ImStrukturJabatanEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
+        List<Object[]> results2 = new ArrayList<Object[]>();
         String strPosisi = "";
         String strParent = "";
         String strNip = "";
@@ -566,16 +667,30 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
                 .createSQLQuery(query)
                 .list();
 
-
         for (Object[] row : results) {
             ImStrukturJabatanEntity result  = new ImStrukturJabatanEntity();
+
             result.setStrukturJabatanId((String) row[0]);
             result.setLevel(Long.valueOf(row[1].toString()));
             result.setParentId((String) row[2]);
             result.setBranchId((String) row[7]);
             result.setPositionId((String) row[8]);
-            result.setNip((String) row[11]);
-            result.setNamaPegawai((String) row[12]);
+
+            if ((String) row[11]!=null){
+                result.setNip((String) row[11]);
+                result.setNamaPegawai((String) row[12]);
+            } else{
+                String position = (String) row[8];
+                String queryPlt = "select * from im_hris_pegawai where position_plt_id='"+position+"'";
+                results2 = this.sessionFactory.getCurrentSession()
+                        .createSQLQuery(queryPlt)
+                        .list();
+
+                for (Object[] obj : results2){
+                    result.setNip((String) obj[0]);
+                    result.setNamaPegawai((String) obj[1]);
+                }
+            }
             result.setPositionName((String) row[13]);
 
             listOfResult.add(result);

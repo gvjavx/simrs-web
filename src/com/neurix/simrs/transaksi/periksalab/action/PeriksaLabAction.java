@@ -9,14 +9,18 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
+import com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail;
+import com.neurix.simrs.transaksi.profilrekammedisrj.bo.RekamMedisRawatJalanBo;
+import com.neurix.simrs.transaksi.profilrekammedisrj.model.RekamMedisRawatJalan;
 import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsRiwayatPembelianObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.RiwayatTransaksiObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -24,10 +28,19 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Array;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -47,6 +60,15 @@ public class PeriksaLabAction extends BaseMasterAction {
     private BranchBo branchBoProxy;
     private String id;
     private String lab;
+    private String ket;
+
+    public String getKet() {
+        return ket;
+    }
+
+    public void setKet(String ket) {
+        this.ket = ket;
+    }
 
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
@@ -109,6 +131,7 @@ public class PeriksaLabAction extends BaseMasterAction {
 
         String id = getId();
         String lab = getLab();
+        String keterangan = getKet();
         String jk = "";
         String userArea = CommonUtil.userBranchLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -153,15 +176,20 @@ public class PeriksaLabAction extends BaseMasterAction {
                 periksaLab.setUrlKtp(checkup.getUrlKtp());
                 periksaLab.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
                 periksaLab.setIdPeriksaLab(lab);
+                periksaLab.setKeterangan(keterangan);
+                periksaLab.setDiagnosa(checkup.getDiagnosa()+"-"+checkup.getNamaDiagnosa());
+                periksaLab.setMetodePembayaran(checkup.getMetodePembayaran());
 
                 PeriksaLab periksalb = new PeriksaLab();
                 try {
                     periksalb = periksaLabBoProxy.getNamaLab(lab);
-                }catch (HibernateException e){
-                    logger.error("Found Error "+e.getMessage());
+                } catch (HibernateException e) {
+                    logger.error("Found Error " + e.getMessage());
                 }
-                if(periksalb.getIdPeriksaLab() != null){
+                if (periksalb.getIdPeriksaLab() != null) {
                     periksaLab.setKategoriLabName(periksalb.getKategoriLabName());
+                    periksaLab.setIdLab(periksalb.getIdLab());
+                    periksaLab.setLabName(periksalb.getLabName());
                 }
 
                 setPeriksaLab(periksaLab);
@@ -177,8 +205,8 @@ public class PeriksaLabAction extends BaseMasterAction {
 
                 try {
                     periksaLabBoProxy.saveEditStatusPeriksa(periksa);
-                }catch (GeneralBOException e){
-                    logger.error("Found Error when "+e.getMessage());
+                } catch (GeneralBOException e) {
+                    logger.error("Found Error when " + e.getMessage());
                 }
 
             } else {
@@ -213,28 +241,19 @@ public class PeriksaLabAction extends BaseMasterAction {
     @Override
     public String search() {
         logger.info("[PeriksaLabAction.search] start process >>>");
-
         PeriksaLab periksaLab = getPeriksaLab();
         List<PeriksaLab> listPeriksaLabList = new ArrayList();
-
         // hanya kategori lab laboratorium saja
-        periksaLab.setIdKategoriLab("KAL00000002");
+        periksaLab.setIdKategoriLab("lab");
         periksaLab.setBranchId(CommonUtil.userBranchLogin());
-
         try {
             listPeriksaLabList = periksaLabBoProxy.getSearchLab(periksaLab);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PeriksaLabAction.save] Error when searching periksa lab by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[PeriksaLabAction.save] Error when searching periksa lab by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
         }
-
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listPeriksaLabList);
-
         logger.info("[PeriksaLabAction.search] end process <<<");
         return "search";
     }
@@ -270,110 +289,164 @@ public class PeriksaLabAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveOrderLab(String idDetailCheckup, String idLab, List<String> idParameter) {
+    public CrudResponse saveOrderLab(String idDetailCheckup, String idLab, List<String> idParameter, String ttd, String idDokter, String idKategori, String waktuPending) {
         logger.info("[PeriksaLabAction.saveOrderLab] start process >>>");
+        CrudResponse response = new CrudResponse();
         try {
             String userLogin = CommonUtil.userLogin();
-            String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            PeriksaLab periksaLab = new PeriksaLab();
-
-
-            periksaLab.setIdDetailCheckup(idDetailCheckup);
-            periksaLab.setIdLab(idLab);
-            periksaLab.setCreatedWho(userLogin);
-            periksaLab.setLastUpdate(updateTime);
-            periksaLab.setCreatedDate(updateTime);
-            periksaLab.setLastUpdateWho(userLogin);
-            periksaLab.setAction("C");
-            periksaLab.setFlag("Y");
-
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
 
-            periksaLabBo.saveAddWithParameter(periksaLab, idParameter);
+            PeriksaLab periksaLab = new PeriksaLab();
+            periksaLab.setIdDetailCheckup(idDetailCheckup);
+            periksaLab.setIdLab(idLab);
+            periksaLab.setAction("C");
+            periksaLab.setFlag("Y");
+            periksaLab.setIdDokterPengirim(idDokter);
+            periksaLab.setIdKategoriLab(idKategori);
+            if (waktuPending != null && !"".equalsIgnoreCase(waktuPending)) {
+                periksaLab.setIsPending("Y");
+                periksaLab.setLastUpdate(Timestamp.valueOf(waktuPending));
+                periksaLab.setCreatedDate(Timestamp.valueOf(waktuPending));
+                periksaLab.setCreatedWho(userLogin);
+                periksaLab.setLastUpdateWho(userLogin);
+            } else {
+                periksaLab.setCreatedWho(userLogin);
+                periksaLab.setLastUpdate(updateTime);
+                periksaLab.setCreatedDate(updateTime);
+                periksaLab.setLastUpdateWho(userLogin);
+            }
+            if (!"".equalsIgnoreCase(ttd) && ttd != null) {
+                try {
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = decoder.decodeBuffer(ttd);
+                    String fileName = idDetailCheckup + "-dokter_pengirim.png";
+                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                        response.setStatus("error");
+                        response.setMsg("Buffered Image is null");
+                    } else {
+                        File f = new File(uploadFile);
+                        ImageIO.write(image, "png", f);
+                        periksaLab.setTtdPengirim(fileName);
+                    }
+                } catch (IOException e) {
+                    response.setStatus("error");
+                    response.setMsg("Found Error, " + e.getMessage());
+                }
+            }
+
+            response = periksaLabBo.saveAddWithParameter(periksaLab, idParameter);
+            insertProfilRJ(idDetailCheckup);
 
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PeriksaLabAction.saveOrderLab] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setMsg(e.getMessage());
+            logger.error("[PeriksaLabAction.saveOrderLab] Error when adding item ,Found problem when saving add data, please inform to your admin." + e.getMessage());
         }
 
         logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
-        return SUCCESS;
+        return response;
     }
 
-    public List<PeriksaLab> listOrderLab(String idDetailCheckup, String lab) {
+    public CrudResponse insertProfilRJ(String idDetailCheckup) {
+        CrudResponse response = new CrudResponse();
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+            RekamMedisRawatJalanBo rekamMedisRawatJalanBo = (RekamMedisRawatJalanBo) ctx.getBean("rekamMedisRawatJalanBoProxy");
+            List<RekamMedisRawatJalan> rekamMedisRawatJalanList = new ArrayList<>();
+            try {
+                RekamMedisRawatJalan rekamMedisRawatJalan = new RekamMedisRawatJalan();
+                rekamMedisRawatJalan.setIdDetailCheckup(idDetailCheckup);
+                rekamMedisRawatJalanList = rekamMedisRawatJalanBo.getByCriteria(rekamMedisRawatJalan);
+                if (rekamMedisRawatJalanList.size() > 0) {
+                    RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
+                    rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setPemeriksaanFisik(checkupBo.getPenunjangMedis(idDetailCheckup, null));
+                    rawatJalan.setDiagnosa(checkupBo.getDiagnosaPasien(idDetailCheckup));
+                    rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setLastUpdateWho(CommonUtil.userLogin());
+                    rawatJalan.setAction("U");
+                    response = rekamMedisRawatJalanBo.saveEdit(rawatJalan);
+                } else {
+                    RekamMedisRawatJalan rawatJalan = new RekamMedisRawatJalan();
+                    rawatJalan.setWaktu(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setPemeriksaanFisik(checkupBo.getPenunjangMedis(idDetailCheckup, null));
+                    rawatJalan.setDiagnosa(checkupBo.getDiagnosaPasien(idDetailCheckup));
+                    rawatJalan.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setLastUpdateWho(CommonUtil.userLogin());
+                    rawatJalan.setCreatedWho(CommonUtil.userLogin());
+                    rawatJalan.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+                    rawatJalan.setIdDetailCheckup(idDetailCheckup);
+                    rawatJalan.setAction("C");
+                    rawatJalan.setFlag("Y");
+                    response = rekamMedisRawatJalanBo.saveAdd(rawatJalan);
+                }
+            } catch (GeneralBOException e) {
+                response.setStatus("error");
+                response.setMsg("error");
+            }
+        }
+        return response;
+    }
 
+    public List<PeriksaLab> listOrderLab(String idDetailCheckup) {
         logger.info("[PeriksaLabAction.listOrderLab] start process >>>");
         List<PeriksaLab> periksaLabList = new ArrayList<>();
         PeriksaLab periksaLab = new PeriksaLab();
         periksaLab.setIdDetailCheckup(idDetailCheckup);
-        periksaLab.setIdPeriksaLab(lab);
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
-
         if (!"".equalsIgnoreCase(idDetailCheckup)) {
             try {
                 periksaLabList = periksaLabBo.getByCriteria(periksaLab);
             } catch (GeneralBOException e) {
                 logger.error("[PeriksaLabAction.listOrderLab] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
-                addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             }
-
-            logger.info("[PeriksaLabAction.listOrderLab] start process >>>");
-            return periksaLabList;
-
-        } else {
-            return null;
         }
+        logger.info("[PeriksaLabAction.listOrderLab] start process >>>");
+        return periksaLabList;
     }
 
-    public List<Dokter> getListDokterTeamByNoDetail(String idDetailCheckup){
+    public List<Dokter> getListDokterTeamByNoDetail(String idDetailCheckup) {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
 
         return checkupDetailBo.getListDokterByDetailCheckup(idDetailCheckup);
     }
 
-    public List<Dokter> getListDokterLabRadiologi(String tipe){
+    public List<Dokter> getListDokterLabRadiologi(String tipe) {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
         return periksaLabBo.getListDokterLabRadiologi(tipe);
     }
 
-    public List<PeriksaLabDetail> listParameterPemeriksaan(String idPeriksaLab, String kategoriName) {
-
+    public List<PeriksaLabDetail> listParameterPemeriksaan(String idPeriksaLab) {
         logger.info("[PeriksaLabAction.listParameterPemeriksaan] start process >>>");
         List<PeriksaLabDetail> periksaLabDetailList = new ArrayList<>();
-
         PeriksaLabDetail periksaLabDetail = new PeriksaLabDetail();
         periksaLabDetail.setIdPeriksaLab(idPeriksaLab);
-        periksaLabDetail.setKategoriName(kategoriName);
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
-
-        if (!"".equalsIgnoreCase(idPeriksaLab) && !"".equalsIgnoreCase(kategoriName)) {
+        if (idPeriksaLab != null && !"".equalsIgnoreCase(idPeriksaLab)) {
             try {
                 periksaLabDetailList = periksaLabBo.getListParameterLab(periksaLabDetail);
             } catch (GeneralBOException e) {
                 logger.error("[PeriksaLabAction.listParameterPemeriksaan] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
-                addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             }
 
-            logger.info("[PeriksaLabAction.listParameterPemeriksaan] start process >>>");
-            return periksaLabDetailList;
-
-        } else {
-            return null;
         }
+        logger.info("[PeriksaLabAction.listParameterPemeriksaan] start process >>>");
+        return periksaLabDetailList;
     }
 
-    public String saveEditParameterLab(String idPeriksaLabDetail, String hasil, String keterangan) {
+    public CrudResponse saveEditParameterLab(String idPeriksaLabDetail, String hasil, String keterangan) {
         logger.info("[PeriksaLabAction.saveEditParameterLab] start process >>>");
+        CrudResponse response = new CrudResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
@@ -391,17 +464,14 @@ public class PeriksaLabAction extends BaseMasterAction {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
 
-            periksaLabBo.saveUpdateHasilLab(periksaLabDetail);
+            response = periksaLabBo.saveUpdateHasilLab(periksaLabDetail);
 
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PeriksaLabAction.saveEditParameterLab] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            logger.error("[PeriksaLabAction.saveEditParameterLab] Error when adding item Found problem when saving add data, please inform to your admin.", e);
         }
 
         logger.info("[PeriksaLabAction.saveEditParameterLab] End process >>>");
-        return SUCCESS;
+        return response;
     }
 
     private HeaderCheckup getHeaderCheckup(String noCheckup) {
@@ -470,14 +540,13 @@ public class PeriksaLabAction extends BaseMasterAction {
         return result;
     }
 
-    public String editOrderLab(String idPeriksaLab, String idLab, List<String> idParameter) {
+    public CrudResponse editOrderLab(String idPeriksaLab, String idLab, List<String> idParameter) {
         logger.info("[PeriksaLabAction.editOrderLab] start process >>>");
+        CrudResponse response = new CrudResponse();
         try {
             String userLogin = CommonUtil.userLogin();
-            String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             PeriksaLab periksaLab = new PeriksaLab();
-
             periksaLab.setIdPeriksaLab(idPeriksaLab);
             periksaLab.setIdLab(idLab);
             periksaLab.setCreatedDate(updateTime);
@@ -485,48 +554,146 @@ public class PeriksaLabAction extends BaseMasterAction {
             periksaLab.setLastUpdate(updateTime);
             periksaLab.setLastUpdateWho(userLogin);
             periksaLab.setAction("U");
-
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
-
-            periksaLabBo.saveEdit(periksaLab, idParameter);
-
+            response = periksaLabBo.saveEdit(periksaLab, idParameter);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PeriksaLabAction.editOrderLab] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setStatus("error");
+            response.setMsg("Error ketika edit lab...!, " + e.getMessage());
+            logger.error("[PeriksaLabAction.editOrderLab] Error when adding item , Found problem when saving add data, please inform to your admin.", e);
         }
-
         logger.info("[PeriksaLabAction.editOrderLab] End process >>>");
-        return SUCCESS;
+        return response;
     }
 
-    public CheckResponse saveEditDokterLab(String idPeriksaLab, String idDokter) {
+    public CheckResponse saveEditDokterLab(String idPeriksaLab, String idDokter, String urlImg, String keterangan, String data, String ttdDokter, String ttdPetugas, String jsonParams) {
         logger.info("[PeriksaLabAction.saveEditDokterLab] start process >>>");
         CheckResponse response = new CheckResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            PeriksaLab periksaLab = new PeriksaLab();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
 
+            PeriksaLab periksaLab = new PeriksaLab();
             periksaLab.setIdPeriksaLab(idPeriksaLab);
             periksaLab.setIdDokter(idDokter);
             periksaLab.setLastUpdate(updateTime);
             periksaLab.setLastUpdateWho(userLogin);
             periksaLab.setAction("U");
+            periksaLab.setIdPemeriksa(CommonUtil.userIdLogin());
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+            if (urlImg != null && !"".equalsIgnoreCase(urlImg)) {
+                try {
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = decoder.decodeBuffer(urlImg);
+                    String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                    String fileName = idPeriksaLab + "-" + patten + ".png";
+                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-            periksaLabBo.saveDokterLab(periksaLab);
-            response.setStatus("success");
-            response.setMessage("Berhasil");
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                        response.setStatus("error");
+                        response.setMessage("Buffered Image is null");
+                    } else {
+                        File f = new File(uploadFile);
+                        ImageIO.write(image, "png", f);
+                        periksaLab.setUrlImg(fileName);
+                    }
+                } catch (IOException e) {
+                    response.setStatus("error");
+                    response.setMessage("IO Error" + e.getMessage());
+                    return response;
+                }
+            }
 
+            if (ttdDokter != null && !"".equalsIgnoreCase(ttdDokter)) {
+                try {
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = decoder.decodeBuffer(ttdDokter);
+                    String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                    String fileName = idPeriksaLab + "-ttd_dokter-" + patten + ".png";
+                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                        response.setStatus("error");
+                        response.setMessage("Buffered Image is null");
+                    } else {
+                        File f = new File(uploadFile);
+                        ImageIO.write(image, "png", f);
+                        periksaLab.setTtdDokter(fileName);
+                    }
+                } catch (IOException e) {
+                    response.setStatus("error");
+                    response.setMessage("IO Error" + e.getMessage());
+                    return response;
+                }
+            }
+            if (ttdPetugas != null && !"".equalsIgnoreCase(ttdPetugas)) {
+                try {
+                    BASE64Decoder decoder = new BASE64Decoder();
+                    byte[] decodedBytes = decoder.decodeBuffer(ttdPetugas);
+                    String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                    String fileName = idPeriksaLab + "-ttd_petugas-" + patten + ".png";
+                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                        response.setStatus("error");
+                        response.setMessage("Buffered Image is null");
+                    } else {
+                        File f = new File(uploadFile);
+                        ImageIO.write(image, "png", f);
+                        periksaLab.setTtdPetugas(fileName);
+                    }
+                } catch (IOException e) {
+                    response.setStatus("error");
+                    response.setMessage("IO Error" + e.getMessage());
+                    return response;
+                }
+            }
+            List<PeriksaLabDetail> detailList = new ArrayList<>();
+            if(jsonParams != null && !"".equalsIgnoreCase(jsonParams)){
+                try {
+                    JSONArray json = new JSONArray(jsonParams);
+                    if(json != null){
+                        for (int i = 0; i < json.length(); i++) {
+                            JSONObject obj = json.getJSONObject(i);
+                            PeriksaLabDetail detail = new PeriksaLabDetail();
+                            detail.setIdPeriksaLabDetail(obj.getString("id_periksa_lab"));
+                            detail.setHasil(obj.getString("hasil"));
+                            detail.setKeteranganPeriksa(obj.getString("kesan"));
+                            detailList.add(detail);
+                        }
+                    }
+                } catch (JSONException e) {
+                    response.setStatus("error");
+                    response.setMessage("Error" + e.getMessage());
+                }
+            }
+            response = periksaLabBo.saveDokterLab(periksaLab, detailList);
+            if ("just_lab".equalsIgnoreCase(keterangan)) {
+                if ("success".equalsIgnoreCase(response.getStatus())) {
+                    CheckupDetailAction detailAction = new CheckupDetailAction();
+                    CrudResponse res = new CrudResponse();
+                    res = detailAction.closeTraksaksiPasien(data);
+                    if ("success".equalsIgnoreCase(res.getStatus())) {
+                        response.setStatus("success");
+                        response.setMessage("Berhasil");
+                    } else {
+                        response.setStatus("error");
+                        response.setMessage("Error" + res.getMsg());
+                    }
+                }
+            }
         } catch (GeneralBOException e) {
             response.setStatus("error");
-            response.setMessage("Error"+e.getMessage());
+            response.setMessage("Error" + e.getMessage());
         }
 
         logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
@@ -543,16 +710,17 @@ public class PeriksaLabAction extends BaseMasterAction {
         String branch = CommonUtil.userBranchLogin();
         String logo = "";
 
-        switch (branch) {
-            case CommonConstant.BRANCH_RS01:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS01;
-                break;
-            case CommonConstant.BRANCH_RS02:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS02;
-                break;
-            case CommonConstant.BRANCH_RS03:
-                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS03;
-                break;
+        String branchName = CommonUtil.userBranchNameLogin();
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
         }
 
         HeaderCheckup headerCheckup = getHeaderCheckup(headerDetailCheckup.getNoCheckup());
@@ -626,23 +794,31 @@ public class PeriksaLabAction extends BaseMasterAction {
             PeriksaLab periksalb = new PeriksaLab();
             try {
                 periksalb = periksaLabBoProxy.getNamaLab(lab);
-            }catch (HibernateException e){
-                logger.error("Found Error "+e.getMessage());
+            } catch (HibernateException e) {
+                logger.error("Found Error " + e.getMessage());
             }
 
-            if(periksalb.getIdPeriksaLab() != null){
-                reportParams.put("title", "Hasil Periksa Lab "+periksalb.getKategoriLabName());
+            if (periksalb.getIdPeriksaLab() != null) {
+                reportParams.put("title", "Hasil Periksa Lab " + periksalb.getLabName());
             }
 
             reportParams.put("area", CommonUtil.userAreaName());
             reportParams.put("unit", CommonUtil.userBranchNameLogin());
             reportParams.put("idPasien", checkup.getIdPasien());
             reportParams.put("idPeriksaLab", lab);
+            reportParams.put("id", lab);
             reportParams.put("logo", logo);
             reportParams.put("nik", checkup.getNoKtp());
             reportParams.put("nama", checkup.getNama());
-            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-            reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            if(checkup.getTglLahir() != null){
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            }
+            if(periksalb.getCreatedDate() != null){
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(periksalb.getCreatedDate());
+                reportParams.put("tglFoto", formatDate);
+            }
+
             if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
                 jk = "Laki-Laki";
             } else {
@@ -670,6 +846,78 @@ public class PeriksaLabAction extends BaseMasterAction {
             }
         }
 
-        return "print_lab";
+        if("label".equalsIgnoreCase(getKet())){
+            return "print_label";
+        }else{
+            return "print_lab";
+        }
     }
+
+    public CrudResponse saveUpdatePemeriksaan(String idLabPeriksa, List<String> idParameter, String ket) {
+        CrudResponse response = new CrudResponse();
+        logger.info("[PeriksaLabAction.saveOrderLab] start process >>>");
+        try {
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            PeriksaLab periksaLab = new PeriksaLab();
+            periksaLab.setIdPeriksaLab(idLabPeriksa);
+            periksaLab.setCreatedWho(userLogin);
+            periksaLab.setLastUpdate(updateTime);
+            periksaLab.setCreatedDate(updateTime);
+            periksaLab.setLastUpdateWho(userLogin);
+            periksaLab.setAction("C");
+            periksaLab.setFlag("Y");
+            periksaLab.setKeterangan(ket);
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+
+            response = periksaLabBo.saveUpdateParameter(periksaLab, idParameter);
+
+        } catch (GeneralBOException e) {
+            response.setStatus("error");
+            response.setMsg("Found error");
+        }
+
+        logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
+        return response;
+    }
+
+    public List<PeriksaLab> getListLab(String noChekcup) {
+        logger.info("[PeriksaLabAction.getListLab] start process >>>");
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+
+        if (!"".equalsIgnoreCase(noChekcup) && noChekcup != null) {
+            try {
+                periksaLabList = periksaLabBo.getListLab(noChekcup);
+            } catch (GeneralBOException e) {
+                logger.error("[PeriksaLabAction.getListLab] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+        }
+        logger.info("[PeriksaLabAction.getListLab] end process >>>");
+        return periksaLabList;
+    }
+
+    public List<PeriksaLab> pushNotifLab(String kategori) {
+        logger.info("[PeriksaLabAction.getListLab] start process >>>");
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+
+        if (!"".equalsIgnoreCase(kategori) && kategori != null) {
+            try {
+                periksaLabList = periksaLabBo.pushListLab(kategori, branchId);
+            } catch (GeneralBOException e) {
+                logger.error("[PeriksaLabAction.getListLab] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+        }
+        logger.info("[PeriksaLabAction.getListLab] end process >>>");
+        return periksaLabList;
+    }
+
 }

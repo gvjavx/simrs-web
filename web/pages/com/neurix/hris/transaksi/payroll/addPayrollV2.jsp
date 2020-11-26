@@ -121,63 +121,13 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'PR':'Payroll', 'T':'THR', 'PD':'Pendidikan', 'R':'Rapel',
-                                        'JP':'Jasprod', 'JB':'Jubileum', 'PN':'Pensiun'}" id="tipe" name="payroll.tipe"
+                                                        <s:select list="#{'PR':'Payroll', 'T':'THR', 'CT':'Cuti Tahunan', 'CP':'Cuti Panjang', 'IN':'Insentif',
+                                        'JP':'Jasa Operasional', 'JB':'Penghargaan Masa Kerja', 'PN':'Santunan Hari Tua'}" id="tipe" name="payroll.tipe"
                                                                   cssClass="form-control" disabled="true" />
                                                         <s:hidden name="payroll.tipe" />
                                                     </table>
 
                                                 </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Nama :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield cssStyle="display: none" id="personName1" name="payroll.nip" readonly="false" cssClass="form-control"/>
-                                                        <s:textfield  id="personName2" readonly="false" cssClass="form-control"/>
-                                                        <s:textfield cssStyle="display: none" id="personName" name="payroll.name" readonly="false" cssClass="form-control"/>
-                                                    </table>
-                                                </td>
-                                                <script type='text/javascript'>
-                                                    var functions, mapped;
-                                                    $('#personName2').typeahead({
-                                                        minLength: 1,
-                                                        source: function (query, process) {
-                                                            functions = [];
-                                                            mapped = {};
-
-                                                            var data = [];
-                                                            dwr.engine.setAsync(false);
-                                                            MedicalRecordAction.initComboPersonil(query,'', function (listdata) {
-                                                                data = listdata;
-                                                            });
-                                                            $.each(data, function (i, item) {
-                                                                var labelItem =item.nip+ " || "+ item.namaPegawai;
-                                                                var labelNip = item.nip;
-                                                                mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem, branchId : item.branch, divisiId: item.divisi, positionId : item.positionId };
-                                                                functions.push(labelItem);
-                                                            });
-
-
-                                                            process(functions);
-                                                        },
-
-                                                        updater: function (item) {
-                                                            var selectedObj = mapped[item];
-                                                            var namaAlat = selectedObj.label;
-                                                            document.getElementById("personName1").value = selectedObj.id;
-                                                            document.getElementById("personName").value = selectedObj.pegawai;
-
-                                                            branc = selectedObj.branchId;
-                                                            dev = selectedObj.divisiId ;
-                                                            return namaAlat;
-                                                        }
-                                                    });
-
-                                                </script>
                                             </tr>
                                         </table>
                                         <br>
@@ -185,8 +135,8 @@
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <button type="button" class="btn btn-primary" onclick="searchData();">
-                                                            <i class="fa fa-search"></i> Search
+                                                        <button type="button" class="btn btn-primary" onclick="window.location.reload()">
+                                                            <i class="fa fa-refresh"></i> Reload
                                                         </button>
                                                     </td>
                                                     <td>
@@ -204,34 +154,55 @@
                                                 </tr>
                                             </table>
                                         </div>
-
                                         <br>
+                                        <br>
+                                        <div style="text-align: left !important;">
+                                            <div class="box-header with-border"></div>
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Payroll</h3>
+                                            </div>
+                                            <div class="box-body">
+                                                <table id="tablePayroll" class="tablePayroll table table-bordered table-striped" style="font-size: 11px">
+                                                    <thead>
+                                                    <tr bgcolor="#90ee90" style="text-align: center">
+                                                        <td>NIP</td>
+                                                        <td>Nama</td>
+                                                        <td>Bidang/Divisi</td>
+                                                        <td>Posisi/Jabatan</td>
+                                                        <td>Status</td>
+                                                        <td>Level</td>
+                                                        <td>Gaji Kotor (RP)</td>
+                                                        <td>Potongan (RP)</td>
+                                                        <td>Gaji Bersih(RP)</td>
+                                                        <td>Prop. Gaji</td>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <s:iterator value="#session.listDataPayrollSearch" var="row">
+                                                        <tr>
+                                                            <td style="text-align: center"><s:property value="nip"/></td>
+                                                            <td style="text-align: center"><s:property value="nama"/></td>
+                                                            <td style="text-align: center"><s:property value="departmentName"/></td>
+                                                            <td style="text-align: center"><s:property value="positionName"/></td>
+                                                            <td style="text-align: center"><s:property value="tipePegawaiName"/></td>
+                                                            <td style="text-align: center"><s:property value="golonganName"/></td>
+                                                            <td style="text-align: center"><s:property value="gajiKotor"/></td>
+                                                            <td style="text-align: center"><s:property value="totalC"/></td>
+                                                            <td style="text-align: center"><s:property value="totalGajiBersih"/></td>
+                                                            <td style="text-align: center"><s:property value="proporsiGaji"/></td>
+                                                        </tr>
+                                                    </s:iterator>
+                                                    </tbody>
+                                                </table>
+                                                <script>
+                                                    $('#tablePayroll').DataTable({
+                                                        "pageLength": 100,
+                                                        "order": [[2, "asc"],[3, "asc"]]
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
 
-                                        <center>
-                                            <table id="showdata" width="95%">
-                                                <tr>
-                                                    <td align="center">
-                                                        <s:set name="listDataPayroll" value="#session.listDataPayrollSearch" scope="request" />
-                                                        <display:table name="listDataPayroll" class="tablePayroll table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_payroll.action" export="true" id="row" pagesize="40" style="font-size:10">
-                                                            <s:if test="%{payroll.adaCheckBox}">
-                                                            <display:column><s:checkbox theme="simple" name="payroll.checkedValue" fieldValue="%{#attr.row.nip}" cssClass="cekUserPensiun"/></display:column>
-                                                            </s:if>
-                                                            <display:column property="nip" sortable="true" title="NIP"  />
-                                                            <display:column property="nama" sortable="true" title="Nama" />
-                                                            <display:column property="departmentName" sortable="true" title="Bidang" />
-                                                            <display:column property="positionName" sortable="true" title="Jabatan" />
-                                                            <display:column style="text-align:center;" property="golonganName" sortable="true" title="Level" />
-                                                            <display:column property="tipePegawaiName" sortable="true" title="Tipe Pegawai" />
-                                                            <display:column style="text-align:right;" property="gajiKotor" sortable="true" title="Gaji Kotor" />
-                                                            <display:column style="text-align:right;" property="totalB" sortable="true" title="Potongan" />
-                                                            <display:column style="text-align:right;" property="pphGaji" sortable="true" title="PPh" />
-                                                            <display:column style="text-align:right;" property="totalGajiBersih" sortable="true" title="Gaji Bersih" />
-                                                        </display:table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </center>
                                         <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
                                                    resizable="false"
                                                    height="350" width="600" autoOpen="false" title="Saving ...">

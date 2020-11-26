@@ -58,6 +58,9 @@
         <property name="idPabrik">
             <column name="id_pabrik" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="idJenisObat">
+            <column name="id_jenis_obat" sql-type="varchar" length="10" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

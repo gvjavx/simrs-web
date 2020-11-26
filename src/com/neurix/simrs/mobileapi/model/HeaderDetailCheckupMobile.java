@@ -92,6 +92,135 @@ public class HeaderDetailCheckupMobile {
     private String urlTtd;
     private String flagCall;
 
+    private String idRiwayatTindakan;
+    private String namaTindakan;
+    private String tglTindakan;
+    private String keterangan;
+    private String videoRm;
+    private String keteranganKeluar;
+
+    private String idTindakan;
+    private String idDetailTindakan;
+    private String namaDetailLab;
+    private String satuan;
+    private String acuan;
+    private String kesimpulan;
+
+    private String namaObat;
+    private String qty;
+
+    public String getIdTindakan() {
+        return idTindakan;
+    }
+
+    public void setIdTindakan(String idTindakan) {
+        this.idTindakan = idTindakan;
+    }
+
+    public String getIdDetailTindakan() {
+        return idDetailTindakan;
+    }
+
+    public void setIdDetailTindakan(String idDetailTindakan) {
+        this.idDetailTindakan = idDetailTindakan;
+    }
+
+    public String getNamaDetailLab() {
+        return namaDetailLab;
+    }
+
+    public void setNamaDetailLab(String namaDetailLab) {
+        this.namaDetailLab = namaDetailLab;
+    }
+
+    public String getSatuan() {
+        return satuan;
+    }
+
+    public void setSatuan(String satuan) {
+        this.satuan = satuan;
+    }
+
+    public String getAcuan() {
+        return acuan;
+    }
+
+    public void setAcuan(String acuan) {
+        this.acuan = acuan;
+    }
+
+    public String getKesimpulan() {
+        return kesimpulan;
+    }
+
+    public void setKesimpulan(String kesimpulan) {
+        this.kesimpulan = kesimpulan;
+    }
+
+    public String getNamaObat() {
+        return namaObat;
+    }
+
+    public void setNamaObat(String namaObat) {
+        this.namaObat = namaObat;
+    }
+
+    public String getQty() {
+        return qty;
+    }
+
+    public void setQty(String qty) {
+        this.qty = qty;
+    }
+
+    public String getKeteranganKeluar() {
+        return keteranganKeluar;
+    }
+
+    public void setKeteranganKeluar(String keteranganKeluar) {
+        this.keteranganKeluar = keteranganKeluar;
+    }
+
+    public String getIdRiwayatTindakan() {
+        return idRiwayatTindakan;
+    }
+
+    public void setIdRiwayatTindakan(String idRiwayatTindakan) {
+        this.idRiwayatTindakan = idRiwayatTindakan;
+    }
+
+    public String getNamaTindakan() {
+        return namaTindakan;
+    }
+
+    public void setNamaTindakan(String namaTindakan) {
+        this.namaTindakan = namaTindakan;
+    }
+
+    public String getTglTindakan() {
+        return tglTindakan;
+    }
+
+    public void setTglTindakan(String tglTindakan) {
+        this.tglTindakan = tglTindakan;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getVideoRm() {
+        return videoRm;
+    }
+
+    public void setVideoRm(String videoRm) {
+        this.videoRm = videoRm;
+    }
+
     public String getCreatedDate() {
         return createdDate;
     }

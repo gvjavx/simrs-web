@@ -1,6 +1,8 @@
 package com.neurix.hris.master.tipepegawai.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.tipepegawai.bo.TipePegawaiBo;
 import com.neurix.hris.master.tipepegawai.dao.TipePegawaiDao;
 import com.neurix.hris.master.tipepegawai.model.ImHrisTipePegawai;
@@ -22,6 +24,15 @@ public class TipePegawaiBoImpl implements TipePegawaiBo{
     protected static transient Logger logger = Logger.getLogger(TipePegawaiBoImpl.class);
 
     private TipePegawaiDao tipePegawaiDao;
+    private BiodataDao biodataDao;
+
+    public BiodataDao getBiodataDao() {
+        return biodataDao;
+    }
+
+    public void setBiodataDao(BiodataDao biodataDao) {
+        this.biodataDao = biodataDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -44,6 +55,15 @@ public class TipePegawaiBoImpl implements TipePegawaiBo{
         logger.info("[Tipe.saveDelete] start process >>>");
 
         boolean saved = false;
+        //validasi
+        List<ImBiodataEntity> biodataEntityList = biodataDao.getBiodataByTipePegawai(bean.getTipePegawaiId());
+
+        if (biodataEntityList.size()>0){
+            String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+            logger.error(status);
+            throw new GeneralBOException(status);
+        }
+
         if (bean!=null) {
             ImHrisTipePegawai entityData = new ImHrisTipePegawai();
             entityData.setTipePegawaiId(bean.getTipePegawaiId());
@@ -98,22 +118,28 @@ public class TipePegawaiBoImpl implements TipePegawaiBo{
         logger.info("[TipePegawaiBoImpl.saveEdit] start process >>>");
         boolean saved = false;
         if (bean!=null) {
-            ImHrisTipePegawai entityData = new ImHrisTipePegawai();
-            entityData.setTipePegawaiId(bean.getTipePegawaiId());
-            entityData.setTipePegawaiName(bean.getTipePegawaiName());
-            entityData.setFlag(bean.getFlag());
-            entityData.setAction(bean.getAction());
-            entityData.setCreateDateWho(bean.getCreatedWho());
-            entityData.setLastUpdateWho(bean.getLastUpdateWho());
-            entityData.setCreatedDate(bean.getCreatedDate());
-            entityData.setLastUpdate(bean.getLastUpdate());
-            try {
-                tipePegawaiDao.updateAndSave(entityData);
-                saved = true;
-            } catch (HibernateException e) {
-                logger.error("[TipePegawaiBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+            String status = cekStatus(bean.getTipePegawaiName());
+            if (!status.equalsIgnoreCase("Exist")){
+                ImHrisTipePegawai entityData = new ImHrisTipePegawai();
+                entityData.setTipePegawaiId(bean.getTipePegawaiId());
+                entityData.setTipePegawaiName(bean.getTipePegawaiName());
+                entityData.setFlag(bean.getFlag());
+                entityData.setAction(bean.getAction());
+                entityData.setCreateDateWho(bean.getCreatedWho());
+                entityData.setLastUpdateWho(bean.getLastUpdateWho());
+                entityData.setCreatedDate(bean.getCreatedDate());
+                entityData.setLastUpdate(bean.getLastUpdate());
+                try {
+                    tipePegawaiDao.updateAndSave(entityData);
+                    saved = true;
+                } catch (HibernateException e) {
+                    logger.error("[TipePegawaiBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                }
+            }else{
+                throw new GeneralBOException("Maaf data tersebut sudah ada ");
             }
+
         }
         if (saved){
             String id;

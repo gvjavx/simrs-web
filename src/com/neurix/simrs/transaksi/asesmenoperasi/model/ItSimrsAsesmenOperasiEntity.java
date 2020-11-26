@@ -19,6 +19,33 @@ public class ItSimrsAsesmenOperasiEntity implements Serializable {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String tipe;
+    private String namaterang;
+    private String sip;
+
+    public String getNamaterang() {
+        return namaterang;
+    }
+
+    public void setNamaterang(String namaterang) {
+        this.namaterang = namaterang;
+    }
+
+    public String getSip() {
+        return sip;
+    }
+
+    public void setSip(String sip) {
+        this.sip = sip;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public String getIdAsesmenOperasi() {
         return idAsesmenOperasi;

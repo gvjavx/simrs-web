@@ -16,11 +16,12 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
+            var tipeDapen = document.getElementById("tipeDapenId1").value;
             var golonganId = document.getElementById("golonganId1").value;
             var point = document.getElementById("point1").value;
             var nilai = document.getElementById("nilai1").value;
 
-            if (golonganId != '' && point != '' && nilai != '' ) {
+            if (golonganId != '' && point != '' && nilai != '' &&tipeDapen!='' ) {
                 if(isNaN(point) ==  false && isNaN(nilai) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
@@ -57,7 +58,9 @@
                 if (point == '') {
                     msg += 'Field <strong>Point</strong> is required.' + '<br/>';
                 }
-
+                if (tipeDapen == '') {
+                    msg += 'Field <strong>Tipe Dapen </strong> is required.' + '<br/>';
+                }
                 if (nilai == '') {
                     msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
                 }
@@ -97,15 +100,9 @@
     <tr>
         <td align="center">
             <s:form id="addPayrollSkalaGajiForm" method="post" theme="simple" namespace="/payrollSkalaGajiPensiunRni" action="saveAdd_payrollSkalaGajiPensiunRni" cssClass="well form-horizontal">
-
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-
-
-
                 <legend align="left">Add Payroll Skala Gaji Pensiun</legend>
-
-
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -113,17 +110,28 @@
                         </td>
                     </tr>
                 </table>
-
-                <table >
+                <table>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Tipe Dapen :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboGolongan" namespace="/payrollDanaPensiun" name="searchPayrollDanaPensiun_payrollDanaPensiun"/>
+                                <s:select cssClass="form-control" list="#comboGolongan.listComboPayrollDanaPensiun" id="tipeDapenId1" name="payrollSkalaGajiPensiunRni.tipeDapenId"
+                                          listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="" />
+                            </table>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <label class="control-label"><small>Golongan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGajiPensiunRni.golonganId"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:action id="comboGolongan" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
+                                <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golonganId1" name="payrollSkalaGajiPensiunRni.golonganId" required="true"
+                                          listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="" />
                             </table>
                         </td>
                     </tr>

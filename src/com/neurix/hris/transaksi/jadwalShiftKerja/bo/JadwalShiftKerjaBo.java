@@ -3,10 +3,9 @@ package com.neurix.hris.transaksi.jadwalShiftKerja.bo;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.groupShift.model.GroupShift;
-import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalKerjaDTO;
-import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalPelayananDTO;
-import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja;
-import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerjaDetail;
+import com.neurix.hris.transaksi.jadwalShiftKerja.model.*;
+import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
+import com.neurix.simrs.transaksi.CrudResponse;
 
 import java.sql.Date;
 import java.util.List;
@@ -34,4 +33,16 @@ public interface JadwalShiftKerjaBo extends BaseMasterBo<JadwalShiftKerja> {
     List<JadwalShiftKerja> getJadwalShiftKerjaByUnitAndTanggal(String branchId, Date tanggal) throws GeneralBOException;
 
     List<JadwalShiftKerjaDetail> getJadwalShiftKerjaByUnitAndProfesiAndTanggal(String branchId, Date tglFrom, Date tglTo, String profesiId) throws GeneralBOException;
+
+    CrudResponse getListLibur(String tanggalAwal, String tanggalAkhir) throws GeneralBOException;
+
+    List<JadwalShiftKerjaDetail> getJadwalShiftByBulanTahun(String nip, String branchId, String profesiId, String tanggalAwal, String tanggalAkhir) throws GeneralBOException;
+
+    List<Notifikasi> savePanggilBerdasarkanId(JadwalShiftKerjaDetail bean);
+
+    void saveLiburBerdasarkanId(JadwalShiftKerjaDetail bean);
+
+    List<HistoryOnCall> getHistoryOnCall(HistoryOnCall search);
+
+    public List<JadwalPelayananDTO> getListJadwalDokter(String branchId, String idPelayanan, String notLike) throws GeneralBOException;
 }

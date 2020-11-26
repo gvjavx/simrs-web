@@ -6,6 +6,9 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/CutiPegawaiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/NotifikasiAdminAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
 <script type="text/javascript">
 
     function loadDataLogin() {
@@ -123,6 +126,12 @@
                         "<span class='label label-success'>Keuangan</span> "+item.note+""+
                         "</a>"+
                         "</li>";
+                }else if (item.tipeNotifId == "TN04"){
+                    tmp_data_approve += "<li>"+
+                        "<a href='<s:property value="appname" />notifikasi/viewNotifikasi_notifikasi.action?id="+item.fromPerson+"&request="+item.noRequest+"&tipeNotif="+item.tipeNotifId+"&notif="+item.notifId+"' onclick='readNotif("+item.notifId+");'>"+
+                        "<span class='label label-success'>Pengajuan Biaya</span> "+item.note+""+
+                        "</a>"+
+                        "</li>";
                 }
                 else {
                     tmp_data_pemberitahuan += "<li class='pemberitahuan' data-id='"+item.notifId+"~"+item.note+"'>"+
@@ -141,12 +150,13 @@
         $("#count3").html(tmp_jml_pemberitahuan);
     }
     function loadUser () {
-        var data="";
         NotifikasiAction.searchUser(function(data){
-            if (data=="ADMIN"){
+            if (data=="admin_hcm"){
                 $(".orangPensiun").show();
-            }else{
-                $(".orangPensiun").hide();
+            }
+            if (data=="admin_keu"){
+                $(".pengajuanBiaya").show();
+                $(".terimaRk").show();
             }
         });
     }
@@ -217,11 +227,73 @@
         $("#count7").html(tmp_jml_panjang);
     }
 
+    function loadPengajuanBiaya(){
+        var tmp_data_pengajuan= "";
+        var tmp_jml_pengajuan="";
+        var data = [];
+        dwr.engine.setAsync(false);
+        NotifikasiAction.searchPengajuanBiayaMenggantung(function(listData){
+            data = listData;
+            $.each(data, function(i, item){
+                if(tmp_jml_pengajuan == ""){
+                    tmp_jml_pengajuan = item.jmlApproval;
+                }
+                tmp_data_pengajuan += "<li class='pengajuanBiaya' data-id='"+item.pengajuanBiayaDetailId+"'>"+
+                    "<a>"+
+                    "<span class='label label-info'>"+item.stTanggalRealisasi+"</span> "+item.keperluan+
+                    "</a>"+
+                    "</li>";
+            })
+        });
+        if (tmp_jml_pengajuan==""){
+            tmp_jml_pengajuan=0;
+        }
+        var total = parseInt(tmp_jml_pengajuan);
+        $("#count8").html(total);
+        $("#inner8").html(tmp_data_pengajuan);
+        $("#count9").html(tmp_jml_pengajuan);
+    }
+
+    function loadRk(){
+        var tmp_data_rk= "";
+        var data = [];
+        var total=0;
+        dwr.engine.setAsync(false);
+        NotifikasiAction.searchTerimaRkPengajuan(function(listData){
+            data = listData;
+            $.each(data, function(i, item){
+                total = item.jmlApproval;
+
+                tmp_data_rk += "<li>"+
+                    "<a href='<s:property value="appname" />pengajuanBiaya/terimaRk_pengajuanBiaya.action?rkId="+item.rkId+"' >"+
+                    "<span class='label label-primary'>Terima RK</span> "+item.rkId+""+
+                    "</a>"+
+                    "</li>";
+            })
+        });
+        $(".count_rk").html(total);
+        $("#inner_rk").html(tmp_data_rk);
+    }
+
     function pushNotifResep(){
         cekNotifResep();
         setInterval(function () {
             cekNotifResep();
-        }, 5000);
+        }, 60000);
+    }
+
+    function pushNotifTele(){
+        cekNotifTele();
+        setInterval(function () {
+            cekNotifTele();
+        }, 60000);
+    }
+
+    function pushNotifLab(kategori){
+        cekNotifLab(kategori);
+        setInterval(function () {
+            cekNotifLab(kategori);
+        }, 60000);
     }
 
     function cekNotifResep(){
@@ -256,19 +328,106 @@
         });
     }
 
+    function cekNotifTele(){
+        NotifikasiAdminAction.getUnReadNotifAdminEntity("tele", function (res) {
+            var listResep = "";
+            var cekCount = $('#count2').text();
+            if(cekCount == ''){
+                cekCount = 0;
+            }
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    listResep += '<li>' +
+                        '<a href="<%= request.getContextPath() %>/onlinepaymentverif/search_onlinepaymentverif.action?id='+item.idItem+'&tipe=notif&notifid='+item.id+'">' +
+                        '<i class="fa fa-info-circle text-green"></i> <small style="margin-left: -8px">'+' ['+item.createdWho +']'+' '+item.keterangan+'</small><br>' +
+                        '</a>' +
+                        '</li>';
+                });
+                $('#inner2').html(listResep);
+                $('#count2').html(res.length);
+                $('#count3').html(res.length);
+                if(res.length > parseInt(cekCount)){
+                    $('#notif_sound').get(0).autoplay = true;
+                    $('#notif_sound').get(0).load();
+                    // $('#notif_sound').get(0).muted = false;
+                    // console.log($('#notif_sound').get(0).preload);
+                }
+            }else{
+                $('#inner2').html(listResep);
+                $('#count2').html('');
+                $('#count3').html('');
+            }
+        });
+    }
+
+    function cekNotifLab(kategori){
+        PeriksaLabAction.pushNotifLab(kategori, function (res) {
+            var listLab = "";
+            var cekCount = $('#count2').text();
+            if(cekCount == ''){
+                cekCount = 0;
+            }
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    var href = "";
+                    if(item.kategori == "lab"){
+                        href = '/periksalab/add_periksalab.action?id='+item.idDetailCheckup+'&lab='+item.idPeriksaLab+'&ket=';
+                    }
+                    if(item.kategori == "radiologi"){
+                        href = '/radiologi/add_radiologi.action?id='+item.idDetailCheckup+'&lab='+item.idPeriksaLab+'&ket=';
+                    }
+                    if(item.kategori != null && item.kategori != '') {
+                        listLab += '<li>' +
+                            '<a href="<%= request.getContextPath() %>'+href+'">' +
+                            '<i class="fa fa-info-circle text-green"></i> <small style="margin-left: -8px">'+' ['+item.idPeriksaLab +']'+' '+item.namaPasien+'</small><br>' +
+                            '</a>' +
+                            '</li>';
+                    }
+                });
+                $('#inner2').html(listLab);
+                $('#count2').html(res.length);
+                $('#count3').html(res.length);
+                if(res.length > parseInt(cekCount)){
+                    $('#notif_sound').get(0).autoplay = true;
+                    $('#notif_sound').get(0).load();
+                    // $('#notif_sound').get(0).muted = false;
+                    // console.log($('#notif_sound').get(0).preload);
+                }
+            }else{
+                $('#inner2').html(listLab);
+                $('#count2').html('');
+                $('#count3').html('');
+            }
+        });
+    }
+
     function cekRole(){
         TransaksiObatAction.cekRole(function (res) {
             if(res == "ADMIN APOTEK"){
                 pushNotifResep();
             }
+            if(res == "VERIFIKATOR PEMBAYARAN ONLINE"){
+                pushNotifTele();
+            }
+            if(res == "ADMIN LAB"){
+                pushNotifLab('lab');
+            }
+            if(res == "ADMIN RADIOLOGI"){
+                pushNotifLab('radiologi');
+            }
         })
     }
 
     $(document).ready(function() {
+        $(".orangPensiun").hide();
+        $(".pengajuanBiaya").hide();
+        $(".terimaRk").hide();
         loadDataLogin();
         loadUser();
         loadNotif();
         loadPegawaiCuti();
+        loadPengajuanBiaya();
+        loadRk();
         cekRole();
 
         $('.pemberitahuan').on('click', function() {
@@ -338,18 +497,32 @@
                 });
             }
         });*/
+
+        getStringUrlPhotoProfile();
     });
+
+    function getStringUrlPhotoProfile() {
+
+        var usname = $('#user_name_head').text;
+
+        if (usname != ""){
+            UserAction.getStringUrlPhotoProfile(function (str) {
+                $("#img-profile-sm-sm").attr('src', str);
+                $("#img-profile").attr('src', str);
+            });
+        }
+    }
 </script>
 <style>
     .sidebar-menu li i{
         color: #50d4a3 !important;
     }
 
-    .skin-blue .sidebar-menu>li:hover>a, .skin-blue .sidebar-menu>li.active>a {
-        color: #fff;
-        background: #1e282c;
-        border-left-color: #50d4a3;
-    }
+        /*color: #fff;*/
+        /*background: #1e282c;*/
+        /*border-left-color: #50d4a3;*/
+    /*}*/
+
     .box.box-primary {
         border-top-color: #50d4a3;
     }
@@ -418,6 +591,32 @@
                         <span class="label label-warning "></span>
                     </a>
                 </li>--%>
+                <li class="dropdown notifications-menu pengajuanBiaya">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-money"></i>
+                        <span class="label label-success" id="count8"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">Ada <span id="count9"></span> pengajuan biaya</li>
+                        <li>
+                            <ul class="menu" id="inner8">
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown notifications-menu terimaRk">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-tasks"></i>
+                        <span class="label label-primary count_rk"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">Ada <span class="count_rk"></span> Penerimaan RK</li>
+                        <li>
+                            <ul class="menu" id="inner_rk">
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
                 <li class="dropdown notifications-menu orangPensiun">
                     <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -484,15 +683,17 @@
                     </ul>
                 </li>
                 <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<s:url value="/pages/images/unknown-person.png"/>" class="user-image" alt="User Image">
+                    <a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">
+                        <%--<div id="img-profile-small">--%>
+
+                        <%--</div>--%>
+                        <img id="img-profile-sm-sm" class="user-image" alt="User Image" onerror="this.onerror=null;this.src='<s:url value="/pages/images/unknown-person.png"></s:url>;'">
                         <span class="hidden-xs" id="user_name_head"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header" style="background-color: #30d196; height: 200px">
-                            <img src="<s:url value="/pages/images/unknown-person.png"/>" class="img-circle" alt="User Image">
-
+                            <img id="img-profile" class="img-circle" alt="User Image" onerror="this.onerror=null;this.src='<s:url value="/pages/images/unknown-person.png"></s:url>;'">
                             <p>
                                 <span id="user_name"></span>
                                 <small id="user_branch"></small>

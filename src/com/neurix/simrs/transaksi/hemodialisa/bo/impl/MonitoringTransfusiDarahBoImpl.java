@@ -132,6 +132,36 @@ public class MonitoringTransfusiDarahBoImpl implements MonitoringTransfusiDarahB
         return response;
     }
 
+    @Override
+    public CrudResponse saveDelete(MonitoringTransfusiDarah bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsMonitoringTransfusiDarahEntity transfusiDarahEntity = new ItSimrsMonitoringTransfusiDarahEntity();
+        try {
+            transfusiDarahEntity = monitoringTransfusiDarahDao.getById("idMonitoringTransfusiDarah", bean.getIdMonitoringTransfusiDarah());
+        }catch (HibernateException e){
+            response.setStatus("error");
+            response.setMsg(e.getMessage());
+        }
+        if(transfusiDarahEntity != null){
+            transfusiDarahEntity.setFlag("N");
+            transfusiDarahEntity.setLastUpdate(bean.getLastUpdate());
+            transfusiDarahEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            transfusiDarahEntity.setAction("D");
+            try {
+                monitoringTransfusiDarahDao.updateAndSave(transfusiDarahEntity);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            }catch (HibernateException e){
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Data tidak ditemukan...!");
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

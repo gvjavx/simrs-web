@@ -30,6 +30,7 @@
             var jamAwal = document.getElementById("jamAwal").value;
             var jamAkhir = document.getElementById("jamAkhir").value;
             var lamaJam = document.getElementById("lamaJam").value;
+//            var tipeLembur = document.getElementById("tipeLembur").value;
             var ket="";
             var ket2="";
             LemburAction.testTanggal(tglAwal,tglAkhir,nip, function (data) {
@@ -38,7 +39,7 @@
                 }
             });
 
-            if (nip != ''/*&& tglAwal !=''&& tglAkhir !=''&& tipeLembur !=''&& ket == ''&&ket2 == ''&& jamAwal == ''&& jamAkhir == ''&& lamaJam == ''*/) {
+            if (nip != '' && tglAwal !=''&& tglAkhir !=''&& tipeLembur !=''&& ket == ''&&ket2 == ''&& jamAwal != ''&& jamAkhir != ''&& lamaJam == '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -55,6 +56,9 @@
                 if (nip === '') {
                     msg += 'Field <strong>NIP</strong>kosong.' + '<br/>';
                 }
+                if (tipeLembur === '') {
+                    msg += 'Field <strong>Tipe Lembur</strong>kosong.' + '<br/>';
+                }
                 if (tglAwal === '') {
                     msg += 'Field <strong>Tanggal Awal</strong>kosong.' + '<br/>';
                 }
@@ -66,9 +70,6 @@
                 }
                 if (jamAkhir === '') {
                     msg += 'Field <strong>Jam Akhir </strong>kosong.' + '<br/>';
-                }
-                if (tipeLembur === '') {
-                    msg += 'Field <strong>Tipe Lembur</strong>kosong.' + '<br/>';
                 }
                 if (ket != "") {
                     $('#tglAwal').val("");
@@ -177,32 +178,24 @@
                             },
                             updater: function (item) {
                                 var selectedObj = mapped[item];
-                                var namaMember = selectedObj.label;
-                                if (selectedObj.statusPegawai=="PKWT"&&$('#branchId').val()!="KD01"){
+                                if (selectedObj.tipePegawai=="TP03" ||selectedObj.statusPegawai=="KNS"){
                                     $('#divisiId').val(selectedObj.divisi).change();
                                     $('#divisiId1').val(selectedObj.divisi).change();
                                     $('#namaAddId').val(selectedObj.nama).change();
                                     $('#positionId').val(selectedObj.jabatan).change();
                                     $('#positionId1').val(selectedObj.jabatan).change();
                                     $('#golonganId').val(selectedObj.golongan).change();
+                                    $('#golonganIdPkwt').val(selectedObj.golongan).change();
                                     $('#golonganId1').val(selectedObj.golongan).change();
                                     $('#tipePegawai').val(selectedObj.tipePegawai).change();
+                                    if ("TP03"==selectedObj.tipePegawai){
+                                        $('#golonganId').hide();
+                                        $('#golonganIdPkwt').show();
+                                    }else{
+                                        $('#golonganId').show();
+                                        $('#golonganIdPkwt').hide();
+                                    }
                                     $('#tipePegawai1').val(selectedObj.tipePegawai).change();
-                                    $('#statusGiling12').val(selectedObj.statusGiling).change();
-                                    $('#statusGiling1').val(selectedObj.statusGiling).change();
-                                    return selectedObj.id;
-                                } else if (selectedObj.statusPegawai!="KS"){
-                                    $('#divisiId').val(selectedObj.divisi).change();
-                                    $('#divisiId1').val(selectedObj.divisi).change();
-                                    $('#namaAddId').val(selectedObj.nama).change();
-                                    $('#positionId').val(selectedObj.jabatan).change();
-                                    $('#positionId1').val(selectedObj.jabatan).change();
-                                    $('#golonganId').val(selectedObj.golongan).change();
-                                    $('#golonganId1').val(selectedObj.golongan).change();
-                                    $('#tipePegawai').val(selectedObj.tipePegawai).change();
-                                    $('#tipePegawai1').val(selectedObj.tipePegawai).change();
-                                    $('#statusGiling12').val(selectedObj.statusGiling).change();
-                                    $('#statusGiling1').val(selectedObj.statusGiling).change();
                                     return selectedObj.id;
                                 } else {
                                     alert("Pimpinan tidak bisa mengambil Lembur");
@@ -249,20 +242,30 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
+                            <label class="control-label"><small>Level :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId" name="lembur.golonganId" disabled="true"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true"/>
+                                <s:if test='lembur.tipePegawaiId=="TP03"'>
+                                    <s:action id="initComboTipePkwt" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                                    <s:select list="#initComboTipePkwt.listComboGolonganPkwt" id="golonganIdPkwt" name="lembur.golonganId" disabled="true"
+                                              listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                </s:if>
+                                <s:else>
+                                    <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                    <s:select list="#initComboTipe.listComboGolongan" id="golonganId" name="lembur.golonganId" disabled="true"
+                                              listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                    <s:action id="initComboTipePkwt" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                                    <s:select list="#initComboTipePkwt.listComboGolonganPkwt" id="golonganIdPkwt" name="lembur.golonganId" disabled="true" cssStyle="display: none"
+                                              listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                </s:else>
                                 <s:textfield  id="golonganId1" name="lembur.golonganId" cssStyle="display: none" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Tipe Pegawai :</small></label>
+                            <label class="control-label"><small>Status Pegawai :</small></label>
                         </td>
                         <td>
                             <table>
@@ -273,25 +276,13 @@
                             </table>
                         </td>
                     </tr>
-                    <%--<tr>
-                        <td>
-                            <label class="control-label"><small>Status Giling :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'DMG':'Dalam Masa Giling','LMG':'Luar Masa Giling'}" id="statusGiling12" name="lembur.statusGiling"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true"/>
-                                <s:textfield  id="statusGiling1" cssStyle="display: none" name="lembur.statusGiling" required="false" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>--%>
                     <tr>
                         <td>
                             <label class="control-label"><small>Tipe Lembur :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'I':'Non Rutin','R':'Rutin'}" id="tipeLembur" name="lembur.tipeLembur"
+                                <s:select list="#{'I':'Non Rutin'}" id="tipeLembur" name="lembur.tipeLembur"
                                           headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
@@ -365,7 +356,7 @@
                     </tr>
                     <tr class="I">
                         <td>
-                            <label class="control-label"><small>Lama Tiap Hari (jam) :</small></label>
+                            <label class="control-label"><small>Lama (jam) :</small></label>
                         </td>
                         <td>
                             <table>
@@ -388,9 +379,6 @@
                         </td>
                     </tr>
                 </table>
-
-
-
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -561,6 +549,18 @@
         }
         $('#jamAwal').timepicker();
         $('#jamAkhir').timepicker();
+
+        $('#tglAkhir').on('change',function(){
+            var startdate =$('#tglAwal').datepicker('getDate');
+            var enddate =$('#tglAkhir').datepicker('getDate');
+            var jamAwal44=$('#jamAwal').val();
+            var jamAkhir44=$('#jamAkhir').val();
+            if (enddate<startdate){
+                alert ('Tanggal yang dipilih salah');
+                $('#tglAwal').val("");
+                $('#tglAkhir').val("");
+            }
+        });
     });
 </script>
 

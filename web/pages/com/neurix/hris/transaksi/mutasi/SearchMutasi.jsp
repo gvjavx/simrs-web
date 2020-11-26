@@ -50,8 +50,7 @@ To change this template use File | Settings | File Templates.
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Mutasi / Rotasi
-            <small>e-HEALTH</small>
+            Mutasi / Nonaktif
         </h1>
     </section>
 
@@ -62,7 +61,7 @@ To change this template use File | Settings | File Templates.
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Mutasi</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Mutasi / Nonaktif</h3>
                     </div>
                     <div class="box-body">
                         <s:form id="mutasiForm" method="post"  theme="simple" namespace="/mutasi" action="search_mutasi.action" cssClass="form-horizontal">
@@ -77,9 +76,17 @@ To change this template use File | Settings | File Templates.
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Unit</label>
                                 <div class="col-sm-4">
-                                    <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                    <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="mutasi.branchLamaId" cssStyle="margin-top: 7px"
-                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                    <s:if test='mutasi.branchIdUser == "KP"'>
+                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="mutasi.branchLamaId" cssStyle="margin-top: 7px"
+                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                    </s:if>
+                                    <s:else>
+                                        <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                        <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="mutasi.branchLamaId" cssStyle="margin-top: 7px"
+                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                        <s:hidden id="branchId" name="pembayaranUtangPiutang.branchLamaId" />
+                                    </s:else>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -149,17 +156,12 @@ To change this template use File | Settings | File Templates.
                             });
                             </script>
                             <div class="form-group">
-                                <label class="control-label col-sm-4">Tipe</label>
-                                <div class="col-sm-4">
-                                    <s:select list="#{'MT':'Mutasi', 'RT':'Rotasi'}" id="tipe" name="mutasi.tipeMutasi" cssStyle="margin-top: 7px"
-                                              headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label class="control-label col-sm-4">Status</label>
                                 <div class="col-sm-4">
-                                    <s:select list="#{'M':'Mutasi', 'R':'Resign', 'P':'Pensiun'}" id="status" name="mutasi.status" cssStyle="margin-top: 7px"
-                                              headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                    <s:action id="comboStatusMutasi" namespace="/statusMutasi" name="initComboStatusMutasi_statusMutasi"/>
+                                    <s:select list="#comboStatusMutasi.listOfComboStatusMutasi" id="statusMutasi" listKey="statusMutasiId"
+                                              listValue="statusMutasiName" headerKey="" headerValue="[Select One]" name="mutasi.status" cssStyle="margin-top: 7px"
+                                              cssClass="form-control"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -189,7 +191,7 @@ To change this template use File | Settings | File Templates.
                                         <i class="fa fa-search"></i>
                                         Search
                                     </sj:submit>
-                                    <a href="add_mutasi.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Mutasi / Rotasi</a>
+                                    <a href="add_mutasi.action" class="btn btn-success" ><i class="fa fa-plus"></i> Add Mutasi / Nonaktif</a>
                                     <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_mutasi"/>'">
                                         <i class="fa fa-refresh"></i> Reset
                                     </button>
@@ -226,13 +228,12 @@ To change this template use File | Settings | File Templates.
                                 <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Mutasi</h3>
                             </div>
                             <div class="box-body">
-                                <table id="myTable" class="table table-bordered table-striped" style="font-size: 12px">
+                                <table id="tableMutasi" class="table table-bordered table-striped" style="font-size: 12px">
                                     <thead >
                                     <tr bgcolor="#90ee90">
                                         <td>ID Mutasi</td>
                                         <td>NIP</td>
                                         <td>Nama Pegawai</td>
-                                        <td>Tipe</td>
                                         <td>Status</td>
                                         <td>Unit Lama</td>
                                         <td>Posisi Lama</td>
@@ -248,7 +249,6 @@ To change this template use File | Settings | File Templates.
                                             <td><s:property value="mutasiId"/></td>
                                             <td><s:property value="nip"/></td>
                                             <td><s:property value="nama"/></td>
-                                            <td><s:property value="tipeMutasiName"/></td>
                                             <td><s:property value="statusName"/></td>
                                             <td><s:property value="branchLamaName"/></td>
                                             <td><s:property value="positionLamaName"/></td>
@@ -320,7 +320,11 @@ To change this template use File | Settings | File Templates.
         $('#modal-edit').modal('show');
     }*/
     $(document).ready(function(){
-        $('#myTable').on('click', '.item-print', function(){
+        $('#tableMutasi').DataTable({
+            "pageLength": 50,
+            "order": [[0, "desc"]]
+        });
+        $('#tableMutasi').on('click', '.item-print', function(){
             var id = $(this).attr('id');
             $('#idMutasi').val(id);
             $('#modal-edit').modal('show');
@@ -334,10 +338,11 @@ To change this template use File | Settings | File Templates.
             dwr.engine.setAsync(false);
             if(noSurat!=''){
                 if (confirm(msg)) {
-                    var addr = "simrs/mutasi/printReportMutasi_mutasi.action?idMutasi="+idMutasi+"&noSurat="+noSurat;
-                    var currentLoc = window.location.href;
-                    var newAdd = currentLoc.split('simrs/')[0] + addr;
-                    window.location.href = newAdd;
+                    var addr = "printReportMutasi_mutasi.action?idMutasi="+idMutasi+"&noSurat="+noSurat;
+                    window.open(addr,'_blank');
+//                    var currentLoc = window.location.href;
+//                    var newAdd = currentLoc.split('simrs/')[0] + addr;
+//                    window.location.href = newAdd;
                 }
             }else{
                 msg2 += "-No Surat\n";

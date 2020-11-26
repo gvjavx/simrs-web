@@ -20,6 +20,7 @@ public class PengajuanCuti implements Serializable {
     private String bidangId;
     private String bidang;
     private String cutiId;
+    private String cutiTanggunganId;
     private String jenisCuti;
     private BigInteger sisaCuti;
     private Date tanggalAwalCuti;
@@ -39,6 +40,24 @@ public class PengajuanCuti implements Serializable {
     private String os;
 
     private String actionError;
+
+    private String message;
+
+    public String getCutiTanggunganId() {
+        return cutiTanggunganId;
+    }
+
+    public void setCutiTanggunganId(String cutiTanggunganId) {
+        this.cutiTanggunganId = cutiTanggunganId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public String getActionError() {
         return actionError;

@@ -4,14 +4,17 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
+import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.security.access.method.P;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -63,7 +66,9 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
     public List<ImSimrsPasienEntity> getListPasienByTmp(String tmp) {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPasienEntity.class);
-        criteria.add(Restrictions.ilike("nama", tmp));
+        Criterion nama= Restrictions.ilike("nama", tmp);
+        Criterion idPasien = Restrictions.ilike("idPasien", tmp);
+        criteria.add(Restrictions.or(nama, idPasien));
         criteria.add(Restrictions.eq("flag", "Y"));
 
         List<ImSimrsPasienEntity> listOfResult = criteria.list();
@@ -143,13 +148,16 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 "a.no_telp,\n" +
                 "a.url_ktp,\n" +
                 "b.id_paket,\n" +
-                "c.id_pelayanan,\n" +
+                "d.id_pelayanan,\n" +
                 "c.nama_paket,\n" +
-                "c.tarif\n" +
+                "c.tarif,\n" +
+                "a.pendidikan,\n" +
+                "a.status_perkawinan\n" +
                 "FROM im_simrs_pasien a\n" +
                 "INNER JOIN it_simrs_paket_pasien b ON a.id_pasien = b.id_pasien\n" +
                 "INNER JOIN mt_simrs_paket c ON b.id_paket = c.id_paket\n" +
-                "WHERE a.nama ILIKE :search AND b.flag = 'Y'";
+                "INNER JOIN (SELECT * FROM mt_simrs_detail_paket WHERE urutan = 1) d ON c.id_paket = d.id_paket \n"+
+                "WHERE b.flag = 'Y' AND a.nama ILIKE :search OR a.id_pasien ILIKE :search";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -177,6 +185,8 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 pasien.setIdPelayanan(obj[15] == null ? "" : obj[15].toString());
                 pasien.setNamaPaket(obj[16] == null ? "" : obj[16].toString());
                 pasien.setTarif(obj[17] != null ? new BigDecimal(obj[17].toString()) : null);
+                pasien.setPendidikan(obj[18] != null ? obj[18].toString() : null);
+                pasien.setStatusPerkawinan(obj[19] != null ? obj[19].toString() : null);
 
                 if(obj[0] != null && !"".equalsIgnoreCase(obj[0].toString())){
                     List<Object[]> objects = getListAlamat(obj[7].toString());
@@ -199,6 +209,68 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
         }
 
         return pasienList;
+    }
+
+    public HeaderDetailCheckup getLastCheckup(String idPasien){
+        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        if(idPasien != null){
+            String SQL = "SELECT\n" +
+                    "b.id_detail_checkup,\n" +
+                    "a.id_pasien,\n" +
+                    "b.tgl_cekup,\n" +
+                    "b.no_checkup_ulang,\n" +
+                    "b.is_order_lab, \n" +
+                    "b.id_pelayanan\n" +
+                    "FROM it_simrs_header_checkup a \n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "WHERE id_pasien = :idPasien\n" +
+                    "AND a.tgl_keluar IS NOT NULL\n" +
+                    "ORDER BY a.created_date DESC\n" +
+                    "LIMIT 1\n";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("idPasien", idPasien)
+                    .list();
+
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                detailCheckup.setIdDetailCheckup(obj[0] != null ? obj[0].toString() : "");
+                detailCheckup.setIdPasien(obj[1] != null ? obj[1].toString() : "");
+                detailCheckup.setTglCekup(obj[2] != null ? Date.valueOf(obj[2].toString()) : null);
+                detailCheckup.setNoCheckupUlang(obj[3] != null ? obj[3].toString() : "");
+                detailCheckup.setIsOrderLab(obj[4] != null ? obj[4].toString() : "");
+                detailCheckup.setIdPelayanan(obj[5] != null ? obj[5].toString() : "");
+            }
+        }
+        return detailCheckup;
+    }
+
+    public Boolean cekPendaftaranPasien(String idPasien){
+        Boolean res = false;
+        if(idPasien != null && !"".equalsIgnoreCase(idPasien)){
+            String SQL = "SELECT \n" +
+                    "a.id_pasien,\n" +
+                    "b.id_detail_checkup,\n" +
+                    "b.status_periksa,\n" +
+                    "b.created_date\n" +
+                    "FROM it_simrs_header_checkup a\n" +
+                    "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                    "WHERE a.id_pasien = :id\n" +
+                    "ORDER BY b.created_date DESC LIMIT 1";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", idPasien)
+                    .list();
+            if(result.size() > 0){
+                Object[] objects = result.get(0);
+                if(objects[2] != null){
+                    if(!"3".equalsIgnoreCase(objects[2].toString())){
+                        res = true;
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     public String getNextIdPasien() {

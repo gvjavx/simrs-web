@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.laporanAkuntansi.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.akuntansi.master.settingReportArusKas.model.AkunSettingReportKeuanganArusKas;
 import com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol;
 import com.neurix.akuntansi.master.settingReportUser.bo.SettingReportUserBo;
 import com.neurix.akuntansi.master.settingReportUser.model.SettingReportUser;
@@ -10,10 +11,7 @@ import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
 import com.neurix.akuntansi.transaksi.budgeting.model.BudgettingDTO;
 import com.neurix.akuntansi.transaksi.jurnal.model.Jurnal;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.bo.LaporanAkuntansiBo;
-import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
-import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.ArusKasDTO;
-import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.LaporanAkuntansi;
-import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.PendapatanDTO;
+import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.*;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
@@ -53,10 +51,38 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     private String tipeLaporan;
     private JRBeanCollectionDataSource dataPrint;
     private List<Aging> myList = new ArrayList<>() ;
+    private List<NeracaSaldoDTO> listNeracaSaldo = new ArrayList<>() ;
+    private List<IkhtisarBukuBesarDTO> listIkhtisarBukuBesar = new ArrayList<>() ;
     private List<PendapatanDTO> listPendapatanDokter = new ArrayList<>();
+    private List<KartuBukuBesarPerBukuBantuDTO> listBukuBesar = new ArrayList<>();
     private List<AkunSettingReportKeuanganKonsol> listKonsol= new ArrayList<>() ;
+    private List<AkunSettingReportKeuanganArusKas> listArusKas= new ArrayList<>() ;
     private List<ArusKasDTO> arusKasDTOList = new ArrayList<>();
     private List<BudgettingDTO> budgettingDTOList = new ArrayList<>();
+
+    public List<KartuBukuBesarPerBukuBantuDTO> getListBukuBesar() {
+        return listBukuBesar;
+    }
+
+    public void setListBukuBesar(List<KartuBukuBesarPerBukuBantuDTO> listBukuBesar) {
+        this.listBukuBesar = listBukuBesar;
+    }
+
+    public List<IkhtisarBukuBesarDTO> getListIkhtisarBukuBesar() {
+        return listIkhtisarBukuBesar;
+    }
+
+    public void setListIkhtisarBukuBesar(List<IkhtisarBukuBesarDTO> listIkhtisarBukuBesar) {
+        this.listIkhtisarBukuBesar = listIkhtisarBukuBesar;
+    }
+
+    public List<NeracaSaldoDTO> getListNeracaSaldo() {
+        return listNeracaSaldo;
+    }
+
+    public void setListNeracaSaldo(List<NeracaSaldoDTO> listNeracaSaldo) {
+        this.listNeracaSaldo = listNeracaSaldo;
+    }
 
     public List<BudgettingDTO> getBudgettingDTOList() {
         return budgettingDTOList;
@@ -664,6 +690,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
     public String printReportNeracaSaldo(){
         logger.info("[LaporanAkuntansiAction.printReportNeracaSaldo] start process >>>");
+        String reportId="RPT01";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
@@ -689,11 +716,15 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             unit="'"+data.getUnit()+"'";
         }
 
+        listNeracaSaldo = laporanAkuntansiBo.getListNeracaSaldo(reportId,data.getBulan()+"-"+data.getTahun(),unit);
+
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", unit);
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("judulGm", dataAtasan.getJudulGeneralManager());
+        reportParams.put("judulManagerKeu", dataAtasan.getJudulManagerKeuangan());
         reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
         reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
         reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
@@ -719,6 +750,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
     }
     public String printReportNeracaMutasi(){
         logger.info("[LaporanAkuntansiAction.printReportNeracaMutasi] start process >>>");
+        String reportId="RPT02";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
@@ -744,11 +776,15 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             unit="'"+data.getUnit()+"'";
         }
 
+        listNeracaSaldo = laporanAkuntansiBo.getListNeracaMutasi(reportId,data.getBulan()+"-"+data.getTahun(),unit);
+
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", unit);
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("judulGm", dataAtasan.getJudulGeneralManager());
+        reportParams.put("judulManagerKeu", dataAtasan.getJudulManagerKeuangan());
         reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
         reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
         reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
@@ -775,6 +811,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
     public String printReportIkhtisarBukuBesar(){
         logger.info("[LaporanAkuntansiAction.printReportIkhtisarBukuBesar] start process >>>");
+        String reportId ="RPT03";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
@@ -800,10 +837,14 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             unit="'"+data.getUnit()+"'";
         }
 
+        listIkhtisarBukuBesar = laporanAkuntansiBo.getListIkhitisarBukuBesar(reportId,data.getBulan()+"-"+data.getTahun(),unit);
+
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", unit);
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("judulGm", dataAtasan.getJudulGeneralManager());
+        reportParams.put("judulManagerKeu", dataAtasan.getJudulManagerKeuangan());
         reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
         reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
         reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
@@ -831,6 +872,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
 
     public String printReportKartuBukuBesar(){
         logger.info("[LaporanAkuntansiAction.printReportKartuBukuBesar] start process >>>");
+        String reportId="RPT10";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LaporanAkuntansiBo laporanAkuntansiBo = (LaporanAkuntansiBo) ctx.getBean("laporanAkuntansiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
@@ -856,10 +898,79 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             unit="'"+data.getUnit()+"'";
         }
 
+        java.sql.Date tanggalAwal= new java.sql.Date(new Date().getTime());
+        java.sql.Date tanggalAkhir= new java.sql.Date(new Date().getTime());
+
+        if (data.getStTanggalAwal()!=null){
+            if (!data.getStTanggalAwal().equalsIgnoreCase("")){
+                tanggalAwal = CommonUtil.convertStringToDate(data.getStTanggalAwal());
+            }
+        }
+        if (data.getStTanggalAkhir()!=null){
+            if (!data.getStTanggalAkhir().equalsIgnoreCase("")){
+                tanggalAkhir = CommonUtil.convertStringToDate(data.getStTanggalAkhir());
+            }
+        }
+
+        listBukuBesar = laporanAkuntansiBo.getListKartuBukuBesar(reportId,data.getBulan()+"-"+data.getTahun(),unit,data.getKodeRekening(),data.getMasterId(),data.getTipeTanggal(),tanggalAwal,tanggalAkhir);
+        BigDecimal saldoAwal ;
+
+        if ("P".equalsIgnoreCase(data.getTipeTanggal())){
+            saldoAwal= laporanAkuntansiBo.saldoAwalKodeRekening(unit,data.getKodeRekening(),data.getMasterId(),data.getBulan()+"-"+data.getTahun());
+        }else{
+            String[] tanggal = data.getStTanggalAwal().split("-");
+            String periode = tanggal[1]+"-"+tanggal[2];
+
+            saldoAwal= laporanAkuntansiBo.saldoAwalKodeRekeningByTanggal(unit,data.getKodeRekening(),data.getMasterId(),periode,data.getStTanggalAwal());
+        }
+
+        BigDecimal saldoAkhir = saldoAwal;
+        String posisiSaldoAwal ="";
+        String posisiSaldoAkhir ="";
+
+        if (listBukuBesar.size()>0){
+            for (KartuBukuBesarPerBukuBantuDTO dataKartu : listBukuBesar){
+                BigDecimal saldo = dataKartu.getJumlahdebit().subtract(dataKartu.getJumlahkredit());
+                saldoAkhir = saldoAkhir.add(saldo);
+            }
+        }
+
+        if (saldoAwal.compareTo(BigDecimal.ZERO)<0){
+            posisiSaldoAwal="K";
+        }else{
+            posisiSaldoAwal="D";
+        }
+        if (saldoAkhir.compareTo(BigDecimal.ZERO)<0){
+            posisiSaldoAkhir="K";
+        }else{
+            posisiSaldoAkhir="D";
+        }
+
+        //jika daftar kartu buku besar kosong tetapi saldo ada maka tetep dicetak
+        if (listBukuBesar.size()==0){
+            if (saldoAwal.compareTo(BigDecimal.ZERO)<0||saldoAwal.compareTo(BigDecimal.ZERO)>0){
+                KartuBukuBesarPerBukuBantuDTO newData = new KartuBukuBesarPerBukuBantuDTO();
+                newData.setJumlahdebit(BigDecimal.ZERO);
+                newData.setJumlahkredit(BigDecimal.ZERO);
+                listBukuBesar.add(newData);
+            }
+        }
+
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         reportParams.put("branchId", unit);
         Date now = new Date();
+        if ("P".equalsIgnoreCase(data.getTipeTanggal())){
+            reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
+        }else{
+            reportParams.put("periodeTitle", data.getStTanggalAwal()+" s/d "+data.getStTanggalAkhir());
+        }
+        reportParams.put("saldoAwal",saldoAwal);
+        reportParams.put("posisiSaldoAwal",posisiSaldoAwal);
+        reportParams.put("saldoAkhir",saldoAkhir);
+        reportParams.put("posisiSaldoAkhir",posisiSaldoAkhir);
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("judulGm", dataAtasan.getJudulGeneralManager());
+        reportParams.put("judulManagerKeu", dataAtasan.getJudulManagerKeuangan());
         reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
         reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
         reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
@@ -868,6 +979,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("alamatSurat",branch.getAlamatSurat());
         reportParams.put("kode_rekening",data.getKodeRekening());
         reportParams.put("nomor_master",data.getMasterId());
+        reportParams.put("nama_kode_rekening",data.getNamaKodeRekening());
+        reportParams.put("nama_master",data.getNamaMaster());
         reportParams.put("branch_id",data.getUnit());
         reportParams.put("rekening_id",data.getRekeningId());
         reportParams.put("reportTitle", "KARTU BUKU BESAR PER BUKU BANTU");
@@ -886,39 +999,41 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
         }
         logger.info("[LaporanAkuntansiAction.printReportKartuBukuBesar] end process <<<");
-        if (("T").equalsIgnoreCase(data.getTipeTanggal())){
-            java.sql.Date tanggalAwal = CommonUtil.convertStringToDate(data.getStTanggalAwal());
-            java.sql.Date tanggalAkhir = CommonUtil.convertStringToDate(data.getStTanggalAkhir());
-
-            String[] stTanggalAwalBulan = data.getStTanggalAwal().split("-");
-
-            Calendar c = Calendar.getInstance();
-            c.setTime(tanggalAkhir);
-            c.add(Calendar.DATE, 1);
-
-            java.sql.Date tanggalAkhirBaru = new java.sql.Date(c.getTimeInMillis());
-
-            reportParams.put("tanggalAwal",tanggalAwal );
-            reportParams.put("tanggalAwalBulan",CommonUtil.convertStringToDate2(stTanggalAwalBulan[2]+"-"+stTanggalAwalBulan[1]+"-01" ));
-            reportParams.put("periode",stTanggalAwalBulan[1]+"-"+stTanggalAwalBulan[2] );
-            reportParams.put("tanggalAkhir", tanggalAkhirBaru);
-            reportParams.put("periodeTitle", data.getStTanggalAwal()+" s/d "+data.getStTanggalAkhir());
-            if (!("").equalsIgnoreCase(data.getMasterId())){
-                return "print_report_akuntansi_kartu_buku_besar_tanggal";
-            }else{
-                return "print_report_akuntansi_kartu_buku_besar_tanggal_tanpa_master";
-            }
-        }else if (("P").equalsIgnoreCase(data.getTipeTanggal())){
-            reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
-            reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
-            if (!("").equalsIgnoreCase(data.getMasterId())){
-                return "print_report_akuntansi_kartu_buku_besar";
-            }else{
-                return "print_report_akuntansi_kartu_buku_besar_tanpa_master";
-            }
-        }else{
-            return ERROR;
-        }
+//        if (("T").equalsIgnoreCase(data.getTipeTanggal())){
+//            java.sql.Date tanggalAwal = CommonUtil.convertStringToDate(data.getStTanggalAwal());
+//            java.sql.Date tanggalAkhir = CommonUtil.convertStringToDate(data.getStTanggalAkhir());
+//
+//            String[] stTanggalAwalBulan = data.getStTanggalAwal().split("-");
+//
+//            Calendar c = Calendar.getInstance();
+//            c.setTime(tanggalAkhir);
+//            c.add(Calendar.DATE, 1);
+//
+//            java.sql.Date tanggalAkhirBaru = new java.sql.Date(c.getTimeInMillis());
+//
+//            reportParams.put("tanggalAwal",tanggalAwal );
+//            reportParams.put("tanggalAwalBulan",CommonUtil.convertStringToDate2(stTanggalAwalBulan[2]+"-"+stTanggalAwalBulan[1]+"-01" ));
+//            reportParams.put("periode",stTanggalAwalBulan[1]+"-"+stTanggalAwalBulan[2] );
+//            reportParams.put("tanggalAkhir", tanggalAkhirBaru);
+//            reportParams.put("periodeTitle", data.getStTanggalAwal()+" s/d "+data.getStTanggalAkhir());
+//            if (!("").equalsIgnoreCase(data.getMasterId())){
+//                return "print_report_akuntansi_kartu_buku_besar_tanggal";
+//            }else{
+//                return "print_report_akuntansi_kartu_buku_besar_tanggal_tanpa_master";
+//            }
+//        }else if (("P").equalsIgnoreCase(data.getTipeTanggal())){
+//            reportParams.put("periode", data.getBulan()+"-"+data.getTahun());
+//            reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
+//            reportParams.put("SUBREPORT_DIR", "C:\\tomcat\\webapps\\go-medsys\\pages\\report\\com\\neurix\\akuntansi\\");
+//            if (!("").equalsIgnoreCase(data.getMasterId())){
+//                return "print_report_akuntansi_kartu_buku_besar";
+//            }else{
+//                return "print_report_akuntansi_kartu_buku_besar_tanpa_master";
+//            }
+//        }else{
+//            return ERROR;
+//        }
+        return "print_report_akuntansi_kartu_buku_besar";
     }
 
     public String printReportMutasiJurnal(){
@@ -975,7 +1090,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("alamatSurat",branch.getAlamatSurat());
         reportParams.put("jurnalType",data.getTipeJurnalId());
         reportParams.put("areaId",CommonUtil.userAreaName());
-        System.out.println(CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
+//        System.out.println(CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
         try {
             preDownload();
         } catch (SQLException e) {
@@ -1089,6 +1204,10 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 titleReport="IKHTISAR PIUTANG PASIEN";
                 report="print_report_akuntansi_ikhitisar_sub_buku_besar_pasien";
                 break;
+            case ("persediaan"):
+                titleReport="IKHTISAR PERSEDIAAN";
+                report="print_report_akuntansi_ikhitisar_sub_buku_besar_persediaan";
+                break;
                 default:
                     titleReport="";
         }
@@ -1100,6 +1219,8 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         reportParams.put("periodeTitle", CommonUtil.convertNumberToStringBulan(data.getBulan())+" "+data.getTahun());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
+        reportParams.put("judulGm", dataAtasan.getJudulGeneralManager());
+        reportParams.put("judulManagerKeu", dataAtasan.getJudulManagerKeuangan());
         reportParams.put("namaGeneralManager", dataAtasan.getNamaGeneralManager());
         reportParams.put("nipGeneralManager", dataAtasan.getNipGeneralManager());
         reportParams.put("namaManagerKeuangan", dataAtasan.getNamaManagerKeuangan());
@@ -1442,23 +1563,24 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         String reportId="RPT07";
         String tipeAging ="";
         String unit = "";
-        if (("KP").equalsIgnoreCase(dataLaporan.getUnit())){
-            List<Branch> branchList = new ArrayList<>();
-            branchList = branchBo.getAll();
-            int i = 1;
-            for (Branch dataUnit : branchList){
-                if (i==1){
-                    unit="'"+dataUnit.getBranchId()+"'";
-                }else{
-                    unit=unit+",'"+dataUnit.getBranchId()+"'";
-                }
-                i++;
-            }
-            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
-            branch.setBranchName("Semua");
-        }else{
-            unit="'"+dataLaporan.getUnit()+"'";
-        }
+//        if ((CommonConstant.ID_KANPUS).equalsIgnoreCase(dataLaporan.getUnit())){
+//            List<Branch> branchList = new ArrayList<>();
+//            branchList = branchBo.getAll();
+//            int i = 1;
+//            for (Branch dataUnit : branchList){
+//                if (i==1){
+//                    unit="'"+dataUnit.getBranchId()+"'";
+//                }else{
+//                    unit=unit+",'"+dataUnit.getBranchId()+"'";
+//                }
+//                i++;
+//            }
+//            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
+//            branch.setBranchName("Semua");
+//        }else{
+//            unit="'"+dataLaporan.getUnit()+"'";
+//        }
+        unit="'"+dataLaporan.getUnit()+"'";
 
         switch (dataLaporan.getTipeLaporan()){
             case("hutang_usaha") :
@@ -1480,6 +1602,18 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
             case ("piutang_pasien"):
                 titleReport="AGING PIUTANG PASIEN";
                 tipeAging ="pasien";
+                break;
+            case ("pph_dokter_kso"):
+                titleReport="AGING PPH21 DOKTER KSO";
+                tipeAging ="dokter";
+                break;
+            case ("pph_pegawai"):
+                titleReport="AGING PPH21 PEGAWAI";
+                tipeAging ="pegawai";
+                break;
+            case ("pph_rekanan"):
+                titleReport="AGING REKANAN";
+                tipeAging ="usaha";
                 break;
         }
 
@@ -1612,7 +1746,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         if(myList.size()>0){
             List<Aging> forReport = new ArrayList<>();
 
-            myList.addAll(forReport);
+//            myList.addAll(forReport);
             reportParams.put("reportTitle", titleReport);
             reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
             reportParams.put("cabangId", dataLaporan.getUnit());
@@ -1652,7 +1786,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         Aging aging=null;
         for (int i = 0; i < listData.size() && !flag; i++){
             aging = listData.get(i);
-            if (aging.getNoNota().equalsIgnoreCase(data.getNoNota()) && data.getMataUang().equalsIgnoreCase(aging.getMataUang())){
+            if (aging.getNoNota().equalsIgnoreCase(data.getNoNota()) && data.getMataUang().equalsIgnoreCase(aging.getMataUang())&& data.getMasterId().equalsIgnoreCase(aging.getMasterId())){
                 flag = true;
             }
         }
@@ -1664,7 +1798,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         Aging dataReturn = null;
         for (int i = 0; i < listData.size() && !flag; i++){
             dataReturn = listData.get(i);
-            if (dataReturn.getNoNota().equalsIgnoreCase(record.getNoNota())&& dataReturn.getMataUang().equalsIgnoreCase(record.getMataUang())){
+            if (dataReturn.getNoNota().equalsIgnoreCase(record.getNoNota())&& dataReturn.getMataUang().equalsIgnoreCase(record.getMataUang())&&dataReturn.getMasterId().equalsIgnoreCase(record.getMasterId())){
                 flag = true;
             }
         }
@@ -1849,6 +1983,26 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         laporanAkuntansi.setTipeLaporanName("Uang Muka Pasien");
         laporanAkuntansiList.add(laporanAkuntansi);
 
+        laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("persediaan");
+        laporanAkuntansi.setTipeLaporanName("Persediaan");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
+        laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("pph_dokter_kso");
+        laporanAkuntansi.setTipeLaporanName("PPH21 Dokter");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
+        laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("pph_pegawai");
+        laporanAkuntansi.setTipeLaporanName("PPH21 Pegawai");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
+        laporanAkuntansi = new LaporanAkuntansi();
+        laporanAkuntansi.setTipeLaporan("pph_rekanan");
+        laporanAkuntansi.setTipeLaporanName("PPH21 Rekanan");
+        laporanAkuntansiList.add(laporanAkuntansi);
+
         return laporanAkuntansiList;
     }
 
@@ -1861,44 +2015,16 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         Branch branch = branchBo.getBranchById(data.getUnit(),"Y");
         String titleReport="";
         String reportId="RPT21";
-        String unit = "";
-        if (("All").equalsIgnoreCase(data.getUnit())){
-            List<Branch> branchList = new ArrayList<>();
-            branchList = branchBo.getAll();
-            int i = 1;
-            for (Branch dataUnit : branchList){
-                if (i==1){
-                    unit="'"+dataUnit.getBranchId()+"'";
-                }else{
-                    unit=unit+",'"+dataUnit.getBranchId()+"'";
-                }
-                i++;
-            }
-            branch.setLogoName(CommonConstant.IMAGE_LOGO_KP);
-            branch.setBranchName("Semua");
-        }else{
-            unit="'"+data.getUnit()+"'";
-        }
-
         String result="";
 
-        switch (data.getTipeLaporan()){
-            case "AK":
-                titleReport="LAPORAN ARUS KAS";
-                result="print_report_arus_kas";
-                arusKasDTOList = laporanAkuntansiBo.getArusKas(reportId,unit,data.getStTanggalAwal(),"AK");
-                break;
-            case "ARD":
-                titleReport="LAPORAN ARUS KAS DETAIL";
-                result="print_report_arus_kas_detail";
-                arusKasDTOList = laporanAkuntansiBo.getArusKas(reportId,unit,data.getStTanggalAwal(),"ARD");
-                break;
-        }
+        titleReport="LAPORAN ARUS KAS";
+        result="print_report_arus_kas";
+        listArusKas = laporanAkuntansiBo.getArusKas(reportId,data.getUnit(),data.getBulan()+"-"+data.getTahun());
 
         reportParams.put("reportTitle", titleReport);
         reportParams.put("reportId", reportId);
         reportParams.put("urlLogo", CommonConstant.URL_LOGO_REPORT+branch.getLogoName());
-        reportParams.put("branchId", unit);
+        reportParams.put("branchId", data.getUnit());
         reportParams.put("periodeTitle", data.getStTanggalAwal());
         Date now = new Date();
         reportParams.put("tanggal", CommonUtil.convertDateToString(now));
@@ -1984,8 +2110,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
                 }
                 i++;
             }
-            branchId.add(unit);
-            listKonsol = laporanAkuntansiBo.getLaporanAkuntansiKonsol(periode,branchId.get(0),branchId.get(1),branchId.get(2),branchId.get(3),branchId.get(4));
+            listKonsol = laporanAkuntansiBo.getLaporanAkuntansiKonsol(periode,branchId.get(0),branchId.get(1),branchId.get(2),branchId.get(3),branchId.get(4),branchId.get(5),branchId.get(6),unit);
         }else{
             titleReport="LAPORAN POSISI KEUANGAN";
             result="print_report_kompilasi";
@@ -2022,6 +2147,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         logger.info("[LaporanAkuntansiAction.printLaporanKompilasi] end process <<<");
         return result;
     }
+
     private String getMataUangKurs(String mataUangId) {
         return "0";
     }

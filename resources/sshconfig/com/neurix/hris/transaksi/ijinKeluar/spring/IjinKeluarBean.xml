@@ -11,6 +11,9 @@
     <bean id="ijinKeluarAction" class="com.neurix.hris.transaksi.ijinKeluar.action.IjinKeluarAction"
           p:ijinKeluarBoProxy-ref="ijinKeluarBoProxy" />
 
+    <bean id="historyPegawaiController" class="com.neurix.hris.mobileapi.HistoryPegawaiController"
+          p:ijinKeluarBoProxy-ref="ijinKeluarBoProxy" />
+
     <bean id="ijinKeluarController" class="com.neurix.hris.mobileapi.IjinKeluarController"
           p:ijinKeluarBoProxy-ref="ijinKeluarBoProxy"
           p:userBoProxy-ref="userBoProxy"
@@ -30,6 +33,7 @@
           p:notifikasiFcmDao-ref="notifikasiFcmDao"
           p:ijinDao-ref="ijinDao"
           p:absensiPegawaiDao-ref="absensiPegawaiDao"
+          p:userDao-ref="userDao"
     />
 
     <bean id="ijinKeluarBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

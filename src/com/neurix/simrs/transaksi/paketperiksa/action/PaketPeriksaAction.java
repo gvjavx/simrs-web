@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.paketperiksa.action;
 
+import com.neurix.akuntansi.master.master.model.Master;
 import com.neurix.akuntansi.master.masterVendor.bo.MasterVendorBo;
 import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.action.BaseTransactionAction;
@@ -18,7 +19,10 @@ import com.neurix.simrs.transaksi.paketperiksa.model.*;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
-import javax.imageio.ImageIO;
+import javax.imageio.*;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.http.HttpSession;
 
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
@@ -31,21 +35,24 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by reza on 12/03/20.
- */
+
 public class PaketPeriksaAction extends BaseTransactionAction {
 
     public static transient Logger logger = Logger.getLogger(PaketPeriksaAction.class);
@@ -55,7 +62,7 @@ public class PaketPeriksaAction extends BaseTransactionAction {
     private PaketPeriksa paketPeriksa;
 
 
-    public List<ImSimrsKelasPaketEntity> getListKelasPaket(){
+    public List<ImSimrsKelasPaketEntity> getListKelasPaket() {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
 
@@ -64,17 +71,15 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         return paketPeriksaBo.getListEntityKelasPaket(paketPeriksa);
     }
 
-    public List<MasterVendor> getListMasterVendor(){
+    public List<MasterVendor> getListMasterVendor() {
+        List<MasterVendor> res = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        MasterVendorBo masterVendorBo = (MasterVendorBo) ctx.getBean("masterVendorBoProxy");
-
-        MasterVendor masterVendor = new MasterVendor();
-        masterVendor.setFlag("Y");
-
-        return masterVendorBo.getByCriteria(masterVendor);
+        PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+        res = paketPeriksaBo.getListPerusahaan();
+        return res;
     }
 
-    public List<PaketPeriksa> getListPaketPeriksa(){
+    public List<PaketPeriksa> getListPaketPeriksa() {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
 
@@ -85,79 +90,85 @@ public class PaketPeriksaAction extends BaseTransactionAction {
 
         try {
             list = paketPeriksaBo.getListPaketPeriksa(periksa);
-        }catch (GeneralBOException e){
-            logger.error("Found Error "+e.getMessage());
+        } catch (GeneralBOException e) {
+            logger.error("Found Error " + e.getMessage());
         }
 
         return list;
     }
 
-    public List<PaketPeriksa> getListPaketPeriksaByTipe(String tipe){
+    public List<PaketPeriksa> getListPaketPeriksaByTipe(String tipe) {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
 
         List<PaketPeriksa> list = new ArrayList<>();
 
-        if("RJ".equalsIgnoreCase(tipe)){
+        if (tipe != null && !"".equalsIgnoreCase(tipe)) {
             try {
-                list = paketPeriksaBo.getListPaketRawatJalan(CommonUtil.userBranchLogin());
-            }catch (GeneralBOException e){
-                logger.error("Found Error "+e.getMessage());
-            }
-        }
-
-        if("IGD".equalsIgnoreCase(tipe)){
-            try {
-                list = paketPeriksaBo.getListPaketIgd(CommonUtil.userBranchLogin());
-            }catch (GeneralBOException e){
-                logger.error("Found Error "+e.getMessage());
+                list = paketPeriksaBo.getListPaket(CommonUtil.userBranchLogin(), tipe);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error " + e.getMessage());
             }
         }
 
         return list;
     }
 
-    public CrudResponse savePaket(String idPelayanan, String namaPaket, BigDecimal tarifPaket, String jsonString) throws JSONException{
+    public CrudResponse savePaket(String namaPaket, String jsonString, String pelayanan) {
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
-
-        CrudResponse response = new CrudResponse();
-
-        JSONArray json = new JSONArray(jsonString);
-        List<MtSimrsItemPaketEntity> itemPaketEntities = new ArrayList<>();
-        MtSimrsItemPaketEntity itemPaketEntity;
-        BigInteger harga = new BigInteger(String.valueOf(0));
-        for (int i = 0; i < json.length(); i++) {
-            JSONObject obj = json.getJSONObject(i);
-            itemPaketEntity = new MtSimrsItemPaketEntity();
-            itemPaketEntity.setIdItem(obj.getString("id_item"));
-            itemPaketEntity.setIdKategoriItem(obj.getString("kategori_item"));
-            itemPaketEntity.setJenisItem(obj.getString("jenis_item"));
-            itemPaketEntity.setHarga(new BigInteger(obj.get("tarif").toString()));
-            harga = harga.add(itemPaketEntity.getHarga());
-            itemPaketEntities.add(itemPaketEntity);
-        }
-
-        MtSimrsPaketEntity paketPeriksa = new MtSimrsPaketEntity();
-        paketPeriksa.setNamaPaket(namaPaket);
-        paketPeriksa.setTarif(new BigDecimal(harga));
-        paketPeriksa.setFlag("Y");
-        paketPeriksa.setAction("C");
-        paketPeriksa.setBranchId(CommonUtil.userBranchLogin());
-        paketPeriksa.setCreatedDate(time);
-        paketPeriksa.setCreatedWho(userLogin);
-        paketPeriksa.setLastUpdate(time);
-        paketPeriksa.setLastUpdateWho(userLogin);
-        paketPeriksa.setIdPelayanan(idPelayanan);
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
+        CrudResponse response = new CrudResponse();
 
         try {
-            response = paketPeriksaBo.savePaketPeriksa(paketPeriksa, itemPaketEntities);
-        } catch (GeneralBOException e){
+            JSONArray json = new JSONArray(jsonString);
+            List<MtSimrsItemPaketEntity> itemPaketEntities = new ArrayList<>();
+            MtSimrsItemPaketEntity itemPaketEntity;
+            BigInteger harga = new BigInteger(String.valueOf(0));
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject obj = json.getJSONObject(i);
+                itemPaketEntity = new MtSimrsItemPaketEntity();
+                itemPaketEntity.setIdItem(obj.getString("id_item"));
+                itemPaketEntity.setIdKategoriItem(obj.getString("kategori_item"));
+                itemPaketEntity.setJenisItem(obj.getString("jenis_item"));
+                itemPaketEntity.setHarga(new BigInteger(obj.get("tarif").toString()));
+                harga = harga.add(itemPaketEntity.getHarga());
+                itemPaketEntity.setIdPelayanan(obj.getString("id_pelayanan"));
+                itemPaketEntities.add(itemPaketEntity);
+            }
 
+            JSONArray jsonPel = new JSONArray(pelayanan);
+            List<MtSimrsDetailPaketEntity> detailPaketEntityList = new ArrayList<>();
+            for (int i = 0; i < jsonPel.length(); i++) {
+                JSONObject obj = jsonPel.getJSONObject(i);
+                MtSimrsDetailPaketEntity detailPaketEntity = new MtSimrsDetailPaketEntity();
+                detailPaketEntity.setIdPelayanan(obj.getString("id_pelayanan"));
+                detailPaketEntity.setUrutan(new BigInteger(obj.getString("urutan")));
+                detailPaketEntityList.add(detailPaketEntity);
+            }
+
+            MtSimrsPaketEntity paketPeriksa = new MtSimrsPaketEntity();
+            paketPeriksa.setNamaPaket(namaPaket);
+            paketPeriksa.setTarif(new BigDecimal(harga));
+            paketPeriksa.setFlag("Y");
+            paketPeriksa.setAction("C");
+            paketPeriksa.setBranchId(CommonUtil.userBranchLogin());
+            paketPeriksa.setCreatedDate(time);
+            paketPeriksa.setCreatedWho(userLogin);
+            paketPeriksa.setLastUpdate(time);
+            paketPeriksa.setLastUpdateWho(userLogin);
+
+            try {
+                response = paketPeriksaBo.savePaketPeriksa(paketPeriksa, itemPaketEntities, detailPaketEntityList);
+            } catch (GeneralBOException e) {
+                response.setStatus("error");
+                response.setMsg("Tidak dapat menyimpan data, dikarenakan terjadi kesalahan pada saat menyimpan...!");
+            }
+        } catch (JSONException e) {
+            response.setStatus("error");
+            response.setMsg("Mohon maaf traksaksi tidak bisa dilanjutkan, JSON parse tidak bisa...!");
         }
 
         return response;
@@ -177,17 +188,17 @@ public class PaketPeriksaAction extends BaseTransactionAction {
 
         try {
             list = paketPeriksaBoProxy.getListPaketPeriksa(paketPeriksa);
-        }catch (GeneralBOException e){
-            logger.error("Found Error when search paket "+e.getMessage());
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search paket " + e.getMessage());
         }
 
         session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult",list);
+        session.setAttribute("listOfResult", list);
         return "search";
 
     }
 
-    public String searchDaftarPaket(){
+    public String searchDaftarPaket() {
 
         PaketPeriksa paketPeriksa = getPaketPeriksa();
         paketPeriksa.setBranchId(CommonUtil.userBranchLogin());
@@ -196,12 +207,12 @@ public class PaketPeriksaAction extends BaseTransactionAction {
 
         try {
             list = paketPeriksaBoProxy.getListDaftarPaketPasien(paketPeriksa);
-        }catch (GeneralBOException e){
-            logger.error("Found Error when search paket "+e.getMessage());
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search paket " + e.getMessage());
         }
 
         session.removeAttribute("listOfResult");
-        session.setAttribute("listOfResult",list);
+        session.setAttribute("listOfResult", list);
         return "search";
     }
 
@@ -214,7 +225,7 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         return "search";
     }
 
-    public String add(){
+    public String add() {
         PaketPeriksa paketPeriksa = new PaketPeriksa();
         setPaketPeriksa(paketPeriksa);
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -222,26 +233,26 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         return "init_add";
     }
 
-    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan){
+    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan) {
         List<KategoriTindakan> tindakanList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KategoriTindakanBo kategoriTindakanBo = (KategoriTindakanBo) ctx.getBean("kategoriTindakanBoProxy");
 
-        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             try {
-                tindakanList = kategoriTindakanBo.getListKategoriTindakan(idPelayanan);
-            }catch (GeneralBOException e){
-               logger.error("Found error "+e.getMessage());
+                tindakanList = kategoriTindakanBo.getListKategoriTindakan(idPelayanan, null);
+            } catch (GeneralBOException e) {
+                logger.error("Found error " + e.getMessage());
             }
         }
         return tindakanList;
     }
 
-    public Pasien cekRMPasien(String nik, String nama, String jenisKelamin){
+    public Pasien cekRMPasien(String nik, String nama, String jenisKelamin) {
 
         Pasien pasien = new Pasien();
 
-        if(nik != null && !"".equalsIgnoreCase(nik)){
+        if (nik != null && !"".equalsIgnoreCase(nik)) {
 
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
@@ -253,38 +264,38 @@ public class PaketPeriksaAction extends BaseTransactionAction {
             dataPasien.setNoKtp(nik);
 
             try {
-               list = pasienBo.getByCriteria(dataPasien);
-            }catch (GeneralBOException e){
-                logger.error("Found Error "+e.getMessage());
+                list = pasienBo.getByCriteria(dataPasien);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error " + e.getMessage());
             }
 
             Pasien pas = new Pasien();
 
-            if(list.size() > 0){
+            if (list.size() > 0) {
 
                 pas = list.get(0);
 
                 try {
                     pasienDaftarPaket = paketPeriksaBo.cekPaketWithIdPasien(pas.getIdPasien());
-                }catch (GeneralBOException e){
-                    logger.error("Found Error "+e.getMessage());
+                } catch (GeneralBOException e) {
+                    logger.error("Found Error " + e.getMessage());
                 }
 
-                if(pasienDaftarPaket){
+                if (pasienDaftarPaket) {
                     pasien.setStatus("error");
-                    pasien.setMsg("No RM "+pas.getIdPasien() +" Sudah terdaftar sebagai pasien paket..!");
-                }else{
+                    pasien.setMsg("No RM " + pas.getIdPasien() + " Sudah terdaftar sebagai pasien paket..!");
+                } else {
                     pasien = list.get(0);
                 }
 
-            }else{
+            } else {
                 pasien = new Pasien();
             }
         }
         return pasien;
     }
 
-    public CheckResponse savePaketPasien(String jsonString) throws JSONException{
+    public CheckResponse savePaketPasien(String jsonString) throws JSONException {
 
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -309,9 +320,9 @@ public class PaketPeriksaAction extends BaseTransactionAction {
 
             try {
                 response = paketPeriksaBo.savePaketPasien(paketPasien);
-            } catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 response.setStatus("Error");
-                response.setMessage("Found Error "+e.getMessage()+" "+response.getMessage());
+                response.setMessage("Found Error " + e.getMessage() + " " + response.getMessage());
                 return response;
             }
         }
@@ -319,111 +330,138 @@ public class PaketPeriksaAction extends BaseTransactionAction {
         return response;
     }
 
-    public Pasien saveNewPasien(String jsonString) throws JSONException, IOException {
-
+    public Pasien saveNewPasien(String jsonString) {
         Pasien pasien = new Pasien();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        try {
+            JSONObject obj = new JSONObject(jsonString);
+            if (obj != null) {
+                Pasien dataPasien = new Pasien();
+                if (obj.has("no_bpjs")) {
+                    dataPasien.setNoBpjs(obj.getString("no_bpjs"));
+                }
+                if (obj.has("no_telp")) {
+                    dataPasien.setNoTelp(obj.getString("no_telp"));
+                }
+                if (obj.has("status")) {
+                    dataPasien.setStatusPerkawinan(obj.getString("status"));
+                }
+                if (obj.has("pendidikan")) {
+                    dataPasien.setPendidikan(obj.getString("pendidikan"));
+                }
+                dataPasien.setNoKtp(obj.getString("nik"));
+                dataPasien.setNama(obj.getString("nama"));
+                dataPasien.setJenisKelamin(obj.getString("jk"));
+                dataPasien.setTempatLahir(obj.getString("tempat_lahir"));
+                dataPasien.setTglLahir(obj.getString("tanggal_lahir"));
+                dataPasien.setAgama(obj.getString("agama"));
+                dataPasien.setProfesi(obj.getString("profesi"));
+                dataPasien.setSuku(obj.getString("suku"));
+                dataPasien.setAlamat(obj.getString("alamat"));
+                dataPasien.setDesaId(obj.getString("desa_id"));
+                dataPasien.setCreatedDate(time);
+                dataPasien.setCreatedWho(userLogin);
+                dataPasien.setLastUpdate(time);
+                dataPasien.setLastUpdateWho(userLogin);
+                if (obj.getString("img_ktp") != null && !"".equalsIgnoreCase(obj.getString("img_ktp"))) {
+                    try {
+                        BASE64Decoder decoder = new BASE64Decoder();
+                        byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img_ktp"));
+                        String fileName = dataPasien.getNoKtp() + "-" + dateFormater("MM") + dateFormater("yy") + ".jpg";
+                        String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN + fileName;
+                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-        JSONObject obj = new JSONObject(jsonString);
+                        if (image == null) {
+                            logger.error("Buffered Image is null");
+                        } else {
+                            CrudResponse response = CommonUtil.compresing(image, uploadFile);
+                            if("success".equalsIgnoreCase(response.getStatus())){
+                                dataPasien.setUrlKtp(fileName);
+                            }else{
+                                Pasien pasien1 = new Pasien();
+                                pasien1.setStatus(response.getStatus());
+                                pasien1.setMsg(response.getMsg());
+                                return pasien1;
+                            }
+//                            File f = new File(uploadFile);
+//                            ImageIO.write(image, "png", f);
 
-        if (obj != null){
-
-            Pasien dataPasien = new Pasien();
-            dataPasien.setNoKtp(obj.getString("nik"));
-            dataPasien.setNama(obj.getString("nama"));
-            dataPasien.setJenisKelamin(obj.getString("jk"));
-            dataPasien.setTempatLahir(obj.getString("tempat_lahir"));
-            dataPasien.setTglLahir(obj.getString("tanggal_lahir"));
-            dataPasien.setAgama(obj.getString("agama"));
-            dataPasien.setProfesi(obj.getString("profesi"));
-            dataPasien.setSuku(obj.getString("suku"));
-            dataPasien.setAlamat(obj.getString("alamat"));
-            dataPasien.setDesaId(obj.getString("desa_id"));
-            dataPasien.setCreatedDate(time);
-            dataPasien.setCreatedWho(userLogin);
-            dataPasien.setLastUpdate(time);
-            dataPasien.setLastUpdateWho(userLogin);
-
-            if(obj.getString("img_ktp") != null && !"".equalsIgnoreCase(obj.getString("img_ktp"))){
-                BASE64Decoder decoder = new BASE64Decoder();
-                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("img_ktp"));
-                logger.info("Decoded upload data : " + decodedBytes.length);
-                String fileName = dataPasien.getNoKtp()+"-"+dateFormater("MM")+dateFormater("yy")+".png";
-                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_KTP_PASIEN+fileName;
-                logger.info("File save path : " + uploadFile);
-                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-
-                if (image == null) {
-                    logger.error("Buffered Image is null");
-                }else{
-                    File f = new File(uploadFile);
-                    // write the image
-                    ImageIO.write(image, "png", f);
-                    dataPasien.setUrlKtp(fileName);
+                        }
+                    } catch (IOException e) {
+                        pasien.setStatus("error");
+                        pasien.setMsg("Error " + e.getMessage());
+                    }
+                }
+                try {
+                    Boolean cekNik = pasienBo.cekNikPasien(dataPasien.getNoKtp());
+                    if (cekNik) {
+                        pasien.setStatus("error");
+                        pasien.setMsg("NIK " + dataPasien.getNoKtp() + " sudah ada...!");
+                    } else {
+                        pasien = pasienBo.saveAddWithResponse(dataPasien);
+                    }
+                } catch (GeneralBOException e) {
+                    pasien.setStatus("error");
+                    pasien.setMsg("Error " + e.getMessage());
+                    logger.error("Found Error " + e.getMessage());
                 }
             }
-
-            try {
-                pasien = pasienBo.saveAddWithResponse(dataPasien);
-            }catch (GeneralBOException e){
-                pasien.setStatus("error");
-                pasien.setMsg("Error "+e.getMessage());
-                logger.error("Found Error "+e.getMessage());
-            }
+        } catch (JSONException e) {
+            pasien.setStatus("error");
+            pasien.setMsg("Error " + e.getMessage());
         }
-
         return pasien;
     }
 
-    public List<PaketPeriksa> detailDaftarPaketPasien(String idPaket, String idPerusahaan) throws JSONException{
+    public List<PaketPeriksa> detailDaftarPaketPasien(String idPaket, String idPerusahaan) throws JSONException {
 
         List<PaketPeriksa> list = new ArrayList<>();
         String branchId = CommonUtil.userBranchLogin();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
 
-        if( idPaket != null && !"".equalsIgnoreCase(idPaket)
-            && idPerusahaan != null && !"".equalsIgnoreCase(idPerusahaan)){
+        if (idPaket != null && !"".equalsIgnoreCase(idPaket)
+                && idPerusahaan != null && !"".equalsIgnoreCase(idPerusahaan)) {
 
             try {
                 list = paketPeriksaBo.getListDetailDaftarPaketPasien(idPaket, idPerusahaan, branchId);
-            }catch (GeneralBOException e){
-                logger.error("Found Error "+e.getMessage());
+            } catch (GeneralBOException e) {
+                logger.error("Found Error " + e.getMessage());
             }
         }
         return list;
     }
 
-    public List<PaketPeriksa> detailPaket(String idPaket) throws JSONException{
+    public List<PaketPeriksa> detailPaket(String idPaket) throws JSONException {
 
         List<PaketPeriksa> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
 
-        if( idPaket != null && !"".equalsIgnoreCase(idPaket)){
+        if (idPaket != null && !"".equalsIgnoreCase(idPaket)) {
             try {
                 list = paketPeriksaBo.getDetailPaket(idPaket);
-            }catch (GeneralBOException e){
-                logger.error("Found Error "+e.getMessage());
+            } catch (GeneralBOException e) {
+                logger.error("Found Error " + e.getMessage());
             }
         }
         return list;
     }
 
-    public List<PaketPeriksa> detailItem(String idLab, String idPaket) throws JSONException{
+    public List<PaketPeriksa> detailItem(String idLab, String idPaket) throws JSONException {
 
         List<PaketPeriksa> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
 
-        if(idPaket != null && !"".equalsIgnoreCase(idPaket) && idLab != null && !"".equalsIgnoreCase(idLab)){
+        if (idPaket != null && !"".equalsIgnoreCase(idPaket) && idLab != null && !"".equalsIgnoreCase(idLab)) {
             try {
                 list = paketPeriksaBo.getDetailItemPaket(idLab, idPaket);
-            }catch (GeneralBOException e){
-                logger.error("Found Error "+e.getMessage());
+            } catch (GeneralBOException e) {
+                logger.error("Found Error " + e.getMessage());
             }
         }
         return list;

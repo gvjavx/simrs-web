@@ -1,6 +1,9 @@
 package com.neurix.hris.master.kelompokPosition.bo.impl;
 
+import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.master.golongan.model.ImGolonganHistoryEntity;
 import com.neurix.hris.master.kelompokPosition.bo.KelompokPositionBo;
 import com.neurix.hris.master.kelompokPosition.dao.KelompokPositionDao;
 import com.neurix.hris.master.kelompokPosition.model.ImKelompokPositionHistoryEntity;
@@ -25,6 +28,15 @@ public class KelompokPositionBoImpl implements KelompokPositionBo {
 
     protected static transient Logger logger = Logger.getLogger(KelompokPositionBoImpl.class);
     private KelompokPositionDao kelompokPositionDao;
+    private PositionDao positionDao;
+
+    public PositionDao getPositionDao() {
+        return positionDao;
+    }
+
+    public void setPositionDao(PositionDao positionDao) {
+        this.positionDao = positionDao;
+    }
 
     public static Logger getLogger() {
         return logger;
@@ -49,18 +61,39 @@ public class KelompokPositionBoImpl implements KelompokPositionBo {
         if (bean!=null) {
 
             String kelompokPositionId = bean.getKelompokId();
+            String idHistory = "";
 
             ImKelompokPositionEntity imKelompokPositionEntity = null;
+            ImKelompokPositionHistoryEntity imKelompokPositionHistoryEntity = new ImKelompokPositionHistoryEntity();
+
+            //validasi
+            List<ImPosition> positionList = positionDao.getListByKelompokId(bean.getKelompokId());
+
+            if (positionList.size()>0){
+                String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
 
             try {
                 // Get data from database by ID
                 imKelompokPositionEntity = kelompokPositionDao.getById("kelompokId", kelompokPositionId);
+                idHistory = kelompokPositionDao.getNextKelompokPositionHistoryId();
             } catch (HibernateException e) {
                 logger.error("[KelompokPositionBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
             }
 
             if (imKelompokPositionEntity != null) {
+                imKelompokPositionHistoryEntity.setId(idHistory);
+                imKelompokPositionHistoryEntity.setKelompokId(imKelompokPositionEntity.getKelompokId());
+                imKelompokPositionHistoryEntity.setKelompokName(imKelompokPositionEntity.getKelompokName());
+                imKelompokPositionHistoryEntity.setFlag(imKelompokPositionEntity.getFlag());
+                imKelompokPositionHistoryEntity.setAction(imKelompokPositionEntity.getAction());
+                imKelompokPositionHistoryEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imKelompokPositionHistoryEntity.setLastUpdate(bean.getLastUpdate());
+                imKelompokPositionHistoryEntity.setCreatedWho(imKelompokPositionEntity.getCreatedWho());
+                imKelompokPositionHistoryEntity.setCreatedDate(imKelompokPositionEntity.getCreatedDate());
 
                 // Modify from bean to entity serializable
                 imKelompokPositionEntity.setKelompokId(bean.getKelompokId());
@@ -73,6 +106,7 @@ public class KelompokPositionBoImpl implements KelompokPositionBo {
                 try {
                     // Delete (Edit) into database
                     kelompokPositionDao.updateAndSave(imKelompokPositionEntity);
+                    kelompokPositionDao.addAndSaveHistory(imKelompokPositionHistoryEntity);
                 } catch (HibernateException e) {
                     logger.error("[KelompokPositionBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data KelompokPosition, please info to your admin..." + e.getMessage());

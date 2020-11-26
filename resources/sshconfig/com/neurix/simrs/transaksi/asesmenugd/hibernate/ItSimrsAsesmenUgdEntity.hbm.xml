@@ -48,5 +48,15 @@
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
 
+        <property name="tipe">
+            <column name="tipe" sql-type="varchar" length="1000" not-null="false" />
+        </property>
+        <property name="namaTerang">
+            <column name="nama_terang"/>
+        </property>
+        <property name="sip">
+            <column name="sip"/>
+        </property>
+
     </class>
 </hibernate-mapping>

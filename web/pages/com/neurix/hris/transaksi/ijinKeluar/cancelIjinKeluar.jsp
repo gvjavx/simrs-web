@@ -22,13 +22,37 @@
         }
 
         $.subscribe('beforeProcessSaveCancelIjinKeluar', function (event, data) {
-            if (confirm('Do you want to save this record?')) {
-                event.originalEvent.options.submit = true;
-                $.publish('showDialogCancelIjinKeluar');
+            var id =document.getElementById("ijinKeluarId5").value;
+            var keterangan = document.getElementById("cancelNote").value;
+            var nip = document.getElementById("nipId").value;
+            var tglDari = document.getElementById("tgl2").value;
+            var tglSelesai = document.getElementById("tgl1").value;
+            if (keterangan!=="") {
 
-            } else {
-                // Cancel Submit comes with 1.8.0
+                IjinKeluarAction.cekIfAbsensi(id,nip, tglDari, tglSelesai, function(listdata){
+                    if (listdata=="tidak"){
+                        if (confirm('Do you want to save this record?')) {
+                            event.originalEvent.options.submit = true;
+                            $.publish('showDialogCancelIjinKeluar');
+
+                        } else {
+                            // Cancel Submit comes with 1.8.0
+                            event.originalEvent.options.submit = false;
+                        }
+                    }else {
+                        alert("Data Tersebut Tidak Bisa Dibatalkan Karena Telah Masuk Absensi");
+                        event.originalEvent.options.submit = false;
+                    }
+                });
+
+            }else {
                 event.originalEvent.options.submit = false;
+                var msg = "";
+                if ( keterangan === '') {
+                    msg += 'Field <strong>Keterangan</strong> is required.' + '<br/>';
+                }
+                document.getElementById('errorMessage').innerHTML = msg;
+                $.publish('showErrorDialogCancelIjinKeluar');
             }
         });
         $.subscribe('successDialogCancelIjinKeluar', function (event, data) {
@@ -72,7 +96,7 @@
                         <td>
                             <table>
                                 <div>
-                                    <s:textfield  id="ijinKeluarId" name="ijinKeluar.ijinKeluarId" required="true" readonly="true" cssClass="form-control"/>
+                                    <s:textfield  id="ijinKeluarId5" name="ijinKeluar.ijinKeluarId" required="true" readonly="true" cssClass="form-control"/>
                                 </div>
                             </table>
                         </td>
@@ -140,13 +164,13 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
+                            <label class="control-label"><small>Level :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
                                 <s:select list="#comboGolongan.listComboGolongan" id="golonganId12" name="ijinKeluar.golonganId" disabled="true"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
+                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" />
                                 <s:textfield  id="golonganIdTmp" name="ijinKeluar.golonganId" required="false" cssStyle="display: none" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
@@ -245,6 +269,11 @@
                             <i class="fa fa-check"></i>
                             Batalkan
                         </sj:submit>
+                        <s:if test='ijinKeluar.flagPengajuanBatal == "Y"'>
+                            <button type="button" id="btnTolak" class="btn btn-danger" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
+                                <i class="fa fa-close"/> Tolak Batal
+                            </button>
+                        </s:if>
                         <button type="button" id="cancel" class="btn btn-default" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
                             <i class="fa fa-close"/> Close
                         </button>
@@ -404,6 +433,21 @@
             $('#ijinName1').val(item.ijinName);
         })
     });*/
+
+    $('#btnTolak').on('click', function() {
+        var ijinKeluarId = document.getElementById("ijinKeluarId5").value;
+        console.log("Test "+ijinKeluarId);
+        if (confirm('Are you sure you want to save this Record?')) {
+            dwr.engine.setAsync(false);
+
+            IjinKeluarAction.saveTolakPengajuan(ijinKeluarId, function(listdata) {
+                alert('Data Successfully Updated');
+                $('#modal-edit').modal('hide');
+                $('#myForm')[0].reset();
+                location.reload();
+            });
+        }
+    });
 
 </script>
 

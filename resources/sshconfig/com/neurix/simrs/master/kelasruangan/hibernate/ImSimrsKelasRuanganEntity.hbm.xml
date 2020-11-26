@@ -9,7 +9,7 @@
 
 
         <id name="idKelasRuangan">
-            <column name="id_kelas_ruangan" sql-type="varchar" length="10" not-null="true" />
+            <column name="id_kelas_ruangan" not-null="true" />
         </id>
 
         <property name="namaKelasRuangan">
@@ -39,7 +39,8 @@
         <property name="divisiId">
             <column name="divisi_id" sql-type="varchar" length="30" not-null="false" />
         </property>
-
-
+        <property name="kategori">
+            <column name="kategori"/>
+        </property>
     </class>
 </hibernate-mapping>

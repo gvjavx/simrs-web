@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.pelayanan.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import org.hibernate.Criteria;
@@ -43,6 +44,19 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
             if(mapCriteria.get("divisi_id") != null){
                 criteria.add(Restrictions.eq("divisiId",  mapCriteria.get("divisi_id").toString()));
             }
+//            if (mapCriteria.get("in_pelayanan_medic") != null){
+//
+//                List<String> arrayList = new ArrayList();
+//                arrayList.add("gudang_obat");
+//                arrayList.add("apotek");
+//                arrayList.add("apotek_ri");
+//
+//                criteria.add(Restrictions.in("tipePelayanan", arrayList));
+//            }
+
+            if (mapCriteria.get("not_own_branch") != null)
+                criteria.add(Restrictions.ne("branchId", mapCriteria.get("not_own_branch")));
+
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         }
 
@@ -168,7 +182,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
 
-        return "SG" + sId;
+        return "PYN" + sId;
     }
 
     public String getNextKodering() throws HibernateException {
@@ -179,4 +193,62 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return sId;
     }
 
+    public List<Pelayanan> getListPelayananWithLab(String tipe){
+        String ply = "('rawat_jalan')";
+        if("umum".equalsIgnoreCase(tipe)){
+            ply = "('rawat_jalan', 'lab', 'radiologi')";
+        }
+        if("igd".equalsIgnoreCase(tipe)){
+            ply = "('igd','ugd')";
+        }
+        String SQL = "SELECT\n" +
+                "id_pelayanan,\n" +
+                "nama_pelayanan,\n" +
+                "tipe_pelayanan,\n" +
+                "kategori_pelayanan\n" +
+                "FROM im_simrs_pelayanan\n" +
+                "WHERE tipe_pelayanan IN " + ply + "\n"+
+                "AND branch_id = :branchId\n" +
+                "ORDER BY nama_pelayanan ASC";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("branchId", CommonUtil.userBranchLogin())
+                .list();
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                Pelayanan pelayanan = new Pelayanan();
+                pelayanan.setIdPelayanan(obj[0] != null ? obj[0].toString() : "");
+                pelayanan.setNamaPelayanan(obj[1] != null ? obj[1].toString() : "");
+                pelayanan.setTipePelayanan(obj[2] != null ? obj[2].toString() : "");
+                pelayanan.setKategoriPelayanan(obj[3] != null ? obj[3].toString() : "");
+                pelayananList.add(pelayanan);
+            }
+        }
+        return pelayananList;
+    }
+
+    public List<ImSimrsPelayananEntity> getPelayananByBranch(String branchId) throws HibernateException {
+        List<ImSimrsPelayananEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPelayananEntity.class)
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
+
+    public List<ImSimrsPelayananEntity> getJutsPelayananByBranch(String branchId) throws HibernateException {
+        List<ImSimrsPelayananEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPelayananEntity.class)
+                .add(Restrictions.eq("branchId", branchId))
+                .add(Restrictions.ne("tipePelayanan", "radiologi"))
+                .add(Restrictions.ne("tipePelayanan", "lab"))
+                .add(Restrictions.ne("tipePelayanan", "apotek_ri"))
+                .add(Restrictions.ne("tipePelayanan", "apotek"))
+                .add(Restrictions.ne("tipePelayanan", "gudang_obat"))
+                .add(Restrictions.ne("tipePelayanan", "gizi"))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
 }

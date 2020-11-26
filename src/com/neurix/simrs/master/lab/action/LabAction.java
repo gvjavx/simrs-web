@@ -420,22 +420,18 @@ public class LabAction extends BaseMasterAction {
     }
 
     public List<Lab> listLab(String idKategoriLab){
-
         logger.info("[LabAction.listLab] start process >>>");
         List<Lab> labList = new ArrayList<>();
-        Lab lab = new Lab();
-        lab.setIdKategoriLab(idKategoriLab);
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LabBo labBo = (LabBo) ctx.getBean("labBoProxy");
-
-        try {
-            labList = labBo.getByCriteria(lab);
-        }catch (GeneralBOException e){
-            logger.error("[LabAction.listLab] Error when get data lab ," + "Found problem when searching data, please inform to your admin.", e);
-            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+        if(idKategoriLab != null){
+            try {
+                labList = labBo.getDataLab(idKategoriLab, CommonUtil.userBranchLogin());
+            }catch (GeneralBOException e){
+                logger.error("[LabAction.listLab] Error when get data lab ," + "Found problem when searching data, please inform to your admin.", e);
+                addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            }
         }
-
         logger.info("[LabAction.listLab] end process >>>");
         return labList;
 

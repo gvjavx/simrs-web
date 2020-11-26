@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="7" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
 	<property name="ireport.zoom" value="1.4641000000000133"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="114"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -106,6 +106,7 @@
 		<field name="positionName" class="java.lang.String"/>
 		<field name="branchName" class="java.lang.String"/>
 		<field name="tanggal" class="java.lang.String"/>
+		<field name="tipePegawaiName" class="java.lang.String"/>
 	</subDataset>
 	<subDataset name="itemPendidikan" uuid="e2e50ee4-49eb-4f03-88b6-5dcd37857038">
 		<field name="typeStudy" class="java.lang.String"/>
@@ -135,7 +136,7 @@
 	upper(nama_bank) as bank_name,
 	im_posisi.position_name,
 	bagian.nama_bagian,
-	case when split_part(golongan.golongan_name, ' ', 2) is null then '-' else split_part(golongan.golongan_name, ' ', 2) end as golongan_name,
+	golongan.golongan_name,
 	case when dapen.dana_pensiun is null then '-' else dapen.dana_pensiun end as dapen_name,
 	case when study.type_study is null then '-' else study.type_study end as type_study,
 	case when study.program_study is null then '' when study.program_study = '' then '' else study.program_study end,
@@ -222,6 +223,25 @@ limit 1]]>
 	<field name="tgl_akhir_kontrak" class="java.sql.Date"/>
 	<field name="branch_id_terakhir" class="java.lang.String"/>
 	<field name="position_id_terakhir" class="java.lang.String"/>
+	<field name="flag_tunjangan_supervisi" class="java.lang.String"/>
+	<field name="flag_tunjangan_siaga" class="java.lang.String"/>
+	<field name="flag_tunjangan_profesional" class="java.lang.String"/>
+	<field name="flag_tunjangan_lokasi" class="java.lang.String"/>
+	<field name="tanggal_pra_pensiun" class="java.sql.Date"/>
+	<field name="flag_plt" class="java.lang.String"/>
+	<field name="flag_pjs" class="java.lang.String"/>
+	<field name="flag_finger_mobile" class="java.lang.String"/>
+	<field name="flag_tunj_rumah" class="java.lang.String"/>
+	<field name="flag_tunj_air" class="java.lang.String"/>
+	<field name="flag_tunj_listrik" class="java.lang.String"/>
+	<field name="flag_tunj_bbm" class="java.lang.String"/>
+	<field name="flag_bpjs_ks" class="java.lang.String"/>
+	<field name="flag_bpjs_tk" class="java.lang.String"/>
+	<field name="flag_percobaan" class="java.lang.String"/>
+	<field name="position_plt_id" class="java.lang.String"/>
+	<field name="nip_lama" class="java.lang.String"/>
+	<field name="flag_dokter_kso" class="java.lang.String"/>
+	<field name="jenis_pegawai" class="java.lang.String"/>
 	<field name="cabang_bank2" class="java.lang.String"/>
 	<field name="gender" class="java.lang.String"/>
 	<field name="menikah" class="java.lang.String"/>
@@ -294,7 +314,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 	<detail>
 		<band height="634" splitType="Stretch">
 			<componentElement>
-				<reportElement key="table 1" mode="Opaque" x="3" y="256" width="548" height="71" isRemoveLineWhenBlank="true" uuid="bd5e82dc-f1fe-4e78-b854-4eb9561fa64a"/>
+				<reportElement key="table 1" mode="Opaque" x="3" y="261" width="548" height="71" isRemoveLineWhenBlank="true" uuid="bd5e82dc-f1fe-4e78-b854-4eb9561fa64a"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="itemKeluarga" uuid="c731e4b0-6a91-4011-9cce-8cf902b6f90a">
 						<dataSourceExpression><![CDATA[$P{reportParams.itemKeluarga}]]></dataSourceExpression>
@@ -414,7 +434,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Golongan]]></text>
+				<text><![CDATA[Level]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="157" width="98" height="12" uuid="0140b146-0344-4648-89d1-1e64e1f9ab70"/>
@@ -422,7 +442,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Bagian]]></text>
+				<text><![CDATA[Sub Bidang/Divisi]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="146" width="98" height="12" uuid="9980dcfd-bad2-4c82-91ad-781ccd5a9b92"/>
@@ -833,7 +853,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{jumlah_anak}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement key="table 2" x="3" y="449" width="547" height="172" isRemoveLineWhenBlank="true" uuid="4450bce7-9d83-4728-ab24-9673e1220e45"/>
+				<reportElement key="table 2" x="3" y="454" width="547" height="172" isRemoveLineWhenBlank="true" uuid="4450bce7-9d83-4728-ab24-9673e1220e45"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="itemRiwayatPekerjaan" uuid="17a6fbc4-dba0-4f20-bcd0-e878aecda505">
 						<dataSourceExpression><![CDATA[$P{reportParams.itemRiwayatPekerjaan}]]></dataSourceExpression>
@@ -903,7 +923,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{tipePegawaiName}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -962,7 +982,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</jr:table>
 			</componentElement>
 			<componentElement>
-				<reportElement key="table 3" x="4" y="347" width="534" height="82" uuid="2aa659b8-d469-4b1b-ab90-1ea9539a7655"/>
+				<reportElement key="table 3" x="4" y="352" width="534" height="82" uuid="2aa659b8-d469-4b1b-ab90-1ea9539a7655"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="itemPendidikan" uuid="43acb7e7-3779-41ee-8cba-7071ec024883">
 						<dataSourceExpression><![CDATA[$P{reportParams.itemPendidikan}]]></dataSourceExpression>
@@ -1085,21 +1105,21 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="236" width="555" height="20" backcolor="#CCCCCC" uuid="718a7c02-8694-4a04-ae32-16f5df3c9228"/>
+				<reportElement mode="Opaque" x="0" y="241" width="555" height="20" backcolor="#CCCCCC" uuid="718a7c02-8694-4a04-ae32-16f5df3c9228"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Susunan Keluarga]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="327" width="555" height="20" backcolor="#CCCCCC" uuid="db77e6a6-48b7-4a25-a285-0acbe4d4b97b"/>
+				<reportElement mode="Opaque" x="0" y="332" width="555" height="20" backcolor="#CCCCCC" uuid="db77e6a6-48b7-4a25-a285-0acbe4d4b97b"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Riwayat Pendidikan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="429" width="555" height="20" backcolor="#CCCCCC" uuid="c207b28f-d559-45c9-a53b-b2d1447273dc"/>
+				<reportElement mode="Opaque" x="0" y="434" width="555" height="20" backcolor="#CCCCCC" uuid="c207b28f-d559-45c9-a53b-b2d1447273dc"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -1120,26 +1140,11 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<textFieldExpression><![CDATA[$F{nama_bagian}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="109" y="168" width="14" height="12" uuid="836ef20c-7490-490a-ab59-0df628013453"/>
+				<reportElement x="109" y="168" width="156" height="12" uuid="836ef20c-7490-490a-ab59-0df628013453"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{golongan_name}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="122" y="168" width="11" height="12" uuid="90130131-d5c9-40c5-a6d0-da24be0ba77a"/>
-				<box leftPadding="0"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[/]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="133" y="168" width="26" height="12" uuid="a6df0c98-67e0-440d-b2fb-b1bd0a4b8ab2"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{point}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="410" y="183" width="133" height="12" uuid="8b37ebe1-a22e-4738-a4ea-be07a0aa3a03"/>

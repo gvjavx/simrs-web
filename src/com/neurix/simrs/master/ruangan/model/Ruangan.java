@@ -12,7 +12,7 @@ public class Ruangan extends BaseModel {
     private String idRuangan;
     private String namaRuangan;
     private String noRuangan;
-    private String statusRuangan;
+//    private String statusRuangan;
     private String statusRuanganName;
     private String idKelasRuangan;
     private String keterangan;
@@ -38,13 +38,75 @@ public class Ruangan extends BaseModel {
     private String tipeTransaksi;
     private BigDecimal nilaiPersen;
 
-    private Integer sisaKuota;
-    private Integer kuota;
+//    private Integer sisaKuota;
+//    private Integer kuota;
 
     private String namaPasien;
     private String branchUser;
 
     private String kodeCbg;
+    private String kategori;
+    private String idTempatTidur;
+    private String namaTempatTidur;
+    private BigDecimal coverBiaya;
+    private String jenisPasien;
+    private BigDecimal totalTarif;
+    private String idPasien;
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public BigDecimal getTotalTarif() {
+        return totalTarif;
+    }
+
+    public void setTotalTarif(BigDecimal totalTarif) {
+        this.totalTarif = totalTarif;
+    }
+
+    public BigDecimal getCoverBiaya() {
+        return coverBiaya;
+    }
+
+    public void setCoverBiaya(BigDecimal coverBiaya) {
+        this.coverBiaya = coverBiaya;
+    }
+
+    public String getJenisPasien() {
+        return jenisPasien;
+    }
+
+    public void setJenisPasien(String jenisPasien) {
+        this.jenisPasien = jenisPasien;
+    }
+
+    public String getIdTempatTidur() {
+        return idTempatTidur;
+    }
+
+    public void setIdTempatTidur(String idTempatTidur) {
+        this.idTempatTidur = idTempatTidur;
+    }
+
+    public String getNamaTempatTidur() {
+        return namaTempatTidur;
+    }
+
+    public void setNamaTempatTidur(String namaTempatTidur) {
+        this.namaTempatTidur = namaTempatTidur;
+    }
+
+    public String getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
+    }
 
     public String getKodeCbg() {
         return kodeCbg;
@@ -62,21 +124,21 @@ public class Ruangan extends BaseModel {
         this.namaPasien = namaPasien;
     }
 
-    public Integer getSisaKuota() {
-        return sisaKuota;
-    }
-
-    public void setSisaKuota(Integer sisaKuota) {
-        this.sisaKuota = sisaKuota;
-    }
-
-    public Integer getKuota() {
-        return kuota;
-    }
-
-    public void setKuota(Integer kuota) {
-        this.kuota = kuota;
-    }
+//    public Integer getSisaKuota() {
+//        return sisaKuota;
+//    }
+//
+//    public void setSisaKuota(Integer sisaKuota) {
+//        this.sisaKuota = sisaKuota;
+//    }
+//
+//    public Integer getKuota() {
+//        return kuota;
+//    }
+//
+//    public void setKuota(Integer kuota) {
+//        this.kuota = kuota;
+//    }
 
 
     public String getTipeTransaksi() {
@@ -151,13 +213,13 @@ public class Ruangan extends BaseModel {
         this.noRuangan = noRuangan;
     }
 
-    public String getStatusRuangan() {
-        return statusRuangan;
-    }
-
-    public void setStatusRuangan(String statusRuangan) {
-        this.statusRuangan = statusRuangan;
-    }
+//    public String getStatusRuangan() {
+//        return statusRuangan;
+//    }
+//
+//    public void setStatusRuangan(String statusRuangan) {
+//        this.statusRuangan = statusRuangan;
+//    }
 
     public String getIdKelasRuangan() {
         return idKelasRuangan;

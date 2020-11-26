@@ -64,12 +64,21 @@
 
                 if (tanggalEfektif != '') {
                     if (isNaN(mydate) == false) {
-                       if (confirm('Do you want to save this record?')) {
-                            event.originalEvent.options.submit = true;
-                            $.publish('showDialog');
-                       } else {
+                        var rowCount = $('.sppdPersonTable tr').length;
+                        if (rowCount>1){
+                            if (confirm('Do you want to save this record?')) {
+                                event.originalEvent.options.submit = true;
+                                $.publish('showDialog');
+                            } else {
+                                event.originalEvent.options.submit = false;
+                            }
+                        } else{
                             event.originalEvent.options.submit = false;
-                       }
+                            var msg = "";
+                            msg += '<strong>Daftar pegawai yang akan di mutasi / nonaktifkan masih kosong</strong>.' + '<br/>';
+                            document.getElementById('errorValidationMessage').innerHTML = msg;
+                            $.publish('showErrorValidationDialog');
+                        }
                     }else{
                         event.originalEvent.options.submit = false;
                         var msg = "";
@@ -105,200 +114,197 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Add Mutasi / Rotasi
-            <small>e-HEALTH</small>
+            Add Mutasi / Nonaktif
         </h1>
     </section>
 
 
     <!-- Main content -->
     <section class="content">
-
-        <table width="100%" align="center">
-            <tr>
-                <td align="center">
-
-                    <s:hidden id="verif" name="mutasi.verif"/>
-                    <s:hidden id="erVerif" name="mutasi.erVerif"/>
-                    <div id="errorAlert" style="display: none" class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <center>
-                            <s:property value="mutasi.erVerif"/>
-                        </center>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Add Form</h3>
                     </div>
-
-                    <div id="succesAlert" style="display: none" class="alert alert-success alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <center>
-                            <s:property value="mutasi.verif"/>
-                        </center>
-                    </div>
-                    
-                    <s:form id="mutasiForm" method="post"  theme="simple" namespace="/mutasi" action="saveMutasi_mutasi.action" cssClass="well form-horizontal">
-                        <s:hidden name="addOrEdit"/>
-                        <s:hidden name="delete"/>
-                        <table>
+                    <div class="box-body">
+                        <table width="100%" align="center">
                             <tr>
-                                <td width="10%" align="center">
-                                    <%@ include file="/pages/common/message.jsp" %>
-                                </td>
-                            </tr>
-                        </table>
+                                <td align="center">
 
-                        <table >
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Tanggal Efektif : </small></label>
-                                </td>
-                                <td>
+                                    <s:hidden id="verif" name="mutasi.verif"/>
+                                    <s:hidden id="erVerif" name="mutasi.erVerif"/>
+                                    <div id="errorAlert" style="display: none" class="alert alert-danger alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <center>
+                                            <s:property value="mutasi.erVerif"/>
+                                        </center>
+                                    </div>
+
+                                    <div id="succesAlert" style="display: none" class="alert alert-success alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <center>
+                                            <s:property value="mutasi.verif"/>
+                                        </center>
+                                    </div>
+
+                                    <s:form id="mutasiForm" method="post"  theme="simple" namespace="/mutasi" action="saveMutasi_mutasi.action" cssClass="form-horizontal">
+                                    <s:hidden name="addOrEdit"/>
+                                    <s:hidden name="delete"/>
                                     <table>
-                                        <div class="input-group date">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <s:textfield id="tanggalEfektif" name="mutasi.stTanggalEfektif" cssClass="form-control pull-right"
-                                                         required="false"  cssStyle=""/>
-                                        </div>
+                                        <tr>
+                                            <td width="10%" align="center">
+                                                <%@ include file="/pages/common/message.jsp" %>
+                                            </td>
+                                        </tr>
                                     </table>
-                                </td>
-                            </tr>
-                        </table>
-                        <br>
-                        <h3>
-                        <h3>
-                            Anggota
-                            <button
-                                    id="btnAddMutasi" type="button" class="btn btn-default btn-info" data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i>
-                            </button>
-                        </h3>
-                        <center>
-                            <table id="showdata" width="100%">
-                                <tr>
-                                    <td align="center">
-                                        <table style="width: 100%;" class="sppdPersonTable table table-bordered">
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </center>
 
-                        <br>
+                                    <table >
+                                        <tr>
+                                            <td>
+                                                <label class="control-label"><small>Tanggal Efektif : </small></label>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <s:textfield id="tanggalEfektif" name="mutasi.stTanggalEfektif" cssClass="form-control pull-right"
+                                                                     required="false"  cssStyle=""/>
+                                                    </div>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br>
+                                    <h3>
+                                        <h3>
+                                            Daftar Pegawai
+                                            <button
+                                                    id="btnAddMutasi" type="button" class="btn btn-default btn-info" data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i>
+                                            </button>
+                                        </h3>
+                                        <center>
+                                            <table id="showdata" width="100%">
+                                                <tr>
+                                                    <td align="center">
+                                                        <table style="width: 100%;" class="sppdPersonTable table table-bordered">
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </center>
 
-                        <div id="actions" class="form-actions">
-                            <table align="center">
-                                <tr>
-                                    <td>
-                                        <sj:submit targets="crsud" type="button" cssClass="btn btn-primary" formIds="mutasiForm" id="save" name="save"
-                                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
-                                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                                            <i class="fa fa-check"></i>
-                                            Save
-                                        </sj:submit>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="add_mutasi.action"/>'">
-                                            <i class="fa fa-refresh"></i> Reset
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-default" onclick="window.location.href='<s:url action="initForm_mutasi.action"/>'">
-                                            <i class="fa fa-close"></i> Cancel
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                                        <br>
 
-                        <br>
+                                        <div id="actions" class="form-actions">
+                                            <table align="center">
+                                                <tr>
+                                                    <td>
+                                                        <sj:submit targets="crsud" type="button" cssClass="btn btn-primary" formIds="mutasiForm" id="save" name="save"
+                                                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                                                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
+                                                            <i class="fa fa-check"></i>
+                                                            Save
+                                                        </sj:submit>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="add_mutasi.action"/>'">
+                                                            <i class="fa fa-refresh"></i> Reset
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-default" onclick="window.location.href='<s:url action="initForm_mutasi.action"/>'">
+                                                            <i class="fa fa-close"></i> Cancel
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <br>
 
 
-                        <div id="actions" class="form-actions">
-                            <table>
-                                <tr>
-                                    <div id="crud">
-                                        <td>
+                                        <div id="actions" class="form-actions">
                                             <table>
-                                                <sj:dialog id="waiting_dialog" openTopics="showDialog"
-                                                           closeTopics="closeDialog" modal="true"
-                                                           resizable="false"
-                                                           height="250" width="600" autoOpen="false"
-                                                           title="Searching ...">
-                                                    Please don't close this window, server is processing your request ...
-                                                    <br>
-                                                    <center>
-                                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
-                                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
-                                                             name="image_indicator_write">
-                                                        <br>
-                                                        <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
-                                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
-                                                             name="image_indicator_write">
-                                                    </center>
-                                                </sj:dialog>
+                                                <tr>
+                                                    <div id="crud">
+                                                        <td>
+                                                            <table>
+                                                                <sj:dialog id="waiting_dialog" openTopics="showDialog"
+                                                                           closeTopics="closeDialog" modal="true"
+                                                                           resizable="false"
+                                                                           height="250" width="600" autoOpen="false"
+                                                                           title="Searching ...">
+                                                                    Please don't close this window, server is processing your request ...
+                                                                    <br>
+                                                                    <center>
+                                                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                                             name="image_indicator_write">
+                                                                        <br>
+                                                                        <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                                             name="image_indicator_write">
+                                                                    </center>
+                                                                </sj:dialog>
 
-                                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                                           buttons="{
+                                                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                                           buttons="{
                                                               'OK':function() {
                                                                       clos();
                                                                    }
                                                             }"
-                                                >
-                                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                                    Record has been saved successfully.
-                                                </sj:dialog>
+                                                                >
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                                                    Record has been saved successfully.
+                                                                </sj:dialog>
 
-                                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
-                                                           height="250" width="600" autoOpen="false" title="Error Dialog"
-                                                           buttons="{
+                                                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                                                           height="250" width="600" autoOpen="false" title="Error Dialog"
+                                                                           buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close'); }
                                                                     }"
-                                                >
-                                                    <div class="alert alert-error fade in">
-                                                        <label class="control-label" align="left">
-                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
-                                                        </label>
-                                                    </div>
-                                                </sj:dialog>
+                                                                >
+                                                                    <div class="alert alert-error fade in">
+                                                                        <label class="control-label" align="left">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                                        </label>
+                                                                    </div>
+                                                                </sj:dialog>
 
-                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
-                                                           height="280" width="500" autoOpen="false" title="Warning"
-                                                           buttons="{
+                                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                                                           height="280" width="500" autoOpen="false" title="Warning"
+                                                                           buttons="{
                                                                         'OK':function() { $('#error_validation_dialog').dialog('close'); }
                                                                     }"
-                                                >
-                                                    <div class="alert alert-error fade in">
-                                                        <label class="control-label" align="left">
-                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
-                                                            <br/>
-                                                            <center><div id="errorValidationMessage"></div></center>
-                                                        </label>
+                                                                >
+                                                                    <div class="alert alert-error fade in">
+                                                                        <label class="control-label" align="left">
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                                            <br/>
+                                                                            <center><div id="errorValidationMessage"></div></center>
+                                                                        </label>
+                                                                    </div>
+                                                                </sj:dialog>
+                                                            </table>
+                                                        </td>
                                                     </div>
-                                                </sj:dialog>
+                                                </tr>
                                             </table>
-                                        </td>
-                                    </div>
-                                </tr>
-                            </table>
-                        </div>
-                    </s:form>
-                </td>
-            </tr>
-        </table>
-
-        <!-- Your Page Content Here -->
-        <div class="row">
-            <div class="col-md-12">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-
+                                        </div>
+                                    </s:form>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -326,33 +332,22 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Status:</label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="statusMutasi" onchange="cekStatusMutasi()">
-                                <option value="M">Move</option>
-                                <option value="R">Resign</option>
-                                <option value="P">Pensiun</option>
-                                <option value="MH">Move Holding</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Tipe:</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" id="tipeMutasi" onchange="changeTipeMutasi()">
-                                <option value="MT">Mutasi</option>
-                                <option value="RT">Rotasi</option>
-                            </select>
+                            <s:action id="comboStatusMutasi" namespace="/statusMutasi" name="initComboStatusMutasi_statusMutasi"/>
+                            <s:select list="#comboStatusMutasi.listOfComboStatusMutasi" id="statusMutasi" listKey="statusMutasiId"
+                                      listValue="statusMutasiName" headerKey="" headerValue="[Select One]"
+                                      cssClass="form-control form-add" onchange="cekStatusMutasi()"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" >NIP</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="nip1" name="nip1" readonly>
+                            <input type="text" class="form-control form-add" id="nip1" name="nip1" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Nama : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control nip" id="nip2" name="nip" onchange="changeTipeMutasi()">
+                            <input type="text" class="form-control nip form-add" id="nip2" name="nip" onchange="changeTipeMutasi()">
                             <input style="display: none" type="text" class="form-control" id="nipOld" name="nip1">
                         </div>
                         <script type='text/javascript'>
@@ -372,7 +367,7 @@
                                         $.each(data, function (i, item) {
                                             var labelItem =item.namaPegawai;
                                             mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem, branchId : item.branch,
-                                                divisiId: item.divisi, positionId : item.positionId, pjs : item.pjs, golongan:item.golongan };
+                                                divisiId: item.divisi, positionId : item.positionId, pjs : item.pjs, golongan:item.golongan, profesiId:item.profesiId, tipePegawai:item.tipePegawai };
                                             functions.push(labelItem);
                                         });
                                         process(functions);
@@ -384,22 +379,38 @@
                                         $('#branchLamaId1').val("").change();
                                         $('#divisiLamaId1').val("").change();
                                         $('#golonganLamaId1').val("").change();
+                                        $('#profesiLamaId1').val("").change();
+                                        $('#tipePegawai1').val("").change();
                                     }
                                 },
                                 updater: function (item) {
                                     var selectedObj = mapped[item];
                                     var namaAlat = selectedObj.label;
                                     document.getElementById("nip1").value = selectedObj.id;
-                                    $('#positionLamaId1').val(selectedObj.positionId).change();
                                     $('#branchLamaId1').val(selectedObj.branchId).change();
+                                    $('#branchBaruId1').val(selectedObj.branchId).change();
                                     $('#divisiLamaId1').val(selectedObj.divisiId).change();
-                                    $('#golonganLamaId1').val(selectedObj.golongan).change();
+                                    $('#divisiBaruId2').val(selectedObj.divisiId).change();
+                                    $('#positionLamaId1').val(selectedObj.positionId).change();
+                                    $('#positionBaruId1').val(selectedObj.positionId).change();
+                                    $('#profesiLamaId1').val(selectedObj.profesiId).change();
+                                    $('#profesiBaruId1').val(selectedObj.profesiId).change();
+                                    $('#tipePegawai1').val(selectedObj.tipePegawai).change();
                                     if(selectedObj.pjs == 'Y'){
                                         document.getElementById("pjsLama").checked = true;
                                         $("#txtPjsLama").val('Y');
+                                        $("#txtPjsBaru").val('Y');
                                     }else{
                                         document.getElementById("pjsLama").checked = false;
                                         $("#txtPjsLama").val('N');
+                                        $("#txtPjsBaru").val('N');
+                                    }
+                                    if (selectedObj.tipePegawai == 'TP01'){
+                                        $('#golonganLamaId1').val(selectedObj.golongan).change();
+                                        $('#golonganBaruId1').val(selectedObj.golongan).change();
+                                    }else {
+                                        $('#golonganLamaId2').val(selectedObj.golongan).change();
+                                        $('#golonganBaruId2').val(selectedObj.golongan).change();
                                     }
                                     return namaAlat;
                                 }
@@ -413,7 +424,7 @@
                         <div class="col-sm-8">
                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                             <s:select list="#initComboBranch.listOfComboBranch" id="branchLamaId1" name="mutasi.branchLamaId" disabled="true"
-                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="" cssClass="form-control"/>
+                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="" cssClass="form-control form-add"/>
                         </div>
                     </div>
 
@@ -422,7 +433,7 @@
                         <div class="col-sm-8">
                             <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
                             <s:select list="#comboDivisi.listComboDepartment" id="divisiLamaId1" name="mutasi.divisiLamaId" disabled="true"
-                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control" />
+                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control form-add" />
                         </div>
                     </div>
 
@@ -431,24 +442,55 @@
                         <div class="col-sm-8">
                             <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
                             <s:select list="#comboPosition.listOfComboPosition" id="positionLamaId1" name="mutasi.positionLamaId" disabled="true"
-                                      listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
+                                      listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control form-add"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" >Profesi Lama: </label>
+                        <div class="col-sm-8">
+                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                            <s:select list="#comboProfesi.listComboProfesi" id="profesiLamaId1" name="mutasi.profesiLamaId" disabled="true"
+                                      listKey="profesiId" listValue="profesiName" headerKey="" headerValue="" cssClass="form-control form-add" />
+                        </div>
+                    </div>
+
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>--%>
+                            <%--<s:select list="#initComboTipe.listComboGolongan" id="golonganLamaId1" name="mutasi.levelLama" disabled="true"--%>
+                                      <%--listKey="golonganId" listValue="stLevel" headerKey="" headerValue="" cssClass="form-control"/>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <div style="display: none" class="form-group">
+                        <label class="control-label col-sm-4" >Status Pegawai: </label>
+                        <div class="col-sm-8">
+                            <s:action id="initComboTipe" namespace="/tipepegawai" name="searchTipePegawai_tipepegawai"/>
+                            <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="mutasi.tipePegawai" onchange="changePegawai(this.value)"
+                                      listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>
-                        <div class="col-sm-8">
+                        <div id="golongan1Group" class="col-sm-8">
                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                             <s:select list="#initComboTipe.listComboGolongan" id="golonganLamaId1" name="mutasi.levelLama" disabled="true"
-                                      listKey="golonganId" listValue="stLevel" headerKey="" headerValue="" cssClass="form-control"/>
+                                      listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>
+                        </div>
+                        <div style="display: none" id="golongan2Group" class="col-sm-8">
+                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                            <s:select list="#initComboTipe.listComboGolonganPkwt" id="golonganLamaId2" name="mutasi.levelLama" disabled="true"
+                                      listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >PJS Lama:</label>
                         <div class="col-sm-8">
-                            <input type="checkbox" class="form-check-input big-checkbox" id="pjsLama" disabled onchange="cekPjsLama()">
-                            <input style="display: none" type="text" class="form-check-input " id="txtPjsLama" >
+                            <input type="checkbox" class="form-check-input big-checkbox form-add" id="pjsLama" disabled onchange="cekPjsLama()">
+                            <input style="display: none" type="text" class="form-check-input form-add" id="txtPjsLama" >
                         </div>
                     </div>
 
@@ -457,7 +499,7 @@
                         <div class="col-sm-8">
                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                             <s:select list="#initComboBranch.listOfComboBranch" id="branchBaruId1" name="mutasi.branchBaruId" onchange="listDivisi(),cekJabatan()"
-                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="" cssClass="form-control"/>
+                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="" cssClass="form-control form-add"/>
                         </div>
                     </div>
 
@@ -470,7 +512,7 @@
                                       name="mutasi.divisiBaruId" onchange="listPosisi(),cekJabatan()"
                                       listKey="departmentId" listValue="departmentName"
                                       headerKey="" headerValue=""
-                                      cssClass="form-control"/>
+                                      cssClass="form-control form-add"/>
                         </div>
                     </div>
 
@@ -479,16 +521,30 @@
                         <div class="col-sm-8">
                             <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
                             <s:select list="#comboPosition" id="positionBaruId1" name="mutasi.positionBaruId" onchange="cekJabatan()"
-                                      listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
+                                      listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control form-add"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="positionLamaId1">Level Baru:</label>
+                        <label class="control-label col-sm-4" >Profesi Baru: </label>
                         <div class="col-sm-8">
+                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                            <s:select list="#comboProfesi.listComboProfesi" id="profesiBaruId1" name="mutasi.profesiBaruId"
+                                      listKey="profesiId" listValue="profesiName" headerKey="" headerValue="" cssClass="form-control form-add" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>
+                        <div id="golonganBaru1Group" class="col-sm-8">
                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                            <s:select list="#initComboTipe.listComboGolongan" id="golonganBaruId1" name="mutasi.levelBaru"
-                                      listKey="golonganId" listValue="stLevel" headerKey="" headerValue="" cssClass="form-control"/>
+                            <s:select list="#initComboTipe.listComboGolongan" id="golonganBaruId1" name="mutasi.levelBaru" disabled="true"
+                                      listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>
+                        </div>
+                        <div style="display: none" id="golonganBaru2Group" class="col-sm-8">
+                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                            <s:select list="#initComboTipe.listComboGolonganPkwt" id="golonganBaruId2" name="mutasi.levelBaru" disabled="true"
+                                      listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>
                         </div>
                     </div>
 
@@ -496,7 +552,7 @@
                         <label class="control-label col-sm-4">Menggantikan:</label>
                         <div class="col-sm-8">
                             <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                            <select class="form-control" id="penggantiId" name="mutasi.penggantiNip"></select>
+                            <select class="form-control form-add" id="penggantiId" name="mutasi.penggantiNip"></select>
                         </div>
                     </div>
 
@@ -504,7 +560,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >PJS Baru:</label>
                         <div class="col-sm-8">
-                            <input type="checkbox" class="form-check-input big-checkbox" onchange="cekPjsBaru()" id="pjsBaru">
+                            <input type="checkbox" class="form-check-input big-checkbox form-add" onchange="cekPjsBaru()" id="pjsBaru">
                             <input style="display: none" type="text" class="form-check-input" value="N" id="txtPjsBaru" >
                         </div>
                     </div>
@@ -521,6 +577,19 @@
 </html>
 
 <script>
+    window.changePegawai = function (id) {
+        if (id == "TP01") {
+            $('#golongan1Group').show();
+            $('#golongan2Group').hide();
+            $('#golonganBaru1Group').show();
+            $('#golonganBaru2Group').hide();
+        } else {
+            $('#golongan1Group').hide();
+            $('#golongan2Group').show();
+            $('#golonganBaru1Group').hide();
+            $('#golonganBaru2Group').show();
+        }
+    };
 
     window.listDivisi= function(){
         var branch = document.getElementById("branchBaruId1").value;
@@ -542,36 +611,32 @@
         dwr.engine.setAsync(false);
         var tmp_table = "";
         MutasiAction.searchMutasiPerson(function(listdata){
-            tmp_table = "<thead style='font-size: 10px; color: white' ><tr class='active'>"+
+            tmp_table = "<thead style='font-size: 10px;' ><tr class='active'>"+
                     "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Edit</th>"+
+                    // "<th style='text-align: center; background-color:  #90ee90'>Edit</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>NIP</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Nama</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Unit Lama</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Bagian Lama</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Jabatan Lama</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Level Lama</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>PJS Lama</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Menggantikan (NIP)</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Menggantikan (Nama)</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Unit Baru</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Bagian Baru</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Jabatan Baru</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Level Baru</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>PJS Baru</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Status</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Tipe</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Unit Lama</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Divisi/Bidang Lama</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Jabatan Lama</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Profesi Lama</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Level</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Unit Baru</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Divisi/Bidang Baru</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Jabatan Baru</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Profesi Baru</th>"+
                     "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 tmp_table += '<tr style="font-size: 10px;" ">' +
                         '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-edit' data ='"+item.nip+"' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
-                        '</a>' +
-                        '</td>' +
+                        <%--'<td align="center">' +--%>
+                        <%--"<a href='javascript:;' class ='item-edit' data ='"+item.nip+"' >" +--%>
+                        <%--"<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+--%>
+                        <%--'</a>' +--%>
+                        <%--'</td>' +--%>
                         '<td align="center">' +
                         "<a href='javascript:;' class ='item-delete' data ='"+item.nip+"' >" +
                         "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
@@ -579,21 +644,16 @@
                         '</td>' +
                         '<td >' + item.nip + '</td>' +
                         '<td align="center">' + item.nama+ '</td>' +
+                        '<td align="center">' + item.statusName+ '</td>' +
                         '<td align="center">' + item.branchLamaName+ '</td>' +
                         '<td align="center">' + item.divisiLamaName+ '</td>' +
                         '<td align="center">' + item.positionLamaName+ '</td>' +
+                        '<td align="center">' + item.profesiLamaName+ '</td>' +
                         '<td align="center">' + item.levelLamaName+ '</td>' +
-                        '<td align="center">' + item.pjsLama+ '</td>' +
-
-                        '<td align="center">' + item.penggantiNip+ '</td>' +
-                        '<td align="center">' + item.penggantiNama+ '</td>' +
-                        '<td align="center">' + item.branchBaruName+ '</td>' +
+                     '<td align="center">' + item.branchBaruName+ '</td>' +
                         '<td align="center">' + item.divisiBaruName+ '</td>' +
                         '<td align="center">' + item.positionBaruName+ '</td>' +
-                        '<td align="center">' + item.levelBaruName+ '</td>' +
-                        '<td align="center">' + item.pjs+ '</td>' +
-                        '<td align="center">' + item.statusName+ '</td>' +
-                        '<td align="center">' + item.tipeMutasiName+ '</td>' +
+                        '<td align="center">' + item.profesiBaruName+ '</td>' +
                         "</tr>";
             });
             $('.sppdPersonTable').append(tmp_table);
@@ -609,30 +669,21 @@
             changeYear: true
         });
 
-
         $('#btnAddMutasi').click(function(){
-            $('#positionBaruId').empty();
-            $('#positionBaruId1').empty();
-            $('#penggantiId').empty();
-            $("#nip2").prop("readonly", false);
-            $("#statusMutasi").prop("disabled", false);
-            $("#tipeMutasi").prop("disabled", false);
             cekStatusMutasi();
-            $("#branchBaruId1").prop("readonly", false);
-            $("#positionBaruId1").prop("readonly", false);
-            $("#divisiBaruId2").prop("readonly", false);
+            $('#nip2').prop("readonly", true);
+            $('#statusMutasi').removeAttr("disabled");
             $('#myForm')[0].reset();
             $("#btnSave").html('Save');
             $('#modal-edit').modal('show');
             $('#myForm').attr('action', 'addPerson');
-            $('#modal-edit').find('.modal-title').text('Add Mutasi');
+            $('.form-add').val("");
+            $('#modal-edit').find('.modal-title').text('Add Mutasi / Nonaktif');
         });
-
     });
 
     $('.sppdPersonTable').on('click', '.item-edit', function(){
         $("#nip2").attr("readonly", false);
-        console.log("Tes");
         /*$("#branchLamaId1").attr("disabled", false);
         $("#positionLamaId1").attr("disabled", false);
         $("#divisiLamaId1").attr("disabled", false);*/
@@ -670,7 +721,13 @@
                 $('#branchLamaId1').val(item.branchLamaId).change();
                 $('#positionLamaId1').val(item.positionLamaId).change();
                 $('#divisiLamaId1').val(item.divisiLamaId).change();
-                $('#golonganLamaId1').val(item.levelLama).change();
+//                $('#golonganLamaId1').val(item.levelLama).change();
+                console.log(item.tipePegawai);
+                if (item.tipePegawai == 'TP01'){
+                    $('#golonganLamaId1').val(item.levelLama).change();
+                }else {
+                    $('#golonganLamaId2').val(item.levelLama).change();
+                }
                 $('#golonganBaruId1').val(item.levelBaru).change();
 
                 if(item.status == "R" || item.status == "P"){
@@ -687,6 +744,9 @@
                     $('#positionBaruId1').val(item.positionBaruId).change();
                     $('#penggantiId').val(item.penggantiNip).change();
                 }
+
+                $('#profesiLamaId1').val(item.profesiLamaId).change();
+                $('#profesiBaruId1').val(item.profesiBaruId).change();
 
                 if(item.pjsLama == 'Y'){
                     document.getElementById("pjsLama").checked = true;
@@ -764,7 +824,15 @@
                 $('#branchLamaId1').val(item.branchLamaId).change();
                 $('#positionLamaId1').val(item.positionLamaId).change();
                 $('#divisiLamaId1').val(item.divisiLamaId).change();
-                $('#golonganLamaId1').val(item.levelLama).change();
+                $('#profesiBaruId1').val(item.profesiId).change();
+
+                $('#tipePegawai1').val(item.tipePegawai).change();
+                if (item.tipePegawai == 'TP01'){
+                    $('#golonganLamaId1').val(item.levelLama).change();
+                }else {
+                    $('#golonganLamaId2').val(item.levelLama).change();
+                }
+
                 $('#golonganBaruId1').val(item.levelBaru).change();
 
                 //listPosisi(item.branchBaruId, item.divisiBaruId);
@@ -800,6 +868,7 @@
         $("#branchBaruId1").prop("disabled", true);
         $("#positionBaruId1").prop("disabled", true);
         $("#divisiBaruId2").prop("disabled", true);
+        $("#profesiBaruId1").prop("disabled", true);
         $("#penggantiId").prop("disabled", true);
         $("#pjsBaru").prop("disabled", true);
         $("#btnSave").html('Delete');
@@ -820,36 +889,53 @@
         var branchLamaId  = document.getElementById("branchLamaId1").value;
         var divisiLamaId    = document.getElementById("divisiLamaId1").value;
         var positionLamaId = document.getElementById("positionLamaId1").value;
-        var levelLamaId = document.getElementById("golonganLamaId1").value;
+//        var levelLamaId = document.getElementById("golonganLamaId1").value;
         var txtPjsLama = document.getElementById("txtPjsLama").value;
 
         var branchLamaName      = $('#branchLamaId1 option:selected').text();
         var divisiLamaName      = $('#divisiLamaId1 option:selected').text();
         var positionLamaName    = $('#positionLamaId1 option:selected').text();
-        var levelLamaName    = $('#golonganLamaId1 option:selected').text();
+//        var levelLamaName    = $('#golonganLamaId1 option:selected').text();
+
+        var tipePegawai = document.getElementById("tipePegawai1").value;
+        if (tipePegawai == 'TP01'){
+            var levelLamaId = document.getElementById("golonganLamaId1").value;
+            var levelLamaName    = $('#golonganLamaId1 option:selected').text();
+            var levelBaruId      = document.getElementById("golonganBaruId1").value;
+            var levelBaruName    = $('#golonganBaruId1 option:selected').text();
+
+        }else {
+            var levelLamaId = document.getElementById("golonganLamaId2").value;
+            var levelLamaName    = $('#golonganLamaId2 option:selected').text();
+            var levelBaruId      = document.getElementById("golonganBaruId2").value;
+            var levelBaruName    = $('#golonganBaruId2 option:selected').text();
+        }
 
         var menggantikanId      = document.getElementById("penggantiId").value;
         var menggantikanNama    = $('#penggantiId option:selected').text();
         var branchBaruId        = document.getElementById("branchBaruId1").value;
         var divisiBaruId        = document.getElementById("divisiBaruId2").value;
         var positionBaruId      = document.getElementById("positionBaruId1").value;
-        var levelBaruId      = document.getElementById("golonganBaruId1").value;
         var txtPjsBaru          = document.getElementById("txtPjsBaru").value;
         var status              = document.getElementById("statusMutasi").value;
-        var tipe              = document.getElementById("tipeMutasi").value;
 
         var branchBaruName      = $('#branchBaruId1 option:selected').text();
         var divisiBaruName      = $('#divisiBaruId2 option:selected').text();
         var positionBaruName    = $('#positionBaruId1 option:selected').text();
-        var levelBaruName    = $('#golonganBaruId1 option:selected').text();
 
-        if (personName!=''&&branchLamaId!=''&&tipe!=''&&status!='') {
+        var profesiLamaId = document.getElementById("profesiLamaId1").value;
+        var profesiLamaName = $('#profesiLamaId1 option:selected').text();
+        var profesiBaruId = document.getElementById("profesiBaruId1").value;
+        var profesiBaruName = $('#profesiBaruId1 option:selected').text();
+
+
+        if (personName!=''&&branchLamaId!=''&&status!='') {
             if(url == 'addPerson'){
                 if (confirm('Are you sure you want to save this Record?')) {
                     dwr.engine.setAsync(false);
                     MutasiAction.saveAnggotaAdd(nip, personName, branchLamaId, branchLamaName, divisiLamaId, divisiLamaName, positionLamaId, positionLamaName, txtPjsLama,
-                        menggantikanId, menggantikanNama, branchBaruId, branchBaruName, divisiBaruId, divisiBaruName, positionBaruId, positionBaruName, txtPjsBaru,  status ,
-                        tipe,levelLamaId,levelBaruId,levelLamaName,levelBaruName, function(result) {
+                        menggantikanId, menggantikanNama, branchBaruId, branchBaruName, divisiBaruId, divisiBaruName, positionBaruId, positionBaruName, txtPjsBaru,  status,
+                        levelLamaId,levelBaruId,levelLamaName,levelBaruName, profesiLamaId, profesiLamaName, profesiBaruId, profesiBaruName, tipePegawai, function(result) {
                             if(result==""){
                                 alert('Data Successfully Added');
                                 $('#modal-edit').modal('hide');
@@ -870,7 +956,7 @@
                                 dwr.engine.setAsync(false);
                                 MutasiAction.saveAnggotaEdit(nipOld,nip, personName, branchLamaId, branchLamaName, divisiLamaId, divisiLamaName, positionLamaId, positionLamaName,
                                     txtPjsLama, menggantikanId, menggantikanNama, branchBaruId, branchBaruName, divisiBaruId, divisiBaruName, positionBaruId, positionBaruName,
-                                    txtPjsBaru, status,function(listdata) {
+                                    txtPjsBaru, status, levelLamaId,levelBaruId,levelLamaName,levelBaruName,profesiLamaId, profesiLamaName, profesiBaruId, profesiBaruName, tipePegawai,function(listdata) {
                                         if(listdata){
                                             alert('Data Successfully Updated');
                                             $('#modal-edit').modal('hide');
@@ -920,16 +1006,13 @@
         }else{
             var msg="";
             if (personName==""){
-                msg+="Nama pegawai masih kosong";
+                msg+="Nama pegawai masih kosong \n";
             }
             if (branchLamaId=="") {
-                msg+="Branch masih kosong";
-            }
-            if (tipe=="") {
-                msg+="Tipe masih belum dipilih";
+                msg+="Branch masih kosong \n";
             }
             if (status=="") {
-                msg+="Status masih belum dipilih";
+                msg+="Status masih belum dipilih \n";
             }
             alert(msg);
         }
@@ -984,22 +1067,34 @@
     window.cekStatusMutasi = function(){
         var status = document.getElementById("statusMutasi").value;
 
-        if(status == 'R' || status == 'P' || status == 'MH'){
+        if(status == 'M' || status == 'R'){
+            $('#nip2').prop("readonly", false);
+            if (status=='M'){
+                $( "#branchBaruId1" ).prop( "disabled", false);
+            } else{
+                $( "#branchBaruId1" ).prop( "disabled", true );
+            }
+            $( "#divisiBaruId2" ).prop( "disabled", false);
+            $( "#positionBaruId1" ).prop( "disabled",false);
+            // $( "#golonganBaruId1" ).prop( "disabled",false);
+            $( "#profesiBaruId1" ).prop( "disabled",false);
+            $( "#pjsBaru" ).prop( "disabled",false);
+            $("#penggantiId").prop("disabled", false);
+            $("#tipeMutasi").prop("disabled", false);
+        }else{
+            if (status==""){
+                $('#nip2').prop("readonly", true);
+            } else{
+                $('#nip2').prop("readonly", false);
+            }
             $( "#branchBaruId1" ).prop( "disabled", true );
             $( "#divisiBaruId2" ).prop( "disabled", true );
             $( "#positionBaruId1" ).prop( "disabled", true );
             $( "#pjsBaru" ).prop( "disabled", true );
+            $( "#profesiBaruId1" ).prop( "disabled",true);
             $("#penggantiId").prop("disabled", true);
             $("#tipeMutasi").prop("disabled", true);
             $("#golonganBaruId1").prop("disabled", true);
-        }else{
-            $( "#branchBaruId1" ).prop( "disabled", false);
-            $( "#divisiBaruId2" ).prop( "disabled", false);
-            $( "#positionBaruId1" ).prop( "disabled",false);
-            $( "#golonganBaruId1" ).prop( "disabled",false);
-            $( "#pjsBaru" ).prop( "disabled",false);
-            $("#penggantiId").prop("disabled", false);
-            $("#tipeMutasi").prop("disabled", false);
         }
     }
 

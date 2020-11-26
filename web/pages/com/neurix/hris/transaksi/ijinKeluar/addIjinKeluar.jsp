@@ -43,6 +43,18 @@
             return (iDateDiff + 1); // add 1 because dates are inclusive
         }
 
+        function calcHolidays(dDate1, dDate2) { // input given as Date objects
+            var iWeeks, iDateDiff, iAdjust = 0;
+            if (dDate2 < dDate1) return -1; // error code if dates transposed
+            var iWeekday1 = dDate1.getDay(); // day of week
+            var iWeekday2 = dDate2.getDay();
+            iWeekday1 = (iWeekday1 == 0) ? 7 : iWeekday1; // change Sunday from 0 to 7
+            iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
+            if ((iWeekday1 > 5) && (iWeekday2 > 5)) iAdjust = 1; // adjustment if both days on weekend
+
+            return (iAdjust + 1); // add 1 because dates are inclusive
+        }
+
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
@@ -58,13 +70,20 @@
             var tglakhir = document.getElementById("tgl2").value;
             var keterangan = document.getElementById("keterangan").value;
             var ket="";
+            var cek="";
             LemburAction.testTanggal(tglawal,tglakhir,nipid, function (data) {
                 if (data !== "") {
                     ket=data;
                 }
             });
+            dwr.engine.setAsync(false);
+            IjinKeluarAction.cekNipIjinKeluar(nipid,function(data){
+                if (data!=""){
+                    cek = data;
+                }
+            });
 
-            if (unit !== ''&& nipid !== ''&& ijinid !== ''&& tglawal !== ''&& tglakhir !== ''&& nama !== ''&& ket === '' ) {
+            if (unit !== ''&& nipid !== ''&& ijinid !== ''&& tglawal !== ''&& tglakhir !== ''&& nama !== ''&& ket === '' && cek === '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -105,6 +124,9 @@
                     $('#lamaId').val("");
                     msg += '<strong>'+ket+'</strong>' + '<br/>';
                 }
+                if (cek != '') {
+                    msg += 'Ada dispensasi yang masih di ajukan<br/>';
+                }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
@@ -139,7 +161,7 @@
         });
 
         function cancelBtn() {
-            $('#dialog_menu_ijin_keluar').dialog('close');
+            $('#dialog_menu_ijin_keluar').dialog('close'); window.location.reload(true);
         };
 
 
@@ -187,7 +209,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>NIP :</small></label>
+                            <label class="control-label"><small>NIP *:</small></label>
                         </td>
 
                         <td>
@@ -227,6 +249,7 @@
                             },
                             updater: function (item) {
                                 var selectedObj = mapped[item];
+                                console.log(selectedObj);
                                 var namaMember = selectedObj.label;
                                 $('#divisiId12').val(selectedObj.divisi).change();
                                 $('#divisiId33').val(selectedObj.divisi).change();
@@ -291,20 +314,20 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
+                            <label class="control-label"><small>Level :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                <s:select list="#comboGolongan.listComboGolongan" id="golonganId124" name="ijinKeluar.golonganId"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true" />
-                                <s:textfield  id="golonganId33" cssStyle="display: none" name="ijinKeluar.golonganId" required="false" readonly="true" cssClass="form-control"/>
+                                    <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                    <s:select list="#comboGolongan.listComboGolongan" id="golonganId124" name="ijinKeluar.golonganId"
+                                              listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true" />
+                                    <s:textfield  id="golonganId33" cssStyle="display: none" name="ijinKeluar.golonganId" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Ijin :</small></label>
+                            <label class="control-label"><small>Ijin *:</small></label>
                         </td>
                         <td>
                             <table>
@@ -317,14 +340,27 @@
                                 $(document).ready(function() {
                                     $('#ijinId1').change(function() {
                                         var namaijin= $('#ijinId1').val();
+                                        var data;
                                         dwr.engine.setAsync(false);
                                         IjinAction.initComboLamaIjin(namaijin, function (listdata) {
                                             data = listdata;
                                         });
                                         $.each(data, function (i, item) {
-                                           $('#maxIjin').val(item.jumlahIjin).change();
+                                            if (namaijin == "IJ030"){
+                                                $('#maxIjin').val("-").change();
+                                            }else {
+                                                $('#maxIjin').val(item.jumlahIjin).change();
+                                            }
                                             $('#ijinName1').val(item.ijinName).change();
                                         });
+
+                                        if (namaijin == "IJ013") {
+                                            // $("#tgl2").prop("readonly", 'true');
+                                            $('#uploadSurat').show();
+                                        } else {
+                                            // $("#tgl2").prop("readonly", 'false');
+                                            $('#uploadSurat').hide();
+                                        }
                                     })
                                 });
                             </script>
@@ -343,7 +379,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label" style="text-align: left !important;"><small>Tanggal Awal :</small></label>
+                            <label class="control-label" style="text-align: left !important;"><small>Tanggal Awal *:</small></label>
                         </td>
                         <td>
                             <div class="input-group date">
@@ -351,14 +387,14 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <s:textfield id="tgl3" name="ijinKeluar.stTanggalAwal" cssClass="form-control pull-right"
-                                             required="false"  cssStyle=""/>
+                                             required="false" onchange="getTanggalAkhir(this.value)" cssStyle=""/>
                                     <%--<input type="text" class="form-control pull-right" id="loginTimestampFrom" name="userSessionLog.stLoginTimestampFrom">--%>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label" style="text-align: left !important;"><small>Tanggal Akhir :</small></label>
+                            <label class="control-label" style="text-align: left !important;"><small>Tanggal Akhir *:</small></label>
                         </td>
                         <td>
                             <table>
@@ -386,7 +422,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label" style="text-align: left !important;"><small>Keterangan :</small></label>
+                            <label class="control-label" style="text-align: left !important;"><small>Keterangan *:</small></label>
                         </td>
                         <td>
                             <table>
@@ -397,6 +433,22 @@
                                 </tr>
                                     <%--<s:hidden name="ijinKeluar.ijinKeluarId"/>--%>
 
+                            </table>
+                        </td>
+                    </tr>
+                    <tr id="uploadSurat" style="display: none">
+                        <td>
+                            <label class="control-label" style="text-align: left !important;"><small>Surat Dokter :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <input type="file" id="file" class="form-control" name="fileUpload"/>
+                                        <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
+                                               name="ijinKeluar.uploadFile" readonly style="display: none;" />
+                                    </td>
+                                </tr>
                             </table>
                         </td>
                     </tr>
@@ -432,7 +484,7 @@
                                                    closeTopics="closeDialog" modal="true"
                                                    resizable="false"
                                                    height="250" width="600" autoOpen="false"
-                                                   title="Searching ...">
+                                                   title="Save Data ...">
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>
@@ -463,7 +515,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -476,7 +528,7 @@
                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -542,7 +594,7 @@
 
         nipid=document.getElementById("nipId").value;
         $('#nipId').change(function() {
-            var nip;
+            var nip,data;
             nip=document.getElementById("nipId").value;
             dwr.engine.setAsync(false);
             IjinKeluarAction.initComboSisaIjinKeluarId(nip, function (listdata) {
@@ -575,21 +627,64 @@
         var startdate =$('#tgl3').datepicker('getDate');
         var enddate =$('#tgl2').datepicker('getDate');
         var days = calcBusinessDays(startdate,enddate);
+        var ijinId = $('#ijinId1').val();
         var jmllibur;
         dwr.engine.setAsync(false);
         IjinKeluarAction.calculateLibur(tglawal,tglakhir, function (listdata) {
             jmllibur = listdata;
         });
-        $('#lamaId').val(days-jmllibur);
+        if (ijinId=="IJ035"){
+            IjinKeluarAction.calculateLiburWeekend(tglawal,tglakhir, function (listdata) {
+                jmllibur += listdata;
+            });
+            $('#lamaId').val(jmllibur);
+        } else{
+            $('#lamaId').val(days-jmllibur);
+        }
         var max =parseInt(document.getElementById("maxIjin").value);
         if (enddate<startdate){
             alert ('Tanggal yang dipilih salah');
                     $('#tgl2').val("");
         }
-        if (days>max){
-            alert ("maaf anda melebihi ijin maksimal");
-            $('#lamaId').val("");
-            $('#tgl2').val("");
+        if (max != "-"){
+            if (days>max){
+                alert ("maaf anda melebihi ijin maksimal");
+                $('#lamaId').val("");
+                $('#tgl2').val("");
+            }
         }
     });
+
+    window.getTanggalAkhir = function (tanggal) {
+        var ijinId = $('#ijinId1').val();
+        if (ijinId == 'IJ013'){
+            var date = $('#tgl3').datepicker('getDate');
+            console.log(date);
+            date.setDate(date.getDate()+45);
+            var d = new Date(date),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + (d.getDate()),
+                    year = '' + (d.getFullYear());
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            var dateFinal = [day,month,year].join('/');
+            $('#tgl2').val(dateFinal);
+
+            var startdate = $('#tgl3').datepicker('getDate');
+            var enddate = date;
+            console.log(startdate);
+            console.log(enddate);
+            if(startdate<enddate) {
+                var days   = (enddate - startdate)/1000/60/60/24;
+                $('#lamaId').val(days);
+            }
+            else {
+                alert ("tanggal selesai kurang dari tanggal mulai , mohon ulangi ");
+                $('#tgl2').val("");
+            }
+        }
+    };
 </script>

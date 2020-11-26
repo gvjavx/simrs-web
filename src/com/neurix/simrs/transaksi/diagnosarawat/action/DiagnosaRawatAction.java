@@ -124,8 +124,9 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveDiagnosa(String idDetailCheckup, String idDiagnosa, String jenisDiagnosa, String ketDiagnosa, String jenisPasien) {
+    public CrudResponse saveDiagnosa(String idDetailCheckup, String idDiagnosa, String jenisDiagnosa, String ketDiagnosa, String jenisPasien) {
         logger.info("[DiagnosaRawatAction.saveDiagnosa] start process >>>");
+        CrudResponse response = new CrudResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -135,36 +136,9 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             DiagnosaBo diagnosaBo = (DiagnosaBo) ctx.getBean("diagnosaBoProxy");
 
             DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
-            String id = "";
-            String ket = "";
-
-            if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
-                id = idDiagnosa;
-                ket = ketDiagnosa;
-
-                updateCoverBpjs(idDetailCheckup, id);
-
-            } else {
-                List<Diagnosa> diagnosaList = new ArrayList<>();
-                Diagnosa diagnosa = new Diagnosa();
-                diagnosa.setIdDiagnosa(idDiagnosa);
-                Diagnosa diagnosaResult = new Diagnosa();
-
-                try {
-                    diagnosaList = diagnosaBo.getByCriteria(diagnosa);
-                } catch (GeneralBOException e) {
-                    logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
-                }
-                if (!diagnosaList.isEmpty()) {
-                    diagnosaResult = diagnosaList.get(0);
-                    id = diagnosaResult.getIdDiagnosa();
-                    ket = diagnosaResult.getDescOfDiagnosa();
-                }
-            }
-
             diagnosaRawat.setIdDetailCheckup(idDetailCheckup);
-            diagnosaRawat.setIdDiagnosa(id);
-            diagnosaRawat.setKeteranganDiagnosa(ket);
+            diagnosaRawat.setIdDiagnosa(idDiagnosa);
+            diagnosaRawat.setKeteranganDiagnosa(ketDiagnosa);
             diagnosaRawat.setJenisDiagnosa(jenisDiagnosa);
             diagnosaRawat.setCreatedWho(userLogin);
             diagnosaRawat.setLastUpdate(updateTime);
@@ -173,17 +147,48 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setAction("C");
             diagnosaRawat.setFlag("Y");
 
-            diagnosaRawatBo.saveAdd(diagnosaRawat);
+            if("diagnosa_utama".equalsIgnoreCase(jenisDiagnosa) || "diagnosa_awal".equalsIgnoreCase(jenisDiagnosa)){
+                DiagnosaRawat dr = new DiagnosaRawat();
+                dr.setIdDetailCheckup(idDetailCheckup);
+                dr.setJenisDiagnosa(jenisDiagnosa);
+                Boolean cek = diagnosaRawatBo.cekDiagnosa(dr);
+                if(cek){
+                    response.setStatus("error");
+                    response.setMsg("Data "+jenisDiagnosa.replace("_", " ").toUpperCase()+" sudah ada ...!");
+                }else{
+                    if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
+                        response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
+                        if ("success".equalsIgnoreCase(response.getStatus())) {
+                            response = diagnosaRawatBo.saveAdd(diagnosaRawat);
+                        }else{
+                            response.setStatus("error");
+                            response.setMsg("Found Error When "+response.getMsg());
+                        }
+                    } else {
+                        response = diagnosaRawatBo.saveAdd(diagnosaRawat);
+                    }
+                }
+            }else{
+                if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
+                    response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
+                    if ("success".equalsIgnoreCase(response.getStatus())) {
+                        response = diagnosaRawatBo.saveAdd(diagnosaRawat);
+                    }else{
+                        response.setStatus("error");
+                        response.setMsg("Found Error When "+response.getMsg());
+                    }
+                } else {
+                    response = diagnosaRawatBo.saveAdd(diagnosaRawat);
+                }
+            }
 
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[DiagnosaRawatAction.saveDiagnosa] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setStatus("error");
+            response.setMsg("Found Error When "+e.getMessage());
         }
         logger.info("[DiagnosaRawatAction.saveDiagnosa] end process >>>");
 
-        return SUCCESS;
+        return response;
     }
 
     public List<DiagnosaRawat> listDiagnosa(String idDetailCheckup) {
@@ -229,7 +234,8 @@ public class DiagnosaRawatAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String editDiagnosa(String idRawatDiagnosa, String idDiagnosa, String jenisDiagnosa, String ketDiagnosa, String jenisPasien, String idDetailCheckup) {
+    public CrudResponse editDiagnosa(String idRawatDiagnosa, String idDiagnosa, String jenisDiagnosa, String ketDiagnosa, String jenisPasien, String idDetailCheckup) {
+        CrudResponse response = new CrudResponse();
         logger.info("[DiagnosaRawatAction.editDiagnosa] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -239,53 +245,33 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
 
             DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
-            String id = "";
-            String ket = "";
-
-            if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
-
-                id = idDiagnosa;
-                ket = ketDiagnosa;
-
-                updateCoverBpjs(idDetailCheckup, id);
-
-            } else {
-                List<Diagnosa> diagnosaList = new ArrayList<>();
-                Diagnosa diagnosa = new Diagnosa();
-                diagnosa.setIdDiagnosa(idDiagnosa);
-                Diagnosa diagnosaResult = new Diagnosa();
-
-                try {
-                    diagnosaList = diagnosaBo.getByCriteria(diagnosa);
-                } catch (GeneralBOException e) {
-                    logger.error("[DiagnosaRawatAction.editDiagnosa] Error when search dec diagnosa by id ," + "Found problem when saving add data, please inform to your admin.", e);
-                }
-                if (!diagnosaList.isEmpty()) {
-                    diagnosaResult = diagnosaList.get(0);
-                    id = diagnosaResult.getIdDiagnosa();
-                    ket = diagnosaResult.getDescOfDiagnosa();
-                }
-            }
-
             diagnosaRawat.setIdDiagnosaRawat(idRawatDiagnosa);
-            diagnosaRawat.setIdDiagnosa(id);
-            diagnosaRawat.setKeteranganDiagnosa(ket);
+            diagnosaRawat.setIdDiagnosa(idDiagnosa);
+            diagnosaRawat.setKeteranganDiagnosa(ketDiagnosa);
             diagnosaRawat.setJenisDiagnosa(jenisDiagnosa);
             diagnosaRawat.setLastUpdate(updateTime);
             diagnosaRawat.setLastUpdateWho(userLogin);
             diagnosaRawat.setAction("U");
 
-            diagnosaRawatBo.saveEdit(diagnosaRawat);
+            if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
+                response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
+                if ("success".equalsIgnoreCase(response.getStatus())) {
+                    response = diagnosaRawatBo.saveEdit(diagnosaRawat);
+                }else{
+                    response.setStatus("error");
+                    response.setMsg("Error when "+response.getMsg());
+                }
+            } else {
+                response = diagnosaRawatBo.saveEdit(diagnosaRawat);
+            }
 
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[DiagnosaRawatAction.editDiagnosa] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            response.setStatus("error");
+            response.setMsg("Error when "+e.getMessage());
         }
         logger.info("[DiagnosaRawatAction.editDiagnosa] end process >>>");
 
-        return SUCCESS;
+        return response;
     }
 
     public CrudResponse updateCoverBpjs(String idDetailCheckup, String idDiagnosa) {
@@ -455,7 +441,6 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                                                     response = diagnosaRawatBo.updateCoverBpjs(headerDetailCheckup);
 
                                                     //======END SET TARIF BPJS=========
-
 
 
                                                 } else {

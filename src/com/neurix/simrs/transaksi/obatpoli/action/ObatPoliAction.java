@@ -1,6 +1,11 @@
 package com.neurix.simrs.transaksi.obatpoli.action;
 
+import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
+import com.neurix.authorization.company.model.ImBranches;
+import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -171,7 +176,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
     }
 
-    public String saveAddRequest(String request, String idTujuan) {
+    public String saveAddRequest(String request, String idTujuan, String flagOtherBranch) {
         logger.info("[TindakanRawatAction.saveAdd] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
@@ -192,6 +197,7 @@ public class ObatPoliAction extends BaseMasterAction {
             obatPoli.setLastUpdateWho(userLogin);
             obatPoli.setAction("C");
             obatPoli.setFlag("Y");
+            obatPoli.setFlagOtherBranch(flagOtherBranch);
 
             List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
             TransaksiObatDetail obatDetail;
@@ -556,9 +562,9 @@ public class ObatPoliAction extends BaseMasterAction {
 
     }
 
-    public List<ObatPoli> getSelectOptionObatByPoli(String idPelayanan, String flagBpjs) {
+    public List<ObatPoli> getSelectOptionObatByPoli(String idPelayanan, String flagBpjs, String jenis) {
 
-        logger.info("[ObatPoliAction.getStokObat] start process >>>");
+        logger.info("[ObatPoliAction.getSelectOptionObatByPoli] start process >>>");
         List<ObatPoli> obatPoliList = new ArrayList<>();
 
         String branchId = CommonUtil.userBranchLogin();
@@ -571,13 +577,34 @@ public class ObatPoliAction extends BaseMasterAction {
 
         try {
 //            obatPoliList = obatPoliBo.getListObatPoliGroup(idPelayanan, branchId);
-            obatPoliList = obatPoliBo.getListObatGroupPoli(idPelayanan, branchId, flagBpjs);
+            obatPoliList = obatPoliBo.getListObatGroupPoli(idPelayanan, branchId, flagBpjs, jenis);
         } catch (GeneralBOException e) {
-            logger.error("[ObatPoliAction.getStokObat] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
+            logger.error("[ObatPoliAction.getSelectOptionObatByPoli] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
             addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
         }
 
-        logger.info("[ObatPoliAction.getStokObat] end process >>>");
+        logger.info("[ObatPoliAction.getSelectOptionObatByPoli] end process >>>");
+        return obatPoliList;
+
+    }
+
+    public List<ObatPoli> getSelectOptionObatByPoliKandunganSerupa(String idPelayanan, String flagBpjs, String idObat) {
+
+        logger.info("[ObatPoliAction.getSelectOptionObatByPoliKandunganSerupa] start process >>>");
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+
+        String branchId = CommonUtil.userBranchLogin();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+        try {
+            obatPoliList = obatPoliBo.getListObatGroupPoliSerupa(idPelayanan, branchId, flagBpjs, idObat);
+        } catch (GeneralBOException e) {
+            logger.error("[ObatPoliAction.getSelectOptionObatByPoliKandunganSerupa] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
+            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+        }
+
+        logger.info("[ObatPoliAction.getSelectOptionObatByPoliKandunganSerupa] end process >>>");
         return obatPoliList;
 
     }
@@ -769,6 +796,179 @@ public class ObatPoliAction extends BaseMasterAction {
         } else {
             return null;
         }
+    }
+
+    public String searchPermintaanObatGudangReqUnit() {
+        logger.info("[ObatPoliAction.searchRequest] start process >>>");
+
+        PermintaanObatPoli permintaanObatPoli = getPermintaanObatPoli();
+        permintaanObatPoli.setBranchId(CommonUtil.userBranchLogin());
+        permintaanObatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        permintaanObatPoli.setFlagOtherBranch("Y");
+
+        boolean isPoli = false;
+        List<PermintaanObatPoli> permintaanObatPoliList = new ArrayList();
+
+        try {
+            permintaanObatPoliList = obatPoliBoProxy.getSearchPermintaanObatPoli(permintaanObatPoli, isPoli);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            logger.error("[ObatPoliAction.searchRequest] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            return ERROR;
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", permintaanObatPoliList);
+
+        logger.info("[ObatPoliAction.searchRequest] end process <<<");
+        return "search";
+    }
+
+    public CheckResponse saveKonfirmasiDiterimaReqUnit(String idApproval, String idPermintaan, String request) {
+        logger.info("[ObatPoliAction.saveKonfirmasiDiterimaReqUnit] START process >>>");
+        CheckResponse response = new CheckResponse();
+        try {
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            String branchId = CommonUtil.userBranchLogin();
+            String idPelayanan = CommonUtil.userPelayananIdLogin();
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+            ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+            BillingSystemBo billingSystemBo = (BillingSystemBo) ctx.getBean("billingSystemBoProxy");
+            PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+            BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+            KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+
+            PermintaanObatPoli obatPoli = new PermintaanObatPoli();
+            obatPoli.setIdApprovalObat(idApproval);
+            obatPoli.setIdPermintaanObatPoli(idPermintaan);
+            obatPoli.setBranchId(branchId);
+            obatPoli.setLastUpdate(updateTime);
+            obatPoli.setLastUpdateWho(userLogin);
+            obatPoli.setAction("U");
+            obatPoli.setFlagOtherBranch("Y");
+
+            String pelayananAsal = "";
+            String pelayananTujuan = "";
+            String branchTujuan = "";
+            String noPermintaan = "";
+            String rekeningIdTujuan = "";
+            MtSimrsPermintaanObatPoliEntity permintaanObatPoliEntity = obatPoliBo.getEntityPermintaanObatPoliById(idPermintaan);
+            if (permintaanObatPoliEntity != null){
+                obatPoli.setIdPelayanan(permintaanObatPoliEntity.getIdPelayanan());
+                obatPoli.setTujuanPelayanan(permintaanObatPoliEntity.getTujuanPelayanan());
+                noPermintaan = permintaanObatPoliEntity.getIdPermintaanObatPoli();
+
+                ImSimrsPelayananEntity pelayananPengirim = pelayananBo.getPelayananById(permintaanObatPoliEntity.getTujuanPelayanan());
+                if (pelayananPengirim != null){
+                    pelayananAsal = pelayananPengirim.getNamaPelayanan();
+                }
+                ImSimrsPelayananEntity pelayanan = pelayananBo.getPelayananById(permintaanObatPoliEntity.getIdPelayanan());
+                if (pelayanan != null){
+                    pelayananTujuan = pelayanan.getNamaPelayanan();
+                    Branch branch = branchBo.getBranchById(pelayanan.getBranchId(), "Y");
+                    if (branch != null){
+                        branchTujuan = branch.getBranchName();
+                        rekeningIdTujuan = kodeRekeningBo.getRekeningIdByKodeRekening(branch.getCoaRk());
+                    }
+                }
+            }
+
+            List<Map> listOfObat = new ArrayList<>();
+            List<Map> listOfObatRk = new ArrayList<>();
+            try {
+                List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
+                if (request != null && !"".equalsIgnoreCase(request)) {
+                    JSONArray json = new JSONArray(request);
+                    TransaksiObatDetail detail;
+                    for (int i = 0; i < json.length(); i++) {
+
+                        JSONObject obj = json.getJSONObject(i);
+
+                        detail = new TransaksiObatDetail();
+                        detail.setIdBarang(obj.getString("ID Barang"));
+                        detail.setIdObat(obj.getString("ID Obat"));
+                        detail.setIdTransaksiObatDetail(obj.getString("ID Transkasi"));
+                        detail.setQtyApprove(new BigInteger(obj.getString("Qty Approve")));
+                        detail.setJenisSatuan(obj.getString("Jenis Satuan"));
+
+                        ImSimrsObatEntity obatEntity = obatBo.getObatByIdBarang(detail.getIdBarang());
+                        if (obatEntity != null){
+
+                            BigDecimal hargaRata = new BigDecimal(0);
+                            if ("box".equalsIgnoreCase(detail.getJenisSatuan()))
+                                hargaRata = obatEntity.getAverageHargaBox();
+                            if ("lembar".equalsIgnoreCase(detail.getJenisSatuan()))
+                                hargaRata = obatEntity.getAverageHargaLembar();
+                            if ("biji".equalsIgnoreCase(detail.getJenisSatuan()))
+                                hargaRata = obatEntity.getAverageHargaBiji();
+
+                            Map mapPersedianGudang = new HashMap();
+                            mapPersedianGudang.put("kd_barang", detail.getIdBarang());
+                            mapPersedianGudang.put("nilai", hargaRata.multiply(new BigDecimal(detail.getQtyApprove())));
+                            listOfObat.add(mapPersedianGudang);
+
+                            Map mapPersedianRK = new HashMap();
+                            mapPersedianRK.put("kd_barang", detail.getIdBarang());
+                            mapPersedianRK.put("nilai", hargaRata.multiply(new BigDecimal(detail.getQtyApprove())));
+                            mapPersedianRK.put("rekening_id", rekeningIdTujuan);
+                            listOfObatRk.add(mapPersedianRK);
+
+                        }
+
+                        transaksiObatDetails.add(detail);
+                    }
+
+                    // create jurnal
+                    Map jurnalMap = new HashMap();
+                    jurnalMap.put("persediaan_gudang", listOfObat);
+                    jurnalMap.put("rk_tujuan", listOfObatRk);
+
+                    String catatan = "RK Penerimaan Barang dari "+pelayananAsal+" ke "+pelayananTujuan+" Unit " +branchTujuan+ " No. Permintaan " + noPermintaan;
+                    try {
+                        billingSystemBo.createJurnal(CommonConstant.TRANSAKSI_ID_RK_PERSEDIAAN_PENERIMA, jurnalMap, branchId, catatan, "Y");
+                        obatPoliBo.saveApproveDiterima(obatPoli, transaksiObatDetails);
+                        response.setStatus("success");
+                        response.setMessage("Oke");
+                    } catch (GeneralBOException e){
+                        logger.error("[ObatPoliAction.saveKonfirmasiDiterimaReqUnit] Error when sabe resep obat", e);
+                        response.setStatus("error");
+                        response.setMessage("Found Error "+e.getMessage());
+                    }
+//
+//                    try {
+//                        obatPoliBo.saveApproveDiterima(obatPoli, transaksiObatDetails);
+//                        response.setStatus("success");
+//                        response.setMessage("Oke");
+//                    } catch (GeneralBOException e){
+//                        logger.error("[PermintaanResepAction.saveKonfirmasiDiterimaReqUnit] Error when sabe resep obat", e);
+//                        response.setStatus("error");
+//                        response.setMessage("Found Error "+e.getMessage());
+//                    }
+
+                }
+            } catch (JSONException e) {
+                response.setStatus("error");
+                response.setMessage("Found Error "+e.getMessage());
+                logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
+            }
+
+        } catch (GeneralBOException e) {
+            response.setStatus("error");
+            response.setMessage("Found Error "+e.getMessage());
+            logger.error("[ObatPoliAction.saveKonfirmasiDiterimaReqUnit] ERROR when adding item ," + "Found problem when saving add data, please inform to your admin."+e);
+        }
+
+        logger.info("[ObatPoliAction.saveKonfirmasiDiterimaReqUnit] END process <<<");
+        return response;
+    }
+
+    public String initFormRequestUnit(){
+        return "search";
     }
 
     @Override

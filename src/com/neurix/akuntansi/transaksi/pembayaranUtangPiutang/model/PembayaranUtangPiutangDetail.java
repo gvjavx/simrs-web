@@ -19,11 +19,74 @@ public class PembayaranUtangPiutangDetail extends BaseModel {
     private String divisiId;
     private String divisiName;
 
+    private String pengajuanBiayaDetailId;
     private String stJumlahPembayaran;
     private String masterName;
     private String rekeningId;
     private String kodeRekening;
     private String posisiCoa;
+    private String noBugetting;
+    private String stPpn;
+    private String stPph;
+    private String noFakturPajak;
+    private String stFileUpload;
+    private String urlFakturImage;
+
+    public String getUrlFakturImage() {
+        return urlFakturImage;
+    }
+
+    public void setUrlFakturImage(String urlFakturImage) {
+        this.urlFakturImage = urlFakturImage;
+    }
+
+    public String getNoFakturPajak() {
+        return noFakturPajak;
+    }
+
+    public void setNoFakturPajak(String noFakturPajak) {
+        this.noFakturPajak = noFakturPajak;
+    }
+
+    public String getStFileUpload() {
+        return stFileUpload;
+    }
+
+    public void setStFileUpload(String stFileUpload) {
+        this.stFileUpload = stFileUpload;
+    }
+
+    public String getStPpn() {
+        return stPpn;
+    }
+
+    public void setStPpn(String stPpn) {
+        this.stPpn = stPpn;
+    }
+
+    public String getStPph() {
+        return stPph;
+    }
+
+    public void setStPph(String stPph) {
+        this.stPph = stPph;
+    }
+
+    public String getNoBugetting() {
+        return noBugetting;
+    }
+
+    public void setNoBugetting(String noBugetting) {
+        this.noBugetting = noBugetting;
+    }
+
+    public String getPengajuanBiayaDetailId() {
+        return pengajuanBiayaDetailId;
+    }
+
+    public void setPengajuanBiayaDetailId(String pengajuanBiayaDetailId) {
+        this.pengajuanBiayaDetailId = pengajuanBiayaDetailId;
+    }
 
     public String getPosisiCoa() {
         return posisiCoa;

@@ -15,6 +15,8 @@ import com.neurix.hris.master.cuti.model.Cuti;
 import com.neurix.hris.master.cuti.bo.CutiBo;
 
 import com.neurix.hris.master.cutiPanjang.model.CutiPanjang;
+import com.neurix.hris.master.libur.bo.LiburBo;
+import com.neurix.hris.master.libur.model.Libur;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
 import com.neurix.hris.master.positionBagian.model.positionBagian;
 import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
@@ -30,6 +32,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -38,6 +41,8 @@ import java.math.BigInteger;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Date;
 
@@ -430,12 +435,15 @@ public class CutiPegawaiAction extends BaseMasterAction {
 
         return "success_save_edit";
     }
+
     public String saveCancel(){
         logger.info("[AlatAction.saveEdit] start process >>>");
         try {
             CutiPegawai cancelCutiPegawai = getCutiPegawai();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
             java.sql.Date dateStart = CommonUtil.convertToDate(cutiPegawai.getStTanggalDari());
             java.sql.Date dateEnd = CommonUtil.convertToDate(cutiPegawai.getStTanggalSelesai());
@@ -450,8 +458,15 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cancelCutiPegawai.setFlag("Y");
 
 //            Edit sisa cuti jika cancel
-            cutiPegawaiBoProxy.editSisaCuti(cancelCutiPegawai);
-            cutiPegawaiBoProxy.saveEdit(cancelCutiPegawai);
+            if ("normal".equalsIgnoreCase(cancelCutiPegawai.getJenisCuti()))
+                cutiPegawaiBoProxy.editSisaCuti(cancelCutiPegawai);
+
+                List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.saveCancel(cancelCutiPegawai);
+
+                for (Notifikasi notifikasi : notifikasiList){
+                    notifikasiBo.sendNotif(notifikasi);
+                }
+
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -469,6 +484,88 @@ public class CutiPegawaiAction extends BaseMasterAction {
 
         return "success_save_cancel";
     }
+
+    public String pengajuanBatal(){
+        logger.info("[AlatAction.saveEdit] start process >>>");
+        try {
+            CutiPegawai cancelCutiPegawai = getCutiPegawai();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
+
+            java.sql.Date dateStart = CommonUtil.convertToDate(cutiPegawai.getStTanggalDari());
+            java.sql.Date dateEnd = CommonUtil.convertToDate(cutiPegawai.getStTanggalSelesai());
+            cancelCutiPegawai.setTanggalDari(dateStart);
+            cancelCutiPegawai.setTanggalSelesai(dateEnd);
+            cancelCutiPegawai.setFlagPengajuanBatal("Y");
+            cancelCutiPegawai.setCancelDate(updateTime);
+            cancelCutiPegawai.setCancelPerson(userLogin);
+            cancelCutiPegawai.setLastUpdateWho(userLogin);
+            cancelCutiPegawai.setLastUpdate(updateTime);
+            cancelCutiPegawai.setAction("U");
+            cancelCutiPegawai.setFlag("Y");
+
+            List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.savePengajuanBatal(cancelCutiPegawai);
+
+
+            for (Notifikasi notifikasi : notifikasiList){
+                notifikasiBo.sendNotif(notifikasi);
+            }
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "AlatBO.saveEdit");
+            } catch (GeneralBOException e1) {
+                logger.error("[CutiPegawaiAction.saveEdit] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[CutiPegawaiAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[CutiPegawaiAction.saveEdit] end process <<<");
+
+        return "success_batal";
+    }
+
+    public String saveTolakPengajuan(String cutiPegawaiId){
+        logger.info("[AlatAction.saveEdit] start process >>>");
+        try {
+            CutiPegawai cancelCuti = new CutiPegawai();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            cancelCuti.setCutiPegawaiId(cutiPegawaiId);
+            cancelCuti.setFlagPengajuanBatal("N");
+            cancelCuti.setLastUpdateWho(userLogin);
+            cancelCuti.setLastUpdate(updateTime);
+            cancelCuti.setAction("U");
+            cancelCuti.setFlag("Y");
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
+
+            cutiPegawaiBo.saveTolakPengajuanBatal(cancelCuti);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "AlatBO.saveEdit");
+            } catch (GeneralBOException e1) {
+                logger.error("[CutiPegawaiAction.saveEdit] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[CutiPegawaiAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[CutiPegawaiAction.saveEdit] end process <<<");
+
+        return "success_save_cancel";
+    }
+
     public String saveDelete(){
         logger.info("[CutiPegawaiAction.saveDelete] start process >>>");
         try {
@@ -524,10 +621,23 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cutiPegawai.setAction("C");
             cutiPegawai.setFlag("Y");
 
-            List<Notifikasi> notifCuti = cutiPegawaiBoProxy.saveAddCuti(cutiPegawai);
+            try {
+                List<Notifikasi> notifCuti = cutiPegawaiBoProxy.saveAddCuti(cutiPegawai);
 
-            for (Notifikasi notifikasi : notifCuti ){
-                notifikasiBo.sendNotif(notifikasi);
+                for (Notifikasi notifikasi : notifCuti ){
+                    notifikasiBo.sendNotif(notifikasi);
+                }
+            }catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "cutiPegawaiBO.saveAdd");
+                } catch (GeneralBOException e1) {
+                    logger.error("[cutiPegawaiAction.saveAdd] Error when saving error,", e1);
+                    throw new GeneralBOException(e1.getMessage());
+                }
+                logger.error("[cutiPegawaiAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
             }
 
         }catch (GeneralBOException e) {
@@ -557,6 +667,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         CutiPegawai searchAlat = getCutiPegawai();
         List<CutiPegawai> listOfSearchCutiPegawai = new ArrayList();
         String role = CommonUtil.roleAsLogin();
+        searchAlat.setRoleId(CommonUtil.roleIdAsLogin());
         if ("ADMIN".equalsIgnoreCase(role)||"Admin bagian".equalsIgnoreCase(role)){
         }
         else{
@@ -606,7 +717,8 @@ public class CutiPegawaiAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultCutiPegawai");
         session.setAttribute("listOfResultCutiPegawai", listOfSearchCutiPegawai);
-        if (("ADMIN").equalsIgnoreCase(CommonUtil.roleAsLogin())){
+
+        if ((CommonConstant.ROLE_ID_ADMIN).equalsIgnoreCase(CommonUtil.roleIdAsLogin())||(CommonConstant.ROLE_ID_ADMIN_SUPER).equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
             setAdmin(true);
         }
         logger.info("[CutiPegawaiAction.search] end process <<<");
@@ -619,7 +731,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         logger.info("[AlatAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultCutiPegawai");
-        if (("ADMIN").equalsIgnoreCase(CommonUtil.roleAsLogin())){
+        if ((CommonConstant.ROLE_ID_ADMIN).equalsIgnoreCase(CommonUtil.roleIdAsLogin())||(CommonConstant.ROLE_ID_ADMIN_SUPER).equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
             setAdmin(true);
         }
         logger.info("[AlatAction.initForm] end process >>>");
@@ -651,6 +763,33 @@ public class CutiPegawaiAction extends BaseMasterAction {
 
         return listOfAlat;
     }
+
+    public String cekTahunCuti(String tglAwal, String tglAkhir, String nip){
+        logger.info("[cutiPegawaiAction.cekTahunCuti] start process >>>");
+
+        String status = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
+
+        try{
+            java.sql.Date tanggalAwal = CommonUtil.convertToDate(tglAwal);
+            java.sql.Date tanggalAkhir = CommonUtil.convertToDate(tglAkhir);
+            status = cutiPegawaiBo.getListCekTahunCuti(tanggalAwal, tanggalAkhir, nip);
+        }catch (GeneralBOException e){
+            Long logId = null;
+            try {
+                logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "cutiPegawaiAction.cekTahunCuti");
+            } catch (GeneralBOException e1) {
+                logger.error("[cutiPegawaiAction.cekTahunCuti] Error when saving error,", e1);
+            }
+            logger.error("[cutiPegawaiAction.cekTahunCuti] Error when get data cuti," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+        }
+
+        logger.info("[cutiPegawaiAction.cekNipCuti] end process <<<");
+
+        return status;
+    }
+
     public String cekNipCuti(String nip) {
         logger.info("[cutiPegawaiAction.cekNipCuti] start process >>>");
 
@@ -848,18 +987,53 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cutiPegawai.setFlagPerbaikan("N");
             if (Integer.parseInt(sisaCutiTahunan)==0){
                 if (Integer.parseInt(sisaCutiPanjang)==0){
-                    cutiPegawai.setSisaCutiHari(BigInteger.valueOf(Integer.parseInt(sisaCutiTahunan)-result.getLamaHariCuti().intValue()));
-                    cutiPegawai.setCutiId("CT002");
+                    throw new GeneralBOException("Peringatan!!! User dengan NIP "+nip+" Memiliki Sisa Cuti 0");
+//                    cutiPegawai.setSisaCutiHari(BigInteger.valueOf(Integer.parseInt(sisaCutiTahunan)-result.getLamaHariCuti().intValue()));
+//                    cutiPegawai.setCutiId("CT002");
                 }else{
-                    BigInteger jumlah = BigInteger.valueOf(Long.parseLong(sisaCutiPanjang)).subtract(result.getLamaHariCuti());
+                    List<CutiPegawai> listOfCuti = new ArrayList();
+                    try {
+                        listOfCuti = cutiPegawaiBo.getListCekNipCuti(nip);
+                    } catch (GeneralBOException e) {
+                        Long logId = null;
+                        try {
+                            logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "cutiPegawaiAction.cekNipCuti");
+                        } catch (GeneralBOException e1) {
+                            logger.error("[cutiPegawaiAction.cekNipCuti] Error when saving error,", e1);
+                        }
+                        logger.error("[cutiPegawaiAction.cekNipCuti] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+                    }
+
+                    if (listOfCuti.size() != 0){
+                        throw new GeneralBOException("Peringatan!!! User dengan NIP "+nip+" Memiliki Cuti menggantung");
+                    }else {
+                        BigInteger jumlah = BigInteger.valueOf(Long.parseLong(sisaCutiPanjang)).subtract(result.getLamaHariCuti());
 //                    cutiPegawai.setSisaHariCuti(BigInteger.valueOf(Integer.parseInt(sisaCutiPanjang) - result.getLamaHariCuti().intValue()));
-                    cutiPegawai.setSisaCutiHari(jumlah);
-                    cutiPegawai.setCutiId("CT006");
+                        cutiPegawai.setSisaCutiHari(jumlah);
+                        cutiPegawai.setCutiId("CT006");
+                    }
                 }
             }else{
-                BigInteger jumlah = BigInteger.valueOf(Long.parseLong(sisaCutiTahunan)).subtract(result.getLamaHariCuti());
-                cutiPegawai.setSisaCutiHari(jumlah);
-                cutiPegawai.setCutiId("CT002");
+                List<CutiPegawai> listOfCuti = new ArrayList();
+                try {
+                    listOfCuti = cutiPegawaiBo.getListCekNipCuti(nip);
+                } catch (GeneralBOException e) {
+                    Long logId = null;
+                    try {
+                        logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "cutiPegawaiAction.cekNipCuti");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[cutiPegawaiAction.cekNipCuti] Error when saving error,", e1);
+                    }
+                    logger.error("[cutiPegawaiAction.cekNipCuti] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+                }
+
+                if (listOfCuti.size() != 0){
+                    throw new GeneralBOException("Peringatan!!! User dengan NIP "+nip+" Memiliki Cuti menggantung");
+                }else {
+                    BigInteger jumlah = BigInteger.valueOf(Long.parseLong(sisaCutiTahunan)).subtract(result.getLamaHariCuti());
+                    cutiPegawai.setSisaCutiHari(jumlah);
+                    cutiPegawai.setCutiId("CT002");
+                }
             }
             try {
                 cutiPegawaiBo.saveCutiBersama(cutiPegawai);
@@ -880,6 +1054,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         CutiPegawai result = getCutiPegawai();
         String[] allData = result.getCheckedValue().split(",");
+
         for (String anAllData : allData) {
             String[] parts = anAllData.split(":");
             String nip = parts[0];
@@ -902,16 +1077,39 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cutiPegawai.setSisaCutiHari(BigInteger.valueOf(Integer.parseInt(setelahReset)));
             cutiPegawai.setCutiId("CT002");
             cutiPegawai.setFlagPerbaikan("Y");
+
+            List<CutiPegawai> listOfCuti = new ArrayList();
             try {
-                cutiPegawaiBo.saveCutiBersama(cutiPegawai);
+                listOfCuti = cutiPegawaiBo.getListCekNipCuti(nip);
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
-                    logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.saveCutiBersama");
+                    logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "cutiPegawaiAction.cekNipCuti");
                 } catch (GeneralBOException e1) {
-                    logger.error("[CutiPegawaiAction.saveResetTahunan] Error when saving error,", e1);
+                    logger.error("[cutiPegawaiAction.cekNipCuti] Error when saving error,", e1);
                 }
-                logger.error("[CutiPegawaiAction.saveResetTahunan] Error when get cuti," + "[" + logId + "] Found problem when retrieving cuti, please inform to your admin.", e);
+                logger.error("[cutiPegawaiAction.cekNipCuti] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+            }
+            if (listOfCuti.size() != 0){
+                throw new GeneralBOException("Peringatan!!! User dengan NIP "+nip+" Memiliki Cuti menggantung");
+            }else {
+
+                String status = cutiPegawaiBo.cekCutiTahunan(nip, "RESET TAHUNAN");
+                if (!status.equalsIgnoreCase("exist")){
+                    try {
+                        cutiPegawaiBo.saveCutiBersama(cutiPegawai);
+                    } catch (GeneralBOException e) {
+                        Long logId = null;
+                        try {
+                            logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.saveCutiBersama");
+                        } catch (GeneralBOException e1) {
+                            logger.error("[CutiPegawaiAction.saveResetTahunan] Error when saving error,", e1);
+                        }
+                        logger.error("[CutiPegawaiAction.saveResetTahunan] Error when get cuti," + "[" + logId + "] Found problem when retrieving cuti, please inform to your admin.", e);
+                    }
+                }else {
+                    throw new GeneralBOException("Peringatan!!! User dengan NIP "+nip+" Sudah pernah mereset cuti tahunan");
+                }
             }
         }
     }
@@ -943,44 +1141,145 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cutiPegawai.setSisaCutiHari(BigInteger.valueOf(Integer.parseInt(setelahReset)));
             cutiPegawai.setCutiId("CT006");
             cutiPegawai.setFlagPerbaikan("Y");
+
+            List<CutiPegawai> listOfCuti = new ArrayList();
             try {
-                cutiPegawaiBo.saveCutiBersama(cutiPegawai);
+                listOfCuti = cutiPegawaiBo.getListCekNipCuti(nip);
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
-                    logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.saveCutiBersama");
+                    logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "cutiPegawaiAction.cekNipCuti");
                 } catch (GeneralBOException e1) {
-                    logger.error("[CutiPegawaiAction.saveResetPanjang] Error when saving error,", e1);
+                    logger.error("[cutiPegawaiAction.cekNipCuti] Error when saving error,", e1);
                 }
-                logger.error("[CutiPegawaiAction.saveResetPanjang] Error when get cuti," + "[" + logId + "] Found problem when retrieving cuti, please inform to your admin.", e);
+                logger.error("[cutiPegawaiAction.cekNipCuti] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
             }
 
-            //reset panjang for tahunan
-            cutiPegawai = new CutiPegawai();
-            cutiPegawai.setNip(nip);
-            cutiPegawai.setKeterangan("RESET PANJANG");
-            cutiPegawai.setTanggalDari(dateStart);
-            cutiPegawai.setTanggalSelesai(dateEnd);
-            cutiPegawai.setLamaHariCuti(BigInteger.valueOf(0));
-            cutiPegawai.setCreatedWho(CommonUtil.userIdLogin());
-            cutiPegawai.setFlag("Y");
-            cutiPegawai.setAction("Y");
-            cutiPegawai.setCreatedDate(updateTime);
-            cutiPegawai.setLastUpdate(updateTime);
-            cutiPegawai.setLastUpdateWho(CommonUtil.userIdLogin());
-            cutiPegawai.setSisaCutiHari(BigInteger.valueOf(0));
-            cutiPegawai.setCutiId("CT002");
-            cutiPegawai.setFlagPerbaikan("Y");
-            try {
-                cutiPegawaiBo.saveCutiBersama(cutiPegawai);
-            } catch (GeneralBOException e) {
-                Long logId = null;
+            if (listOfCuti.size() != 0){
+                throw new GeneralBOException("Peringatan!!! User dengan NIP "+nip+" Memiliki Cuti menggantung");
+            }else {
+//                //cek tanggal aktif
+//                List<Biodata> listOfPegawai = new ArrayList<>();
+//                try{
+//                    listOfPegawai = biodataBoProxy.getTanggalAktif(nip);
+//                }catch (GeneralBOException e){
+//                    Long logId = null;
+//                    try {
+//                        logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "cutiPegawaiAction.cekNipCuti");
+//                    } catch (GeneralBOException e1) {
+//                        logger.error("[cutiPegawaiAction.cekNipCuti] Error when saving error,", e1);
+//                    }
+//                    logger.error("[cutiPegawaiAction.cekNipCuti] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+//                }
+
+//                if (listOfPegawai != null){
+//                    Calendar calendar = Calendar.getInstance();
+//                    calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
+//                    Date tglAktif = listOfPegawai.get(0).getTanggalAktif();
+//                    calendar.setTime(tglAktif);
+//                    calendar.add(Calendar.YEAR, 5);
+//                    Date tglBaru = calendar.getTime();
+//
+//                    //current date
+//                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+//                    java.time.LocalDate now = java.time.LocalDate.now();
+//                    //substrack date
+//                    ZoneId defaultZoneId = ZoneId.systemDefault();
+////                    java.time.LocalDate aktifDate = tglAktif.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+////                    java.time.LocalDate aktifDate = instant.atZone(defaultZoneId).toLocalDate();
+//                    java.time.LocalDate aktifDate = tglAktif.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//
+//                    Period period = Period.between(aktifDate, now);
+//                    int year = period.getYears();
+//
+//                    if (year % 5 == 0){
+//
+//                        try {
+//                            cutiPegawaiBo.saveCutiBersama(cutiPegawai);
+//                        } catch (GeneralBOException e) {
+//                            Long logId = null;
+//                            try {
+//                                logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.saveCutiBersama");
+//                            } catch (GeneralBOException e1) {
+//                                logger.error("[CutiPegawaiAction.saveResetPanjang] Error when saving error,", e1);
+//                            }
+//                            logger.error("[CutiPegawaiAction.saveResetPanjang] Error when get cuti," + "[" + logId + "] Found problem when retrieving cuti, please inform to your admin.", e);
+//                        }
+//
+//                        //reset panjang for tahunan
+//                        cutiPegawai = new CutiPegawai();
+//                        cutiPegawai.setNip(nip);
+//                        cutiPegawai.setKeterangan("RESET PANJANG");
+//                        cutiPegawai.setTanggalDari(dateStart);
+//                        cutiPegawai.setTanggalSelesai(dateEnd);
+//                        cutiPegawai.setLamaHariCuti(BigInteger.valueOf(0));
+//                        cutiPegawai.setCreatedWho(CommonUtil.userIdLogin());
+//                        cutiPegawai.setFlag("Y");
+//                        cutiPegawai.setAction("Y");
+//                        cutiPegawai.setCreatedDate(updateTime);
+//                        cutiPegawai.setLastUpdate(updateTime);
+//                        cutiPegawai.setLastUpdateWho(CommonUtil.userIdLogin());
+//                        cutiPegawai.setSisaCutiHari(BigInteger.valueOf(0));
+//                        cutiPegawai.setCutiId("CT002");
+//                        cutiPegawai.setFlagPerbaikan("Y");
+//                        try {
+//                            cutiPegawaiBo.saveCutiBersama(cutiPegawai);
+//                        } catch (GeneralBOException e) {
+//                            Long logId = null;
+//                            try {
+//                                logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.saveCutiBersama");
+//                            } catch (GeneralBOException e1) {
+//                                logger.error("[CutiPegawaiAction.saveResetPanjang] Error when saving error,", e1);
+//                            }
+//                            logger.error("[CutiPegawaiAction.saveResetPanjang] Error when get cuti," + "[" + logId + "] Found problem when retrieving cuti, please inform to your admin.", e);
+//                        }
+//
+//                    }else {
+//                        throw new GeneralBOException("Peringatan!!! Cuti panjang hanya dapat di reset 5 tahun sekali");
+//                    }
+//
+//                }
+
                 try {
-                    logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.saveCutiBersama");
-                } catch (GeneralBOException e1) {
-                    logger.error("[CutiPegawaiAction.saveResetPanjang] Error when saving error,", e1);
+                    cutiPegawaiBo.saveCutiBersama(cutiPegawai);
+                } catch (GeneralBOException e) {
+                    Long logId = null;
+                    try {
+                        logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.saveCutiBersama");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[CutiPegawaiAction.saveResetPanjang] Error when saving error,", e1);
+                    }
+                    logger.error("[CutiPegawaiAction.saveResetPanjang] Error when get cuti," + "[" + logId + "] Found problem when retrieving cuti, please inform to your admin.", e);
                 }
-                logger.error("[CutiPegawaiAction.saveResetPanjang] Error when get cuti," + "[" + logId + "] Found problem when retrieving cuti, please inform to your admin.", e);
+
+                //reset panjang for tahunan
+                cutiPegawai = new CutiPegawai();
+                cutiPegawai.setNip(nip);
+                cutiPegawai.setKeterangan("RESET PANJANG");
+                cutiPegawai.setTanggalDari(dateStart);
+                cutiPegawai.setTanggalSelesai(dateEnd);
+                cutiPegawai.setLamaHariCuti(BigInteger.valueOf(0));
+                cutiPegawai.setCreatedWho(CommonUtil.userIdLogin());
+                cutiPegawai.setFlag("Y");
+                cutiPegawai.setAction("Y");
+                cutiPegawai.setCreatedDate(updateTime);
+                cutiPegawai.setLastUpdate(updateTime);
+                cutiPegawai.setLastUpdateWho(CommonUtil.userIdLogin());
+                cutiPegawai.setSisaCutiHari(BigInteger.valueOf(0));
+                cutiPegawai.setCutiId("CT002");
+                cutiPegawai.setFlagPerbaikan("Y");
+                try {
+                    cutiPegawaiBo.saveCutiBersama(cutiPegawai);
+                } catch (GeneralBOException e) {
+                    Long logId = null;
+                    try {
+                        logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.saveCutiBersama");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[CutiPegawaiAction.saveResetPanjang] Error when saving error,", e1);
+                    }
+                    logger.error("[CutiPegawaiAction.saveResetPanjang] Error when get cuti," + "[" + logId + "] Found problem when retrieving cuti, please inform to your admin.", e);
+                }
+
             }
         }
     }
@@ -1139,6 +1438,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         StrukturJabatanBo strukturJabatanBo = (StrukturJabatanBo) ctx.getBean("strukturJabatanBoProxy");
         NotifikasiBo notifikasiBo= (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
         List<PersonilPosition> personilPositionList = new ArrayList<>();
+        cutiPegawai.setRoleId(CommonUtil.roleIdAsLogin());
 
         try {
             cutiPegawaiList = cutiPegawaiBo.getByCriteria(cutiPegawai);
@@ -1455,6 +1755,51 @@ public class CutiPegawaiAction extends BaseMasterAction {
         logger.info("[AlatAction.delete] end process <<<");
         return "init_cancel";
     }
+
+    public String batal() {
+        logger.info("[AlatAction.delete] start process >>>");
+
+        String itemId = getId();
+        String itemFlag = getFlag();
+        CutiPegawai cancelCutiPegawai = new CutiPegawai();
+
+        if (itemFlag != null ) {
+
+            try {
+                cancelCutiPegawai = init(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.getAlatById");
+                } catch (GeneralBOException e1) {
+                    logger.error("[AlatAction.delete] Error when retrieving delete data,", e1);
+                }
+                logger.error("[CutiPegawaiAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
+                return "failure";
+            }
+
+            if (cancelCutiPegawai != null) {
+                setCutiPegawai(cancelCutiPegawai);
+
+            } else {
+                cancelCutiPegawai.setCutiPegawaiId(itemId);
+                cancelCutiPegawai.setFlag(itemFlag);
+                setCutiPegawai(cancelCutiPegawai);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            cancelCutiPegawai.setCutiPegawaiId(itemId);
+            cancelCutiPegawai.setFlag(itemFlag);
+            setCutiPegawai(cancelCutiPegawai);
+            addActionError("Error, Unable to delete again with flag = N.");
+            return "failure";
+        }
+        logger.info("[AlatAction.delete] end process <<<");
+        return "init_batal";
+    }
+
     public String reportCuti() {
         logger.info("[CutiPegawaiAction.reportCuti] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -1649,7 +1994,32 @@ public class CutiPegawaiAction extends BaseMasterAction {
         return listOfUser;
     }
 
-    public List initComboSetCuti(String nip) {
+//    public List initComboSetCuti(String nip) {
+//        logger.info("[CutiPegawaiAction.initComboSetCuti] start process >>>");
+//
+//        List<CutiPegawai> listOfCuti= new ArrayList();
+//
+//        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+//        CutiPegawaiBo cutiPegawaiBo= (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
+//
+//        try {
+//            listOfCuti = cutiPegawaiBo.getListSetCuti(nip);
+//        } catch (GeneralBOException e) {
+//            Long logId = null;
+//            try {
+//                logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "biodataBo.getListOfPersonilOnlyName");
+//            } catch (GeneralBOException e1) {
+//                logger.error("[CutiPegawaiAction.initComboSetCuti] Error when saving error,", e1);
+//            }
+//            logger.error("[CutiPegawaiAction.initComboSetCuti] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+//        }
+//
+//        logger.info("[CutiPegawaiAction.initComboSetCuti] end process <<<");
+//
+//        return listOfCuti;
+//    }
+
+    public List initComboSetCuti(String nip, String jenisCuti) {
         logger.info("[CutiPegawaiAction.initComboSetCuti] start process >>>");
 
         List<CutiPegawai> listOfCuti= new ArrayList();
@@ -1658,7 +2028,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         CutiPegawaiBo cutiPegawaiBo= (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
 
         try {
-            listOfCuti = cutiPegawaiBo.getListSetCuti(nip);
+            listOfCuti = cutiPegawaiBo.getListSetCuti2(nip, jenisCuti);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -1752,7 +2122,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         String bagianPegawai="";
         int a = 1;
         List<CutiPegawai> forReport = new ArrayList<>();
-        List<StrukturJabatan> strukturBagian= strukturJabatanBo.getPerBagian();
+//        List<StrukturJabatan> strukturBagian= strukturJabatanBo.getPerBagian();
         for(CutiPegawai cutiPegawai: result) {
             if (!bagianPegawai.equalsIgnoreCase(cutiPegawai.getBagian())){
                 CutiPegawai tmp = new CutiPegawai();
@@ -1889,6 +2259,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
 
     public String saveInisialisasi(){
         String status="";
+        String cek = "";
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<CutiPegawai> listOfResultCutiPegawai = (List<CutiPegawai>) session.getAttribute("listOfResultInisialisasiCuti");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1897,66 +2268,92 @@ public class CutiPegawaiAction extends BaseMasterAction {
 
         for (CutiPegawai data : listOfResultCutiPegawai){
             if (!("").equalsIgnoreCase(data.getStSetelahResetCutiPanjang())||!("").equalsIgnoreCase(data.getStSetelahResetCutiTahunan())){
-                CutiPegawai cutiPegawai = new CutiPegawai();
-                cutiPegawai.setNip(data.getNip());
-                cutiPegawai.setKeterangan("Penambahan/perbaikan Cuti");
-                java.sql.Date dateStart = new java.sql.Date(System.currentTimeMillis());
-                java.sql.Date dateEnd = new java.sql.Date(System.currentTimeMillis());
-                cutiPegawai.setTanggalDari(dateStart);
-                cutiPegawai.setTanggalSelesai(dateEnd);
-                cutiPegawai.setLamaHariCuti(BigInteger.valueOf(0));
-                cutiPegawai.setCreatedWho(CommonUtil.userIdLogin());
-                cutiPegawai.setFlag("Y");
-                cutiPegawai.setAction("Y");
-                cutiPegawai.setCreatedDate(updateTime);
-                cutiPegawai.setLastUpdate(updateTime);
-                cutiPegawai.setLastUpdateWho(CommonUtil.userIdLogin());
-                cutiPegawai.setFlagPerbaikan("Y");
-                if (!("").equalsIgnoreCase(data.getStSetelahResetCutiTahunan())){
-                    cutiPegawai.setSisaCutiHari(BigInteger.valueOf(Integer.parseInt(data.getStSetelahResetCutiTahunan())));
-                    cutiPegawai.setCutiId("CT002");
-                    try {
-                        cutiPegawaiBo.saveCutiBersama(cutiPegawai);
-                    } catch (GeneralBOException e) {
-                        Long logId = null;
-                        try {
-                            logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.saveCutiBersama");
-                        } catch (GeneralBOException e1) {
-                            logger.error("[CutiPegawaiAction.saveResetTahunan] Error when saving error,", e1);
-                        }
-                        logger.error("[CutiPegawaiAction.saveResetTahunan] Error when get cuti," + "[" + logId + "] Found problem when retrieving cuti, please inform to your admin.", e);
+
+                List<CutiPegawai> listOfCuti = new ArrayList<>();
+                try {
+                    if (CommonConstant.ROLE_ID_ADMIN.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+                        listOfCuti = cutiPegawaiBo.getListNipCuti(data.getNip());
                     }
+                } catch (GeneralBOException e) {
+                    Long logId = null;
+                    try {
+                        logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "cutiPegawaiAction.cekNipCuti");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[cutiPegawaiAction.cekNipCuti] Error when saving error,", e1);
+                    }
+                    logger.error("[cutiPegawaiAction.cekNipCuti] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
                 }
-                if (!("").equalsIgnoreCase(data.getStSetelahResetCutiPanjang())){
-                    cutiPegawai.setSisaCutiHari(BigInteger.valueOf(Integer.parseInt(data.getStSetelahResetCutiPanjang())));
-                    cutiPegawai.setCutiId("CT006");
+                if (listOfCuti.size() != 0){
+                    cek = "exist";
+                    break;
+                }else {
+
+                    CutiPegawai cutiPegawai = new CutiPegawai();
+                    cutiPegawai.setNip(data.getNip());
+                    cutiPegawai.setKeterangan("Penambahan/perbaikan Cuti");
+                    java.sql.Date dateStart = new java.sql.Date(System.currentTimeMillis());
+                    java.sql.Date dateEnd = new java.sql.Date(System.currentTimeMillis());
+                    cutiPegawai.setTanggalDari(dateStart);
+                    cutiPegawai.setTanggalSelesai(dateEnd);
+                    cutiPegawai.setLamaHariCuti(BigInteger.valueOf(0));
+                    cutiPegawai.setCreatedWho(CommonUtil.userIdLogin());
+                    cutiPegawai.setFlag("Y");
+                    cutiPegawai.setAction("Y");
+                    cutiPegawai.setCreatedDate(updateTime);
+                    cutiPegawai.setLastUpdate(updateTime);
+                    cutiPegawai.setLastUpdateWho(CommonUtil.userIdLogin());
                     cutiPegawai.setFlagPerbaikan("Y");
-                    try {
-                        cutiPegawaiBo.saveCutiBersama(cutiPegawai);
-                    } catch (GeneralBOException e) {
-                        Long logId = null;
+                    if (!("").equalsIgnoreCase(data.getStSetelahResetCutiTahunan())){
+                        cutiPegawai.setSisaCutiHari(BigInteger.valueOf(Integer.parseInt(data.getStSetelahResetCutiTahunan())));
+                        cutiPegawai.setCutiId("CT002");
                         try {
-                            logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.saveCutiBersama");
-                        } catch (GeneralBOException e1) {
-                            logger.error("[CutiPegawaiAction.saveResetTahunan] Error when saving error,", e1);
+                            cutiPegawaiBo.saveCutiBersama(cutiPegawai);
+                        } catch (GeneralBOException e) {
+                            Long logId = null;
+                            try {
+                                logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.saveCutiBersama");
+                            } catch (GeneralBOException e1) {
+                                logger.error("[CutiPegawaiAction.saveResetTahunan] Error when saving error,", e1);
+                            }
+                            logger.error("[CutiPegawaiAction.saveResetTahunan] Error when get cuti," + "[" + logId + "] Found problem when retrieving cuti, please inform to your admin.", e);
                         }
-                        logger.error("[CutiPegawaiAction.saveResetTahunan] Error when get cuti," + "[" + logId + "] Found problem when retrieving cuti, please inform to your admin.", e);
                     }
+                    if (!("").equalsIgnoreCase(data.getStSetelahResetCutiPanjang())){
+                        cutiPegawai.setSisaCutiHari(BigInteger.valueOf(Integer.parseInt(data.getStSetelahResetCutiPanjang())));
+                        cutiPegawai.setCutiId("CT006");
+                        cutiPegawai.setFlagPerbaikan("Y");
+                        try {
+                            cutiPegawaiBo.saveCutiBersama(cutiPegawai);
+                        } catch (GeneralBOException e) {
+                            Long logId = null;
+                            try {
+                                logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.saveCutiBersama");
+                            } catch (GeneralBOException e1) {
+                                logger.error("[CutiPegawaiAction.saveResetTahunan] Error when saving error,", e1);
+                            }
+                            logger.error("[CutiPegawaiAction.saveResetTahunan] Error when get cuti," + "[" + logId + "] Found problem when retrieving cuti, please inform to your admin.", e);
+                        }
+                    }
+
                 }
+
             }
+
             status="";
         }
+        if ("exist".equalsIgnoreCase(cek))
+            status = "exist";
+        else
+            status="";
+
         return status;
     }
 
     public String getCutiAktif(String branchId){
-        String status="N";
-//        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-//        CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
-//        status = cutiPegawaiBo.findCutiAktif(branchId);
-        return  status;
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
+        return cutiPegawaiBo.findCutiAktif(branchId);
     }
-
 
     public String cetakSisaCutiPegawai(){
         String nip = getNip();
@@ -2139,6 +2536,71 @@ public class CutiPegawaiAction extends BaseMasterAction {
         return status;
     }
 
+    public List<CutiPegawai> searchPegawaiResetTahunan(String unit) {
+        List<CutiPegawai> listOfResult = null;
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
+        try {
+            listOfResult = cutiPegawaiBo.getCriteriaForResetCutiTahunan(unit);
+        } catch (GeneralBOException e) {
+            throw new GeneralBOException(e.getMessage());
+        }
+        logger.info("[CutiPegawaiAction.searchCutiBersama] end process <<<");
+        return listOfResult;
+    }
+
+    public String cekLibur(String tglAwal, String tglAkhir, String nip){
+        String status = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
+        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+        LiburBo liburBo = (LiburBo) ctx.getBean("liburBoProxy");
+
+        try{
+            java.sql.Date startDate = CommonUtil.convertToDate(tglAwal);
+            java.sql.Date endDate = CommonUtil.convertToDate(tglAkhir);
+            Calendar start = Calendar.getInstance();
+            start.setTime(startDate);
+            Calendar end = Calendar.getInstance();
+            end.setTime(endDate);
+            end.add(Calendar.DATE,1);
+            java.util.Date date;
+
+            Biodata biodata = biodataBo.detailBiodataSys(nip);
+
+            if ("N".equalsIgnoreCase(biodata.getShift())){
+                for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                    int hari = cal.get(Calendar.DAY_OF_WEEK);
+                    if (hari==1 || hari==7){
+                        status="Y";
+                    }
+                }
+            }
+
+            //Cek di hari libur
+            for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+                Libur search = new Libur();
+                search.setFlag("Y");
+                search.setTanggal(new Timestamp(date.getTime()));
+                List<Libur> liburList = liburBo.getByCriteria(search);
+
+                if (liburList.size()>0){
+                    status="Y";
+                }
+            }
+        }catch (GeneralBOException e){
+        Long logId = null;
+        try {
+            logId = cutiPegawaiBo.saveErrorMessage(e.getMessage(), "cutiPegawaiAction.cekTahunCuti");
+        } catch (GeneralBOException e1) {
+            logger.error("[cutiPegawaiAction.cekTahunCuti] Error when saving error,", e1);
+        }
+        logger.error("[cutiPegawaiAction.cekTahunCuti] Error when get data cuti," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+        }
+        return status;
+    }
 
     public String paging(){
         return SUCCESS;

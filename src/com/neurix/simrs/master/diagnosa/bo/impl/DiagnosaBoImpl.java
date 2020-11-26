@@ -63,6 +63,17 @@ public class DiagnosaBoImpl implements DiagnosaBo {
         return null;
     }
 
+    @Override
+    public List<Diagnosa> getSearchDiagnosa(String key) throws GeneralBOException {
+        List<Diagnosa> diagnosaList = new ArrayList<>();
+        try {
+            diagnosaList = diagnosaDao.getSearchDiagnosa(key);
+        }catch (HibernateException e){
+            logger.error("Found Error "+e.getMessage());
+        }
+        return diagnosaList;
+    }
+
     public List<Diagnosa> setTemplateToDiagnosaResult(List<ImSimrsDiagnosaEntity> listDiagnosa){
 
         logger.info("[DiagnosaBoImpl.setTemplateToDiagnosaResult] Start >>>>>>>");

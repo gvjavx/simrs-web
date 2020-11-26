@@ -11,6 +11,12 @@
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
           p:teamDokterBoProxy-ref="teamDokterBoProxy"/>
 
+    <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
+          p:teamDokterBoProxy-ref="teamDokterBoProxy"/>
+
+    <bean id="pelayananController" class="com.neurix.simrs.mobileapi.DokterController"
+          p:teamDokterBoProxy-ref="teamDokterBoProxy"/>
+
     <bean id="teamDokterBo" class="com.neurix.simrs.transaksi.teamdokter.bo.impl.TeamDokterBoImpl"
           p:dokterSpesialisDao-ref="dokterSpesialisDao"
           p:dokterDao-ref="dokterDao"
@@ -18,6 +24,11 @@
           p:spesialisDao-ref="spesialisDao"
           p:pelayananSpesialisDao-ref="pelayananSpesialisDao"
     />
+
+
+    <!--<bean id="teamDokterBo" class="com.neurix.simrs.transaksi.teamdokter.bo.impl.TeamDokterBoImpl"-->
+          <!--p:dokterTeamDao-ref="dokterTeamDao"-->
+    <!--/>-->
 
     <bean id="teamDokterBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="teamDokterBo">

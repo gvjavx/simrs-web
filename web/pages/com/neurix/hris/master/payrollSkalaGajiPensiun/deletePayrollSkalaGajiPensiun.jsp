@@ -17,11 +17,10 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var idDepartment = document.getElementById("skalaGajiId1").value;
-            var nameDepartment    = document.getElementById("golonganId1").value;
 
 
 
-            if (nameDepartment != '' ) {
+            if (idDepartment != '' ) {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -38,8 +37,8 @@
 
                 var msg = "";
 
-                if (nameDepartment == '') {
-                    msg += 'Field <strong>Department Name</strong> is required.' + '<br/>';
+                if (idDepartment == '') {
+                    msg += 'Field <strong>ID</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -96,7 +95,7 @@
 
 
 
-                <legend align="left">Delete Skala Gaji Pensiun</legend>
+                <legend align="left">Delete Payroll Iuran Pegawai DPLK</legend>
 
 
                 <table>
@@ -110,7 +109,7 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Id :</small></label>
+                            <label class="control-label"><small>ID :</small></label>
                         </td>
                         <td>
                             <table>
@@ -118,23 +117,9 @@
                             </table>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
-                            <label class="control-label"><small>Golongan :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                                <s:select list="#initComboTipe.listComboGolongan" id="golonganId1" name="payrollSkalaGajiPensiun.golonganId" disabled="true"
-                                          listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Poin :</small></label>
+                            <label class="control-label"><small>Ms. Kerja Gol. :</small></label>
                         </td>
                         <td>
                             <table>

@@ -39,8 +39,100 @@ public class ItSimrsHeaderChekupEntity implements Serializable {
     private String tinggi;
     private String berat;
     private Timestamp tglKeluar;
+    private String idAntrianOnline;
 
     private String flagCall;
+    private String tensi;
+    private String suhu;
+    private String nadi;
+    private String rr;
+
+    private String autoanamnesis;
+    private String heteroanamnesis;
+
+    private String pendidikan;
+    private String statusPerkawinan;
+    private String kunjunganPoli;
+
+    public String getPendidikan() {
+        return pendidikan;
+    }
+
+    public void setPendidikan(String pendidikan) {
+        this.pendidikan = pendidikan;
+    }
+
+    public String getStatusPerkawinan() {
+        return statusPerkawinan;
+    }
+
+    public void setStatusPerkawinan(String statusPerkawinan) {
+        this.statusPerkawinan = statusPerkawinan;
+    }
+
+    public String getKunjunganPoli() {
+        return kunjunganPoli;
+    }
+
+    public void setKunjunganPoli(String kunjunganPoli) {
+        this.kunjunganPoli = kunjunganPoli;
+    }
+
+    public String getAutoanamnesis() {
+        return autoanamnesis;
+    }
+
+    public void setAutoanamnesis(String autoanamnesis) {
+        this.autoanamnesis = autoanamnesis;
+    }
+
+    public String getHeteroanamnesis() {
+        return heteroanamnesis;
+    }
+
+    public void setHeteroanamnesis(String heteroanamnesis) {
+        this.heteroanamnesis = heteroanamnesis;
+    }
+
+    public String getTensi() {
+        return tensi;
+    }
+
+    public void setTensi(String tensi) {
+        this.tensi = tensi;
+    }
+
+    public String getSuhu() {
+        return suhu;
+    }
+
+    public void setSuhu(String suhu) {
+        this.suhu = suhu;
+    }
+
+    public String getNadi() {
+        return nadi;
+    }
+
+    public void setNadi(String nadi) {
+        this.nadi = nadi;
+    }
+
+    public String getRr() {
+        return rr;
+    }
+
+    public void setRr(String rr) {
+        this.rr = rr;
+    }
+
+    public String getIdAntrianOnline() {
+        return idAntrianOnline;
+    }
+
+    public void setIdAntrianOnline(String idAntrianOnline) {
+        this.idAntrianOnline = idAntrianOnline;
+    }
 
     public String getFlagCall() {
         return flagCall;

@@ -194,6 +194,11 @@
                                                 <display:column property="stTanggalAwal" sortable="true" title="Ijin Tidak Masuk Start Date"  />
                                                 <display:column property="stTanggalAkhir" sortable="true" title="Ijin Tidak Masuk End Date"  />
                                                 <display:column property="lamaIjin" sortable="true" title="Lama Ijin"  />
+                                                <display:setProperty name="paging.banner.item_name">Approval</display:setProperty>
+                                                <display:setProperty name="paging.banner.items_name">Approval</display:setProperty>
+                                                <display:setProperty name="export.excel.filename">Approval.xls</display:setProperty>
+                                                <display:setProperty name="export.csv.filename">Approval.csv</display:setProperty>
+                                                <display:setProperty name="export.pdf.filename">Approval.pdf</display:setProperty>
                                             </display:table>
                                         </td>
                                     </tr>
@@ -426,7 +431,11 @@
         IjinAction.initComboIjinId(ijinid, function(listdata) {
             $.each(listdata, function (i, item) {
                 $('#Ijin1').val(item.ijinName);
-                $('#Lama1').val(item.jumlahIjin+' hari');
+                if (item.jumlahIjin != null){
+                    $('#Lama1').val(item.jumlahIjin+' hari');
+                }else {
+                    $('#Lama1').val('- hari');
+                }
             })
         });
     });

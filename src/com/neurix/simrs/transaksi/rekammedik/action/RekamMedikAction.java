@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class RekamMedikAction extends BaseTransactionAction {
@@ -35,6 +36,8 @@ public class RekamMedikAction extends BaseTransactionAction {
     private String idPasien;
     private String imgKtp;
     private String tipe;
+    private String idx;
+    private String url;
 
     @Override
     public String search() {
@@ -124,9 +127,12 @@ public class RekamMedikAction extends BaseTransactionAction {
             }
             detailCheckup.setJenisKelamin(jk);
             detailCheckup.setTempatLahir(checkup.getTempatLahir());
-            detailCheckup.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
-            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-            detailCheckup.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+            if(checkup.getTglLahir() != null){
+                detailCheckup.setUmur(calculateAge(checkup.getTglLahir(), true));
+                detailCheckup.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                detailCheckup.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+            }
             detailCheckup.setNik(checkup.getNoKtp());
             detailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
             detailCheckup.setUrlKtp(checkup.getUrlKtp());
@@ -142,65 +148,91 @@ public class RekamMedikAction extends BaseTransactionAction {
             detailCheckup.setNamaAsuransi(checkup.getNamaAsuransi());
             detailCheckup.setCoverBiaya(checkup.getCoverBiaya());
             detailCheckup.setVideoRm(CommonConstant.EXTERNAL_IMG_URI+checkup.getVideoRm());
-            setDetailCheckup(detailCheckup);
-
-        } else {
-
-            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
-            try {
-                checkup = checkupBoProxy.getLastDataPasienByIdPasien(idPasien);
-            } catch (GeneralBOException e) {
-                logger.error("Found error when detail pasien " + e.getMessage());
+            if(checkup.getCreatedDate() != null){
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getCreatedDate());
+                detailCheckup.setStTanggalMasuk(formatDate);
             }
-            detailCheckup.setNoCheckup(checkup.getNoCheckup());
-            detailCheckup.setIdDetailCheckup(checkup.getIdDetailCheckup());
-            detailCheckup.setIdPasien(checkup.getIdPasien());
-            detailCheckup.setNamaPasien(checkup.getNama());
-            detailCheckup.setAlamat(checkup.getJalan());
-            detailCheckup.setDesa(checkup.getNamaDesa());
-            detailCheckup.setKecamatan(checkup.getNamaKecamatan());
-            detailCheckup.setKota(checkup.getNamaKota());
-            detailCheckup.setProvinsi(checkup.getNamaProvinsi());
-            detailCheckup.setNamaPelayanan(checkup.getNamaPelayanan());
-            if (checkup.getJenisKelamin() != null) {
-                if ("P".equalsIgnoreCase(checkup.getJenisKelamin())) {
-                    jk = "Perempuan";
-                } else {
-                    jk = "Laki-Laki";
-                }
-            }
-            detailCheckup.setJenisKelamin(jk);
-            detailCheckup.setTempatLahir(checkup.getTempatLahir());
-            detailCheckup.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
-            String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-            detailCheckup.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
-            detailCheckup.setNik(checkup.getNoKtp());
-            detailCheckup.setIdJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
-            detailCheckup.setTinggi(checkup.getTinggi());
-            detailCheckup.setBerat(checkup.getBerat());
-            detailCheckup.setNoSep(checkup.getNoSep());
-            detailCheckup.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
-            if(checkup.getTglKeluar() != null){
-                String tglKeluar = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglKeluar());
-                detailCheckup.setTglKeluar(tglKeluar);
-            }
+            detailCheckup.setKategoriPelayanan(checkup.getKategoriPelayanan());
             detailCheckup.setDiagnosa(checkup.getDiagnosa());
+            detailCheckup.setNamaDiagnosa(checkup.getNamaDiagnosa());
+            String label = checkup.getNamaPelayanan().replace("Poli Spesialis", "");
+            detailCheckup.setAsesmenLabel("Asesmen " + label);
+            detailCheckup.setKategoriPelayanan(checkup.getKategoriPelayanan());
+            detailCheckup.setTipePelayanan(checkup.getTipePelayanan());
+            detailCheckup.setIdx(getIdx());
+            detailCheckup.setUrl(getUrl());
             setDetailCheckup(detailCheckup);
         }
-
-        if (idPasien != null && !"".equalsIgnoreCase(idPasien)) {
-            List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
-            try {
-                detailCheckupList = rekamMedikBoProxy.getDetailListRekamMedis(idPasien);
-            } catch (GeneralBOException e) {
-                logger.error("Found Error when search rekam medis " + e.getMessage());
-            }
-            HttpSession session = ServletActionContext.getRequest().getSession();
-            session.setAttribute("listOfRekamMedis", detailCheckupList);
-        }
-
         logger.info("[CheckupDetailAction.add] end process <<<");
         return "init_detail";
+    }
+
+    private String calculateAge(java.sql.Date birthDate, boolean justTahun) {
+        String umur = "";
+        if (birthDate != null && !"".equalsIgnoreCase(birthDate.toString())) {
+            int years = 0;
+            int months = 0;
+            int days = 0;
+
+            //create calendar object for birth day
+            Calendar birthDay = Calendar.getInstance();
+            birthDay.setTimeInMillis(birthDate.getTime());
+
+            //create calendar object for current day
+            long currentTime = System.currentTimeMillis();
+            Calendar now = Calendar.getInstance();
+            now.setTimeInMillis(currentTime);
+
+            //Get difference between years
+            years = now.get(Calendar.YEAR) - birthDay.get(Calendar.YEAR);
+            int currMonth = now.get(Calendar.MONTH) + 1;
+            int birthMonth = birthDay.get(Calendar.MONTH) + 1;
+
+            //Get difference between months
+            months = currMonth - birthMonth;
+
+            //if month difference is in negative then reduce years by one
+            //and calculate the number of months.
+            if (months < 0) {
+                years--;
+                months = 12 - birthMonth + currMonth;
+                if (now.get(Calendar.DATE) < birthDay.get(Calendar.DATE))
+                    months--;
+            } else if (months == 0 && now.get(Calendar.DATE) < birthDay.get(Calendar.DATE)) {
+                years--;
+                months = 11;
+            }
+
+            //Calculate the days
+            if (now.get(Calendar.DATE) > birthDay.get(Calendar.DATE))
+                days = now.get(Calendar.DATE) - birthDay.get(Calendar.DATE);
+            else if (now.get(Calendar.DATE) < birthDay.get(Calendar.DATE)) {
+                int today = now.get(Calendar.DAY_OF_MONTH);
+                now.add(Calendar.MONTH, -1);
+                days = now.getActualMaximum(Calendar.DAY_OF_MONTH) - birthDay.get(Calendar.DAY_OF_MONTH) + today;
+            } else {
+                days = 0;
+                if (months == 12) {
+                    years++;
+                    months = 0;
+                }
+            }
+
+            if (justTahun) {
+                umur = String.valueOf(years);
+            } else {
+                if (days > 0) {
+                    umur = years + " Tahun, " + months + " Bulan, " + days + " Hari";
+                } else if (months > 0) {
+                    umur = years + " Tahun, " + months + " Bulan";
+                } else {
+                    umur = years + " Tahun";
+                }
+            }
+
+        }
+
+        return umur;
     }
 
     public static Logger getLogger() {
@@ -269,5 +301,21 @@ public class RekamMedikAction extends BaseTransactionAction {
 
     public void setTipe(String tipe) {
         this.tipe = tipe;
+    }
+
+    public String getIdx() {
+        return idx;
+    }
+
+    public void setIdx(String idx) {
+        this.idx = idx;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

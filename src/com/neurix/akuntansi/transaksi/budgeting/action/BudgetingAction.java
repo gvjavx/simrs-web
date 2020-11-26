@@ -4,10 +4,10 @@ import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.bo.BudgetingBo;
-import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
-import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail;
-import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPengadaan;
-import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingPeriode;
+import com.neurix.akuntansi.transaksi.budgeting.model.*;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.bo.BudgetingPerhitunganBo;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunJenisBudgetingEntity;
+import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting;
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.company.model.ImBranches;
@@ -27,12 +27,10 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Timestamp;
+import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.neurix.akuntansi.transaksi.budgeting.action.BudgetingAction.StatusBudgeting.*;
-
 /**
  * Created by reza on 29/04/20.
  */
@@ -86,40 +84,8 @@ public class BudgetingAction {
         this.budgeting = budgeting;
     }
 
-    ////=== CLASS STATUS BUDGETING START ===////
-    class StatusBudgeting{
-
-        String statusDetail;
-        String status;
-        Integer idx;
-
-        public String getStatusDetail() {
-            return statusDetail;
-        }
-
-        public void setStatusDetail(String statusDetail) {
-            this.statusDetail = statusDetail;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public Integer getIdx() {
-            return idx;
-        }
-
-        public void setIdx(Integer idx) {
-            this.idx = idx;
-        }
-    }
-
     // sorting status budgeting acending
-    class SortByIdxAsc implements Comparator<StatusBudgeting>
+    public class SortByIdxAsc implements Comparator<StatusBudgeting>
     {
         // Used for sorting in ascending order of
         // roll number
@@ -130,7 +96,7 @@ public class BudgetingAction {
     }
 
     // sorting status budgeting decending
-    class SortByIdxDesc implements Comparator<StatusBudgeting>
+    public class SortByIdxDesc implements Comparator<StatusBudgeting>
     {
         // Used for sorting in decending order of
         // roll number
@@ -139,10 +105,9 @@ public class BudgetingAction {
             return b.getIdx() - a.getIdx();
         }
     }
-    ////=== CLASS STATUS BUDGETING END ===////
 
     ////=== LIST STATUS BIDGETING SORTING BY IDX START ===////
-    private List<StatusBudgeting> listOfStatusBudgeting(){
+    public List<StatusBudgeting> listOfStatusBudgeting(){
 
         StatusBudgeting statusBudgeting;
         List<StatusBudgeting> statusBudgetingList = new ArrayList<>();
@@ -248,7 +213,7 @@ public class BudgetingAction {
         }
 
         // get last Status
-        Budgeting budgetingStatus = findLastStatus(budgeting.getBranchId(), budgeting.getTahun());
+        Budgeting budgetingStatus = findLastStatus(budgeting.getBranchId(), budgeting.getTahun(), "");
         if (budgetingStatus != null){
             budgeting.setStatus(budgetingStatus.getStatus());
         }
@@ -508,6 +473,9 @@ public class BudgetingAction {
         List<BudgetingDetail> sessionDetail = (List<BudgetingDetail>) session.getAttribute("listOfDetail");
         List<BudgetingPengadaan> sessionPengadaan = (List<BudgetingPengadaan>) session.getAttribute("listOfPengadaan");
 
+        Date dateNow = new Date(System.currentTimeMillis());
+        Integer bulanIni = Integer.valueOf(CommonUtil.getDateParted(dateNow, "MONTH"));
+
         Budgeting budgeting = getBudgeting();
 
         Budgeting budgetingNew = new Budgeting();
@@ -603,13 +571,13 @@ public class BudgetingAction {
                                 List<BudgetingDetail> budgetingDetails = budgetingBoProxy.getListBudgetingDetailByNoBudgeting(budgetingData.getIdBudgeting());
                                 if (budgetingDetails.size() > 0){
                                     budgetingDetailList.addAll(budgetingDetails);
-
                                     for (BudgetingDetail budgetingDetail : budgetingDetails){
 
                                         if ("bulanan".equalsIgnoreCase(budgetingData.getTipe())){
                                             if (budgetingData.getListPeriode().size() > 0){
-                                                List<BudgetingPeriode> periodes = budgetingData.getListPeriode().stream().filter(p -> p.getNamaBulan().equalsIgnoreCase(budgetingDetail.getTipe())).collect(Collectors.toList());
-                                                if (periodes.size() > 0){
+                                                boolean notEdit = Integer.valueOf(CommonUtil.convertStringBulanToNumber(budgetingDetail.getTipe())) < bulanIni;
+//                                                List<BudgetingPeriode> periodes = budgetingData.getListPeriode().stream().filter(p -> p.getNamaBulan().equalsIgnoreCase(budgetingDetail.getTipe())).collect(Collectors.toList());
+                                                if (notEdit){
                                                     budgetingDetail.setFlagEdit("N");
                                                 }
                                             }
@@ -839,7 +807,7 @@ public class BudgetingAction {
             }
         }
 
-        Boolean foundSameStatus = budgetingBo.foundWithSameStatus(tahun, branchId, statusTrans);
+        Boolean foundSameStatus = budgetingBo.foundWithSameStatus(tahun, branchId, statusTrans, "");
 
         Long level = budgetingBo.getlastLevelKodeRekening();
         List<Budgeting> childs = budgetingSessionList.stream().filter(p -> p.getLevel().compareTo(level) == 0).collect(Collectors.toList());
@@ -1035,14 +1003,14 @@ public class BudgetingAction {
         return new ArrayList<>();
     }
 
-    public Budgeting findLastStatus(String branchId, String tahun){
+    public Budgeting findLastStatus(String branchId, String tahun, String tipe){
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
 
         Budgeting budgeting = new Budgeting();
         for (StatusBudgeting statusBudgeting : listOfStatusBudgeting()){
-            Boolean foundBudgeting = budgetingBo.foundWithSameStatus(tahun, branchId, statusBudgeting.getStatusDetail());
+            Boolean foundBudgeting = budgetingBo.foundWithSameStatus(tahun, branchId, statusBudgeting.getStatusDetail(), tipe);
             if (foundBudgeting){
                 budgeting.setStatus(statusBudgeting.getStatusDetail());
                 String[] arrStatus = statusBudgeting.getStatusDetail().split("_", 2);
@@ -1244,6 +1212,15 @@ public class BudgetingAction {
         return kodeRekeningBo.getListKodeRekeningByLevel(coa, level);
     }
 
+    public List<ImKodeRekeningEntity> getListKodeRekeningByLevel(String coa, String tipeBudgeting){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KodeRekeningBo kodeRekeningBo = (KodeRekeningBo) ctx.getBean("kodeRekeningBoProxy");
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        Long level = budgetingBo.getlastLevelKodeRekening();
+        return kodeRekeningBo.getListKodeRekeningByLevelAndTipeBudgeting(coa, level, tipeBudgeting);
+    }
+
     public CrudResponse saveAddPengadaan(String strJson, String namaPengadaan, String rekeningId, String tipe) throws JSONException{
         CrudResponse response = new CrudResponse();
 
@@ -1373,7 +1350,7 @@ public class BudgetingAction {
     }
 
     // untuk mengosongkan nilai budgeting, digunakan untuk parent
-    private Budgeting kosongkanNilaiBudgeting(Budgeting budgeting){
+    public Budgeting kosongkanNilaiBudgeting(Budgeting budgeting){
         BigDecimal nol = new BigDecimal(0);
         budgeting.setNilaiTotal(nol);
         budgeting.setSemester1(nol);
@@ -1397,21 +1374,36 @@ public class BudgetingAction {
         return budgeting;
     }
 
-    public Budgeting checkTransaksiBudgeting(String branch, String tahun){
+    public Budgeting checkTransaksiBudgeting(String branch, String tahun, String tipeBudgeting){
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
 
-        return budgetingBo.checkBudgeting(branch, tahun);
+        if (tipeBudgeting != null && !"".equalsIgnoreCase(tipeBudgeting))
+            return budgetingBo.checkBudgetingByTipe(branch, tahun, tipeBudgeting);
+        else
+            return budgetingBo.checkBudgeting(branch, tahun);
     }
 
-    public List<Budgeting> getListOfCoaBudgetingSession(){
+    public List<Budgeting> getListOfCoaBudgetingSession(String kodeRekening){
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");
 
         Collections.sort(budgetingSessionList, Budgeting.getKodeRekeningSorting());
         if (budgetingSessionList != null){
-            return budgetingSessionList;
+            if (kodeRekening != null && !"".equalsIgnoreCase(kodeRekening)){
+                String hurufPertama = kodeRekening.substring(0,1);
+                List<Budgeting> filterBudgeting = new ArrayList<>();
+                for (Budgeting budgeting : budgetingSessionList){
+                    if (budgeting.getKodeRekening().substring(0,1).equalsIgnoreCase(hurufPertama)){
+                        filterBudgeting.add(budgeting);
+                    }
+                }
+                return filterBudgeting;
+            } else {
+                return budgetingSessionList;
+            }
+
         }
         return new ArrayList<>();
     }
@@ -1660,20 +1652,262 @@ public class BudgetingAction {
     }
 
 
-    public String getBudgetSaatIni(String branchId,String divisiId,String tanggal,String coaBiaya){
-        String budgetSaatIni ;
+    public Budgeting getBudgetSaatIni(String branchId,String divisiId,String tanggal,String noBudgetting){
+        Budgeting data = new Budgeting();
+
         String[] arrTanggal = tanggal.split("-");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
-        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[0]);
+        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[2], "");
         budgetingStatus.setDivisi(divisiId);
-        budgetingStatus.setCoa(coaBiaya);
+        budgetingStatus.setCoa(noBudgetting);
+        budgetingStatus.setBranchId(branchId);
+        budgetingStatus.setTahun(arrTanggal[2]);
+        budgetingStatus.setBulan(CommonUtil.convertNumberToStringBulan(arrTanggal[1]));
 
-        budgetSaatIni = budgetingBo.getBudgetBiayaDivisiSaatIni(budgetingStatus);
 
-        return budgetSaatIni;
+        data = budgetingBo.getBudgetBiayaDivisiSaatIni(budgetingStatus);
+
+        return data;
     }
+
+    public Budgeting getBudgetInvestasiSaatIni(String branchId,String divisiId,String tanggal,String idPengadaan){
+        Budgeting data = new Budgeting();
+        String[] arrTanggal = tanggal.split("-");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[2], "");
+        budgetingStatus.setDivisi(divisiId);
+        budgetingStatus.setIdPengadaan(idPengadaan);
+        budgetingStatus.setBranchId(branchId);
+        budgetingStatus.setTahun(arrTanggal[2]);
+
+        data = budgetingBo.getBudgetBiayaInvestasiSaatIni(budgetingStatus);
+
+        return data;
+    }
+
+    public List<Budgeting> getNoBudgetByDivisi(String branchId,String divisiId,String tanggal){
+        List<Budgeting> budgetingList = new ArrayList<>();
+        String[] arrTanggal = tanggal.split("-");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[2], "");
+        budgetingStatus.setDivisi(divisiId);
+        budgetingStatus.setBranchId(branchId);
+        budgetingStatus.setTahun(arrTanggal[2]);
+
+        budgetingList = budgetingBo.getNoBudgetByDivisi(budgetingStatus);
+
+        return budgetingList;
+    }
+
+    public Budgeting view(String idBudgeting){
+
+        logger.info("[BudgetingAction.view] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        Budgeting budgeting = new Budgeting();
+        budgeting.setIdBudgeting(idBudgeting);
+
+        List<Budgeting> budgetings = budgetingBo.getSearchByCriteria(budgeting);
+        if (budgetings.size() > 0){
+            budgeting = new Budgeting();
+            budgeting = budgetings.get(0);
+        }
+
+        List<BudgetingDetail> budgetingDetails = budgetingBo.getListBudgetingDetailByNoBudgeting(idBudgeting);
+        budgeting.setBudgetingDetailList(budgetingDetails);
+
+        logger.info("[BudgetingAction.view] END <<<");
+        return budgeting;
+    }
+
+    public List<BudgetingPengadaan> viewPengadaan(String idBudgetingDetail){
+
+        logger.info("[BudgetingAction.viewPengadaan] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        List<BudgetingPengadaan> budgetingPengadaans = budgetingBo.getListBudgetingPengadaanNoDetail(idBudgetingDetail);
+
+        logger.info("[BudgetingAction.viewPengadaan] END <<<");
+        return budgetingPengadaans;
+    }
+
+    public List<Budgeting> getInvestasiByDivisi(String branchId,String divisiId,String tanggal){
+        List<Budgeting> budgetingList = new ArrayList<>();
+        String[] arrTanggal = tanggal.split("-");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        Budgeting budgetingStatus = findLastStatus(branchId,arrTanggal[2], "");
+        budgetingStatus.setDivisi(divisiId);
+        budgetingStatus.setBranchId(branchId);
+        budgetingStatus.setTahun(arrTanggal[2]);
+
+        budgetingList = budgetingBo.getInvestasiByDivisi(budgetingStatus);
+
+        return budgetingList;
+    }
+
+    public List<BudgetingPengadaan> getInvestasiByNoBudgeting(String noBudgeting) {
+        List<BudgetingPengadaan> budgetingList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        budgetingList = budgetingBo.getInvestasiByNoBudgeting(noBudgeting);
+        return budgetingList;
+    }
+
+    public List<BudgetingPengadaan> getTerminPembayaran(String pengadaanId) {
+        List<BudgetingPengadaan> budgetingList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        budgetingList = budgetingBo.getTerminPembayaran(pengadaanId);
+        return budgetingList;
+    }
+
+    public String checkNilaiDasarByTahun(String tahun){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        return budgetingBo.checkNilaiDasarByTahun(tahun);
+    }
+
+    public CrudResponse getListLabaRugi(String tahun, String unit, String status) {
+
+        CrudResponse response = new CrudResponse();
+        logger.info("[BudgetingAction.getListLabaRugi] START >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+
+        List<Budgeting> budgetingList = new ArrayList<>();
+
+        try {
+            budgetingList = budgetingBo.getListLabaRugi(tahun, unit, status);
+            response.setList(budgetingList);
+            response.setStatus("success");
+        } catch (GeneralBOException e){
+            logger.error("[BudgetingAction.getListLabaRugi] ERROR. ", e);
+            response.setMsg("[BudgetingAction.getListLabaRugi] ERROR. "+ e);
+            response.setStatus("error");
+            return response;
+        }
+
+        return response;
+    }
+
+    public String initLabaRugi(){
+        logger.info("[BudgetingAction.initLabaRugi] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfCoa");
+        session.removeAttribute("listOfDetail");
+        session.removeAttribute("listOfPengadaan");
+        setBudgeting(new Budgeting());
+
+        logger.info("[BudgetingAction.initLabaRugi] END <<<");
+        return "search_laba_rugi";
+    }
+
+    public List<ParameterBudgeting> getJenisTransBudgeting(String tahun, String branchId, String status){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
+        parameterBudgeting.setFlag("Y");
+        List<ImAkunJenisBudgetingEntity> jenisBudgetingEntities =  budgetingPerhitunganBo.getListEntityJenisBudgetingByCriteria(parameterBudgeting);
+        List<ParameterBudgeting> results = new ArrayList<>();
+
+        if (jenisBudgetingEntities.size() > 0){
+            int i = 0;
+            BigDecimal jmlPendapatan = new BigDecimal(0);
+            BigDecimal jmlBiaya = new BigDecimal(0);
+            for (ImAkunJenisBudgetingEntity jenisBudgetingEntity : jenisBudgetingEntities){
+                ParameterBudgeting result = new ParameterBudgeting();
+                result.setIdJenisBudgeting(jenisBudgetingEntity.getId());
+                result.setNama(jenisBudgetingEntity.getNamaJenis());
+
+                List<ParameterBudgeting> listKategoriBudgeting = getListKategoriBudgeting(tahun, branchId, jenisBudgetingEntity.getId(), status);
+                if (listKategoriBudgeting.size() > 0){
+                    BigDecimal nilaiTotal = hitungTotalFromListBudgeting(listKategoriBudgeting);
+                    if ("PDT".equalsIgnoreCase(jenisBudgetingEntity.getId())){
+                        jmlPendapatan = jmlPendapatan.add(nilaiTotal);
+                    } else {
+                        jmlBiaya = jmlBiaya.add(nilaiTotal);
+                    }
+                    result.setNilaiTotal(nilaiTotal);
+                }
+
+                results.add(result);
+                i++;
+
+                // tambahkan hasil perhitungan laba rugi
+                if (i == jenisBudgetingEntities.size()){
+                    result = new ParameterBudgeting();
+                    BigDecimal nilaiTotal = jmlPendapatan.subtract(jmlBiaya);
+                    if (nilaiTotal.compareTo(new BigDecimal(0)) == -1){
+                        result.setIdJenisBudgeting("rugi");
+                        result.setNama("Rugi");
+                        result.setNilaiTotal(nilaiTotal);
+                    } else {
+                        result.setIdJenisBudgeting("laba");
+                        result.setNama("Laba");
+                        result.setNilaiTotal(nilaiTotal);
+                    }
+                    results.add(result);
+                }
+            }
+        }
+        return results;
+    }
+
+    public List<ParameterBudgeting> getListKategoriBudgeting(String tahun, String branchId, String idJenisBudgeting, String status){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingPerhitunganBo budgetingPerhitunganBo = (BudgetingPerhitunganBo) ctx.getBean("budgetingPerhitunganBoProxy");
+        return budgetingPerhitunganBo.getListPerhitunganTransaksiBudgetingByJenis(tahun, branchId, idJenisBudgeting, status);
+    }
+
+    private BigDecimal hitungTotalFromListBudgeting(List<ParameterBudgeting> params){
+        BigDecimal nilaiTotal = new BigDecimal(0);
+        for (ParameterBudgeting param : params){
+            nilaiTotal = nilaiTotal.add(param.getNilaiTotal());
+        }
+        return nilaiTotal;
+    }
+
+    public List<ParameterBudgeting> getListBudgetingRealisasi(String idJenis, String unit, String tahun, String status){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        return budgetingBo.getListBudgetingRealisasi(idJenis, unit, tahun, status);
+    }
+
+    public List<ParameterBudgeting> getListBudgetingPerPeriode(String idJenis, String unit, String tahun, String divisi, String master, String rekeningId, String status){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        return budgetingBo.getListBudgetingRealisasiPerperiode(idJenis, unit, tahun, divisi, master, rekeningId, status);
+    }
+
+    public List<ParameterBudgeting> getListBudgetingPerRekening(String idJenis, String unit, String tahun, String divisi, String master, String status){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        return budgetingBo.getListBudgetingRealisasiPerKodeRekening(idJenis, unit, tahun, divisi, master, status);
+    }
+
+    public String getIdBudgetingDetailInvestasi(String status, String unit, String tahun, String tipe, String divisi){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        return budgetingBo.getIdBudgetingDetailInvestasi(status, unit, tahun, divisi, tipe);
+    }
+
 
     public void setBudgetingBoProxy(BudgetingBo budgetingBoProxy) {
         this.budgetingBoProxy = budgetingBoProxy;

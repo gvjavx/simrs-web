@@ -136,28 +136,29 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                    data-toggle="dropdown" style="height: 34px">
-                                                <span class="caret"></span>
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="addRawatIgd_igd.action?tipe=umum">
-                                                    <i class="fa fa-user-plus"></i>Pasien Umum</a></li>
-                                                <li><a href="addRawatIgd_igd.action?tipe=bpjs">
-                                                    <i class="fa fa-user-plus"></i>Pasien BPJS</a></li>
-                                                <li><a href="addRawatIgd_igd.action?tipe=paket_perusahaan">
-                                                    <i class="fa fa-user-plus"></i>Pasien Paket Perusahaan</a></li>
-                                                <li><a href="addRawatIgd_igd.action?tipe=paket_individu">
-                                                    <i class="fa fa-user-plus"></i>Pasien Paket Individu</a></li>
-                                                <li><a href="addRawatIgd_igd.action?tipe=asuransi">
-                                                    <i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>
-                                                <li><a href="addRawatIgd_igd.action?tipe=ptpn">
-                                                    <i class="fa fa-user-plus"></i>Pasien PTPN</a></li>
-                                            </ul>
-                                        </div>
+                                        <a href="addRawatIgd_igd.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</a>
+                                        <%--<div class="btn-group">--%>
+                                            <%--<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>--%>
+                                            <%--<button type="button" class="btn btn-primary dropdown-toggle"--%>
+                                                    <%--data-toggle="dropdown" style="height: 34px">--%>
+                                                <%--<span class="caret"></span>--%>
+                                                <%--<span class="sr-only">Toggle Dropdown</span>--%>
+                                            <%--</button>--%>
+                                            <%--<ul class="dropdown-menu" role="menu">--%>
+                                                <%--<li><a href="addRawatIgd_igd.action?tipe=umum">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Umum</a></li>--%>
+                                                <%--<li><a href="addRawatIgd_igd.action?tipe=bpjs">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien BPJS</a></li>--%>
+                                                <%--<li><a href="addRawatIgd_igd.action?tipe=paket_perusahaan">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Medical Checkup</a></li>--%>
+                                                <%--<li><a href="addRawatIgd_igd.action?tipe=paket_individu">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Promo</a></li>--%>
+                                                <%--<li><a href="addRawatIgd_igd.action?tipe=asuransi">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>--%>
+                                                <%--<li><a href="addRawatIgd_igd.action?tipe=ptpn">--%>
+                                                    <%--<i class="fa fa-user-plus"></i>Pasien Rekanan</a></li>--%>
+                                            <%--</ul>--%>
+                                        <%--</div>--%>
                                         <a type="button" class="btn btn-warning" id="btnFingerPrint"><i
                                                 class="fa fa-plus"></i> With Finger Print</a>
                                         <a type="button" class="btn btn-danger" href="initForm_igd.action">
@@ -204,35 +205,51 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead >
                             <tr bgcolor="#90ee90">
-                                <td>No Checkup</td>
-                                <td>ID Pasien</td>
+                                <td>ID Detail Checkup</td>
+                                <td>No RM</td>
                                 <td>Nama</td>
                                 <td>Desa</td>
                                 <td>Status</td>
-                                <td>Keterangan</td>
+                                <td align="center">Jenis Pasien</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfRawatJalan" id="listRawatjalan">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
-                                    <td><s:property value="noCheckup"/></td>
+                                    <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
-                                    <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
-                                        <%-- <a href="#" onClick="showPemeriksaan('<s:property value="noCheckup"/>')">
-                                            <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icon-inspection.png"/>" style="cursor: pointer; height: 25px; width: 25px">
-                                        </a> --%>
-                                        <s:if test="#listRawatjalan.statusPeriksa == 0 || #listRawatjalan.statusPeriksa == 1">
-                                            <s:url var="add_rawat_jalan" namespace="/igd" action="add_igd" escapeAmp="false">
-                                                <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                            </s:url>
-                                            <s:a href="%{add_rawat_jalan}">
-                                                <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
-                                            </s:a>
+                                        <script>
+                                            document.write(changeJenisPasien('<s:property value="idJenisPeriksaPasien"/>', '<s:property value="jenisPeriksaPasien"/>'));
+                                        </script>
+                                    </td>
+                                    <td align="center">
+                                        <s:if test='#row.statusPeriksa != "3"'>
+                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                <s:if test='#row.isBayar == "Y"'>
+                                                    <s:url var="add_rawat_jalan" namespace="/igd" action="add_igd" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                    </s:url>
+                                                    <s:a href="%{add_rawat_jalan}">
+                                                        <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                                    </s:a>
+                                                </s:if>
+                                                <s:else>
+                                                    <span class="span-warning">Uang muka belum bayar</span>
+                                                </s:else>
+                                            </s:if>
+                                            <s:else>
+                                                <s:url var="add_rawat_jalan" namespace="/igd" action="add_igd" escapeAmp="false">
+                                                    <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
+                                                </s:url>
+                                                <s:a href="%{add_rawat_jalan}">
+                                                    <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                                </s:a>
+                                            </s:else>
                                         </s:if>
                                     </td>
                                 </tr>
@@ -246,44 +263,6 @@
     </section>
     <!-- /.content -->
 </div>
-
-<%-- <div class="modal fade" id="modal-pemeriksaan">
-    <div class="modal-dialog modal-flat">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00a65a">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Pemeriksaan Fisik</h4>
-            </div>
-            <div class="modal-body">
-                <div class="box">
-                    <table class="table table-striped table-bordered" id="tabel_rese_detail">
-                        <thead>
-                        <td>No RM</td>
-                        <td>Nama Pasien</td>
-                        <td>Diagnosa Terakhir</td>
-                        <td>Tanggal Keluar</td>
-                        </thead>
-                        <tbody id="body-rekam-medic">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div> --%>
-
-
-<%-- <script>
-function showPemeriksaan(n){
-    $("#modal-pemeriksaan").modal("show");
-    // alert(n);
-}
-</script> --%>
 
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>

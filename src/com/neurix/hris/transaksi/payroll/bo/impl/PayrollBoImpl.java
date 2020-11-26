@@ -1,5 +1,7 @@
 package com.neurix.hris.transaksi.payroll.bo.impl;
 
+import com.neurix.akuntansi.master.kodeRekening.dao.KodeRekeningDao;
+import com.neurix.akuntansi.master.mappingJurnal.dao.MappingJurnalDao;
 import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.company.dao.CompanyDao;
 import com.neurix.authorization.company.model.Branch;
@@ -25,6 +27,8 @@ import com.neurix.hris.master.golonganPkwt.model.GolonganPkwt;
 import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity;
 import com.neurix.hris.master.keluarga.dao.KeluargaDao;
 import com.neurix.hris.master.keluarga.model.ImKeluargaEntity;
+import com.neurix.hris.master.mappingpersengaji.dao.MappingPersenGajiDao;
+import com.neurix.hris.master.mappingpersengaji.model.ImHrisMappingPersenGaji;
 import com.neurix.hris.master.masaTanam.dao.MasaTanamDao;
 import com.neurix.hris.master.masaTanam.model.ImMasaTanamEntity;
 import com.neurix.hris.master.payrollAirListrik.dao.PayrollAirListrikDao;
@@ -131,6 +135,51 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     private PayrollSkalaGajiBodDao payrollSkalaGajiBodDao;
     private HistoryJabatanPegawaiDao historyJabatanPegawaiDao;
     private PayrollPttDao payrollPttDao;
+    private PayrollParamBpjsDao payrollParamBpjsDao;
+    private MappingPersenGajiDao mappingPersenGajiDao;
+    private KodeRekeningDao kodeRekeningDao;
+    private MappingJurnalDao mappingJurnalDao;
+    private PayrollDanaPensiunDao payrollDanaPensiunDao;
+
+    public PayrollDanaPensiunDao getPayrollDanaPensiunDao() {
+        return payrollDanaPensiunDao;
+    }
+
+    public void setPayrollDanaPensiunDao(PayrollDanaPensiunDao payrollDanaPensiunDao) {
+        this.payrollDanaPensiunDao = payrollDanaPensiunDao;
+    }
+
+    public MappingJurnalDao getMappingJurnalDao() {
+        return mappingJurnalDao;
+    }
+
+    public void setMappingJurnalDao(MappingJurnalDao mappingJurnalDao) {
+        this.mappingJurnalDao = mappingJurnalDao;
+    }
+
+    public KodeRekeningDao getKodeRekeningDao() {
+        return kodeRekeningDao;
+    }
+
+    public void setKodeRekeningDao(KodeRekeningDao kodeRekeningDao) {
+        this.kodeRekeningDao = kodeRekeningDao;
+    }
+
+    public MappingPersenGajiDao getMappingPersenGajiDao() {
+        return mappingPersenGajiDao;
+    }
+
+    public void setMappingPersenGajiDao(MappingPersenGajiDao mappingPersenGajiDao) {
+        this.mappingPersenGajiDao = mappingPersenGajiDao;
+    }
+
+    public PayrollParamBpjsDao getPayrollParamBpjsDao() {
+        return payrollParamBpjsDao;
+    }
+
+    public void setPayrollParamBpjsDao(PayrollParamBpjsDao payrollParamBpjsDao) {
+        this.payrollParamBpjsDao = payrollParamBpjsDao;
+    }
 
     public PayrollPttDao getPayrollPttDao() {
         return payrollPttDao;
@@ -868,7 +917,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
         if(nip != null){
             //Cek Apakah PKWT atau bukan, jika Y, maka hitung berapa lama user menjadi PKWT, digunakan tabel pegawai dan pegawai history
-            ImBiodataEntity imPegawai = biodataDao.getById("nip", nip, "Y");
+            ImBiodataEntity imPegawai = biodataDao.getById("nip", nip);
             if(imPegawai != null){
                 datePkwtAwal = new Timestamp(imPegawai.getTanggalAktif().getTime());
                 tanggalMasuk = new DateTime(datePkwtAwal.getTime());
@@ -955,7 +1004,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         BigDecimal hutangPajak = new BigDecimal(0);
         if(kelompokId.equalsIgnoreCase("KL00")){
             ImBiodataEntity biodata = null;
-            biodata = biodataDao.getById("nip", nip, "Y");
+            biodata = biodataDao.getById("nip", nip);
             persentaseHutangPph = biodata.getPersentasiHutangPph();
         }
 
@@ -1518,36 +1567,44 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         hasil = CommonUtil.percentage(dasarPerhitunganBpjs, BigDecimal.valueOf(percent));
         return hasil;
     }
+
     public BigDecimal hitungIuranBpjsTk(BigDecimal dasar, String branchId,String jenis){
         BigDecimal hasil = new BigDecimal(0);
         BigDecimal iuran = new BigDecimal(0);
         BigDecimal jpk = new BigDecimal(0);
+        BigDecimal dasarJpk = dasar;
         Integer greater, smaller;
 
+        List<ImPayrollBpjsEntity> payrollBpjsEntityList = new ArrayList<>();
+        payrollBpjsEntityList = payrollBpjsDao.getBpjsFilter(branchId);
+
         ImPayrollBpjsEntity bpjs = new ImPayrollBpjsEntity();
-        bpjs = payrollBpjsDao.getById("branchId", branchId);
+        for (ImPayrollBpjsEntity payrollBpjsEntity : payrollBpjsEntityList){
+            bpjs = payrollBpjsEntity;
+        }
 
         greater = dasar.compareTo(bpjs.getMaxBpjsTk());
         smaller = dasar.compareTo(bpjs.getMinBpjsTk());
 
         if (smaller == 0 || smaller == 1) {
             if (greater == 0 || greater == 1) {
-                dasar = bpjs.getMaxBpjsTk();
+                dasarJpk = bpjs.getMaxBpjsTk();
             }
         } else {
-            dasar = bpjs.getMinBpjsTk();
+            dasarJpk = bpjs.getMinBpjsTk();
         }
         if (jenis.equalsIgnoreCase("kary")){
             iuran = CommonUtil.percentage(dasar, BigDecimal.valueOf(bpjs.getIuranKary()));
-            jpk = CommonUtil.percentage(dasar, BigDecimal.valueOf(bpjs.getJpkKary()));
+            jpk = CommonUtil.percentage(dasarJpk, BigDecimal.valueOf(bpjs.getJpkKary()));
             hasil = iuran.add(jpk);
         }else{
             iuran = CommonUtil.percentage(dasar, BigDecimal.valueOf(bpjs.getIuranPers()));
-            jpk = CommonUtil.percentage(dasar, BigDecimal.valueOf(bpjs.getJpkPers()));
+            jpk = CommonUtil.percentage(dasarJpk, BigDecimal.valueOf(bpjs.getJpkPers()));
             hasil = iuran.add(jpk);
         }
         return hasil;
     }
+
     @Override
     public List<Payroll> dataAddPayroll(Payroll bean) throws GeneralBOException {
         List<Payroll> listOfResult = new ArrayList();
@@ -1565,20 +1622,53 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             List<PayrollTunjanganLain> listTunjanganLain = new ArrayList<>();
             List<ImBranches> imBranches;
             Branch branch = new Branch();
-            String tahun="";
+            String tahun="",tanggalAwalLembur="",tanggalAkhirLembur="";
+            BigDecimal paramDapen = BigDecimal.ZERO;
+            BigDecimal paramDapenPegawai = BigDecimal.ZERO;
+            BigDecimal proporsiGaji = BigDecimal.ONE;
             try {
                 ImCompany company = companyDao.getCompanyInfo("Y");
-                if (!("").equalsIgnoreCase(company.getPeriodeGaji())){
+                if (!("").equalsIgnoreCase(company.getPeriodeGaji())&&company.getTanggalAwalLembur()!=null&&company.getTanggalAkhirLembur()!=null){
                     tahun=company.getPeriodeGaji();
+                    tanggalAwalLembur=String.valueOf(company.getTanggalAwalLembur());
+                    tanggalAkhirLembur=String.valueOf(company.getTanggalAkhirLembur());
+
+                    if (tanggalAwalLembur.length()==1){
+                        tanggalAwalLembur="0"+tanggalAwalLembur;
+                    }
+
+                    if (tanggalAkhirLembur.length()==1){
+                        tanggalAkhirLembur="0"+tanggalAkhirLembur;
+                    }
                 }else{
-                    String status = "Error : tidak ditemukan periode gaji pada Company";
+                    String status = "ERROR : ";
+                    if ("".equalsIgnoreCase(company.getPeriodeGaji())){
+                        status=status+" tidak ditemukan periode gaji pada setting -> company";
+                    }
+                    if (company.getTanggalAwalLembur()==null){
+                        status=status+" , tidak ditemukan cut off tanggal awal lembur pada setting -> company";
+                    }
+                    if (company.getTanggalAkhirLembur()==null){
+                        status=status+" , tidak ditemukan cut off tanggal akhir lembur pada setting -> company";
+                    }
                     logger.error("[PayrollBoImpl.dataAddPayroll] "+status);
                     throw new GeneralBOException(status);
                 }
 
                 String strWhere = "";
+
+                //jika reproses orang berdasarkan NIP
+                if(bean.getNip()!=null&&!"".equalsIgnoreCase(bean.getNip())){
+                    strWhere = "\n AND pegawai.nip='"+bean.getNip()+"' \n";
+                }
                 itPayroll = payrollDao.getDataEdit(bean.getBranchId(), strWhere);
+
                 imBranches = branchDao.getListBranchById(bean.getBranchId());
+
+                //untuk yang resign dll proporsional
+                if (("Y").equalsIgnoreCase(bean.getFlagPayroll())) {
+                    itPayroll.addAll(payrollDao.getDataEditPegawaiNonAktif(bean.getBranchId(), strWhere,bean.getBulan(),bean.getTahun()));
+                }
 
                 if (imBranches.size()>0&&imBranches.size()<2){
                     for (ImBranches branchLoop: imBranches){
@@ -1602,62 +1692,67 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
 
-            //VALIDASI
-            //Validasi jika sudah ada payroll
-            List<ItPayrollEntity> validasiPayroll = new ArrayList<>();
-            if (("Y").equalsIgnoreCase(bean.getFlagPayroll())){
-                validasiPayroll = payrollDao.getDataPayrollByBulanBranchAndTahun(bean.getBranchId(),bean.getBulan(),bean.getTahun());
+            if(!bean.isReproses()){
+                //VALIDASI
+                //Validasi jika sudah ada payroll
+                List<ItPayrollEntity> validasiPayroll = new ArrayList<>();
+                if (("Y").equalsIgnoreCase(bean.getFlagPayroll())){
+                    validasiPayroll = payrollDao.getDataPayrollByBulanBranchAndTahun(bean.getBranchId(),bean.getBulan(),bean.getTahun());
+                    if (validasiPayroll.size()>0){
+                        String status = "ERROR : data payroll bulan ini sudah ada ";
+                        logger.error("[PayrollBoImpl.getSearchSmkJabatanByCriteria] Error, " + status);
+                        throw new GeneralBOException(status);
+                    }
+                }
+
+                //Validasi jika sudah ada payroll menggantung
+                validasiPayroll = payrollDao.getDataPayrollByBulanBranchApproveNull(bean.getBranchId(),bean.getTipe());
                 if (validasiPayroll.size()>0){
-                    String status = "ERROR : data payroll bulan ini sudah ada ";
+                    String status = "ERROR : data payroll masih ada yang belum terapprove ";
                     logger.error("[PayrollBoImpl.getSearchSmkJabatanByCriteria] Error, " + status);
                     throw new GeneralBOException(status);
                 }
-            }
 
-            //Validasi jika sudah ada payroll menggantung
-            validasiPayroll = payrollDao.getDataPayrollByBulanBranchApproveNull(bean.getBranchId());
-            if (validasiPayroll.size()>0){
-                String status = "ERROR : data payroll masih ada yang belum terapprove ";
-                logger.error("[PayrollBoImpl.getSearchSmkJabatanByCriteria] Error, " + status);
-                throw new GeneralBOException(status);
-            }
-
-            //Validasi jika payroll bulan 12 sudah di proses
-            if (!("Y").equalsIgnoreCase(bean.getFlagPensiun())){
-                validasiPayroll = payrollDao.getDataPayrollByBulan12Branch(bean.getBranchId(),bean.getTahun());
-                if (validasiPayroll.size()>0){
-                    String status = "ERROR : Payroll bulan 12 sudah di proses , tidak bisa melakukan transaksi lain ";
-                    logger.error("[PayrollBoImpl.getSearchSmkJabatanByCriteria] Error, " + status);
-                    throw new GeneralBOException(status);
+                //Validasi jika payroll bulan 12 sudah di proses
+                if (!("Y").equalsIgnoreCase(bean.getFlagPensiun())){
+                    validasiPayroll = payrollDao.getDataPayrollByBulan12Branch(bean.getBranchId(),bean.getTahun());
+                    if (validasiPayroll.size()>0){
+                        String status = "ERROR : Payroll bulan 12 sudah di proses , tidak bisa melakukan transaksi lain ";
+                        logger.error("[PayrollBoImpl.getSearchSmkJabatanByCriteria] Error, " + status);
+                        throw new GeneralBOException(status);
+                    }
                 }
-            }
 
-            //Validasi bonus hanya bisa diproses 1 kali di tahun yang sama
-            if (bean.getFlagThr().equalsIgnoreCase("Y") || bean.getFlagJasprod().equalsIgnoreCase("Y")||bean.getFlagInsentif().equalsIgnoreCase("Y")||
-                     bean.getFlagCutiPanjang().equalsIgnoreCase("Y")||
-                    bean.getFlagCutiTahunan().equalsIgnoreCase("Y")) {
-                String tipeWhere="";
-                if (("Y").equalsIgnoreCase(bean.getFlagThr())){
-                    tipeWhere="flagThr";
-                }else if (("Y").equalsIgnoreCase(bean.getFlagJasprod())){
-                    tipeWhere="flagJasprod";
-                }else if (("Y").equalsIgnoreCase(bean.getFlagInsentif())){
-                    tipeWhere="flagInsentif";
-                }else if (("Y").equalsIgnoreCase(bean.getFlagCutiPanjang())){
-                    tipeWhere="flagCutiPanjang";
-                }else if (("Y").equalsIgnoreCase(bean.getFlagCutiTahunan())){
-                    tipeWhere="flagCutiTahunan";
+                //Validasi bonus hanya bisa diproses 1 kali di tahun yang sama
+                if (!"PR".equalsIgnoreCase(bean.getTipe())&&!"PN".equalsIgnoreCase(bean.getTipe())&&!"JB".equalsIgnoreCase(bean.getTipe())){
+                    String tipeWhere="";
+                    switch (bean.getTipe()){
+                        case "T":
+                            tipeWhere="flagThr";
+                            break;
+                        case "JP":
+                            tipeWhere="flagJasprod";
+                            break;
+                        case "IN":
+                            tipeWhere="flagInsentif";
+                            break;
+                        case "CP":
+                            tipeWhere="flagCutiPanjang";
+                            break;
+                        case "CT":
+                            tipeWhere="flagCutiTahunan";
+                            break;
+                    }
+                    validasiPayroll = payrollDao.getBonusDalam1Tahun(bean.getBranchId(),bean.getTahun(),tipeWhere);
+
+                    if (validasiPayroll.size()>0){
+                        String status = "ERROR : Bonus sudah di proses pada tahun ini ";
+                        logger.error("[PayrollBoImpl.getSearchSmkJabatanByCriteria] Error, " + status);
+                        throw new GeneralBOException(status);
+                    }
                 }
-                validasiPayroll = payrollDao.getBonusDalam1Tahun(bean.getBranchId(),bean.getTahun(),tipeWhere);
-
-                if (validasiPayroll.size()>0){
-                    String status = "ERROR : Bonus sudah di proses pada tahun ini ";
-                    logger.error("[PayrollBoImpl.getSearchSmkJabatanByCriteria] Error, " + status);
-                    throw new GeneralBOException(status);
-                }
+                //END OF VALIDASI
             }
-            //END OF VALIDASI
-
 
             if(itPayroll != null) {
                 Payroll payroll;
@@ -1677,6 +1772,25 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 }
                 // payroll yg diproses hanya karyawan tetap dan pkwt dalam masa kerja tersebut
                 for (ItPayrollEntity payrollEntity : itPayroll) {
+
+                    //menghitung pengali proporsional
+                    if (payrollEntity.getTanggalEfektif()!=null){
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(payrollEntity.getTanggalEfektif());
+                        double day = cal.get(Calendar.DAY_OF_MONTH);
+                        double maxday = cal.getActualMaximum(Calendar.DATE);
+                        double prop = day/maxday;
+                        proporsiGaji = BigDecimal.valueOf(prop);
+                    }
+
+                    //validasi untuk yang melakukan cuti di luar tanggung jawab
+                    List<ItCutiPegawaiEntity> listOrangCutiDiLuarTanggungJawab = cutiPegawaiDao.getListCekCutiLuarTanggungan(payrollEntity.getNip(),bean.getBulan(),bean.getTahun());
+                    if (listOrangCutiDiLuarTanggungJawab.size()!=0){
+                        continue;
+                    }
+
+                    ImBiodataEntity biodataEntity = biodataDao.getById("nip",payrollEntity.getNip());
+
                     payroll = new Payroll();
                     payrollPph = new PayrollPph();
                     String dateSekarang = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
@@ -1700,7 +1814,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     }
                     payroll.setStTanggalAktifSekarang(dateSekarang);
                     DateTime tanggalPayroll = new DateTime(CommonUtil.convertToDate("01-" + bean.getBulan() + "-" + bean.getTahun()).getTime());
-                    Period p = new Period(tglAktif, tanggalPayroll , PeriodType.yearMonthDayTime());
+                    Period p = new Period(tglAktif, tanggalPayroll , PeriodType.yearMonthDayTime()); // mencari lama masah kerja berdasarkan tanggal aktif hingga tanggal diprosesnya payroll
                     String strTanggalPayroll = bean.getBulan() + "-" + bean.getTahun();
                     payroll.setStTanggalPayroll(strTanggalPayroll);
                     payroll.setMasaKerjaTahun(p.getYears());
@@ -1744,7 +1858,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     }
                     // cek apakah anak > 25 tahun
                     payrollEntity.setJumlahAnak(cekJumlahAnak(payrollEntity.getNip(), payrollEntity.getBranchId()));
-                    payroll.setJumlahAnak(payrollEntity.getJumlahAnak());
                     payroll.setGender(payrollEntity.getGender());
                     payroll.setDanaPensiunName(payrollEntity.getDanaPensiunName());
                     payroll.setFlagPjs(payrollEntity.getFlagPjs());
@@ -1834,7 +1947,67 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                      BigDecimal selisihPph= new BigDecimal(0);
                     BigDecimal totalLain11Bulan = new BigDecimal(0);
 
-                    //flag untuk testing Tambahan Lain
+                    //macam Peralihan
+                    BigDecimal peralihanGapok = BigDecimal.ZERO;
+                    BigDecimal peralihanSankhus = BigDecimal.ZERO;
+                    BigDecimal peralihanTunjangan = BigDecimal.ZERO;
+//
+//                    if (biodataEntity.getPeralihanGapok()!=null){
+//                        peralihanGapok=biodataEntity.getPeralihanGapok();
+//                    }
+//                    if (biodataEntity.getPeralihanSankhus()!=null){
+//                        peralihanSankhus=biodataEntity.getPeralihanSankhus();
+//                    }
+//                    if (biodataEntity.getPeralihanTunjangan()!=null){
+//                        peralihanTunjangan=biodataEntity.getPeralihanTunjangan();
+//                    }
+//
+//                    tunjPeralihan = peralihanGapok.add(peralihanSankhus).add(peralihanTunjangan);
+
+                    //persentasi gaji
+                    Integer persenGapok = 100;
+                    Integer persenSankhus = 100;
+                    Integer persenTJabatan = 100;
+                    Integer persenTStruktural = 100;
+                    Integer persenTFungsional = 100;
+                    Integer persenTTambahan = 100;
+                    Integer persenRlab = 100;
+
+                    //update 31-05-2020
+                    //persentase dari gaji
+                    String tipeGaji =biodataEntity.getJenisPegawai();
+
+                    if (!"".equalsIgnoreCase(tipeGaji)){
+                        List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(tipeGaji);
+                        for (ImHrisMappingPersenGaji persenGaji : mappingPersenGajiList){
+                            switch (persenGaji.getJenisGaji()){
+                                case "gaji_golongan":
+                                    persenGapok=persenGaji.getPresentase();
+                                    break;
+                                case "tunjangan_umk":
+                                    persenSankhus=persenGaji.getPresentase();
+                                    break;
+                                case "tunjangan_jabatan":
+                                    persenTJabatan=persenGaji.getPresentase();
+                                    break;
+                                case "tunjangan_jabatan_struktural":
+                                    persenTStruktural=persenGaji.getPresentase();
+                                    break;
+                                case "tunjangan_strategis":
+                                    persenTFungsional=persenGaji.getPresentase();
+                                    break;
+                                case "tunjangan_tambahan":
+                                    persenTTambahan=persenGaji.getPresentase();
+                                    break;
+                                case "tunjangan_rlab":
+                                    persenRlab=persenGaji.getPresentase();
+                                    break;
+                            }
+                        }
+                    }
+
+
+                    //flag untuk testing Tambahan Lain / untuk menentukan apakah perhitungan gaji utama dengan tambahan lain atau tidak
                     String flagTestTambahanLain = "N";
 
                     //digunakan untuk menghitung bulan berjalan dari pegawai
@@ -1848,8 +2021,8 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     }
                     // Flag Payroll
                     if(bean.getFlagPayroll().equalsIgnoreCase("Y") || flagTestTambahanLain.equalsIgnoreCase("Y")) {
-                        lembur = getTunjanganLembur(payrollEntity.getNip(), payrollEntity.getBranchId(), tahunBefore + "-" + bulanBefore + "-01",
-                                bean.getTahun() + "-" + bean.getBulan() + "-01");
+                        lembur = getTunjanganLembur(payrollEntity.getNip(), payrollEntity.getBranchId(), tahunBefore + "-" + bulanBefore + "-"+tanggalAwalLembur,
+                                bean.getTahun() + "-" + bean.getBulan() + "-"+tanggalAkhirLembur);
 
                         if (!payrollEntity.getTipePegawai().equalsIgnoreCase("TP03")) {
                             //Jika Kelompok position BOD BOC KA
@@ -1866,37 +2039,78 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             } else {
                                 ImPayrollTunjanganJabatanStrukturalEntity tunjanganJabatan = new ImPayrollTunjanganJabatanStrukturalEntity();
                                 //mengambil gaji pokok dari table skala gaji
-                                ImPayrollSkalaGajiEntity skalaGajiPegawai = getSkalaGajiSimRs(payrollEntity.getGolonganId());
+                                // update 31-05-2020 ( untuk pengisian tergantung centangan dari biodata ) && ada prosentase pendapatan gaji
+                                ImPayrollSkalaGajiEntity skalaGajiPegawai = getSkalaGajiSimRs(payrollEntity.getGolonganId(),tahun);
                                 if (skalaGajiPegawai.getNilai()!=null){
                                     gaji = skalaGajiPegawai.getNilai();
+                                    gaji = gaji.multiply(new BigDecimal(persenGapok)).divide(new BigDecimal(100));
                                 }
                                 if (skalaGajiPegawai.getSantunanKhusus()!=null){
                                     santunanKhusus = skalaGajiPegawai.getSantunanKhusus();
+                                    santunanKhusus = santunanKhusus.multiply(new BigDecimal(persenSankhus)).divide(new BigDecimal(100));
                                 }
                                 if (skalaGajiPegawai.getRumah()!=null){
-                                    tunjanganRumah = skalaGajiPegawai.getRumah();
+                                    if ("Y".equalsIgnoreCase(biodataEntity.getFlagTunjRumah())){
+                                        tunjanganRumah = skalaGajiPegawai.getRumah();
+                                    }
                                 }
                                 if (skalaGajiPegawai.getListrik()!=null){
-                                    tunjanganListrik = skalaGajiPegawai.getListrik();
+                                    if ("Y".equalsIgnoreCase(biodataEntity.getFlagTunjListrik())) {
+                                        tunjanganListrik = skalaGajiPegawai.getListrik();
+                                    }
                                 }
                                 if (skalaGajiPegawai.getAir()!=null){
-                                    tunjanganAir = skalaGajiPegawai.getAir();
+                                    if ("Y".equalsIgnoreCase(biodataEntity.getFlagTunjAir())) {
+                                        tunjanganAir = skalaGajiPegawai.getAir();
+                                    }
                                 }
                                 if (skalaGajiPegawai.getBbm()!=null){
-                                    tunjanganBbm = skalaGajiPegawai.getBbm();
+                                    if ("Y".equalsIgnoreCase(biodataEntity.getFlagTunjBbm())) {
+                                        tunjanganBbm = skalaGajiPegawai.getBbm();
+                                    }
                                 }
+
                                 totalRlab = totalRlab.add(tunjanganRumah).add(tunjanganListrik).add(tunjanganAir).add(tunjanganBbm);
+
+                                totalRlab=totalRlab.multiply(new BigDecimal(persenRlab)).divide(new BigDecimal(100));
+
                                 //mengambil tunjangan jabatan dan tunjangan struktural dari tunjangan jabatan struktural
                                 try {
                                     tunjanganJabatan = getTunjanganJabatanStrukturalSimRs(payrollEntity.getPositionId());
                                     if (tunjanganJabatan.getTunjJabatan()!=null){
                                         tunjJabatanStruktural = tunjanganJabatan.getTunjJabatan();
+                                        tunjJabatanStruktural = tunjJabatanStruktural.multiply(new BigDecimal(persenTJabatan)).divide(new BigDecimal(100));
                                     }
                                     if (tunjanganJabatan.getTunjStruktural()!=null){
                                         tunjStruktural = tunjanganJabatan.getTunjStruktural();
+                                        tunjStruktural = tunjStruktural.multiply(new BigDecimal(persenTStruktural)).divide(new BigDecimal(100));
                                     }
                                 } catch (GeneralBOException e) {
+                                    String status = "ERROR : gagal mengambil tunj jabatan";
+                                    throw new GeneralBOException(status);
+                                }
 
+                                //mengambil tunjangan fungsional
+                                if (tunjJabatanStruktural.compareTo(BigDecimal.valueOf(0))<1){
+                                    List<ImPayrollTunjanganStrategisEntity> listTunjanganStrategis = new ArrayList<>();
+                                    try {
+                                        listTunjanganStrategis = payrollTunjanganStrategisDao.getDataTunjStrategisById(payrollEntity.getProfesiId(),
+                                                payrollEntity.getGolonganId());
+
+                                        if (listTunjanganStrategis.size()>0){
+                                            for (ImPayrollTunjanganStrategisEntity tunjStrategisLoop: listTunjanganStrategis){
+                                                if (tunjStrategisLoop.getNilai()!=null){
+                                                    tunjStrategis = tunjStrategisLoop.getNilai();
+                                                    tunjStrategis = tunjStrategis.multiply(new BigDecimal(persenTFungsional)).divide(new BigDecimal(100));
+                                                }
+                                            }
+                                        }else {
+                                            tunjStrategis= BigDecimal.valueOf(0);
+                                        }
+                                    } catch (GeneralBOException e) {
+                                        String status = "ERROR : gagal mengambil payroll tunjangan strategis";
+                                        throw new GeneralBOException(status);
+                                    }
                                 }
 
                                 //mengambil payroll tahun bulan sebelumnya
@@ -1905,7 +2119,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                     lastPayroll = payrollDao.getLastPayroll(payrollEntity.getNip(),strBulanBefore,String.valueOf(tahunBefore));
                                     if (lastPayroll.size()>0){
                                         for (ItPayrollEntity payrollLoop: lastPayroll){
-                                            tunjPeralihan = payrollLoop.getTunjanganPeralihan();
                                             pemondokan = payrollLoop.getPemondokan();
                                             komunikasi = payrollLoop.getKomunikasi();
 
@@ -1920,47 +2133,37 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                             iuranProfesi = payrollLoop.getIuranProfesi();
                                             potonganLain = payrollLoop.getPotonganLain();
 
+                                            peralihanGapok = payrollLoop.getPeralihanGapok();
+                                            peralihanSankhus = payrollLoop.getPeralihanSankhus();
+                                            peralihanTunjangan = payrollLoop.getPeralihanTunjangan();
+
                                             totalPotonganLain= kopkar.add(iuranSp).add(iuranPiikb).add(bankBri).add(bankMandiri).add(infaq).add(perkesDanObat).add(listrik).add(iuranProfesi).add(potonganLain);
+                                            tunjPeralihan = peralihanGapok.add(peralihanSankhus).add(peralihanTunjangan);
                                         }
                                     }
                                 } catch (GeneralBOException e) {
-
+                                    String status = "ERROR : gagal mengambil last payroll ";
+                                    throw new GeneralBOException(status);
                                 }
 
-                                //mengambil tunjangan fungsional
-                                if (tunjJabatanStruktural.compareTo(BigDecimal.valueOf(0))<1){
-                                    List<ImPayrollTunjanganStrategisEntity> listTunjanganStrategis = new ArrayList<>();
-                                    try {
-                                        listTunjanganStrategis = payrollTunjanganStrategisDao.getDataTunjStrategisById(payrollEntity.getPositionId(),
-                                                payrollEntity.getGolonganId());
-
-                                        if (listTunjanganStrategis.size()>0){
-                                            for (ImPayrollTunjanganStrategisEntity tunjStrategisLoop: listTunjanganStrategis){
-                                                if (tunjStrategisLoop.getNilai()!=null){
-                                                    tunjStrategis = tunjStrategisLoop.getNilai();
-                                                }
-                                            }
-                                        }else {
-                                            tunjStrategis= BigDecimal.valueOf(0);
-                                        }
-                                    } catch (GeneralBOException e) {
-
-                                    }
-                                }
                             }
                         } else {
-                            ImPayrollSkalaGajiPkwtEntity skalaGajiPkwt = getSkalaGajiSimRsPkwt(payrollEntity.getGolonganId());
+                            ImPayrollSkalaGajiPkwtEntity skalaGajiPkwt = getSkalaGajiSimRsPkwt(payrollEntity.getGolonganId(),tahun);
                             if (skalaGajiPkwt.getGajiPokok()!=null){
                                 gaji = skalaGajiPkwt.getGajiPokok();
+                                gaji = gaji.multiply(new BigDecimal(persenGapok)).divide(new BigDecimal(100));
                             }
                             if (skalaGajiPkwt.getSantunanKhusus()!=null){
                                 santunanKhusus = skalaGajiPkwt.getSantunanKhusus();
+                                santunanKhusus = santunanKhusus.multiply(new BigDecimal(persenSankhus)).divide(new BigDecimal(100));
                             }
                             if (skalaGajiPkwt.getTunjFunsional()!=null){
                                 tunjStrategis = skalaGajiPkwt.getTunjFunsional();
+                                tunjStrategis = tunjStrategis.multiply(new BigDecimal(persenTFungsional)).divide(new BigDecimal(100));
                             }
                             if (skalaGajiPkwt.getTunjtambahan()!=null){
                                 tunjTambahan = skalaGajiPkwt.getTunjtambahan();
+                                tunjTambahan = tunjTambahan.multiply(new BigDecimal(persenTTambahan)).divide(new BigDecimal(100));
                             }
                         }
 
@@ -1970,13 +2173,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP01")){
                             thp = getTotalThp(12,
                                     payrollEntity.getGolonganId(),payrollEntity.getTipePegawai(),
-                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                         }
                         if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP03")){
                             bulanBerjalan = cekBulanPayrollSimRs(payrollEntity.getNip(),bean.getBulan(),bean.getTahun());
                             thp = getTotalThp(bulanBerjalan,
                                     payrollEntity.getGolonganId(),payrollEntity.getTipePegawai(),
-                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                         }
                         //mengambil tunjangan2 lain pegawai
                         List<ItTunjLainPegawaiEntity> tunjLainPegawaiEntityList = tunjLainPegawaiDao.getAllData(payrollEntity.getNip());
@@ -2045,30 +2248,67 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         tunjLain = tunjSupervisi.add(tunjLokasi).add(tunjSiaga).add(tunjProfesional);
 
                         //perhitungan iuran bpjs pegawai irfan
-                        BigDecimal dasarPerhitunganBpjs;
-                        dasarPerhitunganBpjs = gaji.add(santunanKhusus);
-                        ImPayrollBpjsEntity payrollBpjsEntity = new ImPayrollBpjsEntity();
-                        payrollBpjsEntity = payrollBpjsDao.getById("branchId", payrollEntity.getBranchId());
-                        //Bpjs Ks
-                        iuranBpjsKsKary = hitungIuranBpjs(dasarPerhitunganBpjs, payrollBpjsEntity.getIuranBpjsKsKaryPersen());
-                        iuranBpjsKsPers = hitungIuranBpjs(dasarPerhitunganBpjs, payrollBpjsEntity.getIuranBpjsKsPersPersen());
+                        // update 31-05-2020 ( parameter dasar perhitungan bpjs fleksibel )
 
-                        //Bpjs Tk
-                        iuranBpjsTkKary = hitungIuranBpjsTk(dasarPerhitunganBpjs, payrollEntity.getBranchId(), "kary");
-                        iuranBpjsTkPers = hitungIuranBpjsTk(dasarPerhitunganBpjs, payrollEntity.getBranchId(), "pers");
+                        BigDecimal dasarPerhitunganBpjs= BigDecimal.ZERO;
+                        List<ImPayrollParamBpjsEntity> payrollParamBpjsEntityList = payrollParamBpjsDao.getParams();
+                        for (ImPayrollParamBpjsEntity bpjsparam : payrollParamBpjsEntityList){
+                            if ("Y".equalsIgnoreCase(bpjsparam.getFlagGapok())){
+                                dasarPerhitunganBpjs=dasarPerhitunganBpjs.add(gaji);
+                            }
+                            if ("Y".equalsIgnoreCase(bpjsparam.getFlagSankhus())){
+                                dasarPerhitunganBpjs=dasarPerhitunganBpjs.add(santunanKhusus);
+                            }
+                            if ("Y".equalsIgnoreCase(bpjsparam.getFlagPeralihanGapok())){
+                                dasarPerhitunganBpjs=dasarPerhitunganBpjs.add(peralihanGapok);
+                            }
+                            if ("Y".equalsIgnoreCase(bpjsparam.getFlagPeralihanSankhus())){
+                                dasarPerhitunganBpjs=dasarPerhitunganBpjs.add(peralihanSankhus);
+                            }
+                            if ("Y".equalsIgnoreCase(bpjsparam.getFlagPeralihanTunjangan())){
+                                dasarPerhitunganBpjs=dasarPerhitunganBpjs.add(peralihanTunjangan);
+                            }
+                        }
+
+                        //mengambil iuran bpjs
+                        List<ImPayrollBpjsEntity> payrollBpjsEntityList = new ArrayList<>();
+                        payrollBpjsEntityList = payrollBpjsDao.getBpjsFilter(payrollEntity.getBranchId());
+
+                        ImPayrollBpjsEntity dataBpjs = new ImPayrollBpjsEntity();
+                        for (ImPayrollBpjsEntity payrollBpjsEntity : payrollBpjsEntityList){
+                            dataBpjs = payrollBpjsEntity;
+                        }
+
+                        // update 31-05-2020 ( ada centangan pada biodata untuk potongan iuran bpjs kary )
+                        if ("Y".equalsIgnoreCase(biodataEntity.getFlagBpjsKs())){
+                            //Bpjs Ks
+                            iuranBpjsKsKary = hitungIuranBpjs(dasarPerhitunganBpjs, dataBpjs.getIuranBpjsKsKaryPersen());
+                            iuranBpjsKsPers = hitungIuranBpjs(dasarPerhitunganBpjs, dataBpjs.getIuranBpjsKsPersPersen());
+                        }
+                        if ("Y".equalsIgnoreCase(biodataEntity.getFlagBpjsTk())){
+                            //Bpjs Tk
+                            iuranBpjsTkKary = hitungIuranBpjsTk(dasarPerhitunganBpjs, payrollEntity.getBranchId(), "kary");
+                            iuranBpjsTkPers = hitungIuranBpjsTk(dasarPerhitunganBpjs, payrollEntity.getBranchId(), "pers");
+                        }
 
                         //perhitungan iuran pensiun
                         if (payrollEntity.getDanaPensiun() != null) {
                             if (!payrollEntity.getDanaPensiun().equalsIgnoreCase("")){
-                                if (payrollEntity.getDanaPensiun().equalsIgnoreCase("DP01")){
-                                    gajiPensiun = getDapenDplkSimRs(payrollEntity.getGolonganDapenId(), payrollEntity.getMasaKerjaGol());
-                                    iuranDapenPensiunPeg = getIuranPensiunPegSimRs(payrollEntity.getGolonganId());
-                                    iuranDapenPensiunPersh = CommonUtil.percentage(gajiPensiun, BigDecimal.valueOf(7.16));
-                                }else if(payrollEntity.getDanaPensiun().equalsIgnoreCase("DP02")){
-                                    gajiPensiun = getGajiPensiunSimRs(payrollEntity.getGolonganDapenId(), payrollEntity.getMasaKerjaGol());
-                                    iuranDapenPensiunPeg = CommonUtil.percentage(gajiPensiun, BigDecimal.valueOf(6));
-                                    iuranDapenPensiunPersh = CommonUtil.percentage(gajiPensiun, BigDecimal.valueOf(7.16));
+                                ImPayrollDanaPensiunEntity payrollDanaPensiunEntity = payrollDanaPensiunDao.getById("danaPensiunId",payrollEntity.getDanaPensiun());
+                                if (payrollDanaPensiunEntity!=null){
+                                    paramDapen = payrollDanaPensiunEntity.getPersentasePers();
+                                    paramDapenPegawai = payrollDanaPensiunEntity.getPersentaseKary();
                                 }
+
+                                gajiPensiun = getGajiPensiunSimRs(payrollEntity.getGolonganDapenId(), payrollEntity.getMasaKerjaGol(),payrollEntity.getDanaPensiun());
+                                iuranDapenPensiunPersh = CommonUtil.percentage(gajiPensiun, paramDapen);
+
+                                if (payrollEntity.getDanaPensiun().equalsIgnoreCase("DP01")){
+                                    iuranDapenPensiunPeg = getIuranPensiunPegSimRs(payrollEntity.getGolonganDapenId());
+                                }else {
+                                    iuranDapenPensiunPeg = CommonUtil.percentage(gajiPensiun, paramDapenPegawai);
+                                }
+
                             }else{
                                 gajiPensiun = BigDecimal.valueOf(0);
                                 iuranDapenPensiunPeg = BigDecimal.valueOf(0);
@@ -2080,6 +2320,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             iuranDapenPensiunPeg = BigDecimal.valueOf(0);
                             iuranDapenPensiunPersh = BigDecimal.valueOf(0);
                         }
+
+                        //membulatkan iuran dapen
+                        iuranDapenPensiunPeg = iuranDapenPensiunPeg.setScale(0,BigDecimal.ROUND_HALF_UP);
+                        iuranDapenPensiunPersh = iuranDapenPensiunPersh.setScale(0,BigDecimal.ROUND_HALF_UP);
+                        iuranBpjsKsKary = iuranBpjsKsKary.setScale(0,BigDecimal.ROUND_HALF_UP);
+                        iuranBpjsTkPers = iuranBpjsTkPers.setScale(0,BigDecimal.ROUND_HALF_UP);
+
                         payroll.setGajiPensiun(CommonUtil.numbericFormat(gajiPensiun, "###,###"));
                         payroll.setGajiPensiunNilai(gajiPensiun);
 
@@ -2090,12 +2337,28 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             gajiPensiun = BigDecimal.valueOf(0);
                         }
 
-                        //perhitungan pph gaji karyawan
+                        //Menghitung proporsional
+                        gaji = gaji.multiply(proporsiGaji);
+                        santunanKhusus = santunanKhusus.multiply(proporsiGaji);
+                        tunjJabatanStruktural = tunjJabatanStruktural.multiply(proporsiGaji);
+                        tunjStruktural = tunjStruktural.multiply(proporsiGaji);
+                        tunjStrategis = tunjStrategis.multiply(proporsiGaji);
+                        tunjPeralihan = tunjPeralihan.multiply(proporsiGaji);
+                        tunjLain = tunjLain.multiply(proporsiGaji);
+                        tunjTambahan = tunjTambahan.multiply(proporsiGaji);
+                        pemondokan = pemondokan.multiply(proporsiGaji);
+                        komunikasi = komunikasi.multiply(proporsiGaji);
+                        tunjanganRumah = tunjanganRumah.multiply(proporsiGaji);
+                        tunjanganListrik = tunjanganListrik.multiply(proporsiGaji);
+                        tunjanganAir = tunjanganAir.multiply(proporsiGaji);
+                        tunjanganBbm = tunjanganBbm.multiply(proporsiGaji);
+                        totalRlab = totalRlab.multiply(proporsiGaji);
 
+                        //perhitungan pph gaji karyawan
                         payrollPph = kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                     gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
                                     totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, lainLain,
-                                    iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak());
+                                    iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
 
                         if (bean.getBulan().equalsIgnoreCase("12")){
                             BigDecimal bruto11Bulan = payrollDao.getBruto11Bulan(bean.getTahun(),payrollEntity.getNip());
@@ -2111,7 +2374,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             PayrollPph pph12Bulan = pph21SimRs(gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
                                     totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, bonus11Bulan,
                                     iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(),
-                                    payrollEntity.getJumlahAnak(),bruto11Bulan,tunjPPh11Bulan,tunjPphBonus,ptt11Bulan,iuranPegawai11Bulan,pttBulan12,pph11Bulan,pphBonus);
+                                    payrollEntity.getJumlahAnak(),bruto11Bulan,tunjPPh11Bulan,tunjPphBonus,ptt11Bulan,iuranPegawai11Bulan,pttBulan12,pph11Bulan,pphBonus,biodataEntity.getNpwp());
 
                             pphSeharusnya = pph12Bulan.getHutangPphNilai();
                             selisihPph = pph12Bulan.getPphGajiNilai();
@@ -2140,13 +2403,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP01")){
                             thp = getTotalThp(12,
                                     payrollEntity.getGolonganId(),payrollEntity.getTipePegawai(),
-                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                         }
                         if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP03")){
                             bulanBerjalan = cekBulanPayrollSimRs(payrollEntity.getNip(),bean.getBulan(),bean.getTahun());
                             thp = getTotalThp(12,
                                     payrollEntity.getGolonganId(),payrollEntity.getTipePegawai(),
-                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                         }
 
                         PayrollThr payrollThr = getThr(payrollEntity.getNip(), bean.getBulan(), bean.getTahun(), gaji
@@ -2158,7 +2421,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         PayrollPph payrolPphThr =  kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                 gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
                                 totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, payrollThr.getTotalThrNilai(),
-                                iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak());
+                                iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
 
                         //pph pendapatan dengan thr - pph gaji normal = pph thr only
                         BigDecimal pphThr = payrolPphThr.getPphGajiNilai().subtract(payrollPph.getPphGajiNilai());
@@ -2204,13 +2467,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP01")){
                             thp = getTotalThp(12,
                                     payrollEntity.getGolonganId(),payrollEntity.getTipePegawai(),
-                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                         }
                         if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP03")){
                             bulanBerjalan = cekBulanPayrollSimRs(payrollEntity.getNip(),bean.getBulan(),bean.getTahun());
                             thp = getTotalThp(bulanBerjalan,
                                     payrollEntity.getGolonganId(),payrollEntity.getTipePegawai(),
-                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                         }
                         PayrollJasopr payrollJasopr = getJasopr(payrollEntity.getNip(), bean.getBulan(), bean.getTahun(),
                                 gaji,santunanKhusus,tunjJabatanStruktural,tunjStruktural,tunjStrategis,tunjPeralihan,
@@ -2221,7 +2484,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         PayrollPph payrolPphJasopr = kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                 gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
                                 totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, payrollJasopr.getTotaljasoprNilai(),
-                                iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak());
+                                iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
 
                         //pph pendapatan dengan jasopr - pph normal = pph jasop only
                         BigDecimal pphJasopr = payrolPphJasopr.getPphGajiNilai().subtract(payrollPph.getPphGajiNilai());
@@ -2282,7 +2545,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                 payrolPphJubileum = kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                         gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
                                         totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, payrollJubileum.getTotalJubileumNilai(),
-                                        iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak());
+                                        iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
                                 //pph pendapatan dengan jasopr - pph normal = pph jasop only
                                 BigDecimal pphJubileum = payrolPphJubileum.getPphGajiNilai().subtract(payrollPph.getPphGajiNilai());
                                 if (pphJubileum.compareTo(BigDecimal.valueOf(0))==1){
@@ -2320,14 +2583,14 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             bulanBerjalan = cekBulanPayrollSimRs(payrollEntity.getNip(),bean.getBulan(),bean.getTahun());
                             thp = getTotalThp(12,
                                     payrollEntity.getGolonganId(),payrollEntity.getTipePegawai(),
-                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                             payrollCuti = getCuti(payrollEntity.getNip(), bean.getBulan(), bean.getTahun(),thp,
                                     bean.getFlagCutiTahunan(),bean.getFlagCutiPanjang());
 
                             PayrollPph payrolPphCuti =  kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                     gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
                                     totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, payrollCuti.getTotalCutiNilai(),
-                                    iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak());
+                                    iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
 
                             //pph pendapatan dengan jasopr - pph normal = pph jasop only
                             BigDecimal pphCuti = payrolPphCuti.getPphGajiNilai().subtract(payrollPph.getPphGajiNilai());
@@ -2427,12 +2690,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                             bulanBerjalan = hitungBulanInsentif("01-01-"+String.valueOf(tahunsebelumnya),"31-12-"+String.valueOf(tahunsebelumnya));
                                             total = getTotalThp(bulanBerjalan,
                                                     payrollEntity.getGolonganId(),historyLoop.getTipePegawaiId(),
-                                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                                         }else if(Integer.parseInt(tglAwalJabatan[2])==tahunsebelumnya){
                                             bulanBerjalan = hitungBulanInsentif(historyLoop.getTanggal(),"31-12-"+String.valueOf(tahunsebelumnya));
                                             total = getTotalThp(bulanBerjalan,
                                                     payrollEntity.getGolonganId(),historyLoop.getTipePegawaiId(),
-                                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                                    tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                                         }
                                     }else{
                                         String[]tahunAkhir = historyLoop.getTanggalKeluar().split("-");
@@ -2441,12 +2704,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                                 bulanBerjalan = hitungBulanInsentif("01-01-"+String.valueOf(tahunsebelumnya),historyLoop.getTanggalKeluar());
                                                 total = getTotalThp(bulanBerjalan,
                                                         payrollEntity.getGolonganId(),historyLoop.getTipePegawaiId(),
-                                                        tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                                        tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                                             }else{
                                                 bulanBerjalan = hitungBulanInsentif(historyLoop.getTanggal(),historyLoop.getTanggalKeluar());
                                                 total = getTotalThp(bulanBerjalan,
                                                         payrollEntity.getGolonganId(),historyLoop.getTipePegawaiId(),
-                                                        tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                                        tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                                             }
                                         }
                                     }
@@ -2455,12 +2718,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                         bulanBerjalan = hitungBulanInsentif("01-01-"+String.valueOf(tahunsebelumnya),"31-12-"+String.valueOf(tahunsebelumnya));
                                         total = getTotalThp(bulanBerjalan,
                                                 payrollEntity.getGolonganId(),historyLoop.getTipePegawaiId(),
-                                                tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                                tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                                     }else if(Integer.parseInt(tglAwalJabatan[2])==tahunsebelumnya){
                                         bulanBerjalan = hitungBulanInsentif(historyLoop.getTanggal(),"31-12"+String.valueOf(tahunsebelumnya));
                                         total = getTotalThp(bulanBerjalan,
                                                 payrollEntity.getGolonganId(),historyLoop.getTipePegawaiId(),
-                                                tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan);
+                                                tunjJabatanStruktural,tunjStruktural,tunjStrategis, tunjPeralihan,tahun);
                                     }
                                 }
                                 thp = thp.add(total);
@@ -2494,7 +2757,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             PayrollPph payrolPphInsentif =  kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                     gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
                                     totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, payrollInsentif.getTotalInsentifNilai(),
-                                    iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak());
+                                    iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
                             //pph pendapatan dengan insentif - pph normal = pph insentif only
                             BigDecimal pphInsentif = payrolPphInsentif.getPphGajiNilai().subtract(payrollPph.getPphGajiNilai());
 
@@ -2760,13 +3023,19 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         payroll.setTotalLain11Bulan(CommonUtil.numbericFormat(BigDecimal.valueOf(0), "###,###"));
                     }
 
-
                     //potongan lain
                     payroll.setTotalPotonganLain(CommonUtil.numbericFormat(totalPotonganLain, "###,###"));
                     payroll.setTotalPotonganLainNilai(totalPotonganLain);
                     payroll.setIuranYpks(CommonUtil.numbericFormat(iuranYpks, "###,###"));
                     payroll.setIuranYpksNilai(iuranYpks);
 
+                    //potongan lain
+                    payroll.setStPeralihanGapok(CommonUtil.numbericFormat(peralihanGapok, "###,###"));
+                    payroll.setPeralihanGapok(peralihanGapok);
+                    payroll.setStPeralihanSankhus(CommonUtil.numbericFormat(peralihanSankhus, "###,###"));
+                    payroll.setPeralihanSankhus(peralihanSankhus);
+                    payroll.setStPeralihanTunjangan(CommonUtil.numbericFormat(peralihanTunjangan, "###,###"));
+                    payroll.setPeralihanTunjangan(peralihanTunjangan);
 
 
                     //Detail komponen C potongan lain - lain
@@ -2803,8 +3072,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payroll.setGajiKotorNilai(jumlahGajiKotor);
 
                     gajiBersih = jumlahGajiKotor.subtract(totalC);
+
                     payroll.setTotalGajiBersih(CommonUtil.numbericFormat(gajiBersih, "###,###"));
                     payroll.setTotalGajiBersihNilai(gajiBersih);
+                    payroll.setProporsiGaji(proporsiGaji);
 
                     if (flagTestTambahanLain.equalsIgnoreCase("N")){
                         listOfResult.add(payroll);
@@ -2885,33 +3156,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         return listOfResult;
     }
 
-    private BigDecimal pphTahun(String nip, String tahun){
-        BigDecimal hasil = new BigDecimal(0);
-        List<ItPayrollEntity> itPayrollEntity = new ArrayList<>();
-        itPayrollEntity = payrollDao.cekTotalPphTahun(nip, tahun);
-        if(itPayrollEntity.size() > 0){
-            for(ItPayrollEntity itPayrollEntity1: itPayrollEntity){
-                hasil = hasil.add(itPayrollEntity1.getPphTahun());
-            }
-        }
-        return hasil;
-    }
-
-    private BigDecimal brutoTahun(String nip, String tahun, BigDecimal brutoAkhir){
-        BigDecimal hasil = new BigDecimal(0);
-        BigDecimal hasilBrutoAkhir = new BigDecimal(0);
-        hasilBrutoAkhir = brutoAkhir.divide(BigDecimal.valueOf(12), BigDecimal.ROUND_HALF_UP);
-        List<ItPayrollEntity> itPayrollEntity = new ArrayList<>();
-        itPayrollEntity = payrollDao.cekTotalBrutoTahun(nip, tahun);
-        if(itPayrollEntity.size() > 0){
-            for(ItPayrollEntity itPayrollEntity1: itPayrollEntity){
-                hasil = hasil.add(itPayrollEntity1.getPphTahun());
-            }
-        }
-        hasil = hasil.add(hasilBrutoAkhir);
-        return hasil;
-    }
-
     @Override
     public String getDirektur() throws GeneralBOException {
         String nama = "";
@@ -2924,276 +3168,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         String nama = "";
         nama = strukturJabatanDao.getNamaKabidSdm();
         return nama;
-    }
-
-    private BigDecimal cekRapel(String nip, String branchId, String golonganId, String positionId, String tipeRapel,
-                                String bulan, String tahun, String rapelBulan, String rapelTahun, int point, String kelompokId){
-
-        String periodeSebelumnya = (Integer.parseInt(tahun) - 1) + "";
-
-        BigDecimal hasil = new BigDecimal(0);
-        BigDecimal tmpRapel = new BigDecimal(0);
-        int selisihBulan = Integer.parseInt(bulan) - Integer.parseInt(rapelBulan);
-
-
-        if(tipeRapel.equalsIgnoreCase("umk")){
-
-        }else if(tipeRapel.equalsIgnoreCase("struktural")){
-
-        }else if(tipeRapel.equalsIgnoreCase("jabatanStruktural")){
-
-        }else if(tipeRapel.equalsIgnoreCase("strategis")){
-
-        }else if(tipeRapel.equalsIgnoreCase("airListrik")){
-
-        }else if(tipeRapel.equalsIgnoreCase("perumahan")){
-
-        }else if(tipeRapel.equalsIgnoreCase("gajiGolongan")) {
-
-        }
-
-
-
-        /*List<ItPayrollRapelEntity> itRapel = null;
-        List<ItPayrollEntity> itPayroll = null;
-        List<ItPayrollEntity> tmpPayroll = null;
-        tmpPayroll = payrollDao.getAllPayroll(nip);
-        String payrollId = "";
-        itPayroll = payrollDao.getDataRapel(nip, branchId);
-        if(itPayroll != null){
-            for(ItPayrollEntity itPayrollEntity: itPayroll){
-                payrollId = itPayrollEntity.getPayrollId();
-            }
-        }
-
-        itRapel = payrollRapelDao.getRapel(payrollId);
-
-        String tglPeriode = "01-" + bulan + "-" + tahun ;
-        DateTime dtmTerakhirRapel = null;
-        DateTime dtmPeriodeNow = new DateTime(CommonUtil.convertStringToDate(tglPeriode));
-
-        BigDecimal rapelUmkHasil = new BigDecimal(0);
-        BigDecimal rapelStrukturalHasil = new BigDecimal(0);
-        BigDecimal rapelJabatanStrukturalHasil = new BigDecimal(0);
-        BigDecimal rapelStrategisHasil = new BigDecimal(0);
-        BigDecimal rapelAirListrikHasil = new BigDecimal(0);
-        BigDecimal rapelGajiGolonganHasil = new BigDecimal(0);
-
-        BigDecimal hasil = new BigDecimal(0);
-
-        int bulanRapel = 0;
-        int tahunRapel = 0;
-
-        if(itRapel.size() > 0){
-            Period p = null;
-            int jumlahBulan = 0;
-            Months bln = null;
-            for(ItPayrollRapelEntity itPayrollRapelEntity: itRapel){
-                for(ItPayrollEntity payrollEntity: tmpPayroll){
-                    if(itPayrollRapelEntity.getPayrollId().equalsIgnoreCase(payrollEntity.getPayrollId())){
-                        dtmTerakhirRapel = new DateTime(CommonUtil.convertStringToDate("01-" + payrollEntity.getBulan() + "-" + payrollEntity.getTahun()));
-                        bulanRapel = Integer.parseInt(payrollEntity.getBulan());
-                        tahunRapel = Integer.parseInt(payrollEntity.getTahun());
-                        break;
-                    }
-                }
-                bln = Months.monthsBetween(dtmTerakhirRapel, dtmPeriodeNow);
-            }
-            if(bln != null){
-                jumlahBulan = bln.getMonths();
-            }else{
-                jumlahBulan = 0;
-            }
-
-            //penambahan 1 bulan karena rapel dihitung sesudah 1bln
-            if(bulanRapel > 12){
-                bulanRapel = 1;
-                tahunRapel++;
-            }
-
-            for(int index = 0 ; index < jumlahBulan ; index++){
-                String bulanPayroll = "", tahunPayroll = "";
-                tahunPayroll = tahunRapel + "";
-                if(bulanRapel < 10){
-                    bulanPayroll = "0" + bulanRapel;
-                }else{
-                    bulanPayroll = "" + bulanRapel;
-                }
-                itPayroll = payrollDao.getDataView(nip, branchId, bulanPayroll, tahunPayroll, "PR");
-                if(itPayroll != null){
-                    for(ItPayrollEntity itPayrollEntity: itPayroll){
-                        List<ItPersonilPositionEntity> itPersonilPositionEntity = null;
-                        itPersonilPositionEntity = personilPositionDao.getListNip(itPayrollEntity.getNip());
-                        for(ItPersonilPositionEntity itPersonilPositionEntity1: itPersonilPositionEntity){
-                            itPayrollEntity.setFlagPjs(itPersonilPositionEntity1.getPjs());
-                        }
-                        BigDecimal tmpRapel = new BigDecimal(0);
-                        if(tipeRapel.equalsIgnoreCase("umk")){
-                            tmpRapel = payrollUmk;
-                            tmpRapel = tmpRapel.subtract(itPayrollEntity.getTunjanganUmk());
-                            if(tmpRapel.compareTo(new BigDecimal(0)) > 0){
-                                rapelUmkHasil = rapelUmkHasil.add(tmpRapel);
-                                hasil = rapelUmkHasil;
-                            }
-                        }else if(tipeRapel.equalsIgnoreCase("struktural")){
-                            tmpRapel = payrollStruktural;
-                            tmpRapel = tmpRapel.subtract(itPayrollEntity.getTunjanganStruktural());
-                            if(tmpRapel.compareTo(new BigDecimal(0)) > 0){
-                                rapelStrukturalHasil = rapelStrukturalHasil.add(tmpRapel);
-                                hasil = rapelStrukturalHasil;
-                            }
-                        }else if(tipeRapel.equalsIgnoreCase("jabatanStruktural")){
-                            tmpRapel = payrollJabatanStruktural;
-                            tmpRapel = tmpRapel.subtract(itPayrollEntity.getTunjanganJabatanStruktural());
-                            if(tmpRapel.compareTo(new BigDecimal(0)) > 0){
-                                rapelJabatanStrukturalHasil = rapelJabatanStrukturalHasil.add(tmpRapel);
-                                hasil = rapelJabatanStrukturalHasil;
-                            }
-                        }else if(tipeRapel.equalsIgnoreCase("strategis")){
-                            tmpRapel = payrollStrategis;
-                            tmpRapel = tmpRapel.subtract(itPayrollEntity.getTunjanganStrategis());
-                            if(tmpRapel.compareTo(new BigDecimal(0)) > 0){
-                                rapelStrategisHasil = rapelStrategisHasil.add(tmpRapel);
-                                hasil = rapelStrategisHasil;
-                            }
-                        }else if(tipeRapel.equalsIgnoreCase("airListrik")){
-                            tmpRapel = payrollAirListrik;
-                            tmpRapel = tmpRapel.subtract(itPayrollEntity.getTunjanganAirListrik());
-                            if(tmpRapel.compareTo(new BigDecimal(0)) > 0){
-                                rapelAirListrikHasil = rapelStrukturalHasil.add(tmpRapel);
-                                hasil = rapelAirListrikHasil;
-                            }
-                        }else if(tipeRapel.equalsIgnoreCase("gajiGolongan")){
-                            tmpRapel = payrollGajiGolongan;
-                            tmpRapel = tmpRapel.subtract(itPayrollEntity.getGajiGolongan());
-                            if(tmpRapel.compareTo(new BigDecimal(0)) > 0){
-                                rapelGajiGolonganHasil = rapelGajiGolonganHasil.add(tmpRapel);
-                                hasil = rapelGajiGolonganHasil;
-                            }
-
-
-                            *//*if(!tipePegawai.equalsIgnoreCase("TP03")){
-                                //Jika Kelompok komisaris dan kelompok direksi
-                                if(kelompokId.equalsIgnoreCase("KL00") || kelompokId.equalsIgnoreCase("KL01")){
-                                    gaji = payrollEntity.getBiodataGaji();
-                                }else{
-                                    gaji = getGaji(payrollEntity.getGolonganId(), payrollEntity.getPoint());
-                                }
-                            }else{
-                                if(strukturGaji.equalsIgnoreCase("G")){
-                                    if(golonganId != null){
-                                        gaji = getGaji(payrollEntity.getGolonganId(), payrollEntity.getPoint());
-                                    }else{
-                                        gaji = payrollEntity.getBiodataGaji();
-                                    }
-                                }
-                            }*//*
-
-                        }
-                    }
-                }
-
-                bulanRapel++;
-                if(bulanRapel > 12){
-                    bulanRapel = 1;
-                    tahunRapel++;
-                }
-            }
-        }else{
-            itPayroll = payrollDao.getFirstPayroll(nip, branchId);
-            if(itPayroll != null){
-                int bulanPayroll = 0;
-                int tahunPayroll = 0;
-                int jumlahBulan = 0;
-                for(ItPayrollEntity itPayrollEntity: itPayroll){
-                    DateTime dtmTerakhirPayroll = new DateTime(CommonUtil.convertStringToDate("01-" +
-                            itPayrollEntity.getBulan() + "-" +itPayrollEntity.getTahun()));
-                    Months bln = Months.monthsBetween(dtmTerakhirPayroll, dtmPeriodeNow);
-                    jumlahBulan = bln.getMonths();
-                    bulanPayroll = Integer.parseInt(itPayrollEntity.getBulan());
-                    tahunPayroll = Integer.parseInt(itPayrollEntity.getTahun());
-                }
-
-                if(bulanPayroll > 12){
-                    bulanPayroll = 1;
-                    tahunPayroll++;
-                }
-
-                for(int a = 0 ; a < jumlahBulan ; a++){
-                    String strBulanPayroll = "", strTahunPayroll = "";
-                    strTahunPayroll = tahunPayroll + "";
-                    if(bulanPayroll < 10){
-                        strBulanPayroll = "0" + bulanPayroll;
-                    }else{
-                        strBulanPayroll = bulanPayroll + "";
-                    }
-
-                    itPayroll = payrollDao.getDataView(nip, branchId, strBulanPayroll, strTahunPayroll, "PR");
-                    if(itPayroll != null){
-                        for(ItPayrollEntity itPayrollEntity: itPayroll){
-                            List<ItPersonilPositionEntity> itPersonilPositionEntity = null;
-                            itPersonilPositionEntity = personilPositionDao.getListNip(itPayrollEntity.getNip());
-                            for(ItPersonilPositionEntity itPersonilPositionEntity1: itPersonilPositionEntity){
-                                itPayrollEntity.setFlagPjs(itPersonilPositionEntity1.getPjs());
-                            }
-                            BigDecimal tmpRapel = new BigDecimal(0);
-                            if(tipeRapel.equalsIgnoreCase("umk")){
-                                tmpRapel = payrollUmk;
-                                tmpRapel = tmpRapel.subtract(itPayrollEntity.getTunjanganUmk());
-                                if(tmpRapel.compareTo(new BigDecimal(0)) > 0){
-                                    rapelUmkHasil = rapelUmkHasil.add(tmpRapel);
-                                    hasil = rapelUmkHasil;
-                                }
-                            }else if(tipeRapel.equalsIgnoreCase("struktural")){
-                                tmpRapel = payrollStruktural;
-                                tmpRapel = tmpRapel.subtract(itPayrollEntity.getTunjanganStruktural());
-                                if(tmpRapel.compareTo(new BigDecimal(0)) > 0){
-                                    rapelStrukturalHasil = rapelStrukturalHasil.add(tmpRapel);
-                                    hasil = rapelStrukturalHasil;
-                                }
-                            }else if(tipeRapel.equalsIgnoreCase("jabatanStruktural")){
-                                tmpRapel = payrollJabatanStruktural;
-                                tmpRapel = tmpRapel.subtract(itPayrollEntity.getTunjanganJabatanStruktural());
-                                if(tmpRapel.compareTo(new BigDecimal(0)) > 0){
-                                    rapelJabatanStrukturalHasil = rapelJabatanStrukturalHasil.add(tmpRapel);
-                                    hasil = rapelJabatanStrukturalHasil;
-                                }
-                            }else if(tipeRapel.equalsIgnoreCase("strategis")){
-                                tmpRapel = payrollStrategis;
-                                tmpRapel = tmpRapel.subtract(itPayrollEntity.getTunjanganStrategis());
-                                if(tmpRapel.compareTo(new BigDecimal(0)) > 0){
-                                    rapelStrategisHasil = rapelStrategisHasil.add(tmpRapel);
-                                    hasil = rapelStrategisHasil;
-                                }
-                            }else if(tipeRapel.equalsIgnoreCase("airListrik")){
-                                tmpRapel = payrollAirListrik;
-                                tmpRapel = tmpRapel.subtract(itPayrollEntity.getTunjanganAirListrik());
-                                if(tmpRapel.compareTo(new BigDecimal(0)) > 0){
-                                    rapelAirListrikHasil = rapelStrukturalHasil.add(tmpRapel);
-                                    hasil = rapelAirListrikHasil;
-                                }
-                            }else if(tipeRapel.equalsIgnoreCase("gajiGolongan")){
-                                tmpRapel = payrollGajiGolongan;
-                                tmpRapel = tmpRapel.subtract(itPayrollEntity.getGajiGolongan());
-                                if(tmpRapel.compareTo(new BigDecimal(0)) > 0){
-                                    rapelGajiGolonganHasil = rapelGajiGolonganHasil.add(tmpRapel);
-                                    hasil = rapelGajiGolonganHasil;
-                                }
-                            }
-                        }
-                    }
-
-                    bulanPayroll++;
-                    if(bulanPayroll > 12){
-                        bulanPayroll = 1;
-                        tahunPayroll++;
-                    }
-                }
-            }
-        }*/
-
-        //hasil = hasil.multiply(BigDecimal.valueOf(jumlahBulan));
-        return hasil;
     }
 
     private boolean cekPromosi(String nip){
@@ -3340,7 +3314,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         return hasil;
     }
 
-    private BigDecimal hitungPajakSetahunSimRs(BigDecimal pkp){
+    private BigDecimal hitungPajakSetahunSimRs(BigDecimal pkp,String npwp){
         /*BigDecimal hasil = new BigDecimal(0) ;
         BigDecimal sisaPkp = pkp;
         //jika kurang dr 50jt, jika lebih maka sisapkp - 50jt
@@ -3376,16 +3350,29 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             sisaPkp = sisaPkp.subtract(BigDecimal.valueOf(500000000));
             hasil = hasil.add(BigDecimal.valueOf(0.30).multiply(sisaPkp));
         }*/
-        BigDecimal hasil = new BigDecimal(0) ;
 
-        if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
-            hasil = BigDecimal.valueOf(0.05).multiply(pkp);
-        }else if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(250000000)) <= 0){
-            hasil = BigDecimal.valueOf(2500000).add((BigDecimal.valueOf(0.15).multiply(pkp.subtract(BigDecimal.valueOf(50000000))))) ;
-        }else if(pkp.compareTo(BigDecimal.valueOf(250000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
-            hasil = BigDecimal.valueOf(32500000).add((BigDecimal.valueOf(0.25).multiply((pkp.subtract(BigDecimal.valueOf(250000000))))));
+
+        BigDecimal hasil = new BigDecimal(0) ;
+        if (!"".equalsIgnoreCase(npwp)){
+            if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
+                hasil = BigDecimal.valueOf(0.05).multiply(pkp);
+            }else if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(250000000)) <= 0){
+                hasil = BigDecimal.valueOf(2500000).add((BigDecimal.valueOf(0.15).multiply(pkp.subtract(BigDecimal.valueOf(50000000))))) ;
+            }else if(pkp.compareTo(BigDecimal.valueOf(250000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
+                hasil = BigDecimal.valueOf(32500000).add((BigDecimal.valueOf(0.25).multiply((pkp.subtract(BigDecimal.valueOf(250000000))))));
+            }else{
+                hasil = BigDecimal.valueOf(95000000).add(BigDecimal.valueOf(0.3).multiply(pkp.subtract(BigDecimal.valueOf(500000000))));
+            }
         }else{
-            hasil = BigDecimal.valueOf(95000000).add(BigDecimal.valueOf(0.3).multiply(pkp.subtract(BigDecimal.valueOf(500000000))));
+            if(pkp.compareTo(BigDecimal.valueOf(50000000)) <= 0){
+                hasil = BigDecimal.valueOf(0.06).multiply(pkp);
+            }else if(pkp.compareTo(BigDecimal.valueOf(50000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(250000000)) <= 0){
+                hasil = BigDecimal.valueOf(2500000).add((BigDecimal.valueOf(0.18).multiply(pkp.subtract(BigDecimal.valueOf(50000000))))) ;
+            }else if(pkp.compareTo(BigDecimal.valueOf(250000000)) > 0 && pkp.compareTo(BigDecimal.valueOf(500000000)) <= 0){
+                hasil = BigDecimal.valueOf(32500000).add((BigDecimal.valueOf(0.3).multiply((pkp.subtract(BigDecimal.valueOf(250000000))))));
+            }else{
+                hasil = BigDecimal.valueOf(95000000).add(BigDecimal.valueOf(0.36).multiply(pkp.subtract(BigDecimal.valueOf(500000000))));
+            }
         }
 
         return hasil.setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -3432,13 +3419,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
         return hasil;
     }
-    public BigDecimal getSkalaGaji(String golonganId){
+    public BigDecimal getSkalaGaji(String golonganId,String tahun){
 
         //hasil2.add(new BigDecimal(0));
         BigDecimal hasil = new BigDecimal(0);
         List<ImPayrollSkalaGajiEntity> imSkalaGaji = null;
 
-        imSkalaGaji = payrollSkalaGajiDao.getDataSkalaGajiSimRs(golonganId);
+        imSkalaGaji = payrollSkalaGajiDao.getDataSkalaGajiSimRs(golonganId,tahun);
         if(imSkalaGaji != null){
             for(ImPayrollSkalaGajiEntity skalaGaji : imSkalaGaji){
                 hasil = hasil.add(skalaGaji.getNilai());
@@ -3447,12 +3434,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
         return hasil;
     }
-    public ImPayrollSkalaGajiEntity getSkalaGajiSimRs(String golonganId){
+    public ImPayrollSkalaGajiEntity getSkalaGajiSimRs(String golonganId,String tahun){
 
         ImPayrollSkalaGajiEntity imSkalaGaji = new ImPayrollSkalaGajiEntity();
         List<ImPayrollSkalaGajiEntity> skalaGaji = new ArrayList<>();
         try {
-            skalaGaji = payrollSkalaGajiDao.getDataSkalaGajiSimRs(golonganId);
+            skalaGaji = payrollSkalaGajiDao.getDataSkalaGajiSimRs(golonganId,tahun);
             for (ImPayrollSkalaGajiEntity skalaGajiLoop: skalaGaji){
                 imSkalaGaji.setNilai(skalaGajiLoop.getNilai());
                 imSkalaGaji.setRumah(skalaGajiLoop.getRumah());
@@ -3469,12 +3456,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
         return imSkalaGaji;
     }
-    public ImPayrollSkalaGajiPkwtEntity getSkalaGajiSimRsPkwt(String golonganId){
+    public ImPayrollSkalaGajiPkwtEntity getSkalaGajiSimRsPkwt(String golonganId,String tahun){
 
         ImPayrollSkalaGajiPkwtEntity imSkalaGajiPkwt = new ImPayrollSkalaGajiPkwtEntity();
         List<ImPayrollSkalaGajiPkwtEntity> skalaGaji = new ArrayList<>();
         try {
-            skalaGaji = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(golonganId);
+            skalaGaji = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(golonganId,tahun);
             for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop: skalaGaji){
                 imSkalaGajiPkwt.setGajiPokok(skalaGajiLoop.getGajiPokok());
                 imSkalaGajiPkwt.setSantunanKhusus(skalaGajiLoop.getSantunanKhusus());
@@ -3753,12 +3740,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
         return hasilSkalaPensiun;
     }
-    private BigDecimal getGajiPensiunSimRs(String golonganId, int poin){
+    private BigDecimal getGajiPensiunSimRs(String golonganId, int poin,String dapenId){
         BigDecimal hasilSkalaPensiun = new BigDecimal(0);
         List<ImPayrollSkalaGajiPensiunRniEntity> imSkalaPensiun = null;
         try{
-            //mengambil gaji dapenbun berdasarkan golongan id dan point pegawai
-            imSkalaPensiun = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golonganId, poin);
+            //mengambil
+            imSkalaPensiun = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golonganId, poin,dapenId);
 
             for (ImPayrollSkalaGajiPensiunRniEntity skalaGajiLoop: imSkalaPensiun){
                 hasilSkalaPensiun = skalaGajiLoop.getNilai();
@@ -3840,7 +3827,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             BigDecimal a = new BigDecimal(0);
             BigDecimal b = new BigDecimal(0);
             for(int i = 20 ; i >= 19 ; i--){
-                imSkalaPensiunRni = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golonganId, i);
+//                imSkalaPensiunRni = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golonganId, i);
                 if(imSkalaPensiunRni != null){
                     for(ImPayrollSkalaGajiPensiunRniEntity imPensiun : imSkalaPensiunRni){
                         if(i == 20){
@@ -3854,7 +3841,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             selisih = a.subtract(b);
             selisih = selisih.multiply(BigDecimal.valueOf(poinLebih));
 
-            imSkalaPensiunRni = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golonganId, 20);
+//            imSkalaPensiunRni = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golonganId, 20);
             if(imSkalaPensiunRni != null){
                 for(ImPayrollSkalaGajiPensiunRniEntity imPensiun : imSkalaPensiunRni){
                     hasilSkalaPensiun = imPensiun.getNilai();
@@ -3862,7 +3849,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             }
             hasilSkalaPensiun = hasilSkalaPensiun.add(selisih);
         }else{
-            imSkalaPensiunRni = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golonganId, poin);
+//            imSkalaPensiunRni = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golonganId, poin);
             if(imSkalaPensiunRni != null){
                 for(ImPayrollSkalaGajiPensiunRniEntity imPensiun : imSkalaPensiunRni){
                     hasilSkalaPensiun = imPensiun.getNilai();
@@ -4024,21 +4011,25 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     }
 
     private BigDecimal getTotalThp(int bulan, String golonganId, String tipePegawai, BigDecimal tunjJabatan,
-                                   BigDecimal tunjStruktural,BigDecimal tunjFungsional, BigDecimal tunjPeralihan){
+                                   BigDecimal tunjStruktural,BigDecimal tunjFungsional, BigDecimal tunjPeralihan,String tahun){
         BigDecimal totalThp = new BigDecimal(0);
-        if (tipePegawai.equalsIgnoreCase("TP01")){
-            ImPayrollSkalaGajiEntity skalaGajiPegawai = getSkalaGajiSimRs(golonganId);
-            totalThp = (skalaGajiPegawai.getTotal().add(tunjJabatan).add(tunjStruktural).add(tunjFungsional).add(tunjPeralihan)).multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12));
-        }
-        if (tipePegawai.equalsIgnoreCase("TP03")){
-            if (bulan>12){
-                bulan = 12;
+        try {
+            if (tipePegawai.equalsIgnoreCase("TP01")){
+                ImPayrollSkalaGajiEntity skalaGajiPegawai = getSkalaGajiSimRs(golonganId,tahun);
+                totalThp = (skalaGajiPegawai.getTotal().add(tunjJabatan).add(tunjStruktural).add(tunjFungsional).add(tunjPeralihan)).multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12));
             }
-            ImPayrollSkalaGajiPkwtEntity skalaGajiPkwt = getSkalaGajiSimRsPkwt(golonganId);
-            totalThp = totalThp.add(skalaGajiPkwt.getGajiPokok().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP))
-                    .add(totalThp.add(skalaGajiPkwt.getSantunanKhusus().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP)))
-                    .add(totalThp.add(skalaGajiPkwt.getTunjFunsional().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP)))
-                    .add(totalThp.add(skalaGajiPkwt.getTunjtambahan().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP)));
+            if (tipePegawai.equalsIgnoreCase("TP03")){
+                if (bulan>12){
+                    bulan = 12;
+                }
+                ImPayrollSkalaGajiPkwtEntity skalaGajiPkwt = getSkalaGajiSimRsPkwt(golonganId,tahun);
+                totalThp = totalThp.add(skalaGajiPkwt.getGajiPokok().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP))
+                        .add(totalThp.add(skalaGajiPkwt.getSantunanKhusus().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP)))
+                        .add(totalThp.add(skalaGajiPkwt.getTunjFunsional().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP)))
+                        .add(totalThp.add(skalaGajiPkwt.getTunjtambahan().multiply(BigDecimal.valueOf(bulan)).divide(BigDecimal.valueOf(12),2,BigDecimal.ROUND_HALF_UP)));
+            }
+        }catch (Exception e){
+            throw new GeneralBOException("Error saat mengambil total THP");
         }
         return totalThp;
     }
@@ -5190,19 +5181,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
     //Tunjangan Lembur
     private BigDecimal getTunjanganLembur(String nip, String branchId, String awal, String akhir){
-        if(nip.equalsIgnoreCase("93-0191")){
-            int a = 0;
-        }
         BigDecimal hasil = new BigDecimal(0);
         List<AbsensiPegawaiEntity> absensiPegawaiEntityList = null;
         java.sql.Date Awal = null;
         java.sql.Date Akhir = null;
-        try {
-            Awal = java.sql.Date.valueOf(awal);
-            Akhir = java.sql.Date.valueOf(akhir);
-        }catch (Exception C){
-            System.out.println(C);
-        }
+
+        Awal = java.sql.Date.valueOf(awal);
+        Akhir = java.sql.Date.valueOf(akhir);
 
         absensiPegawaiEntityList = absensiPegawaiDao.getDataLembur(nip, branchId, Awal, Akhir);
         if(absensiPegawaiEntityList.size() > 0){
@@ -5679,6 +5664,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             itPayrollEntity.setPphSeharusnya(payroll1.getPphSeharusnyaNilai());
             itPayrollEntity.setSelisihPph(payroll1.getSelisihPphNilai());
 
+            //macam peralihan
+            itPayrollEntity.setPeralihanGapok(payroll1.getPeralihanGapok());
+            itPayrollEntity.setPeralihanSankhus(payroll1.getPeralihanSankhus());
+            itPayrollEntity.setPeralihanTunjangan(payroll1.getPeralihanTunjangan());
+
             itPayrollEntity.setFlagPayroll(payroll1.getFlagPayroll());
             itPayrollEntity.setFlagCutiTahunan(payroll1.getFlagCutiTahunan());
             itPayrollEntity.setFlagCutiPanjang(payroll1.getFlagCutiPanjang());
@@ -5703,6 +5693,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             itPayrollEntity.setTotalPensiun(payroll1.getTotalPensiunNilai());
             itPayrollEntity.setTotalJubileum(payroll1.getTotalKaliJubileumNilai());
             itPayrollEntity.setGajiBersih(payroll1.getTotalGajiBersihNilai());
+            itPayrollEntity.setProporsiGaji(payroll1.getProporsiGaji());
 
             itPayrollEntity.setAction(bean.getAction());
             itPayrollEntity.setFlag(bean.getFlag());
@@ -5710,6 +5701,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             itPayrollEntity.setCreatedWho(bean.getCreatedWho());
             itPayrollEntity.setLastUpdate(bean.getLastUpdate());
             itPayrollEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            if (CommonConstant.ID_KANPUS.equalsIgnoreCase(payroll1.getBranchId())){
+                itPayrollEntity.setApprovalUnitFlag("Y");
+                itPayrollEntity.setApprovalUnitId(bean.getCreatedWho());
+                itPayrollEntity.setApprovalUnitDate(bean.getCreatedDate());
+                itPayrollEntity.setApprovalUnitName(bean.getCreatedWho());
+            }
 
             payrollDao.addAndSave(itPayrollEntity);
 
@@ -6487,14 +6485,20 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 payroll.setFlagSlip(false);
 
                 if(("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalFlag())){
-                    String DATE_FORMAT = "HH:mm dd-MM-yyyy";
+                    String DATE_FORMAT = "dd-MM-yyyy HH:mm";
                     SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
                     Date tanggalApp = itPayrollEntity1.getApprovalDate();
                     tanggal = sdf.format(tanggalApp);
                     payroll.setFlagEdit(false);
                     payroll.setStatusApprove("D");
-                }else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalUnitFlag())){
+                }else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalAksFlag())&&(!CommonConstant.ID_KANPUS.equalsIgnoreCase(CommonUtil.userBranchLogin()))&&CommonConstant.ROLE_ID_ADMIN_AKS.equalsIgnoreCase(CommonUtil.roleIdAsLogin())){
+                    payroll.setStatusApprove("RK");
+                }else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalAksFlag())){
+                    payroll.setStatusApprove("DU");
+                } else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalSdmFlag())){
                     payroll.setStatusApprove("K");
+                }else if (("Y").equalsIgnoreCase(itPayrollEntity1.getApprovalUnitFlag())){
+                    payroll.setStatusApprove("S");
                 }else{
                     payroll.setStatusApprove("U");
                 }
@@ -6507,10 +6511,14 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 payroll.setBranchName(itPayrollEntity1.getBranchName());
                 payroll.setTotalGajiBersihNilai(itPayrollEntity1.getGajiBersih());
                 payroll.setTotalGajiBersih(CommonUtil.numbericFormat(itPayrollEntity1.getGajiBersih(), "###,###"));
-                payroll.setTotalANilai(itPayrollEntity1.getTotalA());
-                payroll.setTotalA(CommonUtil.numbericFormat(itPayrollEntity1.getTotalA(), "###,###"));
+                //total A adalah nilai A+B+D
+                payroll.setTotalANilai(itPayrollEntity1.getTotalA().add(itPayrollEntity1.getTotalB()).add(itPayrollEntity1.getLainLain()));
+                payroll.setTotalA(CommonUtil.numbericFormat(payroll.getTotalANilai(), "###,###"));
                 payroll.setApprovalFlag(itPayrollEntity1.getApprovalFlag());
                 payroll.setApprovalDate(itPayrollEntity1.getApprovalDate());
+
+                //untuk flag approval
+                payroll.setApprovalAksFlag(itPayrollEntity1.getApprovalAksFlag());
 
                 if(itPayrollEntity1.getFlagPayroll().equalsIgnoreCase("Y")){
                     payroll.setFlagSlip(true);
@@ -6539,13 +6547,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                 if(itPayrollEntity1.getFlagJubileum() != null){
                     if(itPayrollEntity1.getFlagJubileum().equalsIgnoreCase("Y")){
-                        payroll.setFlagSlip(false);
+                        payroll.setFlagSlip(true);
                     }
                 }
 
                 if(itPayrollEntity1.getFlagPensiun() != null){
                     if(itPayrollEntity1.getFlagPensiun().equalsIgnoreCase("Y")){
-                        payroll.setFlagSlip(false);
+                        payroll.setFlagSlip(true);
                     }
                 }
                 payroll.setTipe(bean.getTipe());
@@ -6727,9 +6735,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payroll.setPphGajiNilai(BigDecimal.valueOf(0));
                 }
 
+                //set gaji kotor A+B+D
+                payroll.setGajiKotorNilai(itPayrollEntity.getTotalA().add(itPayrollEntity.getTotalB().add(itPayrollEntity.getTambahanLain().add(itPayrollEntity.getLainLain()))));
+
                 payroll.setTotalC(CommonUtil.numbericFormat(itPayrollEntity.getTotalC(), "###,###"));
                 payroll.setTotalB(CommonUtil.numbericFormat(itPayrollEntity.getTotalB(), "###,###"));
                 payroll.setTotalGajiBersih(CommonUtil.numbericFormat(itPayrollEntity.getGajiBersih(), "###,###"));
+                payroll.setGajiKotor(CommonUtil.numbericFormat(payroll.getGajiKotorNilai(), "###,###"));
 
                 payroll.setFlagPayroll(itPayrollEntity.getFlagPayroll());
                 payroll.setFlagRapel(itPayrollEntity.getFlagRapel());
@@ -6745,6 +6757,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 payroll.setTotalPendidikanNilai(itPayrollEntity.getTotalPendidikan());
                 payroll.setTotalJasProd(CommonUtil.numbericFormat(itPayrollEntity.getTotalJasProd(), "###,###"));
                 payroll.setTotalJasProdNilai(itPayrollEntity.getTotalJasProd());*/
+                payroll.setTipe(bean.getTipe());
                 payroll.setAction(itPayrollEntity.getAction());
                 payroll.setFlag(itPayrollEntity.getFlag());
                 payroll.setApprovalFlag(itPayrollEntity.getApprovalFlag());
@@ -6753,6 +6766,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 payroll.setLastUpdate(itPayrollEntity.getLastUpdate());
                 payroll.setLastUpdateWho(itPayrollEntity.getLastUpdateWho());
                 payroll.setStApprovalDate(tanggal);
+                payroll.setProporsiGaji(itPayrollEntity.getProporsiGaji().setScale(2,BigDecimal.ROUND_HALF_UP));
 
                 payroll.setStApprovalDate(tanggal);
                 payroll.setFlagPromosiOn(cekPromosi(itPayrollEntity.getNip()));
@@ -6794,7 +6808,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 if(tipePegawai.equalsIgnoreCase("TP01") && itPayrollEntity.getFlagPensiun().equalsIgnoreCase("Y")){
                     //cek pensiun dan tanggal pensiun
                     //Direktur tidak mendapatkan pensiun
-                    ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", itPayrollEntity.getNip(), "Y");
+                    ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", itPayrollEntity.getNip());
                     if(itPayrollEntity.getImPosition() != null){
                         if(!itPayrollEntity.getImPosition().getKelompokId().equalsIgnoreCase("KL01")){
                             if(cekPensiunSys(payroll.getNip()).equalsIgnoreCase("")){
@@ -6868,7 +6882,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     }
 
     @Override
-    public List<AbsensiPegawai> dataAbsensiLembur(AbsensiPegawai bean) throws GeneralBOException {
+    public List<AbsensiPegawai>  dataAbsensiLembur(AbsensiPegawai bean) throws GeneralBOException {
         List<AbsensiPegawai> absensiPegawaiList = new ArrayList();
         List<AbsensiPegawaiEntity> absensiPegawaiEntityList = null;
         BigDecimal jumlahLembur = new BigDecimal(0);
@@ -7605,7 +7619,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         payroll.setCentangPerumahan(itPayrollEntity2.getCentangPerumahan());*/
 
         ImBiodataEntity biodata = null;
-        biodata = biodataDao.getById("nip", payroll.getNip(), "Y");
+        biodata = biodataDao.getById("nip", payroll.getNip());
         List<ItPayrollEntity> payrollPensiunList = null;
         payrollPensiunList = payrollDao.cekPensiun(payroll.getNip());
         itPayrollEntity2.setNettoPensiun(BigDecimal.valueOf(0));
@@ -7803,6 +7817,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         payroll.setTotalGajiBersih(CommonUtil.numbericFormat(itPayrollEntity2.getGajiBersih(), "###,###"));
         payroll.setTotalGajiBersihNilai(itPayrollEntity2.getGajiBersih());
 
+        //macam peralihan
+        payroll.setStPeralihanGapok(CommonUtil.numbericFormat(itPayrollEntity2.getPeralihanGapok(), "###,###"));
+        payroll.setPeralihanGapok(itPayrollEntity2.getPeralihanGapok());
+        payroll.setStPeralihanSankhus(CommonUtil.numbericFormat(itPayrollEntity2.getPeralihanSankhus(), "###,###"));
+        payroll.setPeralihanSankhus(itPayrollEntity2.getPeralihanSankhus());
+        payroll.setStPeralihanTunjangan(CommonUtil.numbericFormat(itPayrollEntity2.getPeralihanTunjangan(), "###,###"));
+        payroll.setPeralihanTunjangan(itPayrollEntity2.getPeralihanTunjangan());
 
         if(("12").equalsIgnoreCase(itPayrollEntity2.getBulan())){
             payroll.setTotalLain11BulanNilai(itPayrollEntity2.getTotalLain11Bulan());
@@ -8393,6 +8414,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 itPayrollEntity.setPphSeharusnya(payroll.getPphSeharusnyaNilai());
                 itPayrollEntity.setPph11Bulan(payroll.getPph11BulanNilai());
 
+                //peralihan
+                itPayrollEntity.setPeralihanGapok(payroll.getPeralihanGapok());
+                itPayrollEntity.setPeralihanSankhus(payroll.getPeralihanSankhus());
+                itPayrollEntity.setPeralihanTunjangan(payroll.getPeralihanTunjangan());
+
                 itPayrollEntity.setAction(payroll.getAction());
                 itPayrollEntity.setLastUpdateWho(payroll.getLastUpdateWho());
                 itPayrollEntity.setLastUpdate(payroll.getLastUpdate());
@@ -8525,6 +8551,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
              branches.setPeriodeGajiAktif(imBranches.getPeriodeGajiAktif());
          }
         if(payrollPerson != null){
+            ImBiodataEntity biodataEntity = biodataDao.getById("nip",payrollPerson.getNip());
             //if(payrollPerson.getTanggalJubileum() != null && payrollPerson.getTanggalJubileum() != null){
             if(payrollPerson.getFlagPayroll().equalsIgnoreCase("N")){
                 if(payroll.getNip().equalsIgnoreCase(payrollPerson.getNip())){
@@ -8641,7 +8668,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             payrollPerson.getTotalRlabNilai(), payrollPerson.getTunjanganLemburNilai(),
                             payrollPerson.getIuranDapenPershNilai(),payrollPerson.getTunjanganBpjsTkNilai(),payrollPerson.getTunjanganBpjsKsNilai(),payrollPerson.getLainLainNilai()
                             ,payrollPerson.getIuranDapenPegNilai(),payrollPerson.getIuranBpjsTkKaryNilai(),payrollPerson.getIuranBpjsKsKaryNilai(),
-                            payrollPerson.getStatusKeluarga(), payrollPerson.getJumlahAnak());
+                            payrollPerson.getStatusKeluarga(), payrollPerson.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
                     payrollPerson.setPphGajiNilai(payrollPph.getPphGajiNilai());
                     payrollPerson.setPphGaji(payrollPph.getPphGaji());
                     payrollPerson.setTunjanganPphNilai(payrollPph.getPphGajiNilai());
@@ -8698,13 +8725,152 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         PayrollPph payrollPph = null;
         Payroll payrollPerson = (Payroll) session.getAttribute("listDataPayrollPerson");
         List<PayrollJubileum> listOfResultJubileum = new ArrayList<>();
-
         if(payrollPerson != null){
             if(payrollPerson.getFlagPayroll().equalsIgnoreCase("Y") && payrollPerson.getFlagPayroll() != null ){
                 if(payroll.getPayrollId().equalsIgnoreCase(payrollPerson.getPayrollId())){
+                    ImBiodataEntity biodataEntity = biodataDao.getById("nip",payrollPerson.getNip());
 
-                    payrollPerson.setTunjanganPeralihanNilai(payroll.getTunjanganPeralihanNilai());
-                    payrollPerson.setTunjanganPeralihan(CommonUtil.numbericFormat(payroll.getTunjanganPeralihanNilai(), "###,###"));
+                    // baru
+                    // set iuran dapen baru & tunj dapen baru
+                    BigDecimal gajiPensiun = BigDecimal.ZERO;
+                    BigDecimal paramDapen = BigDecimal.ZERO;
+                    BigDecimal paramDapenPegawai = BigDecimal.ZERO;
+                    BigDecimal iuranDpPeg = BigDecimal.ZERO;
+                    BigDecimal iuranDpPers = BigDecimal.ZERO;
+                    BigDecimal iuranBTkPeg = BigDecimal.ZERO;
+                    BigDecimal iuranBTkPers = BigDecimal.ZERO;
+                    BigDecimal iuranBKsPeg = BigDecimal.ZERO;
+                    BigDecimal iuranBKsPers = BigDecimal.ZERO;
+
+                    // PERHITUNGAN KEMBALI DAPEN
+                    if (biodataEntity.getDanaPensiun() != null) {
+                        if (!biodataEntity.getDanaPensiun().equalsIgnoreCase("")){
+                            ImPayrollDanaPensiunEntity payrollDanaPensiunEntity = payrollDanaPensiunDao.getById("danaPensiunId",biodataEntity.getDanaPensiun());
+                            if (payrollDanaPensiunEntity!=null){
+                                paramDapen = payrollDanaPensiunEntity.getPersentasePers();
+                                paramDapenPegawai = payrollDanaPensiunEntity.getPersentaseKary();
+                                payrollPerson.setDanaPensiunName(payrollDanaPensiunEntity.getDanaPensiun());
+                            }
+
+                            gajiPensiun = getGajiPensiunSimRs(biodataEntity.getGolonganDapenId(), biodataEntity.getMasaKerjaGolongan(),biodataEntity.getDanaPensiun());
+                            iuranDpPers = CommonUtil.percentage(gajiPensiun, paramDapen);
+
+                            if (biodataEntity.getDanaPensiun().equalsIgnoreCase("DP01")){
+                                iuranDpPeg = getIuranPensiunPegSimRs(biodataEntity.getGolonganDapenId());
+                            }else {
+                                iuranDpPeg = CommonUtil.percentage(gajiPensiun, paramDapenPegawai);
+                            }
+
+                        }else{
+                            gajiPensiun = BigDecimal.valueOf(0);
+                            iuranDpPeg = BigDecimal.valueOf(0);
+                            iuranDpPers = BigDecimal.valueOf(0);
+                        }
+                    } else {
+                        gajiPensiun = BigDecimal.valueOf(0);
+                        iuranDpPeg = BigDecimal.valueOf(0);
+                        iuranDpPers = BigDecimal.valueOf(0);
+                    }
+                    //dibulatkan
+                    iuranDpPeg = iuranDpPeg.setScale(0,BigDecimal.ROUND_HALF_UP);
+                    iuranDpPers = iuranDpPers.setScale(0,BigDecimal.ROUND_HALF_UP);
+
+                    payroll.setGajiPensiun(CommonUtil.numbericFormat(gajiPensiun, "###,###"));
+                    payroll.setGajiPensiunNilai(gajiPensiun);
+
+                    //Jika tunjangan Pesangon sudah diambil, maka sudak tidak mendapatkan gaji pensiun
+                    List<ItPayrollEntity> payrollPensiunList = null;
+                    payrollPensiunList = payrollDao.cekPensiun(payroll.getNip());
+                    if (payrollPensiunList.size() > 0) {
+                        gajiPensiun = BigDecimal.valueOf(0);
+                    }
+
+
+                    //PERHITUNGAN KEMBALI BPJS
+                    BigDecimal dasarPerhitunganBpjs= BigDecimal.ZERO;
+                    List<ImPayrollParamBpjsEntity> payrollParamBpjsEntityList = payrollParamBpjsDao.getParams();
+                    for (ImPayrollParamBpjsEntity bpjsparam : payrollParamBpjsEntityList){
+                        if ("Y".equalsIgnoreCase(bpjsparam.getFlagGapok())){
+                            dasarPerhitunganBpjs=dasarPerhitunganBpjs.add(payrollPerson.getGajiGolonganNilai());
+                        }
+                        if ("Y".equalsIgnoreCase(bpjsparam.getFlagSankhus())){
+                            dasarPerhitunganBpjs=dasarPerhitunganBpjs.add(payrollPerson.getTunjanganUmkNilai());
+                        }
+                        if ("Y".equalsIgnoreCase(bpjsparam.getFlagPeralihanGapok())){
+                            dasarPerhitunganBpjs=dasarPerhitunganBpjs.add(payroll.getPeralihanGapok());
+                        }
+                        if ("Y".equalsIgnoreCase(bpjsparam.getFlagPeralihanSankhus())){
+                            dasarPerhitunganBpjs=dasarPerhitunganBpjs.add(payroll.getPeralihanSankhus());
+                        }
+                        if ("Y".equalsIgnoreCase(bpjsparam.getFlagPeralihanTunjangan())){
+                            dasarPerhitunganBpjs=dasarPerhitunganBpjs.add(payroll.getPeralihanTunjangan());
+                        }
+                    }
+
+                    List<ImPayrollBpjsEntity> payrollBpjsEntityList = new ArrayList<>();
+                    payrollBpjsEntityList = payrollBpjsDao.getBpjsFilter(payrollPerson.getBranchId());
+
+                    ImPayrollBpjsEntity dataBpjs = new ImPayrollBpjsEntity();
+                    for (ImPayrollBpjsEntity payrollBpjsEntity : payrollBpjsEntityList){
+                        dataBpjs = payrollBpjsEntity;
+                    }
+
+                    // update 31-05-2020 ( ada centangan pada biodata untuk potongan iuran bpjs kary )
+                    if ("Y".equalsIgnoreCase(biodataEntity.getFlagBpjsKs())){
+                        //Bpjs Ks
+                        iuranBKsPeg = hitungIuranBpjs(dasarPerhitunganBpjs, dataBpjs.getIuranBpjsKsKaryPersen());
+                        iuranBKsPers = hitungIuranBpjs(dasarPerhitunganBpjs, dataBpjs.getIuranBpjsKsPersPersen());
+                    }
+                    if ("Y".equalsIgnoreCase(biodataEntity.getFlagBpjsTk())){
+                        //Bpjs Tk
+                        iuranBTkPeg = hitungIuranBpjsTk(dasarPerhitunganBpjs, payrollPerson.getBranchId(), "kary");
+                        iuranBTkPers = hitungIuranBpjsTk(dasarPerhitunganBpjs, payrollPerson.getBranchId(), "pers");
+                    }
+                    //dibulatkan
+                    iuranBKsPeg = iuranBKsPeg.setScale(0,BigDecimal.ROUND_HALF_UP);
+                    iuranBKsPers = iuranBKsPers.setScale(0,BigDecimal.ROUND_HALF_UP);
+                    iuranBTkPeg = iuranBTkPeg.setScale(0,BigDecimal.ROUND_HALF_UP);
+                    iuranBTkPers = iuranBTkPers.setScale(0,BigDecimal.ROUND_HALF_UP);
+
+                    //set payroll person dapen & bpjs
+                    payrollPerson.setIuranPensiunNilai(iuranDpPeg);
+                    payrollPerson.setIuranPensiunPerusahaanNilai(iuranDpPers);
+                    payrollPerson.setIuranBpjsKsKaryNilai(iuranBKsPeg);
+                    payrollPerson.setIuranBpjsKsPersNilai(iuranBKsPers);
+                    payrollPerson.setIuranBpjsTkKaryNilai(iuranBTkPeg);
+                    payrollPerson.setIuranBpjsTkPersNilai(iuranBTkPers);
+                    payrollPerson.setGajiPensiunNilai(gajiPensiun);
+
+                    payrollPerson.setIuranPensiun(CommonUtil.numbericFormat(payrollPerson.getIuranPensiunNilai(), "###,###"));
+                    payrollPerson.setIuranPensiunPerusahaan(CommonUtil.numbericFormat(payrollPerson.getIuranPensiunPerusahaanNilai(), "###,###"));
+                    payrollPerson.setIuranBpjsKsKary(CommonUtil.numbericFormat(payrollPerson.getIuranBpjsKsKaryNilai(), "###,###"));
+                    payrollPerson.setIuranBpjsKsPersh(CommonUtil.numbericFormat(payrollPerson.getIuranBpjsKsPersNilai(), "###,###"));
+                    payrollPerson.setIuranBpjsTkKary(CommonUtil.numbericFormat(payrollPerson.getIuranBpjsTkKaryNilai(), "###,###"));
+                    payrollPerson.setIuranBpjsTkPers(CommonUtil.numbericFormat(payrollPerson.getIuranBpjsTkPersNilai(), "###,###"));
+                    payrollPerson.setGajiPensiun(CommonUtil.numbericFormat(payrollPerson.getGajiPensiunNilai(), "###,###"));
+                    payrollPerson.setGolonganDapenId(biodataEntity.getGolonganDapenId());
+                    if (biodataEntity.getGolonganDapenId()!=null){
+                        if (!"".equalsIgnoreCase(biodataEntity.getGolonganDapenId())){
+                            payrollPerson.setGolonganDapenName(golonganDapenDao.getById("golonganDapenId",biodataEntity.getGolonganDapenId()).getGolonganDapenName());
+                        }
+                    }
+                    if (biodataEntity.getMasaKerjaGolongan()!=null){
+                        payrollPerson.setMasaKerjaGol(biodataEntity.getMasaKerjaGolongan());
+                        payrollPerson.setStMasaKerjaGol(String.valueOf(biodataEntity.getMasaKerjaGolongan()));
+                    }
+                    //END OF BARU
+
+                    //macam peralihan
+                    payrollPerson.setPeralihanGapok(payroll.getPeralihanGapok());
+                    payrollPerson.setPeralihanSankhus(payroll.getPeralihanSankhus());
+                    payrollPerson.setPeralihanTunjangan(payroll.getPeralihanTunjangan());
+                    payrollPerson.setStPeralihanGapok(CommonUtil.numbericFormat(payroll.getPeralihanGapok(), "###,###"));
+                    payrollPerson.setStPeralihanSankhus(CommonUtil.numbericFormat(payroll.getPeralihanSankhus(), "###,###"));
+                    payrollPerson.setStPeralihanTunjangan(CommonUtil.numbericFormat(payroll.getPeralihanTunjangan(), "###,###"));
+
+                    BigDecimal tunjanganPeralihan = payroll.getPeralihanGapok().add(payroll.getPeralihanSankhus().add(payroll.getPeralihanTunjangan()));
+                    payrollPerson.setTunjanganPeralihanNilai(tunjanganPeralihan);
+                    payrollPerson.setTunjanganPeralihan(CommonUtil.numbericFormat(tunjanganPeralihan, "###,###"));
                     payrollPerson.setPemondokan(CommonUtil.numbericFormat(payroll.getPemondokanNilai(), "###,###"));
                     payrollPerson.setPemondokanNilai(payroll.getPemondokanNilai());
                     payrollPerson.setKomunikasiNilai(payroll.getKomunikasiNilai());
@@ -8745,7 +8911,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             payrollPerson.getTotalRlabNilai(), payrollPerson.getTunjanganLemburNilai(),
                             payrollPerson.getIuranDapenPershNilai(),payrollPerson.getTunjanganBpjsTkNilai(),payrollPerson.getTunjanganBpjsKsNilai(),
                             payrollPerson.getLainLainNilai(),payrollPerson.getIuranDapenPegNilai(),payrollPerson.getIuranBpjsTkKaryNilai(),payrollPerson.getIuranBpjsKsKaryNilai(),
-                            payrollPerson.getStatusKeluarga(), payrollPerson.getJumlahAnak());
+                            payrollPerson.getStatusKeluarga(), payrollPerson.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
                     payrollPerson.setPphGajiNilai(payrollPph.getPphGajiNilai());
                     payrollPerson.setPphGaji(payrollPph.getPphGaji());
                     payrollPerson.setTunjanganPphNilai(payrollPph.getPphGajiNilai());
@@ -8786,7 +8952,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                 payrollPerson.getTotalRlabNilai(), payrollPerson.getTunjanganLemburNilai(),
                                 payrollPerson.getIuranDapenPershNilai(),payrollPerson.getTunjanganBpjsTkNilai(),payrollPerson.getTunjanganBpjsKsNilai(),
                                 bonus11Bulan,payrollPerson.getIuranDapenPegNilai(),payrollPerson.getIuranBpjsTkKaryNilai(),payrollPerson.getIuranBpjsKsKaryNilai(),
-                                payrollPerson.getStatusKeluarga(), payrollPerson.getJumlahAnak(),bruto11Bulan,tunjPPh11Bulan,tunjPphBonus,ptt11Bulan,iuranPegawai11Bulan,pttBulan12,pph11Bulan,pphBonus);
+                                payrollPerson.getStatusKeluarga(), payrollPerson.getJumlahAnak(),bruto11Bulan,tunjPPh11Bulan,tunjPphBonus,ptt11Bulan,iuranPegawai11Bulan,pttBulan12,pph11Bulan,pphBonus,biodataEntity.getNpwp());
 
                         BigDecimal pphSeharusnya = pph12Bulan.getHutangPphNilai();
                         BigDecimal selisihPph = pph12Bulan.getPphGajiNilai();
@@ -9102,7 +9268,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         List<PayrollUpahHarian> payrollUpahHarianList = new ArrayList<>();
         java.sql.Date awal = CommonUtil.convertStringToDate(upahHarian.getStTanggalAwal());
         java.sql.Date akhir = CommonUtil.convertStringToDate(upahHarian.getStTanggalAkhir());
-        ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", upahHarian.getNip(), "Y");
+        ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", upahHarian.getNip());
 
         String stTanggalAwal = upahHarian.getStTanggalAwal();
         String splitAwal[] = stTanggalAwal.split("-");
@@ -9220,7 +9386,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         List<PayrollUpahHarian> payrollUpahHarianList = new ArrayList<>();
         java.sql.Date awal = CommonUtil.convertStringToDate(upahHarian.getStTanggalAwal());
         java.sql.Date akhir = CommonUtil.convertStringToDate(upahHarian.getStTanggalAkhir());
-        ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", upahHarian.getNip(), "Y");
+        ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", upahHarian.getNip());
 
         String stTanggalAwal = upahHarian.getStTanggalAwal();
         String splitAwal[] = stTanggalAwal.split("-");
@@ -9479,6 +9645,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         List<Map> tunjtantiemdekomlist = new ArrayList<>();
         List<Map> tunjasuransidekomlist = new ArrayList<>();
         List<Map> tunjlainlaindekomlist = new ArrayList<>();
+        List<Map> pphList = new ArrayList<>();
 
         List<Map> penghasilandireksilist = new ArrayList<>();
         List<Map> tunjpphdireksilist = new ArrayList<>();
@@ -9542,7 +9709,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     tunjpphdekom.put("nilai",payrollEntity.getTunjanganPph());
                     tunjpphdekom.put("divisi_id",posisi.getKodering());
                     tunjpphdekomlist.add(tunjpphdekom);
-                    total = total.add(payrollEntity.getTunjanganPph());
+//                    total = total.add(payrollEntity.getTunjanganPph());
 
                     Map tunjtransportkomdekom = new HashMap();
                     tunjtransportkomdekom.put("nilai",BigDecimal.ZERO);
@@ -9655,6 +9822,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 tunjlainlaindekom.put("nilai",BigDecimal.ZERO);
                 tunjlainlaindekom.put("divisi_id",posisi.getKodering());
                 tunjlainlaindekomlist.add(tunjlainlaindekom);
+
             }
         }
 
@@ -9673,7 +9841,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     tunjpphdireksi.put("nilai",payrollEntity.getTunjanganPph());
                     tunjpphdireksi.put("divisi_id",posisi.getKodering());
                     tunjpphdireksilist.add(tunjpphdireksi);
-                    total = total.add(payrollEntity.getTunjanganPph());
+//                    total = total.add(payrollEntity.getTunjanganPph());
 
                     Map tunjtransportkomdireksi = new HashMap();
                     tunjtransportkomdireksi.put("nilai",BigDecimal.ZERO);
@@ -9785,6 +9953,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 tunjlainlaindireksi.put("nilai",BigDecimal.ZERO);
                 tunjlainlaindireksi.put("divisi_id",posisi.getKodering());
                 tunjlainlaindireksilist.add(tunjlainlaindireksi);
+
             }
         }
 
@@ -9819,7 +9988,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         tunjpajakkaryawantetap.put("nilai",payrollEntity.getTunjanganPph());
                         tunjpajakkaryawantetap.put("divisi_id",posisi.getKodering());
                         tunjpajakkaryawantetaplist.add(tunjpajakkaryawantetap);
-                        total = total.add(payrollEntity.getTunjanganPph());
+//                        total = total.add(payrollEntity.getTunjanganPph());
 
                         Map tunjRLABkaryawantetap = new HashMap();
                         tunjRLABkaryawantetap.put("nilai",payrollEntity.getTotalRlab());
@@ -9905,7 +10074,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         tunjpajakkaryawantidaktetap.put("nilai",payrollEntity.getTunjanganPph());
                         tunjpajakkaryawantidaktetap.put("divisi_id",posisi.getKodering());
                         tunjpajakkaryawantidaktetaplist.add(tunjpajakkaryawantidaktetap);
-                        total = total.add(payrollEntity.getTunjanganPph());
+//                        total = total.add(payrollEntity.getTunjanganPph());
 
                         Map tunjbpjstkkaryawantidaktetap = new HashMap();
                         tunjbpjstkkaryawantidaktetap.put("nilai",payrollEntity.getTunjanganBpjsTk());
@@ -10059,7 +10228,17 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 tunjlainnyakaryawantidaktetap.put("nilai",BigDecimal.ZERO);
                 tunjlainnyakaryawantidaktetap.put("divisi_id",posisi.getKodering());
                 tunjlainnyakaryawantidaktetaplist.add(tunjlainnyakaryawantidaktetap);
+
             }
+        }
+
+        //For PPh
+        for (ItPayrollEntity payrollEntity : payrollEntityList){
+            Map pphGaji = new HashMap();
+            pphGaji.put("nilai",payrollEntity.getPphGaji());
+//            pphGaji.put("bukti",mappingJurnalDao.getNextInvoiceId("JKK",payrollEntity.getBranchId()));
+            pphGaji.put("master_id",payrollEntity.getNip());
+            pphList.add(pphGaji);
         }
 
         dataPayroll.put("penghasilan_dekom", penghasilandekomlist);
@@ -10109,42 +10288,76 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         dataPayroll.put("tunj_lembur_karyawan_tidak_tetap", tunjlemburkaryawantidaktetaplist);
         dataPayroll.put("tunj_lainnya_karyawan_tidak_tetap", tunjlainnyakaryawantidaktetaplist);
 
-        Map kas = new HashMap();
-        kas.put("metode_bayar","transfer");
-        kas.put("bank", CommonConstant.COA_PAYROLL);
-        kas.put("nilai",total);
+        dataPayroll.put("pph_gaji",pphList);
 
-        dataPayroll.put("kas",kas);
+        if (bean.getBranchId().equalsIgnoreCase(CommonConstant.ID_KANPUS)||bean.isSdm()){
+            Map kas = new HashMap();
+            kas.put("metode_bayar","transfer");
+            kas.put("bank", CommonConstant.COA_PAYROLL);
+            kas.put("nilai",total);
 
-        return dataPayroll;
+            dataPayroll.put("kas",kas);
+            return dataPayroll;
+        }else{
+            //membuat mapping rk
+            Map dataMap = new HashMap();
+
+            //mencari coa rk unit
+            List<ImBranches> branchesList = branchDao.getListBranchById(bean.getBranchId());
+            String coaRkUnit="";
+            for (ImBranches branches : branchesList){
+                coaRkUnit = branches.getCoaRk();
+            }
+
+            Map rkUnit = new HashMap();
+            rkUnit.put("nilai",total);
+            rkUnit.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(coaRkUnit));
+            dataMap.put("rk_kd_unit",rkUnit);
+
+            Map giro = new HashMap();
+            giro.put("nilai",total);
+            giro.put("rekening_id",kodeRekeningDao.getRekeningIdByCoa(CommonConstant.COA_PAYROLL));
+            dataMap.put("metode_bayar",giro);
+
+            return dataMap;
+        }
     }
 
     @Override
     public void approvePayroll(Payroll bean) throws GeneralBOException {
-        if(bean.getApprovalFlag().equalsIgnoreCase("Y")){
-            try {
-                payrollDao.approvePayroll(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
-            }catch (HibernateException e){
-                logger.error("[PayrollBoImpl.approvePayroll] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving update data Payroll, please info to your admin..." + e.getMessage());
-            }
-        }else{
+        if( bean.getBranchId().equalsIgnoreCase(CommonConstant.ID_KANPUS)){
+            payrollDao.approvePayrollAks(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
             payrollDao.approvePayroll(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
-            payrollDao.approvePayrollUnit(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
-            HttpSession session = ServletActionContext.getRequest().getSession();
-            session.removeAttribute("listOfResult");
+        }else{
+            payrollDao.approvePayrollAks(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
         }
     }
     @Override
-    public void approvePayrollUnit(Payroll bean) throws GeneralBOException {
-        if(bean.getApprovalUnitFlag().equalsIgnoreCase("Y")){
-            payrollDao.approvePayrollUnit(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalUnitFlag(), bean.getTipe());
-        }else{
-            payrollDao.approvePayrollUnit(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalUnitFlag(), bean.getTipe());
-            HttpSession session = ServletActionContext.getRequest().getSession();
-            session.removeAttribute("listOfResult");
-        }
+    public void approvePayrollAks(Payroll bean) throws GeneralBOException {
+        payrollDao.approvePayroll(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalFlag(), bean.getTipe());
     }
+
+    @Override
+    public void approvePayrollUnit(Payroll bean) throws GeneralBOException {
+        payrollDao.approvePayrollUnit(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalUnitFlag(), bean.getTipe());
+    }
+
+    @Override
+    public void approvePayrollSdm(Payroll bean) throws GeneralBOException {
+        payrollDao.approvePayrollSdm(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getApprovalSdmFlag(), bean.getTipe());
+
+    }
+
+    @Override
+    public void deleteTransaksiPayroll(Payroll bean) throws GeneralBOException {
+        payrollDao.deleteTransaksiPayroll(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getTipe());
+    }
+
+    @Override
+    public void deleteTransaksiPayrollById(Payroll bean) throws GeneralBOException {
+        payrollDao.deleteTransaksiPayrollById(bean.getPayrollId());
+    }
+
     @Override
     public void saveEdit(Payroll bean) throws GeneralBOException {
         logger.info("[PayrollBoImpl.saveEdit] start process >>>");
@@ -20430,9 +20643,9 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     }
 
     //perhitungan PKP setahun untuk proses perhitungan pph
-    public BigDecimal hitungPkpSetahunSimRs(BigDecimal netto, BigDecimal ptkp, BigDecimal bonus){
+    public BigDecimal hitungPkpSetahunSimRs(BigDecimal netto, BigDecimal ptkp, BigDecimal bonus,Integer jmlMulaiKerja){
         BigDecimal pkpSetahun = new BigDecimal(0);
-        BigDecimal nettoSetahun = (netto.subtract(bonus)).multiply(BigDecimal.valueOf(12)).add(bonus);
+        BigDecimal nettoSetahun = (netto.subtract(bonus)).multiply(BigDecimal.valueOf(jmlMulaiKerja)).add(bonus);
         pkpSetahun = nettoSetahun.subtract(ptkp);
         return pkpSetahun.setScale(3, BigDecimal.ROUND_HALF_UP);
     }
@@ -20455,9 +20668,20 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     }
 
     public PayrollPph kalkulasiGrossUpPphSimRs(String nip, String bulan, String tahun, String branch, BigDecimal gaji, BigDecimal sankhus, BigDecimal tunjJabatan,
-                                               BigDecimal tunjStruktural, BigDecimal tunjFungsional,BigDecimal tunjPeralihan, BigDecimal TotaltunjLain, BigDecimal tunjTambahan,BigDecimal pemondokan, BigDecimal komunikasi,
-                                               BigDecimal totalRlab, BigDecimal lembur, BigDecimal tunjPensiun,BigDecimal tunjBpjsTk, BigDecimal tunjBpjsKs, BigDecimal bonus,
-                                               BigDecimal iuranPensiun, BigDecimal iuranBpjsTk, BigDecimal iuranBpjsKs, String statusKeluarga, Integer jumAnak){
+                                               BigDecimal tunjStruktural, BigDecimal tunjFungsional, BigDecimal tunjPeralihan, BigDecimal TotaltunjLain, BigDecimal tunjTambahan, BigDecimal pemondokan, BigDecimal komunikasi,
+                                               BigDecimal totalRlab, BigDecimal lembur, BigDecimal tunjPensiun, BigDecimal tunjBpjsTk, BigDecimal tunjBpjsKs, BigDecimal bonus,
+                                               BigDecimal iuranPensiun, BigDecimal iuranBpjsTk, BigDecimal iuranBpjsKs, String statusKeluarga, Integer jumAnak, String npwp, java.sql.Date tanggalMasuk){
+        java.sql.Date tanggal = CommonUtil.convertStringToDate2(tahun+"-"+bulan+"-01");
+
+        //BARU
+        //rumus jika ada orang yang baru masuk di pertengahan bulan
+//        int jmlMulaiBekerja = CommonUtil.getMonthsDifference(tanggalMasuk,tanggal);
+        int jmlMulaiBekerja = 12;
+
+        if(jmlMulaiBekerja>12){
+            jmlMulaiBekerja=12;
+        }
+
         BigDecimal pphGaji = new BigDecimal(0);
         BigDecimal tunjPph = new BigDecimal(0);
         BigDecimal tunjLain = new BigDecimal(0);
@@ -20466,109 +20690,117 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         BigDecimal ptkp = new BigDecimal(0);
         BigDecimal pkp = new BigDecimal(0);
         BigDecimal pphTerhutangSetahun = new BigDecimal(0);
-        Integer selisih;
+        int selisih;
+
+        ImCompany company = companyDao.getCompanyInfo("Y");
 
         PayrollPph payrollPph = new PayrollPph();
         String pphId ="";
 
+        try {
+            tunjLain = hitungTunjLainsimRs(sankhus,tunjJabatan,tunjStruktural,tunjFungsional,tunjPeralihan,TotaltunjLain,tunjTambahan
+                    ,pemondokan,komunikasi,totalRlab,lembur,tunjPensiun,tunjBpjsTk,tunjBpjsKs);
+            //mengambil ptkp pegawai dari database
+            ptkp = getPtkpPegawaiSimRs(statusKeluarga,jumAnak);
+            BigDecimal biayaJabatan = company.getBiayaJabatan();
+            BigDecimal reduce = biayaJabatan.add(ptkp);
+            BigDecimal iuranPegawai = iuranBpjsKs.add(iuranBpjsTk).add(iuranPensiun);
 
-        tunjLain = hitungTunjLainsimRs(sankhus,tunjJabatan,tunjStruktural,tunjFungsional,tunjPeralihan,TotaltunjLain,tunjTambahan
-                ,pemondokan,komunikasi,totalRlab,lembur,tunjPensiun,tunjBpjsTk,tunjBpjsKs);
-        //mengambil ptkp pegawai dari database
-        ptkp = getPtkpPegawaiSimRs(statusKeluarga,jumAnak);
-        BigDecimal biayaJabatan = new BigDecimal(500000);
-        BigDecimal reduce = biayaJabatan.add(ptkp);
-        BigDecimal iuranPegawai = iuranBpjsKs.add(iuranBpjsTk).add(iuranPensiun);
+            do {
+                //menghitung bruto
+                bruto = hitungBrutoSebulanSimRs(gaji,tunjPph,tunjLain,bonus);
+                //menghitung netto
+                if ((CommonUtil.percentage(bruto, BigDecimal.valueOf(5))).compareTo(company.getBiayaJabatan())<1){
+                    biayaJabatan = CommonUtil.percentage(bruto, BigDecimal.valueOf(5));
+                }
+                netto = hitungNettoSebulanSimRs(bruto,iuranPegawai, biayaJabatan);
+                //menghitung pkp
+                pkp = hitungPkpSetahunSimRs(netto,ptkp, bonus,jmlMulaiBekerja);
+                //menghitung pph setahun
+                pphTerhutangSetahun = hitungPajakSetahunSimRs(pkp,npwp);
+                //pph setahun / 12 untuk mendapat pph perbulan
+                pphGaji = pphTerhutangSetahun.divide(BigDecimal.valueOf(12),2, BigDecimal.ROUND_HALF_UP);
 
-        do {
-            //menghiitung bruto
-            bruto = hitungBrutoSebulanSimRs(gaji,tunjPph,tunjLain,bonus);
-            //menghitung netto
-            if ((CommonUtil.percentage(bruto, BigDecimal.valueOf(5))).compareTo(BigDecimal.valueOf(500000))<1){
-                biayaJabatan = CommonUtil.percentage(bruto, BigDecimal.valueOf(5));
+                //perhitungan selisih antara tunjPph dan pph gaji, jika selisih = 0 looping berhenti
+                selisih = pphGaji.subtract(tunjPph).intValue();
+                tunjPph = pphGaji;
+            } while (selisih != 0);
+            //set pph yang didapat ke model pph payroll
+            try{
+                pphId = payrollPphDao.getNextPayrollPphId(bulan, tahun);
+            }catch(GeneralBOException e){
+                throw new GeneralBOException( "ERROR : Ada kesalahan saat menghitung PPH 21 payroll");
             }
-            netto = hitungNettoSebulanSimRs(bruto,iuranPegawai, biayaJabatan);
-            //menghitung pkp
-            pkp = hitungPkpSetahunSimRs(netto,ptkp, bonus);
-            //menghitung pph setahun
-            pphTerhutangSetahun = hitungPajakSetahunSimRs(pkp);
-            //pph setahun / 12 untuk mendapat pph perbulan
-            pphGaji = pphTerhutangSetahun.divide(BigDecimal.valueOf(12),2, BigDecimal.ROUND_HALF_UP);
 
-            //perhitungan selisih antara tunjPph dan pph gaji, jika selisih = 0 looping berhenti
-            selisih = pphGaji.subtract(tunjPph).intValue();
-            tunjPph = pphGaji;
-        } while (selisih != 0);
-        //set pph yang didapat ke model pph payroll
-        try{
-            pphId = payrollPphDao.getNextPayrollPphId(bulan, tahun);
-        }catch(GeneralBOException e){
+            pphGaji = pphGaji.setScale(0, RoundingMode.HALF_UP); //Also tried with RoundingMode.UP
 
+            payrollPph.setPphId(pphId);
+            payrollPph.setPkp(CommonUtil.numbericFormat(pkp,"###,###"));
+            payrollPph.setPkpNilai(pkp);
+            int valuePph = pphGaji.compareTo(BigDecimal.valueOf(0));
+            if (valuePph > 0){
+                payrollPph.setPphGaji(CommonUtil.numbericFormat(pphGaji,"###,###"));
+                payrollPph.setPphGajiNilai(pphGaji);
+            }else{
+                payrollPph.setPphGaji(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
+                payrollPph.setPphGajiNilai(BigDecimal.valueOf(0));
+            }
+
+            payrollPph.setBruto(CommonUtil.numbericFormat(bruto,"###,###"));
+            payrollPph.setBrutoNilai(bruto);
+            payrollPph.setReduce(CommonUtil.numbericFormat(reduce,"###,###"));
+            payrollPph.setReduceNilai(reduce);
+            payrollPph.setNip(nip);
+            payrollPph.setBulan(bulan);
+            payrollPph.setTahun(tahun);
+            payrollPph.setPtkp(CommonUtil.numbericFormat(ptkp,"###,###"));
+            payrollPph.setPtkpNilai(ptkp);
+            payrollPph.setNetto(CommonUtil.numbericFormat(netto,"###,###"));
+            payrollPph.setNettoNilai(netto);
+            payrollPph.setBiayaJabatan(CommonUtil.numbericFormat(biayaJabatan,"###,###"));
+            payrollPph.setBiayaJabatanNilai(biayaJabatan);
+            payrollPph.setHutangPph(CommonUtil.numbericFormat(pphTerhutangSetahun,"###,###"));
+            payrollPph.setHutangPphNilai(pphTerhutangSetahun);
+            payrollPph.setTunjanganPphBulan(CommonUtil.numbericFormat(tunjPph,"###,###"));
+            payrollPph.setTunjanganPphNilaiBulan(tunjPph);
+
+            payrollPph.setGaji(CommonUtil.numbericFormat(gaji,"###,###"));
+            payrollPph.setGajiNilai(gaji);
+            payrollPph.setSankhus(CommonUtil.numbericFormat(sankhus,"###,###"));
+            payrollPph.setSankhusNilai(sankhus);
+            payrollPph.setTunjanganJabatanStruktural(CommonUtil.numbericFormat(tunjJabatan,"###,###"));
+            payrollPph.setTunjanganJabatanStrukturalNilai(tunjJabatan);
+            payrollPph.setTunjanganStruktural(CommonUtil.numbericFormat(tunjStruktural,"###,###"));
+            payrollPph.setTunjanganStrukturalNilai(tunjStruktural);
+            payrollPph.setTunjanganStrategis(CommonUtil.numbericFormat(tunjFungsional,"###,###"));
+            payrollPph.setTunjanganStrategisNilai(tunjFungsional);
+            payrollPph.setTunjanganPeralihan(CommonUtil.numbericFormat(tunjPeralihan,"###,###"));
+            payrollPph.setTunjanganPeralihanNilai(tunjPeralihan);
+            payrollPph.setTotalTunjanganLain(CommonUtil.numbericFormat(tunjLain,"###,###"));
+            payrollPph.setTotalTunjanganLainNilai(tunjLain);
+            payrollPph.setTunjanganTambahan(CommonUtil.numbericFormat(tunjTambahan,"###,###"));
+            payrollPph.setTunjanganTambahanNilai(tunjTambahan);
+            payrollPph.setPemondokan(CommonUtil.numbericFormat(pemondokan,"###,###"));
+            payrollPph.setPemondokanNilai(pemondokan);
+            payrollPph.setKomunikasi(CommonUtil.numbericFormat(komunikasi,"###,###"));
+            payrollPph.setKomunikasiNilai(komunikasi);
+            payrollPph.setTotalRlab(CommonUtil.numbericFormat(totalRlab,"###,###"));
+            payrollPph.setTotalRlabNilai(totalRlab);
+            payrollPph.setIuranPegawai(CommonUtil.numbericFormat(iuranPegawai,"###,###"));
+            payrollPph.setIuranPegawaiNilai(iuranPegawai);
+            payrollPph.setTunjanganLembur(CommonUtil.numbericFormat(lembur,"###,###"));
+            payrollPph.setTunjanganLemburNilai(lembur);
+            payrollPph.setTunjanganPensiun(CommonUtil.numbericFormat(tunjPensiun,"###,###"));
+            payrollPph.setTunjanganPensiunNilai(tunjPensiun);
+            payrollPph.setBpjsTk(CommonUtil.numbericFormat(tunjBpjsTk,"###,###"));
+            payrollPph.setBpjsTkNilai(tunjBpjsTk);
+            payrollPph.setBpjsKs(CommonUtil.numbericFormat(tunjBpjsKs,"###,###"));
+            payrollPph.setBpjsKsNilai(tunjBpjsKs);
+            payrollPph.setBonus(CommonUtil.numbericFormat(bonus,"###,###"));
+            payrollPph.setBonusNilai(bonus);
+        }catch (Exception e){
+            throw new GeneralBOException("ERROR : saat menghitung PPH21 gaji nip :"+nip);
         }
-        payrollPph.setPphId(pphId);
-        payrollPph.setPkp(CommonUtil.numbericFormat(pkp,"###,###"));
-        payrollPph.setPkpNilai(pkp);
-        int valuePph = pphGaji.compareTo(BigDecimal.valueOf(0));
-        if (valuePph ==1){
-            payrollPph.setPphGaji(CommonUtil.numbericFormat(pphGaji,"###,###"));
-            payrollPph.setPphGajiNilai(pphGaji);
-        }else{
-            payrollPph.setPphGaji(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
-            payrollPph.setPphGajiNilai(BigDecimal.valueOf(0));
-        }
-
-        payrollPph.setBruto(CommonUtil.numbericFormat(bruto,"###,###"));
-        payrollPph.setBrutoNilai(bruto);
-        payrollPph.setReduce(CommonUtil.numbericFormat(reduce,"###,###"));
-        payrollPph.setReduceNilai(reduce);
-        payrollPph.setNip(nip);
-        payrollPph.setBulan(bulan);
-        payrollPph.setTahun(tahun);
-        payrollPph.setPtkp(CommonUtil.numbericFormat(ptkp,"###,###"));
-        payrollPph.setPtkpNilai(ptkp);
-        payrollPph.setNetto(CommonUtil.numbericFormat(netto,"###,###"));
-        payrollPph.setNettoNilai(netto);
-        payrollPph.setBiayaJabatan(CommonUtil.numbericFormat(biayaJabatan,"###,###"));
-        payrollPph.setBiayaJabatanNilai(biayaJabatan);
-        payrollPph.setHutangPph(CommonUtil.numbericFormat(pphTerhutangSetahun,"###,###"));
-        payrollPph.setHutangPphNilai(pphTerhutangSetahun);
-        payrollPph.setTunjanganPphBulan(CommonUtil.numbericFormat(tunjPph,"###,###"));
-        payrollPph.setTunjanganPphNilaiBulan(tunjPph);
-
-        payrollPph.setGaji(CommonUtil.numbericFormat(gaji,"###,###"));
-        payrollPph.setGajiNilai(gaji);
-        payrollPph.setSankhus(CommonUtil.numbericFormat(sankhus,"###,###"));
-        payrollPph.setSankhusNilai(sankhus);
-        payrollPph.setTunjanganJabatanStruktural(CommonUtil.numbericFormat(tunjJabatan,"###,###"));
-        payrollPph.setTunjanganJabatanStrukturalNilai(tunjJabatan);
-        payrollPph.setTunjanganStruktural(CommonUtil.numbericFormat(tunjStruktural,"###,###"));
-        payrollPph.setTunjanganStrukturalNilai(tunjStruktural);
-        payrollPph.setTunjanganStrategis(CommonUtil.numbericFormat(tunjFungsional,"###,###"));
-        payrollPph.setTunjanganStrategisNilai(tunjFungsional);
-        payrollPph.setTunjanganPeralihan(CommonUtil.numbericFormat(tunjPeralihan,"###,###"));
-        payrollPph.setTunjanganPeralihanNilai(tunjPeralihan);
-        payrollPph.setTotalTunjanganLain(CommonUtil.numbericFormat(tunjLain,"###,###"));
-        payrollPph.setTotalTunjanganLainNilai(tunjLain);
-        payrollPph.setTunjanganTambahan(CommonUtil.numbericFormat(tunjTambahan,"###,###"));
-        payrollPph.setTunjanganTambahanNilai(tunjTambahan);
-        payrollPph.setPemondokan(CommonUtil.numbericFormat(pemondokan,"###,###"));
-        payrollPph.setPemondokanNilai(pemondokan);
-        payrollPph.setKomunikasi(CommonUtil.numbericFormat(komunikasi,"###,###"));
-        payrollPph.setKomunikasiNilai(komunikasi);
-        payrollPph.setTotalRlab(CommonUtil.numbericFormat(totalRlab,"###,###"));
-        payrollPph.setTotalRlabNilai(totalRlab);
-        payrollPph.setIuranPegawai(CommonUtil.numbericFormat(iuranPegawai,"###,###"));
-        payrollPph.setIuranPegawaiNilai(iuranPegawai);
-        payrollPph.setTunjanganLembur(CommonUtil.numbericFormat(lembur,"###,###"));
-        payrollPph.setTunjanganLemburNilai(lembur);
-        payrollPph.setTunjanganPensiun(CommonUtil.numbericFormat(tunjPensiun,"###,###"));
-        payrollPph.setTunjanganPensiunNilai(tunjPensiun);
-        payrollPph.setBpjsTk(CommonUtil.numbericFormat(tunjBpjsTk,"###,###"));
-        payrollPph.setBpjsTkNilai(tunjBpjsTk);
-        payrollPph.setBpjsKs(CommonUtil.numbericFormat(tunjBpjsKs,"###,###"));
-        payrollPph.setBpjsKsNilai(tunjBpjsKs);
-        payrollPph.setBonus(CommonUtil.numbericFormat(bonus,"###,###"));
-        payrollPph.setBonusNilai(bonus);
 
         return payrollPph;
     }
@@ -20577,9 +20809,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                  BigDecimal tunjStruktural, BigDecimal tunjFungsional,BigDecimal tunjPeralihan, BigDecimal TotaltunjLain, BigDecimal tunjTambahan,BigDecimal pemondokan, BigDecimal komunikasi,
                                  BigDecimal totalRlab, BigDecimal lembur, BigDecimal tunjPensiun,BigDecimal tunjBpjsTk, BigDecimal tunjBpjsKs, BigDecimal bonus,
                                  BigDecimal iuranPensiun, BigDecimal iuranBpjsTk, BigDecimal iuranBpjsKs, String statusKeluarga, Integer jumAnak,BigDecimal bruto11Bulan,BigDecimal tunjPPh11Bulan,
-                                 BigDecimal tunjPphBonus,BigDecimal ptt11Bulan,BigDecimal iuranPegawai11Bulan,BigDecimal pttBulan12,BigDecimal pph11Bulan,BigDecimal pphBonus){
+                                 BigDecimal tunjPphBonus,BigDecimal ptt11Bulan,BigDecimal iuranPegawai11Bulan,BigDecimal pttBulan12,BigDecimal pph11Bulan,BigDecimal pphBonus,String npwp){
 
         PayrollPph result = new PayrollPph();
+        ImCompany company = companyDao.getCompanyInfo("Y");
 
         BigDecimal pphSeharusnya ,pphGaji,tunjPph = BigDecimal.ZERO;
         Integer selisih ;
@@ -20608,10 +20841,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             BigDecimal totalBrutoLoop =totalBruto.add(tunjPph);
 
             // menghitung reduce
-            if ((CommonUtil.percentage(totalBrutoLoop, BigDecimal.valueOf(5))).compareTo(BigDecimal.valueOf(6000000))<1){
+            if ((CommonUtil.percentage(totalBrutoLoop, BigDecimal.valueOf(5))).compareTo(company.getBiayaJabatan().multiply(new BigDecimal(12)))<1){
                 biayaJabatan = CommonUtil.percentage(totalBrutoLoop, BigDecimal.valueOf(5));
             }else{
-                biayaJabatan = new BigDecimal(6000000);
+                biayaJabatan = company.getBiayaJabatan().multiply(new BigDecimal(12));
             }
             BigDecimal reduce = totalIuran.add(biayaJabatan);
 
@@ -20620,7 +20853,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             //menghitung pkp
             pkp = nettoSetahun.subtract(ptkp);
             //menghitung pph setahun
-            pphSeharusnya = hitungPajakSetahunSimRs(pkp);
+            pphSeharusnya = hitungPajakSetahunSimRs(pkp,npwp);
 
             //pph setahun / 12 untuk mendapat pph perbulan
             pphGaji = pphSeharusnya.subtract(pph11Bulan).subtract(pphBonus);
@@ -20969,433 +21202,6 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         return returnPayrollPph;
     }
 
-    private BigDecimal kalkulasiPphTahunKabidTanpaPayroll(String nip, String bulan, String tahun, String branch, BigDecimal pphGajiBulan, BigDecimal gajiKotor1,
-                                                          BigDecimal iuranPensiun, BigDecimal iuranBpjsTk, BigDecimal iuranBpjsPensiun, String statusKeluarga, int jumlahAnak, String gender,
-                                                          BigDecimal asumsiThr, BigDecimal asumsiPendidikan, BigDecimal realisasiThr, BigDecimal realisasiPendidikan,
-                                                          BigDecimal tunjanganPengobatan, BigDecimal pakaianDinas, BigDecimal jkmJkk, String flagThrP, String flagPendidikanP,
-                                                          String flagJasprodP, BigDecimal lembur, String flagEdit){
-
-        if (("93-0384").equalsIgnoreCase(nip)){
-            Integer a = 0;
-        }
-
-        BigDecimal gaji = new BigDecimal(0);
-        BigDecimal umk = new BigDecimal(0);
-        BigDecimal struktural = new BigDecimal(0);
-        BigDecimal peralihan = new BigDecimal(0);
-        BigDecimal jabStruktual = new BigDecimal(0);
-        BigDecimal strategis = new BigDecimal(0);
-        BigDecimal kompensasi = new BigDecimal(0);
-        BigDecimal transport = new BigDecimal(0);
-        BigDecimal listrik = new BigDecimal(0);
-        BigDecimal perumahan = new BigDecimal(0);
-        BigDecimal tunjLain = new BigDecimal(0);
-
-        BigDecimal totalGaji= new BigDecimal(0);
-        BigDecimal totalPph = new BigDecimal(0);
-        BigDecimal totalThr = new BigDecimal(0);
-        BigDecimal totalPendidikan = new BigDecimal(0);
-        BigDecimal bajuDinas = new BigDecimal(0);
-        BigDecimal pphGajiAsumsi = new BigDecimal(0);
-        BigDecimal gajiKotorAsumsi = new BigDecimal(0);
-        int jumlahSisaBulan = 13 - Integer.parseInt(bulan);
-        int jumlahSisaBulanGajiAsumsi = 0;
-        int jumlahKaliPph = 0;
-
-        BigDecimal gajiTanpaPph = new BigDecimal(0);
-
-        List<ItPayrollEntity> itPayrollEntityy = null;
-        itPayrollEntityy = payrollDao.getLastPayroll(nip);
-        if(itPayrollEntityy.size() > 0){
-            for(ItPayrollEntity itPayrollEntity1: itPayrollEntityy){
-                gaji = itPayrollEntity1.getGajiGolongan();
-                umk = itPayrollEntity1.getTunjanganUmk();
-                struktural = itPayrollEntity1.getTunjanganStruktural();
-                peralihan = itPayrollEntity1.getTunjanganPeralihan();
-                jabStruktual = itPayrollEntity1.getTunjanganJabatanStruktural();
-                strategis = itPayrollEntity1.getTunjanganStrategis();
-                kompensasi = itPayrollEntity1.getKompensasi();
-                transport = itPayrollEntity1.getTunjanganTransport();
-                listrik = itPayrollEntity1.getTunjanganAirListrik();
-                perumahan = itPayrollEntity1.getTunjanganPerumahan();
-                tunjLain = itPayrollEntity1.getTunjanganLain();
-
-                List<ItPayrollPphEntity> asumsiPph = payrollPphDao.getDataView(itPayrollEntity1.getPayrollId());
-                asumsiPph = payrollPphDao.getDataView(itPayrollEntity1.getPayrollId());
-                for(ItPayrollPphEntity payrollPphEntity: asumsiPph){
-                    jkmJkk = payrollPphEntity.getIuranJkmJkk();
-                }
-            }
-            gajiTanpaPph = jumlahGajiKotor(gaji, umk, struktural,peralihan, jabStruktual, strategis, kompensasi, transport, listrik, BigDecimal.valueOf(0), perumahan,
-                    BigDecimal.valueOf(0), tunjLain, BigDecimal.valueOf(0));
-        }
-
-        String flagThr = "N";
-        String flagPendidikan = "N";
-        String flagJasprod = "N";
-
-        String strBulan = "";
-
-        if(flagEdit.equalsIgnoreCase("N")){
-            for(int i = 1 ; i <= Integer.parseInt(bulan); i++){
-                if(i == 1){
-                    strBulan = "IN (";
-                }
-                if(i < 10){
-                    strBulan = strBulan + "'0" + i + "'";
-                }else{
-                    strBulan = strBulan + "'" + i + "'";
-                }
-                if(i < Integer.parseInt(bulan)){
-                    strBulan = strBulan + ", ";
-                }else{
-                    strBulan = strBulan + ")";
-                }
-            }
-        }else{
-            strBulan = strBulan + "NOT IN ('"+ bulan + "')";
-        }
-
-        BigDecimal gajiKotorA = gajiTanpaPph ;
-        gajiKotorA = gajiKotorA.multiply(BigDecimal.valueOf(12));
-        gajiKotorA = gajiKotorA.add(jkmJkk);
-        List<ItPayrollEntity> payrollEntityList = payrollDao.getJumlahKotor(nip, strBulan, tahun, branch);
-        totalThr = asumsiThr;
-        totalPendidikan = asumsiPendidikan;
-        bajuDinas = new BigDecimal(0);
-        int jumlahBulan = jumlahSisaBulan;
-        if(payrollEntityList.size() > 0){
-            int jumlahId = payrollEntityList.size();
-            int i = 0;
-            for(ItPayrollEntity itPayrollEntity: payrollEntityList){
-                totalGaji = totalGaji.add(itPayrollEntity.getTotalA()).add(itPayrollEntity.getTunjanganBajuDinas());
-                totalPph = totalPph.add(itPayrollEntity.getPphGaji());
-                if(itPayrollEntity.getFlagThr().equalsIgnoreCase("Y")){
-                    flagThr = "Y";
-                    totalThr = itPayrollEntity.getTotalThr();
-                    jumlahSisaBulanGajiAsumsi++;
-                    totalGaji = totalGaji.subtract(itPayrollEntity.getPphGaji());
-                }else{
-                    if(flagThr.equalsIgnoreCase("N")){
-                        totalThr = asumsiThr;
-                    }
-                }
-
-                if(itPayrollEntity.getFlagPendidikan().equalsIgnoreCase("Y")){
-                    flagPendidikan = "Y";
-                    totalPendidikan = itPayrollEntity.getTotalPendidikan();
-                    jumlahSisaBulanGajiAsumsi++;
-                    totalGaji = totalGaji.subtract(itPayrollEntity.getPphGaji());
-                }else{
-                    if(flagPendidikan.equalsIgnoreCase("N")){
-                        totalPendidikan = asumsiPendidikan;
-                    }
-                }
-                if(itPayrollEntity.getBulan().equalsIgnoreCase(bulan) && itPayrollEntity.getFlagPayroll().equalsIgnoreCase("Y")){
-                    jumlahBulan--;
-                }
-            }
-        }
-
-        gajiKotorAsumsi = gajiTanpaPph.multiply(BigDecimal.valueOf(jumlahBulan));
-        gajiKotorAsumsi = gajiKotorAsumsi.add(pakaianDinas);
-        gajiKotorAsumsi = gajiKotorAsumsi.add(jkmJkk);
-
-        if(realisasiPendidikan.compareTo(BigDecimal.valueOf(0)) > 0){
-            totalPendidikan = new BigDecimal(0);
-        }
-
-        if(realisasiThr.compareTo(BigDecimal.valueOf(0)) > 0){
-            totalThr = new BigDecimal(0);
-        }
-
-        BigDecimal totalGajiTahun = new BigDecimal(0);
-        totalGajiTahun = totalGaji
-                .add(gajiKotorAsumsi)
-                .add(totalThr)
-                .add(totalPendidikan)
-                .add(realisasiThr)
-                .add(realisasiPendidikan);
-
-        //total gaji dikurangi tunjangan pph yang telah dibayar dibulan sebelumnya
-        totalGajiTahun = totalGajiTahun.subtract(totalPph);
-
-        BigDecimal pphGajiBiayaJabatan = new BigDecimal(0);
-        pphGajiBiayaJabatan = getBiayaJabatan(totalGajiTahun).setScale(2, BigDecimal.ROUND_HALF_UP);
-
-        BigDecimal pphGajiTotalBiayaPensiun = BigDecimal.valueOf(0);
-        BigDecimal pphGajiDanaPensiun = iuranPensiun.multiply(BigDecimal.valueOf(12));
-        BigDecimal pphGajiBpjsTk = iuranBpjsTk.multiply(BigDecimal.valueOf(12));
-        BigDecimal pphGajiBpjsPensiun = iuranBpjsPensiun.multiply(BigDecimal.valueOf(12));
-        BigDecimal pphGajiPtkp = BigDecimal.valueOf(0);
-
-        pphGajiPtkp = getPtkp(statusKeluarga, jumlahAnak, gender);
-
-        pphGajiTotalBiayaPensiun = pphGajiDanaPensiun.add(pphGajiBpjsTk).add(pphGajiBpjsPensiun);
-
-        BigDecimal pphGajiB = hitungPphGajiB(pphGajiBiayaJabatan, pphGajiTotalBiayaPensiun, pphGajiPtkp) ;//Jumlah seluruh Pengurang Dari PPh Gaji
-
-        BigDecimal pphGajiPkp = totalGajiTahun.subtract(pphGajiB).setScale(2, BigDecimal.ROUND_HALF_UP); //PPH GAJI PKP(Penghasilan Kena Pajak)
-
-        //Khusus Kabid keatas mendapatkan Tunjangan Pph
-        BigDecimal tunjanganPphTahun = hitungTunjanganPph(pphGajiPkp);
-        if(tunjanganPphTahun.compareTo(BigDecimal.valueOf(0)) <= 0){
-            tunjanganPphTahun = BigDecimal.valueOf(0);
-        }
-
-        BigDecimal pphGaji = new BigDecimal(0);
-
-        BigDecimal pphTanpaThrPendJasp = kalkulasiPphKabidTanpaThrPend(gajiKotorA, pphGajiTotalBiayaPensiun, pphGajiPtkp);
-        BigDecimal selisihPphBulan = new BigDecimal(0);
-
-        if(Integer.parseInt(bulan) >= 8 && jumlahSisaBulanGajiAsumsi <= 3){
-            pphGajiAsumsi = pphTanpaThrPendJasp.multiply(BigDecimal.valueOf((jumlahBulan)));
-        }else{
-            pphGajiAsumsi = pphTanpaThrPendJasp.multiply(BigDecimal.valueOf(jumlahBulan)).add(pphGajiBulan);
-            //selisihPphBulan = selisihPphBulan.divide(BigDecimal.valueOf(jumlahBulan), 2, RoundingMode.HALF_UP);
-        }
-
-        if(bulan.equalsIgnoreCase("01")){
-            //pphGajiBulan = pphTanpaThrPendJasp.add(selisihPphBulan);
-        }
-
-        BigDecimal totalPphTahun = new BigDecimal(0);
-        totalPphTahun = totalPph
-                .add(pphGajiAsumsi);
-
-        if(totalPphTahun.compareTo(tunjanganPphTahun) > 0){
-            BigDecimal selisih = new BigDecimal(0);
-            selisih = totalPphTahun.subtract(tunjanganPphTahun);
-            selisih = selisih.divide(BigDecimal.valueOf(jumlahSisaBulan + jumlahKaliPph), 2, RoundingMode.HALF_UP);
-            pphGajiBulan = pphGajiBulan.subtract(selisih);
-        }else{
-            BigDecimal selisih = new BigDecimal(0);
-            selisih = tunjanganPphTahun.subtract(totalPphTahun);
-            selisih = selisih.divide(BigDecimal.valueOf(jumlahSisaBulan), 2, RoundingMode.HALF_UP);
-            pphGajiBulan = pphGajiBulan.add(selisih);
-        }
-
-        if(pphGajiBulan.compareTo(BigDecimal.valueOf(0)) <= 0){
-            pphGajiBulan = BigDecimal.valueOf(0);
-        }
-
-        return pphGajiBulan;
-    }
-
-    private BigDecimal kalkulasiPphTahunKabidTanpaPayrollRapel(String nip, String bulan, String tahun, String branch, BigDecimal pphGajiBulan, BigDecimal gajiKotor1,
-                                                          BigDecimal iuranPensiun, BigDecimal iuranBpjsTk, BigDecimal iuranBpjsPensiun, String statusKeluarga, int jumlahAnak, String gender,
-                                                          BigDecimal asumsiThr, BigDecimal asumsiPendidikan, BigDecimal realisasiThr, BigDecimal realisasiPendidikan,
-                                                          BigDecimal pakaianDinas, BigDecimal jkmJkk, BigDecimal rapel,  String flagEdit){
-
-        BigDecimal gaji = new BigDecimal(0);
-        BigDecimal umk = new BigDecimal(0);
-        BigDecimal struktural = new BigDecimal(0);
-        BigDecimal peralihan = new BigDecimal(0);
-        BigDecimal jabStruktual = new BigDecimal(0);
-        BigDecimal strategis = new BigDecimal(0);
-        BigDecimal kompensasi = new BigDecimal(0);
-        BigDecimal transport = new BigDecimal(0);
-        BigDecimal listrik = new BigDecimal(0);
-        BigDecimal perumahan = new BigDecimal(0);
-        BigDecimal tunjLain = new BigDecimal(0);
-
-        BigDecimal totalGaji= new BigDecimal(0);
-        BigDecimal totalPph = new BigDecimal(0);
-        BigDecimal totalPphPengobatan = new BigDecimal(0);
-        BigDecimal totalThr = new BigDecimal(0);
-        BigDecimal totalPendidikan = new BigDecimal(0);
-        BigDecimal bajuDinas = new BigDecimal(0);
-        BigDecimal pphGajiAsumsi = new BigDecimal(0);
-        BigDecimal gajiKotorAsumsi = new BigDecimal(0);
-        int jumlahSisaBulan = 13 - Integer.parseInt(bulan);
-        int jumlahSisaBulanGajiAsumsi = 0;
-        int jumlahKaliPph = 0;
-
-        BigDecimal gajiTanpaPph = new BigDecimal(0);
-
-        List<ItPayrollEntity> itPayrollEntityy = null;
-        itPayrollEntityy = payrollDao.getLastPayroll(nip);
-        if(itPayrollEntityy.size() > 0){
-            for(ItPayrollEntity itPayrollEntity1: itPayrollEntityy){
-                gaji = itPayrollEntity1.getGajiGolongan();
-                umk = itPayrollEntity1.getTunjanganUmk();
-                struktural = itPayrollEntity1.getTunjanganStruktural();
-                peralihan = itPayrollEntity1.getTunjanganPeralihan();
-                jabStruktual = itPayrollEntity1.getTunjanganJabatanStruktural();
-                strategis = itPayrollEntity1.getTunjanganStrategis();
-                kompensasi = itPayrollEntity1.getKompensasi();
-                transport = itPayrollEntity1.getTunjanganTransport();
-                listrik = itPayrollEntity1.getTunjanganAirListrik();
-                perumahan = itPayrollEntity1.getTunjanganPerumahan();
-                tunjLain = itPayrollEntity1.getTunjanganLain();
-
-                List<ItPayrollPphEntity> asumsiPph = payrollPphDao.getDataView(itPayrollEntity1.getPayrollId());
-                asumsiPph = payrollPphDao.getDataView(itPayrollEntity1.getPayrollId());
-                for(ItPayrollPphEntity payrollPphEntity: asumsiPph){
-                    jkmJkk = payrollPphEntity.getIuranJkmJkk();
-                }
-            }
-            gajiTanpaPph = jumlahGajiKotor(gaji, umk, struktural,peralihan, jabStruktual, strategis, kompensasi, transport, listrik, BigDecimal.valueOf(0), perumahan,
-                    BigDecimal.valueOf(0), tunjLain, BigDecimal.valueOf(0));
-        }
-
-        String flagThr = "N";
-        String flagPendidikan = "N";
-        String flagJasprod = "N";
-
-        String strBulan = "";
-
-        if(flagEdit.equalsIgnoreCase("N")){
-            for(int i = 1 ; i <= Integer.parseInt(bulan); i++){
-                if(i == 1){
-                    strBulan = "IN (";
-                }
-                if(i < 10){
-                    strBulan = strBulan + "'0" + i + "'";
-                }else{
-                    strBulan = strBulan + "'" + i + "'";
-                }
-                if(i < Integer.parseInt(bulan)){
-                    strBulan = strBulan + ", ";
-                }else{
-                    strBulan = strBulan + ")";
-                }
-            }
-        }else{
-            strBulan = strBulan + "NOT IN ('"+ bulan + "')";
-        }
-
-        BigDecimal gajiKotorA = gajiTanpaPph ;
-        gajiKotorA = gajiKotorA.multiply(BigDecimal.valueOf(12));
-        gajiKotorA = gajiKotorA.add(jkmJkk);
-        List<ItPayrollEntity> payrollEntityList = payrollDao.getJumlahKotorKabid(nip, strBulan, tahun, branch);
-        totalThr = asumsiThr;
-        totalPendidikan = asumsiPendidikan;
-        bajuDinas = new BigDecimal(0);
-        int jumlahBulan = jumlahSisaBulan;
-        if(payrollEntityList.size() > 0){
-            int jumlahId = payrollEntityList.size();
-            int i = 0;
-            for(ItPayrollEntity itPayrollEntity: payrollEntityList){
-                totalGaji = totalGaji.add(itPayrollEntity.getTotalA()).add(itPayrollEntity.getTunjanganBajuDinas());
-                totalPph = totalPph.add(itPayrollEntity.getPphGaji());
-                totalPphPengobatan = totalPphPengobatan.add(itPayrollEntity.getPphPengobatan());
-                if(itPayrollEntity.getFlagThr().equalsIgnoreCase("Y")){
-                    flagThr = "Y";
-                    totalThr = itPayrollEntity.getTotalThr();
-                    jumlahSisaBulanGajiAsumsi++;
-                    //totalGaji = totalGaji.subtract(itPayrollEntity.getPphGaji());
-                }else{
-                    if(flagThr.equalsIgnoreCase("N")){
-                        totalThr = asumsiThr;
-                    }
-                }
-
-                if(itPayrollEntity.getFlagPendidikan().equalsIgnoreCase("Y")){
-                    flagPendidikan = "Y";
-                    totalPendidikan = itPayrollEntity.getTotalPendidikan();
-                    jumlahSisaBulanGajiAsumsi++;
-                    //totalGaji = totalGaji.subtract(itPayrollEntity.getPphGaji());
-                }else{
-                    if(flagPendidikan.equalsIgnoreCase("N")){
-                        totalPendidikan = asumsiPendidikan;
-                    }
-                }
-                if(itPayrollEntity.getBulan().equalsIgnoreCase(bulan) && itPayrollEntity.getFlagPayroll().equalsIgnoreCase("Y")){
-                    jumlahBulan--;
-                }
-            }
-        }
-
-        gajiKotorAsumsi = gajiTanpaPph.multiply(BigDecimal.valueOf(jumlahBulan));
-        gajiKotorAsumsi = gajiKotorAsumsi.add(pakaianDinas);
-        gajiKotorAsumsi = gajiKotorAsumsi.add(jkmJkk);
-
-        if(realisasiPendidikan.compareTo(BigDecimal.valueOf(0)) > 0){
-            totalPendidikan = new BigDecimal(0);
-        }
-
-        if(realisasiThr.compareTo(BigDecimal.valueOf(0)) > 0){
-            totalThr = new BigDecimal(0);
-        }
-
-        BigDecimal totalGajiTahun = new BigDecimal(0);
-        totalGajiTahun = totalGaji
-                .add(gajiKotorAsumsi)
-                .add(totalThr)
-                .add(totalPendidikan)
-                .add(realisasiThr)
-                .add(rapel)
-                .add(realisasiPendidikan);
-
-        //total gaji dikurangi tunjangan pph yang telah dibayar dibulan sebelumnya
-        totalGajiTahun = totalGajiTahun.subtract(totalPph);
-
-        BigDecimal pphGajiBiayaJabatan = new BigDecimal(0);
-        pphGajiBiayaJabatan = getBiayaJabatan(totalGajiTahun).setScale(2, BigDecimal.ROUND_HALF_UP);
-
-        BigDecimal pphGajiTotalBiayaPensiun = BigDecimal.valueOf(0);
-        BigDecimal pphGajiDanaPensiun = iuranPensiun.multiply(BigDecimal.valueOf(12));
-        BigDecimal pphGajiBpjsTk = iuranBpjsTk.multiply(BigDecimal.valueOf(12));
-        BigDecimal pphGajiBpjsPensiun = iuranBpjsPensiun.multiply(BigDecimal.valueOf(12));
-        BigDecimal pphGajiPtkp = BigDecimal.valueOf(0);
-
-        pphGajiPtkp = getPtkp(statusKeluarga, jumlahAnak, gender);
-
-        pphGajiTotalBiayaPensiun = pphGajiDanaPensiun.add(pphGajiBpjsTk).add(pphGajiBpjsPensiun);
-
-        BigDecimal pphGajiB = hitungPphGajiB(pphGajiBiayaJabatan, pphGajiTotalBiayaPensiun, pphGajiPtkp) ;//Jumlah seluruh Pengurang Dari PPh Gaji
-
-        BigDecimal pphGajiPkp = totalGajiTahun.subtract(pphGajiB).setScale(2, BigDecimal.ROUND_HALF_UP); //PPH GAJI PKP(Penghasilan Kena Pajak)
-
-        //Khusus Kabid keatas mendapatkan Tunjangan Pph
-        BigDecimal tunjanganPphTahun = hitungTunjanganPph(pphGajiPkp);
-        if(tunjanganPphTahun.compareTo(BigDecimal.valueOf(0)) <= 0){
-            tunjanganPphTahun = BigDecimal.valueOf(0);
-        }
-
-        BigDecimal pphGaji = new BigDecimal(0);
-
-        BigDecimal pphTanpaThrPendJasp = kalkulasiPphKabidTanpaThrPend(gajiKotorA, pphGajiTotalBiayaPensiun, pphGajiPtkp);
-        BigDecimal selisihPphBulan = new BigDecimal(0);
-
-        if(Integer.parseInt(bulan) >= 8 && jumlahSisaBulanGajiAsumsi <= 3){
-            pphGajiAsumsi = pphTanpaThrPendJasp.multiply(BigDecimal.valueOf((jumlahBulan)));
-        }else{
-            pphGajiAsumsi = pphTanpaThrPendJasp.multiply(BigDecimal.valueOf(jumlahBulan)).add(pphGajiBulan);
-            //selisihPphBulan = selisihPphBulan.divide(BigDecimal.valueOf(jumlahBulan), 2, RoundingMode.HALF_UP);
-        }
-
-        pphGajiAsumsi = pphGajiAsumsi.add(pphGajiBulan);
-
-        if(bulan.equalsIgnoreCase("01")){
-            //pphGajiBulan = pphTanpaThrPendJasp.add(selisihPphBulan);
-        }
-
-        BigDecimal totalPphTahun = new BigDecimal(0);
-        totalPphTahun = totalPph
-                .add(totalPphPengobatan)
-                .add(pphGajiAsumsi);
-
-        if(totalPphTahun.compareTo(tunjanganPphTahun) > 0){
-            BigDecimal selisih = new BigDecimal(0);
-            selisih = totalPphTahun.subtract(tunjanganPphTahun);
-            selisih = selisih.divide(BigDecimal.valueOf(jumlahSisaBulan + jumlahKaliPph), 2, RoundingMode.HALF_UP);
-            pphGajiBulan = selisih;
-        }else{
-            BigDecimal selisih = new BigDecimal(0);
-            selisih = tunjanganPphTahun.subtract(totalPphTahun);
-            selisih = selisih.divide(BigDecimal.valueOf(jumlahSisaBulan), 2, RoundingMode.HALF_UP);
-            pphGajiBulan = selisih;
-        }
-
-        if(pphGajiBulan.compareTo(BigDecimal.valueOf(0)) <= 0){
-            pphGajiBulan = BigDecimal.valueOf(0);
-        }
-
-        return pphGajiBulan;
-    }
-
     BigDecimal kalkulasiPphTanpaThrPendJasp(BigDecimal pphGajiBruto, BigDecimal biayaPensiun, BigDecimal ptkp){
         BigDecimal pphGajiBiayaJabatan = new BigDecimal(0);
 
@@ -21541,9 +21347,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     private int cekJumlahAnak(String nip, String branchId){
         index++;
         ImBiodataEntity biodataEntity = biodataDao.getById("nip", nip);
-        int jumlahAnak = biodataEntity.getJumlahAnak().intValue();
+        int jumlahAnak = 0;
 
-        if(branchId.equalsIgnoreCase("KD01")){
+        try {
+            if (biodataEntity.getJumlahAnak()!=null){
+                jumlahAnak = biodataEntity.getJumlahAnak().intValue();
+            }
             int anak = 0 ;
             List<ImKeluargaEntity> keluargaEntities = new ArrayList<>();
             keluargaEntities = keluargaDao.getListKeluargaById("", biodataEntity.getNip());
@@ -21559,11 +21368,15 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 }
             }
             jumlahAnak = anak;
+
+            if(jumlahAnak > 3){
+                jumlahAnak = 3;
+            }
+        }catch (Exception e){
+            String status = "ERROR : Saat Pengecekan jumlah anak pada NIP : "+nip;
+            throw new GeneralBOException(status);
         }
 
-        if(jumlahAnak > 3){
-            jumlahAnak = 3;
-        }
         return jumlahAnak;
     }
 
@@ -21610,7 +21423,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     //digunakan untuk mengcek bulan aktif pada tahun ini (Apakah di tahun ini user pensiun, jika pensiun dihitung hanya bulan aktif saja)
     private int cekBulanAktifPensiun(String nip, String tahun){
         int hasil = 12;
-        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip, "Y");
+        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip);
 
         Date dateTglPensiun;
         String strTglPensiun;
@@ -21644,7 +21457,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     //cek Bulan Aktif masuk, karena thr dapat dari thr ke thr
     private int cekBulanThr(String nip, Date tanggal){
         int hasil = 0;
-        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip, "Y");
+        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip);
         DateTime tanggalAktif = new DateTime(imPegawai.getTanggalMasuk());
         DateTime tanggalProses = new DateTime(tanggal);
 
@@ -21706,7 +21519,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         DateTime tanggalAktif = new DateTime();
 
 
-        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip, "Y");
+        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip);
         strTgl= "01-"+bulan+"-"+tahun;
         tgl = CommonUtil.convertStringToDate(strTgl);
         if (imPegawai.getTipePegawai().equalsIgnoreCase("TP01")){
@@ -21727,7 +21540,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     //digunakan untuk mengcek bulan aktif pada tahun ini (Apakah di tahun ini user pensiun, jika pensiun dihitung hanya bulan aktif saja)
     private String pembulatanTanggalPensiun(String nip, String tahun){
         int hasil = 12;
-        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip, "Y");
+        ImBiodataEntity imPegawai = biodataDao.getById("nip", nip);
 
         Date dateTglPensiun;
         String strTglPensiun;
@@ -22664,6 +22477,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             List<PayrollEsptDTO> itPayrollEntities = payrollDao.searchReportEspt(tahun, unit);
             if (itPayrollEntities.size() > 0) {
                 for (PayrollEsptDTO data : itPayrollEntities) {
+                    ImBiodataEntity biodataEntity = biodataDao.getById("nip",data.getNip());
                     data.setTahunPajak(tahun);
                     //jumlah2 jumlah tunj pph + tunj pph bonus
                     data.setJumlah2(data.getJumlah2().add(payrollDao.getTunjanganPPhGajiBonusSetahun(tahun,data.getNip())));
@@ -22700,7 +22514,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         data.setJumlah16(data.getJumlah14().subtract(data.getJumlah15()));
                     }
                     //pajak setahun
-                    data.setJumlah17(hitungPajakSetahunSimRs(data.getJumlah16()));
+                    data.setJumlah17(hitungPajakSetahunSimRs(data.getJumlah16(),biodataEntity.getNpwp()));
                     //jumlah 18 belum tau implementasinya
                     data.setJumlah18(BigDecimal.ZERO);
                     // pajak setahun aslinya
@@ -23279,16 +23093,17 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     @Override
     public PayrollModalDTO searchDetailPPhSeharusnya(String nip, String tahun, String totalA, String totalRlab, String tunjDapen, String tunjBpjsKs, String tunjBpjsTk, String iuranDapen, String iuranBpjsKs, String iuranBpjsTk, String statusKelurga, String jumlahAnak) throws GeneralBOException {
         PayrollModalDTO result = new PayrollModalDTO();
+        ImBiodataEntity biodataEntity = biodataDao.getById("nip",nip);
         BigDecimal pphSeharusnya ,pphGaji,tunjPph = BigDecimal.ZERO;
-        Integer selisih ;
-        BigDecimal totalANilai = new BigDecimal(totalA.replace(".",""));
-        BigDecimal totalRlabNilai = new BigDecimal(totalRlab.replace(".",""));
-        BigDecimal iuranDapenNilai = new BigDecimal(iuranDapen.replace(".",""));
-        BigDecimal iuranBpjsKsNilai = new BigDecimal(iuranBpjsKs.replace(".",""));
-        BigDecimal iuranBpjsTkNilai = new BigDecimal(iuranBpjsTk.replace(".",""));
-        BigDecimal tunjDapenNilai = new BigDecimal(tunjDapen.replace(".",""));
-        BigDecimal tunjBpjsKsNilai = new BigDecimal(tunjBpjsKs.replace(".",""));
-        BigDecimal tunjBpjsTkNilai = new BigDecimal(tunjBpjsTk.replace(".",""));
+        int selisih ;
+        BigDecimal totalANilai = new BigDecimal(totalA.replace(".","").replace(",",""));
+        BigDecimal totalRlabNilai = new BigDecimal(totalRlab.replace(".","").replace(",",""));
+        BigDecimal iuranDapenNilai = new BigDecimal(iuranDapen.replace(".","").replace(",",""));
+        BigDecimal iuranBpjsKsNilai = new BigDecimal(iuranBpjsKs.replace(".","").replace(",",""));
+        BigDecimal iuranBpjsTkNilai = new BigDecimal(iuranBpjsTk.replace(".","").replace(",",""));
+        BigDecimal tunjDapenNilai = new BigDecimal(tunjDapen.replace(".","").replace(",",""));
+        BigDecimal tunjBpjsKsNilai = new BigDecimal(tunjBpjsKs.replace(".","").replace(",",""));
+        BigDecimal tunjBpjsTkNilai = new BigDecimal(tunjBpjsTk.replace(".","").replace(",",""));
         BigDecimal iuranPegawai = iuranDapenNilai.add(iuranBpjsKsNilai.add(iuranBpjsTkNilai));
         BigDecimal tunjLain = totalRlabNilai.add(tunjDapenNilai).add(tunjBpjsTkNilai).add(tunjBpjsKsNilai);
 
@@ -23321,6 +23136,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
         BigDecimal finalTotalBruto;
         BigDecimal finalBijab;
+
+        //untuk yang belum bekerja total 12 bulan penuh
+//        Integer selisihBulan = payrollDao.getSelisihBulanPayroll(tahun,nip);
+//        BigDecimal brutoSelisih = payrollDao.getLastBruto(tahun, nip).multiply(BigDecimal.valueOf(selisihBulan));
+
         do {
             //menghiitung bruto
             BigDecimal totalBrutoLoop =totalBruto.add(tunjPph);
@@ -23338,7 +23158,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             //menghitung pkp
             pkp = nettoSetahun.subtract(ptkp);
             //menghitung pph setahun
-            pphSeharusnya = hitungPajakSetahunSimRs(pkp);
+            pphSeharusnya = hitungPajakSetahunSimRs(pkp,biodataEntity.getNpwp());
 
             //pph setahun / 12 untuk mendapat pph perbulan
             pphGaji = pphSeharusnya.subtract(pph11Bulan).subtract(pphBonus);
