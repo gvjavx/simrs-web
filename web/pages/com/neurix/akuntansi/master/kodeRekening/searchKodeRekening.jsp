@@ -511,7 +511,7 @@
             }
             $('.tree').append(tmp_table);
             $(".tree .ceknull:contains('null')").html("-");
-    });
+        });
     }
     function cekAvailableCoaEdit(nilai){
         var coa = nilai.value;

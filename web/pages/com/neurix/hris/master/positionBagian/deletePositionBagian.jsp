@@ -141,11 +141,9 @@
                         </td>
                         <td>
                             <table>
-                                <s:action id="combo" namespace="/department" name="initDepartment_department"/>
-                                <s:select list="#session.listOfResultDepartment" id="divisiId1"
-                                          name="positionBagian.divisiId" disabled="true"
-                                          listKey="departmentId" listValue="departmentName" headerKey=""
-                                          headerValue="[Select one]" cssClass="form-control"/>
+                                <s:action id="comboDept" namespace="/department" name="initComboDepartment_department"/>
+                                <s:select list="#comboDept.listComboDepartment" id="divisiId1" name="positionBagian.divisiId" disabled="true"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                 <s:hidden name ="positionBagian.divisiId" />
                             </table>
                         </td>

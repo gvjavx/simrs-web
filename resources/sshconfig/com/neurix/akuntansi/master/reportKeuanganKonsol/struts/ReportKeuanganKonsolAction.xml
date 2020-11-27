@@ -70,7 +70,8 @@
         </global-exception-mappings>
 
         <action name="*_reportKeuanganKonsol"
-                class="com.neurix.akuntansi.master.settingReportKeuanganKonsol.action.SettingReportKeuanganKonsolAction" method="{1}">
+                class="com.neurix.akuntansi.master.settingReportKeuanganKonsol.action.test_SettingReportKeuanganKonsolAction" method="{1}">
+                <!--class="com.neurix.akuntansi.master.settingReportKeuanganKonsol.action.SettingReportKeuanganKonsolAction" method="{1}">-->
             <interceptor-ref name="ivelinStack" />
             <result name="search">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/searchReportKeuanganKonsol.jsp</result>
             <result name="success">/pages/com/neurix/akuntansi/master/settingReportKeuanganKonsol/searchReportKeuanganKonsol.jsp</result>

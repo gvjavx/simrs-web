@@ -400,6 +400,34 @@ public class DepartmentAction extends BaseMasterAction{
         return "";
     }
 
+    public String initComboDepartment() {
+        logger.info("[DepartmentAction.search] start process >>>");
+
+        Department searchDepartment = new Department();
+        searchDepartment.setFlag("Y");
+        List<Department> listOfsearchDepartment = new ArrayList();
+
+        try {
+            listOfsearchDepartment = departmentBoProxy.getByCriteria(searchDepartment);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = departmentBoProxy.saveErrorMessage(e.getMessage(), "DepartmentBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[DepartmentAction.search] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[DepartmentAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+        listComboDepartment.addAll(listOfsearchDepartment);
+
+        logger.info("[DepartmentAction.search] end process <<<");
+
+        return "init_combo_department";
+    }
+
     public String paging(){
         return SUCCESS;
     }

@@ -96,8 +96,8 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:action id="comboMasaTanam" namespace="/department" name="initDepartment_department"/>
-                                        <s:select list="#session.listOfResultDepartment" id="departmentId" name="positionBagian.divisiId"
+                                        <s:action id="comboDept" namespace="/department" name="initComboDepartment_department"/>
+                                        <s:select list="#comboDept.listComboDepartment" id="departmentId" name="positionBagian.divisiId"
                                                   listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                     </table>
                                 </td>
@@ -162,7 +162,7 @@
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="350" width="500" autoOpen="false"
+                                                   height="auto" width="auto" autoOpen="false"
                                                    title="Position Bagian ">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>

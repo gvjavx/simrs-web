@@ -514,6 +514,13 @@
           <param name="class" value="com.neurix.akuntansi.master.kodeRekening.action.KodeRekeningAction"/>
       </create>
       <convert converter="bean" match="com.neurix.akuntansi.master.kodeRekening.model.KodeRekening"/>
+
+      <!--TEST TREE-->
+      <create creator="new">
+          <param name="class" value="com.neurix.akuntansi.master.settingReportKeuanganKonsol.action.test_SettingReportKeuanganKonsolAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol"/>
+
       <create creator="new">
           <param name="class" value="com.neurix.akuntansi.master.master.action.MasterAction"/>
       </create>
