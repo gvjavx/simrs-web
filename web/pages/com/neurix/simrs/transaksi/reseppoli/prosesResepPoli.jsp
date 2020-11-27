@@ -306,7 +306,9 @@
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="permintaanResep.jenisPeriksaPasien"></s:label>
+                                                <script>
+                                                    document.write(changeJenisPasien('<s:property value="permintaanResep.idJenisPeriksa"/>', '<s:label name="permintaanResep.jenisPeriksaPasien"></s:label>'));
+                                                </script>
                                             </table>
                                         </td>
                                     </tr>
@@ -314,11 +316,9 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-md-6">
-                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
-                                     class="card card-4 pull-right">
-                                    <img border="2" id="img_ktp" src="<s:property value="permintaanResep.urlKtp"/>"
-                                         style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
-                                </div>
+                                <script>
+                                    document.write(imagesDefault('<s:property value="permintaanResep.urlKtp"/>'));
+                                </script>
                                 <table class="table table-striped">
                                     <s:if test='permintaanResep.flagEresep != "Y"'>
                                         <tr>

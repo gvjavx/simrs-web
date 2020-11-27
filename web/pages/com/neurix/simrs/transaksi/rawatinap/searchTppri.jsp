@@ -538,6 +538,10 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_add"></p>
                 </div>
+                <div id="warn-bpjs">
+                </div>
+                <input type="hidden" id="status_bpjs">
+                <input type="hidden" id="kelas_pasien">
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
                 </div>
@@ -554,14 +558,13 @@
                             </div>
                             <div class="form-group" style="display: none" id="form_no_bpjs">
                                 <label style="margin-top: 7px">No BPJS</label>
-                                <input type="number" class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')">
-                                <%--<div class="input-group">--%>
-                                    <%----%>
-                                    <%--<div class="input-group-addon" style="cursor: pointer"--%>
-                                         <%--onclick="cekBpjs(this.value)">--%>
-                                        <%--<i class="fa fa-search"></i> Check--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')">
+                                    <div class="input-group-addon" style="cursor: pointer"
+                                         onclick="cekBpjs(this.value)" id="btn-cek">
+                                        <i class="fa fa-search"></i> Check
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">NIK</label>
@@ -624,7 +627,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-phone"></i>
                                     </div>
-                                    <input class="form-control" id="add_no_telp" oninput="$(this.id).css('border','')"
+                                    <input class="form-control" id="add_no_telp" oninput="$(this.id).css('border','')" onchange="$(this.id).css('border','')"
                                            data-inputmask="'mask': ['9999-9999-9999']"
                                            data-mask="">
                                 </div>
@@ -687,7 +690,7 @@
                                 <div class="form-group">
                                     <label>Perujuk/Asal</label>
                                     <select class="form-control" id="add_perujuk">
-                                        <option value="1">PPK 1 - [Puskesmaa]</option>
+                                        <option value="1">PPK 1 - [Puskesmas]</option>
                                         <option value="2">PPK 2 - [Rumah Sakit Lain]</option>
                                     </select>
                                 </div>
@@ -1520,6 +1523,7 @@
         var kamar = $('#add_kamar').val();
         var kelasKamar = $('#add_kelas_kamar').val();
         var dokter = $('#dokter_add_dpjp_1').val();
+        var statusBpjs = $('#status_bpjs').val();
 
         var ktp = document.getElementById('img_ktp_canvas');
         var foto = document.getElementById('add_foto_rujukan');
@@ -1530,7 +1534,13 @@
 
             if (jenisPasien == 'bpjs') {
                 if (noBpjs && idDignosa && ketDiagnosa != '') {
-                    cek = true;
+                    if('aktif' == statusBpjs){
+                        cek = true;
+                    }else{
+                        $('#warning_add').show().fadeOut(5000);
+                        $('#msg_add').text("Silahkan cek status BPJS...!");
+                        $('#back_top').scrollTop(0);
+                    }
                 } else {
                     $('#warning_add').show().fadeOut(5000);
                     $('#msg_add').text("Silahkan cek kembali data id diagnosa dan no bpjs...!");
@@ -1630,7 +1640,8 @@
         var ketRujukan = $('#add_keterangan').val();
         var ppkRujukan = $('#add_ppk_rujukan').val();
         var tglRujukan = $('#add_tgl_rujukan').val();
-        var noHP = noTelp.replace("-", "").replace("_", "");
+        var noHP = noTelp.replace(/[-]/g, '');
+        var hp = noHP.replace(/[_]/g, '');
         var idDignosa = $('#add_id_diagnosa').val();
         var ketDiagnosa = $('#add_keterangan_diagnosa').val();
 
@@ -1640,6 +1651,7 @@
         var kamar = $('#add_kamar').val();
         var kelasKamar = $('#add_kelas_kamar').val();
         var dokter = $('#dokter_add_dpjp_1').val();
+        var kelasPasien = $('#kelas_pasien').val();
 
         var ktp = document.getElementById('img_ktp_canvas');
         var foto = document.getElementById('add_foto_rujukan');
@@ -1674,7 +1686,7 @@
             'tempat_lahir': tempatLahir,
             'tanggal_lahir': tanggalLahir,
             'agama': agama,
-            'no_telp': noHP,
+            'no_telp': hp,
             'profesi': profesi,
             'suku': suku,
             'alamat': alamat,
@@ -1683,7 +1695,7 @@
             'jenis_pasien': jenisPasien,
             'kelas_kamar': kelasKamar,
             'kamar': kamar,
-            'id_diganosa': idDignosa,
+            'diagnosa': idDignosa,
             'ket_diagnosa': ketDiagnosa,
             'perujuk': perujuk,
             'no_rujukan': noRujukan,
@@ -1693,7 +1705,8 @@
             'img_rujukan': fotoFinal,
             'uang_muka': uangMuka,
             'metode_pembayaran': metode,
-            'data_dpjp': dataDpjp
+            'data_dpjp': dataDpjp,
+            'id_kelas':kelasPasien
         };
         var objectString = JSON.stringify(data);
         $('#save_add').hide();
@@ -1706,12 +1719,13 @@
                     $('#load_add').hide();
                     $('#info_dialog').dialog('open');
                     $('#modal-daftar-pasien').modal('hide');
-                    $('body').scrollTop(0);
+                    $('#back_top').scrollTop(0);
                 } else {
                     $('#save_add').show();
                     $('#load_add').hide();
-                    $('#warning_add').show();
-                    $('#msg_add').text(response.msg).fadeOut(5000);
+                    $('#warning_add').show().fadeOut(5000);
+                    $('#msg_add').text(response.msg);
+                    $('#back_top').scrollTop(0);
                 }
             }
         });
@@ -1754,6 +1768,53 @@
         }else{
             $('#add_keterangan_diagnosa').val('');
         }
+    }
+
+    function cekBpjs() {
+        var noBpjs = $('#add_no_bpjs').val();
+        $('#btn-cek').html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...');
+        dwr.engine.setAsync(true);
+        CheckupAction.checkStatusBpjs(noBpjs, {
+            callback: function (response) {
+                var warnClass = "";
+                var title = "";
+                var msg = "";
+                var icon = "";
+                var val = "";
+                if (response.keteranganStatusPeserta == "AKTIF") {
+                    $('#kelas_pasien').val(response.kodeKelas);
+                    $('#no_mr').val(response.noMr);
+                    val = "aktif";
+                    icon = "fa-info";
+                    title = "Info!";
+                    warnClass = "alert-success";
+                    msg = "No BPJS berhasil diverifikasi dengan status AKTIF!";
+                } else if (response.keteranganStatusPeserta == "TIDAK AKTIF") {
+                    val = "tidak aktif";
+                    icon = "fa-warning";
+                    title = "Warning!";
+                    warnClass = "alert-warning";
+                    msg = "No BPJS berhasil diverifikasi dengan status TIDAK AKTIF!";
+                } else {
+                    val = "tidak ditemukan";
+                    icon = "fa-warning";
+                    title = "Warning!";
+                    warnClass = "alert-danger";
+                    msg = "No BPJS tidak ditemukan atau periksa kembali koneksi internet anda...!";
+                }
+
+                var warning = '<div class="alert ' + warnClass + ' alert-dismissible">' +
+                    '<h4><i class="icon fa ' + icon + '"></i>' + title + '</h4>' + msg +
+                    '</div>';
+
+                $('#status_bpjs').val(val);
+                $('#warn-bpjs').html(warning);
+                $('#warn-bpjs').fadeOut(5000);
+                $('#btn-cek').html('<i class="fa fa-search"></i> Check');
+
+            }
+        });
+
     }
 </script>
 

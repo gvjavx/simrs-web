@@ -507,7 +507,8 @@
 
         if (usname != ""){
             UserAction.getStringUrlPhotoProfile(function (str) {
-                $("#img-profile-sm-sm").attr('src', str);
+                // $("#img-profile-sm-sm").attr('src', str);
+                $("#img-profile-sm-sm").html('<img src="'+str+'" class="user-image" alt="User Image" onerror="this.onerror=null;this.src=\'<s:url value="/pages/images/unknown-person.png"></s:url>\'">');
                 $("#img-profile").attr('src', str);
             });
         }
@@ -687,7 +688,8 @@
                         <%--<div id="img-profile-small">--%>
 
                         <%--</div>--%>
-                        <img id="img-profile-sm-sm" class="user-image" alt="User Image" onerror="this.onerror=null;this.src='<s:url value="/pages/images/unknown-person.png"></s:url>;'">
+                            <span id="img-profile-sm-sm"></span>
+                        <%--<img id="img-profile-sm-sm" class="user-image" alt="User Image" onerror="this.onerror=null;this.src='<s:url value="/pages/images/unknown-person.png"></s:url>;'">--%>
                         <span class="hidden-xs" id="user_name_head"></span>
                     </a>
                     <ul class="dropdown-menu">

@@ -4,6 +4,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.bpjs.tindakan.dao.TindakanBpjsDao;
 import com.neurix.simrs.bpjs.tindakan.model.ImSimrsTindakanBpjsEntity;
 import com.neurix.simrs.bpjs.tindakan.model.TindakanBpjs;
+import com.neurix.simrs.master.kategoritindakanina.dao.KategoriTindakanInaDao;
+import com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity;
+import com.neurix.simrs.master.kategoritindakanina.model.KategoriTindakanIna;
 import com.neurix.simrs.master.tindakan.bo.HeaderTindakanBo;
 import com.neurix.simrs.master.tindakan.dao.HeaderTindakanDao;
 import com.neurix.simrs.master.tindakan.model.HeaderTindakan;
@@ -20,7 +23,7 @@ import java.util.Map;
 public class HeaderTindakanBoImpl implements HeaderTindakanBo {
     private static transient Logger logger = Logger.getLogger(HeaderTindakanBoImpl.class);
     private HeaderTindakanDao headerTindakanDao;
-    private TindakanBpjsDao tindakanBpjsDao;
+    private KategoriTindakanInaDao kategoriTindakanInaDao;
 
     @Override
     public List<HeaderTindakan> getByCriteria(HeaderTindakan bean) throws GeneralBOException {
@@ -64,9 +67,9 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                 headerTindakan.setCreatedWho(entity.getCreatedWho());
                 headerTindakan.setLastUpdate(entity.getLastUpdate());
                 headerTindakan.setLastUpdateWho(entity.getLastUpdateWho());
-                ImSimrsTindakanBpjsEntity bpjsEntity = tindakanBpjsDao.getById("idTindakanBpjs", bean.getKategoriInaBpjs());
-                if(bpjsEntity != null){
-                    headerTindakan.setNamaKategoriBpjs(bpjsEntity.getNamaTindakanBpjs());
+                ImSimrsKategoriTindakanInaEntity inaEntity = kategoriTindakanInaDao.getById("id", entity.getKategoriInaBpjs());
+                if(inaEntity != null){
+                    headerTindakan.setNamaKategoriBpjs(inaEntity.getNama());
                 }
                 headerTindakanList.add(headerTindakan);
             }
@@ -157,8 +160,8 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
         return response;
     }
 
-    public void setTindakanBpjsDao(TindakanBpjsDao tindakanBpjsDao) {
-        this.tindakanBpjsDao = tindakanBpjsDao;
+    public void setKategoriTindakanInaDao(KategoriTindakanInaDao kategoriTindakanInaDao) {
+        this.kategoriTindakanInaDao = kategoriTindakanInaDao;
     }
 
     public void setHeaderTindakanDao(HeaderTindakanDao headerTindakanDao) {

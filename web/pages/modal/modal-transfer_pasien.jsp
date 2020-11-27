@@ -546,10 +546,10 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Kesadaran / GCS</label>
                             <div class="col-md-4">
-                               <input oninput="setSideValue('kps4', this.value)" class="form-control" id="kps3" style="margin-top: 7px">
+                               <input oninput="setSideValue('kps4', this.value)" class="form-control" id="kps3" style="margin-top: 7px" type="number">
                             </div>
                             <div class="col-md-4">
-                                <input class="form-control" id="kps4" style="margin-top: 7px">
+                                <input class="form-control" id="kps4" style="margin-top: 7px" type="number">
                             </div>
                         </div>
                     </div>

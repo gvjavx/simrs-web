@@ -1121,7 +1121,6 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ---------- SUDAH DI PROD -----------
 ----------- +++++++++++ ------------
 
---BARU BARU INI BELUM DI PROD
 --FRIDAY 23-10-2020
 SELECT * FROM im_simrs_pelayanan
 WHERE id_pelayanan = 'PYN00000010';
@@ -1235,6 +1234,17 @@ ALTER TABLE im_simrs_pasien
 ADD COLUMN pendidikan VARCHAR(100),
 ADD COLUMN status_perkawinan VARCHAR(100);
 
+---------- SUDAH DI PROD -----------
+====================================
+
+            /\   /\   /\
+           |__| |__| |__|
+            ||   ||   ||
+            ||   ||   ||
+            ||   ||   ||
+----------- ||   ||   || -----------
+---------- SUDAH DI PROD -----------
+----------- +++++++++++ ------------
 
 --INI BELOM DI PROD
 --KEMMIS MALAM JUMAT
@@ -1277,6 +1287,31 @@ WHERE branch_id = 'RS05';
 UPDATE im_branches
 SET warna = '#00ffff'
 WHERE branch_id = 'RS06';
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN no_antrian VARCHAR(100);
+
+INSERT INTO im_functions VALUES
+(2356, 'print no antrian', '/checkup/printNoAntrian_checkup.action', 1474, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2356, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN poli_rujukan_internal VARCHAR(100);
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN no_rujukan_internal VARCHAR(100);
+
+INSERT INTO im_functions VALUES
+(2357, 'print no rujukan', '/checkupdetail/printNoRujukan_checkupdetail.action', 1481, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2357, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE it_simrs_pengkajian_ulang_keperawatan
+ADD COLUMN tipe VARCHAR(100);
+
 
 
 

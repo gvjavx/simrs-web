@@ -387,7 +387,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 antrian.setJamAkhir(item.getJamAkhir());
                 antrian.setNoAntrian(item.getNoAntrian());
 
-                if  (findNoAntrian != null) {
+                    if  (findNoAntrian != null) {
                     List<AntianOnline> temp = new ArrayList<>();
 
                     try {

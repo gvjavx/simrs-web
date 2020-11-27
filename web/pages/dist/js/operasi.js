@@ -707,7 +707,7 @@ function saveDataOperasi(jenis, ket) {
         var ttd1 = document.getElementById("ttd_spesialis");
         var cekTtd1 = isBlank(ttd1);
 
-        if (pa1 && pa2 && pa3 != '' && !cekTtd1) {
+        if (nama && sip && pa1 && pa2 && pa3 != '' && !cekTtd1) {
             data.push({
                 'parameter': 'Makan minum terakhir',
                 'jawaban1': pa1,
@@ -784,7 +784,7 @@ function saveDataOperasi(jenis, ket) {
         var cekTtd4 = isCanvasBlank(ttd4);
         var cekTtd5 = isCanvasBlank(ttd5);
 
-        if (va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
+        if (nama1 && nama2 && nama3 && nama4 && nama5 && sip1 && sip3 && va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
 
             data.push({
                 'parameter': 'pernyataan',
@@ -1002,7 +1002,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Kesadaran',
                 'jawaban1': isi1,
                 'skor': skor1,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1010,7 +1010,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Warna Kulit',
                 'jawaban1': isi2,
                 'skor': skor2,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1018,7 +1018,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Aktifitas',
                 'jawaban1': isi3,
                 'skor': skor3,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1026,7 +1026,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Respirasi',
                 'jawaban1': isi4,
                 'skor': skor4,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1034,7 +1034,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Kardio Vaskuler',
                 'jawaban1': isi5,
                 'skor': skor5,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1063,7 +1063,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Kesadaran',
                 'jawaban1': isi1,
                 'skor': skor1,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1071,7 +1071,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Respirasi',
                 'jawaban1': isi2,
                 'skor': skor2,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1079,7 +1079,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Aktifitas',
                 'jawaban1': isi3,
                 'skor': skor3,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1102,8 +1102,8 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Penilaian',
                 'jawaban1': isi1,
                 'skor': skor1,
-                'keterangan': ket,
-                'jenis': 'pindah_rr',
+                'keterangan': jenis,
+                'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1148,7 +1148,7 @@ function saveDataOperasi(jenis, ket) {
 
         var cekTtd1 = isCanvasBlank(ttd1);
 
-        if (!cekTtd1 && isi.length == dataTemp.length) {
+        if (!cekTtd1 && isi.length == dataTemp.length && nama && sip != '') {
 
             var canv1 = ttd1.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -1341,7 +1341,9 @@ function saveDataOperasi(jenis, ket) {
         var va25 = $('[name=pra25]:checked').val();
         var va26 = $('[name=pra26]:checked').val();
 
-        if (va1 != '') {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
+            va14 && va15 && va16 && va17 && va18 && va19 && va21 && va22 != '' &&
+            va11 && va12 && va13 && va20 && va23 && va24 && va25 && va26 != undefined) {
 
             data.push({
                 'parameter': 'Tanggal',
@@ -1567,7 +1569,7 @@ function saveDataOperasi(jenis, ket) {
             }
         });
 
-        if (!cekTtd1 && v1 && v2 && v3 && va9 != '' && va3 && va4 && va5 && va7 && va8 && va10 && va11 && va12 != undefined) {
+        if (!cekTtd1 && nama && sip && v1 && v2 && v3 && va9 != '' && va3 && va4 && va5 && va7 && va8 && va10 && va11 && va12 != undefined) {
 
             data.push({
                 'parameter': 'Pre medikasi',
@@ -1985,6 +1987,7 @@ function saveDataOperasi(jenis, ket) {
                 'nama_terang': nama3,
                 'id_detail_checkup': idDetailCheckup
             });
+            console.log(data);
             cek = true;
         }
     }
@@ -2095,7 +2098,7 @@ function saveDataOperasi(jenis, ket) {
 
         var cekTtd1 = isCanvasBlank(ttd1);
 
-        if (!cekTtd1) {
+        if (!cekTtd1 && nama && sip != '') {
 
             var canv1 = ttd1.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -2432,7 +2435,7 @@ function saveDataOperasi(jenis, ket) {
 
         if (va2 && va3 && va4 != undefined && va1 && va5 && va6 &&
             va7 && va8 && va9 && va10 && va11 && va12 && va13 && va14 && va15 &&
-            va16 && va17 && va18 != '' && !cekTtd1) {
+            va16 && va17 && va18 && nama && sip != '' && !cekTtd1) {
 
             var canv1 = ttd1.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");

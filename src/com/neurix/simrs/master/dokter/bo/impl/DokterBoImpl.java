@@ -584,7 +584,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                     dokter.setFlagTele(entity.getFlagTele());
                     dokter.setLat(entity.getLat());
                     dokter.setLon(entity.getLon());
-                    dokter.setKuotaBpjs(entity.getKuotaBpjs());
+//                    dokter.setKuotaBpjs(entity.getKuotaBpjs());
 
                     if (entity.getIdPelayanan() != null){
                         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();

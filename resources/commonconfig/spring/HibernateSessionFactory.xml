@@ -51,6 +51,7 @@
                 <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">postgres</prop>
 
+
             </props>
         </property>
         <property name="mappingResources">
@@ -341,6 +342,7 @@
                 <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsHeaderTindakanEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsHeaderObatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/kategoripersediaan/hibernate/ImSimrsKategoriPersediaanEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImLicenseZebra.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsKategoriResikoJatuhEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsParameterResikoJatuhEntity.hbm.xml</value>

@@ -124,7 +124,7 @@ public class LemburFormController implements ModelDriven<Object> {
         try {
             notif = lemburBoProxy.saveAddLembur(lembur);
         } catch (GeneralBOException e) {
-            result.setActionError(e.getMessage());
+            model.setActionError(e.getMessage());
             logger.error("[LemburFormPegawaiController.update] Error when add lembur,", e);
         }
 

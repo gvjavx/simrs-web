@@ -8,6 +8,9 @@
     <bean id="branchController" class="com.neurix.hris.mobileapi.BranchController"
           p:branchBoProxy-ref="branchBoProxy"/>
 
+    <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
+          p:branchBoProxy-ref="branchBoProxy"/>
+
     <bean id="branchAction" class="com.neurix.authorization.company.action.BranchAction"
           p:branchBoProxy-ref="branchBoProxy"/>
 

@@ -197,7 +197,8 @@ function setDataPasien() {
         CheckupAction.cekLogin({
             callback: function (res) {
                 if (res != '') {
-                    $('.nama_petugas').val(res);
+                    $('.nama_petugas').val(res.msg);
+                    $('.nip_petugas').val(res.status);
                 }
             }
         });

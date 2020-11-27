@@ -607,7 +607,7 @@
                                 <label style="margin-left: 8px">TTD Perawat Operasi</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_perawat" width="220"
                                         onmouseover="paintTtd('ttd_perawat')"></canvas>
-                                <input class="form-control" id="nama_terang_perawat" placeholder="Nama Terang">
+                                <input class="form-control nama_petugas" id="nama_terang_perawat" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_perawat')"><i
                                         class="fa fa-trash"></i> Clear
@@ -2571,8 +2571,8 @@
                                 <label style="margin-left: 8px">TTD Dokter Operator</label>
                                 <canvas class="paint-canvas-ttd" id="ttd_lap_dokter" width="220"
                                         onmouseover="paintTtd('ttd_lap_dokter')"></canvas>
-                                <input class="form-control" id="nama_terang_sps" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_sps" placeholder="SIP">
+                                <input class="form-control nama_dokter_ri" id="nama_terang_sps" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_sps" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_lap_dokter')"><i
                                         class="fa fa-trash"></i> Clear

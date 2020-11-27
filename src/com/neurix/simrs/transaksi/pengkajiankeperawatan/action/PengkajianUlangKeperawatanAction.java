@@ -1,5 +1,6 @@
 package com.neurix.simrs.transaksi.pengkajiankeperawatan.action;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -13,7 +14,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -43,16 +50,56 @@ public class PengkajianUlangKeperawatanAction {
                 keperawatan.setKodeParameter(obj.getString("kode"));
                 keperawatan.setWaktu(obj.getString("waktu"));
                 if (obj.has("jawaban")) {
+                    String jawaban = "";
+                    if(obj.has("tipe")){
+                        if("ttd".equalsIgnoreCase(obj.getString("tipe"))) {
+                            try {
+                                BASE64Decoder decoder = new BASE64Decoder();
+                                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban"));
+                                String wkt = time.toString();
+                                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                                String fileName = obj.getString("id_detail_checkup") + i + "-" + patten + ".png";
+                                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                                if (image == null) {
+                                    response.setStatus("error");
+                                    response.setMsg("Buffered Image is null");
+                                } else {
+                                    File f = new File(uploadFile);
+                                    ImageIO.write(image, "png", f);
+                                    String nama = "";
+                                    String sip = "";
+                                    if(obj.has("nama_terang")){
+                                        nama = "|"+obj.getString("nama_terang");
+                                    }
+                                    if(obj.has("sip")){
+                                        sip = "|"+obj.getString("sip");
+                                    }
+                                    if(obj.has("tipe")){
+                                        keperawatan.setTipe(obj.getString("tipe"));
+                                    }
+                                    jawaban = fileName+nama+sip;
+                                }
+                            } catch (IOException e) {
+                                response.setStatus("error");
+                                response.setMsg("Found Error when pasrse object to images, " + e.getMessage());
+                            }
+                        }
+                    }else{
+                        jawaban = obj.getString("jawaban");
+                    }
+
                     if ("pagi".equalsIgnoreCase(obj.getString("waktu"))) {
-                        keperawatan.setPagi(obj.getString("jawaban"));
+                        keperawatan.setPagi(jawaban);
                     }
                     if ("siang".equalsIgnoreCase(obj.getString("waktu"))) {
-                        keperawatan.setSiang(obj.getString("jawaban"));
+                        keperawatan.setSiang(jawaban);
                     }
                     if ("malam".equalsIgnoreCase(obj.getString("waktu"))) {
-                        keperawatan.setMalam(obj.getString("jawaban"));
+                        keperawatan.setMalam(jawaban);
                     }
                 }
+
                 if (obj.has("jenis")) {
                     keperawatan.setJenis(obj.getString("jenis"));
                     pengkajian.setJenis(obj.getString("jenis"));

@@ -21,7 +21,11 @@ function getJenisResep() {
         arBodyJenisResep.push({"nilai": "asuransi", "label": "ASURANSI"}, {"nilai": "umum", "label": "UMUM"});
     } else if (jenisPeriksaPasien == "bpjs") {
         arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
-    } else {
+    } else if (jenisPeriksaPasien == "paket_perusahaan") {
+        arBodyJenisResep.push({"nilai": "paket_perusahaan", "label": "Medical Checkup"});
+    } else if (jenisPeriksaPasien == "paket_individu") {
+        arBodyJenisResep.push({"nilai": "paket_individu", "label": "Promo"});
+    } else if (jenisPeriksaPasien == "umum") {
         arBodyJenisResep.push({"nilai": "umum", "label": "UMUM"});
     }
 
@@ -1391,7 +1395,7 @@ function listSelectParameter(idLab) {
                     option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
                 });
                 $('#lab_parameter').html(option);
-                $('#kp_parameter').html(option);
+                $('#ckp_parameter').html(option);
                 $('#lab_parameter option').prop('selected', true);
                 $('#ckp_parameter option').prop('selected', true);
             } else {
@@ -3060,6 +3064,9 @@ function savePemeriksaanPasien() {
                     $('#waiting_dialog').dialog('close');
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(6);
+                    if('rujuk_internal' == tindakLanjut){
+                        window.open('printNoRujukan_checkupdetail.action?id='+idDetailCheckup, '_blank');
+                    }
                 } else {
                     $('#waiting_dialog').dialog('close');
                     $('#error_dialog').dialog('open');

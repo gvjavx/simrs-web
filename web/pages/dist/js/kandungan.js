@@ -40,7 +40,7 @@ function showModalRB(jenis, idRM, isSetIdRM) {
     setDataPasien();
 }
 
-function saveRB(jenis, ket) {
+function asesmen_ponek_rbsaveRB(jenis, ket) {
 
     var data = [];
     var cek = false;
@@ -91,7 +91,7 @@ function saveRB(jenis, ket) {
         var sip3 = $('#sip_ttd3').val();
         var sip4 = $('#sip_ttd4').val();
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && nama1 && nama2 && nama3 && nama4 && sip1 && sip2 && sip3 && sip4 &&
             va11 && va12 && va13 && va14 && va15 != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4) {
 
             data.push({
@@ -350,7 +350,7 @@ function saveRB(jenis, ket) {
         var sip1 = $('#sip_ttd1').val();
         var sip2 = $('#sip_ttd2').val();
 
-        if (!cekTtd1 && !cekTtd2 && !cekTtd3) {
+        if (!cekTtd1 && !cekTtd2 && !cekTtd3 && nama1 && nama2 && nama3 && sip1 && sip2 != '') {
 
             data.push({
                 'parameter': 'Tanggal Jam',
@@ -705,7 +705,7 @@ function saveRB(jenis, ket) {
 
         var cekTtd1 = isCanvasBlank(ttd1);
 
-        if (!cekTtd1) {
+        if (!cekTtd1 && nama1 && sip1 != '') {
 
             data.push({
                 'parameter': 'Tempat Lahir',
@@ -1000,7 +1000,7 @@ function saveRB(jenis, ket) {
         var sip1 = $('#sip_ttd1').val();
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
-            va11 && va12 != '' && !cekTtd1) {
+            va11 && va12 != '' && !cekTtd1 && nama1 && sip1 != '') {
 
             data.push({
                 'parameter': 'Persiapan Operasi',
@@ -1182,7 +1182,7 @@ function saveRB(jenis, ket) {
         var nama1 = $('#nama_terang_ttd1').val();
         var sip1 = $('#sip_ttd1').val();
 
-        if (va1 && va2 && va3 && va4 != '' && !cekTtd1) {
+        if (va1 && va2 && va3 && va4 && nama1 && sip1 != '' && !cekTtd1) {
 
             data.push({
                 'parameter': 'Kala I',

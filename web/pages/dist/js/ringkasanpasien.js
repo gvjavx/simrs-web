@@ -865,7 +865,6 @@ function detailRingkasanPasien(jenis) {
                                 '</tr>';
                         }
                     } else if ("resume_medis_pasien" == item.keterangan) {
-                        console.log(jwb);
                         if ("Prognosis" == item.parameter) {
                             var isi = jwb.split("|");
                             var li = "";
@@ -941,10 +940,20 @@ function detailRingkasanPasien(jenis) {
                                 '</tr>';
                         }
                     } else {
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td>' + jwb + '</td>' +
-                            '</tr>';
+                        if(item.tipe == 'ttd'){
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + item.jawaban + '" style="height: 100px">' +
+                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                '</td>' +
+                                '</tr>';
+                        }else{
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + jwb + '</td>' +
+                                '</tr>';
+                        }
                     }
                     cekData = true;
                     tgl = item.createdDate;

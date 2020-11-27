@@ -1455,8 +1455,8 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                                 <label>TTD Petugas</label>
                                 <canvas class="paint-canvas-ttd" id="cppt9" width="220"
                                         onmouseover="paintTtd('cppt9')"></canvas>
-                                <input class="form-control" id="nama_petugas" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_petugas" placeholder="SIP">
+                                <input class="form-control nama_petugas" id="nama_petugas" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control nip_petugas" id="sip_petugas" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('cppt9')"><i
                                         class="fa fa-trash"></i> Clear
@@ -2155,7 +2155,7 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                                 </button>
                             </div>
                             <div class="col-md-6">
-                                <span>TTD Petugas</span>
+                                <span>TTD Dokter</span>
                                 <canvas class="paint-canvas-ttd" id="phd10" width="230"
                                         onmouseover="paintTtd('phd10')"></canvas>
                                 <input class="form-control nama_dokter" id="nama_terang_phd10" placeholder="Nama Terang">
@@ -2174,8 +2174,8 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                                 <span>TTD Nama Perawat Yang Bertugas</span>
                                 <canvas class="paint-canvas-ttd" id="phd011" width="230"
                                         onmouseover="paintTtd('phd011')"></canvas>
-                                <input class="form-control" id="nama_terang_phd011" placeholder="Nama Terang">
-                                <input class="form-control" id="sip_phd011" placeholder="SIP" style="margin-top: 3px">
+                                <input class="form-control nama_petugas" id="nama_terang_phd011" placeholder="Nama Terang">
+                                <input class="form-control nip_petugas" id="sip_phd011" placeholder="SIP" style="margin-top: 3px">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('phd011')"><i class="fa fa-trash"></i>
                                     Clear

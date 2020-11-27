@@ -236,7 +236,7 @@
                                 <label style="margin-left: 8px">TTD Perawat</label>
                                 <canvas class="paint-canvas-ttd" id="ews12" width="220"
                                         onmouseover="paintTtd('ews12')"></canvas>
-                                <input class="form-control" id="nama_terang_ews12" placeholder="Nama Terang">
+                                <input class="form-control nama_petugas" id="nama_terang_ews12" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="clearConvas('ews12')"><i
                                         class="fa fa-trash"></i> Clear

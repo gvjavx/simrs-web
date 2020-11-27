@@ -237,11 +237,11 @@
                         <div class="form-group">
                             <label class="col-md-3">Berat Badan</label>
                             <div class="col-md-3">
-                                <input class="form-control berat-pasien" id="id7">
+                                <input class="form-control berat-pasien" id="id7" type="number">
                             </div>
                             <label class="col-md-3">Tinggi Badan</label>
                             <div class="col-md-3">
-                                <input class="form-control tinggi-pasien" id="id8">
+                                <input class="form-control tinggi-pasien" id="id8" type="number">
                             </div>
                         </div>
                     </div>
@@ -1990,7 +1990,7 @@
                                 <label>TTD Perawat</label>
                                 <canvas class="paint-canvas-ttd" id="asuhan_perawat" width="220"
                                         onmouseover="paintTtd('asuhan_perawat')"></canvas>
-                                <input class="form-control" id="nama_asuhan_perawat" placeholder="Nama Terang">
+                                <input class="form-control nama_petugas" id="nama_asuhan_perawat" placeholder="Nama Terang">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('asuhan_perawat')"><i
                                         class="fa fa-trash"></i> Clear
