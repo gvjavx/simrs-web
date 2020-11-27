@@ -1602,9 +1602,9 @@ public class UserBoImpl implements UserBo {
             ImBiodataEntity biodata = biodataDao.getById("nip", userId, "Y");
 
             if  (biodata != null) {
+                userDetailsLogin = new UserDetailsLogin();
                 userDetailsLogin.setJenisKelamin(biodata.getGender());
                 userDetailsLogin.setFlagFingerMoblie(biodata.getFlagFingerMobile());
-                userDetailsLogin = new UserDetailsLogin();
                 userDetailsLogin.setUserId(userId);
                 userDetailsLogin.setUsername(userId);
                 userDetailsLogin.setUserNameDetail(userName);
