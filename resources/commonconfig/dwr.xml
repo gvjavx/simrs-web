@@ -725,7 +725,6 @@
       <create creator="new">
           <param name="class" value="com.neurix.akuntansi.master.settingReportKeuanganKonsol.action.SettingReportKeuanganKonsolAction"/>
       </create>
-      <convert converter="bean" match="com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsol"/>
       <convert converter="bean" match="com.neurix.akuntansi.master.settingReportKeuanganKonsol.model.AkunSettingReportKeuanganKonsolDetail"/>
 
       <create creator="new">
@@ -860,13 +859,6 @@
       <create creator="new">
         <param name="class" value="com.neurix.simrs.transaksi.initdashboard.action.InitDashboardAction"/>
       </create>
-
-
-      <create creator="new">
-          <param name="class" value="com.neurix.hris.master.positionBagian.action.PositionBagianAction"/>
-      </create>
-      <convert converter="bean" match="com.neurix.hris.master.positionBagian.model.positionBagian"/>
-
 
     </allow>
 </dwr>
