@@ -3,3 +3,6 @@ update im_simrs_asuransi set is_laka = 'Y' where is_laka is null ;
 
 ALTER TABLE im_simrs_dokter
 ADD COLUMN kuota_bpjs bigint;
+
+ALTER TABLE im_simrs_header_tindakan
+ADD COLUMN flag_konsul_tele VARCHAR(1);
