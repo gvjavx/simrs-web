@@ -41,7 +41,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Detail RekananOps
+            Detail Rekanan Oprasional
         </h1>
     </section>
     <!-- Main content -->
@@ -50,7 +50,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i>Detail RekananOps</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Detail Rekanan Oprasional</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -137,7 +137,7 @@
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add RekananOps
+                                                            Add Detail RekananOps
                                                         </sj:a>
                                                     </td>
                                                     <td>
@@ -176,7 +176,7 @@
 
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="440" width="600" autoOpen="false"
-                                                                   title="RekananOps ">
+                                                                   title="Detail Rekanan Ops ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 

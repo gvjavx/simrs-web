@@ -97,7 +97,7 @@
 
 
 
-                <legend align="left">Edit Detail RekananOps</legend>
+                <legend align="left">Edit Detail Rekanan Oprasional</legend>
 
 
                 <table>

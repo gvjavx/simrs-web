@@ -88,7 +88,7 @@
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Add Rekanan Ops</legend>
+                <legend align="left">Add Detail Rekanan Ops</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -106,7 +106,7 @@
                         <td width="70%">
                             <table>
                                 <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
-                                <s:select list="#initComboRekanan.listOfComboRekananOps" id="namarekananadd" name="detailRekananOps.idRekananOps"
+                                <s:select list="#initComboRekanan.listOfComboRekananOps" id="namarekananadd" name="detailRekananOps.idRekananOps" 
                                           listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
                                           cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
@@ -121,6 +121,7 @@
                             <table>
                                 <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                                 <s:select list="#comboBranch.listOfComboBranches" id="branchIdadd" name="detailRekananOps.branchId"
+                                          cssStyle="margin-top: 5px"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
                                           cssClass="form-control" />
                             </table>
@@ -149,7 +150,8 @@
                         <td>
                             <table>
                                 <s:select list="#{'N':'Non-Active'}" id="bpjs" name="detailRekananOps.isBpjs"
-                                          headerKey="Y" headerValue="Active" cssClass="form-control select2" />
+                                          headerKey="Y" headerValue="Active" cssClass="form-control select2"
+                                          cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -199,7 +201,7 @@
                                         </sj:dialog>
 
                                         <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   height="190" width="400" autoOpen="false" title="Infomation Dialog"
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');

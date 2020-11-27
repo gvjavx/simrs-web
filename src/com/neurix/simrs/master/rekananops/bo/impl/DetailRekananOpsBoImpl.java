@@ -194,15 +194,15 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
         logger.info("[DetailRekananOps.saveEdit] start process >>>");
         if (bean != null) {
 
-            List<ImSimrsDetailRekananOpsEntity> cekList = new ArrayList<>();
-            try {
-                cekList = detailRekananOpsDao.getDetailRekananOps(bean.getIdRekananOps() , bean.getBranchId());
-            } catch (HibernateException e) {
-                logger.error(e.getMessage());
-            }
-            if (cekList.size() > 0) {
-                throw new GeneralBOException("nama Detail rekanan ops dan branch sudah ada sudah ada...!");
-            } else {
+//            List<ImSimrsDetailRekananOpsEntity> cekList = new ArrayList<>();
+//            try {
+//                cekList = detailRekananOpsDao.getDetailRekananOps(bean.getIdRekananOps() , bean.getBranchId());
+//            } catch (HibernateException e) {
+//                logger.error(e.getMessage());
+//            }
+//            if (cekList.size() > 0) {
+//                throw new GeneralBOException("nama Detail rekanan ops dan branch sudah ada sudah ada...!");
+//            } else {
 
             String idDetailRekananOps = bean.getIdDetailRekananOps();
             ImSimrsDetailRekananOpsEntity imSimrsDetailRekananOpsEntity = null;
@@ -240,7 +240,7 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
 //                condition = "Error, not found data Cuti with request id, please check again your data ...";
             }
         }
-        }
+//        }
         logger.info("[DetailImpl.saveEdit] end process <<<");
         return null;
     }

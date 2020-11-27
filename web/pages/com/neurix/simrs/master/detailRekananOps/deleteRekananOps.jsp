@@ -85,7 +85,7 @@
 
 
 
-                <legend align="left">Delete Pelayanan</legend>
+                <legend align="left">Delete Detail Rekanan Oprasional</legend>
 
 
                 <table>
