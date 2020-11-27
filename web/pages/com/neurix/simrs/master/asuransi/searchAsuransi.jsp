@@ -107,9 +107,9 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Tidak Aktif'}" id="isLaka"
+                                                        <s:select list="#{'Y':'Aktif', 'N':'Tidak Aktif'}" id="isLaka"
                                                                   name="asuransi.isLaka"
-                                                                  headerKey="Y" headerValue="Aktif"
+                                                                  headerKey="" headerValue="[Select One]"
                                                                   cssClass="form-control select2" />
                                                     </table>
                                                 </td>
