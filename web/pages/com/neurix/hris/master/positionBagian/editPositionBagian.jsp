@@ -136,7 +136,7 @@
                         <td>
                             <table>
                                 <s:action id="combo" namespace="/department" name="initDepartment_department"/>
-                                <s:select list="#combo.listOfResultDepartment" id="divisiId1" name="positionBagian.divisiId" disabled="true"
+                                <s:select list="#session.listOfResultDepartment" id="divisiId1" name="positionBagian.divisiId" disabled="true"
                                           listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                 <s:hidden name ="positionBagian.divisiId" />
                             </table>

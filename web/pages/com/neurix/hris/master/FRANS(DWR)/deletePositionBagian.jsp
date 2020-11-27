@@ -8,20 +8,23 @@
 <head>
     <script type="text/javascript">
 
-        function callSearch2() {
+        function callSearch() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-            window.location.reload(true);
+//            window.location.reload(true);
+            document.positionBagianForm.action = 'search_positionBagian.action';
+            document.positionBagianForm.submit();
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
+            var bagianId = document.getElementById("bagianId1").value;
             var bagianName = document.getElementById("bagianName1").value;
-            var divisiId = document.getElementById("divisiId1").value;
 
 
-            if (bagianName != ''&& divisiId != '') {
-                if (confirm('Do you want to save this record?')) {
+
+            if (bagianName!= '' ) {
+                if (confirm('Do you want to Delete this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
 
@@ -29,6 +32,8 @@
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
                 }
+
+
             } else {
 
                 event.originalEvent.options.submit = false;
@@ -36,11 +41,9 @@
                 var msg = "";
 
                 if (bagianName == '') {
-                    msg += 'Field <strong>Sub Bidang/Divisi Name</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Sub Bidang/Name Name</strong> is required.' + '<br/>';
                 }
-                if (divisiId == '') {
-                    msg += 'Field <strong>Bidang/Divisi</strong> is required.' + '<br/>';
-                }
+
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
@@ -88,14 +91,14 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/positionBagian" action="saveAdd_positionBagian" cssClass="well form-horizontal">
+            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/positionBagian" action="saveDelete_positionBagian" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Add Sub Bidang/Divisi</legend>
+                <legend align="left">Delete Sub Bidang/Name Id</legend>
 
 
                 <table>
@@ -109,26 +112,49 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>Bidang/Devisi :</small></label>
+                            <label class="control-label"><small>Sub Bidang/Name Id :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboMasaTanam" namespace="/department" name="initDepartment_department"/>
-                                <s:select list="#session.listOfResultDepartment" id="divisiId1" name="positionBagian.divisiId"
-                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:textfield  id="bagianId1" name="positionBagian.bagianId" required="true" readonly="true" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Sub Bidang/Name Name :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="bagianName1" name="positionBagian.bagianName" readonly="true" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama :</small></label>
+                            <label class="control-label"><small>Bidang/Divisi Name :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="bagianName1" name="positionBagian.bagianName" required="true" disabled="false" cssClass="form-control"/>
+                                <s:action id="combo" namespace="/department" name="initDepartment_department"/>
+                                <s:select list="#combo.listOfResultDepartment" id="divisiId1" name="positionBagian.divisiId" disabled="true"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:hidden name ="positionBagian.divisiId" />
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Kodering :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="kodering1" name="positionBagian.kodering" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
                 </table>
 
 
@@ -140,8 +166,8 @@
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                            <i class="fa fa-check"></i>
-                            Save
+                            <i class="fa fa-trash"></i>
+                            Delete
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
@@ -160,7 +186,7 @@
                                                    closeTopics="closeDialog" modal="true"
                                                    resizable="false"
                                                    height="250" width="600" autoOpen="false"
-                                                   title="Save Data ...">
+                                                   title="Delete Data ...">
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>
@@ -179,8 +205,7 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
-                                                                      callSearch2();
-                                                                      link();
+                                                                      callSearch();
                                                                    }
                                                             }"
                                         >
@@ -227,4 +252,3 @@
 </table>
 </body>
 </html>
-

@@ -1,6 +1,8 @@
 package com.neurix.hris.master.positionBagian.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -459,6 +461,38 @@ public class PositionBagianAction extends BaseMasterAction{
 
         logger.info("[PositionAction.searchPositionBiodata] End process >>>");
         return listOfSearchPosition;
+    }
+
+
+    public List<positionBagian> initPositionBagianSearch(String positionBagianId, String comboMasaTanam, String positionBagianName) {
+        logger.info("[KodeRekeningAction.initKodeRekeningSearch] start process >>>");
+
+        List<positionBagian> listOfsearchPosisiBagian = new ArrayList();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+
+        positionBagian search = new positionBagian();
+        search.setBagianId(positionBagianId);
+        search.setDivisiId(comboMasaTanam);
+        search.setBagianName(positionBagianName);
+        search.setFlag("Y");
+
+        try {
+            listOfsearchPosisiBagian = positionBagianBo.getDataDevisiId(search);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = positionBagianBo.saveErrorMessage(e.getMessage(), "kodeRekeningBo.getDataStrukturCoa");
+            } catch (GeneralBOException e1) {
+                logger.error("[KodeRekeningAction.initKodeRekeningSearch] Error when saving error,", e1);
+            }
+            logger.error("[KodeRekeningAction.initKodeRekeningSearch] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+        }
+
+        logger.info("[KodeRekeningAction.initKodeRekeningSearch] end process <<<");
+        return listOfsearchPosisiBagian;
     }
 
     public String paging(){

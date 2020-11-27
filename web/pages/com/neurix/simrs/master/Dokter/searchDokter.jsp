@@ -205,6 +205,7 @@
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
+
                                                             <display:column property="idDokter" sortable="true" title="ID Dokter" />
                                                             <display:column property="namaDokter" sortable="true" title="Nama Dokter"  />
                                                             <display:column property="namaPelayanan" sortable="true" title="Nama Pelayanan"/>
@@ -213,17 +214,18 @@
                                                             <display:column property="kodering" sortable="true" title="Kode"/>
                                                             <%--<display:column property="flag" sortable="true" title="flag"  />--%>
                                                             <%--<display:column property="action" sortable="true" title="action"  />--%>
+
+                                                            <%--<display:column property="sip" sortable="true" title="Surat ijin praktek"  />--%>
+                                                            <display:column property="sip" sortable="true" title="sip" />
+                                                            <display:column property="kuotaOnSite" sortable="true" title="kuota OnSite"  />
+                                                            <display:column property="flagCall" sortable="true" title="flag Call"  />
+                                                            <display:column property="flagTele" sortable="true" title="flag Tele"  />
+                                                            <display:column property="kuotaTele" sortable="true" title="kuota Tele"  />
                                                             <display:column property="stCreatedDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="stLastUpdate" sortable="true" title="Last update"  />
 
-                                                            <display:column property="flagCall" sortable="true" title="flag Call"  />
-                                                            <display:column property="flagTele" sortable="true" title="flag Tele"  />
-                                                            <display:column property="kuotaTele" sortable="true" title="kuota Tele"  />
-
-                                                            <display:column property="sip" sortable="true" title="Surat ijin praktek"  />
-                                                            <display:column property="kuotaOnSite" sortable="true" title="kuota OnSite"  />
-                                                            <display:column property="kuotaBpjs" sortable="true" title="kuota Bpjs"  />
+                                                            <%--<display:column property="kuotaBpjs" sortable="true" title="kuota Bpjs"  />--%>
 
 
                                                         </display:table>
