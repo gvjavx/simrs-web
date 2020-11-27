@@ -176,6 +176,8 @@ public class LabBoImpl implements LabBo {
 //                imSimrsLabEntity.setIdOperatorLab(bean.getIdOperatorLab());
                 imSimrsLabEntity.setIdDokter(bean.getIdDokter());
                 imSimrsLabEntity.setIdKategoriLab(bean.getIdKategoriLab());
+
+
                 imSimrsLabEntity.setFlag(bean.getFlag());
                 imSimrsLabEntity.setAction(bean.getAction());
                 imSimrsLabEntity.setCreatedWho(bean.getCreatedWho());
@@ -250,6 +252,7 @@ public class LabBoImpl implements LabBo {
 //                    lab.setIdOperatorLab(labEntity.getIdOperatorLab());
                     lab.setIdDokter(labEntity.getIdDokter());
                     lab.setIdKategoriLab(labEntity.getIdKategoriLab());
+
                     lab.setFlag(labEntity.getFlag());
                     lab.setAction(labEntity.getAction());
                     lab.setStCreatedDate(labEntity.getCreatedDate().toString());
