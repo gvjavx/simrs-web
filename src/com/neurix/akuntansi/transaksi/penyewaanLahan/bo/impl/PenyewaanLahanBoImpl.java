@@ -322,6 +322,13 @@ public class PenyewaanLahanBoImpl implements PenyewaanLahanBo {
         ImMasterVendorEntity masterVendorEntity = masterVendorDao.getById("nomorMaster",data.getNamaPenyewa());
         result.setNamaPenyewaName(masterVendorEntity.getNama());
 
+        if (data.getApprovalDate()!=null){
+            result.setStApprovalDate(CommonUtil.convertTimestampToStringLengkap(data.getApprovalDate()));
+        }
+        if (data.getCancelDate()!=null){
+            result.setStCancelDate(CommonUtil.convertTimestampToStringLengkap(data.getCancelDate()));
+        }
+
         return result;
     }
 }

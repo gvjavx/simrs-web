@@ -976,8 +976,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     //for Cuti
     public List<ImBiodataEntity> findAllUserCuti() throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
-                .add(Restrictions.eq("tipePegawai","TP01"))
-                .add(Restrictions.isNotNull("pin"))
+//                .add(Restrictions.eq("tipePegawai","TP01"))
+//                .add(Restrictions.isNotNull("pin"))
                 .add(Restrictions.eq("flag","Y"))
                 .addOrder(Order.asc("nip"))
                 .list();
@@ -987,8 +987,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public List<ImBiodataEntity> findUserCuti(String nip) throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
                 .add(Restrictions.eq("nip",nip))
-                .add(Restrictions.eq("tipePegawai","TP01"))
-                .add(Restrictions.isNotNull("pin"))
+//                .add(Restrictions.eq("tipePegawai","TP01"))
+//                .add(Restrictions.isNotNull("pin"))
                 .add(Restrictions.eq("flag","Y"))
                 .addOrder(Order.asc("nip"))
                 .list();

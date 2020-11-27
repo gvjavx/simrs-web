@@ -1814,7 +1814,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     }
                     payroll.setStTanggalAktifSekarang(dateSekarang);
                     DateTime tanggalPayroll = new DateTime(CommonUtil.convertToDate("01-" + bean.getBulan() + "-" + bean.getTahun()).getTime());
-                    Period p = new Period(tglAktif, tanggalPayroll , PeriodType.yearMonthDayTime());
+                    Period p = new Period(tglAktif, tanggalPayroll , PeriodType.yearMonthDayTime()); // mencari lama masah kerja berdasarkan tanggal aktif hingga tanggal diprosesnya payroll
                     String strTanggalPayroll = bean.getBulan() + "-" + bean.getTahun();
                     payroll.setStTanggalPayroll(strTanggalPayroll);
                     payroll.setMasaKerjaTahun(p.getYears());
@@ -2007,7 +2007,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     }
 
 
-                    //flag untuk testing Tambahan Lain
+                    //flag untuk testing Tambahan Lain / untuk menentukan apakah perhitungan gaji utama dengan tambahan lain atau tidak
                     String flagTestTambahanLain = "N";
 
                     //digunakan untuk menghitung bulan berjalan dari pegawai

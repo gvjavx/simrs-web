@@ -1816,44 +1816,31 @@ public class VerifikatorAction extends BaseMasterAction {
         return response;
     }
 
-    public KlaimDataCenterResponse sendClaimOnline(String noCheckup) {
+    public KlaimDataCenterResponse sendClaimOnline(String idDetailCheckup) {
         logger.info("[VerifikatorAction.sendClaimOnline] START process <<<");
-
         KlaimDataCenterResponse dataCenterResponse = new KlaimDataCenterResponse();
         String unitId = CommonUtil.userBranchLogin();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
-        CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
         EklaimBo eklaimBo = (EklaimBo) ctx.getBean("eklaimBoProxy");
         VerifikatorBo verifikatorBo = (VerifikatorBo) ctx.getBean("verifikatorBoProxy");
-
         HeaderCheckup headerCheckup = new HeaderCheckup();
-        headerCheckup.setNoCheckup(noCheckup);
-
-        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
-
-        try {
-            headerCheckupList = checkupBo.getByCriteria(headerCheckup);
-        } catch (GeneralBOException e) {
-            logger.error("[VerifikatorAction.sendClaimOnline] Error When Get Header Checkup Data", e);
-        }
-
-        HeaderCheckup checkup = new HeaderCheckup();
-        if (!headerCheckupList.isEmpty()) {
-            checkup = headerCheckupList.get(0);
-            if (checkup != null) {
+        if(idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)){
+            try {
+                headerCheckup = checkupBo.getDataDetailPasien(idDetailCheckup);
+            } catch (GeneralBOException e) {
+                logger.error("[VerifikatorAction.sendClaimOnline] Error When Get Header Checkup Data", e);
+            }
+            if (headerCheckup != null) {
                 List<KlaimDataCenterResponse> klaimDataCenterResponses = new ArrayList<>();
-
                 try {
-                    klaimDataCenterResponses = eklaimBo.kirimKeDataCenterPerSepEklaim(checkup.getNoSep(), unitId);
+                    klaimDataCenterResponses = eklaimBo.kirimKeDataCenterPerSepEklaim(headerCheckup.getNoSep(), unitId);
                 } catch (GeneralBOException e) {
                     logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);
                 }
-
                 KlaimDataCenterResponse detailResponse = new KlaimDataCenterResponse();
                 if (!klaimDataCenterResponses.isEmpty()) {
                     detailResponse = klaimDataCenterResponses.get(0);
-
                     if (detailResponse != null) {
                         dataCenterResponse.setBpjsDcStatus(detailResponse.getBpjsDcStatus());
                         dataCenterResponse.setCobDcStatus(detailResponse.getCobDcStatus());
@@ -1863,35 +1850,18 @@ public class VerifikatorAction extends BaseMasterAction {
                         dataCenterResponse.setTglPulang(detailResponse.getTglPulang());
                         dataCenterResponse.setStatus(detailResponse.getStatus());
                         dataCenterResponse.setMessage(detailResponse.getMessage());
-                    }
-
-                    if ("200".equalsIgnoreCase(detailResponse.getStatus())) {
-
-                        String userLogin = CommonUtil.userLogin();
-                        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-                        HeaderCheckup header = new HeaderCheckup();
-                        header.setNoCheckup(checkup.getNoCheckup());
-                        header.setLastUpdateWho(userLogin);
-                        header.setLastUpdate(updateTime);
-
-                        CheckResponse response = new CheckResponse();
-
-//                        try {
-//                            response = verifikatorBo.updateKlaimBpjsFlag(header);
-//                        }catch (HibernateException e){
-//                            logger.error("[VerifikatorAction.finalClaim] Error When send data seneter per eklaim", e);
-//                        }
-
-                        if (response != null) {
-                            dataCenterResponse.setStatus(response.getStatus());
-                            dataCenterResponse.setMessage(response.getMessage());
+                        String flag = "N";
+                        if("200".equalsIgnoreCase(detailResponse.getStatus())){
+                            flag = "Y";
                         }
+                        HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+                        detailCheckup.setIdDetailCheckup(idDetailCheckup);
+                        detailCheckup.setFlagSendKlaim(flag);
+                        verifikatorBo.updateFlagSendKlaim(detailCheckup);
                     }
                 }
             }
         }
-
         logger.info("[VerifikatorAction.sendClaimOnline] END process <<<");
         return dataCenterResponse;
     }

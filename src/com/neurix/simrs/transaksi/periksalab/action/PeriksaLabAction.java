@@ -901,4 +901,23 @@ public class PeriksaLabAction extends BaseMasterAction {
         return periksaLabList;
     }
 
+    public List<PeriksaLab> pushNotifLab(String kategori) {
+        logger.info("[PeriksaLabAction.getListLab] start process >>>");
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+
+        if (!"".equalsIgnoreCase(kategori) && kategori != null) {
+            try {
+                periksaLabList = periksaLabBo.pushListLab(kategori, branchId);
+            } catch (GeneralBOException e) {
+                logger.error("[PeriksaLabAction.getListLab] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+        }
+        logger.info("[PeriksaLabAction.getListLab] end process >>>");
+        return periksaLabList;
+    }
+
 }

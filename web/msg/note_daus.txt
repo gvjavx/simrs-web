@@ -772,3 +772,6 @@ CREATE TABLE public.im_akun_setting_report_arus_kas_detail
     last_update timestamp without time zone,
     CONSTRAINT im_akun_setting_report_arus_kas_detail_pkey PRIMARY KEY (setting_report_arus_kas_detail_id)
 );
+
+-----------------------------------------------------------------------------------
+ALTER TABLE it_akun_pembayaran_utang_piutang ALTER COLUMN registered_date type timestamp without time zone;

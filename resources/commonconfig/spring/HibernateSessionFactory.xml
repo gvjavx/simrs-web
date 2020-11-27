@@ -46,10 +46,10 @@
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ====== LOCALHOST ======= -->
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu</prop>
-                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
-                <prop key="hibernate.connection.username">root</prop>
-                <prop key="hibernate.connection.password">123456</prop>
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">root</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://db.gomedsys.local:5432/gomedsys_nmu</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
@@ -57,13 +57,21 @@
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ====== DEV ======= -->
+                <prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu</prop>
+                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
+                <prop key="hibernate.connection.username">root</prop>
+                <prop key="hibernate.connection.password">123456</prop>
+
+
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_03082020</prop>-->
+                <!-- ===== DEV ====== -->
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
-
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/simrs_03082020</prop>-->
+                <!-- ====== LOCALHOST ======= -->
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu_prod</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
@@ -268,6 +276,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollBpjsHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ImPayrollTunjanganStrategisHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/payrollSkalaGaji/hibernate/ImPayrollSkalaGajiHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollParamBpjs/hibernate/ImHrisPayrollParamBpjsHistoryEntity.hbm.xml</value>
 
                 <!--<value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrolInsentifEntity.hbm.xml</value>-->
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/imPayrolInsentifNilaiSmkEntity.hbm.xml</value>
@@ -600,6 +609,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/ordergizi/hibernate/ItSimrsDetailJenisDietEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/reportKeuanganArusKas/hibernate/ImAkunSettingReportArusKasEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/akuntansi/master/reportKeuanganArusKas/hibernate/ImAkunSettingReportArusKasDetailEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollParamBpjs/hibernate/ImHrisPayrollParamBpjsEntity.hbm.xml</value>
             </list>
         </property>
     </bean>

@@ -115,5 +115,6 @@ public interface CheckupBo {
 
     public CrudResponse saveAddWithResponse(HeaderCheckup checkup) throws GeneralBOException;
     public List<HeaderCheckup> cekKunjunganPoliPasien(String idPasien, String idPelayanan) throws GeneralBOException;
+    public List<HeaderCheckup> daftarPasienOnline(String branchId, String idPelayanan) throws GeneralBOException;
 
 }

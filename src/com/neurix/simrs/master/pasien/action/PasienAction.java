@@ -11,9 +11,11 @@ import com.neurix.simrs.master.pasien.model.ImSimrsUploadRekamMedicLamaEntity;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
+import com.neurix.simrs.transaksi.hemodialisa.model.Hemodialisa;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
@@ -688,6 +690,79 @@ public class PasienAction extends BaseMasterAction {
         }
 
         return "search";
+    }
+
+    public CrudResponse saveUploadRmLama(String data, String idPasien){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        CrudResponse response = new CrudResponse();
+        String branchId = CommonUtil.userBranchLogin();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ImSImrsRekamMedicLamaEntity rekamMedicLamaEntity = new ImSImrsRekamMedicLamaEntity();
+        rekamMedicLamaEntity.setIdPasien(idPasien);
+        rekamMedicLamaEntity.setBranchId(branchId);
+        rekamMedicLamaEntity.setFlag("Y");
+        rekamMedicLamaEntity.setAction("C");
+        rekamMedicLamaEntity.setCreatedDate(time);
+        rekamMedicLamaEntity.setLastUpdate(time);
+        rekamMedicLamaEntity.setCreatedWho(userLogin);
+        rekamMedicLamaEntity.setLastUpdateWho(userLogin);
+
+        try {
+            JSONArray json = new JSONArray(data);
+            List<ImSimrsUploadRekamMedicLamaEntity> uploads = new ArrayList<>();
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject obj = json.getJSONObject(i);
+                ImSimrsUploadRekamMedicLamaEntity uploadRekamMedicLamaEntity = new ImSimrsUploadRekamMedicLamaEntity();
+                if(obj.has("gambar")){
+                    if(!"".equalsIgnoreCase(obj.getString("gambar"))){
+                        try {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes = decoder.decodeBuffer(obj.getString("gambar"));
+                            String wkt = time.toString();
+                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName = idPasien + "-"+i+ "-" + patten + ".png";
+                            String uploadFile =  CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.URL_IMG_RM + fileName;
+                            if(!"".equalsIgnoreCase(uploadFile)){
+                                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                                if (image == null) {
+                                    logger.error("Buffered Image is null");
+                                    response.setStatus("error");
+                                    response.setMsg("Buffered Image is null");
+                                } else {
+//                                    CrudResponse crudResponse = CommonUtil.compresing(image, uploadFile);
+//                                    if("success".equalsIgnoreCase(crudResponse.getStatus())){
+//                                        uploadRekamMedicLamaEntity.setUrlImg(fileName);
+//                                    }
+                                    File f = new File(uploadFile);
+                                    // write the image
+                                    ImageIO.write(image, "png", f);
+                                    uploadRekamMedicLamaEntity.setUrlImg(fileName);
+                                }
+                            }
+                        }catch (IOException e){
+                            response.setStatus("error");
+                            response.setMsg("Found Error, "+e.getMessage());
+                        }
+                    }
+                }
+                uploads.add(uploadRekamMedicLamaEntity);
+            }
+            if(uploads.size() > 0){
+                try {
+                    response = pasienBo.saveUploadRekamMedicLama(rekamMedicLamaEntity, uploads);
+                } catch (GeneralBOException e) {
+                    logger.error("[PasienAction.saveUploadRmLama] Error when saving rekam medic lama, please inform to your admin.");
+                    response.setStatus("error");
+                    response.setMsg(e.getMessage());
+                }
+            }
+        }catch (JSONException e){
+            response.setStatus("error");
+            response.setMsg("Found Error, "+e.getMessage());
+        }
+        return response;
     }
 
     public Pasien getDataPasien(String idPasien) {

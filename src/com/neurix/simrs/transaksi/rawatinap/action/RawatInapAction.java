@@ -1384,6 +1384,9 @@ public class RawatInapAction extends BaseMasterAction {
                         detailCheckupList = checkupDetailBo.getByCriteria(detailCheckup);
                     } catch (GeneralBOException e) {
                         logger.error("[RawatInap.saveTppri] Error when geting data detail poli, ", e);
+                        finalResponse.setStatus("error");
+                        finalResponse.setMsg("Terjadi kesalahan ketika mencari detail pasien, "+e.getMessage());
+                        return finalResponse;
                     }
 
                     if (!detailCheckupList.isEmpty()) {
@@ -1401,6 +1404,9 @@ public class RawatInapAction extends BaseMasterAction {
                                 headerCheckupList = checkupBo.getByCriteria(checkup);
                             } catch (GeneralBOException e) {
                                 logger.error("[CheckupDetailAction.getHeaderCheckup] Error When Get Header Checkup Data", e);
+                                finalResponse.setStatus("error");
+                                finalResponse.setMsg("Terjadi kesalahan ketika mencari data checkup pasien, "+e.getMessage());
+                                return finalResponse;
                             }
 
                             if (!headerCheckupList.isEmpty()) {
@@ -1417,6 +1423,9 @@ public class RawatInapAction extends BaseMasterAction {
                                     diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
                                 } catch (GeneralBOException e) {
                                     logger.error("[Foun Error] when search diagnosa awal " + e);
+                                    finalResponse.setStatus("error");
+                                    finalResponse.setMsg("Terjadi kesalahan ketika mencari diagnosa, "+e.getMessage());
+                                    return finalResponse;
                                 }
 
                                 if (diagnosaRawatList.size() > 0) {
@@ -1435,10 +1444,18 @@ public class RawatInapAction extends BaseMasterAction {
                                     pelayananList = pelayananBo.getByCriteria(pelayanan);
                                 } catch (GeneralBOException e) {
                                     logger.error("[Found Error] when search pelayanan " + e.getMessage());
+                                    finalResponse.setStatus("error");
+                                    finalResponse.setMsg("Terjadi kesalahan ketika mencari pelayanan, "+e.getMessage());
+                                    return finalResponse;
                                 }
 
                                 if (pelayananList.size() > 0) {
                                     pelayanan = pelayananList.get(0);
+                                    if(pelayanan.getIdPelayanan() == null || "".equalsIgnoreCase(pelayanan.getIdPelayanan())){
+                                        finalResponse.setStatus("error");
+                                        finalResponse.setMsg("Terjadi kesalahan ketika mencari pelayanan");
+                                        return finalResponse;
+                                    }
                                 }
 
                                 if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
@@ -2655,6 +2672,9 @@ public class RawatInapAction extends BaseMasterAction {
             String user = CommonUtil.userLogin();
             String branchId = CommonUtil.userBranchLogin();
             String genNoSep = "";
+            long millis = System.currentTimeMillis();
+            java.util.Date dateNow = new java.util.Date(millis);
+            String dateToday = new SimpleDateFormat("yyyy-MM-dd").format(dateNow);
 
             if (obj != null) {
                 String jenisPasien = obj.getString("jenis_pasien");
@@ -2822,7 +2842,7 @@ public class RawatInapAction extends BaseMasterAction {
 
                                         SepRequest sepRequest = new SepRequest();
                                         sepRequest.setNoKartu(getPasien.getNoBpjs());
-                                        sepRequest.setTglSep(now.toString());
+                                        sepRequest.setTglSep(dateToday);
                                         sepRequest.setPpkPelayanan(getBranch.getPpkPelayanan());//cons id rumah sakit
                                         sepRequest.setJnsPelayanan("1");//jenis rawat inap, apa jalan 2 rawat jalan, 1 rawat inap
                                         sepRequest.setKlsRawat(obj.getString("id_kelas"));//kelas rawat dari bpjs
@@ -3167,8 +3187,8 @@ public class RawatInapAction extends BaseMasterAction {
                                             }
                                         } else {
                                             response.setStatus("error");
-                                            response.setMsg("Failed To Generate SEP " + response.getMsg());
-                                            logger.error("[CheckupAction.saveAdd] Failed To Generate SEP " + response.getMsg());
+                                            response.setMsg("Failed To Generate SEP " + responseSep.getMessage());
+                                            logger.error("[CheckupAction.saveAdd] Failed To Generate SEP " + responseSep.getMessage());
                                             return response;
                                         }
                                     }
@@ -3201,8 +3221,8 @@ public class RawatInapAction extends BaseMasterAction {
                     checkup.setIdRuangan(kamar);
                     checkup.setIdPelayanan(pelayanan.getIdPelayanan());
                     checkup.setMetodePembayaran(metodeBayar);
-                    checkup.setDiagnosa("diagnosa");
-                    checkup.setNamaDiagnosa("ket_diagnosa");
+                    checkup.setDiagnosa(obj.getString("diagnosa"));
+                    checkup.setNamaDiagnosa(obj.getString("ket_diagnosa"));
                     if (uangMuka != null && !"".equalsIgnoreCase(uangMuka)) {
                         checkup.setUangMuka(new BigInteger(uangMuka));
                     }
@@ -3211,6 +3231,8 @@ public class RawatInapAction extends BaseMasterAction {
                     checkup.setIdPasien(responsePasien.getIdPasien());
                     checkup.setStatusPeriksa("1");
                     checkup.setJenisKunjungan("Baru");
+                    checkup.setKunjunganPoli("Baru");
+                    checkup.setUrlKtp(responsePasien.getImgKtp());
                     checkup.setRawatInap(true);
                     response = checkupBo.saveAddWithResponse(checkup);
                 }

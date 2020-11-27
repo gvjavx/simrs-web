@@ -31,7 +31,9 @@ import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.tindakan.dao.HeaderTindakanDao;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
+import com.neurix.simrs.master.tindakan.model.ImSimrsHeaderTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.mobileapi.antrian.model.Antrian;
@@ -108,6 +110,11 @@ public class TelemedicBoImpl implements TelemedicBo {
     private CheckupDetailDao checkupDetailDao;
     private NotifikasiAdminTelemedicDao notifikasiAdminTelemedicDao;
     private VideoRmDao videoRmDao;
+    private HeaderTindakanDao headerTindakanDao;
+
+    public void setHeaderTindakanDao(HeaderTindakanDao headerTindakanDao) {
+        this.headerTindakanDao = headerTindakanDao;
+    }
 
     public void setVideoRmDao(VideoRmDao videoRmDao) {
         this.videoRmDao = videoRmDao;
@@ -764,50 +771,77 @@ public class TelemedicBoImpl implements TelemedicBo {
 
             // mencari tindakan konsultasi;
             Map hsCriteria = new HashMap();
+            hsCriteria.put("konsul_tele", "Y");
             hsCriteria.put("branch_id", branchId);
-            hsCriteria.put("kategori_ina_bpjs", "konsultasi");
-            Tindakan tindakan = new Tindakan();
-            tindakan.setBranchId(branchId);
-            tindakan.setKategoriInaBpjs("konsultasi");
-            List<Tindakan> tindakanEntities = tindakanDao.getListDataTindakan(tindakan);
-            Tindakan tindakanEntity = null;
-            if (tindakanEntities.size() > 0){
-                tindakanEntity = new Tindakan();
-                tindakanEntity = tindakanEntities.get(0);
+
+            List<ImSimrsHeaderTindakanEntity> headerTindakanEntities = headerTindakanDao.getByCriteria(hsCriteria);
+
+            if (headerTindakanEntities.size() > 0){
+
+                if (headerTindakanEntities.size() > 1) {
+                    logger.error("[TelemedicBoIml.generateListPembayaran] ERROR. Tindakan Konsultasi Tele Redundan. Tentukan Yang Dipakai ");
+                    throw new GeneralBOException("[TelemedicBoIml.generateListPembayaran] ERROR. Tindakan Konsultasi Tele Redundan. Tentukan Yang Dipakai.");
+                }
+
+                ImSimrsHeaderTindakanEntity headerTindakanEntity = headerTindakanEntities.get(0);
+
+                // mengambil tindakan konsultasi dokter berdasarkan branch, id_header_tindakan, id_pelayanan;
+                hsCriteria = new HashMap();
+                hsCriteria.put("branch_id", branchId);
+                hsCriteria.put("id_header_tindakan", headerTindakanEntity.getIdHeaderTindakan());
+                hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
+
+                List<ImSimrsTindakanEntity> tindakanEntities = tindakanDao.getByCriteria(hsCriteria);
+
+                if (tindakanEntities.size() > 0){
+
+                    ImSimrsTindakanEntity tindakanEntity = null;
+                    if (tindakanEntities.size() > 0){
+                        tindakanEntity = new ImSimrsTindakanEntity();
+                        tindakanEntity = tindakanEntities.get(0);
+                    }
+
+                    ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
+                    pembayaranOnlineEntity.setId(getSeqPembayaranOnline(bean.getId()));
+                    pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
+                    pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
+
+                    if (tindakanEntity != null){
+                        pembayaranOnlineEntity.setIdItem(tindakanEntity.getIdTindakan());
+
+                        // jika umum generate 3 digit jenis angka untuk penambahan pada nominal;
+                        if ("umum".equalsIgnoreCase(jenisPeriksa))
+                            pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()).add(generateRandomNumBigDecimal()));
+                        else
+                            pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()));
+                        // END
+
+                    }
+
+                    pembayaranOnlineEntity.setFlag(bean.getFlag());
+                    pembayaranOnlineEntity.setCreatedDate(bean.getCreatedDate());
+                    pembayaranOnlineEntity.setCreatedWho(bean.getCreatedWho());
+                    pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
+                    pembayaranOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    pembayaranOnlineEntity.setKeterangan(tipe);
+                    pembayaranOnlineEntity.setKodeBank(kodeBank);
+                    pembayaranOnlineEntity.setIdRekening(bean.getIdRekening());
+
+                    try {
+                        verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
+                    } catch (HibernateException e){
+                        logger.error("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
+                        throw new GeneralBOException("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
+                    }
+                } else {
+                    logger.error("[TelemedicBoIml.generateListPembayaran] ERROR. tidak ditemukan tindakan konsultasi pada unit tersebut ");
+                    throw new GeneralBOException("[TelemedicBoImpl.generateListPembayaran] ERROR. tidak ditemukan tindakan konsultasi pada unit tersebut ");
+                }
+            } else {
+                logger.error("[TelemedicBoIml.generateListPembayaran] ERROR. tidak ditemukan tindakan konsultasi ");
+                throw new GeneralBOException("[TelemedicBoImpl.generateListPembayaran] ERROR. tidak ditemukan tindakan konsultasi ");
             }
 
-            ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();
-            pembayaranOnlineEntity.setId(getSeqPembayaranOnline(bean.getId()));
-            pembayaranOnlineEntity.setIdAntrianTelemedic(bean.getId());
-            pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
-
-            if (tindakanEntity != null){
-                pembayaranOnlineEntity.setIdItem(tindakanEntity.getIdTindakan());
-
-                // jika umum generate 3 digit jenis angka untuk penambahan pada nominal;
-                if ("umum".equalsIgnoreCase(jenisPeriksa))
-                    pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()).add(generateRandomNumBigDecimal()));
-                else
-                    pembayaranOnlineEntity.setNominal(new BigDecimal(tindakanEntity.getTarif()));
-                // END
-
-            }
-
-            pembayaranOnlineEntity.setFlag(bean.getFlag());
-            pembayaranOnlineEntity.setCreatedDate(bean.getCreatedDate());
-            pembayaranOnlineEntity.setCreatedWho(bean.getCreatedWho());
-            pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
-            pembayaranOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            pembayaranOnlineEntity.setKeterangan(tipe);
-            pembayaranOnlineEntity.setKodeBank(kodeBank);
-            pembayaranOnlineEntity.setIdRekening(bean.getIdRekening());
-
-            try {
-                verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
-            } catch (HibernateException e){
-                logger.error("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
-                throw new GeneralBOException("[TelemedicBoIml.generateListPembayaran] ERROR. ",e);
-            }
         } else if ("resep".equalsIgnoreCase(tipe)){
             // for resep
             ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = new ItSimrsPembayaranOnlineEntity();

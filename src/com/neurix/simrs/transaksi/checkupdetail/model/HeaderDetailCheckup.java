@@ -202,6 +202,16 @@ public class HeaderDetailCheckup extends BaseModel{
     private String idx;
     private String url;
 
+    private String flagSendKlaim;
+
+    public String getFlagSendKlaim() {
+        return flagSendKlaim;
+    }
+
+    public void setFlagSendKlaim(String flagSendKlaim) {
+        this.flagSendKlaim = flagSendKlaim;
+    }
+
     public String getUrl() {
         return url;
     }

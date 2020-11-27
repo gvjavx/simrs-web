@@ -25,7 +25,7 @@
             document.pelayananForm.submit();
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
+        $.subscribe('beforeProcessSaveEdit', function (event, data) {
             var namaPelayanan = document.getElementById("namaPelayanan1").value;
             var branchId = document.getElementById("branchId1").value;
             var positionId = document.getElementById("positionId1").value;
@@ -57,24 +57,24 @@
                     msg += 'Field <strong>Tipe Pelayanan </strong> is required.' + '<br/>';
                 }
 
-                document.getElementById('errorValidationMessage2').innerHTML = msg;
+                document.getElementById('errorValidationMessageEdit').innerHTML = msg;
 
-                $.publish('showErrorValidationDialog');
+                $.publish('showErrorValidationDialogEdit');
             }
         });
 
-        $.subscribe('successDialog', function (event, data) {
+        $.subscribe('successDialogEdit', function (event, data) {
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
                 $.publish('showInfoDialog');
             }
         });
 
-        $.subscribe('errorDialog', function (event, data) {
+        $.subscribe('errorDialogEdit', function (event, data) {
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
+            document.getElementById('errorMessageEdit').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            $.publish('showErrorDialogEdit');
         });
 
         function cancelBtn() {
@@ -91,7 +91,8 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="editPelayananForm" method="post" theme="simple" namespace="/pelayanan" action="saveEdit_pelayanan" cssClass="well form-horizontal">
+            <s:form id="editPelayananForm" method="post" theme="simple"
+                    namespace="/pelayanan" action="saveEdit_pelayanan" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -111,27 +112,30 @@
 
                 <table >
                     <tr>
-                        <td>
+                        <td width="30%">
                             <label class="control-label"><small>ID Pelayanan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idPelayanan1" name="pelayanan.idPelayanan" required="true" disabled="true" cssClass="form-control"/>
-                                <s:hidden id="idPelayanan1" name="pelayanan.idPelayanan" />
+                                <s:textfield id="idPelayanan1" name="pelayanan.idPelayanan" required="true" readonly="true" cssClass="form-control"/>
+                                <%--<s:hidden id="idPelayanan1" name="pelayanan.idPelayanan" />--%>
                                 <s:hidden id="kodering" name="pelayanan.kodering" />
                             </table>
                         </td>
                     </tr>
+
                     <tr>
-                        <td>
+                        <td >
                             <label class="control-label"><small>Nama Pelayanan :</small></label>
                         </td>
-                        <td>
+                        <td width="80">
                             <table>
-                                <s:textfield id="namaPelayanan1" name="pelayanan.namaPelayanan" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield cssStyle="margin-top: 5px" id="namaPelayanan1" name="pelayanan.namaPelayanan"
+                                             required="true" disabled="false" cssClass="form-control select2"/>
                             </table>
                         </td>
                     </tr>
+
                     <tr>
                         <td>
                             <label class="control-label"><small>Unit :</small></label>
@@ -140,12 +144,13 @@
                             <table>
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                 <s:select list="#initComboBranch.listOfComboBranch" id="branchId1" name="pelayanan.branchId"
-                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control select2" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
 
-                    <tr>az
+                    <tr>
                         <td>
                             <label class="control-label"><small>Divisi :</small></label>
                         </td>
@@ -153,7 +158,8 @@
                             <table>
                                 <s:action id="initComboPosition" namespace="/pelayanan" name="initComboPosition_pelayanan"/>
                                 <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="pelayanan.divisiId"
-                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="positionId" listValue="positionName" headerKey=""
+                                          headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -166,8 +172,8 @@
                             <table>
                                 <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Instalasi Farmasi RJ', 'apotek_ri' : 'Instalasi Farmasi RI',
                                                                 'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
-                                          id="tipePelayanan" name="pelayanan.tipePelayanan"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          id="tipePelayanan1" name="pelayanan.tipePelayanan"
+                                          headerKey="" headerValue="[Select one]" cssClass="form-control select2" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -193,8 +199,8 @@
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="editPelayananForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
-                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
+                                   onBeforeTopics="beforeProcessSaveEdit" onCompleteTopics="closeDialog,successDialogEdit"
+                                   onSuccessTopics="successDialogEdit" onErrorTopics="errorDialogEdit" >
                             <i class="fa fa-check"></i>
                             Save
                         </sj:submit>
@@ -242,30 +248,33 @@
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialogEdit" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_dialog').dialog('close');}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> System Found : <p id="errorMessageEdit"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_validation_dialog_edit" openTopics="showErrorValidationDialogEdit"
+                                                   modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_validation_dialog_edit').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage2"></div></center>
+                                                    <center><div id="errorValidationMessageEdit"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>

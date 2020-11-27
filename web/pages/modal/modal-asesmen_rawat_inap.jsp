@@ -1927,8 +1927,8 @@
                                 <label>TTD Perawat</label>
                                 <canvas class="paint-canvas-ttd" id="gen2" width="220"
                                         onmouseover="paintTtd('gen2')"></canvas>
-                                <input class="form-control" id="nama_terang_gen2" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_gen2" placeholder="NIP">
+                                <input class="form-control nama_petugas" id="nama_terang_gen2" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control nip_petugas" id="sip_gen2" placeholder="NIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('gen2')"><i
                                         class="fa fa-trash"></i> Clear

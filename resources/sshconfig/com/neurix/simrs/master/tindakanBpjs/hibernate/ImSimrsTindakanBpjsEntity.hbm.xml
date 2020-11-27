@@ -5,20 +5,14 @@
 <hibernate-mapping>
 
     <class name="com.neurix.simrs.bpjs.tindakan.model.ImSimrsTindakanBpjsEntity" dynamic-update="true"
-           table="im_simrs_obat" select-before-update="true" schema="public">
-
+           table="im_simrs_kategori_tindakan_ina" select-before-update="true" schema="public">
 
         <id name="idTindakanBpjs">
-            <column name="tindakan_bpjs_id" sql-type="varchar" length="10" not-null="true" />
+            <column name="id" sql-type="varchar" length="30" not-null="true" />
         </id>
-
         <property name="namaTindakanBpjs">
-            <column name="nama_tindakan_bpjs" sql-type="varchar" length="100" not-null="false"/>
+            <column name="nama" sql-type="varchar" length="100" not-null="false"/>
         </property>
-        <property name="kodeTindakanBpjs">
-            <column name="kode_tindakan_bpjs" sql-type="varchar" length="20" not-null="false"/>
-        </property>
-
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>
@@ -37,7 +31,6 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
-
 
     </class>
 </hibernate-mapping>

@@ -743,7 +743,7 @@ public class CheckupAction extends BaseMasterAction {
                 }
 
                 checkup.setIsOnline("Y");
-                checkup.setTglAntian(antianOnline.getLastUpdate());
+                checkup.setTglAntian(antianOnline.getCreatedDate());
             }
         }
         return checkup;
@@ -1825,7 +1825,6 @@ public class CheckupAction extends BaseMasterAction {
         List<JadwalPelayananDTO> dokterList = new ArrayList<>();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
         String branchId = CommonUtil.userBranchLogin();
 
@@ -1836,14 +1835,6 @@ public class CheckupAction extends BaseMasterAction {
                 logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
             }
         }
-
-        //        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
-//            try {
-//                dokterList = dokterBo.getDokterByPelayanan(idPelayanan, notLike);
-//            } catch (GeneralBOException e) {
-//                logger.error("[CheckupAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
-//            }
-//        }
 
         logger.info("[CheckupAction.listOfDokter] end process >>>");
         return dokterList;
@@ -3819,17 +3810,15 @@ public class CheckupAction extends BaseMasterAction {
         return listRM;
     }
 
-    public List<RekamMedisPasien> getRiwayatListRekammedisPasien(String id, String tipePelayanan, String jenis) {
-
+    public List<RekamMedisPasien> geRekamMedisLama(String id) {
         logger.info("[CheckupAction.getListRekammedisPasien] START process >>>");
-
         List<RekamMedisPasien> listRM = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
 
-        if (tipePelayanan != null && !"".equalsIgnoreCase(tipePelayanan) && id != null && !"".equalsIgnoreCase(id)) {
+        if (id != null && !"".equalsIgnoreCase(id)) {
             try {
-                listRM = rekamMedisPasienBo.getRiwayatListRekamMedis(id, tipePelayanan, jenis);
+                listRM = rekamMedisPasienBo.getListRekamMedisLama(id, CommonUtil.userBranchLogin());
             } catch (GeneralBOException e) {
                 logger.error("Found Error, " + e.getMessage());
             }
@@ -3988,8 +3977,81 @@ public class CheckupAction extends BaseMasterAction {
         return headerCheckupList;
     }
 
-    public String cekLogin() {
-        String res = CommonUtil.userLogin();
+    public List<HeaderCheckup> daftarPasienOnline(String idPelayanan) {
+        logger.info("[CheckupAction.cekPelayananPaket] START process >>>");
+        List<HeaderCheckup> headerCheckupList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        try {
+            headerCheckupList = checkupBo.daftarPasienOnline(CommonUtil.userBranchLogin(), idPelayanan);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error, " + e.getMessage());
+        }
+        logger.info("[CheckupAction.cekPelayananPaket] END process >>>");
+        return headerCheckupList;
+    }
+
+    public CrudResponse cekLogin() {
+        CrudResponse res = new CrudResponse();
+        String nip = CommonUtil.userIdLogin();
+        String nama = CommonUtil.userLogin();
+        if(nip != null && nama != null){
+            res.setStatus(nip);
+            res.setMsg(nama);
+        }
         return res;
+    }
+
+    public List<RekamMedisPasien> getRiwayatListRekammedisPasien(String id, String tipePelayanan, String jenis) {
+
+        logger.info("[CheckupAction.getListRekammedisPasien] START process >>>");
+
+        List<RekamMedisPasien> listRM = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
+
+        if (tipePelayanan != null && !"".equalsIgnoreCase(tipePelayanan) && id != null && !"".equalsIgnoreCase(id)) {
+            try {
+                listRM = rekamMedisPasienBo.getRiwayatListRekamMedis(id, tipePelayanan, jenis);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error, " + e.getMessage());
+            }
+        }
+
+        logger.info("[CheckupAction.getListRekammedisPasien] END process >>>");
+        return listRM;
+    }
+
+    public String printNoAntrian() {
+        String id = getId();
+        String tipe = getTipe();
+        String branch = CommonUtil.userBranchLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        reportParams.put("area", CommonUtil.userAreaName());
+        reportParams.put("unit", CommonUtil.userBranchNameLogin());
+        reportParams.put("logo", logo);
+        reportParams.put("idPasien", id);
+        reportParams.put("idPelayanan", tipe);
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            return "search";
+        }
+
+        return "print_no_antrian";
     }
 }

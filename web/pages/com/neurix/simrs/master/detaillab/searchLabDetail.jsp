@@ -52,7 +52,8 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Data Parameter Pemeriksaan Penunjang Medis</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Data Parameter Pemeriksaan
+                            Penunjang Medis</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
@@ -84,9 +85,9 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Paket</label>
                                     <div class="col-sm-4">
-                                       <select class="form-control select2" id="paket" style="width: 100%">
-                                           <option value="">[Select One]</option>
-                                       </select>
+                                        <select class="form-control select2" id="paket" style="width: 100%">
+                                            <option value="">[Select One]</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -328,7 +329,8 @@
                     <div class="form-group">
                         <label class="col-md-3">Paket Baru</label>
                         <div class="col-md-7">
-                           <input class="form-control" id="set_paket_baru" oninput="var warn =$('#war_set_paket_baru').is(':visible'); if (warn){$('#cor_set_paket_baru').show().fadeOut(3000);$('#war_set_paket_baru').hide()}">
+                            <input class="form-control" id="set_paket_baru"
+                                   oninput="var warn =$('#war_set_paket_baru').is(':visible'); if (warn){$('#cor_set_paket_baru').show().fadeOut(3000);$('#war_set_paket_baru').hide()}">
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -368,7 +370,7 @@
                             <thead>
                             <tr style="font-weight: bold">
                                 <td width="50%">Nama Parameter</td>
-                                <td align="center" >Tarif (Rp.)</td>
+                                <td align="center">Tarif (Rp.)</td>
                                 <td align="center" width="15%">Action</td>
                             </tr>
                             </thead>
@@ -378,7 +380,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <span onclick="cekScrol('fa_scrol', 'temp_scrol')" class="pull-left hvr-grow" style="color: black; margin-top: 11px">
+                <span onclick="cekScrol('fa_scrol', 'temp_scrol')" class="pull-left hvr-grow"
+                      style="color: black; margin-top: 11px">
                     <i id="fa_scrol" class="fa fa-unlock"></i>
                 </span>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -510,10 +513,13 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Paket</label>
                         <div class="col-md-7">
-                            <select class="form-control select2" id="edit_paket" style="width: 100%"
-                                    onchange="var warn =$('#war_edit_paket').is(':visible'); if (warn){$('#cor_edit_paket').show().fadeOut(3000);$('#war_edit_paket').hide()}; cekPaket(this.value)">
-                                <option value="">[Select One]</option>
-                            </select>
+                            <input type="hidden" id="h_edit_paket">
+                            <input class="form-control" id="edit_paket" style="margin-top: 7px"
+                                   onchange="var warn =$('#war_edit_paket').is(':visible'); if (warn){$('#cor_edit_paket').show().fadeOut(3000);$('#war_edit_paket').hide()};">
+                            <%--<select class="form-control select2" id="edit_paket" style="width: 100%"--%>
+                            <%--onchange="var warn =$('#war_edit_paket').is(':visible'); if (warn){$('#cor_edit_paket').show().fadeOut(3000);$('#war_edit_paket').hide()}; cekPaket(this.value)">--%>
+                            <%--<option value="">[Select One]</option>--%>
+                            <%--</select>--%>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -627,7 +633,7 @@
         if ('delete' == tipe) {
             $('#pesan').text('Do you want delete this record?');
             $('#modal-confirm-dialog').modal({show: true, static: 'static'});
-            $('#save_con').attr('onclick','saveDelete(\''+id+'\')');
+            $('#save_con').attr('onclick', 'saveDelete(\'' + id + '\')');
         }
     }
 
@@ -640,12 +646,12 @@
         var parameter = $('#set_nama_parameter').val();
         var namaParameter = $('#set_nama_parameter option:selected').text();
         var paketLab = "";
-        if(paket == "new"){
+        if (paket == "new") {
             var ket = $('#set_paket_baru').val();
-            if(ket != ''){
+            if (ket != '') {
                 paketLab = ket;
             }
-        }else{
+        } else {
             paketLab = paket;
         }
 
@@ -689,9 +695,9 @@
                 $('#war_set_nama_unit').show();
             }
             if (paketLab == '') {
-                if(paket == 'new'){
+                if (paket == 'new') {
                     $('#war_set_paket_baru').show();
-                }else{
+                } else {
                     $('#war_set_paket').show();
                 }
             }
@@ -707,7 +713,7 @@
     function delLabDetail(id) {
         $('#row_' + id).remove();
         var data = $('#table_lab').tableToJSON().length;
-        if(data == 0){
+        if (data == 0) {
             $('#set_nama_unit').attr('disabled', false);
             $('#set_paket').attr('disabled', false);
             $('#set_paket_baru').attr('disabled', false);
@@ -719,6 +725,7 @@
         var data = "";
         if (id != '') {
             var paket = $('#edit_paket').val();
+            var idPaket = $('#h_edit_paket').val();
             var kategori = $('#edit_kategori_lab').val();
             var parameter = $('#edit_nama_parameter').val();
             var tarif = $('#edit_h_tarif').val();
@@ -727,9 +734,10 @@
                 $('#load_edit').show();
                 data = {
                     'id_lab_detail': id,
-                    'id_lab': paket,
-                    'id_parameter_pemeriksaan':parameter,
-                    'tarif': tarif
+                    'id_lab': idPaket,
+                    'nama_lab': paket,
+                    'id_parameter_pemeriksaan': parameter,
+                    'tarif': tarif,
                 };
                 var dataString = JSON.stringify(data);
                 dwr.engine.setAsync(true);
@@ -777,14 +785,14 @@
             var isNew = "N";
             var newPaket = "";
 
-            if(paket == "new"){
+            if (paket == "new") {
                 var ket = $('#set_paket_baru').val();
-                if(ket != ''){
+                if (ket != '') {
                     paketLab = ket;
                     isNew = "Y";
                     newPaket = ket;
                 }
-            }else{
+            } else {
                 paketLab = paket;
             }
 
@@ -828,9 +836,9 @@
                     $('#war_set_nama_unit').show();
                 }
                 if (paketLab == '') {
-                    if(paket == 'new'){
+                    if (paket == 'new') {
                         $('#war_set_paket_baru').show();
-                    }else{
+                    } else {
                         $('#war_set_paket').show();
                     }
                 }
@@ -867,12 +875,12 @@
                 });
             }
             $('#paket').html(option);
-            $('#edit_paket').html(option);
+            // $('#edit_paket').html(option);
         });
     }
 
     function getLabKategori(id) {
-        var branch  = $('#set_nama_unit').val();
+        var branch = $('#set_nama_unit').val();
         var option = '<option value="">[Select One]</option>';
         LabDetailAction.getLabByKategori(id, branch, function (res) {
             if (res.length > 0) {
@@ -910,9 +918,10 @@
                 $('#v_satuan').text(res.satuan);
                 $('#v_tarif').text("Rp. " + formatRupiahAtas(res.tarif));
 
-                $('#edit_nama_unit, #edit_paket, #edit_kategori_lab').attr('disabled', true);
+                $('#edit_nama_unit, #edit_kategori_lab').attr('disabled', true);
                 $('#edit_nama_unit').val(res.branchId).trigger('change');
-                $('#edit_paket').val(res.idLab).trigger('change');
+                $('#edit_paket').val(res.namaLab);
+                $('#h_edit_paket').val(res.idLab);
                 $('#edit_kategori_lab').val(res.idKategoriLab).trigger('change');
                 $('#edit_nama_parameter').val(res.idParameterPemeriksaan).trigger('change');
                 $('#edit_tarif').val(formatRupiahAtas(res.tarif));
@@ -941,10 +950,10 @@
         });
     }
 
-    function cekPaket(val){
-        if(val == 'new'){
+    function cekPaket(val) {
+        if (val == 'new') {
             $('#form_set_paket_baru').show();
-        }else{
+        } else {
             $('#form_set_paket_baru').hide();
         }
     }

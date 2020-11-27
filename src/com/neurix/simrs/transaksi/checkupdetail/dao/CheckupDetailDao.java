@@ -49,6 +49,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             if (mapCriteria.get("today") != null)
                 criteria.add(Restrictions.eq("createdDate", (Date) mapCriteria.get("today")));
         }
+//mengurukan data berdasarkan tglantrian
 
         criteria.addOrder(Order.asc("tglAntrian"));
         List<ItSimrsHeaderDetailCheckupEntity> result = criteria.list();

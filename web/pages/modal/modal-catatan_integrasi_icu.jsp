@@ -181,8 +181,8 @@
                                     <label>TTD Petugas</label>
                                     <canvas class="paint-canvas-ttd" id="cppt9" width="220"
                                             onmouseover="paintTtd('cppt9')"></canvas>
-                                    <input class="form-control" id="nama_petugas" placeholder="Nama Terang">
-                                    <input style="margin-top: 3px" class="form-control" id="sip_petugas" placeholder="SIP">
+                                    <input class="form-control nama_petugas" id="nama_petugas" placeholder="Nama Terang">
+                                    <input style="margin-top: 3px" class="form-control nip_petugas" id="sip_petugas" placeholder="SIP">
                                     <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                             onclick="removePaint('cppt9')"><i
                                             class="fa fa-trash"></i> Clear

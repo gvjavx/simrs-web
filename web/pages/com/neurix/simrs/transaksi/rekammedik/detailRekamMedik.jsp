@@ -41,80 +41,80 @@
             overflow: hidden;
         }
 
-        .carousel {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-top: 56.25%;
-            background: #ddd;
-        }
+        /*.carousel {*/
+            /*position: relative;*/
+            /*width: 100%;*/
+            /*height: 0;*/
+            /*padding-top: 56.25%;*/
+            /*background: #ddd;*/
+        /*}*/
 
-        /* Images */
+        /*!* Images *!*/
 
-        .carousel-img {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            max-width: 100%;
-            -webkit-transition: opacity ease-out 0.5s;
-            transition: opacity ease-out 0.5s;
-        }
+        /*.carousel-img {*/
+            /*position: absolute;*/
+            /*top: 0;*/
+            /*bottom: 0;*/
+            /*left: 0;*/
+            /*right: 0;*/
+            /*max-width: 100%;*/
+            /*-webkit-transition: opacity ease-out 0.5s;*/
+            /*transition: opacity ease-out 0.5s;*/
+        /*}*/
 
-        .carousel-img-displayed {
-            display: block;
-            opacity: 1;
-            z-index: 2;
-        }
+        /*.carousel-img-displayed {*/
+            /*display: block;*/
+            /*opacity: 1;*/
+            /*z-index: 2;*/
+        /*}*/
 
-        .carousel-img-hidden {
-            display: block;
-            opacity: 0;
-            z-index: 1;
-        }
+        /*.carousel-img-hidden {*/
+            /*display: block;*/
+            /*opacity: 0;*/
+            /*z-index: 1;*/
+        /*}*/
 
-        .carousel-img-noDisplay {
-            display: none;
-        }
+        /*.carousel-img-noDisplay {*/
+            /*display: none;*/
+        /*}*/
 
-        /* Flèches de défilement */
+        /*!* Flèches de défilement *!*/
 
-        .carousel-arrow {
-            z-index: 3;
-            display: block;
-            position: absolute;
-            width: 36px;
-            height: 36px;
-            top: 50%;
-            margin-top: -50px;
-            border-radius: 50%;
-            border: 0;
-            background-color: #fff;
-            background-image: url("http://res.cloudinary.com/dnqehhgmu/image/upload/v1509720334/blue-arrow_jk1ydw.svg");
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 16px 16px;
-            cursor: pointer;
-            -webkit-transition: background-size 0.15s ease-out;
-            transition: background-size 0.15s ease-out;
-        }
+        /*.carousel-arrow {*/
+            /*z-index: 3;*/
+            /*display: block;*/
+            /*position: absolute;*/
+            /*width: 36px;*/
+            /*height: 36px;*/
+            /*top: 50%;*/
+            /*margin-top: -50px;*/
+            /*border-radius: 50%;*/
+            /*border: 0;*/
+            /*background-color: #fff;*/
+            /*background-image: url("http://res.cloudinary.com/dnqehhgmu/image/upload/v1509720334/blue-arrow_jk1ydw.svg");*/
+            /*background-repeat: no-repeat;*/
+            /*background-position: center;*/
+            /*background-size: 16px 16px;*/
+            /*cursor: pointer;*/
+            /*-webkit-transition: background-size 0.15s ease-out;*/
+            /*transition: background-size 0.15s ease-out;*/
+        /*}*/
 
-        .carousel-arrow:hover,
-        .carousel-arrow:focus {
-            background-size: 22px 22px;
-        }
+        /*.carousel-arrow:hover,*/
+        /*.carousel-arrow:focus {*/
+            /*background-size: 22px 22px;*/
+        /*}*/
 
-        .carousel-arrow-next {
-            right: 20px;
-        }
+        /*.carousel-arrow-next {*/
+            /*right: 20px;*/
+        /*}*/
 
-        .carousel-arrow-prev {
-            left: 20px;
-            -webkit-transform: rotateZ(180deg);
-            -ms-transform: rotate(180deg);
-            transform: rotateZ(180deg);
-        }
+        /*.carousel-arrow-prev {*/
+            /*left: 20px;*/
+            /*-webkit-transform: rotateZ(180deg);*/
+            /*-ms-transform: rotate(180deg);*/
+            /*transform: rotateZ(180deg);*/
+        /*}*/
 
         .dropdown-menu {
             min-width: 200px;
@@ -183,11 +183,21 @@
                         <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien Periksa Pada Tanggal <s:property value="detailCheckup.stTanggalMasuk"/></h3>
                     </div>
                     <div class="box-body">
-                        <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
-                             class="card card-4 pull-right">
-                            <img border="2" id="img_ktp" src="<s:property value="imgKtp"/>"
-                                 style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
-                        </div>
+                        <script>
+                            var cek = cekImages('<s:property value="imgKtp"/>');
+                            var url = '';
+                            if(cek){
+                                url = '<s:property value="imgKtp"/>';
+                            }else{
+                                url = contextPathHeader+'/pages/images/no-images.png';
+                            }
+                            var set = '<div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"\n' +
+                                'class="card card-4 pull-right">\n' +
+                                '<img border="2" id="img_ktp" src="'+url+'"\n' +
+                                'style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">\n' +
+                                '</div>';
+                            document.write(set);
+                        </script>
                     </div>
                     <div class="box-body">
                         <div class="row">
@@ -400,6 +410,7 @@
                                 <%--<a class="btn btn-info" onclick="viewRiwayat()"><i class="fa fa-history"></i> Riwayat Pasien</a>--%>
                                 <a class="btn btn-info" onclick="viewHistory()"><i class="fa fa-history"></i> All History</a>
                                 <a class="btn bg-aqua" onclick="viewAllRekamMedis()"><i class="fa fa-book"></i> All Rekam Medis</a>
+                                <a class="btn btn-primary" onclick="viewAllRekamMedisLama()"><i class="fa fa-book"></i> Rekam Medis Lama</a>
                             </div>
                         </div>
                         <div class="box-header with-border"></div>
@@ -866,6 +877,50 @@
                     <div class="row">
                         <div class="col-md-12">
                             <img id="img_lab_luar" style="width: 100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-rekam-medis-lama">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medis Lama</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span style="font-weight: bold; color: #0F9E5E" class="text-center" id="id_loading"></span>
+                            <div class="box box-solid">
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                        <ol class="carousel-indicators" id="button_ol">
+
+                                        </ol>
+                                        <div class="carousel-inner" id="isi_carousel">
+
+                                        </div>
+                                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                            <span class="fa fa-angle-left"></span>
+                                        </a>
+                                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                            <span class="fa fa-angle-right"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

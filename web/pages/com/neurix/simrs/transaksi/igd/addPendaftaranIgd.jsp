@@ -1858,6 +1858,8 @@
                         $('#ppk_rujukan').val(response.kdProviderProvUmum);
                         $('#intansi_perujuk').val(response.namaProvPerujuk);
                         $('#tgl_rujukan').val(response.tglCetakKartu);
+                        $('#diagnosa_awal').val(response.kodeDiagnosa);
+                        $('#diagnosa_ket').val(response.namaDiagnosa);
                     } else {
                         val = "tidak ditemukan";
                         icon = "fa-warning";
@@ -2066,14 +2068,7 @@
                 if (res.idPelayanan != null) {
                     if (res.tipePelayanan == "lab" || res.tipePelayanan == "radiologi") {
                         $('#form-lab').show();
-                        var idKategori = "";
-                        if (res.tipePelayanan == "lab") {
-                            idKategori = "KAL00000002";
-                        }
-                        if (res.tipePelayanan == "radiologi") {
-                            idKategori = "KAL00000001";
-                        }
-                        LabAction.listLab(idKategori, function (response) {
+                        LabAction.listLab(res.tipePelayanan, function (response) {
                             if (response != null) {
                                 $.each(response, function (i, item) {
                                     option2 += "<option value='" + item.idLab + "'>" + item.namaLab + "</option>";
@@ -2085,6 +2080,7 @@
                         });
                     } else {
                         $('#form-lab').hide();
+                        $('#h_id_order_lab').val(null);
                     }
                 }
             });
@@ -2510,7 +2506,16 @@
                 $('#jalan').val(selectedObj.alamat);
                 $('#suku').val(selectedObj.suku);
                 $('#img_ktp').val(selectedObj.imgKtp);
-                $('#img-upload').attr('src', selectedObj.urlktp);
+                if(selectedObj.urlktp != null && selectedObj.urlktp != ''){
+                    var cek = cekImages(selectedObj.urlktp);
+                    if(cek){
+                        $('#img-upload').attr('src', selectedObj.urlktp);
+                    }else{
+                        $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                    }
+                }else{
+                    $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                }
                 $('#provinsi').val(selectedObj.prov);
                 $('#kabupaten').val(selectedObj.kota);
                 $('#kecamatan').val(selectedObj.kec);
@@ -2535,11 +2540,11 @@
 
     function searchNoRM(id, value) {
         var functions, mapped;
-        var tipe = $('#jenis_pasien').val();
         if(value != ''){
             $('#' + id).typeahead({
                 minLength: 1,
                 source: function (query, process) {
+                    var tipe = $('#jenis_pasien').val();
                     functions = [];
                     mapped = {};
                     var data = [];
@@ -2613,7 +2618,16 @@
                     $('#jalan').val(selectedObj.alamat);
                     $('#suku').val(selectedObj.suku).trigger('change');
                     $('#img_ktp').val(selectedObj.imgKtp);
-                    $('#img-upload').attr('src', selectedObj.urlktp);
+                    if(selectedObj.urlktp != null && selectedObj.urlktp != ''){
+                        var cek = cekImages(selectedObj.urlktp);
+                        if(cek){
+                            $('#img-upload').attr('src', selectedObj.urlktp);
+                        }else{
+                            $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                        }
+                    }else{
+                        $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                    }
                     $('#provinsi').val(selectedObj.prov);
                     $('#kabupaten').val(selectedObj.kota);
                     $('#kecamatan').val(selectedObj.kec);
@@ -2937,7 +2951,16 @@
                     $('#jalan').val(response.jalan);
                     $('#suku').val(response.suku).trigger('change');
                     $('#img_ktp').val(response.imgKtp);
-                    $('#img-upload').attr('src', response.urlKtp);
+                    if(response.urlKtp != null && response.urlKtp != ''){
+                        var cek = cekImages(response.urlKtp);
+                        if(cek){
+                            $('#img-upload').attr('src', response.urlKtp);
+                        }else{
+                            $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                        }
+                    }else{
+                        $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                    }
                     $('#provinsi').val(response.provinsi);
                     $('#kabupaten').val(response.kota);
                     $('#kecamatan').val(response.kecamatan);

@@ -223,7 +223,8 @@
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="cutiPegawaiForm" method="post"  theme="simple" namespace="/cutiPegawai" action="search_cutiPegawai.action" cssClass="form-horizontal">
+                                    <s:form id="cutiPegawaiForm" method="post"  theme="simple"
+                                            namespace="/cutiPegawai" action="search_cutiPegawai.action" cssClass="form-horizontal">
 
                                         <s:hidden name="addOrEdit"/>
                                         <s:hidden name="delete"/>

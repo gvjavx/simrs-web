@@ -3,7 +3,7 @@
         version="2.0">
 
     <entity class="com.neurix.akuntansi.master.settingReportArusKas.model.ImAkunSettingReportArusKasDetailEntity">
-        <table name="im_akun_setting_report_arus_kas_detail" schema="public" catalog="simrs_prod"/>
+        <table name="im_akun_setting_report_arus_kas_detail" schema="public"/>
         <attributes>
             <id name="settingReportArusKasDetailId">
                 <column name="setting_report_arus_kas_detail_id"/>

@@ -275,33 +275,17 @@
                             <!-- /.col -->
                             <s:hidden value="headerDetailCheckup.jenisPeriksaPasien" id="jenis_periksa"></s:hidden>
                             <div class="col-md-6">
-                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
-                                     class="card card-4 pull-right">
-                                    <img border="2" id="img_ktp" src="<s:property value="headerDetailCheckup.urlKtp"/>"
-                                         style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
-                                </div>
+                                <script>
+                                    document.write(imagesDefault('<s:property value="headerDetailCheckup.urlKtp"/>'));
+                                </script>
                                 <table class="table table-striped">
                                     <tr>
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
-                                                <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:if>
-                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "umum"'>
-                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs"'>
-                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
-                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:else>
-                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:else>
-                                                    <s:property value="headerDetailCheckup.jenisPeriksaPasien"></s:property>
-                                                </span>
+                                                <script>
+                                                    document.write(changeJenisPasien('<s:property value="headerDetailCheckup.idJenisPeriksaPasien"/>', '<s:property value="headerDetailCheckup.jenisPeriksaPasien"/>'));
+                                                </script>
                                             </table>
                                         </td>
                                     </tr>
@@ -423,6 +407,23 @@
                                 </sj:dialog>
                             </div>
                             <!-- /.col -->
+                        </div>
+                        <div class="row" id="form_detail_paket" style="display: none">
+                            <div class="col-md-12">
+                                <label><i class="fa fa-file-o"></i> Detail Pelayanan Paket</label>
+                            </div>
+                            <div class="col-md-6">
+                                <table style="font-size: 12px" class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <td>Pelayanan</td>
+                                        <td width="30%" align="center">Status</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body_detail_paket">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <%--<div class="row">--%>
                         <%--<div class="form-group">--%>
@@ -970,31 +971,31 @@
                                             <select class="form-control select2" id="keterangan" style="width: 100%"
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                                     <option value="">[Select One]</option>
-                                                <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "umum" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
-                                                    <option value="selesai">Selesai</option>
-                                                    <option value="rawat_inap">Rawat Inap</option>
-                                                    <option value="rawat_intensif">Rawat Intensif</option>
-                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                    <option value="kamar_operasi">Kamar Operasi</option>
-                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
-                                                    <option value="rujuk_rs_lain">Dirujuk</option>
-                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
-                                                </s:if>
-                                                <s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>
-                                                    <option value="selesai">Selesai</option>
-                                                    <option value="rawat_inap">Rawat Inap</option>
-                                                    <option value="rawat_intensif">Rawat Intensif</option>
-                                                    <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                    <option value="kamar_operasi">Kamar Operasi</option>
-                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
-                                                    <option value="rujuk_rs_lain">Dirujuk</option>
-                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
-                                                    <option value="lanjut_biaya">Lanjut Biaya</option>
-                                                </s:elseif>
-                                                <s:else>
-                                                    <option value="selesai">Selesai</option>
-                                                    <option value="kontrol_ulang">Kontrol Ulang</option>
-                                                </s:else>
+                                                <%--<s:if test='headerDetailCheckup.idJenisPeriksaPasien == "umum" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>--%>
+                                                    <%--<option value="selesai">Selesai</option>--%>
+                                                    <%--<option value="rawat_inap">Rawat Inap</option>--%>
+                                                    <%--<option value="rawat_intensif">Rawat Intensif</option>--%>
+                                                    <%--<option value="rawat_isolasi">Rawat Isolasi</option>--%>
+                                                    <%--<option value="kamar_operasi">Kamar Operasi</option>--%>
+                                                    <%--<option value="ruang_bersalin">Ruang Bersalin</option>--%>
+                                                    <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
+                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
+                                                <%--</s:if>--%>
+                                                <%--<s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>--%>
+                                                    <%--<option value="selesai">Selesai</option>--%>
+                                                    <%--<option value="rawat_inap">Rawat Inap</option>--%>
+                                                    <%--<option value="rawat_intensif">Rawat Intensif</option>--%>
+                                                    <%--<option value="rawat_isolasi">Rawat Isolasi</option>--%>
+                                                    <%--<option value="kamar_operasi">Kamar Operasi</option>--%>
+                                                    <%--<option value="ruang_bersalin">Ruang Bersalin</option>--%>
+                                                    <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
+                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
+                                                    <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
+                                                <%--</s:elseif>--%>
+                                                <%--<s:else>--%>
+                                                    <%--<option value="selesai">Selesai</option>--%>
+                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
+                                                <%--</s:else>--%>
                                             </select>
                                         </div>
                                     </div>
@@ -1838,7 +1839,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Pemberian</label>
                         <div class="col-md-7">
-                            <s:select list="#{'sebelum':'Sebelum'}"
+                            <s:select list="#{'Saat':'Saat','Sebelum':'Sebelum'}"
                                       cssStyle="margin-top: 7px; width: 100%"
                                       onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()}"
                                       id="resep_waktu"
@@ -2366,6 +2367,7 @@
     var NOSEP = '<s:property value="headerDetailCheckup.noSep"/>';
     var IdAsuransi = '<s:property value="headerDetailCheckup.idAsuransi"/>';
     var isBpjsRekanan = "";
+    var isLanjutPaket = false;
 
     $(document).ready(function () {
         $('#igd').addClass('active');
@@ -2490,6 +2492,11 @@
             }
 
         });
+
+        if(jenisPeriksaPasien == 'paket_perusahaan' || jenisPeriksaPasien == 'paket_individu'){
+            showDetailPaket();
+        }
+        setKeteranganPeriksa();
     });
 
     function loadModalRM(jenis){

@@ -76,7 +76,8 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="eTindakanPelayananForm" method="post" theme="simple" namespace="/tindakanPelayanan" action="saveEdit_tindakanPelayanan" cssClass="well form-horizontal">
+            <s:form id="eTindakanPelayananForm" method="post" theme="simple" namespace="/tindakanPelayanan"
+                    action="saveEdit_tindakanPelayanan" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -99,7 +100,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idKategoriPelayanan2" name="kategoriTindakanPelayanan.idKategoriPelayanan" required="true" disabled="false" readonly="true" cssClass="form-control"/>
+                                <s:textfield id="idKategoriPelayanan2" name="kategoriTindakanPelayanan.idKategoriPelayanan"
+                                             required="true" disabled="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -111,7 +113,8 @@
                             <table>
                                 <s:action id="initComboKategori" namespace="/tindakanPelayanan" name="initComboKategori_tindakanPelayanan"/>
                                 <s:select list="#initComboKategori.listOfComboKategoriTindakan" id="idKategori2" name="kategoriTindakanPelayanan.idKategori"
-                                          listKey="idKategoriTindakan" listValue="kategoriTindakan" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="idKategoriTindakan" listValue="kategoriTindakan" headerKey=""
+                                          headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>
@@ -123,7 +126,8 @@
                             <table>
                                 <s:action id="initComboPelayanan" namespace="/tindakanPelayanan" name="initComboPelayanan_tindakanPelayanan"/>
                                 <s:select list="#initComboPelayanan.listOfComboPelayanan" id="idPelayanan2" name="kategoriTindakanPelayanan.idPelayanan"
-                                          listKey="idPelayanan" listValue="namaPelayanan" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="idPelayanan" listValue="namaPelayanan" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control" cssStyle="margin-top: 5px"/>
                             </table>
                         </td>
                     </tr>

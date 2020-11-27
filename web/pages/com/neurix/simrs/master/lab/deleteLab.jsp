@@ -108,18 +108,18 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Operator Lab :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:action id="initComboOperatorLab" namespace="/lab" name="initComboOperatorLab_lab"/>
-                                <s:select list="#initComboOperatorLab.listOfComboOperatorLab" id="idOperatorLab2" name="lab.idOperatorLab" disabled="true"
-                                          listKey="idOperatorLab" listValue="namaOperator" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Operator Lab :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:action id="initComboOperatorLab" namespace="/lab" name="initComboOperatorLab_lab"/>--%>
+                                <%--<s:select list="#initComboOperatorLab.listOfComboOperatorLab" id="idOperatorLab2" name="lab.idOperatorLab" disabled="true"--%>
+                                          <%--listKey="idOperatorLab" listValue="namaOperator" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
 
                     <tr>
                         <td>
@@ -147,16 +147,16 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tarif :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="tarif2" name="lab.tarif" readonly="true" required="true" disabled="false" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Tarif :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:textfield id="tarif2" name="lab.tarif" readonly="true" required="true" disabled="false" cssClass="form-control"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
 
                 </table>
 

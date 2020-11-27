@@ -159,8 +159,8 @@
                                                     <%--<i class="fa fa-user-plus"></i>Pasien Rekanan</a></li>--%>
                                             <%--</ul>--%>
                                         <%--</div>--%>
-                                        <a type="button" class="btn btn-warning" id="btnFingerPrint"><i
-                                                class="fa fa-plus"></i> With Finger Print</a>
+                                        <%--<a type="button" class="btn btn-warning" id="btnFingerPrint"><i--%>
+                                                <%--class="fa fa-plus"></i> With Finger Print</a>--%>
                                         <a type="button" class="btn btn-danger" href="initForm_igd.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
@@ -223,23 +223,9 @@
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
-                                        <s:if test='#row.idJenisPeriksaPasien == "asuransi"'>
-                                        <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:if>
-                                                <s:elseif test='#row.idJenisPeriksaPasien == "umum"'>
-                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='#row.idJenisPeriksaPasien == "bpjs"'>
-                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='#row.idJenisPeriksaPasien == "ptpn"'>
-                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:else>
-                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:else>
-                                                    <s:property value="jenisPeriksaPasien"></s:property>
-                                                </span>
+                                        <script>
+                                            document.write(changeJenisPasien('<s:property value="idJenisPeriksaPasien"/>', '<s:property value="jenisPeriksaPasien"/>'));
+                                        </script>
                                     </td>
                                     <td align="center">
                                         <s:if test='#row.statusPeriksa != "3"'>
@@ -253,7 +239,7 @@
                                                     </s:a>
                                                 </s:if>
                                                 <s:else>
-                                                    <label class="label label-warning">Uang muka belum bayar</label>
+                                                    <span class="span-warning">Uang muka belum bayar</span>
                                                 </s:else>
                                             </s:if>
                                             <s:else>

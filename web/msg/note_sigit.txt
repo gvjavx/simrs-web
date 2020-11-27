@@ -1310,3 +1310,10 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN id_trans_nilai_dasar VARCHAR(50);
 
 --
+
+-- 2020-11-17
+
+    ALTER TABLE im_simrs_header_tindakan
+    ADD COLUMN flag_konsul_tele VARCHAR(1);
+
+--

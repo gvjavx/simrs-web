@@ -579,7 +579,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             if ("selesai".equalsIgnoreCase(bean.getTindakLanjut()) ||
                     "rujuk_rs_lain".equalsIgnoreCase(bean.getTindakLanjut()) ||
                     "kontrol_ulang".equalsIgnoreCase(bean.getTindakLanjut()) ||
-                    "lanjut_biaya".equalsIgnoreCase(bean.getTindakLanjut())) {
+                    "lanjut_biaya".equalsIgnoreCase(bean.getTindakLanjut()) ||
+                    "rujuk_internal".equalsIgnoreCase(bean.getTindakLanjut())) {
 
                 HeaderCheckup headerCheckup = new HeaderCheckup();
                 headerCheckup.setNoCheckup(entity.getNoCheckup());
@@ -656,7 +657,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 if (rawatInapEntity.getIdRuangan() != null && !"".equalsIgnoreCase(rawatInapEntity.getIdRuangan())) {
                     Ruangan ruangan = new Ruangan();
                     ruangan.setIdRuangan(rawatInapEntity.getIdRuangan());
-                    ruangan.setStatusRuangan("N");
+//                    ruangan.setStatusRuangan("N");
                     List<MtSimrsRuanganEntity> ruanganEntities = getListEntityRuangan(ruangan);
 
                     if (!ruanganEntities.isEmpty() && ruanganEntities.size() > 0) {

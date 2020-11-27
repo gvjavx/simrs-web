@@ -86,6 +86,25 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String flagKunjungan;
     private String berkas;
 
+    private String flagSendKlaim;
+    private String noAntrian;
+
+    public String getNoAntrian() {
+        return noAntrian;
+    }
+
+    public void setNoAntrian(String noAntrian) {
+        this.noAntrian = noAntrian;
+    }
+
+    public String getFlagSendKlaim() {
+        return flagSendKlaim;
+    }
+
+    public void setFlagSendKlaim(String flagSendKlaim) {
+        this.flagSendKlaim = flagSendKlaim;
+    }
+
     public String getFlagKunjungan() {
         return flagKunjungan;
     }

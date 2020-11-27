@@ -387,7 +387,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                 detailEntity.setPengajuanBiayaId(id);
                 detailEntity.setBranchId(pengajuanBiayaDetail.getBranchId());
                 detailEntity.setDivisiId(pengajuanBiayaDetail.getDivisiId());
-                detailEntity.setTanggal(CommonUtil.convertStringToDate2(pengajuanBiayaDetail.getStTanggal()));
+                detailEntity.setTanggal(CommonUtil.convertStringToDate(pengajuanBiayaDetail.getStTanggal()));
                 detailEntity.setTransaksi(pengajuanBiayaDetail.getTransaksi());
                 detailEntity.setNoBudgeting(pengajuanBiayaDetail.getNoBudgeting());
                 detailEntity.setJumlah(pengajuanBiayaDetail.getJumlah());
@@ -434,7 +434,7 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             pengajuanBiayaEntity.setDivisiId(bean.getDivisiId());
             pengajuanBiayaEntity.setTransaksi("PB");
             pengajuanBiayaEntity.setKeterangan(bean.getKeterangan());
-            pengajuanBiayaEntity.setTanggal(CommonUtil.convertStringToDate2(bean.getStTanggal()));
+            pengajuanBiayaEntity.setTanggal(CommonUtil.convertStringToDate(bean.getStTanggal()));
             pengajuanBiayaEntity.setTotalBiaya(bean.getTotalBiaya());
             pengajuanBiayaEntity.setFlagBatal(bean.getFlagBatal());
 
@@ -665,6 +665,19 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
                     if (pengajuanBiayaEntity.getNoJurnal()!=null){
                         if (!"".equalsIgnoreCase(pengajuanBiayaEntity.getNoJurnal())){
                             returnPengajuanBiaya.setFlagPosting(true);
+                        }
+                    }
+
+                    if (pengajuanBiayaEntity.getTransaksi()!=null){
+                        switch (pengajuanBiayaEntity.getTransaksi()){
+                            case "PDU":
+                                returnPengajuanBiaya.setTransaksiName("Swift Kas Unit Ke Pusat");
+                                break;
+                            case "SMK":
+                                returnPengajuanBiaya.setTransaksiName("Setoran Modal Kerja Ke Unit");
+                                break;
+                                default:
+                                    returnPengajuanBiaya.setTransaksiName("");
                         }
                     }
 
@@ -2250,7 +2263,9 @@ public class PengajuanBiayaBoImpl implements PengajuanBiayaBo {
             data.setBranchName(branchDao.getById(pk,"Y").getBranchName());
         }
         if (entity.getMasterId()!=null){
-            data.setMasterName(masterVendorDao.getById("nomorMaster",entity.getMasterId()).getNama());
+            ImMasterVendorEntity masterVendor = masterVendorDao.getById("nomorMaster",entity.getMasterId());
+            data.setMasterName(masterVendor.getNama());
+            data.setNoRekening(masterVendor.getNoRekening());
         }
 
         switch (entity.getStatus()){

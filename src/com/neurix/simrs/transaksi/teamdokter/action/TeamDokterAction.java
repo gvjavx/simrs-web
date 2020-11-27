@@ -209,7 +209,9 @@ public class TeamDokterAction extends BaseMasterAction {
             beanNotif.setUserId(idDokter);
 
             resultNotif = notifikasiFcmBo.getByCriteria(beanNotif);
-            FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan " + jenisDpjp, "dr. meminta persetujuan untuk " + jenisDpjp, "SK", resultNotif.get(0).getOs(), null);
+            if(resultNotif.size() > 0){
+                FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Persetujuan " + jenisDpjp, "dr. meminta persetujuan untuk " + jenisDpjp, "SK", resultNotif.get(0).getOs(), null);
+            }
 
         }catch (GeneralBOException e) {
             response.setStatus("error");
