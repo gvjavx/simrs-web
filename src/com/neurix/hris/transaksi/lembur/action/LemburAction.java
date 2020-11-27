@@ -732,6 +732,11 @@ public class LemburAction extends BaseMasterAction {
                 iJamAkhirDb=Integer.parseInt(sJamKerjaAkhirDb.replace(":",""));
                 break;
             }
+
+            // Sigit, 2020-11-26, jika mengajukan pada jam kerja, maka durasi 0 / tidak dapat hitungan lembur
+            if (iJamAwalKerja>iJamAwalDb && iJamAwalKerja<iJamAkhirDb && tglAwal.equals(tglAkhir)){
+                return new Double(0);
+            }
             if (iJamAwalKerja<iJamAwalDb){
                 hasil=hasil+CommonUtil.SubtractJamAwalDanJamAkhir (jamAwal,sJamKerjaAwalDb,"positif");
                 if (iJamAkhirKerja>iJamAkhirDb){

@@ -2355,9 +2355,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         totalRlab = totalRlab.multiply(proporsiGaji);
 
                         //perhitungan pph gaji karyawan
+                        // Sigit, 2020-11-26, semua method pph, pergantian parameter iuranBpjsKsPers -> tunjBpjsKs
+                        // method perhitungan pph : kalkulasiGrossUpPphSimRs, pph21SimRs
                         payrollPph = kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                     gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
-                                    totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, lainLain,
+                                    totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, tunjBpjsKs, lainLain,
                                     iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
 
                         if (bean.getBulan().equalsIgnoreCase("12")){
@@ -2372,7 +2374,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             BigDecimal iuranPegawai11Bulan = payrollDao.getIuran11Bulan(bean.getTahun(),payrollEntity.getNip());
                             totalLain11Bulan = bonus11Bulan.add(ptt11Bulan).add(pttBulan12);
                             PayrollPph pph12Bulan = pph21SimRs(gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
-                                    totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, bonus11Bulan,
+                                    totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, tunjBpjsKs, bonus11Bulan,
                                     iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(),
                                     payrollEntity.getJumlahAnak(),bruto11Bulan,tunjPPh11Bulan,tunjPphBonus,ptt11Bulan,iuranPegawai11Bulan,pttBulan12,pph11Bulan,pphBonus,biodataEntity.getNpwp());
 
@@ -2420,7 +2422,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         //perhitungan pph thr
                         PayrollPph payrolPphThr =  kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                 gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
-                                totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, payrollThr.getTotalThrNilai(),
+                                totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, tunjBpjsKs, payrollThr.getTotalThrNilai(),
                                 iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
 
                         //pph pendapatan dengan thr - pph gaji normal = pph thr only
@@ -2483,7 +2485,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         //hitung pph jasa operasional
                         PayrollPph payrolPphJasopr = kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                 gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
-                                totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, payrollJasopr.getTotaljasoprNilai(),
+                                totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, tunjBpjsKs, payrollJasopr.getTotaljasoprNilai(),
                                 iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
 
                         //pph pendapatan dengan jasopr - pph normal = pph jasop only
@@ -2544,7 +2546,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                 PayrollPph payrolPphJubileum = new PayrollPph();
                                 payrolPphJubileum = kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                         gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
-                                        totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, payrollJubileum.getTotalJubileumNilai(),
+                                        totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, tunjBpjsKs, payrollJubileum.getTotalJubileumNilai(),
                                         iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
                                 //pph pendapatan dengan jasopr - pph normal = pph jasop only
                                 BigDecimal pphJubileum = payrolPphJubileum.getPphGajiNilai().subtract(payrollPph.getPphGajiNilai());
@@ -2589,7 +2591,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                             PayrollPph payrolPphCuti =  kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                     gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
-                                    totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, payrollCuti.getTotalCutiNilai(),
+                                    totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, tunjBpjsKs, payrollCuti.getTotalCutiNilai(),
                                     iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
 
                             //pph pendapatan dengan jasopr - pph normal = pph jasop only
@@ -2756,7 +2758,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                             PayrollPph payrolPphInsentif =  kalkulasiGrossUpPphSimRs(payrollEntity.getNip(),bean.getBulan(), bean.getTahun(), payrollEntity.getBranchId(),
                                     gaji, santunanKhusus, tunjJabatanStruktural, tunjStruktural, tunjStrategis, tunjPeralihan,tunjLain, tunjTambahan, pemondokan, komunikasi,
-                                    totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, iuranBpjsKsPers, payrollInsentif.getTotalInsentifNilai(),
+                                    totalRlab, lembur, iuranDapenPensiunPersh, iuranBpjsTkPers, tunjBpjsKs, payrollInsentif.getTotalInsentifNilai(),
                                     iuranDapenPensiunPeg, iuranBpjsTkKary, iuranBpjsKsKary, payrollEntity.getStatusKeluarga(), payrollEntity.getJumlahAnak(),biodataEntity.getNpwp(),biodataEntity.getTanggalMasuk());
                             //pph pendapatan dengan insentif - pph normal = pph insentif only
                             BigDecimal pphInsentif = payrolPphInsentif.getPphGajiNilai().subtract(payrollPph.getPphGajiNilai());
@@ -2956,7 +2958,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                     //tunjangan
 
-                    tunjBpjsKs = iuranBpjsKsPers;
+                    tunjBpjsKs = iuranBpjsKsPers.add(iuranBpjsKsKary);
                     payroll.setTunjanganBpjsKs(CommonUtil.numbericFormat(tunjBpjsKs, "###,###"));
                     payroll.setTunjanganBpjsKsNilai(tunjBpjsKs);
                     tunjBpjsTk = iuranBpjsTkPers;
@@ -8900,6 +8902,14 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payrollPerson.setIuranProfesi(CommonUtil.numbericFormat(payroll.getIuranProfesiNilai(), "###,###"));
                     payrollPerson.setPotonganLainNilai(payroll.getPotonganLainNilai());
                     payrollPerson.setPotonganLain(CommonUtil.numbericFormat(payroll.getPotonganLainNilai(), "###,###"));
+
+                    // update tunj bpjs TK pers pada B, Sigit 2020-11-24, START
+                    payrollPerson.setTunjanganBpjsKsNilai(payrollPerson.getIuranBpjsKsPersNilai().add(payrollPerson.getIuranBpjsKsKaryNilai()));
+                    payrollPerson.setTunjanganBpjsTkNilai(payrollPerson.getIuranBpjsTkPersNilai());
+
+                    payrollPerson.setTunjanganBpjsKs(CommonUtil.numbericFormat(payrollPerson.getTunjanganBpjsKsNilai(),"###,###"));
+                    payrollPerson.setTunjanganBpjsTk(CommonUtil.numbericFormat(payrollPerson.getTunjanganBpjsTkNilai(),"###,###"));
+                    // END
 
                     //pphGaji
                     payrollPph = kalkulasiGrossUpPphSimRs(payrollPerson.getNip(),payrollPerson.getBulan(),payrollPerson.getTahun(),
