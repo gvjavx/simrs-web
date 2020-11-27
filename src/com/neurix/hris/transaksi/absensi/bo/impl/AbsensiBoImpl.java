@@ -5186,8 +5186,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         // END
                                         // Sigit, 2020-11-26 perubahan Perhitungan upah biaya lembur per jam, START
                                         peralihan = getPeralihanGapok(biodata.getNip(),CommonUtil.dateUtiltoDateSql(data.getTanggalUtil())).doubleValue();
-
-                                        BigDecimal bGapokPeralihan = new BigDecimal(gapok+peralihan);
+                                        Double totalGapokPeralihan = gapok+peralihan;
+                                        BigDecimal bGapokPeralihan = new BigDecimal(totalGapokPeralihan);
                                         BigDecimal bFaktor = new BigDecimal(faktor);
                                         BigDecimal bJamLembur = new BigDecimal(jamLembur);
 
