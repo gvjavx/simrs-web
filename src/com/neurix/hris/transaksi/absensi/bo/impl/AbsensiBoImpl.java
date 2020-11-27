@@ -5170,7 +5170,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 //                                        peralihan = getTunjPeralihan(biodata.getNip(),CommonUtil.dateUtiltoDateSql(data.getTanggalUtil())).doubleValue();
 //                                        upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
 
-                                        // Sigit 2020-11-26, Perhitungan upah biaya lembur, START
+                                        // Sigit 2020-11-26, Pencarian prosentase gaji dari unutk perhitungan upah lembur perjam, START
                                         BigDecimal prosentase = new BigDecimal(0);
                                         List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(biodata.getJenisPegawai());
                                         if (mappingPersenGajiList.size() > 0){
@@ -5184,7 +5184,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                             }
                                         }
                                         // END
-
+                                        // Sigit, 2020-11-26 perubahan Perhitungan upah biaya lembur per jam, START
                                         peralihan = getPeralihanGapok(biodata.getNip(),CommonUtil.dateUtiltoDateSql(data.getTanggalUtil())).doubleValue();
 
                                         BigDecimal bGapokPeralihan = new BigDecimal(gapok+peralihan);
@@ -5193,6 +5193,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                         BigDecimal bUpahLembur = bGapokPeralihan.multiply(prosentase).multiply(bFaktor).multiply(bJamLembur);
                                         upahLembur = bUpahLembur.doubleValue();
+                                        // END
 
 
                                         String upahNew = "";
