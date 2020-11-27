@@ -73,30 +73,30 @@
                 class="com.neurix.simrs.master.rekananops.action.DetailRekananOpsAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/master/rekananOps/searchRekananOps.jsp</result>
-            <result name="success">/pages/com/neurix/simrs/master/rekananOps/searchRekananOps.jsp</result>
-            <result name="input">/pages/com/neurix/simrs/master/rekananOps/searchRekananOps.jsp</result>
-            <result name="init_add">/pages/com/neurix/simrs/master/rekananOps/addRekananOps.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/simrs/master/rekananOps/addRekananOps.jsp</result>
-            <result name="error">/pages/com/neurix/simrs/master/rekananOps/addRekananOps.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/master/detailRekananOps/searchRekananOps.jsp</result>
+            <result name="success">/pages/com/neurix/simrs/master/detailRekananOps/searchRekananOps.jsp</result>
+            <result name="input">/pages/com/neurix/simrs/master/detailRekananOps/searchRekananOps.jsp</result>
+            <result name="init_add">/pages/com/neurix/simrs/master/detailRekananOps/addRekananOps.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/simrs/master/detailRekananOps/addRekananOps.jsp</result>
+            <result name="error">/pages/com/neurix/simrs/master/detailRekananOps/addRekananOps.jsp</result>
 
-            <result name="init_edit">/pages/com/neurix/simrs/master/rekananOps/editRekananOps.jsp</result>
-            <result name="failure">/pages/com/neurix/simrs/master/rekananOps/editRekananOps.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/simrs/master/rekananOps/editRekananOps.jsp</result>
+            <result name="init_edit">/pages/com/neurix/simrs/master/detailRekananOps/editRekananOps.jsp</result>
+            <result name="failure">/pages/com/neurix/simrs/master/detailRekananOps/editRekananOps.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/simrs/master/detailRekananOps/editRekananOps.jsp</result>
 
-            <result name="success_save_delete">/pages/com/neurix/simrs/master/rekananOps/deleteRekananOps.jsp</result>
-            <result name="init_delete">/pages/com/neurix/simrs/master/rekananOps/deleteRekananOps.jsp</result>
-            <result name="init_combo_farmasi">/pages/com/neurix/simrs/master/rekananOps/addRekananOps.jsp</result>
+            <result name="success_save_delete">/pages/com/neurix/simrs/master/detailRekananOps/deleteRekananOps.jsp</result>
+            <result name="init_delete">/pages/com/neurix/simrs/master/detailRekananOps/deleteRekananOps.jsp</result>
+            <result name="init_combo_farmasi">/pages/com/neurix/simrs/master/detailRekananOps/addRekananOps.jsp</result>
             <!--<result name="error" type="httpheader">-->
             <!--<param name="status">504</param>-->
             <!--<param name="headers.message">${actionErrors}</param>-->
             <!--</result>-->
         </action>
 
-        <action name="paging_displaytag_rekananOps"
+        <action name="paging_displaytag_detailRekananOps"
                 class="com.neurix.simrs.master.rekananops.action.DetailRekananOpsAction" method="paging">
             <interceptor-ref name="defaultStack" />
-            <result name="success">/pages/com/neurix/simrs/master/rekananOps/searchRekananOps.jsp</result>
+            <result name="success">/pages/com/neurix/simrs/master/detailRekananOps/searchRekananOps.jsp</result>
         </action>
 
     </package>

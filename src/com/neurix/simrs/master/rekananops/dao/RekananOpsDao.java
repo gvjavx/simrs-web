@@ -1,9 +1,11 @@
 package com.neurix.simrs.master.rekananops.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.rekananops.model.ImSimrsDetailRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -151,7 +153,16 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_rekanan_ops')");
         Iterator<BigInteger> iter = query.list().iterator();
-        String sId = String.format("%05d", iter.next());
-        return sId;
+        String sId = String.format("%08d", iter.next());
+        return "RKN" +sId;
+    }
+
+    public List<ImSimrsRekananOpsEntity> getRekananOps(String nomorMaster) throws HibernateException {
+        List<ImSimrsRekananOpsEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsRekananOpsEntity.class)
+                .add(Restrictions.eq("nomorMaster", nomorMaster))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+//        ne (not equal / tidak samadengan)
+        return results;
     }
 }

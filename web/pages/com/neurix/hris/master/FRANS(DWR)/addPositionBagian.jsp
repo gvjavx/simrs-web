@@ -6,57 +6,73 @@
 
 <html>
 <head>
-    <%--<script type='text/javascript' src='<s:url value="/dwr/interface/PayrollSkalaGajiAction.js"/>'></script>--%>
     <script type="text/javascript">
-    function callSearch2() {
+
+        function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
             window.location.reload(true);
         };
 
-    $.subscribe('beforeProcessSaveAdd', function (event, data) {
-        var namarekanan = document.getElementById("rekananOps").value;
-     
-        if (namarekanan != '' ) {
-            if (confirm('Do you want to save this record?')) {
+        $.subscribe('beforeProcessSave', function (event, data) {
+            var bagianName = document.getElementById("bagianName1").value;
+            var divisiId = document.getElementById("divisiId1").value;
+
+
+            if (bagianName != ''&& divisiId != '') {
+                if (confirm('Do you want to save this record?')) {
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialog');
+
+                } else {
+                    // Cancel Submit comes with 1.8.0
+                    event.originalEvent.options.submit = false;
+                }
+            } else {
+
+                event.originalEvent.options.submit = false;
+
+                var msg = "";
+
+                if (bagianName == '') {
+                    msg += 'Field <strong>Sub Bidang/Divisi Name</strong> is required.' + '<br/>';
+                }
+                if (divisiId == '') {
+                    msg += 'Field <strong>Bidang/Divisi</strong> is required.' + '<br/>';
+                }
+                document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                $.publish('showErrorValidationDialog');
+
+            }
+        });
+
+        $.subscribe('beforeProcessDelete', function (event, data) {
+            if (confirm('Do you want to delete this record ?')) {
                 event.originalEvent.options.submit = true;
-                $.publish('showDialogAdd');
+                $.publish('showDialog');
+
             } else {
                 // Cancel Submit comes with 1.8.0
                 event.originalEvent.options.submit = false;
             }
-        } else {
-            event.originalEvent.options.submit = false;
-            var msg = "";
-            if (namarekanan == '') {
-                msg += 'Field <strong>Nama rekananOps </strong> is required.' + '<br/>';
-            }
-           
+        });
 
-            document.getElementById('errorValidationMessageAdd').innerHTML = msg;
-
-            $.publish('showErrorValidationDialogAdd');
-        }
-    });
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
                 $.publish('showInfoDialog');
             }
-            }
-        );
+        });
 
-        $.subscribe('errorDialogAdd', function (event, data) {
+        $.subscribe('errorDialog', function (event, data) {
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
-            document.getElementById('errorMessageAdd').innerHTML = "Status = "
-                + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialogAdd');
-        }
-
-        );
+            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            $.publish('showErrorDialog');
+        });
 
         function cancelBtn() {
             $('#view_dialog_menu').dialog('close');
@@ -71,13 +87,17 @@
 
 <table width="100%" align="center">
     <tr>
-        <td align="center" >
-            <s:form id="addRekananOpsForm" method="post" theme="simple"
-                    namespace="/rekananOps" action="saveAdd_rekananOps" cssClass="well form-horizontal">
+        <td align="center">
+            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/positionBagian" action="saveAdd_positionBagian" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Add Rekanan Ops</legend>
+
+
+
+                <legend align="left">Add Sub Bidang/Divisi</legend>
+
+
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -87,43 +107,28 @@
                 </table>
 
                 <table >
-
                     <tr>
-                        <td width="20%">
-                            <label class="control-label"><small>Nomor Master :</small></label>
+                        <td>
+                            <label class="control-label"><small>Bidang/Devisi :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="rekananOps" name="rekananOps.namaRekanan" required="true" disabled="false" cssClass="form-control"/>
+                                <s:action id="comboMasaTanam" namespace="/department" name="initDepartment_department"/>
+                                <s:select list="#session.listOfResultDepartment" id="divisiId1" name="positionBagian.divisiId"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-
                     <tr>
-                        <td >
-                            <label class="control-label"><small>Nama Branche :</small></label>
+                        <td>
+                            <label class="control-label"><small>Nama :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaBrancheOpsAdd" name="rekananOps.namaBranche"
-                                             required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="bagianName1" name="positionBagian.bagianName" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tipe :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'ptpn':'Ptpn'}" id="tipe" name="rekananOps.tipe"
-                                          headerKey="No_ptpn" headerValue="bukan ptpn" cssClass="form-control " />
-                            </table>
-
-                        </td>
-                    </tr>
-
                 </table>
 
 
@@ -132,9 +137,9 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addRekananOpsForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSaveAdd" onCompleteTopics="closeDialog,successDialog"
-                                   onSuccessTopics="successDialog" onErrorTopics="errorDialogAdd" >
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
+                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Save
                         </sj:submit>
@@ -144,13 +149,14 @@
                     </div>
                 </div>
 
+
                 <div id="actions" class="form-actions">
                     <table>
                         <tr>
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialogAdd"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
                                                    closeTopics="closeDialog" modal="true"
                                                    resizable="false"
                                                    height="250" width="600" autoOpen="false"
@@ -174,6 +180,7 @@
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
                                                                       callSearch2();
+                                                                      link();
                                                                    }
                                                             }"
                                         >
@@ -181,30 +188,30 @@
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialogAdd" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close');}
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessageAdd"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_validation_dialog_add" openTopics="showErrorValidationDialogAdd" modal="true" resizable="false"
+                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog_add').dialog('close');}
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
                                                     <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessageAdd"></div></center>
+                                                    <center><div id="errorValidationMessage"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>
@@ -220,24 +227,4 @@
 </table>
 </body>
 </html>
-<script>
-    window.cekEksekutif1 = function () {
-        if (document.getElementById("isEksekutifAdd").checked == true) {
-            $("#eksekutif").val("Yes");
-        } else {
-            $("#eksekutif").val("No");
-        }
-    }
-    function showKategoriRekananOps(valueTipe){
-        // console.log(valueTipe);
-        if(valueTipe=='rawat_jalan'){
-            $('#form_kategori').show();
-        }else {
-            $('#form_kategori').hide();
-            $('#kategoriRekananOpsAdd').val('');
-
-        }
-    }
-
-</script>
 

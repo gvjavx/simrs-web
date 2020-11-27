@@ -3,6 +3,7 @@ package com.neurix.hris.master.positionBagian.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianHistoryEntity;
+import com.neurix.hris.master.positionBagian.model.positionBagian;
 import com.neurix.hris.transaksi.payroll.model.ItPayrollEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -33,18 +34,18 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
 
     @Override
     public List<ImPositionBagianEntity> getByCriteria(Map mapCriteria) {
-        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImPositionBagianEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImPositionBagianEntity.class);
 
         // Get Collection and sorting
-        if (mapCriteria!=null) {
-            if (mapCriteria.get("bagian_id")!=null) {
+        if (mapCriteria != null) {
+            if (mapCriteria.get("bagian_id") != null) {
                 criteria.add(Restrictions.eq("bagianId", (String) mapCriteria.get("bagian_id")));
             }
-            if (mapCriteria.get("divisi_id")!=null) {
+            if (mapCriteria.get("divisi_id") != null) {
                 criteria.add(Restrictions.eq("divisiId", (String) mapCriteria.get("divisi_id")));
             }
-            if (mapCriteria.get("bagian_name")!=null) {
-                criteria.add(Restrictions.ilike("bagianName", "%" + (String)mapCriteria.get("bagian_name") + "%"));
+            if (mapCriteria.get("bagian_name") != null) {
+                criteria.add(Restrictions.ilike("bagianName", "%" + (String) mapCriteria.get("bagian_name") + "%"));
             }
         }
 
@@ -62,22 +63,22 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
     // Generate surrogate id from postgre
     public String getNextPositioBagianId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_position_bagian')");
-        Iterator<BigInteger> iter=query.list().iterator();
+        Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%02d", iter.next());
-        return "PB2"+sId;
+        return "PB2" + sId;
     }
 
     public String getNextKelompokPositionHistoryId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kelompok_position_history')");
-        Iterator<BigInteger> iter=query.list().iterator();
+        Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%02d", iter.next());
-        return "HK"+sId;
+        return "HK" + sId;
     }
 
     public List<ImPositionBagianEntity> getListPositionBagian(String term) throws HibernateException {
 
         List<ImPositionBagianEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPositionBagianEntity.class)
-                .add(Restrictions.ilike("bagianName",term))
+                .add(Restrictions.ilike("bagianName", term))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 
@@ -87,7 +88,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
     public List<ImPositionBagianEntity> getListPositionBagianKodering(String term) throws HibernateException {
 
         List<ImPositionBagianEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPositionBagianEntity.class)
-                .add(Restrictions.ilike("kodering",term))
+                .add(Restrictions.ilike("kodering", term))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 
@@ -97,7 +98,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
     public List<ImPositionBagianEntity> getPositionBagianName(String term) throws HibernateException {
 
         List<ImPositionBagianEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPositionBagianEntity.class)
-                .add(Restrictions.ilike("bagianId",term))
+                .add(Restrictions.ilike("bagianId", term))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 
@@ -108,22 +109,24 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
 
         List<ImPositionBagianEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPositionBagianEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
-                .add(Restrictions.eq("branchId","KD01"))
+                .add(Restrictions.eq("branchId", "KD01"))
                 .list();
 
         return results;
     }
+
     public List<ImPositionBagianEntity> getComboPositionBagian() throws HibernateException {
         List<ImPositionBagianEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPositionBagianEntity.class)
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
         return results;
     }
+
     public void addAndSaveHistory(ImPositionBagianHistoryEntity entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);
     }
 
-    public List<ImPositionBagianEntity> getAllDataPositionBagian(){
+    public List<ImPositionBagianEntity> getAllDataPositionBagian() {
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
@@ -136,7 +139,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
 
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
@@ -145,7 +148,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
-    public List<ImPositionBagianEntity> getDataBagianSmk(String periode){
+    public List<ImPositionBagianEntity> getDataBagianSmk(String periode) {
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
@@ -157,7 +160,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tleft join im_hris_position_bagian bagian on bagian.bagian_id = smk.bagian_id\n" +
                 "where\n" +
                 "\tsmk.flag = 'Y'\n" +
-                "\tand periode = '"+periode+"'\n" +
+                "\tand periode = '" + periode + "'\n" +
                 "order by \n" +
                 "\tbagian.bagian_id";
 
@@ -166,7 +169,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
 
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
@@ -177,7 +180,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
-    public List<ImPositionBagianEntity> getDataBagianSmkV2(String periode, String branchId){
+    public List<ImPositionBagianEntity> getDataBagianSmkV2(String periode, String branchId) {
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
@@ -195,8 +198,8 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tleft join im_hris_department divisi on divisi.department_id = smk.divisi_id\n" +
                 "where\n" +
                 "\tsmk.flag = 'Y'\n" +
-                "\tand periode = '"+periode+"'\n" +
-                "\tand smk.branch_id = '"+branchId+"'\n" +
+                "\tand periode = '" + periode + "'\n" +
+                "\tand smk.branch_id = '" + branchId + "'\n" +
                 //"\tand posisi.kelompok_id not in ('KL01','KL02','KL03', 'KL04', 'KL05')\n" +
                 "order by\n" +
                 "\tsmk.divisi_id,\n" +
@@ -208,7 +211,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
 
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
@@ -223,7 +226,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
-    public List<ImPositionBagianEntity> getAllDataPositionBagian(String txtWhere){
+    public List<ImPositionBagianEntity> getAllDataPositionBagian(String txtWhere) {
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
@@ -237,7 +240,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
 
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
@@ -246,7 +249,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
-    public List<ImPositionBagianEntity> getPosisiPerBagian(String bagianId, String unitId, String statusPegawai){
+    public List<ImPositionBagianEntity> getPosisiPerBagian(String bagianId, String unitId, String statusPegawai) {
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
@@ -260,9 +263,9 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tleft join it_hris_pegawai_position posisiPegawai on posisiPegawai.position_id = posisi.position_id\n" +
                 "\tleft join im_hris_pegawai pegawai on pegawai.nip = posisiPegawai.nip\n" +
                 "where\n" +
-                "\tposisi.bagian_id = '"+bagianId+"'\n" +
-                "\tand posisiPegawai.branch_id = '"+unitId+"'\n" +
-                "\tand pegawai.status_pegawai = '"+statusPegawai+"'\n" +
+                "\tposisi.bagian_id = '" + bagianId + "'\n" +
+                "\tand posisiPegawai.branch_id = '" + unitId + "'\n" +
+                "\tand pegawai.status_pegawai = '" + statusPegawai + "'\n" +
                 "\t--and pegawai.flag ='Y'\n" +
                 "\tand posisiPegawai.flag ='Y'";
 
@@ -271,7 +274,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
 
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
@@ -283,7 +286,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
-    public List<ImPositionBagianEntity> getPosisiPerBagian(String bagianId, String unitId, String statusPegawai, String bulan, String tahun){
+    public List<ImPositionBagianEntity> getPosisiPerBagian(String bagianId, String unitId, String statusPegawai, String bulan, String tahun) {
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
@@ -297,13 +300,13 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tleft join it_hris_payroll payroll on payroll.position_id = posisi.position_id\n" +
                 "\tleft join im_hris_pegawai pegawai on pegawai.nip = payroll.nip\n" +
                 "where\n" +
-                "\tposisi.bagian_id = '"+bagianId+"'\n" +
-                "\tand pegawai.status_pegawai = '"+statusPegawai+"'\n" +
+                "\tposisi.bagian_id = '" + bagianId + "'\n" +
+                "\tand pegawai.status_pegawai = '" + statusPegawai + "'\n" +
                 "\tand pegawai.flag ='Y'\n" +
                 "\t\n" +
-                "\tand payroll.bulan = '"+bulan+"' \n" +
-                "\tand payroll.tahun ='"+tahun+"' \n" +
-                "\tand payroll.branch_id = '"+unitId+"' \n" +
+                "\tand payroll.bulan = '" + bulan + "' \n" +
+                "\tand payroll.tahun ='" + tahun + "' \n" +
+                "\tand payroll.branch_id = '" + unitId + "' \n" +
                 "\tand payroll.flag_payroll = 'Y'";
 
         results = this.sessionFactory.getCurrentSession()
@@ -311,7 +314,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
 
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
@@ -323,7 +326,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
-    public List<ImPositionBagianEntity> getPosisiPerBagianThr(String bagianId, String unitId, String statusPegawai, String bulan, String tahun){
+    public List<ImPositionBagianEntity> getPosisiPerBagianThr(String bagianId, String unitId, String statusPegawai, String bulan, String tahun) {
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
@@ -337,13 +340,13 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tleft join it_hris_payroll payroll on payroll.position_id = posisi.position_id\n" +
                 "\tleft join im_hris_pegawai pegawai on pegawai.nip = payroll.nip\n" +
                 "where\n" +
-                "\tposisi.bagian_id = '"+bagianId+"'\n" +
-                "\tand pegawai.status_pegawai = '"+statusPegawai+"'\n" +
+                "\tposisi.bagian_id = '" + bagianId + "'\n" +
+                "\tand pegawai.status_pegawai = '" + statusPegawai + "'\n" +
                 "\tand pegawai.flag ='Y'\n" +
                 "\t\n" +
-                "\tand payroll.bulan = '"+bulan+"' \n" +
-                "\tand payroll.tahun ='"+tahun+"' \n" +
-                "\tand payroll.branch_id = '"+unitId+"' \n" +
+                "\tand payroll.bulan = '" + bulan + "' \n" +
+                "\tand payroll.tahun ='" + tahun + "' \n" +
+                "\tand payroll.branch_id = '" + unitId + "' \n" +
                 "\tand payroll.flag_thr = 'Y'";
 
         results = this.sessionFactory.getCurrentSession()
@@ -351,7 +354,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
 
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
@@ -364,7 +367,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
     }
 
     // posisi bagian untuk master update golongan
-    public List<ImPositionBagianEntity> getPosisiPerBagianUpdateGolongan(String id, String bagianId){
+    public List<ImPositionBagianEntity> getPosisiPerBagianUpdateGolongan(String id, String bagianId) {
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
@@ -378,8 +381,8 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tleft join im_hris_pegawai pegawai on pegawai.nip = history.nip\n" +
                 "\tleft join im_position posisi on posisi.position_id = history.position_id \n" +
                 "where\n" +
-                "\thistory.update_golongan_id = '"+id+"'\n" +
-                "\tand posisi.bagian_id = '"+bagianId+"'\n" +
+                "\thistory.update_golongan_id = '" + id + "'\n" +
+                "\tand posisi.bagian_id = '" + bagianId + "'\n" +
                 "order by\n" +
                 "\tposisi.bagian_id";
 
@@ -388,7 +391,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
 
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
@@ -400,7 +403,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
-    public List<ImPositionBagianEntity> getPosisiPerBagianJasprod(String bagianId, String unitId, String statusPegawai, String bulan, String tahun){
+    public List<ImPositionBagianEntity> getPosisiPerBagianJasprod(String bagianId, String unitId, String statusPegawai, String bulan, String tahun) {
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
@@ -415,11 +418,11 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tleft join im_hris_pegawai pegawai on pegawai.nip = payroll.nip\n" +
                 "\tleft join it_hris_smk_evaluasi_pegawai smk on smk.nip = payroll.nip\n" +
                 "where\n" +
-                "\tsmk.bagian_id = '"+bagianId+"'\n" +
-                "\tand smk.status_pegawai = '"+statusPegawai+"'\n" +
-                "\tand payroll.bulan = '"+bulan+"' \n" +
-                "\tand payroll.tahun ='"+tahun+"' \n" +
-                "\tand payroll.branch_id = '"+unitId+"' \n" +
+                "\tsmk.bagian_id = '" + bagianId + "'\n" +
+                "\tand smk.status_pegawai = '" + statusPegawai + "'\n" +
+                "\tand payroll.bulan = '" + bulan + "' \n" +
+                "\tand payroll.tahun ='" + tahun + "' \n" +
+                "\tand payroll.branch_id = '" + unitId + "' \n" +
                 "\tand payroll.flag_jasprod = 'Y'\n" +
                 "\tand smk.flag = 'Y'";
 
@@ -428,7 +431,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
 
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
@@ -440,7 +443,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
-    public List<ImPositionBagianEntity> getPosisiPerBagianInsentif(String bagianId, String unitId, String statusPegawai, String bulan, String tahun){
+    public List<ImPositionBagianEntity> getPosisiPerBagianInsentif(String bagianId, String unitId, String statusPegawai, String bulan, String tahun) {
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
@@ -454,11 +457,11 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tleft join it_hris_payroll payroll on payroll.position_id = posisi.position_id\n" +
                 "\tleft join im_hris_pegawai pegawai on pegawai.nip = payroll.nip\n" +
                 "where\n" +
-                "\tposisi.bagian_id = '"+bagianId+"'\n" +
-                "\tand pegawai.status_pegawai = '"+statusPegawai+"'\n" +
-                "\tand payroll.bulan = '"+bulan+"' \n" +
-                "\tand payroll.tahun ='"+tahun+"' \n" +
-                "\tand payroll.branch_id = '"+unitId+"' \n" +
+                "\tposisi.bagian_id = '" + bagianId + "'\n" +
+                "\tand pegawai.status_pegawai = '" + statusPegawai + "'\n" +
+                "\tand payroll.bulan = '" + bulan + "' \n" +
+                "\tand payroll.tahun ='" + tahun + "' \n" +
+                "\tand payroll.branch_id = '" + unitId + "' \n" +
                 "\tand payroll.flag_insentif = 'Y'";
 
         results = this.sessionFactory.getCurrentSession()
@@ -466,7 +469,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
 
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
@@ -478,7 +481,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
-    public List<ImPositionBagianEntity> getPosisiPerBagianPendidikan(String bagianId, String unitId, String statusPegawai, String bulan, String tahun){
+    public List<ImPositionBagianEntity> getPosisiPerBagianPendidikan(String bagianId, String unitId, String statusPegawai, String bulan, String tahun) {
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
@@ -492,13 +495,13 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tleft join it_hris_payroll payroll on payroll.position_id = posisi.position_id\n" +
                 "\tleft join im_hris_pegawai pegawai on pegawai.nip = payroll.nip\n" +
                 "where\n" +
-                "\tposisi.bagian_id = '"+bagianId+"'\n" +
-                "\tand pegawai.status_pegawai = '"+statusPegawai+"'\n" +
+                "\tposisi.bagian_id = '" + bagianId + "'\n" +
+                "\tand pegawai.status_pegawai = '" + statusPegawai + "'\n" +
                 "\tand pegawai.flag ='Y'\n" +
                 "\t\n" +
-                "\tand payroll.bulan = '"+bulan+"' \n" +
-                "\tand payroll.tahun ='"+tahun+"' \n" +
-                "\tand payroll.branch_id = '"+unitId+"' \n" +
+                "\tand payroll.bulan = '" + bulan + "' \n" +
+                "\tand payroll.tahun ='" + tahun + "' \n" +
+                "\tand payroll.branch_id = '" + unitId + "' \n" +
                 "\tand payroll.flag_pendidikan = 'Y'";
 
         results = this.sessionFactory.getCurrentSession()
@@ -506,7 +509,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
 
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
@@ -518,7 +521,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
-    public List<ImPositionBagianEntity> getListOfBagian(String branchId){
+    public List<ImPositionBagianEntity> getListOfBagian(String branchId) {
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "SELECT \n" +
@@ -530,7 +533,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tim_position posisi \n" +
                 "\tleft join it_hris_pegawai_position posisiPegawai on posisiPegawai.position_id = posisi.position_id  \n" +
                 "\tleft join im_hris_position_bagian bagian on bagian.bagian_id = posisi.bagian_id \n" +
-                "\tWHERE posisiPegawai.branch_id ='"+branchId+"'  AND bagian.bagian_id IS NOT NULL GROUP BY bagian.nama_bagian ) hasilBagian\n" +
+                "\tWHERE posisiPegawai.branch_id ='" + branchId + "'  AND bagian.bagian_id IS NOT NULL GROUP BY bagian.nama_bagian ) hasilBagian\n" +
                 "\tLEFT JOIN im_hris_position_bagian bagian ON bagian.nama_bagian = hasilBagian.nama_bagian\n";
 
         results = this.sessionFactory.getCurrentSession()
@@ -538,7 +541,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
             listOfResult.add(result);
@@ -548,12 +551,12 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
 
     public String getNextPositionBagianHistoryId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_position_bagian_history')");
-        Iterator<BigInteger> iter=query.list().iterator();
+        Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%03d", iter.next());
-        return "PBS"+sId;
+        return "PBS" + sId;
     }
 
-    public List<ImPositionBagianEntity> getDataPosisiBagian(String divisiId){
+    public List<ImPositionBagianEntity> getDataPosisiBagian(String divisiId) {
 
         String bagian = "";
 
@@ -571,7 +574,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "                from \n" +
                 "                im_hris_position_bagian \n" +
                 "                where \n" +
-                "                bagian_id is not null and divisi_id = '"+divisiId+"'  \n" +
+                "                bagian_id is not null and divisi_id = '" + divisiId + "'  \n" +
                 "                order by \n" +
                 "                \tnama_bagian";
 
@@ -580,7 +583,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         for (Object[] row : results) {
-            ImPositionBagianEntity result  = new ImPositionBagianEntity();
+            ImPositionBagianEntity result = new ImPositionBagianEntity();
             result.setBagianId((String) row[0]);
             result.setBagianName((String) row[1]);
 
@@ -589,10 +592,47 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
+    public List<positionBagian> getDataDevisiId(positionBagian bean) {
+        List<positionBagian> positionBagianList = new ArrayList<>();
+        String departementId = "%";
+        if (bean.getDivisiId() != null && !"".equalsIgnoreCase(bean.getDivisiId())) {
+            departementId = bean.getDivisiId();
+        }
+
+        String sql = "SELECT \n" +
+                "im_hris_position_bagian.bagian_id ,\n" +//0
+                "im_hris_position_bagian.nama_bagian,\n" +//1
+                "im_hris_department.department_id,  \n" +//2
+                "im_hris_department.department_name\n" +//3
+                "FROM \n" +
+                "im_hris_department \n" +
+                "INNER JOIN im_hris_position_bagian ON im_hris_department.department_id = im_hris_position_bagian.divisi_id \n" +
+                "where\n" +
+                "im_hris_department.department_id LIKE :id \n" +
+                "ORDER BY\n" +
+                "im_hris_department.department_id,im_hris_position_bagian.bagian_id";
+
+        List<Object[]> datatree = new ArrayList<>();
+        datatree = this.sessionFactory.getCurrentSession().createSQLQuery(sql).setParameter("id", departementId).list();
+        if (datatree.size() > 0) {
+            for (Object[] obj : datatree) {
+                positionBagian pb = new positionBagian();
+                pb.setBagianId(obj[0] != null ? obj[0].toString() : "");
+                pb.setBagianName(obj[1] != null ? obj[1].toString() : "");
+                pb.setDivisiId(obj[2] != null ? obj[2].toString() : "");
+                pb.setDivisiName(obj[3] != null ? obj[3].toString() : "");
+                positionBagianList.add(pb);
+            }
+        }
+
+
+        return positionBagianList;
+    }
+
     public List<ImPositionBagianEntity> getListPositionBagianByDivisi(String id) throws HibernateException {
 
         List<ImPositionBagianEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPositionBagianEntity.class)
-                .add(Restrictions.ilike("divisiId",id))
+                .add(Restrictions.ilike("divisiId", id))
                 .list();
 
         return results;

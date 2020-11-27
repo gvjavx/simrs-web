@@ -6,59 +6,48 @@
 
 <html>
 <head>
+    <%--<script type='text/javascript' src='<s:url value="/dwr/interface/PayrollSkalaGajiAction.js"/>'></script>--%>
     <script type="text/javascript">
-
+        $(document).ready(function(){
+            // var cek = document.getElementById("eksekutif").value;
+            //
+            // if (cek == 'Y'){
+            //     console.log(cek);
+            //     document.getElementById("isEksekutif").checked = true;
+            // }
+        });
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-            window.location.reload(true);
+//            window.location.reload(true);
+            document.detailRekananOpsForm.action = "search_detailrekananops.action";
+            document.detailRekananOpsForm.submit();
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
-            var bagianName = document.getElementById("bagianName1").value;
-            var divisiId = document.getElementById("divisiId1").value;
+        $.subscribe('beforeProcessSaveDelete', function (event, data) {
+            var diskondelet = document.getElementById("diskondelet").value;
 
-
-            if (bagianName != ''&& divisiId != '') {
+            if (diskondelet != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
-
                 } else {
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
                 }
             } else {
-
                 event.originalEvent.options.submit = false;
-
                 var msg = "";
+                if (diskondelet == '') {
+                    msg += 'Field <strong> diskondelet </strong> is required.' + '<br/>';
+                }
 
-                if (bagianName == '') {
-                    msg += 'Field <strong>Sub Bidang/Divisi Name</strong> is required.' + '<br/>';
-                }
-                if (divisiId == '') {
-                    msg += 'Field <strong>Bidang/Divisi</strong> is required.' + '<br/>';
-                }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
-
             }
         });
-
-        $.subscribe('beforeProcessDelete', function (event, data) {
-            if (confirm('Do you want to delete this record ?')) {
-                event.originalEvent.options.submit = true;
-                $.publish('showDialog');
-
-            } else {
-                // Cancel Submit comes with 1.8.0
-                event.originalEvent.options.submit = false;
-            }
-        });
-
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
@@ -88,14 +77,15 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/positionBagian" action="saveAdd_positionBagian" cssClass="well form-horizontal">
+            <s:form id="deletePelayananForm" method="post" theme="simple" namespace="/detailrekananops"
+                    action="saveDelete_detailrekananops" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Add Sub Bidang/Divisi</legend>
+                <legend align="left">Delete Detail Rekanan Oprasional</legend>
 
 
                 <table>
@@ -108,27 +98,82 @@
 
                 <table >
                     <tr>
-                        <td>
-                            <label class="control-label"><small>Bidang/Devisi :</small></label>
+                        <td width="30%">
+                            <label class="control-label"><small>ID Detail RekananOps :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboMasaTanam" namespace="/department" name="initDepartment_department"/>
-                                <s:select list="#session.listOfResultDepartment" id="divisiId1" name="positionBagian.divisiId"
-                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:textfield id="idDetailRekananOpsdelet" name="detailRekananOps.idDetailRekananOps"
+                                             required="true" disabled="true"  readonly="true" cssClass="form-control"/>
+                                    <%--&lt;%&ndash;<s:hidden id="idRekananOps1" name="rekananOps.idRekananOps" />&ndash;%&gt;--%>
+                                    <s:hidden id="idDetailRekananOpsdelet" name="detailRekananOps.idDetailRekananOps" />
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>isbpjs :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'Non-Active'}" id="isbpjs" name="detailRekananOps.isBpjs"
+                                          headerKey="Y" headerValue="Active" cssClass="form-control select2" readonly="true"
+                                          required="true" disabled="true" />
+                                <s:hidden id="isbpjs" name="detailRekananOps.isBpjs" />
+                            </table>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Nama rekanan :</small></label>
+                        </td>
+                        <td width="70%">
+                            <table>
+                                <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
+                                <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
+                                          disabled="true"
+                                          listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
+                                          readonly="true"
+                                          cssClass="form-control" cssStyle="margin-top: 5px"/>
+                                <s:hidden id="positionId1" name="detailRekananOps.idRekananOps" />
                             </table>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama :</small></label>
+                            <label class="control-label"><small>branch:</small></label>
                         </td>
-                        <td>
+                        <td width="70%">
                             <table>
-                                <s:textfield id="bagianName1" name="positionBagian.bagianName" required="true" disabled="false" cssClass="form-control"/>
+                                <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="detailRekananOps.branchId"
+                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                          readonly="true" disabled="true"
+                                          cssClass="form-control" />
+                                <s:hidden id="branchId" name="detailRekananOps.branchId" />
                             </table>
                         </td>
                     </tr>
+
+                    <tr>
+                        <td width="18%">
+                            <label class="control-label"><small> diskon :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield cssStyle="margin-top: 7px"
+                                             id="diskondelet"
+                                             name="detailRekananOps.diskon"
+                                             required="false"
+                                             readonly="true" cssClass="form-control" />
+                            </table>
+                        </td>
+                    </tr>
+
+
                 </table>
 
 
@@ -137,11 +182,11 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deletePelayananForm" id="save" name="save"
+                                   onBeforeTopics="beforeProcessSaveDelete" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
-                            Save
+                            Delete
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
@@ -180,7 +225,6 @@
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
                                                                       callSearch2();
-                                                                      link();
                                                                    }
                                                             }"
                                         >
@@ -191,7 +235,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -227,4 +271,13 @@
 </table>
 </body>
 </html>
+<script>
+    window.cekEksekutif = function () {
+        if (document.getElementById("isEksekutif").checked == true) {
+            $("#eksekutif").val("Y");
+        } else {
+            $("#eksekutif").val("N");
+        }
+    }
+</script>
 

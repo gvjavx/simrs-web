@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class DetailRekananOps {
+public class DetailRekananOps  {
     private String idDetailRekananOps;
     private String idRekananOps;
     private BigInteger diskon;

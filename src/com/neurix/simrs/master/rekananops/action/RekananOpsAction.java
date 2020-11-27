@@ -7,9 +7,6 @@ import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-//import com.neurix.simrs.master.rekananOps.bo.RekananOpsBo;
-//import com.neurix.simrs.master.rekananOps.model.RekananOps;
-import com.neurix.hris.master.payrollPtkp.model.PayrollPtkp;
 import com.neurix.simrs.master.rekananops.bo.DetailRekananOpsBo;
 import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
 import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
@@ -26,8 +23,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class DetailRekananOpsAction extends BaseMasterAction {
-    protected static transient Logger logger = Logger.getLogger(DetailRekananOpsAction.class);
+//import com.neurix.simrs.master.rekananOps.bo.RekananOpsBo;
+//import com.neurix.simrs.master.rekananOps.model.RekananOps;
+
+public class RekananOpsAction extends BaseMasterAction {
+    protected static transient Logger logger = Logger.getLogger(RekananOpsAction.class);
     private RekananOps rekananOps;
     private RekananOpsBo rekananOpsBoProxy;
     private PositionBo positionBoProxy;
@@ -121,16 +121,16 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         this.detailRekananOpsBoProxy = detailRekananOpsBoProxy;
     }
 
-    public DetailRekananOps init(String kode, String flag){
+    public RekananOps init(String kode, String flag){
         logger.info("[PayrollSkalaGajiAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        List<DetailRekananOps> listOfResult = (List<DetailRekananOps>) session.getAttribute("listOfResultRekananOps");
+        List<RekananOps> listOfResult = (List<RekananOps>) session.getAttribute("listOfResultRekananOps");
 
         if(kode != null && !"".equalsIgnoreCase(kode)){
             if(listOfResult != null){
-                for (DetailRekananOps detailRekananOps: listOfResult) {
-                    if(kode.equalsIgnoreCase(detailRekananOps.getIdDetailRekananOps()) && flag.equalsIgnoreCase(detailRekananOps.getFlag())){
-                        setDetailRekananOps(detailRekananOps);
+                for (RekananOps rekananOps: listOfResult) {
+                    if(kode.equalsIgnoreCase(rekananOps.getIdRekananOps()) && flag.equalsIgnoreCase(rekananOps.getFlag())){
+                        setRekananOps(rekananOps);
                         break;
                     }
                 }
@@ -139,17 +139,18 @@ public class DetailRekananOpsAction extends BaseMasterAction {
             }
             logger.info("[PayrollSkalaGajiAction.init] end process >>>");
         }
-        return getDetailRekananOps();
+        return getRekananOps();
     }
 
     @Override
     public String add() {
         logger.info("[DetailRekananOpsAction.add] start process >>>");
-        DetailRekananOps addDetailRekananOps = new DetailRekananOps();
-        if(!"ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
-            addDetailRekananOps.setBranchId(CommonUtil.userBranchLogin());
-        }
-        setDetailRekananOps(addDetailRekananOps);
+
+        RekananOps addRekananOps = new RekananOps();
+//        if(!"ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
+//            addRekananOps.setBranchId(CommonUtil.userBranchLogin());
+//        }
+        setRekananOps(addRekananOps);
         setAddOrEdit(true);
         setAdd(true);
 //        HttpSession session = ServletActionContext.getRequest().getSession();
@@ -164,32 +165,32 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[DetailRekananOpsAction.edit] start process >>>");
         String itemFlag = getFlag();
         String itemId = getId();
-        DetailRekananOps editDetailRekananOps = new DetailRekananOps();
+        RekananOps editRekananOps = new RekananOps();
         if(itemFlag != null){
             try {
-                editDetailRekananOps = init (itemId,itemFlag);
+                editRekananOps = init (itemId,itemFlag);
             } catch (GeneralBOException e) {
                 logger.error("dfsdfdsf"+e.getMessage());
                 throw new GeneralBOException("sdfdsfdf, "+e.getMessage());
             }
 
-            if(editDetailRekananOps != null) {
-                setDetailRekananOps(editDetailRekananOps);
+            if(editRekananOps != null) {
+                setRekananOps(editRekananOps);
             } else {
-                editDetailRekananOps.setFlag(itemFlag);
-                setDetailRekananOps(editDetailRekananOps);
+                editRekananOps.setFlag(itemFlag);
+                setRekananOps(editRekananOps);
                 addActionError("Error, Unable to find data with id = " + itemId);
                 return "failure";
             }
         } else {
-            editDetailRekananOps.setFlag(getFlag());
-            setDetailRekananOps(editDetailRekananOps);
+            editRekananOps.setFlag(getFlag());
+            setRekananOps(editRekananOps);
             addActionError("Error, Unable to edit again with flag = N.");
             return "failure";
         }
 
         setAddOrEdit(true);
-        logger.info("[DetailRekananOpsAction.edit] end process >>>");
+        logger.info("[RekananOpsAction.edit] end process >>>");
         return "init_edit";
     }
 
@@ -198,34 +199,34 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[DetailRekananOpsAction.delete] start process >>>");
         String itemId = getId();
         String itemFlag = getFlag();
-        DetailRekananOps deleteDetailRekananOps = new DetailRekananOps();
+        RekananOps deleteRekananOps = new RekananOps();
         if (itemFlag != null ) {
             try {
-                deleteDetailRekananOps = init (itemId, itemFlag);
+                deleteRekananOps = init (itemId, itemFlag);
             } catch (GeneralBOException e) {
                 logger.error("ini error, "+e.getMessage());
                 throw new GeneralBOException("ini error, "+e.getMessage());
             }
 
-            if (deleteDetailRekananOps != null) {
-                setDetailRekananOps(deleteDetailRekananOps);
+            if (deleteRekananOps != null) {
+                setRekananOps(deleteRekananOps);
 
             } else {
                 //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
-                deleteDetailRekananOps.setFlag(itemFlag);
-                setDetailRekananOps(deleteDetailRekananOps);
+                deleteRekananOps.setFlag(itemFlag);
+                setRekananOps(deleteRekananOps);
                 addActionError("Error, Unable to find data with id = " + itemId);
                 return "failure";
             }
         } else {
             //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
-            deleteDetailRekananOps.setFlag(itemFlag);
-            setDetailRekananOps(deleteDetailRekananOps);
+            deleteRekananOps.setFlag(itemFlag);
+            setRekananOps(deleteRekananOps);
             addActionError("Error, Unable to delete again with flag = N.");
             return "failure";
         }
 
-        logger.info("[PayrollSkalaGajiAction.delete] end process <<<");
+        logger.info("[deleteRekananOpsAction.delete] end process <<<");
 
         return "init_delete";
     }
@@ -246,23 +247,23 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[PayrollSkalaGajiAction.saveDelete] start process >>>");
         try {
 
-            DetailRekananOps deleteDetailRekananOps = getDetailRekananOps();
+            RekananOps deleteRekananOps = getRekananOps();
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            deleteDetailRekananOps.setLastUpdate(updateTime);
-            deleteDetailRekananOps.setLastUpdateWho(userLogin);
-            deleteDetailRekananOps.setAction("U");
-            deleteDetailRekananOps.setFlag("N");
+            deleteRekananOps.setLastUpdate(updateTime);
+            deleteRekananOps.setLastUpdateWho(userLogin);
+            deleteRekananOps.setAction("U");
+            deleteRekananOps.setFlag("N");
 
-            detailRekananOpsBoProxy.saveDelete(deleteDetailRekananOps);
+            rekananOpsBoProxy.saveDelete(deleteRekananOps);
         } catch (GeneralBOException e) {
             logger.error("ini error, "+e.getMessage());
             throw new GeneralBOException("ini error, "+e.getMessage());
         }
 
-        logger.info("[DetailRekananOpsiAction.saveDelete] end process <<<");
+        logger.info("[RekananOpsiAction.saveDelete] end process <<<");
 
         return "success_save_delete";
     }
@@ -271,16 +272,17 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[PayrollSkalaGajiAction.saveEdit] start process >>>");
         try {
 
-            DetailRekananOps editDetailRekananOps = getDetailRekananOps();
+            RekananOps editRekananOps = getRekananOps();
+
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            editDetailRekananOps.setLastUpdateWho(userLogin);
-            editDetailRekananOps.setLastUpdate(updateTime);
-            editDetailRekananOps.setAction("U");
-            editDetailRekananOps.setFlag("Y");
+            editRekananOps.setLastUpdateWho(userLogin);
+            editRekananOps.setLastUpdate(updateTime);
+            editRekananOps.setAction("U");
+            editRekananOps.setFlag("Y");
 
-            detailRekananOpsBoProxy.saveEdit(editDetailRekananOps);
+            rekananOpsBoProxy.saveEdit(editRekananOps);
         } catch (GeneralBOException e) {
             logger.error("ini error, "+e.getMessage());
             throw new GeneralBOException("ini error, "+e.getMessage());
@@ -295,24 +297,22 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[DetailRekananOpsAction.saveAdd] start process >>>");
 
         try {
-            DetailRekananOps detailRekananOps = getDetailRekananOps();
+            RekananOps rekananOps = getRekananOps();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            detailRekananOps.setCreatedWho(userLogin);
-            detailRekananOps.setLastUpdate(updateTime);
-            detailRekananOps.setCreatedDate(updateTime);
-            detailRekananOps.setLastUpdateWho(userLogin);
-            detailRekananOps.setAction("C");
-            detailRekananOps.setFlag("Y");
+            rekananOps.setCreatedWho(userLogin);
+            rekananOps.setLastUpdate(updateTime);
+            rekananOps.setCreatedDate(updateTime);
+            rekananOps.setLastUpdateWho(userLogin);
+            rekananOps.setAction("C");
+            rekananOps.setFlag("Y");
 
-            detailRekananOpsBoProxy.saveAdd(detailRekananOps);
+            rekananOpsBoProxy.saveAdd(rekananOps);
         }catch (GeneralBOException e) {
             logger.error("ini error, "+e.getMessage());
             throw new GeneralBOException("ini error, "+e.getMessage());
         }
-
-
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultRekananOps");
 
@@ -324,10 +324,10 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     public String search() {
         logger.info("[DetailRekananOpsAction.search] start process >>>");
 
-        DetailRekananOps searchRekananOps = getDetailRekananOps();
-        List<DetailRekananOps> listOfsearchRekananOps = new ArrayList();
+        RekananOps searchRekananOps = getRekananOps();
+        List<RekananOps> listOfsearchRekananOps = new ArrayList();
         try {
-            listOfsearchRekananOps = detailRekananOpsBoProxy.getSearchByCriteria(searchRekananOps);
+            listOfsearchRekananOps = rekananOpsBoProxy.getByCriteria(searchRekananOps);
         } catch (GeneralBOException e) {
             logger.error("ini error, "+e.getMessage());
             throw new GeneralBOException("ini error, "+e.getMessage());

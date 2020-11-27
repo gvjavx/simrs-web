@@ -67,9 +67,9 @@
             <column name="kuota_on_site"/>
         </property>
 
-        <property name="kuotaBpjs">
-            <column name="kuota_bpjs" />
-        </property>
+        <!--<property name="kuotaBpjs">-->
+            <!--<column name="kuota_bpjs" />-->
+        <!--</property>-->
 
     </class>
 </hibernate-mapping>

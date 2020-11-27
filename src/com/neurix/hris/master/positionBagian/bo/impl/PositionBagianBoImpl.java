@@ -417,4 +417,12 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         }
         return positions;
     }
+
+    @Override
+    public List<positionBagian> getDataDevisiId(positionBagian bean) throws GeneralBOException {
+        List<positionBagian> posisiList = new ArrayList<>() ;
+
+        posisiList = positionBagianDao.getDataDevisiId(bean);
+        return posisiList;
+    }
 }

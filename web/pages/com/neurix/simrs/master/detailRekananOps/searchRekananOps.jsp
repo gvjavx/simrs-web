@@ -25,7 +25,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_dokter'/>";
+            window.location.href="<s:url action='initForm_detailrekananops'/>";
         }
 
     </script>
@@ -41,7 +41,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Dokter
+            Detail Rekanan Oprasional
         </h1>
     </section>
     <!-- Main content -->
@@ -50,14 +50,14 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Form Dokter </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Detail Rekanan Oprasional</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="dokterForm" method="post"  theme="simple" namespace="/dokter"
-                                            action="search_dokter.action" cssClass="form-horizontal">
+                                    <s:form id="detailRekananOpsForm" method="post"  theme="simple"
+                                            namespace="/detailrekananops" action="search_detailrekananops.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -66,52 +66,54 @@
                                             </tr>
                                         </table>
                                         <table>
+
                                             <tr>
-                                                <td width="15%">
-                                                    <label class="control-label"><small>Dokter ID :</small></label>
+                                                <td>
+                                                    <label class="control-label"><small>Nama rekanan :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="idDokter" name="dokter.idDokter" required="true"
-                                                                     disabled="false" cssClass="form-control"/>
+                                                        <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
+                                                        <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
+                                                        listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
+                                                        cssClass="form-control" cssStyle="margin-top: 5px"/>
                                                     </table>
                                                 </td>
                                             </tr>
 
+                                            <%--<tr>--%>
+                                                <%--<td width="18%">--%>
+                                                    <%--<label class="control-label"><small>RekananOps ID :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<s:textfield cssStyle="margin-top: 7px"--%>
+                                                                     <%--id="idRekananOps"--%>
+                                                                     <%--name="detailRekananOps.idDetailRekananOps"--%>
+                                                                     <%--required="false"--%>
+                                                                     <%--readonly="false" cssClass="form-control"/>--%>
+                                                    <%--</table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
                                             <tr>
-                                                <td >
-                                                    <label class="control-label"><small> Nama Dokter :</small></label>
+                                                <td>
+                                                    <label class="control-label"><small>isbpjs :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="namaDokter" name="dokter.namaDokter" required="true" cssStyle="margin-top: 7px"
-                                                                     disabled="false" cssClass="form-control"/>
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag2" name="detailRekananOps.isBpjs"
+                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
+
                                                 </td>
                                             </tr>
-
-
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Pelayanan :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:action id="initComboPelayanan" namespace="/dokter" name="initComboPelayanan_dokter"/>
-                                                        <s:select list="#initComboPelayanan.listOfComboPelayanan" id="idPelayanan" name="dokter.idPelayanan"
-                                                                  listKey="idPelayanan" listValue="namaPelayanan"
-                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
-
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Flag :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="dokter.flag"
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="detailRekananOps.flag"
                                                                   headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
 
@@ -123,17 +125,25 @@
                                         <div id="actions" class="form-actions">
                                             <table align="center">
                                                 <tr>
-                                                    <td>
-                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary" formIds="dokterForm" id="search" name="search"
+                                                    <td >
+                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary" formIds="detailRekananOpsForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>
                                                     </td>
-
                                                     <td>
-                                                        <button type="button"  class="btn btn-danger"
-                                                                onclick="window.location.href='<s:url action="initForm_dokter"/>'">
+                                                        <s:url var="urlAdd" namespace="/detailrekananops" action="add_detailrekananops" escapeAmp="false">
+                                                        </s:url>
+                                                        <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                            <i class="fa fa-plus"></i>
+                                                            Add Detail RekananOps
+                                                        </sj:a>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" cssStyle="margin-right: 5px"
+                                                                onclick="window.location.href='<s:url
+                                                                action="initForm_detailrekananops"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -163,9 +173,10 @@
                                                                      name="image_indicator_write">
                                                             </center>
                                                         </sj:dialog>
+
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="650" width="600" autoOpen="false"
-                                                                   title="Dokter ">
+                                                                   height="440" width="600" autoOpen="false"
+                                                                   title="Detail Rekanan Ops ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
@@ -178,14 +189,15 @@
                                                                    title="Pendapatan Dokter">
                                                         </sj:dialog>
 
-                                                        <s:set name="listOfsearchDokter" value="#session.listOfResultDokter" scope="request" />
-                                                        <display:table name="listOfsearchDokter" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_dokter.action"
-                                                                       export="true" id="row" pagesize="14" style="font-size:12">
+                                                        <s:set name="listOfsearchRekananOps" value="#session.listOfResultRekananOps" scope="request" />
+                                                        <display:table name="listOfsearchRekananOps" class="table table-condensed table-striped table-hover"
+                                                                       requestURI="paging_displaytag_detailRekananOps.action" export="true" id="row"
+                                                                       pagesize="14" style="font-size:12">
+
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlEdit" namespace="/dokter" action="edit_dokter" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idDokter"/></s:param>
+                                                                    <s:url var="urlEdit" namespace="/detailrekananops" action="edit_detailrekananops" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.idDetailRekananOps"/></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -196,8 +208,8 @@
 
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlViewDelete" namespace="/dokter" action="delete_dokter" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idDokter" /></s:param>
+                                                                    <s:url var="urlViewDelete" namespace="/detailrekananops" action="delete_detailrekananops" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.idDetailRekananOps" /></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
@@ -205,29 +217,19 @@
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
+                                                            <%--<display:column property="idRekananOps" sortable="true" title="ID RekananOps" />--%>
+                                                            <display:column property="idDetailRekananOps" sortable="true" title="id DetailRekananOps" />
+                                                            <display:column property="isBpjs" sortable="true" title="is Bpjs" />
+                                                            <display:column property="namaRekanan" sortable="true" title="nama rekanan Ops" />
+                                                            <display:column property="diskon" sortable="true" title="diskon" />
+                                                            <display:column property="branchName" sortable="true" title=" nama branch" />
+                                                            <display:column property="flag" sortable="true" title="flag"  />
 
-                                                            <display:column property="idDokter" sortable="true" title="ID Dokter" />
-                                                            <display:column property="namaDokter" sortable="true" title="Nama Dokter"  />
-                                                            <display:column property="namaPelayanan" sortable="true" title="Nama Pelayanan"/>
-                                                            <display:column property="kuota" sortable="true" title="Kuota"/>
-                                                            <display:column property="kodeDpjp" sortable="true" title="Kode DPJP"/>
-                                                            <display:column property="kodering" sortable="true" title="Kode"/>
-                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
-                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
-
-                                                            <%--<display:column property="sip" sortable="true" title="Surat ijin praktek"  />--%>
-                                                            <display:column property="sip" sortable="true" title="sip" />
-                                                            <display:column property="kuotaOnSite" sortable="true" title="kuota OnSite"  />
-                                                            <display:column property="flagCall" sortable="true" title="flag Call"  />
-                                                            <display:column property="flagTele" sortable="true" title="flag Tele"  />
-                                                            <display:column property="kuotaTele" sortable="true" title="kuota Tele"  />
-                                                            <display:column property="stCreatedDate" sortable="true" title="Created date"  />
+                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <display:column property="createdDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
-                                                            <display:column property="stLastUpdate" sortable="true" title="Last update"  />
-
-                                                            <%--<display:column property="kuotaBpjs" sortable="true" title="kuota Bpjs"  />--%>
-
-
+                                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                                         </display:table>
                                                     </td>
                                                 </tr>
@@ -239,7 +241,8 @@
                                                     <div id="crud">
                                                         <td>
                                                             <table>
-                                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog"
+                                                                           modal="true" resizable="false"
                                                                            height="280" width="500" autoOpen="false" title="Warning"
                                                                            buttons="{
                                                                         'OK':function() { $('#error_validation_dialog').dialog('close'); }
@@ -247,7 +250,8 @@
                                                                 >
                                                                     <div class="alert alert-error fade in">
                                                                         <label class="control-label" align="left">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                                                 name="icon_error"> Please check this field :
                                                                             <br/>
                                                                             <center><div id="errorValidationMessage"></div></center>
                                                                         </label>

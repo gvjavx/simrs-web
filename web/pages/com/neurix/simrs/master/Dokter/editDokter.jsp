@@ -30,11 +30,11 @@
             var kuotatele = document.getElementById("kuotaTele1").value;
             var kuotaonsite = document.getElementById("kuotaOnSite1").value;
             var sip = document.getElementById("sip1").value;
-            var kuotabpjs = document.getElementById("kuotaBpjs1").value;
+            // var kuotabpjs = document.getElementById("kuotaBpjs1").value;
 
 
             if ( namaDokter != '' && pelayanan != '' && kuota != '' && kodeDpjp != ''  && flagcall != ''
-                && flagtele != '' && kuotatele != '' && kuotaonsite != '' && sip != '' && kuotabpjs != '' ) {
+                && flagtele != '' && kuotatele != '' && kuotaonsite != '' && sip != '' ) {
                 if (confirm('Do you want to update this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -58,20 +58,20 @@
                     msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
                 }
                 if (flagcall == '') {
-                    msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
+                    msg += 'Field <strong>flag call </strong> is required.' + '<br/>';
                 }
                 if (kuotatele == '') {
-                    msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
+                    msg += 'Field <strong>kuota tele </strong> is required.' + '<br/>';
                 }
                 if (kuotaonsite == '') {
-                    msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
+                    msg += 'Field <strong>kuota onsite </strong> is required.' + '<br/>';
                 }
                 if (sip == '') {
-                    msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
+                    msg += 'Field <strong>surat ujin praktek </strong> is required.' + '<br/>';
                 }
-                if (kuotabpjs == '') {
-                    msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
-                }
+                // if (kuotabpjs == '') {
+                //     msg += 'Field <strong>kode Dpjp </strong> is required.' + '<br/>';
+                // }
 
 
 
@@ -247,17 +247,17 @@
                             </table>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Kuota Bpjs :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="kuotaBpjs1" name="dokter.kuotaBpjs" required="true"
-                                             disabled="false" type="number" cssClass="form-control" cssStyle="margin-top: 5px"/>
-                            </table>
-                        </td>
-                    </tr>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Kuota Bpjs :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:textfield id="kuotaBpjs1" name="dokter.kuotaBpjs" required="true"--%>
+                                             <%--disabled="false" type="number" cssClass="form-control" cssStyle="margin-top: 5px"/>--%>
+                            <%--</table>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
                 </table>
 
 

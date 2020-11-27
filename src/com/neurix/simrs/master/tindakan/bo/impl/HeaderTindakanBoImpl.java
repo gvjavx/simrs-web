@@ -66,6 +66,7 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                 headerTindakan.setCreatedDate(entity.getCreatedDate());
                 headerTindakan.setCreatedWho(entity.getCreatedWho());
                 headerTindakan.setLastUpdate(entity.getLastUpdate());
+                headerTindakan.setFlagKonsulTele(entity.getFlagKonsulTele());
                 headerTindakan.setLastUpdateWho(entity.getLastUpdateWho());
                 ImSimrsKategoriTindakanInaEntity inaEntity = kategoriTindakanInaDao.getById("id", entity.getKategoriInaBpjs());
                 if(inaEntity != null){
@@ -105,6 +106,7 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                 imSimrsHeaderTindakanEntity.setLastUpdate(bean.getLastUpdate());
                 imSimrsHeaderTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
+                imSimrsHeaderTindakanEntity.setFlagKonsulTele(bean.getFlagKonsulTele());
                 try {
                     headerTindakanDao.addAndSave(imSimrsHeaderTindakanEntity);
                     response.setStatus("success");
