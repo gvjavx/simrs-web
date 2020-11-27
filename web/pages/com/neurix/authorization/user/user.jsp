@@ -101,7 +101,10 @@
                                     <div class="form-group">
                                         <label class="control-label col-sm-5" for="users.branchId">Unit :</label>
                                         <div class="col-sm-3">
-                                            parkir
+                                            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
+                                            <s:select list="#comboBranch.listOfComboBranches" id="branchid" name="users.branchId" onchange="listPosisi()"
+                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                                      cssClass="form-control" />
                                         </div>
                                     </div>
                                     <div class="form-group">
