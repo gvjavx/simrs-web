@@ -94,7 +94,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'Y':'Sudah Verifikasi'}" cssStyle="margin-top: 7px"
+                                        <s:select list="#{'Y':'Sudah Verifikasi'}" cssStyle="margin-top: 7px; width: 100%"
                                                   id="status" name="headerDetailCheckup.flagCloseTraksaksi"
                                                   headerKey="" headerValue="Belum Verifikasi"
                                                   cssClass="form-control select2"/>
