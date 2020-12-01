@@ -43,10 +43,12 @@ public class AreasBranchesUsersDao extends GenericDao<ImAreasBranchesUsers,ImAre
             if (mapCriteria.get("user_id")!=null) {
                 criteria.add(Restrictions.eq("primaryKey.userId", (String)mapCriteria.get("user_id")));
             }
+            if (mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }
 
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         criteria.addOrder(Order.asc("primaryKey.areaId"));
         criteria.addOrder(Order.asc("primaryKey.branchId"));
         criteria.addOrder(Order.asc("primaryKey.userId"));

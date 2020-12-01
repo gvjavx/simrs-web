@@ -299,6 +299,16 @@
                                 </td>
                             </tr>
 
+                            <tr id="form-pelayanan-edit">
+                                <td>
+                                    <label class="control-label" for="users.roleId">Pelayanan :</label>
+                                </td>
+                                <td>
+
+                                </td>
+                            </tr>
+
+
                             <s:if test="isAddOrEdit()">
                                 <tr>
                                     <td>

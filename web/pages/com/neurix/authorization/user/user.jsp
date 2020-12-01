@@ -73,23 +73,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.positionId">Posisi :</label>
-                                        <div class="col-sm-3">
-                                            <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
-                                            <s:select list="#comboPosition.listOfComboPositions" id="positionId" name="users.positionId"
-                                                      listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.divisiId">Divisi :</label>
-                                        <div class="col-sm-3">
-                                            <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                                            <s:select list="#comboDivisi.listComboDepartment" id="users.divisiId" name="users.divisiId"
-                                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         <label class="control-label col-sm-5" for="users.positionId">Area :</label>
                                         <div class="col-sm-3">
                                             <s:action id="comboArea" namespace="/admin/user" name="initComboArea_user"/>
@@ -104,6 +87,23 @@
                                             <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                                             <s:select list="#comboBranch.listOfComboBranches" id="branchid" name="users.branchId" onchange="listPosisi()"
                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                                      cssClass="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5" for="users.divisiId">Divisi/Bidang :</label>
+                                        <div class="col-sm-3">
+                                            <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
+                                            <s:select list="#comboDivisi.listComboDepartment" id="users.divisiId" name="users.divisiId"
+                                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5" for="users.positionId">Posisi/Jabatan :</label>
+                                        <div class="col-sm-3">
+                                            <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
+                                            <s:select list="#comboPosition.listOfComboPositions" id="positionId" name="users.positionId"
+                                                      listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control" />
                                         </div>
                                     </div>
