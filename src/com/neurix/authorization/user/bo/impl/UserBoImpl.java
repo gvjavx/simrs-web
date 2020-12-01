@@ -1742,16 +1742,11 @@ public class UserBoImpl implements UserBo {
                 hsCriteria.put("department_id", searchUsers.getDepartmentId());
             // END
 
-            if (searchUsers.getFlag() != null && !"".equalsIgnoreCase(searchUsers.getFlag())) {
-                if ("N".equalsIgnoreCase(searchUsers.getFlag())) {
-                    hsCriteria.put("flag", "N");
-                } else {
-                    hsCriteria.put("flag", searchUsers.getFlag());
-                }
-            } else {
-                hsCriteria.put("flag", "Y");
-            }
+            String flag = "Y";
+            if (searchUsers.getFlag() != null && !"".equalsIgnoreCase(searchUsers.getFlag()))
+                flag = searchUsers.getFlag();
 
+            hsCriteria.put("flag", flag);
 
             // Sigit, 2020-11-30 mencari list user id berdasrkan criteria filter yang dicari, START
             List<String> stringListUserId = new ArrayList<>();
@@ -1769,6 +1764,7 @@ public class UserBoImpl implements UserBo {
             if (stringListUserId.size() > 0){
                 hsCriteria = new HashMap();
                 hsCriteria.put("list_user_id", stringListUserId);
+                hsCriteria.put("flag", flag);
             }
 
             List<ImUsers> listOfUsers = null;
@@ -1817,6 +1813,13 @@ public class UserBoImpl implements UserBo {
                     resultUsers.setLastUpdate(imUsers.getLastUpdate());
                     resultUsers.setCreatedWho(imUsers.getCreatedWho());
                     resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+
+                    if (imUsers.getImDepartmentEntity() != null)
+                        resultUsers.setDepartmentId(imUsers.getImDepartmentEntity().getDepartmentId());
+
+                    resultUsers.setDivisiId(imUsers.getDivisiId());
+                    resultUsers.setIdPelayanan(imUsers.getIdPelayanan());
+                    resultUsers.setIdDevice(imUsers.getIdDevice());
 
                     StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
                     imageUpload.append(ServletActionContext.getRequest().getContextPath());
@@ -2454,31 +2457,6 @@ public class UserBoImpl implements UserBo {
                 ImAreasBranchesUsers imAreasBranchesUsersOld = imAreasBranchesUsersListOld.get(0);
                 String branchIdOld = imAreasBranchesUsersOld.getPrimaryKey().getBranchId();
 
-                if (!branchIdOld.equalsIgnoreCase(branchId) || !sPositionIdOld.equalsIgnoreCase(positionId)) {
-
-                    //jika asmud maka akan dicek transaksi list task dan notification
-                    //jika opsgps maka akna dicek transaksi list task
-                    //jika asman maka akan dicek transaksi approval kontrak dan cetak kontrak
-                    //jika mantan maka akan dicek transaksi pembatalan kontrak
-
-                    if (sPositionIdOld.equalsIgnoreCase("1")) { // mantan
-
-
-
-                    } else if (sPositionIdOld.equalsIgnoreCase("8")) { //asman
-
-
-                    } else if (sPositionIdOld.equalsIgnoreCase("7")) { //asmud
-
-
-
-                    } else if (sPositionIdOld.equalsIgnoreCase("4")) { //ops gps
-
-
-                    }
-
-                }
-
                 // move last data to table history
                 ImUsersHistory imUsersDeactive = new ImUsersHistory();
                 try {
@@ -2521,27 +2499,11 @@ public class UserBoImpl implements UserBo {
                     throw new GeneralBOException("Found problem when saving edit data user, please info to your admin..." + e.getMessage());
                 }
 
-                // if no found data then create new data
-
-                ImUsersRolesPK primaryKeyUserRole = new ImUsersRolesPK();
-                primaryKeyUserRole.setUserId(userId);
-                primaryKeyUserRole.setRoleId(Long.valueOf(usersNew.getRoleId()));
-
-                ImUsersRoles imUsersRolesOld = null;
-                try {
-                    imUsersRolesOld = userRoleDao.getByCompositeKey(primaryKeyUserRole, "Y");
-                } catch (HibernateException e) {
-                    logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
-                }
-
-                if (imUsersRolesOld==null) {
 
                     //update old to be N, and add new data
                     //deactive old data, set Flag = N
                     Map hsCriteria = new HashMap();
                     hsCriteria.put("user_id",userId);
-                    hsCriteria.put("flag","Y");
 
                     List<ImUsersRoles> listOfImUsersRoleses = new ArrayList<ImUsersRoles>();
                     try {
@@ -2552,13 +2514,8 @@ public class UserBoImpl implements UserBo {
                     }
 
                     for (ImUsersRoles imUsersRoles : listOfImUsersRoleses) {
-
-                        imUsersRoles.setLastUpdate(usersNew.getLastUpdate());
-                        imUsersRoles.setLastUpdateWho(usersNew.getLastUpdateWho());
-                        imUsersRoles.setFlag("N");
-
                         try {
-                            userRoleDao.updateAndSave(imUsersRoles);
+                            userRoleDao.deleteAndSave(imUsersRoles);
                         } catch (HibernateException e) {
                             logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
                             throw new GeneralBOException("Found problem when saving deactive data user-role, please info to your admin..." + e.getMessage());
@@ -2567,7 +2524,7 @@ public class UserBoImpl implements UserBo {
 
                     //create new data
                     ImUsersRoles imUsersRolesNew = new ImUsersRoles();
-                    primaryKeyUserRole = new ImUsersRolesPK();
+                    ImUsersRolesPK primaryKeyUserRole = new ImUsersRolesPK();
                     primaryKeyUserRole.setUserId(userId);
                     primaryKeyUserRole.setRoleId(Long.valueOf(usersNew.getRoleId()));
                     imUsersRolesNew.setPrimaryKey(primaryKeyUserRole);
@@ -2584,32 +2541,13 @@ public class UserBoImpl implements UserBo {
                         throw new GeneralBOException("Found problem when saving new data users roles, please info to your admin..." + e.getMessage());
                     }
 
-                }
-
-                //update im_areas_branches_users, if old same new one, skip, otherwise then non active old, and create new, update by ferdi, 10-10-2016
-                Map hsCriteria = new HashMap();
-                hsCriteria.put("user_id",userId);
-                hsCriteria.put("area_id",areaId);
-                hsCriteria.put("branch_id",branchId);
-                hsCriteria.put("flag","Y");
-
-                List<ImAreasBranchesUsers> imAreasBranchesUsersList = null;
-                try {
-                    imAreasBranchesUsersList = areasBranchesUsersDao.getByCriteria(hsCriteria);
-                } catch (HibernateException e) {
-                    logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when searching data users, please info to your admin..." + e.getMessage());
-                }
-
-                if (imAreasBranchesUsersList.isEmpty()) {
 
                     //update old to be N, and add new data
                     //deactive old data, set Flag = N
                     hsCriteria = new HashMap();
                     hsCriteria.put("user_id", userId);
-                    hsCriteria.put("flag", "Y");
 
-                    imAreasBranchesUsersList = null;
+                    List<ImAreasBranchesUsers> imAreasBranchesUsersList = null;
                     try {
                         imAreasBranchesUsersList = areasBranchesUsersDao.getByCriteria(hsCriteria);
                     } catch (HibernateException e) {
@@ -2618,13 +2556,8 @@ public class UserBoImpl implements UserBo {
                     }
 
                     for (ImAreasBranchesUsers imAreasBranchesUsers : imAreasBranchesUsersList) {
-
-                        imAreasBranchesUsers.setLastUpdate(usersNew.getLastUpdate());
-                        imAreasBranchesUsers.setLastUpdateWho(usersNew.getLastUpdateWho());
-                        imAreasBranchesUsers.setFlag("N");
-
                         try {
-                            areasBranchesUsersDao.updateAndSave(imAreasBranchesUsers);
+                            areasBranchesUsersDao.deleteAndSave(imAreasBranchesUsers);
                         } catch (HibernateException e) {
                             logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
                             throw new GeneralBOException("Found problem when saving deactive data area-branch-user, please info to your admin..." + e.getMessage());
@@ -2650,8 +2583,6 @@ public class UserBoImpl implements UserBo {
                         logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving new data area-branch-users, please info to your admin..." + e.getMessage());
                     }
-                }
-
 
             } else {
                 logger.error("[UserBoImpl.saveEdit] Error, Found problem when saving update data users, cause no have userId in database, please info to your admin.");
