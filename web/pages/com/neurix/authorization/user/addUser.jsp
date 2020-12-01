@@ -225,7 +225,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.password">Confirmation Password :</label>
+                                        <label class="control-label col-sm-5" for="users.password">Confirm Password :</label>
                                         <div class="col-sm-3">
                                             <s:password id="confirmPassword" name="users.confirmPassword" required="true" cssClass="form-control"/>
                                         </div>

@@ -14,7 +14,11 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
-
+    <style>
+        .btn-save{
+            float: right;
+        }
+    </style>
     <script type="text/javascript">
 
         function setReadOnlyField(){
@@ -25,7 +29,7 @@
             document.getElementById("positionid").disabled = true;
             document.getElementById("roleid").disabled = true;
             document.getElementById("areaid").disabled = true;
-            document.getElementById("branchid").disabled = true;
+            document.getElementById("branchid_edit").disabled = true;
             document.getElementById("divisiId").disabled = true;
         }
 
@@ -37,7 +41,7 @@
                     document.getElementById("positionid").value != '' &&
                     document.getElementById("roleid").value != '' &&
                     document.getElementById("areaid").value != '' &&
-                    document.getElementById("branchid").value != '' &&
+                    document.getElementById("branchid_edit").value != '' &&
                     document.getElementById("password").value == document.getElementById("confirmPassword").value) {
 
                 if (confirm('Do you want to save this record?')) {
@@ -86,7 +90,7 @@
                     msg = msg + 'Field <strong>Area Id</strong> is required.' + '<br/>';
                 }
 
-                if (document.getElementById("branchid").value == '') {
+                if (document.getElementById("branchid_edit").value == '') {
                     msg = msg + 'Field <strong>Branch Id</strong> is required.' + '<br/>';
                 }
 
@@ -206,8 +210,8 @@
 
                             <s:if test="isAddOrEdit()">
                                 <tr>
-                                    <td>
-                                        <label class="control-label" for="users.confirmPassword">Confirmation Password :</label>
+                                    <td style="text-align: left">
+                                        <label class="control-label" for="users.confirmPassword">Confirm :</label>
                                     </td>
 
                                     <td>
@@ -275,7 +279,7 @@
                                 <td>
                                     <table>
                                         <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid" name="users.branchId" required="true"
+                                        <s:select cssClass="form-control" list="#comboBranch.listOfComboBranches" id="branchid_edit" name="users.branchId" required="true"
                                                   listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" />
                                     </table>
                                 </td>
@@ -381,7 +385,7 @@
                                     <td>
                                         <table align="center">
                                             <s:if test="isAddOrEdit()">
-                                                <sj:submit targets="crdud" type="button" cssClass="btn btn-primary" formIds="modifyUserForm" id="save" name="save"
+                                                <sj:submit targets="crud" type="button" cssClass="btn btn-primary btn-save" formIds="modifyUserForm" id="save" name="save"
                                                            onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                                            onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                                                     <i class="fa fa-check"></i>
@@ -459,7 +463,7 @@
                                                 </sj:dialog>
                                             </s:if>
                                             <s:elseif test="isDelete()">
-                                                <sj:submit targets="crudd" type="button" cssClass="btn btn-primary" formIds="modifyUserForm" id="delete" name="delete"
+                                                <sj:submit targets="crud" type="button" cssClass="btn btn-danger btn-save" formIds="modifyUserForm" id="delete" name="delete"
                                                            onBeforeTopics="beforeProcessDelete" onCompleteTopics="closeDialog,successDialog"
                                                            onSuccessTopics="successDialog" onErrorTopics="errorDialog">
                                                     <i class="fa fa-trash"></i>
@@ -530,7 +534,7 @@
 
                                 <td>
                                     <table>
-                                        <button type="button" id="cancel" class="btn" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px;font-weight: bold;" onclick="cancelBtn();">
+                                        <button type="button" id="cancel" class="btn btn-default btn-save"  onclick="cancelBtn();">
                                             <i class="icon-remove-circle"/> Cancel
                                         </button>
                                     </table>

@@ -28,6 +28,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
+import com.neurix.hris.master.department.model.ImDepartmentEntity;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.apache.commons.beanutils.BeanUtils;
@@ -1727,6 +1728,20 @@ public class UserBoImpl implements UserBo {
                 hsCriteria.put("id_device", searchUsers.getIdDevice());
             }
 
+            // Sigit, 2020-11-30 penambahan filter search user, START
+            if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId()))
+                hsCriteria.put("branch_id", searchUsers.getBranchId());
+
+            if (searchUsers.getAreaId() != null && !"".equalsIgnoreCase(searchUsers.getAreaId()))
+                hsCriteria.put("area_id", searchUsers.getAreaId());
+
+            if (searchUsers.getRoleId() != null && !"".equalsIgnoreCase(searchUsers.getRoleId()))
+                hsCriteria.put("role_id", searchUsers.getRoleId());
+
+            if (searchUsers.getDepartmentId() != null && !"".equalsIgnoreCase(searchUsers.getDepartmentId()))
+                hsCriteria.put("department_id", searchUsers.getDepartmentId());
+            // END
+
             if (searchUsers.getFlag() != null && !"".equalsIgnoreCase(searchUsers.getFlag())) {
                 if ("N".equalsIgnoreCase(searchUsers.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -1737,6 +1752,25 @@ public class UserBoImpl implements UserBo {
                 hsCriteria.put("flag", "Y");
             }
 
+
+            // Sigit, 2020-11-30 mencari list user id berdasrkan criteria filter yang dicari, START
+            List<String> stringListUserId = new ArrayList<>();
+
+            try {
+                stringListUserId = userDao.getListUserIdByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[UserBoImpl.getByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when slist user id, please info to your admin..." + e.getMessage());
+            }
+            // END
+
+            // Sigit, 2020-11-30 jika terdapat list user berdasarkan criteria yang dicari, START
+            // maka cari berdasarkan list user untuk mendapatkan data lengkap user
+            if (stringListUserId.size() > 0){
+                hsCriteria = new HashMap();
+                hsCriteria.put("list_user_id", stringListUserId);
+            }
+
             List<ImUsers> listOfUsers = null;
             try {
                 listOfUsers = userDao.getByCriteria(hsCriteria);
@@ -1745,422 +1779,478 @@ public class UserBoImpl implements UserBo {
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
 
-            if (listOfUsers != null) {
-                User resultUsers;
-                for (ImUsers imUsers : listOfUsers) {
+            // END
 
-                    if (searchUsers.getRoleId() != null && !"".equalsIgnoreCase(searchUsers.getRoleId())) {
+            if (listOfUsers.size() > 0){
+                for (ImUsers imUsers : listOfUsers){
 
-                        if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
-                            List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsers.getImRoles());
-                            ImRoles itemImRoles = listOfImRoles.get(0);
-                            if (itemImRoles.getRoleId().toString().equalsIgnoreCase(searchUsers.getRoleId())) { //jika search berdasarkan role
+                    ImRoles itemImRoles = new ImRoles();
+                    List<ImRoles> imRolesList = new ArrayList<>(imUsers.getImRoles());
+                    if (imRolesList.size() > 0)
+                        itemImRoles = imRolesList.get(0);
 
-                                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
+                    ImAreasBranchesUsers imAreasBranchesUsers = new ImAreasBranchesUsers();
+                    List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<>(imUsers.getImAreasBranchesUsers());
+                    if (imAreasBranchesUsersList.size() > 0)
+                        imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
 
-                                if (imAreasBranchesUsersList!=null) {
+                    User resultUsers = new User();
+                    resultUsers.setUserId(imUsers.getPrimaryKey().getId());
+                    resultUsers.setUsername(imUsers.getUserName());
+                    resultUsers.setPassword(imUsers.getPassword());
+                    resultUsers.setEmail(imUsers.getEmail());
 
-                                    ImAreasBranchesUsers imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
+                    resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
+                    resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
 
-                                    if (searchUsers.getAreaId() != null && !"".equalsIgnoreCase(searchUsers.getAreaId())) {
+                    resultUsers.setRoleId(itemImRoles.getRoleId().toString());
+                    resultUsers.setRoleName(itemImRoles.getRoleName());
 
-                                        if (imAreasBranchesUsers.getImArea().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getAreaId())) { //jika search berdasarkan area
+                    resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
+                    resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
+                    resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
+                    resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
 
-                                            if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
+                    resultUsers.setFlag(imUsers.getFlag());
+                    resultUsers.setAction(imUsers.getAction());
+                    resultUsers.setCreatedDate(imUsers.getCreatedDate());
+                    resultUsers.setLastUpdate(imUsers.getLastUpdate());
+                    resultUsers.setCreatedWho(imUsers.getCreatedWho());
+                    resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
 
-                                                if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
-
-                                                    resultUsers = new User();
-                                                    resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                                    resultUsers.setUsername(imUsers.getUserName());
-                                                    resultUsers.setPassword(imUsers.getPassword());
-                                                    resultUsers.setEmail(imUsers.getEmail());
-
-                                                    resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                                    resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                                    resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                                    resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                                    resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                                    resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                                    resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                                    resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                                    resultUsers.setFlag(imUsers.getFlag());
-                                                    resultUsers.setAction(imUsers.getAction());
-                                                    resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                                    resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                                    resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                                    resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                                    StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                                    imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                                    imageUpload.append(CommonUtil.getUploadFolderValue() + CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                                    if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                        imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                                    } else {
-                                                        imageUpload.append(imUsers.getPhotoUrl());
-                                                    }
-                                                    imageUpload.append("\" border=\"none\" >");
-
-                                                    resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                                    listOfResultUsers.add(resultUsers);
-
-                                                }
-
-                                            } else {
-
-                                                resultUsers = new User();
-                                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                                resultUsers.setUsername(imUsers.getUserName());
-                                                resultUsers.setPassword(imUsers.getPassword());
-                                                resultUsers.setEmail(imUsers.getEmail());
-
-                                                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                                resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                                resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                                resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                                resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                                resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                                resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                                resultUsers.setFlag(imUsers.getFlag());
-                                                resultUsers.setAction(imUsers.getAction());
-                                                resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                                resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                                resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                                StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                                imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                                imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                    imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                                } else {
-                                                    imageUpload.append(imUsers.getPhotoUrl());
-                                                }
-                                                imageUpload.append("\" border=\"none\" >");
-
-                                                resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                                listOfResultUsers.add(resultUsers);
-                                            }
-
-                                        }
-
-                                    } else {
-
-                                        if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
-                                            if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
-                                                resultUsers = new User();
-                                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                                resultUsers.setUsername(imUsers.getUserName());
-                                                resultUsers.setPassword(imUsers.getPassword());
-                                                resultUsers.setEmail(imUsers.getEmail());
-
-                                                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                                resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                                resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                                resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                                resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                                resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                                resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                                resultUsers.setFlag(imUsers.getFlag());
-                                                resultUsers.setAction(imUsers.getAction());
-                                                resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                                resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                                resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                                StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                                imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                                imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                    imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                                } else {
-                                                    imageUpload.append(imUsers.getPhotoUrl());
-                                                }
-                                                imageUpload.append("\" border=\"none\" >");
-
-                                                resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                                listOfResultUsers.add(resultUsers);
-                                            }
-                                        } else {
-
-                                            resultUsers = new User();
-                                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                            resultUsers.setUsername(imUsers.getUserName());
-                                            resultUsers.setPassword(imUsers.getPassword());
-                                            resultUsers.setEmail(imUsers.getEmail());
-
-                                            resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                            resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                            resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                            resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                            resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                            resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                            resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                            resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                            resultUsers.setFlag(imUsers.getFlag());
-                                            resultUsers.setAction(imUsers.getAction());
-                                            resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                            resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                            resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                            resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                            StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                            imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                            imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                            if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                            } else {
-                                                imageUpload.append(imUsers.getPhotoUrl());
-                                            }
-                                            imageUpload.append("\" border=\"none\" >");
-
-                                            resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                            listOfResultUsers.add(resultUsers);
-
-                                        }
-
-                                    }
-
-                                }
-
-                            }
-                        }
-
+                    StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
+                    imageUpload.append(ServletActionContext.getRequest().getContextPath());
+                    imageUpload.append(CommonUtil.getUploadFolderValue() + CommonConstant.RESOURCE_PATH_USER_UPLOAD);
+                    if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+                        imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
                     } else {
-
-                        if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
-                            List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsers.getImRoles());
-                            ImRoles itemImRoles = listOfImRoles.get(0);
-
-                            List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
-
-                            if (imAreasBranchesUsersList!=null) {
-
-                                ImAreasBranchesUsers imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
-
-                                if (searchUsers.getAreaId() != null && !"".equalsIgnoreCase(searchUsers.getAreaId())) {
-
-                                    if (imAreasBranchesUsers.getImArea().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getAreaId())) { //jika search berdasarkan area
-
-                                        if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
-
-                                            if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
-
-                                                resultUsers = new User();
-                                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                                resultUsers.setUsername(imUsers.getUserName());
-                                                resultUsers.setPassword(imUsers.getPassword());
-                                                resultUsers.setEmail(imUsers.getEmail());
-
-                                                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                                resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                                resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                                resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                                resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                                resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                                resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                                resultUsers.setFlag(imUsers.getFlag());
-                                                resultUsers.setAction(imUsers.getAction());
-                                                resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                                resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                                resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                                StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                                imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                                imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                    imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                                } else {
-                                                    imageUpload.append(imUsers.getPhotoUrl());
-                                                }
-                                                imageUpload.append("\" border=\"none\" >");
-
-                                                resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                                listOfResultUsers.add(resultUsers);
-
-                                            }
-
-                                        } else {
-
-                                            resultUsers = new User();
-                                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                            resultUsers.setUsername(imUsers.getUserName());
-                                            resultUsers.setPassword(imUsers.getPassword());
-                                            resultUsers.setEmail(imUsers.getEmail());
-
-                                            resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                            resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                            resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                            resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                            resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                            resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                            resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                            resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                            resultUsers.setFlag(imUsers.getFlag());
-                                            resultUsers.setAction(imUsers.getAction());
-                                            resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                            resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                            resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                            resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                            StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                            imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                            imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                            if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                            } else {
-                                                imageUpload.append(imUsers.getPhotoUrl());
-                                            }
-                                            imageUpload.append("\" border=\"none\" >");
-
-                                            resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                            listOfResultUsers.add(resultUsers);
-                                        }
-
-                                    }
-
-                                } else {
-
-                                    if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
-                                        if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
-                                            resultUsers = new User();
-                                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                            resultUsers.setUsername(imUsers.getUserName());
-                                            resultUsers.setPassword(imUsers.getPassword());
-                                            resultUsers.setEmail(imUsers.getEmail());
-                                            if(imUsers.getDivisiId() != null){
-                                                resultUsers.setDivisiId(imUsers.getDivisiId());
-                                                resultUsers.setDivisiName(imUsers.getImDepartmentEntity().getDepartmentName());
-                                            }
-                                            else{
-                                                resultUsers.setDivisiName("");
-                                                resultUsers.setDivisiId("");
-                                            }
-
-                                            resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                            resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                            resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                            resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                            resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                            resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                            resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                            resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                            resultUsers.setFlag(imUsers.getFlag());
-                                            resultUsers.setAction(imUsers.getAction());
-                                            resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                            resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                            resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                            resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                            StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                            imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                            imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                            if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                            } else {
-                                                imageUpload.append(imUsers.getPhotoUrl());
-                                            }
-                                            imageUpload.append("\" border=\"none\" >");
-
-                                            resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                            listOfResultUsers.add(resultUsers);
-                                        }
-                                    } else {
-
-                                        resultUsers = new User();
-                                        resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                        resultUsers.setUsername(imUsers.getUserName());
-                                        resultUsers.setPassword(imUsers.getPassword());
-                                        resultUsers.setEmail(imUsers.getEmail());
-                                        if(imUsers.getDivisiId() != null){
-                                            resultUsers.setDivisiName(imUsers.getImDepartmentEntity().getDepartmentName());
-                                        }
-                                        else{
-                                            resultUsers.setDivisiName("");
-                                        }
-                                        resultUsers.setDivisiId(imUsers.getDivisiId());
-
-                                        resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                        resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                        resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                        resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                        resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                        resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                        resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                        resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                        resultUsers.setFlag(imUsers.getFlag());
-                                        resultUsers.setAction(imUsers.getAction());
-                                        resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                        resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                        resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                        resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                        StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg img-cirle \" width='50px' src=\"");
-                                        imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                        imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                        if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                            imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                        } else {
-                                            imageUpload.append(imUsers.getPhotoUrl());
-                                        }
-                                        imageUpload.append("\" border=\"none\" >");
-
-                                        resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                        listOfResultUsers.add(resultUsers);
-
-                                    }
-
-                                }
-                            }
-
-                        }
+                        imageUpload.append(imUsers.getPhotoUrl());
                     }
+                    imageUpload.append("\" border=\"none\" >");
+
+                    resultUsers.setPreviewPhoto(imageUpload.toString());
+
+                    listOfResultUsers.add(resultUsers);
+
                 }
             }
+
+//            if (listOfUsers != null) {
+//                User resultUsers;
+//                for (ImUsers imUsers : listOfUsers) {
+//
+//                    if (searchUsers.getRoleId() != null && !"".equalsIgnoreCase(searchUsers.getRoleId())) {
+//
+//                        if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+//                            List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsers.getImRoles());
+//                            ImRoles itemImRoles = listOfImRoles.get(0);
+//                            if (itemImRoles.getRoleId().toString().equalsIgnoreCase(searchUsers.getRoleId())) { //jika search berdasarkan role
+//
+//                                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
+//
+//                                if (imAreasBranchesUsersList!=null) {
+//
+//                                    ImAreasBranchesUsers imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
+//
+//                                    if (searchUsers.getAreaId() != null && !"".equalsIgnoreCase(searchUsers.getAreaId())) {
+//
+//                                        if (imAreasBranchesUsers.getImArea().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getAreaId())) { //jika search berdasarkan area
+//
+//                                            if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
+//
+//                                                if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
+//
+//                                                    resultUsers = new User();
+//                                                    resultUsers.setUserId(imUsers.getPrimaryKey().getId());
+//                                                    resultUsers.setUsername(imUsers.getUserName());
+//                                                    resultUsers.setPassword(imUsers.getPassword());
+//                                                    resultUsers.setEmail(imUsers.getEmail());
+//
+//                                                    resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
+//                                                    resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+//
+//                                                    resultUsers.setRoleId(itemImRoles.getRoleId().toString());
+//                                                    resultUsers.setRoleName(itemImRoles.getRoleName());
+//
+//                                                    resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
+//                                                    resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
+//                                                    resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
+//                                                    resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
+//
+//                                                    resultUsers.setFlag(imUsers.getFlag());
+//                                                    resultUsers.setAction(imUsers.getAction());
+//                                                    resultUsers.setCreatedDate(imUsers.getCreatedDate());
+//                                                    resultUsers.setLastUpdate(imUsers.getLastUpdate());
+//                                                    resultUsers.setCreatedWho(imUsers.getCreatedWho());
+//                                                    resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+//
+//
+//                                                    StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
+//                                                    imageUpload.append(ServletActionContext.getRequest().getContextPath());
+//                                                    imageUpload.append(CommonUtil.getUploadFolderValue() + CommonConstant.RESOURCE_PATH_USER_UPLOAD);
+//                                                    if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+//                                                        imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
+//                                                    } else {
+//                                                        imageUpload.append(imUsers.getPhotoUrl());
+//                                                    }
+//                                                    imageUpload.append("\" border=\"none\" >");
+//
+//                                                    resultUsers.setPreviewPhoto(imageUpload.toString());
+//
+//                                                    listOfResultUsers.add(resultUsers);
+//
+//                                                }
+//
+//                                            } else {
+//
+//                                                resultUsers = new User();
+//                                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
+//                                                resultUsers.setUsername(imUsers.getUserName());
+//                                                resultUsers.setPassword(imUsers.getPassword());
+//                                                resultUsers.setEmail(imUsers.getEmail());
+//
+//                                                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
+//                                                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+//
+//                                                resultUsers.setRoleId(itemImRoles.getRoleId().toString());
+//                                                resultUsers.setRoleName(itemImRoles.getRoleName());
+//
+//                                                resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
+//                                                resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
+//                                                resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
+//                                                resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
+//
+//                                                resultUsers.setFlag(imUsers.getFlag());
+//                                                resultUsers.setAction(imUsers.getAction());
+//                                                resultUsers.setCreatedDate(imUsers.getCreatedDate());
+//                                                resultUsers.setLastUpdate(imUsers.getLastUpdate());
+//                                                resultUsers.setCreatedWho(imUsers.getCreatedWho());
+//                                                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+//
+//
+//                                                StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
+//                                                imageUpload.append(ServletActionContext.getRequest().getContextPath());
+//                                                imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
+//                                                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+//                                                    imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
+//                                                } else {
+//                                                    imageUpload.append(imUsers.getPhotoUrl());
+//                                                }
+//                                                imageUpload.append("\" border=\"none\" >");
+//
+//                                                resultUsers.setPreviewPhoto(imageUpload.toString());
+//
+//                                                listOfResultUsers.add(resultUsers);
+//                                            }
+//
+//                                        }
+//
+//                                    } else {
+//
+//                                        if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
+//                                            if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
+//                                                resultUsers = new User();
+//                                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
+//                                                resultUsers.setUsername(imUsers.getUserName());
+//                                                resultUsers.setPassword(imUsers.getPassword());
+//                                                resultUsers.setEmail(imUsers.getEmail());
+//
+//                                                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
+//                                                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+//
+//                                                resultUsers.setRoleId(itemImRoles.getRoleId().toString());
+//                                                resultUsers.setRoleName(itemImRoles.getRoleName());
+//
+//                                                resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
+//                                                resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
+//                                                resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
+//                                                resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
+//
+//                                                resultUsers.setFlag(imUsers.getFlag());
+//                                                resultUsers.setAction(imUsers.getAction());
+//                                                resultUsers.setCreatedDate(imUsers.getCreatedDate());
+//                                                resultUsers.setLastUpdate(imUsers.getLastUpdate());
+//                                                resultUsers.setCreatedWho(imUsers.getCreatedWho());
+//                                                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+//
+//
+//                                                StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
+//                                                imageUpload.append(ServletActionContext.getRequest().getContextPath());
+//                                                imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
+//                                                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+//                                                    imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
+//                                                } else {
+//                                                    imageUpload.append(imUsers.getPhotoUrl());
+//                                                }
+//                                                imageUpload.append("\" border=\"none\" >");
+//
+//                                                resultUsers.setPreviewPhoto(imageUpload.toString());
+//
+//                                                listOfResultUsers.add(resultUsers);
+//                                            }
+//                                        } else {
+//
+//                                            resultUsers = new User();
+//                                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
+//                                            resultUsers.setUsername(imUsers.getUserName());
+//                                            resultUsers.setPassword(imUsers.getPassword());
+//                                            resultUsers.setEmail(imUsers.getEmail());
+//
+//                                            resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
+//                                            resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+//
+//                                            resultUsers.setRoleId(itemImRoles.getRoleId().toString());
+//                                            resultUsers.setRoleName(itemImRoles.getRoleName());
+//
+//                                            resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
+//                                            resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
+//                                            resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
+//                                            resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
+//
+//                                            resultUsers.setFlag(imUsers.getFlag());
+//                                            resultUsers.setAction(imUsers.getAction());
+//                                            resultUsers.setCreatedDate(imUsers.getCreatedDate());
+//                                            resultUsers.setLastUpdate(imUsers.getLastUpdate());
+//                                            resultUsers.setCreatedWho(imUsers.getCreatedWho());
+//                                            resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+//
+//
+//                                            StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
+//                                            imageUpload.append(ServletActionContext.getRequest().getContextPath());
+//                                            imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
+//                                            if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+//                                                imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
+//                                            } else {
+//                                                imageUpload.append(imUsers.getPhotoUrl());
+//                                            }
+//                                            imageUpload.append("\" border=\"none\" >");
+//
+//                                            resultUsers.setPreviewPhoto(imageUpload.toString());
+//
+//                                            listOfResultUsers.add(resultUsers);
+//
+//                                        }
+//
+//                                    }
+//
+//                                }
+//
+//                            }
+//                        }
+//
+//                    } else {
+//
+//                        if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+//                            List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsers.getImRoles());
+//                            ImRoles itemImRoles = listOfImRoles.get(0);
+//
+//                            List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
+//
+//                            if (imAreasBranchesUsersList!=null) {
+//
+//                                ImAreasBranchesUsers imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
+//
+//                                if (searchUsers.getAreaId() != null && !"".equalsIgnoreCase(searchUsers.getAreaId())) {
+//
+//                                    if (imAreasBranchesUsers.getImArea().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getAreaId())) { //jika search berdasarkan area
+//
+//                                        if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
+//
+//                                            if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
+//
+//                                                resultUsers = new User();
+//                                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
+//                                                resultUsers.setUsername(imUsers.getUserName());
+//                                                resultUsers.setPassword(imUsers.getPassword());
+//                                                resultUsers.setEmail(imUsers.getEmail());
+//
+//                                                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
+//                                                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+//
+//                                                resultUsers.setRoleId(itemImRoles.getRoleId().toString());
+//                                                resultUsers.setRoleName(itemImRoles.getRoleName());
+//
+//                                                resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
+//                                                resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
+//                                                resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
+//                                                resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
+//
+//                                                resultUsers.setFlag(imUsers.getFlag());
+//                                                resultUsers.setAction(imUsers.getAction());
+//                                                resultUsers.setCreatedDate(imUsers.getCreatedDate());
+//                                                resultUsers.setLastUpdate(imUsers.getLastUpdate());
+//                                                resultUsers.setCreatedWho(imUsers.getCreatedWho());
+//                                                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+//
+//
+//                                                StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
+//                                                imageUpload.append(ServletActionContext.getRequest().getContextPath());
+//                                                imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
+//                                                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+//                                                    imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
+//                                                } else {
+//                                                    imageUpload.append(imUsers.getPhotoUrl());
+//                                                }
+//                                                imageUpload.append("\" border=\"none\" >");
+//
+//                                                resultUsers.setPreviewPhoto(imageUpload.toString());
+//
+//                                                listOfResultUsers.add(resultUsers);
+//
+//                                            }
+//
+//                                        } else {
+//
+//                                            resultUsers = new User();
+//                                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
+//                                            resultUsers.setUsername(imUsers.getUserName());
+//                                            resultUsers.setPassword(imUsers.getPassword());
+//                                            resultUsers.setEmail(imUsers.getEmail());
+//
+//                                            resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
+//                                            resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+//
+//                                            resultUsers.setRoleId(itemImRoles.getRoleId().toString());
+//                                            resultUsers.setRoleName(itemImRoles.getRoleName());
+//
+//                                            resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
+//                                            resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
+//                                            resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
+//                                            resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
+//
+//                                            resultUsers.setFlag(imUsers.getFlag());
+//                                            resultUsers.setAction(imUsers.getAction());
+//                                            resultUsers.setCreatedDate(imUsers.getCreatedDate());
+//                                            resultUsers.setLastUpdate(imUsers.getLastUpdate());
+//                                            resultUsers.setCreatedWho(imUsers.getCreatedWho());
+//                                            resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+//
+//
+//                                            StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
+//                                            imageUpload.append(ServletActionContext.getRequest().getContextPath());
+//                                            imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
+//                                            if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+//                                                imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
+//                                            } else {
+//                                                imageUpload.append(imUsers.getPhotoUrl());
+//                                            }
+//                                            imageUpload.append("\" border=\"none\" >");
+//
+//                                            resultUsers.setPreviewPhoto(imageUpload.toString());
+//
+//                                            listOfResultUsers.add(resultUsers);
+//                                        }
+//
+//                                    }
+//
+//                                } else {
+//
+//                                    if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
+//                                        if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
+//                                            resultUsers = new User();
+//                                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
+//                                            resultUsers.setUsername(imUsers.getUserName());
+//                                            resultUsers.setPassword(imUsers.getPassword());
+//                                            resultUsers.setEmail(imUsers.getEmail());
+//                                            if(imUsers.getDivisiId() != null){
+//                                                resultUsers.setDivisiId(imUsers.getDivisiId());
+//                                                resultUsers.setDivisiName(imUsers.getImDepartmentEntity().getDepartmentName());
+//                                            }
+//                                            else{
+//                                                resultUsers.setDivisiName("");
+//                                                resultUsers.setDivisiId("");
+//                                            }
+//
+//                                            resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
+//                                            resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+//
+//                                            resultUsers.setRoleId(itemImRoles.getRoleId().toString());
+//                                            resultUsers.setRoleName(itemImRoles.getRoleName());
+//
+//                                            resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
+//                                            resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
+//                                            resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
+//                                            resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
+//
+//                                            resultUsers.setFlag(imUsers.getFlag());
+//                                            resultUsers.setAction(imUsers.getAction());
+//                                            resultUsers.setCreatedDate(imUsers.getCreatedDate());
+//                                            resultUsers.setLastUpdate(imUsers.getLastUpdate());
+//                                            resultUsers.setCreatedWho(imUsers.getCreatedWho());
+//                                            resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+//
+//
+//                                            StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
+//                                            imageUpload.append(ServletActionContext.getRequest().getContextPath());
+//                                            imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
+//                                            if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+//                                                imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
+//                                            } else {
+//                                                imageUpload.append(imUsers.getPhotoUrl());
+//                                            }
+//                                            imageUpload.append("\" border=\"none\" >");
+//
+//                                            resultUsers.setPreviewPhoto(imageUpload.toString());
+//
+//                                            listOfResultUsers.add(resultUsers);
+//                                        }
+//                                    } else {
+//
+//                                        resultUsers = new User();
+//                                        resultUsers.setUserId(imUsers.getPrimaryKey().getId());
+//                                        resultUsers.setUsername(imUsers.getUserName());
+//                                        resultUsers.setPassword(imUsers.getPassword());
+//                                        resultUsers.setEmail(imUsers.getEmail());
+//                                        if(imUsers.getDivisiId() != null){
+//                                            resultUsers.setDivisiName(imUsers.getImDepartmentEntity().getDepartmentName());
+//                                        }
+//                                        else{
+//                                            resultUsers.setDivisiName("");
+//                                        }
+//                                        resultUsers.setDivisiId(imUsers.getDivisiId());
+//
+//                                        resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
+//                                        resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+//
+//                                        resultUsers.setRoleId(itemImRoles.getRoleId().toString());
+//                                        resultUsers.setRoleName(itemImRoles.getRoleName());
+//
+//                                        resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
+//                                        resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
+//                                        resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
+//                                        resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
+//
+//                                        resultUsers.setFlag(imUsers.getFlag());
+//                                        resultUsers.setAction(imUsers.getAction());
+//                                        resultUsers.setCreatedDate(imUsers.getCreatedDate());
+//                                        resultUsers.setLastUpdate(imUsers.getLastUpdate());
+//                                        resultUsers.setCreatedWho(imUsers.getCreatedWho());
+//                                        resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+//
+//
+//                                        StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg img-cirle \" width='50px' src=\"");
+//                                        imageUpload.append(ServletActionContext.getRequest().getContextPath());
+//                                        imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
+//                                        if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+//                                            imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
+//                                        } else {
+//                                            imageUpload.append(imUsers.getPhotoUrl());
+//                                        }
+//                                        imageUpload.append("\" border=\"none\" >");
+//
+//                                        resultUsers.setPreviewPhoto(imageUpload.toString());
+//
+//                                        listOfResultUsers.add(resultUsers);
+//
+//                                    }
+//
+//                                }
+//                            }
+//
+//                        }
+//                    }
+//                }
+//            }
         }
 
         logger.info("[UserBoImpl.getByCriteria] end process <<<");
