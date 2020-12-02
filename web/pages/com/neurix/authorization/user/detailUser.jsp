@@ -299,12 +299,14 @@
                                 </td>
                             </tr>
 
-                            <tr id="form-pelayanan-edit">
+                            <tr style="display: none" id="form-pelayanan-edit">
                                 <td>
-                                    <label class="control-label" for="users.roleId">Pelayanan :</label>
+                                    <label class="control-label" style="display: none" for="users.roleId">Pelayanan :</label>
                                 </td>
                                 <td>
-
+                                    <select style="width: 100%" class="form-control select2" name="users.idPelayanan" id="pelayananId-edit">
+                                        <option value="">[Select One]</option>
+                                    </select>
                                 </td>
                             </tr>
 
@@ -565,7 +567,24 @@
         </div>
     </div>
 </section>
+<script>
 
+    function listApotek(branch){
+        var option = "";
+        CheckupAction.getListComboApotek(branch, function (response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
+                });
+            } else {
+                option = option;
+            }
+            $('#pelayananId-edit').html(option);
+        });
+    }
+
+</script>
 
 <%@ include file="/pages/common/lastScript.jsp" %>
 

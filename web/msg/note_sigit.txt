@@ -1317,3 +1317,22 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN flag_konsul_tele VARCHAR(1);
 
 --
+
+-- 2020-12-02
+
+    ALTER TABLE im_roles
+    ADD COLUMN tipe_pelayanan VARCHAR(100);
+
+    UPDATE im_roles SET tipe_pelayanan = 'rawat_jalan'
+    WHERE role_id = '34';
+
+    UPDATE im_roles SET tipe_pelayanan = 'igd'
+    WHERE role_id = '35';
+
+    UPDATE im_roles SET tipe_pelayanan = 'apotek'
+    WHERE role_id = '36';
+
+    UPDATE im_roles SET tipe_pelayanan = 'gudang_obat'
+    WHERE role_id = '37';
+
+--

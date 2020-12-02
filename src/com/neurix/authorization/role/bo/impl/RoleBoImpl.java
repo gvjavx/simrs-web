@@ -348,6 +348,7 @@ public class RoleBoImpl implements RoleBo {
                 throw new GeneralBOException("Found problem when coping search imRoles to result roles to display , please info to your admin..." + e.getMessage());
             }
 
+            resultRoles.setTipePelayanan(imRoles.getTipePelayanan());
             resultRoles.setStRoleId(imRoles.getRoleId().toString());
             resultRoles.setFlag(imRoles.getFlag());
         }
