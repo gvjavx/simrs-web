@@ -240,7 +240,7 @@ public class PaketPeriksaAction extends BaseTransactionAction {
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             try {
-                tindakanList = kategoriTindakanBo.getListKategoriTindakan(idPelayanan, null);
+                tindakanList = kategoriTindakanBo.getListKategoriTindakan(idPelayanan, null, CommonUtil.userBranchLogin());
             } catch (GeneralBOException e) {
                 logger.error("Found error " + e.getMessage());
             }
