@@ -460,7 +460,6 @@
             }
 
         });
-
     }
 
     function getListPelayananByBranchAndTipe(branch, tipe) {

@@ -27,10 +27,11 @@
             document.getElementById("password").disabled = true;
             document.getElementById("emailid").disabled = true;
             document.getElementById("positionid").disabled = true;
-            document.getElementById("roleid").disabled = true;
+            document.getElementById("roleid-edit").disabled = true;
             document.getElementById("areaid").disabled = true;
             document.getElementById("branchid_edit").disabled = true;
             document.getElementById("divisiId").disabled = true;
+            document.getElementById("pelayananId-edit").disabled = true;
         }
 
         $.subscribe('beforeProcessSave', function (event, data) {
@@ -39,7 +40,7 @@
                     document.getElementById("password").value != '' &&
                     document.getElementById("confirmPassword").value != '' &&
                     document.getElementById("positionid").value != '' &&
-                    document.getElementById("roleid").value != '' &&
+                    document.getElementById("roleid-edit").value != '' &&
                     document.getElementById("areaid").value != '' &&
                     document.getElementById("branchid_edit").value != '' &&
                     document.getElementById("password").value == document.getElementById("confirmPassword").value) {
@@ -134,6 +135,8 @@
         };
 
     </script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/RoleAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PelayananAction.js"/>'></script>
 
 </head>
 
@@ -175,7 +178,7 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label" for="users.userId">User Id :</label>
+                                    <label class="control-label" for="users.userId">User Id</label>
                                 </td>
                                 <td>
                                     <table>
@@ -187,7 +190,7 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label" for="users.userName">User Name :</label>
+                                    <label class="control-label" for="users.userName">User Name</label>
                                 </td>
 
                                 <td>
@@ -198,7 +201,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label class="control-label" for="users.password">Password :</label>
+                                    <label class="control-label" for="users.password">Password</label>
                                 </td>
 
                                 <td>
@@ -211,7 +214,7 @@
                             <s:if test="isAddOrEdit()">
                                 <tr>
                                     <td style="text-align: left">
-                                        <label class="control-label" for="users.confirmPassword">Confirm :</label>
+                                        <label class="control-label" for="users.confirmPassword">Confirm</label>
                                     </td>
 
                                     <td>
@@ -223,7 +226,7 @@
                             </s:if>
                             <tr>
                                 <td>
-                                    <label class="control-label" for="users.email">Email :</label>
+                                    <label class="control-label" for="users.email">Email</label>
                                 </td>
 
                                 <td>
@@ -234,7 +237,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label class="control-label" for="users.positionId">Divisi :</label>
+                                    <label class="control-label" for="users.positionId">Divisi</label>
                                 </td>
 
                                 <td>
@@ -247,7 +250,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label class="control-label" for="users.positionId">Position :</label>
+                                    <label class="control-label" for="users.positionId">Position</label>
                                 </td>
 
                                 <td>
@@ -260,7 +263,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label class="control-label" for="users.areaId">Area :</label>
+                                    <label class="control-label" for="users.areaId">Area</label>
                                 </td>
 
                                 <td>
@@ -273,7 +276,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label class="control-label" for="users.branchId">Branch :</label>
+                                    <label class="control-label" for="users.branchId">Branch</label>
                                 </td>
 
                                 <td>
@@ -287,21 +290,21 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label" for="users.roleId">Role :</label>
+                                    <label class="control-label" for="users.roleId">Role</label>
                                 </td>
 
                                 <td>
                                     <table>
                                         <s:action id="comboRole" namespace="/admin/user" name="initComboRole_user"/>
-                                        <s:select cssClass="form-control" list="#comboRole.listOfComboRoles" id="roleid" name="users.roleId" required="false"
-                                                  listKey="stRoleId" listValue="roleName" headerKey="" headerValue="[Select one]"/>
+                                        <s:select cssClass="form-control" list="#comboRole.listOfComboRoles" id="roleid-edit" name="users.roleId" required="false"
+                                                  listKey="stRoleId" listValue="roleName" headerKey="" headerValue="[Select one]" onchange="showPelayananEdit(this.value)"/>
                                     </table>
                                 </td>
                             </tr>
 
                             <tr style="display: none" id="form-pelayanan-edit">
                                 <td>
-                                    <label class="control-label" style="display: none" for="users.roleId">Pelayanan :</label>
+                                    <label class="control-label"  for="users.roleId">Pelayanan</label>
                                 </td>
                                 <td>
                                     <select style="width: 100%" class="form-control select2" name="users.idPelayanan" id="pelayananId-edit">
@@ -314,7 +317,7 @@
                             <s:if test="isAddOrEdit()">
                                 <tr>
                                     <td>
-                                        <label class="control-label" for="fileUpload">Upload Photo :</label>
+                                        <label class="control-label" for="fileUpload">Upload Photo</label>
                                     </td>
 
                                     <td>
@@ -327,7 +330,7 @@
                             <s:if test="!isDelete() && !isAddOrEdit()">
                                 <tr>
                                     <td>
-                                        <label class="control-label" for="users.stCreatedDate">Created Date :</label>
+                                        <label class="control-label" for="users.stCreatedDate">Created Date</label>
                                     </td>
 
                                     <td>
@@ -338,7 +341,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="control-label" for="users.createdWho">Created Who :</label>
+                                        <label class="control-label" for="users.createdWho">Created Who</label>
                                     </td>
 
                                     <td>
@@ -349,7 +352,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="control-label" for="users.stLastUpdate">Last Update :</label>
+                                        <label class="control-label" for="users.stLastUpdate">Last Update</label>
                                     </td>
 
                                     <td>
@@ -360,7 +363,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="control-label" for="users.lastUpdateWho">Last Update Who :</label>
+                                        <label class="control-label" for="users.lastUpdateWho">Updated Who</label>
                                     </td>
 
                                     <td>
@@ -371,7 +374,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="control-label" for="users.flag">Flag :</label>
+                                        <label class="control-label" for="users.flag">Flag</label>
                                     </td>
 
                                     <td>
@@ -569,16 +572,48 @@
 </section>
 <script>
 
-    function listApotek(branch){
+    var pelayananId = '<s:property value="users.idPelayanan" />';
+
+    $( document ).ready(function() {
+
+        console.log("pelayanan Id edit -> "+pelayananId);
+        console.log("role Id edit -> "+ $("#roleid-edit").val());
+        if(pelayananId != null && pelayananId != "") {
+            $("#form-pelayanan-edit").show();
+            var roleIdEdit = $("#roleid-edit").val();
+            showPelayananEdit(roleIdEdit, pelayananId);
+        }
+    });
+
+    function showPelayananEdit(role, pelayanan){
+        var branch = $('#branchid_edit').val();
+        if (branch == null || branch == "")
+            alert("Pilih Unit Dahulu");
+        RoleAction.getRoleById(role, function (res) {
+            console.log(res);
+            if(res.tipePelayanan != "" && res.tipePelayanan != null){
+                $('#form-pelayanan').show();
+                getListPelayananByBranchAndTipeEdit(branch, res.tipePelayanan, pelayanan);
+            }
+        });
+    }
+
+    function getListPelayananByBranchAndTipeEdit(branch, tipe, pelayanan) {
         var option = "";
-        CheckupAction.getListComboApotek(branch, function (response) {
+        PelayananAction.getListPelayananByBranchAndTipe(branch, tipe, function (response) {
             option = "<option value=''>[Select One]</option>";
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
+
+                    if (item.idPelayanan == pelayanan){
+                        option += "<option value='" + item.idPelayanan + "' selected>" + item.namaPelayanan + "</option>";
+                    } else {
+                        option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
+                    }
                 });
             } else {
                 option = option;
+                $('#form-pelayanan-edit').hide();
             }
             $('#pelayananId-edit').html(option);
         });

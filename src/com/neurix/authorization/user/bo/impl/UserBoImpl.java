@@ -2074,6 +2074,8 @@ public class UserBoImpl implements UserBo {
                 imUsersOld.setUserName(usersNew.getUsername());
                 imUsersOld.setPassword(usersNew.getPassword());
                 imUsersOld.setEmail(usersNew.getEmail());
+                if (usersNew.getIdPelayanan() != null && !"".equalsIgnoreCase(usersNew.getIdPelayanan()))
+                    imUsersOld.setIdPelayanan(usersNew.getIdPelayanan());
 //                if (usersNew.getContentFile()!=null) imUsersOld.setPhoto(usersNew.getContentFile());
                 if (usersNew.getPhotoUserUrl()!=null) imUsersOld.setPhotoUrl(usersNew.getPhotoUserUrl());
                 imUsersOld.setPositionId(String.valueOf(usersNew.getPositionId()));
