@@ -22,6 +22,9 @@
             font-size: 14px;
             margin-bottom: 30px;
         }
+        #coba{
+            text-align: center;
+        }
     </style>
 
     <style>
@@ -189,6 +192,11 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Search Form</h3>
+                    </div>
+
+
                     <s:if test="isAddOrEdit() || isDelete()">
                         <s:url id="urlProcess" namespace="/admin/function" action="save_function" includeContext="false"/>
                     </s:if>
@@ -196,16 +204,22 @@
                         <s:url id="urlProcess" namespace="/admin/function" action="search_function" includeContext="false"/>
                     </s:else>
 
-                    <s:form id="functionForm" method="post" action="%{urlProcess}"
-                            cssClass="well form-horizontal">
+
+
+                    <div class="box-body">
+                        <s:form id="functionForm" method="post" action="%{urlProcess}"
+                                cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden id="add" name="add"/>
-                        <s:hidden name="delete"/>
-                    <div class="box-body">
-                        <div class="form-group">
-                            <div id="actions" class="form-actions">
-                                <table align="center">
+
+                        <%--<div class="form-group">--%>
+                            <%--<div id="actions" class="form-actions">--%>
+                            <table  width="100%" align="center">
+                                <tr>
+                                    <td align="center">
+                                        <table>
+
                                     <tr>
                                         <td>
                                             <label class="control-label" for="functions.stFuncId">Function Id :</label>
@@ -408,12 +422,17 @@
                                             </td>
                                         </tr>
                                     </s:if>
-                                </table>
-                                <table align="center">
+
+                                            <%--</table>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+
+                                <br><br>
+                                <table >
                                     <tr>
                                         <div id="crud">
-                                            <td>
-                                                <table>
+                                            <td >
+                                                <table  width="100%" align="center">
 
                                                     <s:if test="isAddOrEdit()">
                                                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="functionForm" id="save" name="save"
@@ -596,7 +615,7 @@
                                             </td>
 
                                             <td>
-                                                <table>
+                                                <table >
 
                                                     <s:url id="urlAdd" namespace="/admin/function" action="add_function" escapeAmp="false"/>
 
@@ -636,8 +655,18 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <br>
+                                </table>
+                                </table>
+                            </td>
+                            </tr>
+                            </table>
+
+                                    <br>
+                                    <br><br>
                                     <tr>
-                                        <table align="center">
+                                        <center>
+                                        <table width="100%" align="center">
                                             <tr>
                                                 <td align="center">
                                                     <s:if test="!isAddOrEdit() && !isDelete()">
@@ -716,6 +745,7 @@
                                                 </td>
                                             </tr>
                                         </table>
+                                        </center>
                                     </tr>
                                 </table>
                             </div>

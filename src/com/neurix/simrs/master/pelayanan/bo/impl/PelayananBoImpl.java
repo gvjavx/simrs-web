@@ -307,7 +307,6 @@ public class PelayananBoImpl implements PelayananBo{
             if(cekList.size() > 0){
                 throw new GeneralBOException("Nama Pelayanan "+bean.getNamaPelayanan()+" sudah ada...!");
             }else{
-
                 String pelayananId, seqKodering;
                 try {
                     // Generating ID, get from postgre sequence

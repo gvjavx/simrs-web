@@ -1,6 +1,7 @@
 package com.neurix.hris.master.positionBagian.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.hris.master.department.model.Department;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianHistoryEntity;
 import com.neurix.hris.master.positionBagian.model.positionBagian;
@@ -13,6 +14,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -628,6 +630,64 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
 
         return positionBagianList;
     }
+
+    public List<Department> getHeadDepartent(String departementId, String departemenname) {
+        List<Department> positionBagianList = new ArrayList<>();
+
+        String id = "%";
+        String dp = "%";
+        if (departementId != null && !"".equalsIgnoreCase(departementId)) {
+            id = departementId;
+        }
+        if (departemenname!= null && !"".equalsIgnoreCase(departemenname)) {
+            dp = departemenname;
+        }
+        String sql = "SELECT \n" +
+                "b.department_id,  \n" +
+                "a.department_name,\n" +
+                "a.created_date,\n" +
+                "a.created_who,\n" +
+                "a.last_update,\n" +
+                "a.last_update_who\n" +
+                "FROM im_hris_department a\n" +
+                "LEFT JOIN (\n" +
+                "\tSELECT\n" +
+                "\ta.department_id,  \n" +
+                "\ta.department_name\n" +
+                "\tFROM im_hris_department a \n" +
+                "\tINNER JOIN im_hris_position_bagian b ON a.department_id = b.divisi_id \n" +
+                "\tWHERE a.department_id LIKE :id \n" +
+                "\tAND a.department_name LIKE :dp \n" +
+                "\tGROUP BY a.department_id\n" +
+                "\tORDER BY a.department_name ASC\t\n" +
+                ") b ON a.department_id = b.department_id\n" +
+                "ORDER BY a.department_id ASC";
+
+        List<Object[]> datatree = new ArrayList<>();
+        datatree = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+                .setParameter("id", id)
+                .setParameter("dp", dp)
+                .list();
+
+        if (datatree.size() > 0) {
+            for (Object[] obj : datatree) {
+                Department department = new Department();
+                department.setDepartmentId(obj[0] != null ? obj[0].toString() : "");
+                department.setDepartmentName(obj[1] != null ? obj[1].toString() : "");
+                department.setCreatedDate(obj[2] == null ? null : (Timestamp) obj[2]);
+                department.setStCreatedDate(obj[2] != null ? obj[2].toString() : "");
+                department.setCreatedWho(obj[3] != null ?  obj[3].toString() : "");
+                department.setLastUpdate(obj[4] == null ?  null : (Timestamp) obj[4]);
+                department.setStLastUpdate(obj[4] != null ? obj[4].toString() : "");
+                department.setLastUpdateWho(obj[5] != null ? obj[5].toString() : "");
+
+                positionBagianList.add(department);
+            }
+        }
+        return positionBagianList;
+    }
+
+
 
     public List<ImPositionBagianEntity> getListPositionBagianByDivisi(String id) throws HibernateException {
 

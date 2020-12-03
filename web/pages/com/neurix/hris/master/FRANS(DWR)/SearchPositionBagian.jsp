@@ -34,7 +34,6 @@
         function link(){
             window.location.href="<s:url action='initForm_positionBagian'/>";
         }
-
     </script>
 </head>
 
@@ -236,4 +235,3 @@
 
 </body>
 </html>
-

@@ -2,6 +2,7 @@ package com.neurix.hris.master.positionBagian.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.department.dao.DepartmentDao;
+import com.neurix.hris.master.department.model.Department;
 import com.neurix.hris.master.department.model.ImDepartmentEntity;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
 import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
@@ -421,8 +422,19 @@ public class PositionBagianBoImpl implements PositionBagianBo {
     @Override
     public List<positionBagian> getDataDevisiId(positionBagian bean) throws GeneralBOException {
         List<positionBagian> posisiList = new ArrayList<>() ;
-
         posisiList = positionBagianDao.getDataDevisiId(bean);
         return posisiList;
+    }
+
+    @Override
+    public List<Department> getHead(String id, String dp) throws GeneralBOException {
+        List<Department> departmentList = new ArrayList<>();
+        try {
+            departmentList = positionBagianDao.getHeadDepartent(id,dp);
+        }catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+        return departmentList;
     }
 }
