@@ -301,4 +301,6 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/initdashboard/spring/InitDashboardBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganArusKas/spring/ReportKeuanganArusKasBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollParamBpjs/spring/PayrollParamBpjsBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/simrs/master/kandunganObat/spring/KandunganObatBean.xml"/>
 </beans>

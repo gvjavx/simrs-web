@@ -1,4 +1,4 @@
-package com.neurix.simrs.master.obat.model;
+package com.neurix.simrs.master.kandunganObat.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

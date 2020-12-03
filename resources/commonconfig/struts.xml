@@ -286,4 +286,6 @@
     <include file="sshconfig/com/neurix/simrs/master/rekananops/struts/RekananOpsAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/rekananops/struts/DetailRekananOpsAction.xml"/>
 
+    <include file="sshconfig/com/neurix/simrs/master/kandunganObat/struts/KandunganObatAction.xml"/>
+
 </struts>
