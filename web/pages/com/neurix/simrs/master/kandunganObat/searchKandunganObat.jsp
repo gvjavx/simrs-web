@@ -139,15 +139,12 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Kandungan Obat</h3>
                     </div>
 
-                    <div class="box-body" align="center">
-                        <table id="tb_kandunganObat" class="table table-bordered" style="font-size: 13px; width: 70%;">
+                    <div class="box-body" style="width: 75%">
+                        <table id="myTable" class="table table-bordered" style="font-size: 13px; width: 70%;">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID</td>
                                 <td>Kandungan Obat</td>
-                                <%--<td>Created Date</td>--%>
-                                <%--<td>Created By</td>--%>
-                                <%--<td>Last Update</td>--%>
                                 <td>Updated By</td>
                                 <s:if test='kandunganObat.isKp == "Y" && kandunganObat.flag == "Y"'>
                                     <td>Edit</td>
@@ -156,13 +153,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfPeriksaLab" var="row">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <tr class="tb-item">
                                     <td><s:property value="idKandungan"/></td>
                                     <td><s:property value="kandungan"/></td>
-                                    <%--<td><s:property value="createdDate"/></td>--%>
-                                    <%--<td><s:property value="createdWho"/></td>--%>
-                                    <%--<td><s:property value="lastUpdate"/></td>--%>
                                     <td><s:property value="lastUpdateWho"/></td>
                                     <s:if test='kandunganObat.isKp == "Y" && kandunganObat.flag == "Y"'>
                                         <td align="center">
