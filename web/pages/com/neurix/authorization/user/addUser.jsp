@@ -453,10 +453,11 @@
         if (branch == null || branch == "")
             alert("Pilih Unit Dahulu");
         RoleAction.getRoleById(role, function (res) {
-            console.log(res);
             if(res.tipePelayanan != "" && res.tipePelayanan != null){
                 $('#form-pelayanan').show();
                 getListPelayananByBranchAndTipe(branch, res.tipePelayanan);
+            }else{
+                $('#form-pelayanan').hide();
             }
 
         });
