@@ -105,7 +105,7 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <label>Tensi</label>
-                                <input class="form-control tensi-pasien" placeholder="mmHg" type="number" id="kut3">
+                                <input class="form-control tensi-pasien" placeholder="mmHg" id="kut3">
                             </div>
                             <div class="col-md-3">
                                 <label>Nadi</label>

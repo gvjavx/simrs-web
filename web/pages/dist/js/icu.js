@@ -1366,29 +1366,31 @@ function saveICU(jenis, ket) {
     }
 
     if (cek) {
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
-        $('#save_icu_' + jenis).hide();
-        $('#load_icu_' + jenis).show();
-        dwr.engine.setAsync(true);
-        AsesmenIcuAction.save(result, pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_icu_' + jenis).show();
-                    $('#load_icu_' + jenis).hide();
-                    $('#modal-icu-' + jenis).modal('hide');
-                    $('#warning_icu_' + ket).show().fadeOut(5000);
-                    $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
-                    $('#modal-icu-' + jenis).scrollTop(0);
-                } else {
-                    $('#save_icu_' + jenis).show();
-                    $('#load_icu_' + jenis).hide();
-                    $('#warning_icu_' + jenis).show().fadeOut(5000);
-                    $('#msg_icu_' + jenis).text(res.msg);
-                    $('#modal-icu-' + jenis).scrollTop(0);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_icu_' + jenis).hide();
+            $('#load_icu_' + jenis).show();
+            dwr.engine.setAsync(true);
+            AsesmenIcuAction.save(result, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_icu_' + jenis).show();
+                        $('#load_icu_' + jenis).hide();
+                        $('#modal-icu-' + jenis).modal('hide');
+                        $('#warning_icu_' + ket).show().fadeOut(5000);
+                        $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
+                        $('#modal-icu-' + jenis).scrollTop(0);
+                    } else {
+                        $('#save_icu_' + jenis).show();
+                        $('#load_icu_' + jenis).hide();
+                        $('#warning_icu_' + jenis).show().fadeOut(5000);
+                        $('#msg_icu_' + jenis).text(res.msg);
+                        $('#modal-icu-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        })
+            });
+        }
     } else {
         $('#warning_icu_' + jenis).show().fadeOut(5000);
         $('#msg_icu_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -1397,153 +1399,155 @@ function saveICU(jenis, ket) {
 }
 
 function detailICU(jenis) {
-    if (jenis != '') {
-        var head = "";
-        var body = "";
-        var totalSkor = 0;
-        var cekSkor = false;
-        var first = "";
-        var last = "";
-        var tgl = "";
-        var cekData = false;
-        var rowTotal = "";
-        var kesimpulan = "";
-        var isKesimpulan = false;
-        var forTTD = "";
+    if(!cekSession()){
+        if (jenis != '') {
+            var head = "";
+            var body = "";
+            var totalSkor = 0;
+            var cekSkor = false;
+            var first = "";
+            var last = "";
+            var tgl = "";
+            var cekData = false;
+            var rowTotal = "";
+            var kesimpulan = "";
+            var isKesimpulan = false;
+            var forTTD = "";
 
-        AsesmenIcuAction.getListDetail(idDetailCheckup, jenis, function (res) {
+            AsesmenIcuAction.getListDetail(idDetailCheckup, jenis, function (res) {
 
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    var jwb = "";
-                    if (item.jawaban != '') {
-                        jwb = item.jawaban;
-                    }
-
-                    if ("Alat" == item.parameter) {
-                        var val = jwb.split("|");
-                        var li = "";
-                        $.each(val, function (i, item) {
-                            li += '<li>' + item + '</li>'
-                        });
-                        body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + '<ul style="margin-left: 15px">' + li + '</ul>' + '</td>' +
-                            '</tr>';
-
-                    } else if ("tindakan_icu" == jenis) {
-                        if ("colspan" == item.tipe) {
-                            body += '<tr>' +
-                                '<td colspan="3">' + jwb + '</td>' +
-                                '</tr>';
-                        } else if ("info" == item.tipe) {
-                            body += '<tr>' +
-                                '<td width="25%">' + item.parameter + '</td>' +
-                                '<td >' + item.informasi + '</td>' +
-                                '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
-                                '</tr>';
-                        } else if ("ttd" == item.tipe) {
-                            body += '<tr>' +
-                                '<td colspan="2">' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' +
-                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
-                                '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
-                                '</td>' +
-                                '</tr>';
-                        } else if ("bold" == item.tipe) {
-                            body += '<tr style="font-weight: bold">' +
-                                '<td width="25%">' + item.parameter + '</td>' +
-                                '<td >' + item.informasi + '</td>' +
-                                '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
-                                '</tr>';
-                        } else {
-                            body += '<tr>' +
-                                '<td width="30%">' + item.parameter + '</td>' +
-                                '<td colspan="2">' + jwb + '</td>' +
-                                '</tr>';
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        var jwb = "";
+                        if (item.jawaban != '') {
+                            jwb = item.jawaban;
                         }
-                    } else if (item.score != null) {
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td>' + item.jawaban + '</td>' +
-                            '<td width="10%" align="center">' + item.score + '</td>' +
-                            '</tr>';
-                        totalSkor = parseInt(totalSkor) + parseInt(item.score);
-                        cekSkor = true;
-                    } else if ("gambar" == item.tipe) {
-                        body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
-                            '</tr>';
-                    } else {
-                        if ("checklist_kriteria" == jenis) {
-                            if ("ttd" == item.tipe) {
-                                forTTD += '<tr>' +
-                                    '<td width="40%">' + item.parameter + '</td>' +
-                                    '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' +
+
+                        if ("Alat" == item.parameter) {
+                            var val = jwb.split("|");
+                            var li = "";
+                            $.each(val, function (i, item) {
+                                li += '<li>' + item + '</li>'
+                            });
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + '<ul style="margin-left: 15px">' + li + '</ul>' + '</td>' +
+                                '</tr>';
+
+                        } else if ("tindakan_icu" == jenis) {
+                            if ("colspan" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td colspan="3">' + jwb + '</td>' +
+                                    '</tr>';
+                            } else if ("info" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td width="25%">' + item.parameter + '</td>' +
+                                    '<td >' + item.informasi + '</td>' +
+                                    '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
+                                    '</tr>';
+                            } else if ("ttd" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td colspan="2">' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' +
                                     '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
                                     '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
                                     '</td>' +
                                     '</tr>';
-                            }
-                        } else {
-                            if ("ttd" == item.tipe) {
-                                forTTD += '<tr>' +
-                                    '<td width="40%">' + item.parameter + '</td>' +
-                                    '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' +
-                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
-                                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
-                                    '</td>' +
+                            } else if ("bold" == item.tipe) {
+                                body += '<tr style="font-weight: bold">' +
+                                    '<td width="25%">' + item.parameter + '</td>' +
+                                    '<td >' + item.informasi + '</td>' +
+                                    '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
                                     '</tr>';
                             } else {
                                 body += '<tr>' +
-                                    '<td width="40%">' + item.parameter + '</td>' +
-                                    '<td>' + jwb + '</td>' +
+                                    '<td width="30%">' + item.parameter + '</td>' +
+                                    '<td colspan="2">' + jwb + '</td>' +
                                     '</tr>';
                             }
+                        } else if (item.score != null) {
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + item.jawaban + '</td>' +
+                                '<td width="10%" align="center">' + item.score + '</td>' +
+                                '</tr>';
+                            totalSkor = parseInt(totalSkor) + parseInt(item.score);
+                            cekSkor = true;
+                        } else if ("gambar" == item.tipe) {
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
+                                '</tr>';
+                        } else {
+                            if ("checklist_kriteria" == jenis) {
+                                if ("ttd" == item.tipe) {
+                                    forTTD += '<tr>' +
+                                        '<td width="40%">' + item.parameter + '</td>' +
+                                        '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' +
+                                        '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                        '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                        '</td>' +
+                                        '</tr>';
+                                }
+                            } else {
+                                if ("ttd" == item.tipe) {
+                                    forTTD += '<tr>' +
+                                        '<td width="40%">' + item.parameter + '</td>' +
+                                        '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' +
+                                        '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                        '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                        '</td>' +
+                                        '</tr>';
+                                } else {
+                                    body += '<tr>' +
+                                        '<td width="40%">' + item.parameter + '</td>' +
+                                        '<td>' + jwb + '</td>' +
+                                        '</tr>';
+                                }
+                            }
+                        }
+                        cekData = true;
+                        tgl = item.createdDate;
+                        isKesimpulan = true;
+                    });
+                } else {
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
+                        '</tr>';
+                }
+
+                if (cekSkor) {
+                    first = '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
+                    last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>'
+
+                    if ("resiko_jatuh" == jenis) {
+                        var jwb = "";
+                        if (totalSkor >= 0 && totalSkor <= 24) {
+                            jwb = "Rendah";
+                        } else if (totalSkor >= 25 && totalSkor <= 44) {
+                            jwb = "Sedang";
+                        } else if (totalSkor >= 45) {
+                            jwb = "Tinggi";
+                        }
+
+                        if (isKesimpulan) {
+                            kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">' + jwb + '</td></tr>';
                         }
                     }
-                    cekData = true;
-                    tgl = item.createdDate;
-                    isKesimpulan = true;
-                });
-            } else {
-                body = '<tr>' +
-                    '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
-
-            if (cekSkor) {
-                first = '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
-                last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>'
-
-                if ("resiko_jatuh" == jenis) {
-                    var jwb = "";
-                    if (totalSkor >= 0 && totalSkor <= 24) {
-                        jwb = "Rendah";
-                    } else if (totalSkor >= 25 && totalSkor <= 44) {
-                        jwb = "Sedang";
-                    } else if (totalSkor >= 45) {
-                        jwb = "Tinggi";
-                    }
-
-                    if (isKesimpulan) {
-                        kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">' + jwb + '</td></tr>';
-                    }
                 }
-            }
 
-            var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead>' + head + '</thead>' +
-                '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
-                '</table>';
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
+                    '</table>';
 
-            var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-            newRow.insertAfter($('table').find('#row_icu_' + jenis));
-            var url = contextPath + '/pages/images/minus-allnew.png';
-            $('#btn_icu_' + jenis).attr('src', url);
-            $('#btn_icu_' + jenis).attr('onclick', 'delRowICU(\'' + jenis + '\')');
-        });
+                var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_icu_' + jenis));
+                var url = contextPath + '/pages/images/minus-allnew.png';
+                $('#btn_icu_' + jenis).attr('src', url);
+                $('#btn_icu_' + jenis).attr('onclick', 'delRowICU(\'' + jenis + '\')');
+            });
+        }
     }
 }
 
@@ -1591,29 +1595,31 @@ function saveHemodinamika(jenis, ket) {
             'map': va11,
             'keterangan': jenis
         };
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
-        $('#save_icu_' + jenis).hide();
-        $('#load_icu_' + jenis).show();
-        dwr.engine.setAsync(true);
-        HemodinamikaAction.save(result, pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_icu_' + jenis).show();
-                    $('#load_icu_' + jenis).hide();
-                    $('#modal-icu-' + jenis).modal('hide');
-                    $('#warning_icu_' + ket).show().fadeOut(5000);
-                    $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
-                    $('#modal-icu-' + jenis).scrollTop(0);
-                } else {
-                    $('#save_icu_' + jenis).show();
-                    $('#load_icu_' + jenis).hide();
-                    $('#warning_icu_' + jenis).show().fadeOut(5000);
-                    $('#msg_icu_' + jenis).text(res.msg);
-                    $('#modal-icu-' + jenis).scrollTop(0);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_icu_' + jenis).hide();
+            $('#load_icu_' + jenis).show();
+            dwr.engine.setAsync(true);
+            HemodinamikaAction.save(result, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_icu_' + jenis).show();
+                        $('#load_icu_' + jenis).hide();
+                        $('#modal-icu-' + jenis).modal('hide');
+                        $('#warning_icu_' + ket).show().fadeOut(5000);
+                        $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
+                        $('#modal-icu-' + jenis).scrollTop(0);
+                    } else {
+                        $('#save_icu_' + jenis).show();
+                        $('#load_icu_' + jenis).hide();
+                        $('#warning_icu_' + jenis).show().fadeOut(5000);
+                        $('#msg_icu_' + jenis).text(res.msg);
+                        $('#modal-icu-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        });
+            });
+        }
     } else {
         $('#warning_icu_' + jenis).show().fadeOut(5000);
         $('#msg_icu_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -1623,178 +1629,153 @@ function saveHemodinamika(jenis, ket) {
 }
 
 function showChartHemodinamika(jenis, tgl) {
-    $('#tanggal_data').html(converterDate(new Date(tgl)));
-    $('#modal-icu-chart_' + jenis).modal({show: true, backdrop: 'static'});
-    HemodinamikaAction.getListDetail(idDetailCheckup, jenis, tgl, function (res) {
-        if (res.length > 0) {
-            var dataArray = [];
-            var thEkg = [];
-            var tdEkg = [];
-            var temJam = "";
-            var tempEkg = 0;
+    if(!cekSession()){
+        $('#tanggal_data').html(converterDate(new Date(tgl)));
+        $('#modal-icu-chart_' + jenis).modal({show: true, backdrop: 'static'});
+        HemodinamikaAction.getListDetail(idDetailCheckup, jenis, tgl, function (res) {
+            if (res.length > 0) {
+                var dataArray = [];
+                var thEkg = [];
+                var tdEkg = [];
+                var temJam = "";
+                var tempEkg = 0;
 
-            $.each(res, function (i, item) {
-                var ekg = 0;
-                if (item.ekg != null) {
-                    // ekg = item.ekg;
-                    thEkg.push({'jam': item.waktu});
-                    tdEkg.push({'ekg': item.ekg});
+                $.each(res, function (i, item) {
+                    var ekg = 0;
+                    if (item.ekg != null) {
+                        // ekg = item.ekg;
+                        thEkg.push({'jam': item.waktu});
+                        tdEkg.push({'ekg': item.ekg});
+                    }
+
+                    dataArray.push({
+                        y: item.waktu,
+                        a: item.tensi,
+                        b: item.sistole,
+                        c: item.diastole,
+                        d: item.hi,
+                        e: item.rr,
+                        f: item.icp,
+                        g: item.ibp,
+                        h: item.cvp,
+                        i: item.map
+                    });
+                });
+
+                $('#modal-icu-chart_' + jenis).on('shown.bs.modal', function (event) {
+                    $('#line-chart_hemodinamika').empty();
+                    var line = new Morris.Line({
+                        element: 'line-chart_hemodinamika',
+                        resize: true,
+                        data: dataArray,
+                        xkey: 'y',
+                        ykeys: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
+                        labels: ['Temperature', 'Sistole', 'Diastole', 'HR', 'RR', 'ICP', 'IBP', 'CVP', 'MAP'],
+                        lineColors: ['#ff0000', '#0000ff', '#00cc00', '#ff9933', '#cc6600', '#ffff66', '#cc6699', '#666633', '#000066'],
+                        hideHover: 'auto',
+                        parseTime: false,
+                        lineWidth: 1
+                    });
+                });
+
+                var jamEkg = "<td>Jam</td>";
+                var valEkg = "<td>EKG</td>";
+                if (thEkg.length > 0) {
+                    $.each(thEkg, function (i, item) {
+                        jamEkg += '<td>' + item.jam + '</td>';
+                    });
                 }
 
-                dataArray.push({
-                    y: item.waktu,
-                    a: item.tensi,
-                    b: item.sistole,
-                    c: item.diastole,
-                    d: item.hi,
-                    e: item.rr,
-                    f: item.icp,
-                    g: item.ibp,
-                    h: item.cvp,
-                    i: item.map
-                });
-
-                // var jam = item.waktu.split(":")[0];
-
-                // if (temJam != jam) {
-                //     temJam = jam;
-                //     thEkg.push({'jam': jam});
-                // }
-
-                // var tempTgl = "";
-                // var btn = "";
-
-                // if (i == 0) {
-                //     tempEkg = parseInt(tempEkg) + parseInt(ekg);
-                // } else {
-                //     var jm = res[i - 1]["waktu"];
-                //     var jamB = jm.split(":")[0];
-                //
-                //     if (jam == jamB) {
-                //         tempEkg = parseInt(tempEkg) + parseInt(ekg);
-                //     } else {
-                //         tdEkg.push({'ekg': tempEkg});
-                //         tempEkg = ekg;
-                //     }
-                // }
-                //
-                // if (i == res.length - 1) {
-                //     tdEkg.push({'ekg': tempEkg});
-                // }
-
-            });
-
-            $('#modal-icu-chart_' + jenis).on('shown.bs.modal', function (event) {
-                $('#line-chart_hemodinamika').empty();
-                var line = new Morris.Line({
-                    element: 'line-chart_hemodinamika',
-                    resize: true,
-                    data: dataArray,
-                    xkey: 'y',
-                    ykeys: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
-                    labels: ['Temperature', 'Sistole', 'Diastole', 'HR', 'RR', 'ICP', 'IBP', 'CVP', 'MAP'],
-                    lineColors: ['#ff0000', '#0000ff', '#00cc00', '#ff9933', '#cc6600', '#ffff66', '#cc6699', '#666633', '#000066'],
-                    hideHover: 'auto',
-                    parseTime: false,
-                    lineWidth: 1
-                });
-            });
-
-            var jamEkg = "<td>Jam</td>";
-            var valEkg = "<td>EKG</td>";
-            if (thEkg.length > 0) {
-                $.each(thEkg, function (i, item) {
-                    jamEkg += '<td>' + item.jam + '</td>';
-                });
+                if (tdEkg.length > 0) {
+                    $.each(tdEkg, function (i, item) {
+                        valEkg += '<td>' + item.ekg + '</td>';
+                    });
+                }
+                $('#body_ekg').html('<tr style="font-weight: bold">' + jamEkg + '</tr><tr>' + valEkg + '</tr>');
             }
-
-            if (tdEkg.length > 0) {
-                $.each(tdEkg, function (i, item) {
-                    valEkg += '<td>' + item.ekg + '</td>';
-                });
-            }
-            $('#body_ekg').html('<tr style="font-weight: bold">' + jamEkg + '</tr><tr>' + valEkg + '</tr>');
-        }
-    });
+        });
+    }
 }
 
 function listHemodinamika(jenis) {
-    var cekData = false;
-    var body = "";
-    var head = "";
-    HemodinamikaAction.getListDetail(idDetailCheckup, jenis, null, function (res) {
-        if (res.length > 0) {
-            $.each(res, function (i, item) {
-                var tanggal = converterDate(new Date(item.createdDate));
-                var ketTgl = converterDateYmd(new Date(item.tanggal));
+    if(!cekSession()){
+        var cekData = false;
+        var body = "";
+        var head = "";
+        HemodinamikaAction.getListDetail(idDetailCheckup, jenis, null, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var tanggal = converterDate(new Date(item.createdDate));
+                    var ketTgl = converterDateYmd(new Date(item.tanggal));
 
-                var tempTgl = "";
-                var btn = "";
+                    var tempTgl = "";
+                    var btn = "";
 
-                if (i == 0) {
-                    tempTgl = tanggal;
-                    btn = '<i class="fa fa-line-chart" style="cursor: pointer; color: #1ab7ea" onclick="showChartHemodinamika(\'' + jenis + '\', \'' + ketTgl + '\')"></i>';
-                } else {
-                    var tgl = res[i - 1]["createdDate"];
-                    var tglB = converterDate(new Date(tgl));
-                    if (tanggal == tglB) {
-                        tempTgl = "";
-                    } else {
+                    if (i == 0) {
                         tempTgl = tanggal;
                         btn = '<i class="fa fa-line-chart" style="cursor: pointer; color: #1ab7ea" onclick="showChartHemodinamika(\'' + jenis + '\', \'' + ketTgl + '\')"></i>';
+                    } else {
+                        var tgl = res[i - 1]["createdDate"];
+                        var tglB = converterDate(new Date(tgl));
+                        if (tanggal == tglB) {
+                            tempTgl = "";
+                        } else {
+                            tempTgl = tanggal;
+                            btn = '<i class="fa fa-line-chart" style="cursor: pointer; color: #1ab7ea" onclick="showChartHemodinamika(\'' + jenis + '\', \'' + ketTgl + '\')"></i>';
+                        }
                     }
-                }
 
-                body += '<tr>' +
-                    '<td>' + btn + "&nbsp;&nbsp;" + tempTgl + '</td>' +
-                    '<td>' + cekItemIsNull(item.waktu) + '</td>' +
-                    '<td>' + cekItemIsNull(item.tensi) + '</td>' +
-                    '<td>' + cekItemIsNull(item.sistole) + '</td>' +
-                    '<td>' + cekItemIsNull(item.diastole) + '</td>' +
-                    '<td>' + cekItemIsNull(item.hi) + '</td>' +
-                    '<td>' + cekItemIsNull(item.rr) + '</td>' +
-                    '<td>' + cekItemIsNull(item.ekg) + '</td>' +
-                    '<td>' + cekItemIsNull(item.icp) + '</td>' +
-                    '<td>' + cekItemIsNull(item.ibp) + '</td>' +
-                    '<td>' + cekItemIsNull(item.cvp) + '</td>' +
-                    '<td>' + cekItemIsNull(item.map) + '</td>' +
-                    '<td align="center">' + '<i id="delete_' + item.idHemodinamika + '" onclick="conICU(\'' + jenis + '\', \'asesmen_icu\', \'' + item.idHemodinamika + '\', \'hemodinamika\')" class="fa fa-trash hvr-grow" style="color: red;">' + '</td>' +
+                    body += '<tr>' +
+                        '<td>' + btn + "&nbsp;&nbsp;" + tempTgl + '</td>' +
+                        '<td>' + cekItemIsNull(item.waktu) + '</td>' +
+                        '<td>' + cekItemIsNull(item.tensi) + '</td>' +
+                        '<td>' + cekItemIsNull(item.sistole) + '</td>' +
+                        '<td>' + cekItemIsNull(item.diastole) + '</td>' +
+                        '<td>' + cekItemIsNull(item.hi) + '</td>' +
+                        '<td>' + cekItemIsNull(item.rr) + '</td>' +
+                        '<td>' + cekItemIsNull(item.ekg) + '</td>' +
+                        '<td>' + cekItemIsNull(item.icp) + '</td>' +
+                        '<td>' + cekItemIsNull(item.ibp) + '</td>' +
+                        '<td>' + cekItemIsNull(item.cvp) + '</td>' +
+                        '<td>' + cekItemIsNull(item.map) + '</td>' +
+                        '<td align="center">' + '<i id="delete_' + item.idHemodinamika + '" onclick="conICU(\'' + jenis + '\', \'asesmen_icu\', \'' + item.idHemodinamika + '\', \'hemodinamika\')" class="fa fa-trash hvr-grow" style="color: red;">' + '</td>' +
+                        '</tr>';
+                    cekData = true;
+                });
+            } else {
+                body = '<tr><td>Data belum ada</td></tr>';
+            }
+
+            if (cekData) {
+                head = '<tr style="font-weight: bold">\n' +
+                    '<td>Tanggal</td>\n' +
+                    '<td>Waktu</td>\n' +
+                    '<td>Temperatur</td>\n' +
+                    '<td>Sistole</td>\n' +
+                    '<td>Diastole</td>\n' +
+                    '<td>HR</td>\n' +
+                    '<td>RR</td>\n' +
+                    '<td>EKG</td>\n' +
+                    '<td>ICP</td>\n' +
+                    '<td>IBP</td>\n' +
+                    '<td>CVP</td>\n' +
+                    '<td>MAP</td>\n' +
+                    '<td width="10%" align="center">Action</td>\n' +
                     '</tr>';
-                cekData = true;
-            });
-        } else {
-            body = '<tr><td>Data belum ada</td></tr>';
-        }
+            }
 
-        if (cekData) {
-            head = '<tr style="font-weight: bold">\n' +
-                '<td>Tanggal</td>\n' +
-                '<td>Waktu</td>\n' +
-                '<td>Temperatur</td>\n' +
-                '<td>Sistole</td>\n' +
-                '<td>Diastole</td>\n' +
-                '<td>HR</td>\n' +
-                '<td>RR</td>\n' +
-                '<td>EKG</td>\n' +
-                '<td>ICP</td>\n' +
-                '<td>IBP</td>\n' +
-                '<td>CVP</td>\n' +
-                '<td>MAP</td>\n' +
-                '<td width="10%" align="center">Action</td>\n' +
-                '</tr>';
-        }
+            var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                '<thead>' + head + '</thead>' +
+                '<tbody>' + body + '</tbody>' +
+                '</table>';
 
-        var table = '<table style="font-size: 12px" class="table table-bordered">' +
-            '<thead>' + head + '</thead>' +
-            '<tbody>' + body + '</tbody>' +
-            '</table>';
-
-        var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-        newRow.insertAfter($('table').find('#row_icu_' + jenis));
-        var url = contextPath + '/pages/images/minus-allnew.png';
-        $('#btn_icu_' + jenis).attr('src', url);
-        $('#btn_icu_' + jenis).attr('onclick', 'delRowHemo(\'' + jenis + '\')');
-    });
+            var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+            newRow.insertAfter($('table').find('#row_icu_' + jenis));
+            var url = contextPath + '/pages/images/minus-allnew.png';
+            $('#btn_icu_' + jenis).attr('src', url);
+            $('#btn_icu_' + jenis).attr('onclick', 'delRowHemo(\'' + jenis + '\')');
+        });
+    }
 }
 
 function delRowHemo(id) {
@@ -1871,29 +1852,31 @@ function saveRespirasi(jenis, ket) {
             'secret': va28,
             'keterangan': jenis
         };
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
-        $('#save_icu_' + jenis).hide();
-        $('#load_icu_' + jenis).show();
-        dwr.engine.setAsync(true);
-        RespirasiAction.save(result, pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_icu_' + jenis).show();
-                    $('#load_icu_' + jenis).hide();
-                    $('#modal-icu-' + jenis).modal('hide');
-                    $('#warning_icu_' + ket).show().fadeOut(5000);
-                    $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
-                    $('#modal-icu-' + jenis).scrollTop(0);
-                } else {
-                    $('#save_icu_' + jenis).show();
-                    $('#load_icu_' + jenis).hide();
-                    $('#warning_icu_' + jenis).show().fadeOut(5000);
-                    $('#msg_icu_' + jenis).text(res.msg);
-                    $('#modal-icu-' + jenis).scrollTop(0);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_icu_' + jenis).hide();
+            $('#load_icu_' + jenis).show();
+            dwr.engine.setAsync(true);
+            RespirasiAction.save(result, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_icu_' + jenis).show();
+                        $('#load_icu_' + jenis).hide();
+                        $('#modal-icu-' + jenis).modal('hide');
+                        $('#warning_icu_' + ket).show().fadeOut(5000);
+                        $('#msg_icu_' + ket).text("Berhasil menambahkan data ICU...");
+                        $('#modal-icu-' + jenis).scrollTop(0);
+                    } else {
+                        $('#save_icu_' + jenis).show();
+                        $('#load_icu_' + jenis).hide();
+                        $('#warning_icu_' + jenis).show().fadeOut(5000);
+                        $('#msg_icu_' + jenis).text(res.msg);
+                        $('#modal-icu-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        });
+            });
+        }
     } else {
         $('#warning_icu_' + jenis).show().fadeOut(5000);
         $('#msg_icu_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -1902,118 +1885,120 @@ function saveRespirasi(jenis, ket) {
 }
 
 function listRespirasi(jenis) {
-    var body = "";
-    var head = '';
-    var cekData = false;
-    RespirasiAction.getListDetail(idDetailCheckup, jenis, function (res) {
-        if (res.length > 0) {
-            $.each(res, function (i, item) {
-                var tanggal = converterDate(new Date(item.createdDate));
-                var tempTgl = "";
+    if(!cekSession()){
+        var body = "";
+        var head = '';
+        var cekData = false;
+        RespirasiAction.getListDetail(idDetailCheckup, jenis, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var tanggal = converterDate(new Date(item.createdDate));
+                    var tempTgl = "";
 
-                if (i == 0) {
-                    tempTgl = tanggal;
-                } else {
-                    var tgl = res[i - 1]["createdDate"];
-                    var tglB = converterDate(new Date(tgl));
-                    if (tanggal == tglB) {
-                        tempTgl = "";
-                    } else {
+                    if (i == 0) {
                         tempTgl = tanggal;
+                    } else {
+                        var tgl = res[i - 1]["createdDate"];
+                        var tglB = converterDate(new Date(tgl));
+                        if (tanggal == tglB) {
+                            tempTgl = "";
+                        } else {
+                            tempTgl = tanggal;
+                        }
                     }
-                }
 
-                var gcs = item.gcs.split("|");
-                var dp = item.diameterPupil.split("|");
-                var rc = item.reflekCahaya.split("|");
-                var tk = item.tk.split("|");
-                var kk = item.kk.split("|");
+                    var gcs = item.gcs.split("|");
+                    var dp = item.diameterPupil.split("|");
+                    var rc = item.reflekCahaya.split("|");
+                    var tk = item.tk.split("|");
+                    var kk = item.kk.split("|");
 
-                body += '<tr>' +
-                    '<td>' + tempTgl + '<span class="pull-right">' + cekItemIsNull(item.waktu) + '</span>' + '</td>' +
-                    '<td>' + gcs[0] + '</td>' +
-                    '<td>' + gcs[1] + '</td>' +
-                    '<td>' + gcs[2] + '</td>' +
-                    '<td>' + dp[0] + '</td>' +
-                    '<td>' + dp[1] + '</td>' +
-                    '<td>' + rc[0] + '</td>' +
-                    '<td>' + rc[1] + '</td>' +
-                    '<td>' + tk[0] + '</td>' +
-                    '<td>' + tk[1] + '</td>' +
-                    '<td>' + kk[0] + '</td>' +
-                    '<td>' + kk[1] + '</td>' +
-                    '<td>' + cekItemIsNull(item.o2) + '</td>' +
-                    '<td>' + cekItemIsNull(item.peep) + '</td>' +
-                    '<td>' + cekItemIsNull(item.frekwensi) + '</td>' +
-                    '<td>' + cekItemIsNull(item.tv) + '</td>' +
-                    '<td>' + cekItemIsNull(item.mv) + '</td>' +
-                    '<td>' + cekItemIsNull(item.pSupportPAsb) + '</td>' +
-                    '<td>' + cekItemIsNull(item.pInsPCon) + '</td>' +
-                    '<td>' + cekItemIsNull(item.triger) + '</td>' +
-                    '<td>' + cekItemIsNull(item.insTime) + '</td>' +
-                    '<td>' + cekItemIsNull(item.flow) + '</td>' +
-                    '<td>' + cekItemIsNull(item.fioKon) + '</td>' +
-                    '<td>' + cekItemIsNull(item.ukuranEtt) + '</td>' +
-                    '<td>' + cekItemIsNull(item.kedalamanEtt) + '</td>' +
-                    '<td>' + cekItemIsNull(item.spo2) + '</td>' +
-                    '<td>' + cekItemIsNull(item.secret) + '</td>' +
-                    '<td align="center">' + '<i id="delete_' + item.idRespirasi + '" onclick="conICU(\'' + jenis + '\', \'asesmen_icu\', \'' + item.idRespirasi + '\', \'respirasi\')" class="fa fa-trash hvr-grow" style="color: red;">' + '</td>' +
-                    '</tr>';
-                cekData = true;
-            });
-        } else {
-            body = '<tr><td>Data belum ada</td></tr>';
-        }
+                    body += '<tr>' +
+                        '<td>' + tempTgl + '<span class="pull-right">' + cekItemIsNull(item.waktu) + '</span>' + '</td>' +
+                        '<td>' + gcs[0] + '</td>' +
+                        '<td>' + gcs[1] + '</td>' +
+                        '<td>' + gcs[2] + '</td>' +
+                        '<td>' + dp[0] + '</td>' +
+                        '<td>' + dp[1] + '</td>' +
+                        '<td>' + rc[0] + '</td>' +
+                        '<td>' + rc[1] + '</td>' +
+                        '<td>' + tk[0] + '</td>' +
+                        '<td>' + tk[1] + '</td>' +
+                        '<td>' + kk[0] + '</td>' +
+                        '<td>' + kk[1] + '</td>' +
+                        '<td>' + cekItemIsNull(item.o2) + '</td>' +
+                        '<td>' + cekItemIsNull(item.peep) + '</td>' +
+                        '<td>' + cekItemIsNull(item.frekwensi) + '</td>' +
+                        '<td>' + cekItemIsNull(item.tv) + '</td>' +
+                        '<td>' + cekItemIsNull(item.mv) + '</td>' +
+                        '<td>' + cekItemIsNull(item.pSupportPAsb) + '</td>' +
+                        '<td>' + cekItemIsNull(item.pInsPCon) + '</td>' +
+                        '<td>' + cekItemIsNull(item.triger) + '</td>' +
+                        '<td>' + cekItemIsNull(item.insTime) + '</td>' +
+                        '<td>' + cekItemIsNull(item.flow) + '</td>' +
+                        '<td>' + cekItemIsNull(item.fioKon) + '</td>' +
+                        '<td>' + cekItemIsNull(item.ukuranEtt) + '</td>' +
+                        '<td>' + cekItemIsNull(item.kedalamanEtt) + '</td>' +
+                        '<td>' + cekItemIsNull(item.spo2) + '</td>' +
+                        '<td>' + cekItemIsNull(item.secret) + '</td>' +
+                        '<td align="center">' + '<i id="delete_' + item.idRespirasi + '" onclick="conICU(\'' + jenis + '\', \'asesmen_icu\', \'' + item.idRespirasi + '\', \'respirasi\')" class="fa fa-trash hvr-grow" style="color: red;">' + '</td>' +
+                        '</tr>';
+                    cekData = true;
+                });
+            } else {
+                body = '<tr><td>Data belum ada</td></tr>';
+            }
 
-        if (cekData) {
-            head = '<tr>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">Tanggal Jam</td>\n' +
-                '<td colspan="3" style="vertical-align: middle" align="center">GCS</td>\n' +
-                '<td colspan="2" style="vertical-align: middle" align="center">DP</td>\n' +
-                '<td colspan="2" style="vertical-align: middle" align="center">RC</td>\n' +
-                '<td colspan="4" style="vertical-align: middle" align="center">EXTR</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">O2</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">PE</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">FR</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">TV</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">MV</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">PS</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">PI</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">TR</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">IN</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">FL</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">FI</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">UE</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">DE</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">SP</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">SE</td>\n' +
-                '<td rowspan="2" style="vertical-align: middle" align="center">Action</td>\n' +
-                '                        </tr>\n' +
-                '                        <tr>\n' +
-                '<td align="center">E</td>\n' +
-                '<td align="center">V</td>\n' +
-                '<td align="center">M</td>\n' +
-                '<td align="center">R</td>\n' +
-                '<td align="center">L</td>\n' +
-                '<td align="center">R</td>\n' +
-                '<td align="center">L</td>\n' +
-                '<td align="center">TR</td>\n' +
-                '<td align="center">TL</td>\n' +
-                '<td align="center">KR</td>\n' +
-                '<td align="center">KL</td>\n' +
-                '                        </tr>';
-        }
-        var table = '<table style="font-size: 10px" class="table table-bordered">' +
-            '<thead>' + head + '</thead>' +
-            '<tbody>' + body + '</tbody>' +
-            '</table>';
+            if (cekData) {
+                head = '<tr>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">Tanggal Jam</td>\n' +
+                    '<td colspan="3" style="vertical-align: middle" align="center">GCS</td>\n' +
+                    '<td colspan="2" style="vertical-align: middle" align="center">DP</td>\n' +
+                    '<td colspan="2" style="vertical-align: middle" align="center">RC</td>\n' +
+                    '<td colspan="4" style="vertical-align: middle" align="center">EXTR</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">O2</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">PE</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">FR</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">TV</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">MV</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">PS</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">PI</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">TR</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">IN</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">FL</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">FI</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">UE</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">DE</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">SP</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">SE</td>\n' +
+                    '<td rowspan="2" style="vertical-align: middle" align="center">Action</td>\n' +
+                    '                        </tr>\n' +
+                    '                        <tr>\n' +
+                    '<td align="center">E</td>\n' +
+                    '<td align="center">V</td>\n' +
+                    '<td align="center">M</td>\n' +
+                    '<td align="center">R</td>\n' +
+                    '<td align="center">L</td>\n' +
+                    '<td align="center">R</td>\n' +
+                    '<td align="center">L</td>\n' +
+                    '<td align="center">TR</td>\n' +
+                    '<td align="center">TL</td>\n' +
+                    '<td align="center">KR</td>\n' +
+                    '<td align="center">KL</td>\n' +
+                    '                        </tr>';
+            }
+            var table = '<table style="font-size: 10px" class="table table-bordered">' +
+                '<thead>' + head + '</thead>' +
+                '<tbody>' + body + '</tbody>' +
+                '</table>';
 
-        var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-        newRow.insertAfter($('table').find('#row_icu_' + jenis));
-        var url = contextPath + '/pages/images/minus-allnew.png';
-        $('#btn_icu_' + jenis).attr('src', url);
-        $('#btn_icu_' + jenis).attr('onclick', 'delRowRes(\'' + jenis + '\')');
-    });
+            var newRow = $('<tr id="del_icu_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+            newRow.insertAfter($('table').find('#row_icu_' + jenis));
+            var url = contextPath + '/pages/images/minus-allnew.png';
+            $('#btn_icu_' + jenis).attr('src', url);
+            $('#btn_icu_' + jenis).attr('onclick', 'delRowRes(\'' + jenis + '\')');
+        });
+    }
 }
 
 function delRowRes(id) {
@@ -2254,124 +2239,6 @@ function setInputan(jenis) {
                 $('#form-output').show();
             }
         });
-        // IcuAction.getListDetailParameter(idDetailCheckup, jenis, function (res) {
-        //     if (res.length > 0) {
-        //
-        //         $.each(res, function (i, item) {
-        //             inputan += '<div class="row">' +
-        //                 '<div class="form-group">\n' +
-        //                 '    <label class="col-md-3 jarak">' + item.jenis + '</label>\n' +
-        //                 '<input value="' + item.idHeaderIcu + '" type="hidden" class="data-label' + jenis + '">' +
-        //                 '    <div class="col-md-9">\n' +
-        //                 '       <input class="form-control jarak nilai' + jenis + '" type="number">\n' +
-        //                 '    </div>\n' +
-        //                 '</div>\n' +
-        //                 '</div>';
-        //         });
-        //
-        //         $('#inpt_' + jenis).html(inputan);
-        //         $('#resus').html('');
-        //         $('#darah').html('');
-        //         $('#infus').html('');
-        //         $('#' + jenis).html('');
-        //         $('#select_isi').html('');
-        //         $('#is_new').val(false);
-        //
-        //     } else {
-        //
-        //         if ("keseimbangan_icu") {
-        //             var isi = '<div class="row">\n' +
-        //                 '<div class="form-group">\n' +
-        //                 '    <label class="col-md-3" style="margin-top: 7px">Pengisian</label>\n' +
-        //                 '    <div class="col-md-9">\n' +
-        //                 '        <select class="form-control select2 " id="jensis_pengisian" style="width: 100%" onchange="pilIsi(\'' + jenis + '\', this.value)">\n' +
-        //                 '            <option value="">[Select One]</option>\n' +
-        //                 '            <option value="rc">Resusitasi Cairan</option>\n' +
-        //                 '            <option value="in">Infus</option>\n' +
-        //                 '        </select>\n' +
-        //                 '    </div>\n' +
-        //                 '</div>\n' +
-        //                 '</div>';
-        //             $('#select_isi').html(isi);
-        //         }
-        //
-        //         var label = "";
-        //         if ("injeksi_icu" == jenis) {
-        //             label = "Injeksi";
-        //         }
-        //         if ("oral_icu" == jenis) {
-        //             label = "Oral";
-        //         }
-        //         if ("lain_icu" == jenis) {
-        //             label = "Lain-Lain";
-        //         }
-        //
-        //         if ("intakea_icu" == jenis) {
-        //             parameter.push({'params': 'NGT/ Oral'});
-        //             parameter.push({'params': 'Minum'});
-        //         }
-        //         if ("output_icu" == jenis) {
-        //             parameter.push({'params': 'Drain 1'});
-        //             parameter.push({'params': 'Drain 2'});
-        //             parameter.push({'params': 'Urin'});
-        //             parameter.push({'params': 'Muntah'});
-        //             parameter.push({'params': 'BAB'});
-        //             parameter.push({'params': 'IWL'});
-        //             parameter.push({'params': 'Stoma'});
-        //         }
-        //
-        //         obat = '<hr class="garis">' +
-        //             '<div class="row">\n' +
-        //             '<div class="form-group">\n' +
-        //             '    <div class="col-md-offset-3 col-md-1">\n' +
-        //             '        <button class="btn btn-success" onclick="addInputan(\'' + jenis + '\', \'obat\')"><i class="fa fa-plus"></i> Tambah</button>\n' +
-        //             '    </div>\n' +
-        //             '</div>\n' +
-        //             '</div>\n';
-        //
-        //         if (parameter.length > 0) {
-        //
-        //             $.each(parameter, function (i, item) {
-        //                 obat +=
-        //                     '<div class="row jarak" id="res' + i + '">\n' +
-        //                     '<div class="form-group">\n' +
-        //                     '    <label class="col-md-3 jarak">' + item.params + '</label>\n' +
-        //                     '<input type="hidden" value="' + item.params + '" class="data-label' + jenis + ' obat' + jenis + '">\n' +
-        //                     '    <div class="col-md-9">\n' +
-        //                     '       <input class="form-control jarak nilai' + jenis + '" type="number">\n' +
-        //                     '    </div>\n' +
-        //                     '</div>\n' +
-        //                     '</div>'
-        //             });
-        //
-        //         } else {
-        //             obat = obat +
-        //                 '<div class="row jarak" id="res1">\n' +
-        //                 '<div class="form-group">\n' +
-        //                 '    <label class="col-md-3 jarak">' + label + '</label>\n' +
-        //                 '    <div class="col-md-4">\n' +
-        //                 '<input class="form-control jarak data-label' + jenis + ' obat' + jenis + '" placeholder="Keterangan">\n' +
-        //                 '    </div>\n' +
-        //                 '    <label class="col-md-1 jarak">Nilai</label>\n' +
-        //                 '    <div class="col-md-3">\n' +
-        //                 '       <input class="form-control jarak nilai' + jenis + '" type="number">\n' +
-        //                 '    </div>\n' +
-        //                 '</div>\n' +
-        //                 '</div>';
-        //         }
-        //
-        //         if ("keseimbangan_icu" == jenis) {
-        //             $('#resus').html(resus);
-        //             $('#darah').html(darah);
-        //             $('#infus').html(infus);
-        //         } else {
-        //             $('#' + jenis).html(obat);
-        //         }
-        //
-        //         $('#inpt_' + jenis).html('');
-        //         $('#is_new').val(true);
-        //     }
-        // });
     }
 
     var sel = $('.select2').length;
@@ -3840,58 +3707,62 @@ function conICU(jenis, ket, idAsesmen, tipe) {
 
 function delICUS(jenis, ket, idAsesmen, tipe) {
     $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startIconSpin('delete_' + idAsesmen);
-    dwr.engine.setAsync(true);
-    IcuAction.saveDelete(idAsesmen, tipe, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopIconSpin('delete_' + idAsesmen);
-                $('#modal-icu-' + ket).scrollTop(0);
-                $('#warning_icu_' + ket).show().fadeOut(5000);
-                $('#msg_icu_' + ket).text("Berhasil menghapus data...");
-            } else {
-                stopIconSpin('delete_' + idAsesmen);
-                $('#modal-icu-' + ket).scrollTop(0);
-                $('#warn_' + ket).show().fadeOut(5000);
-                $('#msg_' + ket).text(res.msg);
-            }
+    if(!cekSession()){
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
-    });
+        var result = JSON.stringify(dataPasien);
+        startIconSpin('delete_' + idAsesmen);
+        dwr.engine.setAsync(true);
+        IcuAction.saveDelete(idAsesmen, tipe, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopIconSpin('delete_' + idAsesmen);
+                    $('#modal-icu-' + ket).scrollTop(0);
+                    $('#warning_icu_' + ket).show().fadeOut(5000);
+                    $('#msg_icu_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopIconSpin('delete_' + idAsesmen);
+                    $('#modal-icu-' + ket).scrollTop(0);
+                    $('#warn_' + ket).show().fadeOut(5000);
+                    $('#msg_' + ket).text(res.msg);
+                }
+            }
+        });
+    }
 }
 
 function delICU(jenis, ket) {
-    $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startSpin('delete_' + jenis);
-    dwr.engine.setAsync(true);
-    AsesmenIcuAction.saveDelete(idDetailCheckup, jenis, result, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopSpin('delete_' + jenis);
-                $('#modal-icu-' + ket).scrollTop(0);
-                $('#warning_icu_' + ket).show().fadeOut(5000);
-                $('#msg_icu_' + ket).text("Berhasil menghapus data...");
-            } else {
-                stopSpin('delete_' + jenis);
-                $('#modal-icu-' + ket).scrollTop(0);
-                $('#warn_' + ket).show().fadeOut(5000);
-                $('#msg_' + ket).text(res.msg);
-            }
+    if(!cekSession()){
+        $('#modal-confirm-rm').modal('hide');
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
-    });
+        var result = JSON.stringify(dataPasien);
+        startSpin('delete_' + jenis);
+        dwr.engine.setAsync(true);
+        AsesmenIcuAction.saveDelete(idDetailCheckup, jenis, result, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopSpin('delete_' + jenis);
+                    $('#modal-icu-' + ket).scrollTop(0);
+                    $('#warning_icu_' + ket).show().fadeOut(5000);
+                    $('#msg_icu_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopSpin('delete_' + jenis);
+                    $('#modal-icu-' + ket).scrollTop(0);
+                    $('#warn_' + ket).show().fadeOut(5000);
+                    $('#msg_' + ket).text(res.msg);
+                }
+            }
+        });
+    }
 }
 
 function setCustomeJenis(idSet, jenis) {
@@ -3993,25 +3864,27 @@ function showEditObat(idHead, idDetail){
 }
 
 function saveEditObat(idHead, idDetail){
-    var nilai = $('#obat_nilai').val();
-    if(nilai != ''){
-        IcuAction.editObat(idHead, idDetail, nilai, function (res) {
-            if(res.status == 'success'){
-                $('#modal-icu-edit-obat').modal('hide');
-                $('#warning_icu_asesmen_icu').show().fadeOut(5000);
-                $('#msg_icu_asesmen_icu').text("Berhasil mengupdate data obat-obatan...!");
-                $('#del_icu_keseimbangan_icu').remove();
-                var url = contextPath + '/pages/images/icons8-add-list-25.png';
-                $('#btn_icu_keseimbangan_icu').attr('src', url);
-                $('#btn_icu_keseimbangan_icu').attr('onclick', 'listInputan(\'keseimbangan_icu\')');
-            }else{
-                $('#warning_icu_edit_obat').show().fadeOut(5000);
-                $('#msg_icu_edit_obat').text(res.msg);
-            }
-        });
-    }else{
-        $('#warning_icu_edit_obat').show().fadeOut(5000);
-        $('#msg_icu_edit_obat').text("Silahkan cek kembali inputan nilai...!");
+    if(!cekSession()){
+        var nilai = $('#obat_nilai').val();
+        if(nilai != ''){
+            IcuAction.editObat(idHead, idDetail, nilai, function (res) {
+                if(res.status == 'success'){
+                    $('#modal-icu-edit-obat').modal('hide');
+                    $('#warning_icu_asesmen_icu').show().fadeOut(5000);
+                    $('#msg_icu_asesmen_icu').text("Berhasil mengupdate data obat-obatan...!");
+                    $('#del_icu_keseimbangan_icu').remove();
+                    var url = contextPath + '/pages/images/icons8-add-list-25.png';
+                    $('#btn_icu_keseimbangan_icu').attr('src', url);
+                    $('#btn_icu_keseimbangan_icu').attr('onclick', 'listInputan(\'keseimbangan_icu\')');
+                }else{
+                    $('#warning_icu_edit_obat').show().fadeOut(5000);
+                    $('#msg_icu_edit_obat').text(res.msg);
+                }
+            });
+        }else{
+            $('#warning_icu_edit_obat').show().fadeOut(5000);
+            $('#msg_icu_edit_obat').text("Silahkan cek kembali inputan nilai...!");
+        }
     }
 }
 

@@ -747,29 +747,31 @@ function savePengkajianKep(jenis, ket) {
     }
 
     if (cek) {
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
-        $('#save_puk_' + jenis).hide();
-        $('#load_puk_' + jenis).show();
-        dwr.engine.setAsync(true);
-        PengkajianUlangKeperawatanAction.savePengkajianKeperawatan(result, pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_puk_' + jenis).show();
-                    $('#load_puk_' + jenis).hide();
-                    $('#modal-puk-' + jenis).modal('hide');
-                    $('#warning_puk_' + ket).show().fadeOut(5000);
-                    $('#msg_puk_' + ket).text("Berhasil menambahkan data data keperawatan...");
-                    $('#modal-puk-' + jenis).scrollTop(0);
-                } else {
-                    $('#save_puk_' + jenis).show();
-                    $('#load_puk_' + jenis).hide();
-                    $('#warning_puk_' + jenis).show().fadeOut(5000);
-                    $('#msg_puk_' + jenis).text(res.msg);
-                    $('#modal-puk-' + jenis).scrollTop(0);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_puk_' + jenis).hide();
+            $('#load_puk_' + jenis).show();
+            dwr.engine.setAsync(true);
+            PengkajianUlangKeperawatanAction.savePengkajianKeperawatan(result, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_puk_' + jenis).show();
+                        $('#load_puk_' + jenis).hide();
+                        $('#modal-puk-' + jenis).modal('hide');
+                        $('#warning_puk_' + ket).show().fadeOut(5000);
+                        $('#msg_puk_' + ket).text("Berhasil menambahkan data data keperawatan...");
+                        $('#modal-puk-' + jenis).scrollTop(0);
+                    } else {
+                        $('#save_puk_' + jenis).show();
+                        $('#load_puk_' + jenis).hide();
+                        $('#warning_puk_' + jenis).show().fadeOut(5000);
+                        $('#msg_puk_' + jenis).text(res.msg);
+                        $('#modal-puk-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        })
+            });
+        }
     } else {
         $('#warning_puk_' + jenis).show().fadeOut(5000);
         $('#msg_puk_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -778,113 +780,115 @@ function savePengkajianKep(jenis, ket) {
 }
 
 function detailPengkajianKep(jenis) {
-    if (jenis != '') {
-        var head = "";
-        var body = "";
-        var totalSkor = 0;
-        var first = "";
-        var last = "";
-        var tgl = "";
-        var cekData = false;
+    if(!cekSession()){
+        if (jenis != '') {
+            var head = "";
+            var body = "";
+            var totalSkor = 0;
+            var first = "";
+            var last = "";
+            var tgl = "";
+            var cekData = false;
 
-        PengkajianUlangKeperawatanAction.getListPengkajianKeperawatan(idDetailCheckup, jenis, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    var pagi = "";
-                    var siang = "";
-                    var malam = "";
-                    if (item.pagi != null) {
-                        pagi = item.pagi;
-                    }
-                    if (item.siang != null) {
-                        siang = item.siang;
-                    }
-                    if (item.malam != null) {
-                        malam = item.malam;
-                    }
+            PengkajianUlangKeperawatanAction.getListPengkajianKeperawatan(idDetailCheckup, jenis, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        var pagi = "";
+                        var siang = "";
+                        var malam = "";
+                        if (item.pagi != null) {
+                            pagi = item.pagi;
+                        }
+                        if (item.siang != null) {
+                            siang = item.siang;
+                        }
+                        if (item.malam != null) {
+                            malam = item.malam;
+                        }
 
-                    if("Tanggal dan Jam" == item.parameter){
-                        body += '<tr>' +
-                            '<td>' + item.parameter +
-                            '<i id="delete_'+item.idPengkajianUlangKeperawatan+'_pagi" onclick="conPK(\'pagi\', \''+item.idPengkajianUlangKeperawatan+'\')" class="fa fa-trash hvr-grow" style="color: #00e765; margin-left: 10px"></i>' +
-                            '<i id="delete_'+item.idPengkajianUlangKeperawatan+'_siang" onclick="conPK(\'siang\', \''+item.idPengkajianUlangKeperawatan+'\')" class="fa fa-trash hvr-grow" style="color: #ff7700; margin-left: 10px"></i>' +
-                            '<i id="delete_'+item.idPengkajianUlangKeperawatan+'_malam" onclick="conPK(\'malam\', \''+item.idPengkajianUlangKeperawatan+'\')" class="fa fa-trash hvr-grow" style="color: #0d6aad; margin-left: 10px"></i>' +
-                            '</td>' +
-                            '<td>' + setItm(pagi) + '</td>' +
-                            '<td>' + setItm(siang) + '</td>' +
-                            '<td>' + setItm(malam) + '</td>' +
-                            '</tr>';
-                    }else{
-                        if(item.tipe == 'ttd'){
-                            var p1 = "";
-                            var p2 = "";
-                            var p3 = "";
-                            var s1 = "";
-                            var s2 = "";
-                            var s3 = "";
-                            var m1 = "";
-                            var m2 = "";
-                            var m3 = "";
-                            if(item.pagi != null && item.pagi != ''){
-                                p1 = '<img src="' + item.pagi.split("|")[0] + '" style="height: 100px">';
-                                p2 = '<p style="margin-top: -3px">'+item.pagi.split("|")[1]+'</p>';
-                                p3 = '<p style="margin-top: -10px">'+item.pagi.split("|")[2]+'</p>';
-                            }
-                            if(item.siang != null && item.siang != ''){
-                                s1 = '<img src="' + item.siang.split("|")[0] + '" style="height: 100px">';
-                                s2 = '<p style="margin-top: -3px">'+item.siang.split("|")[1]+'</p>';
-                                s3 = '<p style="margin-top: -10px">'+item.siang.split("|")[2]+'</p>';
-                            }
-                            if(item.malam != null && item.malam != ''){
-                                m1 = '<img src="' + item.malam.split("|")[0] + '" style="height: 100px">';
-                                m2 = '<p style="margin-top: -3px">'+item.malam.split("|")[1]+'</p>';
-                                m3 = '<p style="margin-top: -10px">'+item.malam.split("|")[2]+'</p>';
-                            }
+                        if("Tanggal dan Jam" == item.parameter){
                             body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td>' + p1+p2+p3 + '</td>' +
-                                '<td>' + s1+s2+s3 + '</td>' +
-                                '<td>' + m1+m2+m3 + '</td>' +
-                                '</tr>';
-                        }else{
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + item.parameter +
+                                '<i id="delete_'+item.idPengkajianUlangKeperawatan+'_pagi" onclick="conPK(\'pagi\', \''+item.idPengkajianUlangKeperawatan+'\')" class="fa fa-trash hvr-grow" style="color: #00e765; margin-left: 10px"></i>' +
+                                '<i id="delete_'+item.idPengkajianUlangKeperawatan+'_siang" onclick="conPK(\'siang\', \''+item.idPengkajianUlangKeperawatan+'\')" class="fa fa-trash hvr-grow" style="color: #ff7700; margin-left: 10px"></i>' +
+                                '<i id="delete_'+item.idPengkajianUlangKeperawatan+'_malam" onclick="conPK(\'malam\', \''+item.idPengkajianUlangKeperawatan+'\')" class="fa fa-trash hvr-grow" style="color: #0d6aad; margin-left: 10px"></i>' +
+                                '</td>' +
                                 '<td>' + setItm(pagi) + '</td>' +
                                 '<td>' + setItm(siang) + '</td>' +
                                 '<td>' + setItm(malam) + '</td>' +
                                 '</tr>';
+                        }else{
+                            if(item.tipe == 'ttd'){
+                                var p1 = "";
+                                var p2 = "";
+                                var p3 = "";
+                                var s1 = "";
+                                var s2 = "";
+                                var s3 = "";
+                                var m1 = "";
+                                var m2 = "";
+                                var m3 = "";
+                                if(item.pagi != null && item.pagi != ''){
+                                    p1 = '<img src="' + item.pagi.split("|")[0] + '" style="height: 100px">';
+                                    p2 = '<p style="margin-top: -3px">'+item.pagi.split("|")[1]+'</p>';
+                                    p3 = '<p style="margin-top: -10px">'+item.pagi.split("|")[2]+'</p>';
+                                }
+                                if(item.siang != null && item.siang != ''){
+                                    s1 = '<img src="' + item.siang.split("|")[0] + '" style="height: 100px">';
+                                    s2 = '<p style="margin-top: -3px">'+item.siang.split("|")[1]+'</p>';
+                                    s3 = '<p style="margin-top: -10px">'+item.siang.split("|")[2]+'</p>';
+                                }
+                                if(item.malam != null && item.malam != ''){
+                                    m1 = '<img src="' + item.malam.split("|")[0] + '" style="height: 100px">';
+                                    m2 = '<p style="margin-top: -3px">'+item.malam.split("|")[1]+'</p>';
+                                    m3 = '<p style="margin-top: -10px">'+item.malam.split("|")[2]+'</p>';
+                                }
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + p1+p2+p3 + '</td>' +
+                                    '<td>' + s1+s2+s3 + '</td>' +
+                                    '<td>' + m1+m2+m3 + '</td>' +
+                                    '</tr>';
+                            }else{
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + setItm(pagi) + '</td>' +
+                                    '<td>' + setItm(siang) + '</td>' +
+                                    '<td>' + setItm(malam) + '</td>' +
+                                    '</tr>';
+                            }
                         }
-                    }
 
-                    cekData = true;
-                    tgl = item.createdDate;
-                });
-            } else {
-                body = '<tr>' +
-                    '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
+                        cekData = true;
+                        tgl = item.createdDate;
+                    });
+                } else {
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
+                        '</tr>';
+                }
 
-            if (cekData) {
-                head = '<tr>' +
-                    '<td><b>Pengkajian</b></td>' +
-                    '<td width="17%"><b><i class="fa fa-circle" style="color: #00e765"></i> Pagi</b></td>' +
-                    '<td width="17%"><b><i class="fa fa-circle" style="color: #ff7700"></i> Siang</b></td>' +
-                    '<td width="17%"><b><i class="fa fa-circle" style="color: #0d6aad"></i> Malam</b></td>' +
-                    '</tr>';
-            }
+                if (cekData) {
+                    head = '<tr>' +
+                        '<td><b>Pengkajian</b></td>' +
+                        '<td width="17%"><b><i class="fa fa-circle" style="color: #00e765"></i> Pagi</b></td>' +
+                        '<td width="17%"><b><i class="fa fa-circle" style="color: #ff7700"></i> Siang</b></td>' +
+                        '<td width="17%"><b><i class="fa fa-circle" style="color: #0d6aad"></i> Malam</b></td>' +
+                        '</tr>';
+                }
 
-            var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead>' + head + '</thead>' +
-                '<tbody>' + first + body + last + '</tbody>' +
-                '</table>';
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tbody>' + first + body + last + '</tbody>' +
+                    '</table>';
 
-            var newRow = $('<tr id="del_puk_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-            newRow.insertAfter($('table').find('#row_puk_' + jenis));
-            var url = contextPath + '/pages/images/minus-allnew.png';
-            $('#btn_puk_' + jenis).attr('src', url);
-            $('#btn_puk_' + jenis).attr('onclick', 'delRowPengkajianKep(\'' + jenis + '\')');
-        });
+                var newRow = $('<tr id="del_puk_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_puk_' + jenis));
+                var url = contextPath + '/pages/images/minus-allnew.png';
+                $('#btn_puk_' + jenis).attr('src', url);
+                $('#btn_puk_' + jenis).attr('onclick', 'delRowPengkajianKep(\'' + jenis + '\')');
+            });
+        }
     }
 }
 
@@ -917,28 +921,30 @@ function conPK(jenis, idAsesmen){
 
 function delPK(jenis, idAsesmen) {
     $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startIconSpin('delete_'+idAsesmen+'_'+jenis);
-    dwr.engine.setAsync(true);
-    PengkajianUlangKeperawatanAction.saveDelete(jenis, idAsesmen, result, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopIconSpin('delete_'+idAsesmen+'_'+jenis);
-                $('#pengkajian').scrollTop(0);
-                $('#warning_puk_pengkajian').show().fadeOut(5000);
-                $('#msg_puk_pengkajian').text("Berhasil menghapus data...");
-            } else {
-                stopIconSpin('delete_'+idAsesmen+'_'+jenis);
-                $('#pengkajian').scrollTop(0);
-                $('#modal_warning').show().fadeOut(5000);
-                $('#msg_warning').text(res.msg);
-            }
-        }
-    });
+   if(!cekSession()){
+       var dataPasien = {
+           'no_checkup': noCheckup,
+           'id_detail_checkup': idDetailCheckup,
+           'id_pasien': idPasien,
+           'id_rm': tempidRm
+       }
+       var result = JSON.stringify(dataPasien);
+       startIconSpin('delete_'+idAsesmen+'_'+jenis);
+       dwr.engine.setAsync(true);
+       PengkajianUlangKeperawatanAction.saveDelete(jenis, idAsesmen, result, {
+           callback: function (res) {
+               if (res.status == "success") {
+                   stopIconSpin('delete_'+idAsesmen+'_'+jenis);
+                   $('#pengkajian').scrollTop(0);
+                   $('#warning_puk_pengkajian').show().fadeOut(5000);
+                   $('#msg_puk_pengkajian').text("Berhasil menghapus data...");
+               } else {
+                   stopIconSpin('delete_'+idAsesmen+'_'+jenis);
+                   $('#pengkajian').scrollTop(0);
+                   $('#modal_warning').show().fadeOut(5000);
+                   $('#msg_warning').text(res.msg);
+               }
+           }
+       });
+   }
 }

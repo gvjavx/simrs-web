@@ -45,6 +45,9 @@
         <property name="skor">
             <column name="skor"/>
         </property>
+        <property name="tipe">
+            <column name="tipe"/>
+        </property>
 
     </class>
 </hibernate-mapping>

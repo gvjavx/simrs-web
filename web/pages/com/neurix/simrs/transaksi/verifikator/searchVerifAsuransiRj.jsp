@@ -440,295 +440,303 @@
     }
 
     function detail(noCheckup, idDetailCheckup, flagClose) {
-        $('#body_tindakan').html('');
-        $('#body_lab').html('');
-        $('#body_resep').html('');
-        startSpinner('spin_', idDetailCheckup);
-        dwr.engine.setAsync(true);
-        CheckupAction.listDataPasien(idDetailCheckup, {callback: function (res) {
-                if (res.idPasien != null) {
-                    stopSpinner('spin_', idDetailCheckup);
-                    dwr.engine.setAsync(false);
-                    jenisKelamin = res.jenisKelamin;
-                    listTindakan(noCheckup);
-                    listResepPasien(noCheckup);
-                    listLab(noCheckup);
-                    var jk = "";
-                    var alamat = res.namaDesa + ", " + res.namaKecamatan + ", " + res.namaKota;
-                    var diagnosa = res.diagnosa + ", " + res.namaDiagnosa;
-                    if (res.jenisKelamin == "L") {
-                        jk = "Laki-Laki";
-                    } else {
-                        jk = "Perempuan";
-                    }
+        if(!cekSession()){
+            $('#body_tindakan').html('');
+            $('#body_lab').html('');
+            $('#body_resep').html('');
+            startSpinner('spin_', idDetailCheckup);
+            dwr.engine.setAsync(true);
+            CheckupAction.listDataPasien(idDetailCheckup, {callback: function (res) {
+                    if (res.idPasien != null) {
+                        stopSpinner('spin_', idDetailCheckup);
+                        dwr.engine.setAsync(false);
+                        jenisKelamin = res.jenisKelamin;
+                        listTindakan(noCheckup);
+                        listResepPasien(noCheckup);
+                        listLab(noCheckup);
+                        var jk = "";
+                        var alamat = res.namaDesa + ", " + res.namaKecamatan + ", " + res.namaKota;
+                        var diagnosa = res.diagnosa + ", " + res.namaDiagnosa;
+                        if (res.jenisKelamin == "L") {
+                            jk = "Laki-Laki";
+                        } else {
+                            jk = "Perempuan";
+                        }
 
-                    $('#no_rm').html(res.idPasien);
-                    $('#no_checkup').html(noCheckup);
-                    $('#nik').html(res.noKtp);
-                    $('#nama').html(res.nama);
-                    $('#jenis_kelamin').html(jk);
-                    $('#tgl').html(res.tempatLahir + ", " + converterDate(new Date(res.tglLahir)));
-                    $('#alamat').html(alamat);
-                    $('#poli').html(res.namaPelayanan);
-                    $('#jenis_pasien').html(res.statusPeriksaName);
-                    $('#diagnosa').html(diagnosa);
-                    $('#h_id_pasien').val(res.idPasien);
-                    $('#h_id_detail_pasien').val(res.idDetailCheckup);
-                    $('#h_id_pelayanan').val(res.idPelayanan);
-                    $('#h_metode_bayar').val(res.metodePembayaran);
-                    $('#h_jenis_pasien').val(res.idJenisPeriksaPasien);
-                    $('#h_no_checkup').val(noCheckup);
-                    setLabelJenisPasien('jenis_pasien', res.idJenisPeriksaPasien);
-                    $('#save_fin').show();
-                    $('#load_fin').hide();
-                    if(res.flagCloseTransaksi == "Y"){
-                        $('#form-close').hide();
-                        $('#form-cover').show();
-                        $('#save_fin').html("<i class='fa fa-check'></i> Update Cover");
-                        $('#save_fin').attr('onclick', 'confirm()');
-                        listTindakanApprove(noCheckup, idDetailCheckup, res.idJenisPeriksaPasien);
-                    }else{
-                        $('#form-close').show();
-                        $('#form-cover').hide();
-                        $('#save_fin').html("<i class='fa fa-check'></i> Verifikasi");
-                        $('#save_fin').attr('onclick', 'confirmClose()');
+                        $('#no_rm').html(res.idPasien);
+                        $('#no_checkup').html(noCheckup);
+                        $('#nik').html(res.noKtp);
+                        $('#nama').html(res.nama);
+                        $('#jenis_kelamin').html(jk);
+                        $('#tgl').html(res.tempatLahir + ", " + converterDate(new Date(res.tglLahir)));
+                        $('#alamat').html(alamat);
+                        $('#poli').html(res.namaPelayanan);
+                        $('#jenis_pasien').html(res.statusPeriksaName);
+                        $('#diagnosa').html(diagnosa);
+                        $('#h_id_pasien').val(res.idPasien);
+                        $('#h_id_detail_pasien').val(res.idDetailCheckup);
+                        $('#h_id_pelayanan').val(res.idPelayanan);
+                        $('#h_metode_bayar').val(res.metodePembayaran);
+                        $('#h_jenis_pasien').val(res.idJenisPeriksaPasien);
+                        $('#h_no_checkup').val(noCheckup);
+                        setLabelJenisPasien('jenis_pasien', res.idJenisPeriksaPasien);
+                        $('#save_fin').show();
+                        $('#load_fin').hide();
+                        if(res.flagCloseTransaksi == "Y"){
+                            $('#form-close').hide();
+                            $('#form-cover').show();
+                            $('#save_fin').html("<i class='fa fa-check'></i> Update Cover");
+                            $('#save_fin').attr('onclick', 'confirm()');
+                            listTindakanApprove(noCheckup, idDetailCheckup, res.idJenisPeriksaPasien);
+                        }else{
+                            $('#form-close').show();
+                            $('#form-cover').hide();
+                            $('#save_fin').html("<i class='fa fa-check'></i> Verifikasi");
+                            $('#save_fin').attr('onclick', 'confirmClose()');
+                        }
+                        $('#modal-detail').modal({show: true, backdrop: 'static'});
                     }
-                    $('#modal-detail').modal({show: true, backdrop: 'static'});
                 }
-            }
-        });
+            });
+        }
     }
 
     function listTindakan(noCheckup) {
+        if(!cekSession()){
+            var table = "";
+            var data = [];
+            var trfTtl = 0;
+            TindakanRawatAction.getListTindakanRawat(noCheckup, function (response) {
+                if (response.length > 0) {
+                    $.each(response, function (i, item) {
+                        var tanggal = item.createdDate;
+                        var dateFormat = converterDate(new Date(tanggal));
+                        var tarif = "-";
+                        var tarifTotal = "-";
+                        var trfTotal = 0;
+                        var qtyTotal = 0;
+                        var perawat = "";
+                        var btn = '';
 
-        var table = "";
-        var data = [];
-        var trfTtl = 0;
-        TindakanRawatAction.getListTindakanRawat(noCheckup, function (response) {
-            if (response.length > 0) {
-                $.each(response, function (i, item) {
-                    var tanggal = item.createdDate;
-                    var dateFormat = converterDate(new Date(tanggal));
-                    var tarif = "-";
-                    var tarifTotal = "-";
-                    var trfTotal = 0;
-                    var qtyTotal = 0;
-                    var perawat = "";
-                    var btn = '';
+                        if (item.tarif != null) {
+                            tarif = formatRupiah(item.tarif);
+                            trfTotal += item.tarif;
+                        }
+                        if (item.tarifTotal != null) {
+                            tarifTotal = formatRupiah(item.tarifTotal);
+                            trfTtl += item.tarifTotal;
+                        }
+                        if (item.qty != null) {
+                            qtyTotal += item.qty;
+                        }
+                        if (item.idPerawat != null) {
+                            perawat = item.idPerawat;
+                        }
 
-                    if (item.tarif != null) {
-                        tarif = formatRupiah(item.tarif);
-                        trfTotal += item.tarif;
+                        if ("Y" == item.approveFlag) {
+                            btn = "";
+                        }
+
+                        table += "<tr>" +
+                            "<td>" + dateFormat + "</td>" +
+                            "<td>" + item.namaTindakan + "</td>" +
+                            "<td align='right'>" + tarif + "</td>" +
+                            "<td align='center'>" + item.qty + "</td>" +
+                            "<td align='right'>" + tarifTotal + "</td>" +
+                            "</tr>";
+
+                    });
+
+                    if(table != ''){
+                        table = table + "<tr>" +
+                            "<td colspan='4'>Total</td>" +
+                            "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
+                            "</tr>";
+                        $('#body_tindakan').html(table);
                     }
-                    if (item.tarifTotal != null) {
-                        tarifTotal = formatRupiah(item.tarifTotal);
-                        trfTtl += item.tarifTotal;
-                    }
-                    if (item.qty != null) {
-                        qtyTotal += item.qty;
-                    }
-                    if (item.idPerawat != null) {
-                        perawat = item.idPerawat;
-                    }
-
-                    if ("Y" == item.approveFlag) {
-                        btn = "";
-                    }
-
-                    table += "<tr>" +
-                        "<td>" + dateFormat + "</td>" +
-                        "<td>" + item.namaTindakan + "</td>" +
-                        "<td align='right'>" + tarif + "</td>" +
-                        "<td align='center'>" + item.qty + "</td>" +
-                        "<td align='right'>" + tarifTotal + "</td>" +
-                        "</tr>";
-
-                });
-
-                if(table != ''){
-                    table = table + "<tr>" +
-                        "<td colspan='4'>Total</td>" +
-                        "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
-                        "</tr>";
-                    $('#body_tindakan').html(table);
                 }
-            }
-        });
+            });
+        }
     }
 
     function listResepPasien(noCheckup) {
+        if(!cekSession()){
+            var table = "";
+            var data = [];
+            PermintaanResepAction.getListRespPasien(noCheckup, function (response) {
+                if (response.length > 0) {
+                    $.each(response, function (i, item) {
+                        var idResep = "";
+                        var tanggal = item.createdDate;
+                        var dateFormat = converterDate(new Date(tanggal));
+                        var status = "";
 
-        var table = "";
-        var data = [];
-        PermintaanResepAction.getListRespPasien(noCheckup, function (response) {
-            if (response.length > 0) {
-                $.each(response, function (i, item) {
-                    var idResep = "";
-                    var tanggal = item.createdDate;
-                    var dateFormat = converterDate(new Date(tanggal));
-                    var status = "";
-
-                    if(item.status == "0"){
-                        status = "Antrian";
-                    }else if(item.status == "1"){
-                        status = "Proses";
-                    }else if(item.status == "3"){
-                        status = "Selesai";
-                    }else{
-                        status = "Tidak Diketahui";
-                    }
-                    if (item.idPermintaanResep != null) {
-                        idResep = item.idPermintaanResep;
-                    }
+                        if(item.status == "0"){
+                            status = "Antrian";
+                        }else if(item.status == "1"){
+                            status = "Proses";
+                        }else if(item.status == "3"){
+                            status = "Selesai";
+                        }else{
+                            status = "Tidak Diketahui";
+                        }
+                        if (item.idPermintaanResep != null) {
+                            idResep = item.idPermintaanResep;
+                        }
 
 
-                    var url = contextPath + '/pages/images/icons8-plus-25.png';
-                    table += '<tr id="row_'+idResep+'">' +
-                        "<td>" + dateFormat + "</td>" +
-                        "<td>" + idResep + "</td>" +
-                        "<td>" + status + "</td>" +
-                        "<td align='center' width='10%'>" +
-                        '<img src="'+url+'" onclick="detailTindakan(\''+idResep+'\', \'resep\')" class="hvr-grow" id="btn_'+idResep+'" style="cursor: pointer">' +
-                        "</td>" +
-                        "</tr>"
-                });
-                $('#body_resep').html(table);
-            }
-        });
+                        var url = contextPath + '/pages/images/icons8-plus-25.png';
+                        table += '<tr id="row_'+idResep+'">' +
+                            "<td>" + dateFormat + "</td>" +
+                            "<td>" + idResep + "</td>" +
+                            "<td>" + status + "</td>" +
+                            "<td align='center' width='10%'>" +
+                            '<img src="'+url+'" onclick="detailTindakan(\''+idResep+'\', \'resep\')" class="hvr-grow" id="btn_'+idResep+'" style="cursor: pointer">' +
+                            "</td>" +
+                            "</tr>"
+                    });
+                    $('#body_resep').html(table);
+                }
+            });
+        }
     }
 
     function listLab(noCheckup) {
-        var table = "";
-        var data = [];
-        PeriksaLabAction.getListLab(noCheckup, function (response) {
-            if (response.length > 0) {
-                $.each(response, function (i, item) {
-                    var pemeriksaan = "-";
-                    var status = "-";
-                    var lab = "-";
-                    var tanggal = item.createdDate;
-                    var dateFormat = converterDate(new Date(tanggal));
-                    var btn = '';
-                    var tipe = "";
+        if(!cekSession()){
+            var table = "";
+            var data = [];
+            PeriksaLabAction.getListLab(noCheckup, function (response) {
+                if (response.length > 0) {
+                    $.each(response, function (i, item) {
+                        var pemeriksaan = "-";
+                        var status = "-";
+                        var lab = "-";
+                        var tanggal = item.createdDate;
+                        var dateFormat = converterDate(new Date(tanggal));
+                        var btn = '';
+                        var tipe = "";
 
-                    if (item.kategori == "radiologi") {
-                        tipe = "radiologi";
-                    } else {
-                        tipe = "laboratorium";
-                    }
-
-                    if (item.idLab != null) {
-                        pemeriksaan = item.idLab;
-                    }
-                    if (item.statusPeriksa != null) {
-                        if(item.statusPeriksa == "0"){
-                            status = "Antrian";
-                        }else if(item.statusPeriksa == "1"){
-                            status = "Proses";
-                        }else{
-                            status = "Selesai";
+                        if (item.kategori == "radiologi") {
+                            tipe = "radiologi";
+                        } else {
+                            tipe = "laboratorium";
                         }
-                    }
-                    if (item.labName != null) {
-                        lab = item.labName;
-                    }
 
-                    var url = contextPath + '/pages/images/icons8-plus-25.png';
+                        if (item.idLab != null) {
+                            pemeriksaan = item.idLab;
+                        }
+                        if (item.statusPeriksa != null) {
+                            if(item.statusPeriksa == "0"){
+                                status = "Antrian";
+                            }else if(item.statusPeriksa == "1"){
+                                status = "Proses";
+                            }else{
+                                status = "Selesai";
+                            }
+                        }
+                        if (item.labName != null) {
+                            lab = item.labName;
+                        }
 
-                    table += '<tr id="row_'+item.idPeriksaLab+'">' +
-                        "<td>" + dateFormat + "</td>" +
-                        "<td>" + lab + "</td>" +
-                        "<td>" + status + "</td>" +
-                        "<td>" + item.kategoriLabName + "</td>" +
-                        "<td align='center' width='10%'>" +
-                        '<img src="'+url+'" onclick="detailTindakan(\''+item.idPeriksaLab+'\', \''+tipe+'\')" class="hvr-grow" id="btn_'+item.idPeriksaLab+'" style="cursor: pointer">'
-                        +"</td>" +
-                        "</tr>";
+                        var url = contextPath + '/pages/images/icons8-plus-25.png';
 
-                });
-                $('#body_penunjang_medis').html(table);
-            }
-        });
+                        table += '<tr id="row_'+item.idPeriksaLab+'">' +
+                            "<td>" + dateFormat + "</td>" +
+                            "<td>" + lab + "</td>" +
+                            "<td>" + status + "</td>" +
+                            "<td>" + item.kategoriLabName + "</td>" +
+                            "<td align='center' width='10%'>" +
+                            '<img src="'+url+'" onclick="detailTindakan(\''+item.idPeriksaLab+'\', \''+tipe+'\')" class="hvr-grow" id="btn_'+item.idPeriksaLab+'" style="cursor: pointer">'
+                            +"</td>" +
+                            "</tr>";
+
+                    });
+                    $('#body_penunjang_medis').html(table);
+                }
+            });
+        }
     }
 
     function detailTindakan(idTindakan, keterangan){
-        if (idTindakan && keterangan != '') {
-            var head = "";
-            var body = "";
-            CheckupAction.getListDetailHistoryPasien(idTindakan, keterangan, function (res) {
-                if (res.length > 0) {
-                    $.each(res, function (i, item) {
-                        if(keterangan == "radiologi"){
-                            var acuan = cekDataNull(item.ketAcuanL);
-                            if(jenisKelamin == "P"){
-                                acuan = cekDataNull(item.ketAcuanP);
+        if(!cekSession()){
+            if (idTindakan && keterangan != '') {
+                var head = "";
+                var body = "";
+                CheckupAction.getListDetailHistoryPasien(idTindakan, keterangan, function (res) {
+                    if (res.length > 0) {
+                        $.each(res, function (i, item) {
+                            if(keterangan == "radiologi"){
+                                var acuan = cekDataNull(item.ketAcuanL);
+                                if(jenisKelamin == "P"){
+                                    acuan = cekDataNull(item.ketAcuanP);
+                                }
+                                body += '<tr>' +
+                                    '<td>'+cekDataNull(item.namaDetailLab)+'</td>' +
+                                    '<td>'+cekDataNull(item.satuan)+'</td>' +
+                                    '<td>'+cekDataNull(acuan)+'</td>' +
+                                    '<td>'+cekDataNull(item.kesimpulan)+'</td>' +
+                                    '</tr>';
                             }
-                            body += '<tr>' +
-                                '<td>'+cekDataNull(item.namaDetailLab)+'</td>' +
-                                '<td>'+cekDataNull(item.satuan)+'</td>' +
-                                '<td>'+cekDataNull(acuan)+'</td>' +
-                                '<td>'+cekDataNull(item.kesimpulan)+'</td>' +
-                                '</tr>';
-                        }
-                        if(keterangan == "laboratorium"){
-                            var acuan = cekDataNull(item.ketAcuanL);
-                            if(jenisKelamin == "P"){
-                                acuan = cekDataNull(item.ketAcuanP);
+                            if(keterangan == "laboratorium"){
+                                var acuan = cekDataNull(item.ketAcuanL);
+                                if(jenisKelamin == "P"){
+                                    acuan = cekDataNull(item.ketAcuanP);
+                                }
+                                body += '<tr>' +
+                                    '<td>'+cekDataNull(item.namaDetailLab)+'</td>' +
+                                    '<td>'+cekDataNull(item.satuan)+'</td>' +
+                                    '<td>'+cekDataNull(acuan)+'</td>' +
+                                    '<td>'+cekDataNull(item.kesimpulan)+'</td>' +
+                                    '<td>'+cekDataNull(item.keterangan)+'</td>' +
+                                    '</tr>';
                             }
-                            body += '<tr>' +
-                                '<td>'+cekDataNull(item.namaDetailLab)+'</td>' +
-                                '<td>'+cekDataNull(item.satuan)+'</td>' +
-                                '<td>'+cekDataNull(acuan)+'</td>' +
-                                '<td>'+cekDataNull(item.kesimpulan)+'</td>' +
-                                '<td>'+cekDataNull(item.keterangan)+'</td>' +
-                                '</tr>';
-                        }
-                        if(keterangan == "resep"){
-                            body += '<tr>' +
-                                '<td>'+cekDataNull(item.namaObat)+'</td>' +
-                                '<td>'+cekDataNull(item.qty)+' '+cekDataNull(item.satuan)+'</td>' +
-                                '<td>'+cekDataNull(item.keterangan)+'</td>' +
-                                '</tr>';
-                        }
-                    });
-                }
+                            if(keterangan == "resep"){
+                                body += '<tr>' +
+                                    '<td>'+cekDataNull(item.namaObat)+'</td>' +
+                                    '<td>'+cekDataNull(item.qty)+' '+cekDataNull(item.satuan)+'</td>' +
+                                    '<td>'+cekDataNull(item.keterangan)+'</td>' +
+                                    '</tr>';
+                            }
+                        });
+                    }
 
-                if(keterangan == "radiologi"){
-                    head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
-                        '<td>Pemeriksaan</td>' +
-                        '<td>Satuan</td>' +
-                        '<td>Keterangan Acuan</td>' +
-                        '<td>Hasil</td>' +
-                        '</tr>';
-                }
-                if(keterangan == "laboratorium"){
-                    head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
-                        '<td>Pemeriksaan</td>' +
-                        '<td>Satuan</td>' +
-                        '<td>Keterangan Acuan</td>' +
-                        '<td>Hasil</td>' +
-                        '<td>Keterangan</td>' +
-                        '</tr>';
-                }
-                if(keterangan == "resep"){
-                    head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
-                        '<td>Nama Obat</td>' +
-                        '<td>Qty</td>' +
-                        '<td>Keterangan</td>' +
-                        '</tr>';
-                }
+                    if(keterangan == "radiologi"){
+                        head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                            '<td>Pemeriksaan</td>' +
+                            '<td>Satuan</td>' +
+                            '<td>Keterangan Acuan</td>' +
+                            '<td>Hasil</td>' +
+                            '</tr>';
+                    }
+                    if(keterangan == "laboratorium"){
+                        head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                            '<td>Pemeriksaan</td>' +
+                            '<td>Satuan</td>' +
+                            '<td>Keterangan Acuan</td>' +
+                            '<td>Hasil</td>' +
+                            '<td>Keterangan</td>' +
+                            '</tr>';
+                    }
+                    if(keterangan == "resep"){
+                        head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                            '<td>Nama Obat</td>' +
+                            '<td>Qty</td>' +
+                            '<td>Keterangan</td>' +
+                            '</tr>';
+                    }
 
-                var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                    '<thead>' + head + '</thead>' +
-                    '<tbody>' + body + '</tbody>' +
-                    '</table>';
+                    var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                        '<thead>' + head + '</thead>' +
+                        '<tbody>' + body + '</tbody>' +
+                        '</table>';
 
-                var newRow = $('<tr id="del_' + idTindakan + '"><td colspan="6">' + table + '</td></tr>');
-                newRow.insertAfter($('table').find('#row_' + idTindakan));
-                var url = contextPath+'/pages/images/minus-allnew.png';
-                $('#btn_' + idTindakan).attr('src', url);
-                $('#btn_' + idTindakan).attr('onclick', 'delDetail(\''+idTindakan+'\', \''+keterangan+'\')');
-            });
+                    var newRow = $('<tr id="del_' + idTindakan + '"><td colspan="6">' + table + '</td></tr>');
+                    newRow.insertAfter($('table').find('#row_' + idTindakan));
+                    var url = contextPath+'/pages/images/minus-allnew.png';
+                    $('#btn_' + idTindakan).attr('src', url);
+                    $('#btn_' + idTindakan).attr('onclick', 'delDetail(\''+idTindakan+'\', \''+keterangan+'\')');
+                });
+            }
         }
     }
 
@@ -754,130 +762,131 @@
 
     function closeTransaksi(){
         $('#modal-confirm-dialog').modal('hide');
-        var data = "";
-        var noCheckup = $('#h_no_checkup').val();
-        var idPasien = $('#h_id_pasien').val();
-        var idPelayanan = $('#h_id_pelayanan').val();
-        var metodePembayaran = $('#h_metode_bayar').val();
-        var jenisPasien = $('#h_jenis_pasien').val();
-        var idDetailCheckup = $('#h_id_detail_pasien').val();
-        var cekResep = $('#tabel_resep').tableToJSON();
-        var isResep = "N";
-        if(cekResep.length > 0){
-            isResep = "Y";
-        }
+        if(!cekSession()){
+            var data = "";
+            var noCheckup = $('#h_no_checkup').val();
+            var idPasien = $('#h_id_pasien').val();
+            var idPelayanan = $('#h_id_pelayanan').val();
+            var metodePembayaran = $('#h_metode_bayar').val();
+            var jenisPasien = $('#h_jenis_pasien').val();
+            var idDetailCheckup = $('#h_id_detail_pasien').val();
+            var cekResep = $('#tabel_resep').tableToJSON();
+            var isResep = "N";
+            if(cekResep.length > 0){
+                isResep = "Y";
+            }
 
-        data = {
-            'no_checkup':noCheckup,
-            'id_pasien':idPasien,
-            'id_detail_checkup': idDetailCheckup,
-            'jenis_pasien': jenisPasien,
-            'id_pelayanan': idPelayanan,
-            'metode_bayar': metodePembayaran,
-            'is_resep':isResep
-        }
-        var result = JSON.stringify(data);
-        $('#save_fin').hide();
-        $('#load_fin').show();
-        dwr.engine.setAsync(true);
-        CheckupDetailAction.closeTraksaksiPasien(result,
-            {callback: function (res) {
-                    if (res.status == "success") {
-                        $('#form-close').hide();
-                        $('#form-cover').show();
-                        $('#save_fin').show();
-                        $('#load_fin').hide();
-                        $('#save_fin').html("<i class='fa fa-check'></i> Update Cover");
-                        $('#save_fin').attr('onclick', 'confirm()');
-                        $('#top_up').scrollTop(0);
-                        $('#success').show().fadeOut(5000);
-                        $('#msg_suc').text("Traksaksi berhasil di close, silahkan update cover asuransi dibawah...!");
-                        listTindakanApprove(noCheckup, idDetailCheckup, jenisPasien);
-                        // $('#modal-detail').modal('hide');
-                        // $('#info_dialog').dialog('open');
-                        // $('body').scrollTop(0);
-                    } else {
-                        $('#save_fin').show();
-                        $('#load_fin').hide();
-                        $('#warning').show().fadeOut(5000);
-                        $('#msg_war').text(res.msg);
-                        $('#top_up').scrollTop(0);
+            data = {
+                'no_checkup':noCheckup,
+                'id_pasien':idPasien,
+                'id_detail_checkup': idDetailCheckup,
+                'jenis_pasien': jenisPasien,
+                'id_pelayanan': idPelayanan,
+                'metode_bayar': metodePembayaran,
+                'is_resep':isResep
+            }
+            var result = JSON.stringify(data);
+            $('#save_fin').hide();
+            $('#load_fin').show();
+            dwr.engine.setAsync(true);
+            CheckupDetailAction.closeTraksaksiPasien(result,
+                {callback: function (res) {
+                        if (res.status == "success") {
+                            $('#form-close').hide();
+                            $('#form-cover').show();
+                            $('#save_fin').show();
+                            $('#load_fin').hide();
+                            $('#save_fin').html("<i class='fa fa-check'></i> Update Cover");
+                            $('#save_fin').attr('onclick', 'confirm()');
+                            $('#top_up').scrollTop(0);
+                            $('#success').show().fadeOut(5000);
+                            $('#msg_suc').text("Traksaksi berhasil di close, silahkan update cover asuransi dibawah...!");
+                            listTindakanApprove(noCheckup, idDetailCheckup, jenisPasien);
+                        } else {
+                            $('#save_fin').show();
+                            $('#load_fin').hide();
+                            $('#warning').show().fadeOut(5000);
+                            $('#msg_war').text(res.msg);
+                            $('#top_up').scrollTop(0);
+                        }
                     }
-                }
-            });
+                });
+        }
     }
 
     function listTindakanApprove(noCheckup, idDetailCheckup, jenis) {
-        var table = "";
-        var data = [];
-        var trfTtl = 0;
-        $('#body_tindakan_cover').html('');
-        $('#loading_page').show();
-        dwr.engine.setAsync(true);
-        VerifikatorAction.getListTindakanRawat(noCheckup, idDetailCheckup, jenis,
-            {callback: function (response) {
-            if (response.length > 0) {
-                $('#loading_page').hide();
-                $.each(response, function (i, item) {
-                    var tanggal = item.createdDate;
-                    var dateFormat = converterDate(new Date(tanggal));
-                    var tarif = "-";
-                    var tarifTotal = "-";
-                    var trfTotal = 0;
-                    var qtyTotal = 0;
-                    var perawat = "";
-                    var btn = '';
+        if(!cekSession()){
+            var table = "";
+            var data = [];
+            var trfTtl = 0;
+            $('#body_tindakan_cover').html('');
+            $('#loading_page').show();
+            dwr.engine.setAsync(true);
+            VerifikatorAction.getListTindakanRawat(noCheckup, idDetailCheckup, jenis,
+                {callback: function (response) {
+                        if (response.length > 0) {
+                            $('#loading_page').hide();
+                            $.each(response, function (i, item) {
+                                var tanggal = item.createdDate;
+                                var dateFormat = converterDate(new Date(tanggal));
+                                var tarif = "-";
+                                var tarifTotal = "-";
+                                var trfTotal = 0;
+                                var qtyTotal = 0;
+                                var perawat = "";
+                                var btn = '';
 
-                    if (item.totalTarif != null) {
-                        tarif = formatRupiah(item.totalTarif);
-                        trfTtl += item.totalTarif;
+                                if (item.totalTarif != null) {
+                                    tarif = formatRupiah(item.totalTarif);
+                                    trfTtl += item.totalTarif;
+                                }
+
+                                var select = '<select style="width: 100%" onchange="setCoverBiaya(this.value,\''+item.totalTarif+'\')" class="form-control select2" id="cover_'+i+'">' +
+                                    '<option value="asuransi">Ditanggung</option>'+
+                                    '<option value="umum">Tidak Ditanggung</option>'+
+                                    '</select>';
+
+                                table += "<tr>" +
+                                    "<td>" +'<input type="hidden" value="'+item.idRiwayatTindakan+'" id="h_id_riwayat_tindakan_'+i+'">' +item.stTglTindakan + "</td>" +
+                                    "<td>" + item.namaTindakan + "</td>" +
+                                    "<td align='right'>" + tarif + "</td>" +
+                                    "<td>" + select + "</td>" +
+                                    "</tr>";
+
+                            });
+
+                            if(table != ''){
+                                table = table + "<tr style='font-weight: bold'>" +
+                                    "<td colspan='2'>Total Jasa</td>" +
+                                    "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
+                                    "<td></td>" +
+                                    "</tr>" +
+                                    "<tr style='font-weight: bold'>" +
+                                    "<td colspan='2'>Total Cover Biaya</td>" +
+                                    "<td>" +
+                                    '<input type="hidden" value="'+trfTtl+'" id="h_cover_biaya">' +
+                                    '<input style="text-align: right" class="form-control" id="cover_biaya" value="'+formatRupiah(trfTtl)+'">' +
+                                    "</td>" +
+                                    "<td></td>" +
+                                    "</tr>"+
+                                    "<tr style='font-weight: bold'>" +
+                                    "<td colspan='2'>Total Biaya Yang Dibayar Pasien</td>" +
+                                    "<td>" +
+                                    '<input type="hidden" id="h_pasien_bayar" value="0">' +
+                                    '<input style="text-align: right" class="form-control" id="pasien_bayar" value="0">' +
+                                    "</td>" +
+                                    "<td></td>" +
+                                    "</tr>";
+                                $('#body_tindakan_cover').html(table);
+                            }
+                        }
+                        var cek = $('.select2').length;
+                        if(cek > 0){
+                            $('.select2').select2();
+                        }
                     }
-
-                    var select = '<select style="width: 100%" onchange="setCoverBiaya(this.value,\''+item.totalTarif+'\')" class="form-control select2" id="cover_'+i+'">' +
-                            '<option value="asuransi">Ditanggung</option>'+
-                        '<option value="umum">Tidak Ditanggung</option>'+
-                        '</select>';
-
-                    table += "<tr>" +
-                        "<td>" +'<input type="hidden" value="'+item.idRiwayatTindakan+'" id="h_id_riwayat_tindakan_'+i+'">' +item.stTglTindakan + "</td>" +
-                        "<td>" + item.namaTindakan + "</td>" +
-                        "<td align='right'>" + tarif + "</td>" +
-                        "<td>" + select + "</td>" +
-                        "</tr>";
-
                 });
-
-                if(table != ''){
-                    table = table + "<tr style='font-weight: bold'>" +
-                        "<td colspan='2'>Total Jasa</td>" +
-                        "<td align='right'>" + formatRupiah(trfTtl) + "</td>" +
-                        "<td></td>" +
-                        "</tr>" +
-                        "<tr style='font-weight: bold'>" +
-                        "<td colspan='2'>Total Cover Biaya</td>" +
-                        "<td>" +
-                        '<input type="hidden" value="'+trfTtl+'" id="h_cover_biaya">' +
-                        '<input style="text-align: right" class="form-control" id="cover_biaya" value="'+formatRupiah(trfTtl)+'">' +
-                        "</td>" +
-                        "<td></td>" +
-                        "</tr>"+
-                        "<tr style='font-weight: bold'>" +
-                        "<td colspan='2'>Total Biaya Yang Dibayar Pasien</td>" +
-                        "<td>" +
-                        '<input type="hidden" id="h_pasien_bayar" value="0">' +
-                        '<input style="text-align: right" class="form-control" id="pasien_bayar" value="0">' +
-                        "</td>" +
-                        "<td></td>" +
-                        "</tr>";
-                    $('#body_tindakan_cover').html(table);
-                }
-            }
-            var cek = $('.select2').length;
-            if(cek > 0){
-                $('.select2').select2();
-            }
-            }
-        });
+        }
     }
 
     function setCoverBiaya(value, tarif) {
@@ -925,61 +934,63 @@
 
     function closeTransaksiCover(){
         $('#modal-confirm-dialog').modal('hide');
-        var data = [];
-        var dataDetail = "";
-        var noCheckup = $('#h_no_checkup').val();
-        var idPasien = $('#h_id_pasien').val();
-        var idPelayanan = $('#h_id_pelayanan').val();
-        var idDetailCheckup = $('#h_id_detail_pasien').val();
-        var coverBiaya = $('#h_cover_biaya').val();
-        var pasienBayar = $('#h_pasien_bayar').val();
-        var dataTable = $('#tbl_tindakan').tableToJSON();
-        var cekResep = $('#tabel_resep').tableToJSON();
-        var isResep = "N";
-        if(cekResep.length > 0){
-            isResep = "Y";
-        }
-
-        for (var i = 0; i < dataTable.length - 3; i++){
-            var idRiwayat = $('#h_id_riwayat_tindakan_'+i).val();
-            var jenis = $('#cover_'+i).val();
-            data.push({
-                'id_riwayat_tindakan': idRiwayat,
-                'jenis_pasien':jenis
-            });
-        }
-
-        dataDetail = {
-            'no_checkup':noCheckup,
-            'id_pasien':idPasien,
-            'id_detail_checkup': idDetailCheckup,
-            'id_pelayanan': idPelayanan,
-            'ditanggung_pasien': pasienBayar,
-            'cover_biaya': coverBiaya,
-            'is_resep':isResep
-        }
-        var result1 = JSON.stringify(data);
-        var result2 = JSON.stringify(dataDetail);
-        $('#save_fin').hide();
-        $('#load_fin').show();
-        dwr.engine.setAsync(true);
-        VerifikatorAction.updateCoverAsuransi(result1, result2,
-            {callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_fin').show();
-                    $('#load_fin').hide();
-                    $('#modal-detail').modal('hide');
-                    $('#info_dialog').dialog('open');
-                    $('body').scrollTop(0);
-                } else {
-                    $('#save_fin').show();
-                    $('#load_fin').hide();
-                    $('#warning').show().fadeOut(5000);
-                    $('#msg_war').text(res.msg);
-                    $('#top_up').scrollTop(0);
-                }
+        if(!cekSession()){
+            var data = [];
+            var dataDetail = "";
+            var noCheckup = $('#h_no_checkup').val();
+            var idPasien = $('#h_id_pasien').val();
+            var idPelayanan = $('#h_id_pelayanan').val();
+            var idDetailCheckup = $('#h_id_detail_pasien').val();
+            var coverBiaya = $('#h_cover_biaya').val();
+            var pasienBayar = $('#h_pasien_bayar').val();
+            var dataTable = $('#tbl_tindakan').tableToJSON();
+            var cekResep = $('#tabel_resep').tableToJSON();
+            var isResep = "N";
+            if(cekResep.length > 0){
+                isResep = "Y";
             }
-        });
+
+            for (var i = 0; i < dataTable.length - 3; i++){
+                var idRiwayat = $('#h_id_riwayat_tindakan_'+i).val();
+                var jenis = $('#cover_'+i).val();
+                data.push({
+                    'id_riwayat_tindakan': idRiwayat,
+                    'jenis_pasien':jenis
+                });
+            }
+
+            dataDetail = {
+                'no_checkup':noCheckup,
+                'id_pasien':idPasien,
+                'id_detail_checkup': idDetailCheckup,
+                'id_pelayanan': idPelayanan,
+                'ditanggung_pasien': pasienBayar,
+                'cover_biaya': coverBiaya,
+                'is_resep':isResep
+            }
+            var result1 = JSON.stringify(data);
+            var result2 = JSON.stringify(dataDetail);
+            $('#save_fin').hide();
+            $('#load_fin').show();
+            dwr.engine.setAsync(true);
+            VerifikatorAction.updateCoverAsuransi(result1, result2,
+                {callback: function (res) {
+                        if (res.status == "success") {
+                            $('#save_fin').show();
+                            $('#load_fin').hide();
+                            $('#modal-detail').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('body').scrollTop(0);
+                        } else {
+                            $('#save_fin').show();
+                            $('#load_fin').hide();
+                            $('#warning').show().fadeOut(5000);
+                            $('#msg_war').text(res.msg);
+                            $('#top_up').scrollTop(0);
+                        }
+                    }
+                });
+        }
     }
 
 </script>

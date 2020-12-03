@@ -256,6 +256,12 @@ public class BranchBoImpl implements BranchBo {
                     resultBranch.setLon(imBranches.getLon());
                     resultBranch.setWarna(imBranches.getWarna());
 
+                    if(!"ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
+                        resultBranch.setIsDisabled("Y");
+                    }else{
+                        resultBranch.setIsDisabled("N");
+                    }
+
                     listOfResultBranch.add(resultBranch);
                 }
             }

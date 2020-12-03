@@ -63,9 +63,10 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Unit</label>
                                     <div class="col-sm-4">
-                                        <select class="form-control select2" id="branch" name="labDetail.branchId">
+                                        <select class="form-control select2" id="branch">
                                             <option value="">[Select One]</option>
                                         </select>
+                                        <s:hidden id="h_branch_id" name="labDetail.branchId"></s:hidden>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -672,6 +673,7 @@
                         var table = '<tr id="row_' + parameter + '">' +
                             '<td style="vertical-align: middle">' + namaParameter +
                             '<input id="id_parameter_' + id + '" type="hidden" value="' + parameter + '"></td>' +
+                            '<input id="nama_parameter_' + id + '" type="hidden" value="' + namaParameter + '"></td>' +
                             '<td>' +
                             '<input id="tarif_' + id + '" class="form-control" value="' + formatRupiahAtas(res.tarif) + '" oninput="convertRpAtas(this.id, this.value, \'h_tarif_' + id + '\')">' +
                             '<input type="hidden" id="h_tarif_' + id + '" class="form-control" value="' + res.tarif + '">' +
@@ -779,6 +781,7 @@
             var dataLab = $('#table_lab').tableToJSON();
             var branch = $('#set_nama_unit').val();
             var paket = $('#set_paket').val();
+            var paketName = $('#set_paket option:selected').text();
             var kategori = $('#set_kategori_lab').val();
             var parameter = $('#set_nama_parameter').val();
             var paketLab = "";
@@ -802,11 +805,14 @@
                 $('#load_add').show();
                 $.each(dataLab, function (i, item) {
                     var idParameter = $('#id_parameter_' + i).val();
+                    var namaParameter = $('#nama_parameter_' + i).val();
                     var tarif = $('#h_tarif_' + i).val();
                     dataSave.push({
                         'id_lab': paketLab,
                         'nama_lab': newPaket,
+                        'nama_paket':paketName,
                         'id_parameter_pemeriksaan': idParameter,
+                        'nama_parameter_pemeriksaan': namaParameter,
                         'tarif': tarif,
                         'branch_id': branch
                     });
@@ -853,16 +859,34 @@
     }
 
     function getBranch() {
+        var selectOne = '<option value="">[Select One]</option>';
         var option = '<option value="">[Select One]</option>';
+        var idDef = "";
+        var isDis = "";
         TindakanAction.getComboBranch(function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
+                    if(i == 0){
+                        idDef = item.branchId;
+                    }
+                    if(item.isDisabled == "Y"){
+                        isDis = "Y";
+                    }
                     option += '<option value="' + item.branchId + '">' + item.branchName + '</option>'
                 });
             }
-            $('#set_nama_unit').html(option);
+            if(isDis == "Y"){
+                $('#set_nama_unit').html(option);
+                $('#branch').html(option);
+                $('#set_nama_unit').val(idDef).trigger('change');
+                $('#branch').val(idDef).trigger('change');
+                $('#set_nama_unit, #branch').attr('disabled', true);
+                $('#h_branch_id').val(idDef);
+            }else{
+                $('#set_nama_unit').html(selectOne+option);
+                $('#branch').html(selectOne+option);
+            }
             $('#edit_nama_unit').html(option);
-            $('#branch').html(option);
         });
     }
 

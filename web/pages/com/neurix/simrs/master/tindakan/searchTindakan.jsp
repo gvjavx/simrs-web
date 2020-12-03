@@ -60,10 +60,11 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Unit</label>
                                     <div class="col-sm-4">
-                                        <select class="form-control select2" id="branch" name="tindakan.branchId"
+                                        <select class="form-control select2" id="branch"
                                                 onchange="getPelayanan(this.value)">
                                             <option value="">[Select One]</option>
                                         </select>
+                                        <s:hidden id="h_branch_id" name="tindakan.branchId"></s:hidden>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -692,7 +693,7 @@
             $.each(data, function (i, item) {
                 var idTindakan = $('#id_tindakan_' + i).val();
                 var idKategori = $('#id_kategori_' + i).val();
-                if (idTindakan == tindakan && idKategori == kategori) {
+                if (idTindakan == tindakan) {
                     cek = true;
                 }
             });
@@ -705,6 +706,7 @@
                         var table = '<tr id="row_' + tindakan + '">' +
                             '<td style="vertical-align: middle">' + namaTindakan +
                             '<input id="id_tindakan_' + id + '" type="hidden" value="' + tindakan + '"></td>' +
+                            '<input id="nama_tindakan_' + id + '" type="hidden" value="' + namaTindakan + '"></td>' +
                             '<td style="vertical-align: middle">' + kategoriName +
                             '<input id="id_kategori_' + id + '" type="hidden" value="' + kategori + '"></td>' +
                             '<td>' +
@@ -847,7 +849,8 @@
         } else {
             var dataPelayanan = $('#table_pelayanan').tableToJSON();
             var namaUnit = $('#set_nama_unit').val();
-            var namaPelayanan = $('#set_nama_pelayanan').val();
+            var idPelayanan = $('#set_nama_pelayanan').val();
+            var namaPelayanan = $('#set_nama_pelayanan option:selected').text();
             var kete = $('#set_kategori_tindakan').val();
             var namaTindakan = $('#set_nama_tindakan').val();
             var tarif = $('#h_tarif').val();
@@ -861,6 +864,7 @@
                     $('#load_add').show();
                     $.each(dataPelayanan, function (i, item) {
                         var idHeaderTindakan = $('#id_tindakan_' + i).val();
+                        var namaHeaderTindakan = $('#nama_tindakan_'+i).val();
                         var idKategori = $('#id_kategori_' + i).val();
                         var tarif = $('#h_tarif_' + i).val();
                         var tarifBpjs = $('#h_tarif_bpjs_' + i).val();
@@ -878,7 +882,9 @@
                         dataSave.push({
                             'id_kategori_tindakan': idKategori,
                             'id_header_tindakan': idHeaderTindakan,
-                            'id_pelayanan': namaPelayanan,
+                            'nama_header_tindakan': namaHeaderTindakan,
+                            'id_pelayanan': idPelayanan,
+                            'nama_pelayanan': namaPelayanan,
                             'branch_id': namaUnit,
                             'tarif': tarif,
                             'tarif_bpjs': tarifBpjs,
@@ -944,31 +950,52 @@
     }
 
     function getBranch() {
-        var option = '<option value="">[Select One]</option>';
+        var selectOne = '<option value="">[Select One]</option>';
+        var option = '';
+        var idDef = "";
+        var isDis = "";
         TindakanAction.getComboBranch(function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
-                    option += '<option value="' + item.branchId + '">' + item.branchName + '</option>'
+                    if(i == 0){
+                        idDef = item.branchId;
+                    }
+                    if(item.isDisabled == "Y"){
+                        isDis = "Y";
+                    }
+                    option += '<option value="' + item.branchId + '">' + item.branchName + '</option>';
                 });
             }
-            $('#set_nama_unit').html(option);
+            if(isDis == "Y"){
+                $('#set_nama_unit').html(option);
+                $('#branch').html(option);
+                $('#set_nama_unit').val(idDef).trigger('change');
+                $('#branch').val(idDef).trigger('change');
+                $('#set_nama_unit, #branch').attr('disabled', true);
+                $('#h_branch_id').val(idDef);
+            }else{
+                $('#set_nama_unit').html(selectOne+option);
+                $('#branch').html(selectOne+option);
+            }
             $('#edit_nama_unit').html(option);
-            $('#branch').html(option);
         });
     }
 
     function getPelayanan(idPelayanan) {
-        var option = '<option value="">[Select One]</option>';
-        TindakanAction.getComboPelayanan(idPelayanan, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    option += '<option value="' + item.idPelayanan + '">' + item.namaPelayanan + '</option>'
-                })
-            }
-            $('#set_nama_pelayanan').html(option);
-            $('#edit_nama_pelayanan').html(option);
-            $('#pelayanan').html(option);
-        });
+        if(idPelayanan != ''){
+            $('#h_branch_id').val(idPelayanan);
+            var option = '<option value="">[Select One]</option>';
+            TindakanAction.getComboPelayanan(idPelayanan, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        option += '<option value="' + item.idPelayanan + '">' + item.namaPelayanan + '</option>'
+                    })
+                }
+                $('#set_nama_pelayanan').html(option);
+                $('#edit_nama_pelayanan').html(option);
+                $('#pelayanan').html(option);
+            });
+        }
     }
 
     function getTindakan() {

@@ -42,6 +42,15 @@ public class ParameterPemeriksaanDao extends GenericDao<ImSimrsParameterPemeriks
         return results;
     }
 
+    public List<ImSimrsParameterPemeriksaanEntity> getHeaderParameter(String namaTindakan, String idKategori) throws HibernateException {
+        List<ImSimrsParameterPemeriksaanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsParameterPemeriksaanEntity.class)
+                .add(Restrictions.ilike("namaPemeriksaan", namaTindakan))
+                .add(Restrictions.eq("idKategoriLab", idKategori))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
+
     public String getNextId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_perameter_pemeriksaan')");
         Iterator<BigInteger> iter=query.list().iterator();

@@ -1274,85 +1274,87 @@
 
     function saveTppri() {
         $('#modal-confirm-dialog').modal('hide');
-        var data = "";
-        var dataDpjp = [];
-        var dataDokter = $('.id_dpjp');
-        var dataPrio = $('.dpjp');
-        var idPasien = $('#h_id_pasien').val();
-        var noCheckup = $('#h_no_checkup').val();
-        var idDetailCheckup = $('#h_id_detail_pasien').val();
-        var jenisPasien = $('#h_jenis_pasien').val();
-        var tindakLanjut = $('#h_tindak_lanjut').val();
-        var kategori = $('#h_kategori').val();
-        var metodeBayar = $('#metode_bayar').val();
-        var valUangMuka = $('#val_uang_muka').val();
-        var uangMuka = "";
-        if (valUangMuka != undefined) {
-            uangMuka = valUangMuka.replace(/[.]/g, '');
-        }
-        var kelasKamar = $('#kelas_kamar').val();
-        var kamar = $('#kamar').val();
-        var cekKunjungan = $('#cek_kunjungan').is(':checked');
-        var cekBerkas = $('#berkas').val();
-        var finalBerkas = "";
-        if(cekBerkas != ''){
-            finalBerkas = convertToDataURL(document.getElementById('img_berkas'));
-        }
-
-        var bolehKunjungan = "N";
-        if(cekKunjungan){
-            bolehKunjungan = "Y"
-        }
-        $.each(dataDokter, function (i, item) {
-            if (item.value != '') {
-                var data = item.value.split("|");
-                var idDokter = data[0];
-                var idPelayanan = data[1];
-                dataDpjp.push({
-                    'id_dpjp': idDokter,
-                    'id_pelayanan': idPelayanan,
-                    'prioritas': dataPrio[i].value
-                });
+        if(!cekSession()){
+            var data = "";
+            var dataDpjp = [];
+            var dataDokter = $('.id_dpjp');
+            var dataPrio = $('.dpjp');
+            var idPasien = $('#h_id_pasien').val();
+            var noCheckup = $('#h_no_checkup').val();
+            var idDetailCheckup = $('#h_id_detail_pasien').val();
+            var jenisPasien = $('#h_jenis_pasien').val();
+            var tindakLanjut = $('#h_tindak_lanjut').val();
+            var kategori = $('#h_kategori').val();
+            var metodeBayar = $('#metode_bayar').val();
+            var valUangMuka = $('#val_uang_muka').val();
+            var uangMuka = "";
+            if (valUangMuka != undefined) {
+                uangMuka = valUangMuka.replace(/[.]/g, '');
             }
-        });
+            var kelasKamar = $('#kelas_kamar').val();
+            var kamar = $('#kamar').val();
+            var cekKunjungan = $('#cek_kunjungan').is(':checked');
+            var cekBerkas = $('#berkas').val();
+            var finalBerkas = "";
+            if(cekBerkas != ''){
+                finalBerkas = convertToDataURL(document.getElementById('img_berkas'));
+            }
 
-        data = {
-            'id_pasien': idPasien,
-            'no_checkup': noCheckup,
-            'id_detail_checkup': idDetailCheckup,
-            'jenis_pasien': jenisPasien,
-            'tindak_lanjut': tindakLanjut,
-            'data_dpjp': dataDpjp,
-            'kelas_kamar': kelasKamar,
-            'kamar': kamar,
-            'metode_pembayaran': metodeBayar,
-            'uang_muka': uangMuka,
-            'kunjungan': bolehKunjungan,
-            'img_berkas': finalBerkas
-        }
-
-        var result = JSON.stringify(data);
-        $('#save_fin').hide();
-        $('#load_fin').show();
-        dwr.engine.setAsync(true);
-        RawatInapAction.saveTppri(result,
-            {
-                callback: function (response) {
-                    if (response.status == "success") {
-                        $('#save_fin').show();
-                        $('#load_fin').hide();
-                        $('#info_dialog').dialog('open');
-                        $('#modal-detail').modal('hide');
-                        $('body').scrollTop(0);
-                        console.log(response);
-                    } else {
-                        $('#save_fin').show();
-                        $('#load_fin').hide();
-                        $('#warning').show().fadeOut(5000);
-                        $('#msg_war').text(response.msg);
-                    }
+            var bolehKunjungan = "N";
+            if(cekKunjungan){
+                bolehKunjungan = "Y"
+            }
+            $.each(dataDokter, function (i, item) {
+                if (item.value != '') {
+                    var data = item.value.split("|");
+                    var idDokter = data[0];
+                    var idPelayanan = data[1];
+                    dataDpjp.push({
+                        'id_dpjp': idDokter,
+                        'id_pelayanan': idPelayanan,
+                        'prioritas': dataPrio[i].value
+                    });
                 }
             });
+
+            data = {
+                'id_pasien': idPasien,
+                'no_checkup': noCheckup,
+                'id_detail_checkup': idDetailCheckup,
+                'jenis_pasien': jenisPasien,
+                'tindak_lanjut': tindakLanjut,
+                'data_dpjp': dataDpjp,
+                'kelas_kamar': kelasKamar,
+                'kamar': kamar,
+                'metode_pembayaran': metodeBayar,
+                'uang_muka': uangMuka,
+                'kunjungan': bolehKunjungan,
+                'img_berkas': finalBerkas
+            }
+
+            var result = JSON.stringify(data);
+            $('#save_fin').hide();
+            $('#load_fin').show();
+            dwr.engine.setAsync(true);
+            RawatInapAction.saveTppri(result,
+                {
+                    callback: function (response) {
+                        if (response.status == "success") {
+                            $('#save_fin').show();
+                            $('#load_fin').hide();
+                            $('#info_dialog').dialog('open');
+                            $('#modal-detail').modal('hide');
+                            $('body').scrollTop(0);
+                            console.log(response);
+                        } else {
+                            $('#save_fin').show();
+                            $('#load_fin').hide();
+                            $('#warning').show().fadeOut(5000);
+                            $('#msg_war').text(response.msg);
+                        }
+                    }
+                });
+        }
     }
 
     function printPernyataan(kode, idRm, flag, namaRm) {
@@ -1616,119 +1618,121 @@
     }
 
     function saveNewRB() {
-        var data = "";
-        $('#modal-confirm-dialog').modal('hide');
-        var jenisPasien = $('#add_jenis').val();
-        var noBpjs = $('#add_no_bpjs').val();
-        var nik = $('#add_nik').val();
-        var nama = $('#add_nama').val();
-        var jk = $('#add_jk').val();
-        var tempatLahir = $('#add_tempat_lahir').val();
-        var tanggalLahir = $('#add_tanggal_lahir').val();
-        var noTelp = $('#add_no_telp').val();
-        var agama = $('#add_agama').val();
-        var profesi = $('#add_profesi').val();
-        var suku = $('#add_suku').val();
-        var alamat = $('#add_alamat').val();
-        var provinsi = $('#add_id_provinsi').val();
-        var kota = $('#add_id_kota').val();
-        var kecamatan = $('#add_id_kecamatan').val();
-        var desa = $('#add_id_desa').val();
+        if(!cekSession()){
+            var data = "";
+            $('#modal-confirm-dialog').modal('hide');
+            var jenisPasien = $('#add_jenis').val();
+            var noBpjs = $('#add_no_bpjs').val();
+            var nik = $('#add_nik').val();
+            var nama = $('#add_nama').val();
+            var jk = $('#add_jk').val();
+            var tempatLahir = $('#add_tempat_lahir').val();
+            var tanggalLahir = $('#add_tanggal_lahir').val();
+            var noTelp = $('#add_no_telp').val();
+            var agama = $('#add_agama').val();
+            var profesi = $('#add_profesi').val();
+            var suku = $('#add_suku').val();
+            var alamat = $('#add_alamat').val();
+            var provinsi = $('#add_id_provinsi').val();
+            var kota = $('#add_id_kota').val();
+            var kecamatan = $('#add_id_kecamatan').val();
+            var desa = $('#add_id_desa').val();
 
-        var perujuk = $('#add_perujuk').val();
-        var noRujukan = $('#add_no_rujukan').val();
-        var ketRujukan = $('#add_keterangan').val();
-        var ppkRujukan = $('#add_ppk_rujukan').val();
-        var tglRujukan = $('#add_tgl_rujukan').val();
-        var noHP = noTelp.replace(/[-]/g, '');
-        var hp = noHP.replace(/[_]/g, '');
-        var idDignosa = $('#add_id_diagnosa').val();
-        var ketDiagnosa = $('#add_keterangan_diagnosa').val();
+            var perujuk = $('#add_perujuk').val();
+            var noRujukan = $('#add_no_rujukan').val();
+            var ketRujukan = $('#add_keterangan').val();
+            var ppkRujukan = $('#add_ppk_rujukan').val();
+            var tglRujukan = $('#add_tgl_rujukan').val();
+            var noHP = noTelp.replace(/[-]/g, '');
+            var hp = noHP.replace(/[_]/g, '');
+            var idDignosa = $('#add_id_diagnosa').val();
+            var ketDiagnosa = $('#add_keterangan_diagnosa').val();
 
-        var cekUangMuka = $('#cek_add_uang_muka').is(':checked');
-        var uangMuka = $('#h_uang_muka').val();
-        var metode = $('#add_metode_bayar').val();
-        var kamar = $('#add_kamar').val();
-        var kelasKamar = $('#add_kelas_kamar').val();
-        var dokter = $('#dokter_add_dpjp_1').val();
-        var kelasPasien = $('#kelas_pasien').val();
+            var cekUangMuka = $('#cek_add_uang_muka').is(':checked');
+            var uangMuka = $('#h_uang_muka').val();
+            var metode = $('#add_metode_bayar').val();
+            var kamar = $('#add_kamar').val();
+            var kelasKamar = $('#add_kelas_kamar').val();
+            var dokter = $('#dokter_add_dpjp_1').val();
+            var kelasPasien = $('#kelas_pasien').val();
 
-        var ktp = document.getElementById('img_ktp_canvas');
-        var foto = document.getElementById('add_foto_rujukan');
-        var ktpFinal = "";
-        var fotoFinal = "";
-        if ($('#ktp').val() != '') {
-            ktpFinal = convertToDataURL(ktp);
-        }
-        if ($('#foto_rujukan').val() != '') {
-            ktpFinal = convertToDataURL(ktp);
-        }
-        var dataDpjp = [];
-        var dataDokter = $('.add_id_dpjp');
-        var dataPrio = $('.add_dpjp');
-        $.each(dataDokter, function (i, item) {
-            if (item.value != '') {
-                var data = item.value.split("|");
-                var idDokter = data[0];
-                var idPelayanan = data[1];
-                dataDpjp.push({
-                    'id_dpjp': idDokter,
-                    'id_pelayanan': idPelayanan,
-                    'prioritas': dataPrio[i].value
-                });
+            var ktp = document.getElementById('img_ktp_canvas');
+            var foto = document.getElementById('add_foto_rujukan');
+            var ktpFinal = "";
+            var fotoFinal = "";
+            if ($('#ktp').val() != '') {
+                ktpFinal = convertToDataURL(ktp);
             }
-        });
-        data = {
-            'no_bpjs': noBpjs,
-            'nik': nik,
-            'nama': nama,
-            'jk': jk,
-            'tempat_lahir': tempatLahir,
-            'tanggal_lahir': tanggalLahir,
-            'agama': agama,
-            'no_telp': hp,
-            'profesi': profesi,
-            'suku': suku,
-            'alamat': alamat,
-            'desa_id': desa,
-            'img_ktp': ktpFinal,
-            'jenis_pasien': jenisPasien,
-            'kelas_kamar': kelasKamar,
-            'kamar': kamar,
-            'diagnosa': idDignosa,
-            'ket_diagnosa': ketDiagnosa,
-            'perujuk': perujuk,
-            'no_rujukan': noRujukan,
-            'ket_perujuk': ketRujukan,
-            'no_ppk': ppkRujukan,
-            'tgl_ppk': tglRujukan,
-            'img_rujukan': fotoFinal,
-            'uang_muka': uangMuka,
-            'metode_pembayaran': metode,
-            'data_dpjp': dataDpjp,
-            'id_kelas':kelasPasien
-        };
-        var objectString = JSON.stringify(data);
-        $('#save_add').hide();
-        $('#load_add').show();
-        dwr.engine.setAsync(true);
-        RawatInapAction.saveNewTppri(objectString, {
-            callback: function (response) {
-                if (response.status == "success") {
-                    $('#save_add').show();
-                    $('#load_add').hide();
-                    $('#info_dialog').dialog('open');
-                    $('#modal-daftar-pasien').modal('hide');
-                    $('#back_top').scrollTop(0);
-                } else {
-                    $('#save_add').show();
-                    $('#load_add').hide();
-                    $('#warning_add').show().fadeOut(5000);
-                    $('#msg_add').text(response.msg);
-                    $('#back_top').scrollTop(0);
+            if ($('#foto_rujukan').val() != '') {
+                ktpFinal = convertToDataURL(ktp);
+            }
+            var dataDpjp = [];
+            var dataDokter = $('.add_id_dpjp');
+            var dataPrio = $('.add_dpjp');
+            $.each(dataDokter, function (i, item) {
+                if (item.value != '') {
+                    var data = item.value.split("|");
+                    var idDokter = data[0];
+                    var idPelayanan = data[1];
+                    dataDpjp.push({
+                        'id_dpjp': idDokter,
+                        'id_pelayanan': idPelayanan,
+                        'prioritas': dataPrio[i].value
+                    });
                 }
-            }
-        });
+            });
+            data = {
+                'no_bpjs': noBpjs,
+                'nik': nik,
+                'nama': nama,
+                'jk': jk,
+                'tempat_lahir': tempatLahir,
+                'tanggal_lahir': tanggalLahir,
+                'agama': agama,
+                'no_telp': hp,
+                'profesi': profesi,
+                'suku': suku,
+                'alamat': alamat,
+                'desa_id': desa,
+                'img_ktp': ktpFinal,
+                'jenis_pasien': jenisPasien,
+                'kelas_kamar': kelasKamar,
+                'kamar': kamar,
+                'diagnosa': idDignosa,
+                'ket_diagnosa': ketDiagnosa,
+                'perujuk': perujuk,
+                'no_rujukan': noRujukan,
+                'ket_perujuk': ketRujukan,
+                'no_ppk': ppkRujukan,
+                'tgl_ppk': tglRujukan,
+                'img_rujukan': fotoFinal,
+                'uang_muka': uangMuka,
+                'metode_pembayaran': metode,
+                'data_dpjp': dataDpjp,
+                'id_kelas':kelasPasien
+            };
+            var objectString = JSON.stringify(data);
+            $('#save_add').hide();
+            $('#load_add').show();
+            dwr.engine.setAsync(true);
+            RawatInapAction.saveNewTppri(objectString, {
+                callback: function (response) {
+                    if (response.status == "success") {
+                        $('#save_add').show();
+                        $('#load_add').hide();
+                        $('#info_dialog').dialog('open');
+                        $('#modal-daftar-pasien').modal('hide');
+                        $('#back_top').scrollTop(0);
+                    } else {
+                        $('#save_add').show();
+                        $('#load_add').hide();
+                        $('#warning_add').show().fadeOut(5000);
+                        $('#msg_add').text(response.msg);
+                        $('#back_top').scrollTop(0);
+                    }
+                }
+            });
+        }
     }
 
     function showDiagnosa(value, id) {

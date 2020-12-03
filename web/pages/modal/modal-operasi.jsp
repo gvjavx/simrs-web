@@ -749,15 +749,15 @@
                         <div class="col-md-6">
                             <b style="margin-left: 8px">Tanda Tangan Pasien</b>
                             <canvas onmouseover="paintTtd('op_ttd_pasien')" class="paint-canvas-ttd" id="op_ttd_pasien" width="380" height="300"></canvas>
-                            <input class="form-control" id="nama_terang_pasien" placeholder="Nama Terang">
+                            <input class="form-control nama-pasien" id="nama_terang_pasien" placeholder="Nama Terang">
                             <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('op_ttd_pasien')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
                         <div class="col-md-6">
                             <b style="margin-left: 8px">Tanda Tangan Dokter</b>
                             <canvas onmouseover="paintTtd('op_ttd_dokter')" class="paint-canvas-ttd" id="op_ttd_dokter" width="380" height="300"></canvas>
-                            <input class="form-control" id="nama_terang_dokter" placeholder="Nama Terang">
-                            <input style="margin-top: 3px" class="form-control" id="sip_dokter" placeholder="SIP">
+                            <input class="form-control nama_dokter_ri" id="nama_terang_dokter" placeholder="Nama Terang">
+                            <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_dokter" placeholder="SIP">
                             <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('op_ttd_dokter')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>

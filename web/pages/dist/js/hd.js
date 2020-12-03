@@ -1971,30 +1971,32 @@ function saveMonHD(jenis, ket) {
     }
 
     if (cek) {
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
-        $('#save_hd_' + jenis).hide();
-        $('#load_hd_' + jenis).show();
-        dwr.engine.setAsync(true);
-        HemodialisaAction.saveHemodialisa(result, pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_hd_' + jenis).show();
-                    $('#load_hd_' + jenis).hide();
-                    $('#modal-hd-' + jenis).modal('hide');
-                    $('#warning_hd_' + ket).show().fadeOut(5000);
-                    $('#msg_hd_' + ket).text("Berhasil menambahkan data hd...");
-                    $('#modal-hd-' + jenis).scrollTop(0);
-                    getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
-                } else {
-                    $('#save_hd_' + jenis).show();
-                    $('#load_hd_' + jenis).hide();
-                    $('#warning_hd_' + jenis).show().fadeOut(5000);
-                    $('#msg_hd_' + jenis).text(res.msg);
-                    $('#modal-hd-' + jenis).scrollTop(0);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_hd_' + jenis).hide();
+            $('#load_hd_' + jenis).show();
+            dwr.engine.setAsync(true);
+            HemodialisaAction.saveHemodialisa(result, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_hd_' + jenis).show();
+                        $('#load_hd_' + jenis).hide();
+                        $('#modal-hd-' + jenis).modal('hide');
+                        $('#warning_hd_' + ket).show().fadeOut(5000);
+                        $('#msg_hd_' + ket).text("Berhasil menambahkan data hd...");
+                        $('#modal-hd-' + jenis).scrollTop(0);
+                        getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
+                    } else {
+                        $('#save_hd_' + jenis).show();
+                        $('#load_hd_' + jenis).hide();
+                        $('#warning_hd_' + jenis).show().fadeOut(5000);
+                        $('#msg_hd_' + jenis).text(res.msg);
+                        $('#modal-hd-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        })
+            });
+        }
     } else {
         $('#warning_hd_' + jenis).show().fadeOut(5000);
         $('#msg_hd_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -2003,189 +2005,191 @@ function saveMonHD(jenis, ket) {
 }
 
 function detailMonHD(jenis) {
-    if (jenis != '') {
-        var head = "";
-        var body = "";
-        var totalSkor = 0;
-        var first = "";
-        var last = "";
-        var tgl = "";
-        var cekData = false;
+    if(!cekSession()){
+        if (jenis != '') {
+            var head = "";
+            var body = "";
+            var totalSkor = 0;
+            var first = "";
+            var last = "";
+            var tgl = "";
+            var cekData = false;
 
-        HemodialisaAction.getListHemodialisa(idDetailCheckup, jenis, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    var jwb = "";
-                    var jwb2 = "";
-                    if (item.jawaban1 != null) {
-                        jwb = item.jawaban1;
-                    }
-                    if (item.jawaban2 != null) {
-                        jwb2 = item.jawaban2;
-                    }
-                    if ("ttd" == item.tipe) {
-                        if("tindakan_medis_hd" == item.keterangan){
-                            body += '<tr>' +
-                                '<td colspan="2">' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + item.jawaban1 + '" style="height: 100px">' +
-                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
-                                '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
-                                '</td>' +
-                                '</tr>';
-                        }else{
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + jwb + '" style="width: 100px">' +
-                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
-                                '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
-                                '</td>' +
-                                '</tr>';
+            HemodialisaAction.getListHemodialisa(idDetailCheckup, jenis, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        var jwb = "";
+                        var jwb2 = "";
+                        if (item.jawaban1 != null) {
+                            jwb = item.jawaban1;
                         }
-                    } else if ("intervensi" == item.keterangan || "diagnosa" == item.keterangan || "Dosis Maintenance" == item.parameter) {
-                        var li = "";
-                        var isi = jwb.split("|");
-                        if("intervensi" == item.keterangan){
-                            var jaw2 = jwb2.split("|");
-                            $.each(jaw2, function (i, item) {
-                                li += '<li>' + item + '</li>';
-                            });
-                            body += '<tr>' +
-                                '<td width="40%">' + item.parameter + '</td>' +
-                                '<td>' + jwb + '</td>' +
-                                '<td>' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
-                                '</tr>';
-                        }else{
-                            $.each(isi, function (i, item) {
-                                li += '<li>' + item + '</li>';
-                            });
-                            body += '<tr>' +
-                                '<td width="40%">' + item.parameter + '</td>' +
-                                '<td>' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
-                                '</tr>';
+                        if (item.jawaban2 != null) {
+                            jwb2 = item.jawaban2;
                         }
-                    } else if ("resiko_jatuh" == item.keterangan) {
-                        if (item.skor != null) {
-                            totalSkor = parseInt(totalSkor) + parseInt(item.skor);
-                        }
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td>' + jwb + '</td>' +
-                            '<td align="center">' + item.skor + '</td>' +
-                            '</tr>';
-                    } else if ("tranfusi_informasi" == item.keterangan || "persetujuan_hd_informasi" == item.keterangan) {
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td>' + jwb + '</td>' +
-                            '<td align="center">' + cekIcons(jwb2) + '</td>' +
-                            '</tr>';
-                    } else if ("tranfusi_penyataan" == item.keterangan || "persetujuan_hd_penyataan" == item.keterangan) {
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td align="center">' + '<img src="' + jwb + '" style="width: 150px">' + '</td>' +
-                            '</tr>';
-                    } else if ("pernyataan" == item.parameter) {
-                        body += '<tr>' +
-                            '<td colspan="2">' + jwb + '</td>' +
-                            '</tr>';
-                    } else if ("perencanaan_hemodialisa_pasien" == item.keterangan) {
-                        if ("Perencanaan Hemodialisa" == item.parameter) {
-                            var isi = jwb.split("|");
-                            var li = "";
-                            $.each(isi, function (i, item) {
-                                li += '<li style="list-style-type: none">' + item + '</li>';
-                            });
-                            if (li != '') {
+                        if ("ttd" == item.tipe) {
+                            if("tindakan_medis_hd" == item.keterangan){
+                                body += '<tr>' +
+                                    '<td colspan="2">' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban1 + '" style="height: 100px">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                    '</td>' +
+                                    '</tr>';
+                            }else{
                                 body += '<tr>' +
                                     '<td>' + item.parameter + '</td>' +
-                                    '<td>' + '<ul style="margin-left: 1px">' + li + '</ul>' + '</td>' +
+                                    '<td>' + '<img src="' + jwb + '" style="width: 100px">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                    '</td>' +
+                                    '</tr>';
+                            }
+                        } else if ("intervensi" == item.keterangan || "diagnosa" == item.keterangan || "Dosis Maintenance" == item.parameter) {
+                            var li = "";
+                            var isi = jwb.split("|");
+                            if("intervensi" == item.keterangan){
+                                var jaw2 = jwb2.split("|");
+                                $.each(jaw2, function (i, item) {
+                                    li += '<li>' + item + '</li>';
+                                });
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '<td>' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
+                                    '</tr>';
+                            }else{
+                                $.each(isi, function (i, item) {
+                                    li += '<li>' + item + '</li>';
+                                });
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + '<ul style="margin-left: 10px">' + li + '</ul>' + '</td>' +
+                                    '</tr>';
+                            }
+                        } else if ("resiko_jatuh" == item.keterangan) {
+                            if (item.skor != null) {
+                                totalSkor = parseInt(totalSkor) + parseInt(item.skor);
+                            }
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + jwb + '</td>' +
+                                '<td align="center">' + item.skor + '</td>' +
+                                '</tr>';
+                        } else if ("tranfusi_informasi" == item.keterangan || "persetujuan_hd_informasi" == item.keterangan) {
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + jwb + '</td>' +
+                                '<td align="center">' + cekIcons(jwb2) + '</td>' +
+                                '</tr>';
+                        } else if ("tranfusi_penyataan" == item.keterangan || "persetujuan_hd_penyataan" == item.keterangan) {
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td align="center">' + '<img src="' + jwb + '" style="width: 150px">' + '</td>' +
+                                '</tr>';
+                        } else if ("pernyataan" == item.parameter) {
+                            body += '<tr>' +
+                                '<td colspan="2">' + jwb + '</td>' +
+                                '</tr>';
+                        } else if ("perencanaan_hemodialisa_pasien" == item.keterangan) {
+                            if ("Perencanaan Hemodialisa" == item.parameter) {
+                                var isi = jwb.split("|");
+                                var li = "";
+                                $.each(isi, function (i, item) {
+                                    li += '<li style="list-style-type: none">' + item + '</li>';
+                                });
+                                if (li != '') {
+                                    body += '<tr>' +
+                                        '<td>' + item.parameter + '</td>' +
+                                        '<td>' + '<ul style="margin-left: 1px">' + li + '</ul>' + '</td>' +
+                                        '</tr>';
+                                }
+                            } else {
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '</tr>';
+                            }
+                        } else if ("gambar" == item.tipe) {
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + jwb + '" style="width: 100px">' + '</td>' +
+                                '</tr>';
+                        } else if("tindakan_medis_hd" == item.keterangan){
+                            if ("colspan" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td colspan="3">' + item.jawaban1 + '</td>' +
+                                    '</tr>';
+                            } else if ("info" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td width="25%">' + item.parameter + '</td>' +
+                                    '<td >' + item.jawaban1 + '</td>' +
+                                    '<td width="20%" align="center">' + cekIcons(item.jawaban2) + '</td>' +
+                                    '</tr>';
+                            } else if ("ttd" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td colspan="2">' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
+                                    '</tr>';
+                            } else if ("bold" == item.tipe) {
+                                body += '<tr style="font-weight: bold">' +
+                                    '<td width="25%">' + item.parameter + '</td>' +
+                                    '<td >' + item.jawaban1 + '</td>' +
+                                    '<td width="20%" align="center">' + item.jawaban2 + '</td>' +
+                                    '</tr>';
+                            }else {
+                                body += '<tr>' +
+                                    '<td width="30%">' + item.parameter + '</td>' +
+                                    '<td colspan="2">' + item.jawaban1 + '</td>' +
                                     '</tr>';
                             }
                         } else {
                             body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
                                 '<td>' + jwb + '</td>' +
                                 '</tr>';
                         }
-                    } else if ("gambar" == item.tipe) {
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + jwb + '" style="width: 100px">' + '</td>' +
-                            '</tr>';
-                    } else if("tindakan_medis_hd" == item.keterangan){
-                        if ("colspan" == item.tipe) {
-                            body += '<tr>' +
-                                '<td colspan="3">' + item.jawaban1 + '</td>' +
-                                '</tr>';
-                        } else if ("info" == item.tipe) {
-                            body += '<tr>' +
-                                '<td width="25%">' + item.parameter + '</td>' +
-                                '<td >' + item.jawaban1 + '</td>' +
-                                '<td width="20%" align="center">' + cekIcons(item.jawaban2) + '</td>' +
-                                '</tr>';
-                        } else if ("ttd" == item.tipe) {
-                            body += '<tr>' +
-                                '<td colspan="2">' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
-                                '</tr>';
-                        } else if ("bold" == item.tipe) {
-                            body += '<tr style="font-weight: bold">' +
-                                '<td width="25%">' + item.parameter + '</td>' +
-                                '<td >' + item.jawaban1 + '</td>' +
-                                '<td width="20%" align="center">' + item.jawaban2 + '</td>' +
-                                '</tr>';
-                        }else {
-                            body += '<tr>' +
-                                '<td width="30%">' + item.parameter + '</td>' +
-                                '<td colspan="2">' + item.jawaban1 + '</td>' +
-                                '</tr>';
-                        }
-                    } else {
-                        body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + jwb + '</td>' +
-                            '</tr>';
-                    }
-                    cekData = true;
-                    tgl = item.createdDate;
-                });
-            } else {
-                body = '<tr>' +
-                    '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
-
-            if ("resiko_jatuh" == jenis) {
-                var con = "";
-                if (totalSkor >= 0 && totalSkor <= 24) {
-                    con = "Tidak berisiko";
-                } else if (totalSkor >= 25 && totalSkor <= 50) {
-                    con = "Resiko rendah";
+                        cekData = true;
+                        tgl = item.createdDate;
+                    });
                 } else {
-                    con = "Resiko tinggi";
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
+                        '</tr>';
                 }
 
-                if (cekData) {
-                    last = '<tr style="font-weight: bold"><td colspan="2">Total Skor</td><td align="center">' + totalSkor + '</td></tr>' +
-                        '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">' + con + '</td></tr>';
-                }
-            }
+                if ("resiko_jatuh" == jenis) {
+                    var con = "";
+                    if (totalSkor >= 0 && totalSkor <= 24) {
+                        con = "Tidak berisiko";
+                    } else if (totalSkor >= 25 && totalSkor <= 50) {
+                        con = "Resiko rendah";
+                    } else {
+                        con = "Resiko tinggi";
+                    }
 
-            if ("tranfusi_informasi" == jenis || "persetujuan_hd_informasi" == jenis) {
-                if (cekData) {
-                    head = '<tr style="font-weight: bold"><td width="25%">Jenis Informasi</td><td>Isi Informasi</td><td align="center" width="15%">Check (<i class="fa fa-check"></i>)</td></tr>'
+                    if (cekData) {
+                        last = '<tr style="font-weight: bold"><td colspan="2">Total Skor</td><td align="center">' + totalSkor + '</td></tr>' +
+                            '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">' + con + '</td></tr>';
+                    }
                 }
-            }
-            var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead>' + head + '</thead>' +
-                '<tbody>' + first + body + last + '</tbody>' +
-                '</table>';
 
-            var newRow = $('<tr id="del_hd_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-            newRow.insertAfter($('table').find('#row_hd_' + jenis));
-            var url = contextPath + '/pages/images/minus-allnew.png';
-            $('#btn_hd_' + jenis).attr('src', url);
-            $('#btn_hd_' + jenis).attr('onclick', 'delRowHemodialisa(\'' + jenis + '\')');
-        });
+                if ("tranfusi_informasi" == jenis || "persetujuan_hd_informasi" == jenis) {
+                    if (cekData) {
+                        head = '<tr style="font-weight: bold"><td width="25%">Jenis Informasi</td><td>Isi Informasi</td><td align="center" width="15%">Check (<i class="fa fa-check"></i>)</td></tr>'
+                    }
+                }
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tbody>' + first + body + last + '</tbody>' +
+                    '</table>';
+
+                var newRow = $('<tr id="del_hd_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_hd_' + jenis));
+                var url = contextPath + '/pages/images/minus-allnew.png';
+                $('#btn_hd_' + jenis).attr('src', url);
+                $('#btn_hd_' + jenis).attr('onclick', 'delRowHemodialisa(\'' + jenis + '\')');
+            });
+        }
     }
 }
 
@@ -2229,38 +2233,40 @@ function showKetHD(val, id) {
 }
 
 function getListMonTransfusiDarah() {
-    var body = "";
-    MonitoringTransfusiDarahAction.getListMonitoringTransfusiDarah(idDetailCheckup, function (res) {
-        if (res.length > 0) {
-            $.each(res, function (i, item) {
-                body +=
-                    '<tr>' +
-                    '<td align="center">' + set(item.waktu) + '</td>' +
-                    '<td align="center">' + set(item.tekananDarah) + '</td>' +
-                    '<td align="center">' + set(item.nadi) + '</td>' +
-                    '<td align="center">' + set(item.suhu) + '</td>' +
-                    '<td align="center">' + set(item.rr) + '</td>' +
-                    '<td align="center">' + set(item.tidakAdaReaksi) + '</td>' +
-                    '<td align="center">' + set(item.gatal) + '</td>' +
-                    '<td align="center">' + set(item.urtikariaBeratSedang) + '</td>' +
-                    '<td align="center">' + set(item.kulitKemerahanSedang) + '</td>' +
-                    '<td align="center">' + set(item.demamSedang) + '</td>' +
-                    '<td align="center">' + set(item.menggigilSedang) + '</td>' +
-                    '<td align="center">' + set(item.gelisahSedang) + '</td>' +
-                    '<td align="center">' + set(item.peningkatanDetakJantungSedang) + '</td>' +
-                    '<td align="center">' + set(item.demamMengancam) + '</td>' +
-                    '<td align="center">' + set(item.menggigilSedang) + '</td>' +
-                    '<td align="center">' + set(item.gelisahSedang) + '</td>' +
-                    '<td align="center">' + set(item.peningkatanDetakJantungSedang) + '</td>' +
-                    '<td align="center">' + set(item.nafasCepatMengancam) + '</td>' +
-                    '<td align="center">' + set(item.urinMengancam) + '</td>' +
-                    '<td align="center">' + set(item.pendarahanJantungMengancam) + '</td>' +
-                    '<td align="center">' + set(item.kesadaranMengancam) + '</td>' +
-                    '</tr>';
-            });
-            $('#body_hd_catatan_tranfusi_darah').html(body);
-        }
-    });
+    if(!cekSession()){
+        var body = "";
+        MonitoringTransfusiDarahAction.getListMonitoringTransfusiDarah(idDetailCheckup, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    body +=
+                        '<tr>' +
+                        '<td align="center">' + set(item.waktu) + '</td>' +
+                        '<td align="center">' + set(item.tekananDarah) + '</td>' +
+                        '<td align="center">' + set(item.nadi) + '</td>' +
+                        '<td align="center">' + set(item.suhu) + '</td>' +
+                        '<td align="center">' + set(item.rr) + '</td>' +
+                        '<td align="center">' + set(item.tidakAdaReaksi) + '</td>' +
+                        '<td align="center">' + set(item.gatal) + '</td>' +
+                        '<td align="center">' + set(item.urtikariaBeratSedang) + '</td>' +
+                        '<td align="center">' + set(item.kulitKemerahanSedang) + '</td>' +
+                        '<td align="center">' + set(item.demamSedang) + '</td>' +
+                        '<td align="center">' + set(item.menggigilSedang) + '</td>' +
+                        '<td align="center">' + set(item.gelisahSedang) + '</td>' +
+                        '<td align="center">' + set(item.peningkatanDetakJantungSedang) + '</td>' +
+                        '<td align="center">' + set(item.demamMengancam) + '</td>' +
+                        '<td align="center">' + set(item.menggigilSedang) + '</td>' +
+                        '<td align="center">' + set(item.gelisahSedang) + '</td>' +
+                        '<td align="center">' + set(item.peningkatanDetakJantungSedang) + '</td>' +
+                        '<td align="center">' + set(item.nafasCepatMengancam) + '</td>' +
+                        '<td align="center">' + set(item.urinMengancam) + '</td>' +
+                        '<td align="center">' + set(item.pendarahanJantungMengancam) + '</td>' +
+                        '<td align="center">' + set(item.kesadaranMengancam) + '</td>' +
+                        '</tr>';
+                });
+                $('#body_hd_catatan_tranfusi_darah').html(body);
+            }
+        });
+    }
 }
 
 function set(item) {
@@ -2278,93 +2284,95 @@ function set(item) {
 }
 
 function saveMonTransfusiDarah(jenis) {
-    var data = "";
-    var dataPasien = "";
-    dataPasien = {
-        'no_checkup' : noCheckup,
-        'id_detail_checkup' : idDetailCheckup,
-        'id_pasien' : idPasien,
-        'id_rm' : tempidRm
-    }
-    var va1 = $('#ct1').val();
-    var va2 = $('#ct2').val();
-    var va3 = $('#ct3').val();
-    var va4 = $('#ct4').val();
-    var va5 = $('#ct5').val();
-    var va6 = $('#ct6').val();
-    var va7 = $('[name=ct7]:checked').val();
-    var va8 = $('[name=ct8]:checked').val();
-    var va9 = $('[name=ct9]:checked').val();
-    var va10 = $('[name=ct10]:checked').val();
-    var va11 = $('[name=ct11]:checked').val();
-    var va12 = $('[name=ct12]:checked').val();
-    var va13 = $('[name=ct13]:checked').val();
-    var va14 = $('[name=ct14]:checked').val();
-    var va15 = $('[name=ct15]:checked').val();
-    var va16 = $('[name=ct16]:checked').val();
-    var va17 = $('[name=ct17]:checked').val();
-    var va18 = $('[name=ct18]:checked').val();
-    var va19 = $('[name=ct19]:checked').val();
-    var va20 = $('[name=ct20]:checked').val();
-    var va21 = $('[name=ct21]:checked').val();
-    var va22 = jenis;
-    var reaksi = $('#ct_rekasi').val();
+    if(!cekSession()){
+        var data = "";
+        var dataPasien = "";
+        dataPasien = {
+            'no_checkup' : noCheckup,
+            'id_detail_checkup' : idDetailCheckup,
+            'id_pasien' : idPasien,
+            'id_rm' : tempidRm
+        }
+        var va1 = $('#ct1').val();
+        var va2 = $('#ct2').val();
+        var va3 = $('#ct3').val();
+        var va4 = $('#ct4').val();
+        var va5 = $('#ct5').val();
+        var va6 = $('#ct6').val();
+        var va7 = $('[name=ct7]:checked').val();
+        var va8 = $('[name=ct8]:checked').val();
+        var va9 = $('[name=ct9]:checked').val();
+        var va10 = $('[name=ct10]:checked').val();
+        var va11 = $('[name=ct11]:checked').val();
+        var va12 = $('[name=ct12]:checked').val();
+        var va13 = $('[name=ct13]:checked').val();
+        var va14 = $('[name=ct14]:checked').val();
+        var va15 = $('[name=ct15]:checked').val();
+        var va16 = $('[name=ct16]:checked').val();
+        var va17 = $('[name=ct17]:checked').val();
+        var va18 = $('[name=ct18]:checked').val();
+        var va19 = $('[name=ct19]:checked').val();
+        var va20 = $('[name=ct20]:checked').val();
+        var va21 = $('[name=ct21]:checked').val();
+        var va22 = jenis;
+        var reaksi = $('#ct_rekasi').val();
 
-    if (va1 && va2 && va3 && va4 && va5 && reaksi != '') {
+        if (va1 && va2 && va3 && va4 && va5 && reaksi != '') {
 
-        data = {
-            'id_detail_checkup': idDetailCheckup,
-            'waktu': va1,
-            'tekanan_darah': replaceUnderLine(va2),
-            'nadi': va3,
-            'suhu': va4,
-            'rr': va5,
-            'tidak_ada_reaksi': va6,
-            'gatal': va7,
-            'urtikaria_berat_sedang': va8,
-            'kulit_kemerahan_sedang': va9,
-            'demam_sedang': va10,
-            'menggigil_sedang': va11,
-            'gelisah_sedang': va12,
-            'peningkatan_detak_jantung_sedang': va13,
-            'demam_mengancam': va14,
-            'menggigil_mengancam': va15,
-            'gelisah_mengancam': va16,
-            'peningkatan_detak_jantung_mengancam': va17,
-            'nafas_cepat_mengancam': va18,
-            'urin_mengancam': va19,
-            'pendarahan_jantung_mengancam': va20,
-            'kesadaran_mengancam': va21,
-            'keterangan': va22
-        };
+            data = {
+                'id_detail_checkup': idDetailCheckup,
+                'waktu': va1,
+                'tekanan_darah': replaceUnderLine(va2),
+                'nadi': va3,
+                'suhu': va4,
+                'rr': va5,
+                'tidak_ada_reaksi': va6,
+                'gatal': va7,
+                'urtikaria_berat_sedang': va8,
+                'kulit_kemerahan_sedang': va9,
+                'demam_sedang': va10,
+                'menggigil_sedang': va11,
+                'gelisah_sedang': va12,
+                'peningkatan_detak_jantung_sedang': va13,
+                'demam_mengancam': va14,
+                'menggigil_mengancam': va15,
+                'gelisah_mengancam': va16,
+                'peningkatan_detak_jantung_mengancam': va17,
+                'nafas_cepat_mengancam': va18,
+                'urin_mengancam': va19,
+                'pendarahan_jantung_mengancam': va20,
+                'kesadaran_mengancam': va21,
+                'keterangan': va22
+            };
 
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
-        $('#save_hd_catatan_tranfusi').hide();
-        $('#load_hd_catatan_tranfusi').show();
-        dwr.engine.setAsync(true);
-        MonitoringTransfusiDarahAction.saveMonitoringTransfusiDarah(result, pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_hd_catatan_tranfusi').show();
-                    $('#load_hd_catatan_tranfusi').hide();
-                    $('#modal-hd-catatan_tranfusi').modal('hide');
-                    $('#warning_hd_catatan_tranfusi_darah').show().fadeOut(5000);
-                    $('#msg_hd_catatan_tranfusi_darah').text("Berhasil menambahkan data monitoring...");
-                    getListMonTransfusiDarah();
-                } else {
-                    $('#save_hd_catatan_tranfusi').show();
-                    $('#load_hd_catatan_tranfusi').hide();
-                    $('#warning_hd_catatan_tranfusi').show().fadeOut(5000);
-                    $('#msg_hd_catatan_tranfusi').text(res.msg);
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_hd_catatan_tranfusi').hide();
+            $('#load_hd_catatan_tranfusi').show();
+            dwr.engine.setAsync(true);
+            MonitoringTransfusiDarahAction.saveMonitoringTransfusiDarah(result, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_hd_catatan_tranfusi').show();
+                        $('#load_hd_catatan_tranfusi').hide();
+                        $('#modal-hd-catatan_tranfusi').modal('hide');
+                        $('#warning_hd_catatan_tranfusi_darah').show().fadeOut(5000);
+                        $('#msg_hd_catatan_tranfusi_darah').text("Berhasil menambahkan data monitoring...");
+                        getListMonTransfusiDarah();
+                    } else {
+                        $('#save_hd_catatan_tranfusi').show();
+                        $('#load_hd_catatan_tranfusi').hide();
+                        $('#warning_hd_catatan_tranfusi').show().fadeOut(5000);
+                        $('#msg_hd_catatan_tranfusi').text(res.msg);
+                    }
                 }
-            }
-        });
+            });
 
-    } else {
-        $('#warning_hd_catatan_tranfusi').show().fadeOut(5000);
-        $('#msg_hd_catatan_tranfusi').text("Silahkan cek kembali data inputan anda...!");
-        $('#modal-hd-catatan_tranfusi').scrollTop(0);
+        } else {
+            $('#warning_hd_catatan_tranfusi').show().fadeOut(5000);
+            $('#msg_hd_catatan_tranfusi').text("Silahkan cek kembali data inputan anda...!");
+            $('#modal-hd-catatan_tranfusi').scrollTop(0);
+        }
     }
 }
 
@@ -2420,30 +2428,32 @@ function saveObservasi(jenis, ket){
             cek = true;
         }
         if (cek) {
-            var result = JSON.stringify(data);
-            var pasienData = JSON.stringify(dataPasien);
-            $('#save_hd_' + jenis).hide();
-            $('#load_hd_' + jenis).show();
-            dwr.engine.setAsync(true);
-            HemodialisaAction.saveObservasi(result, pasienData, {
-                callback: function (res) {
-                    if (res.status == "success") {
-                        $('#save_hd_' + jenis).show();
-                        $('#load_hd_' + jenis).hide();
-                        $('#modal-hd-' + jenis).modal('hide');
-                        $('#warning_hd_' + ket).show().fadeOut(5000);
-                        $('#msg_hd_' + ket).text("Berhasil menambahkan data hd...");
-                        $('#modal-hd-' + jenis).scrollTop(0);
-                        getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
-                    } else {
-                        $('#save_hd_' + jenis).show();
-                        $('#load_hd_' + jenis).hide();
-                        $('#warning_hd_' + jenis).show().fadeOut(5000);
-                        $('#msg_hd_' + jenis).text(res.msg);
-                        $('#modal-hd-' + jenis).scrollTop(0);
+            if(!cekSession()){
+                var result = JSON.stringify(data);
+                var pasienData = JSON.stringify(dataPasien);
+                $('#save_hd_' + jenis).hide();
+                $('#load_hd_' + jenis).show();
+                dwr.engine.setAsync(true);
+                HemodialisaAction.saveObservasi(result, pasienData, {
+                    callback: function (res) {
+                        if (res.status == "success") {
+                            $('#save_hd_' + jenis).show();
+                            $('#load_hd_' + jenis).hide();
+                            $('#modal-hd-' + jenis).modal('hide');
+                            $('#warning_hd_' + ket).show().fadeOut(5000);
+                            $('#msg_hd_' + ket).text("Berhasil menambahkan data hd...");
+                            $('#modal-hd-' + jenis).scrollTop(0);
+                            getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
+                        } else {
+                            $('#save_hd_' + jenis).show();
+                            $('#load_hd_' + jenis).hide();
+                            $('#warning_hd_' + jenis).show().fadeOut(5000);
+                            $('#msg_hd_' + jenis).text(res.msg);
+                            $('#modal-hd-' + jenis).scrollTop(0);
+                        }
                     }
-                }
-            })
+                });
+            }
         } else {
             $('#warning_hd_' + jenis).show().fadeOut(5000);
             $('#msg_hd_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -2454,17 +2464,18 @@ function saveObservasi(jenis, ket){
 }
 
 function detailObservasi(jenis){
-    if (jenis != '') {
-        var head = "";
-        var body = "";
-        var totalSkor = 0;
-        var first = "";
-        var last = "";
-        var tgl = "";
-        var cekData = false;
-        HemodialisaAction.getListObservasi(idDetailCheckup, jenis, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
+    if(!cekSession()){
+        if (jenis != '') {
+            var head = "";
+            var body = "";
+            var totalSkor = 0;
+            var first = "";
+            var last = "";
+            var tgl = "";
+            var cekData = false;
+            HemodialisaAction.getListObservasi(idDetailCheckup, jenis, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
                         body += '<tr>' +
                             '<td>' + item.waktu + '</td>' +
                             '<td>' + item.observasi + '</td>' +
@@ -2484,43 +2495,44 @@ function detailObservasi(jenis){
                             '</td>' +
                             '<td align="center">'+'<i onclick="conObs(\''+jenis+'\', \''+item.idObservasiTindakanHd+'\')" class="fa fa-trash hvr-grow" style="color: red; font-size: 18px"></i>'+'</td>'+
                             '</tr>';
-                    cekData = true;
-                    tgl = item.createdDate;
-                });
-            } else {
-                body = '<tr>' +
-                    '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
-            if (cekData) {
-                head = '<tr style="font-weight: bold">' +
-                    '<td>Waktu</td>' +
-                    '<td>Obs</td>' +
-                    '<td>QB</td>' +
-                    '<td>Tensi</td>' +
-                    '<td>Nadi</td>' +
-                    '<td>Suhu</td>' +
-                    '<td>RR</td>' +
-                    '<td>CM</td>' +
-                    '<td>MM</td>' +
-                    '<td>M</td>' +
-                    '<td>UF</td>' +
-                    '<td>Keterangan</td>' +
-                    '<td width="15%">Paraf</td>' +
-                    '<td align="center">Action</td>' +
-                    '</tr>';
-            }
-            var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead>' + head + '</thead>' +
-                '<tbody>' + first + body + last + '</tbody>' +
-                '</table>';
+                        cekData = true;
+                        tgl = item.createdDate;
+                    });
+                } else {
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
+                        '</tr>';
+                }
+                if (cekData) {
+                    head = '<tr style="font-weight: bold">' +
+                        '<td>Waktu</td>' +
+                        '<td>Obs</td>' +
+                        '<td>QB</td>' +
+                        '<td>Tensi</td>' +
+                        '<td>Nadi</td>' +
+                        '<td>Suhu</td>' +
+                        '<td>RR</td>' +
+                        '<td>CM</td>' +
+                        '<td>MM</td>' +
+                        '<td>M</td>' +
+                        '<td>UF</td>' +
+                        '<td>Keterangan</td>' +
+                        '<td width="15%">Paraf</td>' +
+                        '<td align="center">Action</td>' +
+                        '</tr>';
+                }
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tbody>' + first + body + last + '</tbody>' +
+                    '</table>';
 
-            var newRow = $('<tr id="del_hd_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-            newRow.insertAfter($('table').find('#row_hd_' + jenis));
-            var url = contextPath + '/pages/images/minus-allnew.png';
-            $('#btn_hd_' + jenis).attr('src', url);
-            $('#btn_hd_' + jenis).attr('onclick', 'delRowObservasi(\'' + jenis + '\')');
-        });
+                var newRow = $('<tr id="del_hd_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_hd_' + jenis));
+                var url = contextPath + '/pages/images/minus-allnew.png';
+                $('#btn_hd_' + jenis).attr('src', url);
+                $('#btn_hd_' + jenis).attr('onclick', 'delRowObservasi(\'' + jenis + '\')');
+            });
+        }
     }
 }
 
@@ -2583,48 +2595,52 @@ function conObs(jenis, id){
 
 function delObs(jenis, id) {
     $('#modal-confirm-rm').modal('hide');
-    startSpin('del_'+jenis);
-    dwr.engine.setAsync(true);
-    HemodialisaAction.deleteObservasi(id, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopSpin('del_'+jenis);
-                $('#warning_hd_monitoring_hd').show().fadeOut(5000);
-                $('#msg_hd_monitoring_hd').text("Berhasil menghapus data...");
-            } else {
-                stopSpin('del_'+jenis);
-                $('#modal-hd-monitoring_hd').scrollTop(0);
-                $('#modal_warning').show().fadeOut(5000);
-                $('#msg_warning').text(res.msg);
+    if(!cekSession()){
+        startSpin('del_'+jenis);
+        dwr.engine.setAsync(true);
+        HemodialisaAction.deleteObservasi(id, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopSpin('del_'+jenis);
+                    $('#warning_hd_monitoring_hd').show().fadeOut(5000);
+                    $('#msg_hd_monitoring_hd').text("Berhasil menghapus data...");
+                } else {
+                    stopSpin('del_'+jenis);
+                    $('#modal-hd-monitoring_hd').scrollTop(0);
+                    $('#modal_warning').show().fadeOut(5000);
+                    $('#msg_warning').text(res.msg);
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 function delHD(jenis, ket) {
     $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startSpin('delete_'+jenis);
-    dwr.engine.setAsync(true);
-    HemodialisaAction.saveDelete(idDetailCheckup, jenis, result, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopSpin('delete_'+jenis);
-                $('#modal-hd-'+ket).scrollTop(0);
-                $('#warning_hd_' + ket).show().fadeOut(5000);
-                $('#msg_hd_' + ket).text("Berhasil menghapus data...");
-            } else {
-                stopSpin('delete_'+jenis);
-                $('#modal-hd-'+ket).scrollTop(0);
-                $('#warn_'+ket).show().fadeOut(5000);
-                $('#msg_'+ket).text(res.msg);
-            }
+    if(!cekSession()){
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
-    });
+        var result = JSON.stringify(dataPasien);
+        startSpin('delete_'+jenis);
+        dwr.engine.setAsync(true);
+        HemodialisaAction.saveDelete(idDetailCheckup, jenis, result, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopSpin('delete_'+jenis);
+                    $('#modal-hd-'+ket).scrollTop(0);
+                    $('#warning_hd_' + ket).show().fadeOut(5000);
+                    $('#msg_hd_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopSpin('delete_'+jenis);
+                    $('#modal-hd-'+ket).scrollTop(0);
+                    $('#warn_'+ket).show().fadeOut(5000);
+                    $('#msg_'+ket).text(res.msg);
+                }
+            }
+        });
+    }
 }

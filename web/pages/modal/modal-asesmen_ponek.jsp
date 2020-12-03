@@ -281,7 +281,7 @@
                         <div class="form-group">
                             <label class="col-md-5">Pemakaian obat saat ini</label>
                             <div class="col-md-7">
-                                <input class="form-control alergi-pasien" id="po27">
+                                <input class="form-control" id="po27">
                             </div>
                         </div>
                     </div>
@@ -289,7 +289,7 @@
                         <div class="form-group">
                             <label class="col-md-5">Riwayat Anternal Care</label>
                             <div class="col-md-7">
-                                <input class="form-control alergi-pasien" id="po28">
+                                <input class="form-control" id="po28">
                             </div>
                         </div>
                     </div>
@@ -297,7 +297,7 @@
                         <div class="form-group">
                             <label class="col-md-5">Riwayat Obstetri</label>
                             <div class="col-md-7">
-                                <textarea class="form-control alergi-pasien" id="po29"></textarea>
+                                <textarea class="form-control" id="po29"></textarea>
                             </div>
                         </div>
                     </div>
@@ -305,7 +305,7 @@
                         <div class="form-group">
                             <label class="col-md-5">Pemeriksaan Penunjang</label>
                             <div class="col-md-7">
-                                <textarea class="form-control alergi-pasien" id="po30"></textarea>
+                                <textarea class="form-control penunjang-medis" id="po30"></textarea>
                             </div>
                         </div>
                     </div>
@@ -313,7 +313,7 @@
                         <div class="form-group">
                             <label class="col-md-5">Diagnosa Kerja/Diagnosa Banding</label>
                             <div class="col-md-7">
-                                <textarea class="form-control alergi-pasien" id="po31"></textarea>
+                                <textarea class="form-control" id="po31"></textarea>
                             </div>
                         </div>
                     </div>
@@ -321,7 +321,7 @@
                         <div class="form-group">
                             <label class="col-md-5">Tindakan Terapi</label>
                             <div class="col-md-7">
-                                <textarea class="form-control alergi-pasien" id="po32"></textarea>
+                                <textarea class="form-control" id="po32"></textarea>
                             </div>
                         </div>
                     </div>

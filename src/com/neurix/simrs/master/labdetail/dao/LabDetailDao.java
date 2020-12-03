@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.labdetail.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
 import com.neurix.simrs.master.labdetail.model.LabDetail;
@@ -29,7 +30,6 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
 
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImSimrsLabDetailEntity.class);
 
-        // Get Collection and sorting
         if (mapCriteria!=null) {
             if (mapCriteria.get("id_lab_detail")!=null) {
                 criteria.add(Restrictions.eq("idLabDetail", (String) mapCriteria.get("id_lab_detail")));
@@ -40,12 +40,6 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
             if (mapCriteria.get("nama_detail_periksa")!=null) {
                 criteria.add(Restrictions.ilike("namaDetailPeriksa", "%" + (String)mapCriteria.get("nama_detail_periksa") + "%"));
             }
-//            if (mapCriteria.get("satuan")!=null) {
-//                criteria.add(Restrictions.eq("satuan", (String) mapCriteria.get("satuan")));
-//            }
-//            if (mapCriteria.get("keterangan_acuan")!=null) {
-//                criteria.add(Restrictions.eq("ketentuanAcuan", (String) mapCriteria.get("keterangan_acuan")));
-//            }
         }
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
@@ -218,5 +212,15 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
             }
         }
         return res;
+    }
+
+    public List<ImSimrsLabDetailEntity> cekDataLabDetail(String idParameter, String idLab) throws HibernateException {
+        List<ImSimrsLabDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsLabDetailEntity.class)
+                .add(Restrictions.eq("idLab", idLab))
+                .add(Restrictions.eq("idParameterPemeriksaan", idParameter))
+                .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
     }
 }

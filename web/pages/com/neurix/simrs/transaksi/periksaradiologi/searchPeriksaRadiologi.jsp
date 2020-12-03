@@ -190,7 +190,7 @@
                                     <td><s:property value="namaPasien"/></td>
                                     <td><s:property value="labName"/></td>
                                     <td align="center">
-                                        <s:if test='#row.approveFlag == "Y"'>
+                                        <s:if test='#row.statusPeriksa == "3"'>
                                             <a target="_blank" href="printRadiologi_radiologi.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idPeriksaLab"/>">
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer; ">
                                             </a>
