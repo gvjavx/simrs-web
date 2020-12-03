@@ -1658,6 +1658,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 String strWhere = "";
 
                 //jika reproses orang berdasarkan NIP
+                bean.setNip("150219790282");
                 if(bean.getNip()!=null&&!"".equalsIgnoreCase(bean.getNip())){
                     strWhere = "\n AND pegawai.nip='"+bean.getNip()+"' \n";
                 }
@@ -1858,6 +1859,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     }
                     // cek apakah anak > 25 tahun
                     payrollEntity.setJumlahAnak(cekJumlahAnak(payrollEntity.getNip(), payrollEntity.getBranchId()));
+                    payroll.setJumlahAnak(payrollEntity.getJumlahAnak());
                     payroll.setGender(payrollEntity.getGender());
                     payroll.setDanaPensiunName(payrollEntity.getDanaPensiunName());
                     payroll.setFlagPjs(payrollEntity.getFlagPjs());

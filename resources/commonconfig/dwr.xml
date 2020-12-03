@@ -26,6 +26,7 @@
             <param name="class" value="com.neurix.authorization.role.action.RoleAction"/>
         </create>
         <convert converter="bean" match="com.neurix.authorization.role.model.Roles"/>
+        <convert converter="bean" match="com.neurix.authorization.role.model.ImRoles"/>
         <create creator="new">
             <param name="class" value="com.neurix.authorization.role.action.RoleFuncAction"/>
         </create>
@@ -853,6 +854,12 @@
         <create creator="new">
             <param name="class" value="com.neurix.simrs.transaksi.initdashboard.action.InitDashboardAction"/>
         </create>
+
+      <create creator="new">
+          <param name="class" value="com.neurix.simrs.master.kandunganObat.action.KandunganObatAction"/>
+      </create>
+      <convert converter="bean" match="com.neurix.simrs.master.kandunganObat.model.KandunganObat"/>
+      <convert converter="bean" match="com.neurix.simrs.master.kandunganObat.model.ImSimrsKandunganObatEntity"/>
 
     </allow>
 </dwr>

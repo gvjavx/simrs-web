@@ -37,8 +37,10 @@ public class UserRoleDao extends GenericDao<ImUsersRoles,ImUsersRolesPK> {
             if (mapCriteria.get("role_id")!=null) {
                 criteria.add(Restrictions.eq("primaryKey.roleId", (Long) mapCriteria.get("role_id")));
             }
+            if (mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }
         }
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         List<ImUsersRoles> results = criteria.list();
         return results;
     }

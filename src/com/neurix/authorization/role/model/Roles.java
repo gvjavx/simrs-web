@@ -17,6 +17,15 @@ public class Roles extends BaseModel implements Serializable, Comparable<Roles> 
     private Long roleId;
     private String roleName;
     private String stRoleId;
+    private String tipePelayanan;
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
 
     //to get all url per function, for security reason --> filter url access
     private List<Functions> listFunctions;

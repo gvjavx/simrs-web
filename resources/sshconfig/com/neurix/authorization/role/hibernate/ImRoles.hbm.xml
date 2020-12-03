@@ -34,6 +34,10 @@
             <column name="flag" sql-type="varchar" length="1"/>
         </property>
 
+        <property name="tipePelayanan">
+            <column name="tipe_pelayanan" sql-type="varchar" length="100"/>
+        </property>
+
         <set name="imUser" table="im_users_roles" where="flag='Y'"
         	inverse="true" lazy="true" fetch="select" cascade="all" >
             <key>

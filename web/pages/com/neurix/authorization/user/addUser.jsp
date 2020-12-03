@@ -170,6 +170,8 @@
 
     </script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/RoleAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PelayananAction.js"/>'></script>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -225,7 +227,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.password">Confirmation Password :</label>
+                                        <label class="control-label col-sm-5" for="users.password">Confirm Password :</label>
                                         <div class="col-sm-3">
                                             <s:password id="confirmPassword" name="users.confirmPassword" required="true" cssClass="form-control"/>
                                         </div>
@@ -448,23 +450,31 @@
 
     function showPelayanan(role){
         var branch = $('#branchid').val();
-        if(role != '' && branch != ''){
-            if('34' == role){
+        if (branch == null || branch == "")
+            alert("Pilih Unit Dahulu");
+        RoleAction.getRoleById(role, function (res) {
+            console.log(res);
+            if(res.tipePelayanan != "" && res.tipePelayanan != null){
                 $('#form-pelayanan').show();
-                listPelayanan(branch);
-            }else if('35' == role){
-                $('#form-pelayanan').show();
-                listPelayananIgd(branch);
-            }else if ('36' == role){
-                $('#form-pelayanan').show();
-                listApotek(branch);
-            }else if ('37' == role){
-                $('#form-pelayanan').show();
-                listGudangObat(branch);
-            }else{
-                $('#form-pelayanan').hide();
+                getListPelayananByBranchAndTipe(branch, res.tipePelayanan);
             }
-        }
+
+        });
+    }
+
+    function getListPelayananByBranchAndTipe(branch, tipe) {
+        var option = "";
+        PelayananAction.getListPelayananByBranchAndTipe(branch, tipe, function (response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
+                });
+            } else {
+                option = option;
+            }
+            $('#pelayananId').html(option);
+        });
     }
 
     function listApotek(branch){

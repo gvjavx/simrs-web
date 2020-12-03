@@ -3,6 +3,8 @@ package com.neurix.authorization.role.model;
 import com.neurix.authorization.function.model.ImFunctions;
 import com.neurix.authorization.user.model.ImUsers;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -114,6 +116,16 @@ public class ImRoles implements Serializable {
 
     public void setImFunction(Set<ImFunctions> imFunction) {
         this.imFunction = imFunction;
+    }
+
+    private String tipePelayanan;
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
     }
 
     @Override
