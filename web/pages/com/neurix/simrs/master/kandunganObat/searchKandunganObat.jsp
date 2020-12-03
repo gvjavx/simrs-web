@@ -139,41 +139,45 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Kandungan Obat</h3>
                     </div>
 
-                    <div class="box-body" style="width: 75%">
-                        <table id="myTable" class="table table-bordered" style="font-size: 13px; width: 70%;">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td>ID</td>
-                                <td>Kandungan Obat</td>
-                                <td>Updated By</td>
-                                <s:if test='kandunganObat.isKp == "Y" && kandunganObat.flag == "Y"'>
-                                    <td>Edit</td>
-                                    <td>Delete</td>
-                                </s:if>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <s:iterator value="#session.listOfResult" var="row">
-                                <tr class="tb-item">
-                                    <td><s:property value="idKandungan"/></td>
-                                    <td><s:property value="kandungan"/></td>
-                                    <td><s:property value="lastUpdateWho"/></td>
-                                    <s:if test='kandunganObat.isKp == "Y" && kandunganObat.flag == "Y"'>
-                                        <td align="center">
-                                            <a href="javascript:" class="item-edit" data="<s:property value="idKandungan"/>">
-                                                <img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>
-                                            </a>
-                                        </td>
-                                        <td align="center">
-                                            <a href="javascript:" class="item-delete" data="<s:property value="idKandungan"/>">
-                                                <img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_delete'>
-                                            </a>
-                                        </td>
-                                    </s:if>
-                                </tr>
-                            </s:iterator>
-                            </tbody>
-                        </table>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-8">
+                                <table id="myTable" class="table table-bordered" style="font-size: 13px;">
+                                    <thead>
+                                    <tr bgcolor="#90ee90">
+                                        <td>ID</td>
+                                        <td>Kandungan Obat</td>
+                                        <td>Updated By</td>
+                                        <s:if test='kandunganObat.isKp == "Y" && kandunganObat.flag == "Y"'>
+                                            <td>Edit</td>
+                                            <td>Delete</td>
+                                        </s:if>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <s:iterator value="#session.listOfResult" var="row">
+                                        <tr class="tb-item">
+                                            <td><s:property value="idKandungan"/></td>
+                                            <td><s:property value="kandungan"/></td>
+                                            <td><s:property value="lastUpdateWho"/></td>
+                                            <s:if test='kandunganObat.isKp == "Y" && kandunganObat.flag == "Y"'>
+                                                <td align="center">
+                                                    <a href="javascript:" class="item-edit" data="<s:property value="idKandungan"/>">
+                                                        <img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>
+                                                    </a>
+                                                </td>
+                                                <td align="center">
+                                                    <a href="javascript:" class="item-delete" data="<s:property value="idKandungan"/>">
+                                                        <img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_delete'>
+                                                    </a>
+                                                </td>
+                                            </s:if>
+                                        </tr>
+                                    </s:iterator>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
