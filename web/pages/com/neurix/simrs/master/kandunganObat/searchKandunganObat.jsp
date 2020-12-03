@@ -70,7 +70,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Flag</label>
+                                    <label class="control-label col-sm-4">Flag :</label>
                                     <div class="col-sm-4">
                                         <s:select cssClass="form-control" cssStyle="margin-top: 7px" list="#{'N':'Non Active'}" headerKey="Y" headerValue="Active" name="kandunganObat.flag"/>
                                     </div>
@@ -90,7 +90,7 @@
 
                                         <s:if test='kandunganObat.isKp == "Y"'>
                                             <s:url var="urlAdd" namespace="/kandunganObat" action="add_kandunganObat" escapeAmp="false"></s:url>
-                                            <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                            <sj:a cssClass="btn btn-primary" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                 <i class="fa fa-plus"></i>
                                                 Add Kandungan Obat
                                             </sj:a>
@@ -124,7 +124,7 @@
                                         </sj:dialog>
 
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true" resizable="false" cssStyle="text-align:left;"
-                                                   height="450" width="600" autoOpen="false" title="Add Kode Rekening"
+                                                   height="auto" width="600" autoOpen="false" title="Add Kandungan Obat"
                                         >
                                             <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
@@ -139,19 +139,17 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Kandungan Obat</h3>
                     </div>
 
-                    <div class="box-body">
-                        <table id="tb_kandunganObat" class="table table-bordered" style="font-size: 13px;">
+                    <div class="box-body" align="center">
+                        <table id="tb_kandunganObat" class="table table-bordered" style="font-size: 13px; width: 70%;">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID</td>
                                 <td>Kandungan Obat</td>
-                                <td>Created Date</td>
-                                <td>Created By</td>
-                                <td>Last Update</td>
+                                <%--<td>Created Date</td>--%>
+                                <%--<td>Created By</td>--%>
+                                <%--<td>Last Update</td>--%>
                                 <td>Updated By</td>
-                                <td>Flag</td>
-                                <td>Action</td>
-                                <s:if test='kandunganObat.isKp == "Y"'>
+                                <s:if test='kandunganObat.isKp == "Y" && kandunganObat.flag == "Y"'>
                                     <td>Edit</td>
                                     <td>Delete</td>
                                 </s:if>
@@ -162,13 +160,11 @@
                                 <tr class="tb-item">
                                     <td><s:property value="idKandungan"/></td>
                                     <td><s:property value="kandungan"/></td>
-                                    <td><s:property value="createdDate"/></td>
-                                    <td><s:property value="createdWho"/></td>
-                                    <td><s:property value="lastUpdate"/></td>
+                                    <%--<td><s:property value="createdDate"/></td>--%>
+                                    <%--<td><s:property value="createdWho"/></td>--%>
+                                    <%--<td><s:property value="lastUpdate"/></td>--%>
                                     <td><s:property value="lastUpdateWho"/></td>
-                                    <td><s:property value="flag"/></td>
-                                    <td><s:property value="action"/></td>
-                                    <s:if test='kandunganObat.isKp == "Y"'>
+                                    <s:if test='kandunganObat.isKp == "Y" && kandunganObat.flag == "Y"'>
                                         <td align="center">
                                             <a href="javascript:" class="item-edit" data="<s:property value="idKandungan"/>">
                                                 <img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>
@@ -197,7 +193,7 @@
     <div class="modal-dialog modal-md">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-success">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Edit Data</h4>
             </div>
@@ -230,7 +226,7 @@
     <div class="modal-dialog modal-md">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-success">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Delete Data</h4>
             </div>
