@@ -1117,18 +1117,18 @@ public class UserBoImpl implements UserBo {
 
             if (listOfUsers != null) {
                 User resultUsers;
-                for (ImUsers imUsers : listOfUsers) {
+                for (ImUsers imUser : listOfUsers) {
 
-                    if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                    if (imUser.getImRoles()!=null && !imUser.getImRoles().isEmpty()) {
 
-                        List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
+                        List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUser.getImAreasBranchesUsers());
 
                         for (ImAreasBranchesUsers imBranches : listOfImBranches) {
                             if (branchId.equalsIgnoreCase(imBranches.getImBranch().getPrimaryKey().getId())) {
                                 resultUsers = new User();
 
-                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                resultUsers.setUsername(imUsers.getUserName());
+                                resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                                resultUsers.setUsername(imUser.getUserName());
 
                                 listOfResultUsers.add(resultUsers);
                             }
@@ -1182,12 +1182,12 @@ public class UserBoImpl implements UserBo {
 
             if (listOfUsers != null) {
                 User resultUsers;
-                for (ImUsers imUsers : listOfUsers) {
+                for (ImUsers imUser : listOfUsers) {
 
-                    if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                    if (imUser.getImRoles()!=null && !imUser.getImRoles().isEmpty()) {
 
                         boolean isFound = false;
-                        Set<ImRoles> listRoles = imUsers.getImRoles();
+                        Set<ImRoles> listRoles = imUser.getImRoles();
                         for (ImRoles imRoles : listRoles) {
                             if (imRoles.getRoleId() == lRoleId) {
                                 isFound = true;
@@ -1196,14 +1196,14 @@ public class UserBoImpl implements UserBo {
 
                         if (isFound) {
 
-                            List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
+                            List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUser.getImAreasBranchesUsers());
 
                             for (ImAreasBranchesUsers imBranches : listOfImBranches) {
                                 if (branchId.equalsIgnoreCase(imBranches.getImBranch().getPrimaryKey().getId())) {
                                     resultUsers = new User();
 
-                                    resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                    resultUsers.setUsername(imUsers.getUserName());
+                                    resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                                    resultUsers.setUsername(imUser.getUserName());
 
                                     listOfResultUsers.add(resultUsers);
                                 }
@@ -1256,14 +1256,14 @@ public class UserBoImpl implements UserBo {
 
             if (listOfUsers != null) {
                 User resultUsers;
-                for (ImUsers imUsers : listOfUsers) {
+                for (ImUsers imUser : listOfUsers) {
 
-                    if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                    if (imUser.getImRoles()!=null && !imUser.getImRoles().isEmpty()) {
 
                         resultUsers = new User();
 
-                        resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                        resultUsers.setUsername(imUsers.getUserName());
+                        resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                        resultUsers.setUsername(imUser.getUserName());
 
                         listOfResultUsers.add(resultUsers);
 
@@ -1295,18 +1295,18 @@ public class UserBoImpl implements UserBo {
 
         if (imUsersEntityList != null) {
             User resultUsers;
-            for (ImUsers imUsers : imUsersEntityList) {
+            for (ImUsers imUser : imUsersEntityList) {
 
-                if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                if (imUser.getImRoles()!=null && !imUser.getImRoles().isEmpty()) {
 
-                    List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
+                    List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUser.getImAreasBranchesUsers());
 
                     for (ImAreasBranchesUsers imBranches : listOfImBranches) {
                         if (pabrikGula.equalsIgnoreCase(imBranches.getImBranch().getPrimaryKey().getId())) {
                             resultUsers = new User();
 
-                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                            resultUsers.setUsername(imUsers.getUserName());
+                            resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                            resultUsers.setUsername(imUser.getUserName());
 
                             listComboOpsGps.add(resultUsers);
                         }
@@ -1339,18 +1339,18 @@ public class UserBoImpl implements UserBo {
 
         if (imUsersEntityList != null) {
             User resultUsers;
-            for (ImUsers imUsers : imUsersEntityList) {
+            for (ImUsers imUser : imUsersEntityList) {
 
-                if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                if (imUser.getImRoles()!=null && !imUser.getImRoles().isEmpty()) {
 
-                    List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
+                    List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUser.getImAreasBranchesUsers());
 
                     for (ImAreasBranchesUsers imBranches : listOfImBranches) {
                         if (pabrikGula.equalsIgnoreCase(imBranches.getImBranch().getPrimaryKey().getId())) {
                             resultUsers = new User();
 
-                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                            resultUsers.setUsername(imUsers.getUserName());
+                            resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                            resultUsers.setUsername(imUser.getUserName());
 
                             listComboAsmud.add(resultUsers);
                         }
@@ -1383,18 +1383,18 @@ public class UserBoImpl implements UserBo {
 
         if (imUsersEntityList != null) {
             User resultUsers;
-            for (ImUsers imUsers : imUsersEntityList) {
+            for (ImUsers imUser : imUsersEntityList) {
 
-                if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                if (imUser.getImRoles()!=null && !imUser.getImRoles().isEmpty()) {
 
-                    List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
+                    List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUser.getImAreasBranchesUsers());
 
                     for (ImAreasBranchesUsers imBranches : listOfImBranches) {
                         if (pabrikGula.equalsIgnoreCase(imBranches.getImBranch().getPrimaryKey().getId())) {
                             resultUsers = new User();
 
-                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                            resultUsers.setUsername(imUsers.getUserName());
+                            resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                            resultUsers.setUsername(imUser.getUserName());
 
                             listComboAsman.add(resultUsers);
                         }
@@ -1427,18 +1427,18 @@ public class UserBoImpl implements UserBo {
 
         if (imUsersEntityList != null) {
             User resultUsers;
-            for (ImUsers imUsers : imUsersEntityList) {
+            for (ImUsers imUser : imUsersEntityList) {
 
-                if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                if (imUser.getImRoles()!=null && !imUser.getImRoles().isEmpty()) {
 
-                    List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
+                    List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUser.getImAreasBranchesUsers());
 
                     for (ImAreasBranchesUsers imBranches : listOfImBranches) {
                         if (pabrikGula.equalsIgnoreCase(imBranches.getImBranch().getPrimaryKey().getId())) {
                             resultUsers = new User();
 
-                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                            resultUsers.setUsername(imUsers.getUserName());
+                            resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                            resultUsers.setUsername(imUser.getUserName());
 
                             listComboMantan.add(resultUsers);
                         }
@@ -1745,16 +1745,16 @@ public class UserBoImpl implements UserBo {
 
             if (listOfUsers != null) {
                 User resultUsers;
-                for (ImUsers imUsers : listOfUsers) {
+                for (ImUsers imUser : listOfUsers) {
 
                     if (searchUsers.getRoleId() != null && !"".equalsIgnoreCase(searchUsers.getRoleId())) {
 
-                        if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
-                            List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsers.getImRoles());
+                        if (imUser.getImRoles()!=null && !imUser.getImRoles().isEmpty()) {
+                            List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUser.getImRoles());
                             ImRoles itemImRoles = listOfImRoles.get(0);
                             if (itemImRoles.getRoleId().toString().equalsIgnoreCase(searchUsers.getRoleId())) { //jika search berdasarkan role
 
-                                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
+                                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUser.getImAreasBranchesUsers());
 
                                 if (imAreasBranchesUsersList!=null) {
 
@@ -1769,13 +1769,13 @@ public class UserBoImpl implements UserBo {
                                                 if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
 
                                                     resultUsers = new User();
-                                                    resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                                    resultUsers.setUsername(imUsers.getUserName());
-                                                    resultUsers.setPassword(imUsers.getPassword());
-                                                    resultUsers.setEmail(imUsers.getEmail());
+                                                    resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                                                    resultUsers.setUsername(imUser.getUserName());
+                                                    resultUsers.setPassword(imUser.getPassword());
+                                                    resultUsers.setEmail(imUser.getEmail());
 
-                                                    resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                                    resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+                                                    resultUsers.setPositionId(imUser.getImPosition().getPositionId().toString());
+                                                    resultUsers.setPositionName(imUser.getImPosition().getPositionName());
 
                                                     resultUsers.setRoleId(itemImRoles.getRoleId().toString());
                                                     resultUsers.setRoleName(itemImRoles.getRoleName());
@@ -1785,21 +1785,21 @@ public class UserBoImpl implements UserBo {
                                                     resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
                                                     resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
 
-                                                    resultUsers.setFlag(imUsers.getFlag());
-                                                    resultUsers.setAction(imUsers.getAction());
-                                                    resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                                    resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                                    resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                                    resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+                                                    resultUsers.setFlag(imUser.getFlag());
+                                                    resultUsers.setAction(imUser.getAction());
+                                                    resultUsers.setCreatedDate(imUser.getCreatedDate());
+                                                    resultUsers.setLastUpdate(imUser.getLastUpdate());
+                                                    resultUsers.setCreatedWho(imUser.getCreatedWho());
+                                                    resultUsers.setLastUpdateWho(imUser.getLastUpdateWho());
 
 
                                                     StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
                                                     imageUpload.append(ServletActionContext.getRequest().getContextPath());
                                                     imageUpload.append(CommonUtil.getUploadFolderValue() + CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                                    if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+                                                    if (imUser.getPhotoUrl() == null || "".equalsIgnoreCase(imUser.getPhotoUrl())) {
                                                         imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
                                                     } else {
-                                                        imageUpload.append(imUsers.getPhotoUrl());
+                                                        imageUpload.append(imUser.getPhotoUrl());
                                                     }
                                                     imageUpload.append("\" border=\"none\" >");
 
@@ -1812,13 +1812,13 @@ public class UserBoImpl implements UserBo {
                                             } else {
 
                                                 resultUsers = new User();
-                                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                                resultUsers.setUsername(imUsers.getUserName());
-                                                resultUsers.setPassword(imUsers.getPassword());
-                                                resultUsers.setEmail(imUsers.getEmail());
+                                                resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                                                resultUsers.setUsername(imUser.getUserName());
+                                                resultUsers.setPassword(imUser.getPassword());
+                                                resultUsers.setEmail(imUser.getEmail());
 
-                                                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+                                                resultUsers.setPositionId(imUser.getImPosition().getPositionId().toString());
+                                                resultUsers.setPositionName(imUser.getImPosition().getPositionName());
 
                                                 resultUsers.setRoleId(itemImRoles.getRoleId().toString());
                                                 resultUsers.setRoleName(itemImRoles.getRoleName());
@@ -1828,21 +1828,21 @@ public class UserBoImpl implements UserBo {
                                                 resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
                                                 resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
 
-                                                resultUsers.setFlag(imUsers.getFlag());
-                                                resultUsers.setAction(imUsers.getAction());
-                                                resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                                resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                                resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+                                                resultUsers.setFlag(imUser.getFlag());
+                                                resultUsers.setAction(imUser.getAction());
+                                                resultUsers.setCreatedDate(imUser.getCreatedDate());
+                                                resultUsers.setLastUpdate(imUser.getLastUpdate());
+                                                resultUsers.setCreatedWho(imUser.getCreatedWho());
+                                                resultUsers.setLastUpdateWho(imUser.getLastUpdateWho());
 
 
                                                 StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
                                                 imageUpload.append(ServletActionContext.getRequest().getContextPath());
                                                 imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+                                                if (imUser.getPhotoUrl() == null || "".equalsIgnoreCase(imUser.getPhotoUrl())) {
                                                     imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
                                                 } else {
-                                                    imageUpload.append(imUsers.getPhotoUrl());
+                                                    imageUpload.append(imUser.getPhotoUrl());
                                                 }
                                                 imageUpload.append("\" border=\"none\" >");
 
@@ -1858,13 +1858,13 @@ public class UserBoImpl implements UserBo {
                                         if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
                                             if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
                                                 resultUsers = new User();
-                                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                                resultUsers.setUsername(imUsers.getUserName());
-                                                resultUsers.setPassword(imUsers.getPassword());
-                                                resultUsers.setEmail(imUsers.getEmail());
+                                                resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                                                resultUsers.setUsername(imUser.getUserName());
+                                                resultUsers.setPassword(imUser.getPassword());
+                                                resultUsers.setEmail(imUser.getEmail());
 
-                                                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+                                                resultUsers.setPositionId(imUser.getImPosition().getPositionId().toString());
+                                                resultUsers.setPositionName(imUser.getImPosition().getPositionName());
 
                                                 resultUsers.setRoleId(itemImRoles.getRoleId().toString());
                                                 resultUsers.setRoleName(itemImRoles.getRoleName());
@@ -1874,21 +1874,21 @@ public class UserBoImpl implements UserBo {
                                                 resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
                                                 resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
 
-                                                resultUsers.setFlag(imUsers.getFlag());
-                                                resultUsers.setAction(imUsers.getAction());
-                                                resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                                resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                                resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+                                                resultUsers.setFlag(imUser.getFlag());
+                                                resultUsers.setAction(imUser.getAction());
+                                                resultUsers.setCreatedDate(imUser.getCreatedDate());
+                                                resultUsers.setLastUpdate(imUser.getLastUpdate());
+                                                resultUsers.setCreatedWho(imUser.getCreatedWho());
+                                                resultUsers.setLastUpdateWho(imUser.getLastUpdateWho());
 
 
                                                 StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
                                                 imageUpload.append(ServletActionContext.getRequest().getContextPath());
                                                 imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+                                                if (imUser.getPhotoUrl() == null || "".equalsIgnoreCase(imUser.getPhotoUrl())) {
                                                     imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
                                                 } else {
-                                                    imageUpload.append(imUsers.getPhotoUrl());
+                                                    imageUpload.append(imUser.getPhotoUrl());
                                                 }
                                                 imageUpload.append("\" border=\"none\" >");
 
@@ -1899,13 +1899,13 @@ public class UserBoImpl implements UserBo {
                                         } else {
 
                                             resultUsers = new User();
-                                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                            resultUsers.setUsername(imUsers.getUserName());
-                                            resultUsers.setPassword(imUsers.getPassword());
-                                            resultUsers.setEmail(imUsers.getEmail());
+                                            resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                                            resultUsers.setUsername(imUser.getUserName());
+                                            resultUsers.setPassword(imUser.getPassword());
+                                            resultUsers.setEmail(imUser.getEmail());
 
-                                            resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                            resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+                                            resultUsers.setPositionId(imUser.getImPosition().getPositionId().toString());
+                                            resultUsers.setPositionName(imUser.getImPosition().getPositionName());
 
                                             resultUsers.setRoleId(itemImRoles.getRoleId().toString());
                                             resultUsers.setRoleName(itemImRoles.getRoleName());
@@ -1915,21 +1915,21 @@ public class UserBoImpl implements UserBo {
                                             resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
                                             resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
 
-                                            resultUsers.setFlag(imUsers.getFlag());
-                                            resultUsers.setAction(imUsers.getAction());
-                                            resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                            resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                            resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                            resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+                                            resultUsers.setFlag(imUser.getFlag());
+                                            resultUsers.setAction(imUser.getAction());
+                                            resultUsers.setCreatedDate(imUser.getCreatedDate());
+                                            resultUsers.setLastUpdate(imUser.getLastUpdate());
+                                            resultUsers.setCreatedWho(imUser.getCreatedWho());
+                                            resultUsers.setLastUpdateWho(imUser.getLastUpdateWho());
 
 
                                             StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
                                             imageUpload.append(ServletActionContext.getRequest().getContextPath());
                                             imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                            if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+                                            if (imUser.getPhotoUrl() == null || "".equalsIgnoreCase(imUser.getPhotoUrl())) {
                                                 imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
                                             } else {
-                                                imageUpload.append(imUsers.getPhotoUrl());
+                                                imageUpload.append(imUser.getPhotoUrl());
                                             }
                                             imageUpload.append("\" border=\"none\" >");
 
@@ -1948,11 +1948,11 @@ public class UserBoImpl implements UserBo {
 
                     } else {
 
-                        if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
-                            List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsers.getImRoles());
+                        if (imUser.getImRoles()!=null && !imUser.getImRoles().isEmpty()) {
+                            List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUser.getImRoles());
                             ImRoles itemImRoles = listOfImRoles.get(0);
 
-                            List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
+                            List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUser.getImAreasBranchesUsers());
 
                             if (imAreasBranchesUsersList!=null) {
 
@@ -1967,13 +1967,13 @@ public class UserBoImpl implements UserBo {
                                             if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
 
                                                 resultUsers = new User();
-                                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                                resultUsers.setUsername(imUsers.getUserName());
-                                                resultUsers.setPassword(imUsers.getPassword());
-                                                resultUsers.setEmail(imUsers.getEmail());
+                                                resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                                                resultUsers.setUsername(imUser.getUserName());
+                                                resultUsers.setPassword(imUser.getPassword());
+                                                resultUsers.setEmail(imUser.getEmail());
 
-                                                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+                                                resultUsers.setPositionId(imUser.getImPosition().getPositionId().toString());
+                                                resultUsers.setPositionName(imUser.getImPosition().getPositionName());
 
                                                 resultUsers.setRoleId(itemImRoles.getRoleId().toString());
                                                 resultUsers.setRoleName(itemImRoles.getRoleName());
@@ -1983,21 +1983,21 @@ public class UserBoImpl implements UserBo {
                                                 resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
                                                 resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
 
-                                                resultUsers.setFlag(imUsers.getFlag());
-                                                resultUsers.setAction(imUsers.getAction());
-                                                resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                                resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                                resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+                                                resultUsers.setFlag(imUser.getFlag());
+                                                resultUsers.setAction(imUser.getAction());
+                                                resultUsers.setCreatedDate(imUser.getCreatedDate());
+                                                resultUsers.setLastUpdate(imUser.getLastUpdate());
+                                                resultUsers.setCreatedWho(imUser.getCreatedWho());
+                                                resultUsers.setLastUpdateWho(imUser.getLastUpdateWho());
 
 
                                                 StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
                                                 imageUpload.append(ServletActionContext.getRequest().getContextPath());
                                                 imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+                                                if (imUser.getPhotoUrl() == null || "".equalsIgnoreCase(imUser.getPhotoUrl())) {
                                                     imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
                                                 } else {
-                                                    imageUpload.append(imUsers.getPhotoUrl());
+                                                    imageUpload.append(imUser.getPhotoUrl());
                                                 }
                                                 imageUpload.append("\" border=\"none\" >");
 
@@ -2010,13 +2010,13 @@ public class UserBoImpl implements UserBo {
                                         } else {
 
                                             resultUsers = new User();
-                                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                            resultUsers.setUsername(imUsers.getUserName());
-                                            resultUsers.setPassword(imUsers.getPassword());
-                                            resultUsers.setEmail(imUsers.getEmail());
+                                            resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                                            resultUsers.setUsername(imUser.getUserName());
+                                            resultUsers.setPassword(imUser.getPassword());
+                                            resultUsers.setEmail(imUser.getEmail());
 
-                                            resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                            resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+                                            resultUsers.setPositionId(imUser.getImPosition().getPositionId().toString());
+                                            resultUsers.setPositionName(imUser.getImPosition().getPositionName());
 
                                             resultUsers.setRoleId(itemImRoles.getRoleId().toString());
                                             resultUsers.setRoleName(itemImRoles.getRoleName());
@@ -2026,21 +2026,21 @@ public class UserBoImpl implements UserBo {
                                             resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
                                             resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
 
-                                            resultUsers.setFlag(imUsers.getFlag());
-                                            resultUsers.setAction(imUsers.getAction());
-                                            resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                            resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                            resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                            resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+                                            resultUsers.setFlag(imUser.getFlag());
+                                            resultUsers.setAction(imUser.getAction());
+                                            resultUsers.setCreatedDate(imUser.getCreatedDate());
+                                            resultUsers.setLastUpdate(imUser.getLastUpdate());
+                                            resultUsers.setCreatedWho(imUser.getCreatedWho());
+                                            resultUsers.setLastUpdateWho(imUser.getLastUpdateWho());
 
 
                                             StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
                                             imageUpload.append(ServletActionContext.getRequest().getContextPath());
                                             imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                            if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+                                            if (imUser.getPhotoUrl() == null || "".equalsIgnoreCase(imUser.getPhotoUrl())) {
                                                 imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
                                             } else {
-                                                imageUpload.append(imUsers.getPhotoUrl());
+                                                imageUpload.append(imUser.getPhotoUrl());
                                             }
                                             imageUpload.append("\" border=\"none\" >");
 
@@ -2056,21 +2056,21 @@ public class UserBoImpl implements UserBo {
                                     if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
                                         if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
                                             resultUsers = new User();
-                                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                            resultUsers.setUsername(imUsers.getUserName());
-                                            resultUsers.setPassword(imUsers.getPassword());
-                                            resultUsers.setEmail(imUsers.getEmail());
-                                            if(imUsers.getDivisiId() != null){
-                                                resultUsers.setDivisiId(imUsers.getDivisiId());
-                                                resultUsers.setDivisiName(imUsers.getImDepartmentEntity().getDepartmentName());
+                                            resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                                            resultUsers.setUsername(imUser.getUserName());
+                                            resultUsers.setPassword(imUser.getPassword());
+                                            resultUsers.setEmail(imUser.getEmail());
+                                            if(imUser.getDivisiId() != null){
+                                                resultUsers.setDivisiId(imUser.getDivisiId());
+                                                resultUsers.setDivisiName(imUser.getImDepartmentEntity().getDepartmentName());
                                             }
                                             else{
                                                 resultUsers.setDivisiName("");
                                                 resultUsers.setDivisiId("");
                                             }
 
-                                            resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                            resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+                                            resultUsers.setPositionId(imUser.getImPosition().getPositionId().toString());
+                                            resultUsers.setPositionName(imUser.getImPosition().getPositionName());
 
                                             resultUsers.setRoleId(itemImRoles.getRoleId().toString());
                                             resultUsers.setRoleName(itemImRoles.getRoleName());
@@ -2080,21 +2080,21 @@ public class UserBoImpl implements UserBo {
                                             resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
                                             resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
 
-                                            resultUsers.setFlag(imUsers.getFlag());
-                                            resultUsers.setAction(imUsers.getAction());
-                                            resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                            resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                            resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                            resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+                                            resultUsers.setFlag(imUser.getFlag());
+                                            resultUsers.setAction(imUser.getAction());
+                                            resultUsers.setCreatedDate(imUser.getCreatedDate());
+                                            resultUsers.setLastUpdate(imUser.getLastUpdate());
+                                            resultUsers.setCreatedWho(imUser.getCreatedWho());
+                                            resultUsers.setLastUpdateWho(imUser.getLastUpdateWho());
 
 
                                             StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
                                             imageUpload.append(ServletActionContext.getRequest().getContextPath());
                                             imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                            if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+                                            if (imUser.getPhotoUrl() == null || "".equalsIgnoreCase(imUser.getPhotoUrl())) {
                                                 imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
                                             } else {
-                                                imageUpload.append(imUsers.getPhotoUrl());
+                                                imageUpload.append(imUser.getPhotoUrl());
                                             }
                                             imageUpload.append("\" border=\"none\" >");
 
@@ -2105,20 +2105,20 @@ public class UserBoImpl implements UserBo {
                                     } else {
 
                                         resultUsers = new User();
-                                        resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                        resultUsers.setUsername(imUsers.getUserName());
-                                        resultUsers.setPassword(imUsers.getPassword());
-                                        resultUsers.setEmail(imUsers.getEmail());
-                                        if(imUsers.getDivisiId() != null){
-                                            resultUsers.setDivisiName(imUsers.getImDepartmentEntity().getDepartmentName());
+                                        resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                                        resultUsers.setUsername(imUser.getUserName());
+                                        resultUsers.setPassword(imUser.getPassword());
+                                        resultUsers.setEmail(imUser.getEmail());
+                                        if(imUser.getDivisiId() != null){
+                                            resultUsers.setDivisiName(imUser.getImDepartmentEntity().getDepartmentName());
                                         }
                                         else{
                                             resultUsers.setDivisiName("");
                                         }
-                                        resultUsers.setDivisiId(imUsers.getDivisiId());
+                                        resultUsers.setDivisiId(imUser.getDivisiId());
 
-                                        resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                        resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+                                        resultUsers.setPositionId(imUser.getImPosition().getPositionId().toString());
+                                        resultUsers.setPositionName(imUser.getImPosition().getPositionName());
 
                                         resultUsers.setRoleId(itemImRoles.getRoleId().toString());
                                         resultUsers.setRoleName(itemImRoles.getRoleName());
@@ -2128,21 +2128,21 @@ public class UserBoImpl implements UserBo {
                                         resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
                                         resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
 
-                                        resultUsers.setFlag(imUsers.getFlag());
-                                        resultUsers.setAction(imUsers.getAction());
-                                        resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                        resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                        resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                        resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+                                        resultUsers.setFlag(imUser.getFlag());
+                                        resultUsers.setAction(imUser.getAction());
+                                        resultUsers.setCreatedDate(imUser.getCreatedDate());
+                                        resultUsers.setLastUpdate(imUser.getLastUpdate());
+                                        resultUsers.setCreatedWho(imUser.getCreatedWho());
+                                        resultUsers.setLastUpdateWho(imUser.getLastUpdateWho());
 
 
                                         StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg img-cirle \" width='50px' src=\"");
                                         imageUpload.append(ServletActionContext.getRequest().getContextPath());
                                         imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                        if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+                                        if (imUser.getPhotoUrl() == null || "".equalsIgnoreCase(imUser.getPhotoUrl())) {
                                             imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
                                         } else {
-                                            imageUpload.append(imUsers.getPhotoUrl());
+                                            imageUpload.append(imUser.getPhotoUrl());
                                         }
                                         imageUpload.append("\" border=\"none\" >");
 
@@ -2190,7 +2190,7 @@ public class UserBoImpl implements UserBo {
 
             if (imUsersCheck==null) { //if not exist in table user then save this record
 
-                //save users table imUsers
+                //save users table imUser
                 ImUsers imUsersNew = new ImUsers();
                 ImUsersPK imUsersPK = new ImUsersPK();
                 imUsersPK.setId(addUsers.getUserId());
@@ -2740,47 +2740,47 @@ public class UserBoImpl implements UserBo {
         ImUsersPK primaryKey=new ImUsersPK();
         primaryKey.setId(userId);
 
-        ImUsers imUsers = null;
+        ImUsers imUser = null;
         try {
-            imUsers = userDao.getById(primaryKey, getFlag);
+            imUser = userDao.getById(primaryKey, getFlag);
         } catch (HibernateException e) {
             logger.error("[UserBoImpl.getUserById] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retrieving departement based on userId and flag, please info to your admin..." + e.getMessage());
         }
 
         User resultUsers = new User();
-        if (imUsers != null) {
+        if (imUser != null) {
 
-            if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
-                List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsers.getImRoles());
+            if (imUser.getImRoles()!=null && !imUser.getImRoles().isEmpty()) {
+                List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUser.getImRoles());
                 ImRoles itemImRoles = listOfImRoles.get(0);
                 resultUsers = new User();
 
-                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                resultUsers.setUsername(imUsers.getUserName());
-                resultUsers.setPassword(imUsers.getPassword());
-                resultUsers.setEmail(imUsers.getEmail());
+                resultUsers.setUserId(imUser.getPrimaryKey().getId());
+                resultUsers.setUsername(imUser.getUserName());
+                resultUsers.setPassword(imUser.getPassword());
+                resultUsers.setEmail(imUser.getEmail());
 
-                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
+                resultUsers.setPositionId(imUser.getImPosition().getPositionId().toString());
+                resultUsers.setPositionName(imUser.getImPosition().getPositionName());
 
                 resultUsers.setRoleId(itemImRoles.getRoleId().toString());
                 resultUsers.setRoleName(itemImRoles.getRoleName());
 
-                resultUsers.setFlag(imUsers.getFlag());
-                resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-                resultUsers.setPhotoUserUrl(imUsers.getPhotoUrl());
+                resultUsers.setFlag(imUser.getFlag());
+                resultUsers.setCreatedDate(imUser.getCreatedDate());
+                resultUsers.setLastUpdate(imUser.getLastUpdate());
+                resultUsers.setCreatedWho(imUser.getCreatedWho());
+                resultUsers.setLastUpdateWho(imUser.getLastUpdateWho());
+                resultUsers.setPhotoUserUrl(imUser.getPhotoUrl());
 
                 StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
                 imageUpload.append(ServletActionContext.getRequest().getContextPath());
                 imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                if (imUsers.getPhotoUrl()==null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+                if (imUser.getPhotoUrl()==null || "".equalsIgnoreCase(imUser.getPhotoUrl())) {
                     imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
                 } else {
-                    imageUpload.append(imUsers.getPhotoUrl());
+                    imageUpload.append(imUser.getPhotoUrl());
                 }
                 imageUpload.append("\" border=\"none\" >");
 
@@ -2810,17 +2810,17 @@ public class UserBoImpl implements UserBo {
         }
 
         if (listUser != null) {
-            for (ImUsers imUsers : listUser) {
-                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
+            for (ImUsers imUser : listUser) {
+                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUser.getImAreasBranchesUsers());
                 ImAreasBranchesUsers imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
                 User itemComboUser = new User();
-                itemComboUser.setUserId(imUsers.getPrimaryKey().getId());
-                itemComboUser.setUsername(imUsers.getUserName());
+                itemComboUser.setUserId(imUser.getPrimaryKey().getId());
+                itemComboUser.setUsername(imUser.getUserName());
                 itemComboUser.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                if(imUsers.getImDepartmentEntity() != null){
-                    itemComboUser.setDivisiId(imUsers.getImDepartmentEntity().getDepartmentId());
+                if(imUser.getImDepartmentEntity() != null){
+                    itemComboUser.setDivisiId(imUser.getImDepartmentEntity().getDepartmentId());
                 }
-                itemComboUser.setPositionId(imUsers.getImPosition().getPositionId().toString());
+                itemComboUser.setPositionId(imUser.getImPosition().getPositionId().toString());
                 listComboUser.add(itemComboUser);
             }
         }
@@ -2846,26 +2846,26 @@ public class UserBoImpl implements UserBo {
         }
 
         if (listUser != null) {
-            for (ImUsers imUsers : listUser) {
-                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
-                if (imUsers.getItPersonilPositionEntity() !=null) {
+            for (ImUsers imUser : listUser) {
+                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUser.getImAreasBranchesUsers());
+                if (imUser.getItPersonilPositionEntity() !=null) {
                     ImAreasBranchesUsers imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
                     User itemComboUser = new User();
                     if(!Branch.equals("") && !Divisi.equals("")){
-                        if(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equals(Branch) && imUsers.getImDepartmentEntity().getDepartmentId().equals(Divisi)){
-                            itemComboUser.setUserId(imUsers.getPrimaryKey().getId());
-                            itemComboUser.setUsername(imUsers.getImBiodataEntity().getNamaPegawai());
+                        if(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equals(Branch) && imUser.getImDepartmentEntity().getDepartmentId().equals(Divisi)){
+                            itemComboUser.setUserId(imUser.getPrimaryKey().getId());
+                            itemComboUser.setUsername(imUser.getImBiodataEntity().getNamaPegawai());
                             itemComboUser.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                            itemComboUser.setDivisiId(imUsers.getImDepartmentEntity().getDepartmentId());
-                            itemComboUser.setPositionId(imUsers.getImPosition().getPositionId().toString());
+                            itemComboUser.setDivisiId(imUser.getImDepartmentEntity().getDepartmentId());
+                            itemComboUser.setPositionId(imUser.getImPosition().getPositionId().toString());
                             listComboUser.add(itemComboUser);
                         }
                     }else{
-                        itemComboUser.setUserId(imUsers.getPrimaryKey().getId());
-                        itemComboUser.setUsername(imUsers.getImBiodataEntity().getNamaPegawai());
+                        itemComboUser.setUserId(imUser.getPrimaryKey().getId());
+                        itemComboUser.setUsername(imUser.getImBiodataEntity().getNamaPegawai());
                         itemComboUser.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                        itemComboUser.setDivisiId(imUsers.getImPosition().getDepartmentId());
-                        itemComboUser.setPositionId(imUsers.getImPosition().getPositionId().toString());
+                        itemComboUser.setDivisiId(imUser.getImPosition().getDepartmentId());
+                        itemComboUser.setPositionId(imUser.getImPosition().getPositionId().toString());
                         listComboUser.add(itemComboUser);
                     }
                 }
@@ -3004,9 +3004,9 @@ public class UserBoImpl implements UserBo {
 
                     ImUsersPK usersPK = new ImUsersPK();
                     usersPK.setId(itUserSessionLog.getUserName());
-                    ImUsers imUsers = userDao.getById(usersPK,"Y");
+                    ImUsers imUser = userDao.getById(usersPK,"Y");
 
-                    resultUserSessionLog.setName(imUsers.getUserName());
+                    resultUserSessionLog.setName(imUser.getUserName());
 
                     if (itUserSessionLog.getLogoutTimestamp()!=null) {
                         resultUserSessionLog.setEnabledKill(false);
@@ -3089,10 +3089,10 @@ public class UserBoImpl implements UserBo {
         }
 
         if (listUser != null) {
-            for (ImUsers imUsers : listUser) {
+            for (ImUsers imUser : listUser) {
                 User itemComboUser = new User();
-                itemComboUser.setUserId(imUsers.getPrimaryKey().getId());
-                itemComboUser.setUsername(imUsers.getUserName());
+                itemComboUser.setUserId(imUser.getPrimaryKey().getId());
+                itemComboUser.setUsername(imUser.getUserName());
                 listComboUser.add(itemComboUser);
             }
         }
@@ -3114,19 +3114,19 @@ public class UserBoImpl implements UserBo {
         }
 
         if (listUser != null) {
-            for (ImUsers imUsers : listUser) {
-                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
+            for (ImUsers imUser : listUser) {
+                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUser.getImAreasBranchesUsers());
                 ImAreasBranchesUsers imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
                 User itemComboUser = new User();
-                itemComboUser.setUserId(imUsers.getPrimaryKey().getId());
-                itemComboUser.setUsername(imUsers.getUserName());
-                //itemComboUser.setUsername(imUsers.getImBiodataEntity().getNamaPegawai());
+                itemComboUser.setUserId(imUser.getPrimaryKey().getId());
+                itemComboUser.setUsername(imUser.getUserName());
+                //itemComboUser.setUsername(imUser.getImBiodataEntity().getNamaPegawai());
                 itemComboUser.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
                 itemComboUser.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                itemComboUser.setDivisiName(imUsers.getImDepartmentEntity().getDepartmentName());
-                itemComboUser.setDivisiId(imUsers.getImDepartmentEntity().getDepartmentId());
-                itemComboUser.setPositionName(imUsers.getImPosition().getPositionName());
-                itemComboUser.setPositionId(imUsers.getImPosition().getPositionId().toString());
+                itemComboUser.setDivisiName(imUser.getImDepartmentEntity().getDepartmentName());
+                itemComboUser.setDivisiId(imUser.getImDepartmentEntity().getDepartmentId());
+                itemComboUser.setPositionName(imUser.getImPosition().getPositionName());
+                itemComboUser.setPositionId(imUser.getImPosition().getPositionId().toString());
                 listComboUser.add(itemComboUser);
             }
         }

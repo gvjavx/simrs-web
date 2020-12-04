@@ -160,7 +160,7 @@
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
-                jQuery(".ui-dialog-titlebar-close").hide();
+                // jQuery(".ui-dialog-titlebar-close").hide();
                 $.publish('showInfoDialog');
             }
         });
@@ -341,129 +341,59 @@
                                     <td>
                                         <table>
                                             <s:if test="isAddOrEdit()">
-                                                <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
-                                                           onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                                                <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm"
+                                                           id="save" name="save"
+                                                           onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog, successDialog"
                                                            onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                                                     <i class="icon-ok-sign icon-white"></i>
                                                     Save
                                                 </sj:submit>
 
-                                                <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
-                                                           <%--resizable="false"--%>
-                                                           <%--height="250" width="600" autoOpen="false" title="Saving ...">--%>
-                                                    <%--Please don't close this window, server is processing your request ...--%>
-                                                    <%--</br>--%>
-                                                    <%--</br>--%>
-                                                    <%--</br>--%>
-                                                    <%--<center>--%>
-                                                        <%--<img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">--%>
-                                                    <%--</center>--%>
-                                                <%--</sj:dialog>--%>
-
-                                                <sj:dialog id="waiting_dialog" openTopics="showDialog"
-                                                           closeTopics="closeDialog" modal="true"
-                                                           resizable="false"
-                                                           height="250" width="600" autoOpen="false"
-                                                           title="Searching ...">
-                                                    Please don't close this window, server is processing your request ...
-                                                    <br>
-                                                    <center>
-                                                        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
-                                                             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
-                                                             name="image_indicator_write">
-                                                        <br>
-                                                        <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
-                                                             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
-                                                             name="image_indicator_write">
-                                                    </center>
-                                                </sj:dialog>
-
-                                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                                           buttons="{
-                                                              'OK':function() {
-                                                                      $('#info_dialog').dialog('close');
-                                                                      $('#view_dialog_menu').dialog('close');
-                                                                   }
-                                                            }"
-                                                        >
-                                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                                    Record has been saved successfully.
-                                                </sj:dialog>
-
-                                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
-                                                           height="250" width="600" autoOpen="false" title="Error Dialog"
-                                                           buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
-                                                                    }"
-                                                        >
-                                                    <div class="alert alert-error fade in">
-                                                        <label class="control-label" align="left">
-                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
-                                                        </label>
-                                                    </div>
-                                                </sj:dialog>
-
-                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
-                                                           height="280" width="500" autoOpen="false" title="Warning"
-                                                           buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
-                                                                    }"
-                                                        >
-                                                    <div class="alert alert-error fade in">
-                                                        <label class="control-label" align="left">
-                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
-                                                            <br/>
-                                                            <center><div id="errorValidationMessage"></div></center>
-                                                        </label>
-                                                    </div>
-                                                </sj:dialog>
-
                                             </s:if>
                                             <s:elseif test="isDelete()">
                                                 <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm"
                                                            id="delete" name="delete"
-                                                           onBeforeTopics="beforeProcessDelete" onCompleteTopics="closeDialog,successDialog"
+                                                           onBeforeTopics="beforeProcessDelete" onCompleteTopics="closeDialog, successDialog"
                                                            onSuccessTopics="successDialog" onErrorTopics="errorDialog">
                                                     <i class="icon-trash icon-white"></i>
                                                     Delete
                                                 </sj:submit>
 
-                                                <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                                           resizable="false"
-                                                           height="250" width="600" autoOpen="false" title="Deleting ...">
-                                                    Please don't close this window, server is processing your request ...
-                                                    </br>
-                                                    </br>
-                                                    </br>
-                                                    <img border="0" src="<s:url value="/pages/images/indicator-trash.gif"/>" name="image_indicator_trash">
-                                                </sj:dialog>
+                                                <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                                           <%--resizable="false"--%>
+                                                           <%--height="250" width="600" autoOpen="false" title="Deleting ...">--%>
+                                                    <%--Please don't close this window, server is processing your request ...--%>
+                                                    <%--</br>--%>
+                                                    <%--</br>--%>
+                                                    <%--</br>--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/indicator-trash.gif"/>" name="image_indicator_trash">--%>
+                                                <%--</sj:dialog>--%>
 
-                                                <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                           height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                                           buttons="{
-                                                                    'OK':function() {
-                                                                            $('#info_dialog').dialog('close');
-                                                                            $('#view_dialog_menu').dialog('close');
-                                                                        }
-                                                                    }"
-                                                        >
-                                                    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                                    Record has been deleted successfully.
-                                                </sj:dialog>
+                                                <%--<sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"--%>
+                                                           <%--height="200" width="400" autoOpen="false" title="Infomation Dialog"--%>
+                                                           <%--buttons="{--%>
+                                                                    <%--'OK':function() {--%>
+                                                                            <%--$('#info_dialog').dialog('close');--%>
+                                                                            <%--$('#view_dialog_menu').dialog('close');--%>
+                                                                        <%--}--%>
+                                                                    <%--}"--%>
+                                                        <%-->--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">--%>
+                                                    <%--Record has been deleted successfully.--%>
+                                                <%--</sj:dialog>--%>
 
-                                                <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
-                                                           height="250" width="600" autoOpen="false" title="Error Dialog"
-                                                           buttons="{
-                                                                    'OK':function() { $('#error_dialog').dialog('close'); }
-                                                                    }"
-                                                        >
-                                                    <div class="alert alert-error fade in">
-                                                        <label class="control-label" align="left">
-                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
-                                                        </label>
-                                                    </div>
-                                                </sj:dialog>
+                                                <%--<sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"--%>
+                                                           <%--height="250" width="600" autoOpen="false" title="Error Dialog"--%>
+                                                           <%--buttons="{--%>
+                                                                    <%--'OK':function() { $('#error_dialog').dialog('close'); }--%>
+                                                                    <%--}"--%>
+                                                        <%-->--%>
+                                                    <%--<div class="alert alert-error fade in">--%>
+                                                        <%--<label class="control-label" align="left">--%>
+                                                            <%--<img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>--%>
+                                                        <%--</label>--%>
+                                                    <%--</div>--%>
+                                                <%--</sj:dialog>--%>
                                             </s:elseif>
                                         </table>
                                     </td>
@@ -481,10 +411,82 @@
                         </table>
                     </div>
                 </s:form>
-
         </td>
     </tr>
 </table>
+
+<%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+<%--resizable="false"--%>
+<%--height="250" width="600" autoOpen="false" title="Saving ...">--%>
+<%--Please don't close this window, server is processing your request ...--%>
+<%--</br>--%>
+<%--</br>--%>
+<%--</br>--%>
+<%--<center>--%>
+<%--<img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">--%>
+<%--</center>--%>
+<%--</sj:dialog>--%>
+
+<sj:dialog id="waiting_dialog" openTopics="showDialog"
+           closeTopics="closeDialog" modal="true"
+           resizable="false"
+           height="250" width="600" autoOpen="false"
+           title="Searching ...">
+    Please don't close this window, server is processing your request ...
+    <br>
+    <center>
+        <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+             src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+             name="image_indicator_write">
+        <br>
+        <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+             src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+             name="image_indicator_write">
+    </center>
+</sj:dialog>
+
+<%--$('#info_dialog').dialog('close');--%>
+<%--$('#view_dialog_menu').dialog('close');--%>
+<sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+           height="200" width="400" autoOpen="false" title="Infomation Dialog"
+           buttons="{
+                                                              'OK':function() {
+                                                                        $( '#rolefuncForm').submit();
+                                                                   }
+                                                            }"
+>
+    <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+    Record has been saved successfully.
+</sj:dialog>
+
+<sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+           height="250" width="600" autoOpen="false" title="Error Dialog"
+           buttons="{
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                    }"
+>
+    <div class="alert alert-error fade in">
+        <label class="control-label" align="left">
+            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+        </label>
+    </div>
+</sj:dialog>
+
+<sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+           height="280" width="500" autoOpen="false" title="Warning"
+           buttons="{
+                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                    }"
+>
+    <div class="alert alert-error fade in">
+        <label class="control-label" align="left">
+            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+            <br/>
+            <center><div id="errorValidationMessage"></div></center>
+        </label>
+    </div>
+</sj:dialog>
+
 </body>
 </html>
 
