@@ -857,7 +857,6 @@
             $('#load_obat').show();
 
             if (id != '') {
-                console.log(" edit --> KLIK");
                 dwr.engine.setAsync(true);
                 ObatAction.editObat(id, nama, jenis, merek, pabrik, lembarBox, bijiLembar, minStok, flagKronis, flagGeneric, flagBpjs, margin, idKategori,  function (response) {
                     dwr.engine.setAsync(false);
@@ -875,8 +874,6 @@
                     }
                 })
             } else {
-
-                console.log("save Add 2 -> KLIK");
                 dwr.engine.setAsync(true);
                 ObatAction.saveObat(nama, jenis, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, hargaBox, hargaLembar, hargaBiji, minStok, flagKronis, flagGeneric, flagBpjs, margin, idKategori, function (response) {
                     console.log(response);
@@ -983,9 +980,6 @@
         $('#modal-obat').modal({show:true, backdrop:'static'});
         $("#row-check-id-pabrik").hide();
         $("#add_pabrik").attr('readOnly', "true");
-
-        console.log( "kronis" + flagKronis);
-        console.log( "generic " + flagGeneric);
         showListKandunganObat(idObat);
     }
 
@@ -1058,7 +1052,7 @@
 
                         table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +
                             '<td>'+item.idBarang+'</td>'+
-                            '<td>'+formaterDate(item.expiredDate)+'</td>'+
+                            '<td>'+converterDate(item.expiredDate)+'</td>'+
                             '<td>'+item.qtyBox+'</td>'+
                             '<td>'+item.qtyLembar+'</td>'+
                             '<td>'+item.qtyBiji+'</td>'+
@@ -1144,9 +1138,6 @@
         var bentuk = $('#sel_fin_bentuk_kandungan_obat').val();
         var sediaan = $("#fin_sediaan_kandungan_obat").val();
         var satuan = $("#fin_satuan_kandungan_obat").val();
-
-        console.log(kandungan);
-        console.log(bentuk);
 
         if (id == null || id == ""){
             ObatAction.addKandunganObat(idObat, kandungan, bentuk, sediaan, satuan, function (res) {
