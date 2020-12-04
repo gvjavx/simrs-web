@@ -416,8 +416,8 @@
                             <label style="margin-left: 8px">TTD Operator</label>
                             <canvas class="paint-canvas-ttd" id="ttd_aperator" width="220"
                                     onmouseover="paintTtd('ttd_aperator')"></canvas>
-                            <input class="form-control" id="nama_terang_aperator" placeholder="SIP">
-                            <input style="margin-top: 3px" class="form-control" id="sip_aperator" placeholder="SIP">
+                            <input class="form-control nama_petugas" id="nama_terang_aperator" placeholder="SIP">
+                            <input style="margin-top: 3px" class="form-control nip_petugas" id="sip_aperator" placeholder="SIP">
                             <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                     onclick="removePaint('ttd_aperator')"><i
                                     class="fa fa-trash"></i> Clear

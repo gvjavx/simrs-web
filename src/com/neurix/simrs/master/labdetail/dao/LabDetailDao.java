@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.labdetail.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.labdetail.model.ImSimrsLabDetailEntity;
 import com.neurix.simrs.master.labdetail.model.LabDetail;
@@ -29,7 +30,6 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
 
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImSimrsLabDetailEntity.class);
 
-        // Get Collection and sorting
         if (mapCriteria!=null) {
             if (mapCriteria.get("id_lab_detail")!=null) {
                 criteria.add(Restrictions.eq("idLabDetail", (String) mapCriteria.get("id_lab_detail")));
@@ -40,12 +40,6 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
             if (mapCriteria.get("nama_detail_periksa")!=null) {
                 criteria.add(Restrictions.ilike("namaDetailPeriksa", "%" + (String)mapCriteria.get("nama_detail_periksa") + "%"));
             }
-//            if (mapCriteria.get("satuan")!=null) {
-//                criteria.add(Restrictions.eq("satuan", (String) mapCriteria.get("satuan")));
-//            }
-//            if (mapCriteria.get("keterangan_acuan")!=null) {
-//                criteria.add(Restrictions.eq("ketentuanAcuan", (String) mapCriteria.get("keterangan_acuan")));
-//            }
         }
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
@@ -197,25 +191,36 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
         String res = "";
         if(idLab != null && branch != null){
             String SQL = "SELECT\n" +
+                    "CAST('id_kategori' AS VARCHAR) as kategori,\n" +
                     "d.id_kategori_lab\n" +
                     "FROM mt_simrs_item_paket_periksa a\n" +
                     "INNER JOIN im_simrs_lab b ON a.id_kategori_item = b.id_lab\n" +
                     "INNER JOIN im_simrs_lab_detail c ON b.id_lab = c.id_lab\n" +
                     "INNER JOIN im_simrs_parameter_pemeriksaan d ON c.id_parameter_pemeriksaan = d.id_parameter_pemeriksaan\n" +
-                    "WHERE b.id_lab = :id \n" +
-                    "AND c.branch_id = :branch'\n" +
-                    "GROUP BY d.id_kategori_lab \n";
+                    "WHERE b.id_lab = :id\n" +
+                    "AND c.branch_id = :branch\n" +
+                    "GROUP BY d.id_kategori_lab\n";
             List<Object[]> resut = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idLab)
                     .setParameter("branch", branch)
                     .list();
             if(resut.size() > 0){
                 Object[] obj = resut.get(0);
-                if(obj[0] != null){
-                    res = obj[0].toString();
+                if(obj[1] != null){
+                    res = obj[1].toString();
                 }
             }
         }
         return res;
+    }
+
+    public List<ImSimrsLabDetailEntity> cekDataLabDetail(String idParameter, String idLab) throws HibernateException {
+        List<ImSimrsLabDetailEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsLabDetailEntity.class)
+                .add(Restrictions.eq("idLab", idLab))
+                .add(Restrictions.eq("idParameterPemeriksaan", idParameter))
+                .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
     }
 }

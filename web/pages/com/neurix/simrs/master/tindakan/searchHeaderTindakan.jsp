@@ -180,8 +180,9 @@
                                 <td>ID Tindakan</td>
                                 <td>Nama Tindakan</td>
                                 <td>Kategori BPJS</td>
+                                <td>Flag Konsul</td>
                                 <td align="center">Tarif (Rp.)</td>
-                                <td align="center">Action</td>
+                                <td align="center" width="10%">Action</td>
                             </tr>
                             </thead>
                             <tbody>
@@ -190,6 +191,7 @@
                                     <td><s:property value="idHeaderTindakan"/></td>
                                     <td><s:property value="namaTindakan"/></td>
                                     <td><s:property value="namaKategoriBpjs"/></td>
+                                    <td><s:property value="flagKonsulTele"/></td>
                                     <td align="right">
                                         <script>
                                             converterRupiah('<s:property value="standardCost"/>');
@@ -256,7 +258,8 @@
                         <label class="col-md-3" style="margin-top: 7px">Kategori Ina BPJS</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="width: 100%" id="set_kategori_ina_bpjs"
-                                    onchange="var warn =$('#war_set_kategori_ina_bpjs').is(':visible'); if (warn){$('#cor_set_kategori_ina_bpjs').show().fadeOut(3000);$('#war_set_kategori_ina_bpjs').hide()}">
+                                    onchange="var warn =$('#war_set_kategori_ina_bpjs').is(':visible');
+                                    if (warn){$('#cor_set_kategori_ina_bpjs').show().fadeOut(3000);$('#war_set_kategori_ina_bpjs').hide()}">
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -265,6 +268,28 @@
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_set_kategori_ina_bpjs"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Konsul Tele</label>
+                        <div class="col-md-7">
+                            <s:select list="#{'Y':'Ya'}" id="flagKonsulTele"
+                                      headerKey="N" headerValue="Tidak" cssClass="form-control select2"
+                                      cssStyle="width: 100%" onchange="
+                                  var warn =$('#war_konsul_tele').is(':visible');
+                                    if (warn){
+                                    $('#cor_konsul_tele').show().fadeOut(3000);
+                                    $('#war_konsul_tele').hide()
+                                    }"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_konsul_tele">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_konsul_tele"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>
@@ -375,6 +400,7 @@
         if ('add' == tipe) {
             getKategoriIna();
             $('.form-control').val('');
+            $('#flagKonsulTele').val('Y');
             $('#save_add').attr('onclick', 'saveTindakan("")');
             $('#set_judul').text("Tambah Tindakan");
             $('#modal-add').modal({show: true, backdrop: 'static'});
@@ -403,8 +429,9 @@
         var nama = $('#set_nama_tindakan').val();
         var idKategori = $('#set_kategori_ina_bpjs').val();
         var tarif = $('#h_tarif').val();
+        var flagTele = $('#flagKonsulTele').val();
 
-        if (nama != '' && idKategori != '' && tarif != '') {
+        if (nama != '' && idKategori != '' && tarif != '' && flagTele != '') {
             $('#save_add').hide();
             $('#load_add').show();
             if (id != '') {
@@ -412,7 +439,8 @@
                     'id_tindakan': id,
                     'nama_tindakan': nama,
                     'kategori_ina_bpjs': idKategori,
-                    'tarif': tarif
+                    'tarif': tarif,
+                    'flag_tele': flagTele
                 };
                 var dataString = JSON.stringify(data);
                 dwr.engine.setAsync(true);
@@ -437,7 +465,8 @@
                 data = {
                     'nama_tindakan': nama,
                     'kategori_ina_bpjs': idKategori,
-                    'tarif': tarif
+                    'tarif': tarif,
+                    'flag_tele': flagTele
                 };
                 var dataString = JSON.stringify(data);
                 dwr.engine.setAsync(true);
@@ -472,6 +501,9 @@
             if (tarif == '') {
                 $('#war_set_tarif').show();
             }
+            if (flagTele == '') {
+                $('#war_konsul_tele').show();
+            }
         }
     }
 
@@ -498,6 +530,7 @@
                 $('#set_nama_tindakan').val(res.namaTindakan);
                 $('#set_kategori_ina_bpjs').val(res.kategoriInaBpjs).trigger('change');
                 $('#set_tarif').val(formatRupiahAtas(res.standardCost));
+                $('#flagKonsulTele').val(res.flagKonsulTele).trigger('change');
                 $('#h_tarif').val(res.standardCost);
             }
         });

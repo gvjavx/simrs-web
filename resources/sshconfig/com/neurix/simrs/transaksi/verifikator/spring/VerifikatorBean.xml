@@ -47,7 +47,4 @@
         </property>
     </bean>
 
-    <bean id="kategoriTindakanInaDao" class="com.neurix.simrs.master.kategoritindakanina.dao.KategoriTindakanInaDao"
-          p:sessionFactory-ref="sessionFactory" />
-
 </beans>

@@ -356,6 +356,7 @@ public class UserAction extends BaseMasterAction {
                     editUser.setBranchId(itemUser.getBranchId());
                     editUser.setAreaId(itemUser.getAreaId());
                     editUser.setDivisiId(itemUser.getDivisiId());
+                    editUser.setIdPelayanan(itemUser.getIdPelayanan());
                     setUserId(itemUser.getUserId());
                     break;
                 }
@@ -522,8 +523,6 @@ public class UserAction extends BaseMasterAction {
                         editUser.setLastUpdate(updateTime);
                         editUser.setLastUpdateWho(userLogin);
                         editUser.setAction("U");
-
-
 
                         userBoProxy.saveEdit(editUser);
                         users.setSuccessMessage("Data Successfully Updated");

@@ -122,35 +122,20 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
 
         if (kelasRuangan != null){
             String status = cekStatus(kelasRuangan.getNamaKelasRuangan());
-            String kelasRuanganId, seqKodering;
+            String kelasRuanganId;
             if (!status.equalsIgnoreCase("exist")){
                 try {
                     // Generating ID, get from postgre sequence
                     kelasRuanganId = kelasRuanganDao.getNextIdKelasRuangan();
-                    seqKodering = kelasRuanganDao.getNextKodering();
                 } catch (HibernateException e) {
                     logger.error("[PayrollSkalaGajiBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiId id, please info to your admin..."
                             + e.getMessage());
                 }
-
-                Map map = new HashMap<>();
-                map.put("position_id", kelasRuangan.getPositionId());
-                String koderingPosition = positionDao.getKodringPosition(map);
-
-                String branchId = CommonUtil.userBranchLogin();
-                Map map1 = new HashMap<>();
-                map1.put("branch_id", branchId);
-                String koderingBranch = branchDao.getKodringBranches(map1);
-
-                String kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-
                 ImSimrsKelasRuanganEntity imSimrsKelasRuanganEntity = new ImSimrsKelasRuanganEntity();
-
                 imSimrsKelasRuanganEntity.setIdKelasRuangan("KR"+kelasRuanganId);
                 imSimrsKelasRuanganEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
                 imSimrsKelasRuanganEntity.setDivisiId(kelasRuangan.getPositionId());
-                imSimrsKelasRuanganEntity.setKodering(kodering);
                 imSimrsKelasRuanganEntity.setFlag(kelasRuangan.getFlag());
                 imSimrsKelasRuanganEntity.setAction(kelasRuangan.getAction());
                 imSimrsKelasRuanganEntity.setCreatedDate(kelasRuangan.getCreatedDate());
@@ -180,7 +165,6 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
         logger.info("[KelasRuanganBoImpl.saveEdit] Start >>>>>>>");
 
         if (kelasRuangan != null && kelasRuangan.getIdKelasRuangan() != null && !"".equalsIgnoreCase(kelasRuangan.getIdKelasRuangan())){
-            String kodering, seqKodering;
             ImSimrsKelasRuanganEntity imSimrsPelayananEntity = null;
             try {
                 // Get data from database by ID
@@ -194,34 +178,7 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
             if (imSimrsPelayananEntity != null){
                 if (kelasRuangan.getNamaKelasRuangan().equalsIgnoreCase(imSimrsPelayananEntity.getNamaKelasRuangan())){
                     String kode = imSimrsPelayananEntity.getKodering();
-                    if (kode != null){
-                        String[] arrOfStr = kode.split("\\.");
-                        seqKodering = arrOfStr[4];
-
-                        Map map = new HashMap<>();
-                        map.put("position_id", kelasRuangan.getPositionId());
-                        String koderingPosition = positionDao.getKodringPosition(map);
-
-                        String branchId = CommonUtil.userBranchLogin();
-                        Map map1 = new HashMap<>();
-                        map1.put("branch_id", branchId);
-                        String koderingBranch = branchDao.getKodringBranches(map1);
-                        kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-                    }else {
-                        seqKodering = kelasRuanganDao.getNextKodering();
-                        Map map = new HashMap<>();
-                        map.put("position_id", kelasRuangan.getPositionId());
-                        String koderingPosition = positionDao.getKodringPosition(map);
-
-                        String branchId = CommonUtil.userBranchLogin();
-                        Map map1 = new HashMap<>();
-                        map1.put("branch_id", branchId);
-                        String koderingBranch = branchDao.getKodringBranches(map1);
-                        kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-                    }
-
                     imSimrsPelayananEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
-                    imSimrsPelayananEntity.setKodering(kodering);
                     imSimrsPelayananEntity.setDivisiId(kelasRuangan.getPositionId());
                     imSimrsPelayananEntity.setFlag(kelasRuangan.getFlag());
                     imSimrsPelayananEntity.setAction("U");
@@ -237,35 +194,7 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                 }else {
                     String status = cekStatus(kelasRuangan.getNamaKelasRuangan());
                     if (!status.equalsIgnoreCase("exist")){
-                        String kode = imSimrsPelayananEntity.getKodering();
-                        if (kode != null){
-                            String[] arrOfStr = kode.split("\\.");
-                            seqKodering = arrOfStr[4];
-
-                            Map map = new HashMap<>();
-                            map.put("position_id", kelasRuangan.getPositionId());
-                            String koderingPosition = positionDao.getKodringPosition(map);
-
-                            String branchId = CommonUtil.userBranchLogin();
-                            Map map1 = new HashMap<>();
-                            map1.put("branch_id", branchId);
-                            String koderingBranch = branchDao.getKodringBranches(map1);
-                            kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-                        }else {
-                            seqKodering = kelasRuanganDao.getNextKodering();
-                            Map map = new HashMap<>();
-                            map.put("position_id", kelasRuangan.getPositionId());
-                            String koderingPosition = positionDao.getKodringPosition(map);
-
-                            String branchId = CommonUtil.userBranchLogin();
-                            Map map1 = new HashMap<>();
-                            map1.put("branch_id", branchId);
-                            String koderingBranch = branchDao.getKodringBranches(map1);
-                            kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-                        }
-
                         imSimrsPelayananEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
-                        imSimrsPelayananEntity.setKodering(kodering);
                         imSimrsPelayananEntity.setDivisiId(kelasRuangan.getPositionId());
                         imSimrsPelayananEntity.setFlag(kelasRuangan.getFlag());
                         imSimrsPelayananEntity.setAction("U");

@@ -121,6 +121,7 @@
                                 <input onclick="showKetRing(this.value, 'pre_alat_bantu')" type="radio" value="Tidak" id="pre05-02" name="pre05" /><label for="pre05-02">Tidak</label>
                             </div>
                             <select style="display: none" class="form-control" id="form-ring-pre_alat_bantu">
+                                <option value="">[Select One]</option>
                                 <option value="Kursi roda">Kursi roda</option>
                                 <option value="Tongkat/kruk">Tongkak/kruk</option>
                                 <option value="Brankar">Brankar</option>
@@ -152,8 +153,8 @@
                         <div class="col-md-6">
                             <label>TTD petugas</label>
                             <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('et4')" class="paint-canvas-ttd" id="et4"></canvas>
-                            <input class="form-control" id="nama_petugas" placeholder="Nama Terang">
-                            <input style="margin-top: 3px" class="form-control" id="nip_petugas" placeholder="NIP">
+                            <input class="form-control nama_petugas" id="nama_petugas" placeholder="Nama Terang">
+                            <input style="margin-top: 3px" class="form-control nip_petugas" id="nip_petugas" placeholder="NIP">
                             <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('et4')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>

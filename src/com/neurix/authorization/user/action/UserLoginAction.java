@@ -49,6 +49,7 @@ public class UserLoginAction extends ActionSupport {
     private String RegTemp;
     private String VerPas;
     private FingerPrint fingerPrint;
+    private String hostname;
 
 
 
@@ -357,7 +358,7 @@ public class UserLoginAction extends ActionSupport {
         if (fingerPrint1.getAc()!=null&&fingerPrint1.getVc()!=null){
             acsn=fingerPrint1.getAc()+fingerPrint1.getSn();
         }
-        String result= userId +";SecurityKey;"+ CommonConstant.timeLimitReg+";"+CommonConstant.regAddress+";"+acsn+";";
+        String result= userId +";SecurityKey;"+ CommonConstant.timeLimitReg+";"+getHostname()+"/prosesRegisterFinger.action?hostname="+getHostname()+";"+acsn+";";
         finalResult.setDataResult(result);
 
         fingerPrint=finalResult;
@@ -379,7 +380,7 @@ public class UserLoginAction extends ActionSupport {
 
         String result;
         FingerPrint finalResult = new FingerPrint();
-        result= "http://192.168.43.222:8080/simrs/pasien/search_pasien.action?id_pasien="+userId;
+        result= getHostname()+"/pasien/search_pasien.action?id_pasien="+userId;
         finalResult.setDataResult(result);
         fingerPrint=finalResult;
         logger.info("[BpjsController.prosesRegisterFinger] end process <<<");
@@ -419,7 +420,7 @@ public class UserLoginAction extends ActionSupport {
         }
 
         String result;
-        result= userId+";"+fingerData+";SecurityKey;"+CommonConstant.timeLimitVer+";"+CommonConstant.verAddress+";"+acsn+";extraParams";
+        result= userId+";"+fingerData+";SecurityKey;"+CommonConstant.timeLimitVer+";"+getHostname()+"/prosesLoginFinger.action?hostname="+getHostname()+";"+acsn+";extraParams";
         finalResult.setDataResult(result);
         fingerPrint=finalResult;
         logger.info("[BpjsController.loginFinger] end process <<<");
@@ -436,13 +437,35 @@ public class UserLoginAction extends ActionSupport {
 
         String result;
         FingerPrint finalResult = new FingerPrint();
-        String texttipe = ",bpjs";
-        result= CommonConstant.addRawatPasien+"?idPasien="+userId+texttipe;
+        result= getHostname()+"/checkup/add_checkup.action?idPasien="+userId;
         finalResult.setDataResult(result);
         fingerPrint=finalResult;
         logger.info("[BpjsController.prosesLoginFinger] end process <<<");
         return "finger";
 
+    }
+
+    //updated by ferdi, 17-11-2020, get time session from dwr action
+    public boolean getTimeOutSession() {
+        logger.info("[UserLoginAction.getTimeOutSession] start process >>>");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        boolean isTimeout = false;
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                if (securityContextImpl.getAuthentication().isAuthenticated()) {
+                    isTimeout = false;
+                } else {
+                    isTimeout = true;
+                }
+            } else {
+                isTimeout = true;
+            }
+        } else {
+            isTimeout = true;
+        }
+        logger.info("[UserLoginAction.getTimeOutSession] end process <<<");
+        return isTimeout;
     }
 
     public String getPetugasId() {
@@ -550,6 +573,14 @@ public class UserLoginAction extends ActionSupport {
 
     public void setUserPhotoUrl(String userPhotoUrl) {
         this.userPhotoUrl = userPhotoUrl;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
     }
 }
 

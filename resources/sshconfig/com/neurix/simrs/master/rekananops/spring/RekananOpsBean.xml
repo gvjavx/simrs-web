@@ -8,6 +8,7 @@
           p:rekananOpsDao-ref="rekananOpsDao"
           p:detailRekananOpsDao-ref="detailRekananOpsDao"
           p:branchDao-ref="branchDao"
+          p:masterDao-ref="masterDao"
 
     />
     <bean id="rekananOpsBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

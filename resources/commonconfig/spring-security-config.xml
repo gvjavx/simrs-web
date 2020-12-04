@@ -226,6 +226,10 @@
             <filter-chain pattern="/mobileapi/company/*" filters="none" />
             <filter-chain pattern="/mobileapi/company/*/**" filters="none" />
 
+            <filter-chain pattern="/mobileapi/license" filters="none" />
+            <filter-chain pattern="/mobileapi/license/*" filters="none" />
+            <filter-chain pattern="/mobileapi/license/*/**" filters="none" />
+
 
             <filter-chain pattern="/**/*"
                           filters="

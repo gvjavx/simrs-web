@@ -172,48 +172,21 @@ public class PelayananBoImpl implements PelayananBo{
     public void saveEdit(Pelayanan bean) throws GeneralBOException {
         logger.info("[PayrollSkalaGajiBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
-            String historyId = "";
-            String koderingBranch, koderingPosition, seqKodering;
             String idPelayanan = bean.getIdPelayanan();
-
             ImSimrsPelayananEntity imSimrsPelayananEntity = null;
             try {
-                // Get data from database by ID
                 imSimrsPelayananEntity = pelayananDao.getById("idPelayanan", idPelayanan);
-                //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
             } catch (HibernateException e) {
                 logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data PayrollSkalaGaji by Kode PayrollSkalaGaji, please inform to your admin...," + e.getMessage());
             }
             if (imSimrsPelayananEntity.getNamaPelayanan().equalsIgnoreCase(bean.getNamaPelayanan())){
-                String kode = imSimrsPelayananEntity.getKodering();
-                if (kode != null){
-                    String[] arrOfStr = kode.split("\\.");
-                    seqKodering = arrOfStr[4];
-                    Map map = new HashMap<>();
-                    map.put("position_id", bean.getDivisiId());
-                    koderingPosition = positionDao.getKodringPosition(map);
-                    Map map1 = new HashMap<>();
-                    map1.put("branch_id", bean.getBranchId());
-                    koderingBranch = branchDao.getKodringBranches(map1);
-                }else {
-                    seqKodering = pelayananDao.getNextKodering();
-                    Map map = new HashMap<>();
-                    map.put("position_id", bean.getPositionId());
-                    koderingPosition = positionDao.getKodringPosition(map);
-                    Map map1 = new HashMap<>();
-                    map1.put("branch_id", bean.getBranchId());
-                    koderingBranch = branchDao.getKodringBranches(map1);
-                }
-                String kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-
                 if (imSimrsPelayananEntity != null) {
                     imSimrsPelayananEntity.setIdPelayanan(bean.getIdPelayanan());
                     imSimrsPelayananEntity.setNamaPelayanan(bean.getNamaPelayanan());
                     imSimrsPelayananEntity.setIsEksekutif(bean.getIsEksekutif());
                     imSimrsPelayananEntity.setTipePelayanan(bean.getTipePelayanan());
                     imSimrsPelayananEntity.setBranchId(bean.getBranchId());
-                    imSimrsPelayananEntity.setKodering(kodering);
                     imSimrsPelayananEntity.setDivisiId(bean.getDivisiId());
                     imSimrsPelayananEntity.setFlag(bean.getFlag());
                     imSimrsPelayananEntity.setAction(bean.getAction());
@@ -222,9 +195,7 @@ public class PelayananBoImpl implements PelayananBo{
 
                     String flag;
                     try {
-                        // Update into database
                         pelayananDao.updateAndSave(imSimrsPelayananEntity);
-                        //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
                     } catch (HibernateException e) {
                         logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving update data PayrollSkalaGaji, please info to your admin..." + e.getMessage());
@@ -236,47 +207,19 @@ public class PelayananBoImpl implements PelayananBo{
             }else {
                 String status = cekStatus(bean.getNamaPelayanan());
                 if (!status.equalsIgnoreCase("exist")){
-                    String kode = imSimrsPelayananEntity.getKodering();
-                    if (kode != null){
-                        String[] arrOfStr = kode.split("\\.");
-                        seqKodering = arrOfStr[4];
-
-                        Map map = new HashMap<>();
-                        map.put("position_id", bean.getDivisiId());
-                        koderingPosition = positionDao.getKodringPosition(map);
-                        Map map1 = new HashMap<>();
-                        map1.put("branch_id", bean.getBranchId());
-                        koderingBranch = branchDao.getKodringBranches(map1);
-                    }else {
-                        seqKodering = pelayananDao.getNextKodering();
-                        Map map = new HashMap<>();
-                        map.put("position_id", bean.getPositionId());
-                        koderingPosition = positionDao.getKodringPosition(map);
-                        Map map1 = new HashMap<>();
-                        map1.put("branch_id", bean.getBranchId());
-                        koderingBranch = branchDao.getKodringBranches(map1);
-                    }
-
-                    String kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-
                     if (imSimrsPelayananEntity != null) {
                         imSimrsPelayananEntity.setIdPelayanan(bean.getIdPelayanan());
                         imSimrsPelayananEntity.setNamaPelayanan(bean.getNamaPelayanan());
                         imSimrsPelayananEntity.setIsEksekutif(bean.getIsEksekutif());
                         imSimrsPelayananEntity.setTipePelayanan(bean.getTipePelayanan());
                         imSimrsPelayananEntity.setBranchId(bean.getBranchId());
-                        imSimrsPelayananEntity.setKodering(kodering);
                         imSimrsPelayananEntity.setDivisiId(bean.getDivisiId());
                         imSimrsPelayananEntity.setFlag(bean.getFlag());
                         imSimrsPelayananEntity.setAction(bean.getAction());
                         imSimrsPelayananEntity.setLastUpdateWho(bean.getLastUpdateWho());
                         imSimrsPelayananEntity.setLastUpdate(bean.getLastUpdate());
-
-                        String flag;
                         try {
-                            // Update into database
                             pelayananDao.updateAndSave(imSimrsPelayananEntity);
-                            //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
                         } catch (HibernateException e) {
                             logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
                             throw new GeneralBOException("Found problem when saving update data PayrollSkalaGaji, please info to your admin..." + e.getMessage());
@@ -286,7 +229,7 @@ public class PelayananBoImpl implements PelayananBo{
                         throw new GeneralBOException("Error, not found data PayrollSkalaGaji with request id, please check again your data ...");
                     }
                 }else {
-                    throw new GeneralBOException("Maaf Data dengan Nama Pelayanan Tersebut Sudah Ada");
+                    throw new GeneralBOException("Maaf Data "+bean.getNamaPelayanan()+" Sudah Ada");
                 }
             }
         }
@@ -307,26 +250,13 @@ public class PelayananBoImpl implements PelayananBo{
             if(cekList.size() > 0){
                 throw new GeneralBOException("Nama Pelayanan "+bean.getNamaPelayanan()+" sudah ada...!");
             }else{
-
-                String pelayananId, seqKodering;
+                String pelayananId;
                 try {
-                    // Generating ID, get from postgre sequence
                     pelayananId = pelayananDao.getNextPelayananId();
-                    seqKodering = pelayananDao.getNextKodering();
                 } catch (HibernateException e) {
                     logger.error("[PelayananBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiId id, please info to your admin..." + e.getMessage());
                 }
-                Map map = new HashMap<>();
-                map.put("position_id", bean.getPositionId());
-                String koderingPosition = positionDao.getKodringPosition(map);
-                Map map1 = new HashMap<>();
-                map1.put("branch_id", bean.getBranchId());
-                String koderingBranch = branchDao.getKodringBranches(map1);
-
-                String kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
-
-                // creating object entity serializable
                 ImSimrsPelayananEntity imSimrsPelayananEntity = new ImSimrsPelayananEntity();
 
                 imSimrsPelayananEntity.setIdPelayanan(pelayananId);
@@ -335,7 +265,6 @@ public class PelayananBoImpl implements PelayananBo{
                 imSimrsPelayananEntity.setTipePelayanan(bean.getTipePelayanan());
                 imSimrsPelayananEntity.setBranchId(bean.getBranchId());
                 imSimrsPelayananEntity.setDivisiId(bean.getPositionId());
-                imSimrsPelayananEntity.setKodering(kodering);
                 imSimrsPelayananEntity.setFlag(bean.getFlag());
                 imSimrsPelayananEntity.setAction(bean.getAction());
                 imSimrsPelayananEntity.setCreatedWho(bean.getCreatedWho());
@@ -345,18 +274,12 @@ public class PelayananBoImpl implements PelayananBo{
                 imSimrsPelayananEntity.setKategoriPelayanan(bean.getKategoriPelayanan());
 
                 try {
-                    // insert into database
                     pelayananDao.addAndSave(imSimrsPelayananEntity);
                 } catch (HibernateException e) {
                     logger.error("[PelayananBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving new data PelayananGaji, please info to your admin..." + e.getMessage());
                 }
             }
-//            String status = cekStatus(bean.getNamaPelayanan());
-//            if (!status.equalsIgnoreCase("exist")){
-//            }else{
-//                throw new GeneralBOException("Maaf Data dengan Nama Pelayanan Tersebut Sudah Ada");
-//            }
         }
 
         logger.info("[PelayananBoImpl.saveAdd] end process <<<");

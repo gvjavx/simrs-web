@@ -215,15 +215,15 @@
                         </div>
                         <div class="col-md-3">
                             <span>Nadi</span> <small><b>(x/menit)</b></small>
-                            <input class="form-control nadi-pasien" id="in10">
+                            <input class="form-control nadi-pasien" id="in10" type="number">
                         </div>
                         <div class="col-md-3">
                             <span>RR</span> <small><b>(x/menit)</b></small>
-                            <input class="form-control rr-pasien" id="in11">
+                            <input class="form-control rr-pasien" id="in11" type="number">
                         </div>
                         <div class="col-md-3">
                             <span>Suhu</span> <small><b>(C)</b></small>
-                            <input class="form-control suhu-pasien" id="in12">
+                            <input class="form-control suhu-pasien" id="in12" type="number">
                         </div>
                     </div>
                     <hr class="garis">
@@ -279,8 +279,8 @@
                             <div class="col-md-offset-6 col-md-6">
                                 <label>TTD Perawat Ruang Recovery</label>
                                 <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('ttd1')" class="paint-canvas-ttd" id="ttd1"></canvas>
-                                <input class="form-control" id="nama_terang_sps" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_sps" placeholder="SIP">
+                                <input class="form-control nama_petugas" id="nama_terang_sps" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control nip_petugas" id="sip_sps" placeholder="SIP">
                                 <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ttd1')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>

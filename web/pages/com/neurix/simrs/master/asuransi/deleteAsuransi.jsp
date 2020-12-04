@@ -102,7 +102,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaAsuransi1" name="asuransi.namaAsuransi" required="true" disabled="false" readonly="true" cssClass="form-control"/>
+                                <s:textfield id="namaAsuransi1" name="asuransi.namaAsuransi"
+                                             required="true" disabled="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

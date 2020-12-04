@@ -195,7 +195,7 @@
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
                                                 <table>
-                                                    <span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                    <span class="span-success">
                                                     <s:property value="rawatInap.noSep"></s:property>
                                                     </span>
                                                 </table>
@@ -269,9 +269,9 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-md-6">
-                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center" class="card card-4 pull-right">
-                                    <img border="2" id="img_ktp" src="<s:property value="rawatInap.urlKtp"/>" style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
-                                </div>
+                                <script>
+                                    document.write(imagesDefault('<s:property value="rawatInap.urlKtp"/>'));
+                                </script>
                                 <table class="table table-striped">
                                     <tr>
                                         <td><b>Jenis Pasien</b></td>
@@ -343,7 +343,7 @@
                                         <td><b>Ruangan</b></td>
                                         <td>
                                             <table>
-                                                <span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                <span class="span-success">
                                                     <span id="no_ruang"></span> -
                                                     <span id="name_ruang"></span>
                                                 </span>
@@ -813,7 +813,9 @@
                                                         <option value="rawat_intensif">Rawat Intensif</option>
                                                         <option value="rawat_isolasi">Rawat Isolasi</option>
                                                         <option value="kamar_operasi">Kamar Operasi</option>
-                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                        <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                            <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                        </s:if>
                                                         <option value="rujuk_rs_lain">Dirujuk</option>
                                                         <option value="kontrol_ulang">Kontrol Ulang</option>
                                                     </s:if>
@@ -822,7 +824,9 @@
                                                         <option value="rawat_intensif">Rawat Intensif</option>
                                                         <option value="rawat_isolasi">Rawat Isolasi</option>
                                                         <option value="kamar_operasi">Kamar Operasi</option>
-                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                        <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                            <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                        </s:if>
                                                         <option value="rujuk_rs_lain">Dirujuk</option>
                                                         <option value="kontrol_ulang">Kontrol Ulang</option>
                                                         <option value="lanjut_biaya">Lanjut Biaya</option>
@@ -841,7 +845,9 @@
                                                     </s:else>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
                                                     <option value="kamar_operasi">Kamar Operasi</option>
-                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    </s:if>
                                                     <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
                                                     <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
                                                     <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
@@ -855,7 +861,9 @@
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="kamar_operasi">Kamar Operasi</option>
-                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    </s:if>
                                                     <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
                                                     <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
                                                     <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
@@ -869,7 +877,9 @@
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
-                                                    <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    <s:if test='rawatInap.jenisKelamin == "Perempuan"'>
+                                                        <option value="ruang_bersalin">Ruang Bersalin</option>
+                                                    </s:if>
                                                     <option value="rr">Recovery Room</option>
                                                 </s:elseif>
                                                 <s:elseif test='rawatInap.kategoriRuangan == "ruang_bersalin"'>
@@ -2085,7 +2095,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Pemberian</label>
                         <div class="col-md-7">
-                            <s:select list="#{'sebelum':'Sebelum'}"
+                            <s:select list="#{'Saat':'Saat','Sebelum':'Sebelum'}"
                                       cssStyle="margin-top: 7px; width: 100%"
                                       onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()}"
                                       id="resep_waktu"
@@ -2103,16 +2113,16 @@
                         <label class="col-md-3" style="margin-top: 7px">Waktu Minum</label>
                         <div class="col-md-7">
                             <div class="form-check" style="margin-top: 7px;">
-                                <input type="checkbox" name="cek_waktu" id="pagi" value="Pagi" onclick="var warn =$('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
-                                <label for="pagi"></label> Pagi
+                                <input type="checkbox" name="cek_waktu" id="pagi-pagi" value="Pagi" onclick="var warn =$('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
+                                <label for="pagi-pagi"></label> Pagi
                             </div>
                             <div class="form-check" style="margin-top: 7px; margin-left: 10px">
-                                <input type="checkbox" name="cek_waktu" id="siang" value="Siang" onclick="var warn =$('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
-                                <label for="siang"></label> Siang
+                                <input type="checkbox" name="cek_waktu" id="siang-siang" value="Siang" onclick="var warn =$('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
+                                <label for="siang-siang"></label> Siang
                             </div>
                             <div class="form-check" style="margin-top: 7px; margin-left: 10px">
-                                <input type="checkbox" name="cek_waktu" id="malam" value="Malam" onclick="var warn =$('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
-                                <label for="malam"></label> Malam
+                                <input type="checkbox" name="cek_waktu" id="malam-malam" value="Malam" onclick="var warn =$('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
+                                <label for="malam-malam"></label> Malam
                             </div>
                         </div>
                         <div class="col-md-2">

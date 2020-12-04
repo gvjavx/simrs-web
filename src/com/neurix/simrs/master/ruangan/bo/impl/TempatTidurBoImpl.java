@@ -179,6 +179,17 @@ public class TempatTidurBoImpl implements TempatTidurBo {
     }
 
     @Override
+    public List<MtSimrsRuanganTempatTidurEntity> cekTT(String namaTt, String idRuangan) throws GeneralBOException {
+        List<MtSimrsRuanganTempatTidurEntity> tempatTidurList = new ArrayList<>();
+        try {
+            tempatTidurList = tempatTidurDao.cekDataTT(namaTt, idRuangan);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return tempatTidurList;
+    }
+
+    @Override
     public List<TempatTidur> getByCriteria(TempatTidur bean) throws GeneralBOException {
         List<TempatTidur> pemeriksaanList = new ArrayList<>();
         List<MtSimrsRuanganTempatTidurEntity> entityList = new ArrayList<>();

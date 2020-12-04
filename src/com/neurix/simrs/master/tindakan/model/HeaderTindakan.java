@@ -16,6 +16,15 @@ public class HeaderTindakan {
     private String lastUpdateWho;
     private String kategoriInaBpjs;
     private String namaKategoriBpjs;
+    private String flagKonsulTele;
+
+    public String getFlagKonsulTele() {
+        return flagKonsulTele;
+    }
+
+    public void setFlagKonsulTele(String flagKonsulTele) {
+        this.flagKonsulTele = flagKonsulTele;
+    }
 
     public String getNamaKategoriBpjs() {
         return namaKategoriBpjs;

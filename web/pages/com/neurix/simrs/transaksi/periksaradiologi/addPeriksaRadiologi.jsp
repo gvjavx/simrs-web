@@ -127,23 +127,9 @@
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
-                                                <s:if test='periksaLab.idJenisPeriksa == "asuransi"'>
-                                                <span style="background-color: #ffff00; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:if>
-                                                <s:elseif test='periksaLab.idJenisPeriksa == "umum"'>
-                                                    <span style="background-color: #4d4dff; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='periksaLab.idJenisPeriksa == "bpjs"'>
-                                                    <span style="background-color: #00b300; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:elseif test='periksaLab.idJenisPeriksa == "ptpn"'>
-                                                    <span style="background-color: #66ff33; color: black; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:elseif>
-                                                <s:else>
-                                                    <span style="background-color: #cc3399; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
-                                                </s:else>
-                                                    <s:property value="periksaLab.jenisPeriksaPasien"></s:property>
-                                                </span>
+                                                <script>
+                                                    document.write(changeJenisPasien('<s:property value="periksaLab.idJenisPeriksa"/>', '<s:property value="periksaLab.jenisPeriksaPasien"/>'));
+                                                </script>
                                             </table>
                                         </td>
                                     </tr>
@@ -157,11 +143,9 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-md-6">
-                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
-                                     class="card card-4 pull-right">
-                                    <img border="2" id="img_ktp" src="<s:property value="periksaLab.urlKtp"/>"
-                                         style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
-                                </div>
+                                <script>
+                                    document.write(imagesDefault('<s:property value="periksaLab.urlKtp"/>'));
+                                </script>
                                 <table class="table table-striped">
                                     <tr>
                                         <td><b>Pelayanan</b></td>

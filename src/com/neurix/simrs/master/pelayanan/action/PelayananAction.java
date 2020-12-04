@@ -459,4 +459,35 @@ public class PelayananAction extends BaseMasterAction {
         logger.info("[CheckupAction.getListDokterByBranchId] END process >>>");
         return response;
     }
+
+    public List<Pelayanan> getListPelayananByBranchAndTipe(String branchId, String tipe){
+        logger.info("[PelayananAction.getListPelayananByBranchAndTipe] START process >>>");
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setTipePelayanan(tipe);
+        pelayanan.setBranchId(branchId);
+
+        if ("apotek".equalsIgnoreCase(tipe)){
+            try {
+                pelayananList = pelayananBo.getListApotek(branchId, "");
+            } catch (HibernateException e) {
+                logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+                addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+            }
+        } else {
+            try {
+                pelayananList = pelayananBo.getByCriteria(pelayanan);
+            } catch (HibernateException e) {
+                logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
+                addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());
+            }
+
+        }
+
+        logger.info("[PelayananAction.getListPelayananByBranchAndTipe] END process <<<");
+        return pelayananList;
+    }
 }

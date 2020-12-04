@@ -82,7 +82,8 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="kodeRekeningForm" method="post" namespace="/kodeRekening" action="search_kodeRekening.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="kodeRekeningForm" method="post" namespace="/kodeRekening" action="search_kodeRekening.action"
+                                    theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Rekening ID</label>
                                     <div class="col-sm-4">
@@ -321,6 +322,7 @@
 </div>
 
 <script>
+
     $(document).ready(function () {
         //btn Save
         $('#btnEdit').click(function(){

@@ -2,6 +2,7 @@ package com.neurix.authorization.role.action;
 
 
 import com.neurix.authorization.role.bo.RoleBo;
+import com.neurix.authorization.role.model.ImRoles;
 import com.neurix.authorization.role.model.Roles;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
@@ -443,6 +444,18 @@ public class RoleAction extends BaseMasterAction {
         logger.info("[RoleAction.initComboRole] end process <<<");
 
         return listOfRoles;
+    }
+
+    public Roles getRoleById(String roleId){
+        logger.info("[RoleAction.getRoleById] START process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RoleBo roleBo = (RoleBo) ctx.getBean("roleBoProxy");
+
+        Long lRoleId = Long.parseLong(roleId);
+        if (roleId != null && !"".equalsIgnoreCase(roleId));
+
+        return roleBo.getRoleById(lRoleId, "Y");
     }
 
 }

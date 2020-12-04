@@ -28,6 +28,14 @@ public class BaseModel {
 
     protected boolean flagYes;
 
+    public void setStCreatedDate(String stCreatedDate) {
+        this.stCreatedDate = stCreatedDate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
+
     public String getFlagKalkulasiPph() {
         return flagKalkulasiPph;
     }

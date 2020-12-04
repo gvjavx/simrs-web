@@ -1121,7 +1121,6 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ---------- SUDAH DI PROD -----------
 ----------- +++++++++++ ------------
 
---BARU BARU INI BELUM DI PROD
 --FRIDAY 23-10-2020
 SELECT * FROM im_simrs_pelayanan
 WHERE id_pelayanan = 'PYN00000010';
@@ -1235,8 +1234,6 @@ ALTER TABLE im_simrs_pasien
 ADD COLUMN pendidikan VARCHAR(100),
 ADD COLUMN status_perkawinan VARCHAR(100);
 
-
---INI BELOM DI PROD
 --KEMMIS MALAM JUMAT
 ALTER TABLE im_simrs_pelayanan
 ADD COLUMN kode_poli_vclaim VARCHAR(100);
@@ -1278,8 +1275,207 @@ UPDATE im_branches
 SET warna = '#00ffff'
 WHERE branch_id = 'RS06';
 
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN no_antrian VARCHAR(100);
+
+INSERT INTO im_functions VALUES
+(2356, 'print no antrian', '/checkup/printNoAntrian_checkup.action', 1474, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2356, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN poli_rujukan_internal VARCHAR(100);
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN no_rujukan_internal VARCHAR(100);
+
+INSERT INTO im_functions VALUES
+(2357, 'print no rujukan', '/checkupdetail/printNoRujukan_checkupdetail.action', 1481, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2357, 32, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE it_simrs_pengkajian_ulang_keperawatan
+ADD COLUMN tipe VARCHAR(100);
 
 
+--BUAT MIGRASI
+CREATE TABLE public.im_position_migrasi
+(
+  position_name character varying(100),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  department_id character varying(3),
+  kelompok_id character varying(4),
+  position_id character varying(10) NOT NULL,
+  bagian_id character varying(10),
+  carrer_path_strata_id character varying(10),
+  flag_dijabat_satu character varying(1),
+  kodering character varying(10),
+  kategori character varying(50),
+  CONSTRAINT im_position_migrasi_pkey PRIMARY KEY (position_id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.im_position_migrasi
+  OWNER TO postgres;
+
+
+CREATE TABLE public.im_hris_department_migrasi
+(
+  department_id character varying(3) NOT NULL,
+  department_name character varying(100),
+  created_who character varying(100),
+  last_update_who character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  kodering character varying(10),
+  CONSTRAINT im_hris_department__migrasi_pkey PRIMARY KEY (department_id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.im_hris_department_migrasi
+  OWNER TO postgres;
+
+CREATE TABLE public.im_hris_position_bagian_migrasi
+(
+  bagian_id character varying(10) NOT NULL,
+  nama_bagian character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  last_update_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  branch_id character varying(10),
+  divisi_id character varying(10),
+  kodering character varying(10),
+  CONSTRAINT im_hris_position_bagian_migrasi_pkey PRIMARY KEY (bagian_id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.im_hris_position_bagian_migrasi
+  OWNER TO postgres;
+
+INSERT INTO im_position
+(position_name,
+created_date,
+created_who,
+last_update,
+last_update_who,
+flag,
+action,
+department_id,
+kelompok_id,
+position_id,
+bagian_id,
+carrer_path_strata_id,
+flag_dijabat_satu,
+kodering,
+kategori
+)
+SELECT
+a.position_name,
+a.created_date,
+a.created_who,
+a.last_update,
+a.last_update_who,
+a.flag,
+a.action,
+a.department_id,
+a.kelompok_id,
+a.position_id,
+a.bagian_id,
+a.carrer_path_strata_id,
+a.flag_dijabat_satu,
+a.kodering,
+a.kategori
+FROM im_position_migrasi a
+LEFT JOIN im_position b ON a.position_id = b.position_id
+WHERE b.position_id IS NULL;
+
+INSERT INTO im_hris_department
+(
+department_id,
+department_name,
+created_who,
+last_update_who,
+flag,
+action,
+created_date,
+last_update,
+kodering
+)
+SELECT
+a.department_id,
+a.department_name,
+a.created_who,
+a.last_update_who,
+a.flag,
+a.action,
+a.created_date,
+a.last_update,
+a.kodering
+FROM im_hris_department_migrasi a
+LEFT JOIN im_hris_department b ON a.department_id = b.department_id
+WHERE b.department_id IS NULL;
+
+INSERT INTO im_hris_position_bagian
+(
+bagian_id,
+nama_bagian,
+flag,
+action,
+created_who,
+last_update_who,
+created_date,
+last_update,
+branch_id,
+divisi_id,
+kodering
+)
+SELECT
+a.bagian_id,
+a.nama_bagian,
+a.flag,
+a.action,
+a.created_who,
+a.last_update_who,
+a.created_date,
+a.last_update,
+a.branch_id,
+a.divisi_id,
+a.kodering
+FROM im_hris_position_bagian_migrasi  a
+LEFT JOIN im_hris_position_bagian b ON a.bagian_id = b.bagian_id
+WHERE b.bagian_id IS NULL;
+
+---------- SUDAH DI PROD -----------
+====================================
+
+            /\   /\   /\
+           |__| |__| |__|
+            ||   ||   ||
+            ||   ||   ||
+            ||   ||   ||
+----------- ||   ||   || -----------
+---------- SUDAH DI PROD -----------
+----------- +++++++++++ ------------
+
+--BELUM DIPROD INI YA...
+--SENIN 30-11-2020 16:07
+ALTER TABLE im_simrs_tindakan
+DROP COLUMN kategori_ina_bpjs;
 
 
 

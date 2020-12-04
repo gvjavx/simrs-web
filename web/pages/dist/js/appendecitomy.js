@@ -256,28 +256,30 @@ function saveAppendecitomy(jenis, ket) {
     }
 
     if (cek) {
-        var result = JSON.stringify(data);
-        $('#save_ic_' + jenis).hide();
-        $('#load_ic_' + jenis).show();
-        dwr.engine.setAsync(true);
-        AppendecitomyAction.saveAppendecitomy(result, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_ic_' + jenis).show();
-                    $('#load_ic_' + jenis).hide();
-                    $('#modal-ic-' + jenis).modal('hide');
-                    $('#warning_ic_' + ket).show().fadeOut(5000);
-                    $('#msg_ic_' + ket).text("Berhasil menambahkan data ic...");
-                    $('#modal-ic-' + jenis).scrollTop(0);
-                } else {
-                    $('#save_ic_' + jenis).show();
-                    $('#load_ic_' + jenis).hide();
-                    $('#warning_ic_' + jenis).show().fadeOut(5000);
-                    $('#msg_ic_' + jenis).text(res.msg);
-                    $('#modal-ic-' + jenis).scrollTop(0);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            $('#save_ic_' + jenis).hide();
+            $('#load_ic_' + jenis).show();
+            dwr.engine.setAsync(true);
+            AppendecitomyAction.saveAppendecitomy(result, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_ic_' + jenis).show();
+                        $('#load_ic_' + jenis).hide();
+                        $('#modal-ic-' + jenis).modal('hide');
+                        $('#warning_ic_' + ket).show().fadeOut(5000);
+                        $('#msg_ic_' + ket).text("Berhasil menambahkan data ic...");
+                        $('#modal-ic-' + jenis).scrollTop(0);
+                    } else {
+                        $('#save_ic_' + jenis).show();
+                        $('#load_ic_' + jenis).hide();
+                        $('#warning_ic_' + jenis).show().fadeOut(5000);
+                        $('#msg_ic_' + jenis).text(res.msg);
+                        $('#modal-ic-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        })
+            })
+        }
     } else {
         $('#warning_ic_' + jenis).show().fadeOut(5000);
         $('#msg_ic_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -287,79 +289,81 @@ function saveAppendecitomy(jenis, ket) {
 
 function detailAppendecitomy(jenis) {
     if (jenis != '') {
-        var head = "";
-        var body = "";
-        var totalSkor = 0;
-        var first = "";
-        var last = "";
-        var tgl = "";
-        var cekData = false;
+        if(!cekSession()){
+            var head = "";
+            var body = "";
+            var totalSkor = 0;
+            var first = "";
+            var last = "";
+            var tgl = "";
+            var cekData = false;
 
-        AppendecitomyAction.getListAppendecitomy(idDetailCheckup, jenis, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    var jwb = "";
-                    var jwb2 = "";
-                    if (item.jawaban1 != null) {
-                        jwb = item.jawaban1;
-                    }
-                    if (item.jawaban2 != null) {
-                        jwb2 = item.jawaban2;
-                    }
-                    if ("appendecitomy_informasi" == item.keterangan) {
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td>' + jwb + '</td>' +
-                            '<td align="center">' + checkIcon(jwb2) + '</td>' +
-                            '</tr>';
-                    } else if ("appendecitomy_penyataan" == item.keterangan) {
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td align="center">' + '<img src="' + jwb + '" style="width: 150px">' + '</td>' +
-                            '</tr>';
-                    } else {
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td>' + jwb + '</td>' +
-                            '</tr>';
-                    }
-                    cekData = true;
-                    tgl = item.createdDate;
-                });
-            } else {
-                body = '<tr>' +
-                    '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
-
-            if ("appendecitomy_informasi" == jenis) {
-                if (cekData) {
-                    head = '<tr style="font-weight: bold"><td width="25%">Jenis Informasi</td><td>Isi Informasi</td><td align="center" width="15%">Check (<i class="fa fa-check"></i>)</td></tr>'
-                }
-            }
-
-            if ("appendecitomy_persetujuan" == jenis) {
-                if (cekData) {
-                    first = '<tr>' +
-                        '<td colspan="2">Yang bertanda tangan dibawah ini, saya :</td>' +
-                        '</tr>';
-                    last = '<tr>' +
-                        '<td colspan="2">Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti di atas kepada saya termasuk resiko dan komplikasi yang timbul. Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti. maka keberhasilan tindakan kedokteran bukan keniscayaan, tetapi bergantung kepada izin Tuhan Yang Maha Esa. Tanggal ' + formaterDate(tgl) + ', Jam ' + formaterTime(tgl) + '</td>' +
+            AppendecitomyAction.getListAppendecitomy(idDetailCheckup, jenis, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        var jwb = "";
+                        var jwb2 = "";
+                        if (item.jawaban1 != null) {
+                            jwb = item.jawaban1;
+                        }
+                        if (item.jawaban2 != null) {
+                            jwb2 = item.jawaban2;
+                        }
+                        if ("appendecitomy_informasi" == item.keterangan) {
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + jwb + '</td>' +
+                                '<td align="center">' + checkIcon(jwb2) + '</td>' +
+                                '</tr>';
+                        } else if ("appendecitomy_penyataan" == item.keterangan) {
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td align="center">' + '<img src="' + jwb + '" style="width: 150px">' + '</td>' +
+                                '</tr>';
+                        } else {
+                            body += '<tr>' +
+                                '<td>' + item.parameter + '</td>' +
+                                '<td>' + jwb + '</td>' +
+                                '</tr>';
+                        }
+                        cekData = true;
+                        tgl = item.createdDate;
+                    });
+                } else {
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
                         '</tr>';
                 }
-            }
 
-            var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead>' + head + '</thead>' +
-                '<tbody>' + first + body + last + '</tbody>' +
-                '</table>';
+                if ("appendecitomy_informasi" == jenis) {
+                    if (cekData) {
+                        head = '<tr style="font-weight: bold"><td width="25%">Jenis Informasi</td><td>Isi Informasi</td><td align="center" width="15%">Check (<i class="fa fa-check"></i>)</td></tr>'
+                    }
+                }
 
-            var newRow = $('<tr id="del_ic_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-            newRow.insertAfter($('table').find('#row_ic_' + jenis));
-            var url = contextPath + '/pages/images/minus-allnew.png';
-            $('#btn_ic_' + jenis).attr('src', url);
-            $('#btn_ic_' + jenis).attr('onclick', 'delRowAppendecitomy(\'' + jenis + '\')');
-        });
+                if ("appendecitomy_persetujuan" == jenis) {
+                    if (cekData) {
+                        first = '<tr>' +
+                            '<td colspan="2">Yang bertanda tangan dibawah ini, saya :</td>' +
+                            '</tr>';
+                        last = '<tr>' +
+                            '<td colspan="2">Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti di atas kepada saya termasuk resiko dan komplikasi yang timbul. Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti. maka keberhasilan tindakan kedokteran bukan keniscayaan, tetapi bergantung kepada izin Tuhan Yang Maha Esa. Tanggal ' + formaterDate(tgl) + ', Jam ' + formaterTime(tgl) + '</td>' +
+                            '</tr>';
+                    }
+                }
+
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tbody>' + first + body + last + '</tbody>' +
+                    '</table>';
+
+                var newRow = $('<tr id="del_ic_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_ic_' + jenis));
+                var url = contextPath + '/pages/images/minus-allnew.png';
+                $('#btn_ic_' + jenis).attr('src', url);
+                $('#btn_ic_' + jenis).attr('onclick', 'delRowAppendecitomy(\'' + jenis + '\')');
+            });
+        }
     }
 }
 

@@ -243,7 +243,6 @@ public class KategoriLabBoImpl implements KategoriLabBo {
                     kategoriLab.setStLastUpdate(kategoriLabEntity.getLastUpdate().toString());
                     kategoriLab.setLastUpdate(kategoriLabEntity.getLastUpdate());
                     kategoriLab.setLastUpdateWho(kategoriLabEntity.getLastUpdateWho());
-//
 
                     //set divisi dari tabel lain ke tabel kategorilab dan mengambil nama berdasarkan id nya
                     if (kategoriLabEntity.getDivisiId() != null){

@@ -491,8 +491,48 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     detailCheckupEntity.setNoPpkRujukan(bean.getNoPpkRujukan() != null ? bean.getNoPpkRujukan() : null);
                 }
 
-                if (detailCheckupEntity.getNoCheckupOnline() != null && !"".equalsIgnoreCase(detailCheckupEntity.getNoCheckupOnline())) {
-                    detailCheckupEntity.setNoCheckupOnline(bean.getNoCheckupOnline());
+                if(!"paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                    List<HeaderCheckup> antrian = new ArrayList<>();
+                    int jumlahOnline = 0;
+                    String noAntrian = "";
+                    try {
+                        antrian = headerCheckupDao.listAntrianOnline(bean.getBranchId(), bean.getIdPelayanan());
+                    }catch (HibernateException e){
+                        logger.error("[CheckupBoImpl.saveAdd] Error When search no antrian" + e.getMessage());
+                        throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When search no antrian");
+                    }
+                    if(antrian.size() > 0){
+                        jumlahOnline = antrian.size();
+                    }
+                    if (bean.getNoCheckupOnline() != null && !"".equalsIgnoreCase(bean.getNoCheckupOnline())) {
+                        int urutan = 0;
+                        for (HeaderCheckup ckp: antrian){
+                            urutan++;
+                            if(bean.getNoCheckupOnline().equalsIgnoreCase(ckp.getNoCheckupOnline())){
+                                noAntrian = String.valueOf(urutan);
+                            }
+                        }
+                        detailCheckupEntity.setNoCheckupOnline(bean.getNoCheckupOnline());
+                    }else{
+                        HeaderCheckup lastAntrian = new HeaderCheckup();
+                        try {
+                            lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan());
+                        }catch (HibernateException e){
+                            logger.error("[CheckupBoImpl.saveAdd] Error When search no antrian" + e.getMessage());
+                            throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When search no antrian");
+                        }
+                        if(lastAntrian.getStNoAntrian() != null){
+                            int jumlah = Integer.valueOf(lastAntrian.getStNoAntrian()) + 1;
+                            noAntrian = String.valueOf(jumlah);
+                        }else{
+                            int jumlah = jumlahOnline + 1;
+                            noAntrian = String.valueOf(jumlah);
+                        }
+                    }
+
+                    if(!"".equalsIgnoreCase(noAntrian)){
+                        detailCheckupEntity.setNoAntrian(noAntrian);
+                    }
                 }
 
                 if ("Y".equalsIgnoreCase(bean.getIsOnline())) {

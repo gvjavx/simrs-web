@@ -1330,10 +1330,6 @@ function saveAsesmenUgd(jenis, keterangan) {
                 skor1 = "1";
             }
 
-            console.log(umur);
-            console.log(parseInt(umur));
-            console.log(skor1);
-
             if(jenisKelamin == "Laki-Laki"){
                 skor2 = "2";
             }else{
@@ -1590,30 +1586,30 @@ function saveAsesmenUgd(jenis, keterangan) {
         }
 
         if (cek) {
-            var result = JSON.stringify(data);
-            var pasienData = JSON.stringify(dataPasien);
-
-            $('#save_aud_'+jenis).hide();
-            $('#load_aud_'+jenis).show();
-            dwr.engine.setAsync(true);
-            AsesmenUgdAction.saveAsesmenUgd(result, pasienData, {
-                callback: function (res) {
-                if(res.status == "success"){
-                    $('#save_aud_'+jenis).show();
-                    $('#load_aud_'+jenis).hide();
-                    $('#modal-aud-' + jenis).modal('hide');
-                    $('#warning_aud_'+keterangan).show().fadeOut(5000);
-                    $('#msg_aud_'+keterangan).text("Berhasil menambahkan data asesmen UGD...");
-                    $("#modal-aud_"+keterangan).scrollTop(0);
-                }else{
-                    $('#save_aud_'+jenis).show();
-                    $('#load_aud_'+jenis).hide();
-                    $("#warning_aud_" + jenis).show().fadeOut(5000);
-                    $('#msg_aud_' + jenis).text(res.msg);
-                    $("#modal-aud-"+jenis).scrollTop(0);
-                }
-            }});
-
+            if(!cekSession()){
+                var result = JSON.stringify(data);
+                var pasienData = JSON.stringify(dataPasien);
+                $('#save_aud_'+jenis).hide();
+                $('#load_aud_'+jenis).show();
+                dwr.engine.setAsync(true);
+                AsesmenUgdAction.saveAsesmenUgd(result, pasienData, {
+                    callback: function (res) {
+                        if(res.status == "success"){
+                            $('#save_aud_'+jenis).show();
+                            $('#load_aud_'+jenis).hide();
+                            $('#modal-aud-' + jenis).modal('hide');
+                            $('#warning_aud_'+keterangan).show().fadeOut(5000);
+                            $('#msg_aud_'+keterangan).text("Berhasil menambahkan data asesmen UGD...");
+                            $("#modal-aud_"+keterangan).scrollTop(0);
+                        }else{
+                            $('#save_aud_'+jenis).show();
+                            $('#load_aud_'+jenis).hide();
+                            $("#warning_aud_" + jenis).show().fadeOut(5000);
+                            $('#msg_aud_' + jenis).text(res.msg);
+                            $("#modal-aud-"+jenis).scrollTop(0);
+                        }
+                    }});
+            }
         } else {
             $("#warning_aud_" + jenis).show().fadeOut(5000);
             $('#msg_aud_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -1624,122 +1620,124 @@ function saveAsesmenUgd(jenis, keterangan) {
 }
 
 function detailAud(jenis) {
-    if (jenis != '') {
-        var body = "";
-        var totalSkor = 0;
-        var cekSkor = false;
-        var rowTotal = "";
-        var kesimpulan = "";
-        var isKesimpulan = false;
-        var list = "";
-        var first = "";
-        AsesmenUgdAction.getListAsesmenUgd(idDetailCheckup, jenis, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    if("diagnosis" == item.keterangan || "asuhan" == item.keterangan){
-                        var li = "";
-                        var isi = item.jawaban.split("|");
-                        $.each(isi, function (i ,item) {
-                            li +='<li>'+item+'</li>'
-                        });
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td>' + li + '</td>' +
-                            '</tr>';
-                    }else if ("ttd" == item.tipe) {
-                        body += '<tr>' +
-                            '<td width="60%">' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + item.jawaban + '" style="width: 100px">' +
-                            '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>'+
-                            '<p style="margin-top: -7px">'+cekItemIsNull(item.sip)+'</p>'+
-                            '</td>' +
-                            '</tr>';
-                    }else if("gambar" == item.tipe){
-                        body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + item.jawaban + '" style="width: 100%">' + '</td>' +
-                            '</tr>';
-                    }else{
-                        if(item.skor != null){
+    if(!cekSession()){
+        if (jenis != '') {
+            var body = "";
+            var totalSkor = 0;
+            var cekSkor = false;
+            var rowTotal = "";
+            var kesimpulan = "";
+            var isKesimpulan = false;
+            var list = "";
+            var first = "";
+            AsesmenUgdAction.getListAsesmenUgd(idDetailCheckup, jenis, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        if("diagnosis" == item.keterangan || "asuhan" == item.keterangan){
+                            var li = "";
+                            var isi = item.jawaban.split("|");
+                            $.each(isi, function (i ,item) {
+                                li +='<li>'+item+'</li>'
+                            });
                             body += '<tr>' +
                                 '<td>' + item.parameter + '</td>' +
-                                '<td>' + item.jawaban + '</td>' +
-                                '<td width="10%" align="center">' + item.skor + '</td>' +
+                                '<td>' + li + '</td>' +
                                 '</tr>';
-                            totalSkor = parseInt(totalSkor) + parseInt(item.skor);
-                            cekSkor = true;
-                        }else{
+                        }else if ("ttd" == item.tipe) {
+                            body += '<tr>' +
+                                '<td width="60%">' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + item.jawaban + '" style="width: 100px">' +
+                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>'+
+                                '<p style="margin-top: -7px">'+cekItemIsNull(item.sip)+'</p>'+
+                                '</td>' +
+                                '</tr>';
+                        }else if("gambar" == item.tipe){
                             body += '<tr>' +
                                 '<td width="40%">' + item.parameter + '</td>' +
-                                '<td>' + item.jawaban + '</td>' +
+                                '<td>' + '<img src="' + item.jawaban + '" style="width: 100%">' + '</td>' +
                                 '</tr>';
+                        }else{
+                            if(item.skor != null){
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + item.jawaban + '</td>' +
+                                    '<td width="10%" align="center">' + item.skor + '</td>' +
+                                    '</tr>';
+                                totalSkor = parseInt(totalSkor) + parseInt(item.skor);
+                                cekSkor = true;
+                            }else{
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + item.jawaban + '</td>' +
+                                    '</tr>';
+                            }
                         }
+                    });
+
+                    isKesimpulan = true;
+                } else {
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
+                        '</tr>';
+                }
+
+                if(cekSkor){
+                    first = '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
+                    rowTotal = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">'+totalSkor+'</td></tr>'
+                }
+
+                if("nutrisional" == jenis){
+                    var jwb = "";
+                    if(totalSkor < 2){
+                        jwb = "Tidak";
+                    }else{
+                        jwb = "Ya";
                     }
-                });
 
-                isKesimpulan = true;
-            } else {
-                body = '<tr>' +
-                    '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
-
-            if(cekSkor){
-                first = '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
-                rowTotal = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">'+totalSkor+'</td></tr>'
-            }
-
-            if("nutrisional" == jenis){
-                var jwb = "";
-                if(totalSkor < 2){
-                    jwb = "Tidak";
-                }else{
-                    jwb = "Ya";
+                    if(isKesimpulan){
+                        kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Nutrisi</td><td align="center">'+jwb+'</td></tr>';
+                    }
                 }
 
-                if(isKesimpulan){
-                    kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Nutrisi</td><td align="center">'+jwb+'</td></tr>';
-                }
-            }
+                if("jatuh" == jenis){
+                    var jwb = "";
+                    if(totalSkor >= 0 && totalSkor <= 24){
+                        jwb = "Rendah";
+                    }else if (totalSkor >= 25 && totalSkor <= 44) {
+                        jwb = "Sedang";
+                    }else if (totalSkor >= 45) {
+                        jwb = "Tinggi";
+                    }
 
-            if("jatuh" == jenis){
-                var jwb = "";
-                if(totalSkor >= 0 && totalSkor <= 24){
-                    jwb = "Rendah";
-                }else if (totalSkor >= 25 && totalSkor <= 44) {
-                    jwb = "Sedang";
-                }else if (totalSkor >= 45) {
-                    jwb = "Tinggi";
-                }
-
-                if(isKesimpulan){
-                    kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">'+jwb+'</td></tr>';
-                }
-            }
-
-            if("jatuh_anak" == jenis){
-                var jwb = "";
-                if(totalSkor >= 7 && totalSkor <= 11){
-                    jwb = "Rendah";
-                }else if (totalSkor >= 12 && totalSkor <= 44) {
-                    jwb = "Tinggi";
+                    if(isKesimpulan){
+                        kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">'+jwb+'</td></tr>';
+                    }
                 }
 
-                if(isKesimpulan){
-                    kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">'+jwb+'</td></tr>';
+                if("jatuh_anak" == jenis){
+                    var jwb = "";
+                    if(totalSkor >= 7 && totalSkor <= 11){
+                        jwb = "Rendah";
+                    }else if (totalSkor >= 12 && totalSkor <= 44) {
+                        jwb = "Tinggi";
+                    }
+
+                    if(isKesimpulan){
+                        kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">'+jwb+'</td></tr>';
+                    }
                 }
-            }
 
-            var table = '<table style="font-size: 12px" class="table table-bordered"><tr bgcolor="#ffebcd">' +
-                '<tbody>' + first + body + rowTotal + kesimpulan + '</tbody>' +
-                '</table>';
+                var table = '<table style="font-size: 12px" class="table table-bordered"><tr bgcolor="#ffebcd">' +
+                    '<tbody>' + first + body + rowTotal + kesimpulan + '</tbody>' +
+                    '</table>';
 
-            var newRow = $('<tr id="del_aud_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-            newRow.insertAfter($('table').find('#row_aud_' + jenis));
-            var url = contextPath+'/pages/images/minus-allnew.png';
-            $('#btn_aud_' + jenis).attr('src', url);
-            $('#btn_aud_' + jenis).attr('onclick', 'delRowAud(\'' + jenis + '\')');
-        });
+                var newRow = $('<tr id="del_aud_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_aud_' + jenis));
+                var url = contextPath+'/pages/images/minus-allnew.png';
+                $('#btn_aud_' + jenis).attr('src', url);
+                $('#btn_aud_' + jenis).attr('onclick', 'delRowAud(\'' + jenis + '\')');
+            });
+        }
     }
 }
 
@@ -1759,17 +1757,19 @@ function audKeterangan(val, jenis) {
 }
 
 function listTindakanKategoriPoli() {
-    var option = "<option value=''>[Select One]</option>";
-    CheckupDetailAction.getListComboTindakanKategori(idPoli, function (response) {
-        if (response != null) {
-            $.each(response, function (i, item) {
-                option += "<option value='" + item.idKategoriTindakan + "'>" + item.kategoriTindakan + "</option>";
-            });
-            $('#ra3').html(option);
-        } else {
-            $('#ra3').html('');
-        }
-    });
+    if(!cekSession()){
+        var option = "<option value=''>[Select One]</option>";
+        CheckupDetailAction.getListComboTindakanKategori(idPoli, function (response) {
+            if (response != null) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idKategoriTindakan + "'>" + item.kategoriTindakan + "</option>";
+                });
+                $('#ra3').html(option);
+            } else {
+                $('#ra3').html('');
+            }
+        });
+    }
 }
 
 function listTindakanPoli(idKategori){
@@ -1962,26 +1962,28 @@ function conUGD(jenis, ket){
 
 function delUGD(jenis, ket) {
     $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startSpin('delete_'+jenis);
-    dwr.engine.setAsync(true);
-    AsesmenUgdAction.saveDelete(idDetailCheckup, jenis, result, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopSpin('delete_'+jenis);
-                $('#warning_aud_' + ket).show().fadeOut(5000);
-                $('#msg_aud_' + ket).text("Berhasil menghapus data...");
-            } else {
-                stopSpin('delete_'+jenis);
-                $('#modal_warning').show().fadeOut(5000);
-                $('#msg_warning').text(res.msg);
-            }
+    if(!cekSession()){
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
-    });
+        var result = JSON.stringify(dataPasien);
+        startSpin('delete_'+jenis);
+        dwr.engine.setAsync(true);
+        AsesmenUgdAction.saveDelete(idDetailCheckup, jenis, result, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopSpin('delete_'+jenis);
+                    $('#warning_aud_' + ket).show().fadeOut(5000);
+                    $('#msg_aud_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopSpin('delete_'+jenis);
+                    $('#modal_warning').show().fadeOut(5000);
+                    $('#msg_warning').text(res.msg);
+                }
+            }
+        });
+    }
 }

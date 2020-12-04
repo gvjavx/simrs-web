@@ -104,10 +104,6 @@
                         </td>
                         <td width="70%">
                             <table>
-                                    <%--<s:textfield id="namaAsuransi" name="asuransi.namaAsuransi"--%>
-                                    <%--required="true" disabled="false" cssClass="form-control"/>--%>
-
-
                                 <s:action id="initComboAsuransi" namespace="/masterVendor"
                                           name="getComboAsuransi_masterVendor" />
                                 <s:select cssStyle="margin-top: 7px; width: 100%" list="#initComboAsuransi.listOfComboVendor"

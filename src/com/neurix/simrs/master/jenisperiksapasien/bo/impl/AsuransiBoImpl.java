@@ -83,7 +83,6 @@ public class AsuransiBoImpl implements AsuransiBo  {
         logger.info("[PayrollSkalaGajiBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
             String asuransiId = bean.getIdAsuransi();
-
             ImSimrsAsuransiEntity imSimrsAsuransiEntity = null;
             try {
                 // Get data from database by ID
@@ -93,18 +92,15 @@ public class AsuransiBoImpl implements AsuransiBo  {
                 logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data PayrollSkalaGaji by Kode PayrollSkalaGaji, please inform to your admin...," + e.getMessage());
             }
-
-//             mengambil nama master / nama asuransi dari masterdao berdasarkan no master;
+//          mengambil nama master / nama asuransi dari masterdao berdasarkan no master;
             ImMasterEntity masterEntity = new ImMasterEntity();
             try {
                 masterEntity = masterDao.getById("primaryKey.nomorMaster", bean.getNoMaster());
             }catch (HibernateException e){
                 logger.error("Found Error when search asuransi "+e.getMessage());
             }
-
-//            imSimrsAsuransiEntity.setIdAsuransi(asuransiId);
+//           imSimrsAsuransiEntity.setIdAsuransi(asuransiId);
             //cari ke dao akun Master berdasarkan no master
-
 
             if (imSimrsAsuransiEntity != null) {
                 if (imSimrsAsuransiEntity.getNamaAsuransi().equalsIgnoreCase(bean.getNamaAsuransi())){
@@ -188,7 +184,6 @@ public class AsuransiBoImpl implements AsuransiBo  {
                     logger.error("[AsuransiBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when getting sequence Asuransi id, please info to your admin..." + e.getMessage());
                 }
-
                 // mengambil nama master / nama asuransi dari masterdao berdasarkan no master;
                 ImMasterEntity masterEntity = new ImMasterEntity();
                 try {
@@ -224,9 +219,6 @@ public class AsuransiBoImpl implements AsuransiBo  {
                 }
             }
 
-//            else{
-//                throw new GeneralBOException("Maaf Data dengan Nama Asuransi Tersebut Sudah Ada");
-//            }
         }
 
 

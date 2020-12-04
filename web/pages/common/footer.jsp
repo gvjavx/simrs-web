@@ -7,6 +7,29 @@
     <%--</ul>--%>
 <%--</div>--%>
 
+<div class="modal fade" id="modal-session">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #dd4b39">
+                <h4 class="modal-title" style="color: white"><i class="fa fa-warning"></i> Warning</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="alert alert-danger alert-dismissible" id="warning_finger">
+                            Your session has expired, please login again...!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button onclick="toLogin()" class="btn btn-success"><i class="fa fa-check"></i> OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Main Footer -->
 <footer class="main-footer">
     <!-- To the right -->

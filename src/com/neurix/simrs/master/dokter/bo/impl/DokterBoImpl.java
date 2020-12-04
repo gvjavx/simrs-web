@@ -110,7 +110,9 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                     String kode = imSimrsDokterEntity.getKodering();
                     if (kode != null){
                         String[] arrOfStr = kode.split("\\.");
-                        seqKodering = arrOfStr[4];
+//                        seqKodering = arrOfStr[4];
+                        int lastIndex = arrOfStr.length - 1;
+                        seqKodering = String.valueOf(lastIndex);
 
                         Map map = new HashMap<>();
                         map.put("position_id", bean.getPositionId());
@@ -132,7 +134,6 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                         Map map1 = new HashMap<>();
                         map1.put("branch_id", branchId);
                         String koderingBranch = branchDao.getKodringBranches(map1);
-
                         kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
                     }
 
@@ -142,6 +143,13 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                     imSimrsDokterEntity.setKuota(bean.getKuota());
                     imSimrsDokterEntity.setKodeDpjp(bean.getKodeDpjp());
                     imSimrsDokterEntity.setKodering(kodering);
+
+                    imSimrsDokterEntity.setFlagTele(bean.getFlagTele());
+                    imSimrsDokterEntity.setFlagCall(bean.getFlagCall());
+                    imSimrsDokterEntity.setKuotaTele(bean.getKuotaTele());
+                    imSimrsDokterEntity.setKuotaOnSite(bean.getKuotaOnSite());
+                    imSimrsDokterEntity.setSip(bean.getSip());
+
                     imSimrsDokterEntity.setFlag(bean.getFlag());
                     imSimrsDokterEntity.setAction(bean.getAction());
                     imSimrsDokterEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -193,6 +201,12 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                         imSimrsDokterEntity.setKuota(bean.getKuota());
                         imSimrsDokterEntity.setKodeDpjp(bean.getKodeDpjp());
                         imSimrsDokterEntity.setKodering(kodering);
+                        imSimrsDokterEntity.setFlagTele(bean.getFlagTele());
+                        imSimrsDokterEntity.setFlagCall(bean.getFlagCall());
+                        imSimrsDokterEntity.setKuotaTele(bean.getKuotaTele());
+                        imSimrsDokterEntity.setKuotaOnSite(bean.getKuotaOnSite());
+                        imSimrsDokterEntity.setSip(bean.getSip());
+
                         imSimrsDokterEntity.setFlag(bean.getFlag());
                         imSimrsDokterEntity.setAction(bean.getAction());
                         imSimrsDokterEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -535,7 +549,6 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
         if(bean != null){
 
             Map hsCriteria = new HashMap();
-
             if(bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())){
                 hsCriteria.put("id_dokter", bean.getIdDokter());
             }
@@ -581,10 +594,13 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                     dokter.setKodeDpjp(entity.getKodeDpjp());
                     dokter.setKodering(entity.getKodering());
                     dokter.setKuotaTele(entity.getKuotaTele());
+                    dokter.setFlagCall(entity.getFlagCall());
                     dokter.setFlagTele(entity.getFlagTele());
+                    dokter.setSip(entity.getSip());
+                    dokter.setKuotaOnSite(entity.getKuotaOnSite());
                     dokter.setLat(entity.getLat());
                     dokter.setLon(entity.getLon());
-                    dokter.setKuotaBpjs(entity.getKuotaBpjs());
+//                    dokter.setKuotaBpjs(entity.getKuotaBpjs());
 
                     if (entity.getIdPelayanan() != null){
                         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
