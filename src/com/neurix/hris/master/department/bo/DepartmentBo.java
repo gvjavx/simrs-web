@@ -17,5 +17,6 @@ public interface DepartmentBo extends BaseMasterBo<Department>{
     public void saveDelete(Department bean) throws GeneralBOException;
 
     public List<Department> getComboDepartmentWithCriteria(String query) throws GeneralBOException;
+    public List<Department> getListDepartmentByDepartmenId(String id) throws GeneralBOException;
 
 }
