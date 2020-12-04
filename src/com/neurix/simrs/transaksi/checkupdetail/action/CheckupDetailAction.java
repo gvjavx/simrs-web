@@ -889,7 +889,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         try {
-            kategoriTindakanList = kategoriTindakanBoProxy.getListKategoriTindakan(pelayanan, null);
+            kategoriTindakanList = kategoriTindakanBoProxy.getListKategoriTindakan(pelayanan, null, CommonUtil.userBranchLogin());
         } catch (GeneralBOException e) {
             logger.error("[CheckupDetailAction.getListComboKategoriTIndakan] Error when get kategori tindakan ," + "Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error Found problem when get kategori tindakan , please inform to your admin.\n" + e.getMessage());
@@ -926,7 +926,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             try {
-                kategoriTindakans = kategoriTindakanBo.getListKategoriTindakan(idPelayanan, kategori);
+                kategoriTindakans = kategoriTindakanBo.getListKategoriTindakan(idPelayanan, kategori, CommonUtil.userBranchLogin());
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
             }

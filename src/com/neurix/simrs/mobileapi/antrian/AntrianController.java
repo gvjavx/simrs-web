@@ -52,7 +52,7 @@ public class AntrianController implements ModelDriven<Object> {
                 checkup.setNamaPelayanan(entity.getNamaPelayanan());
                 checkup.setNoCheckup(entity.getNoCheckup());
                 checkup.setIdDetailCheckup(entity.getIdDetailCheckup());
-                checkup.setNoAntrian(entity.getNoAntrian());
+                checkup.setNoAntrian(Integer.valueOf(entity.getStNoAntrian()));
                 checkup.setBelumBayarUangMuka(entity.getBelumBayarUangMuka());
                 checkup.setStatusBayar(entity.getStatusBayar());
                 checkup.setIdJenisPeriksaPasien(entity.getStatusBayar());
