@@ -362,4 +362,32 @@ public class DepartmentBoImpl implements DepartmentBo {
         }
         return status;
     }
+
+    @Override
+    public List<Department> getListDepartmentByDepartmenId(String id) throws GeneralBOException {
+
+        Map hsCriteria = new HashMap();
+        if (!"".equalsIgnoreCase(id) && id != null)
+            hsCriteria.put("department_id", id);
+        hsCriteria.put("flag", id);
+
+        List<ImDepartmentEntity> departmentEntities = new ArrayList<>();
+        try {
+            departmentEntities = departmentDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[PayrollSkalaGajiBoImpl.getListDepartmentByDepartmenId] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        List<Department> departmentList = new ArrayList<>();
+        if (departmentEntities.size() > 0){
+            for (ImDepartmentEntity departmentEntity : departmentEntities){
+                Department department = new Department();
+                department.setDepartmentId(departmentEntity.getDepartmentId());
+                department.setDepartmentName(departmentEntity.getDepartmentName());
+                departmentList.add(department);
+            }
+        }
+        return departmentList;
+    }
 }

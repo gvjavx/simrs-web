@@ -21,11 +21,23 @@
             font-size: 14px;
             margin-bottom: 30px;
         }
+        #reset{
+            -webkit-box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);
+            box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);
+        }
+        #addd{
+            -webkit-box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);
+            box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);
+        }
+        #search{
+            -webkit-box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);
+            box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);
+        }
     </style>
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_pelayanan'/>";
+            window.location.href="<s:url action='initForm_jenisobat'/>";
         }
 
     </script>
@@ -41,7 +53,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Asuransi
+            Jenis Obat
         </h1>
     </section>
     <!-- Main content -->
@@ -50,14 +62,14 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Asuransi </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i>Jenis Obat</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="asuransiForm" method="post"  theme="simple"
-                                            namespace="/asuransi" action="search_asuransi.action" cssClass="form-horizontal">
+                                    <s:form id="SearchJenisObatForm" method="post"  theme="simple"
+                                            namespace="/jenisobat" action="search_jenisobat.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -66,55 +78,19 @@
                                             </tr>
                                         </table>
                                         <table>
+
                                             <tr>
-                                                <td width="16%">
-                                                    <label class="control-label"><small>Asuransi ID :</small></label>
+                                                <td width="18%" >
+                                                    <label class="control-label"><small>Jenis Obat:</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="idAsuransi"
-                                                                     name="asuransi.idAsuransi"
-                                                                     required="true"
-                                                                     disabled="false"
-                                                                     cssClass="form-control"/>
+                                                        <s:textfield id="jenisobat" name="jenisObat.namaJenisObat"
+                                                                     required="true" cssStyle="margin-top: 7px"
+                                                                     disabled="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Nama Asuransi :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                            <s:action id="initComboAsuransi" namespace="/masterVendor"
-                                                                      name="getComboAsuransi_masterVendor"/>
-                                                            <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                                      list="#initComboAsuransi.listOfComboVendor" id="asuransi"
-                                                                      name="asuransi.namaAsuransi" listKey="nama"
-                                                                      listValue="nama"
-                                                                      headerKey="" headerValue="[Select one]"
-                                                                      cssClass="form-control select2"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
-
-
-
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>isLaka :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:select list="#{'N':'Tidak Aktif' ,'Y':'aktif'}" id="isLaka"
-                                                                  name="asuransi.isLaka"
-                                                                  headerKey=""  headerValue="[Select one]"
-                                                                  cssClass="form-control select2" />
-                                                    </table>
-                                                </td>
-                                            </tr>
-
 
                                             <tr>
                                                 <td>
@@ -122,10 +98,8 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Tidak Aktif'}" id="flag"
-                                                                  name="asuransi.flag"
-                                                                  headerKey="Y" headerValue="Aktif"
-                                                                  cssClass="form-control select2" />
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="rekananOps.flag"
+                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
 
                                                 </td>
@@ -133,34 +107,29 @@
 
                                         </table>
                                         <br>
-
                                         <div id="actions" class="form-actions">
                                             <table align="center">
                                                 <tr>
-                                                    <td>
-                                                        <sj:submit type="button" cssClass="btn btn-primary"
-                                                                   formIds="asuransiForm" id="search"
-                                                                   name="search"
-                                                                   onClickTopics="showDialog"
-                                                                   onCompleteTopics="closeDialog" cssStyle="margin-right: 5px">
+                                                    <td >
+                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary"
+                                                                   formIds="SearchJenisObatForm" id="search" name="search"
+                                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:url var="urlAdd" namespace="/asuransi"
-                                                               action="add_asuransi" escapeAmp="false">
+                                                        <s:url var="urlAdd"  namespace="/jenisobat" action="add_jenisobat" escapeAmp="false">
                                                         </s:url>
-                                                        <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" cssStyle="margin-right: 5px"
-                                                              href="%{urlAdd}">
+                                                        <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add Asuransi
+                                                            Add JenisObat
                                                         </sj:a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" cssStyle="margin-right: 5px"
+                                                        <button type="button" class="btn btn-danger" id="reset" cssStyle="margin-right: 5px"
                                                                 onclick="window.location.href='<s:url
-                                                                        action="initForm_asuransi"/>'">
+                                                                action="initForm_jenisobat"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -190,9 +159,10 @@
                                                                      name="image_indicator_write">
                                                             </center>
                                                         </sj:dialog>
+
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="340" width="500" autoOpen="false"
-                                                                   title="Asuransi ">
+                                                                   height="310" width="600" autoOpen="false"
+                                                                   title="JenisObat ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
@@ -205,15 +175,15 @@
                                                                    title="Pendapatan Dokter">
                                                         </sj:dialog>
 
-                                                        <s:set name="listOfsearchAsuransi" value="#session.listOfResultAsuransi" scope="request" />
-                                                        <display:table name="listOfsearchAsuransi" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_asuransi.action" export="true" id="row" pagesize="14"
-                                                                       style="font-size:12">
+                                                        <s:set name="listOfsearchJenisObat" value="#session.listOfResultJenisObat" scope="request" />
+                                                        <display:table name="listOfsearchJenisObat" class="table table-condensed table-striped table-hover"
+                                                                       requestURI="paging_displaytag_rekananOps.action" export="true" id="row"
+                                                                       pagesize="14" style="font-size:12">
 
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlEdit" namespace="/asuransi" action="edit_asuransi" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idAsuransi"/></s:param>
+                                                                    <s:url var="urlEdit" namespace="/jenisobat" action="edit_jenisobat" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.idJenisObat"/></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -224,8 +194,8 @@
 
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlViewDelete" namespace="/asuransi" action="delete_asuransi" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idAsuransi" /></s:param>
+                                                                    <s:url var="urlViewDelete" namespace="/jenisobat" action="delete_jenisobat" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.idJenisObat" /></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
@@ -233,15 +203,12 @@
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
-
-                                                            <display:column property="idAsuransi" sortable="true" title="ID Asuransi" />
-                                                            <display:column property="namaAsuransi" sortable="true" title="Nama Asuransi"  />
-                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
-                                                            <display:column property="isLaka" sortable="true" title="is laka"  />
-                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
-                                                            <display:column property="stCreatedDate" sortable="true" title="Created date"  />
+                                                            <%--<display:column property="idJenisObat" sortable="true" title="ID JenisObat" />--%>
+                                                            <display:column property="namaJenisObat" sortable="true" title="Nama Jenis Obat" />
+                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <display:column property="createdDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
-                                                            <display:column property="stLastUpdate" sortable="true" title="Last update"  />
+                                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                                         </display:table>
                                                     </td>

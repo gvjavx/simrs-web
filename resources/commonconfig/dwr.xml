@@ -855,11 +855,14 @@
             <param name="class" value="com.neurix.simrs.transaksi.initdashboard.action.InitDashboardAction"/>
         </create>
 
-      <create creator="new">
-          <param name="class" value="com.neurix.simrs.master.kandunganObat.action.KandunganObatAction"/>
-      </create>
-      <convert converter="bean" match="com.neurix.simrs.master.kandunganObat.model.KandunganObat"/>
-      <convert converter="bean" match="com.neurix.simrs.master.kandunganObat.model.ImSimrsKandunganObatEntity"/>
-
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.kandunganObat.action.KandunganObatAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.kandunganObat.model.KandunganObat"/>
+        <convert converter="bean" match="com.neurix.simrs.master.kandunganObat.model.ImSimrsKandunganObatEntity"/>
+        <create creator="new">
+            <param name="class" value="com.neurix.hris.master.department.action.DepartmentAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.hris.master.department.model.Department"/>
     </allow>
 </dwr>
