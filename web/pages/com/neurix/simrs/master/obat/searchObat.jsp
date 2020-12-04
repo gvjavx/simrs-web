@@ -305,18 +305,18 @@
                     <p id="msg_exits"></p>
                 </div>
                 <div class="row" id="row-check-id-pabrik">
-                    <label class="col-md-3" style="margin-top: 7px">Generate Id Obat</label>
-                    <label class="switch">
-                        <input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">
-                        <span class="slider round"></span>
-                    </label>
-                    <%--<input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">--%>
-
-
+                    <div class="form-group">
+                        <label class="col-md-3">Generate Id Obat</label>
+                        <div class="col-md-7">
+                            <label class="switch" style="margin-top: 4px">
+                                <input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
-
                     <div class="form-group" id="dis-id-pabrik">
                         <label class="col-md-3" style="margin-top: 7px">ID Obat</label>
                         <div class="col-md-7">
