@@ -32,10 +32,10 @@
 
         /*frans*/
 
-        #demo {
-            -webkit-box-shadow: 2px 0px 24px 1px rgba(0,0,0,0.44);
-            box-shadow:2px 0px 24px 1px rgba(0,0,0,0.44);
-        }
+        /*#demo {*/
+            /*-webkit-box-shadow: 2px 0px 24px 1px rgba(0,0,0,0.44);*/
+            /*box-shadow:2px 0px 24px 1px rgba(0,0,0,0.44);*/
+        /*}*/
 
     </style>
     <script type='text/javascript'>
@@ -149,7 +149,7 @@
                                         <%--</sj:submit>--%>
                                         <%--</td>--%>
                                             <td >
-                                                <a class="btn btn-primary" Style="margin-right: 5px" onclick="searchData() "><i class="fa fa-primary"></i> Search</a>
+                                                <a class="btn btn-primary" Style="margin-right: 5px" onclick="searchData() "><i class="fa fa-search"></i> Search</a>
                                             </td>
                                     <td>
                                         <s:url var="urlAdd" namespace="/positionBagian" action="add_positionBagian" escapeAmp="false">
@@ -238,17 +238,17 @@
                                             <%--<display:column property="lastUpdate" sortable="true" title="Last update"  />--%>
                                             <%--<display:column property="lastUpdateWho" sortable="true" title="Last update who"  />--%>
                                         <%--</display:table>--%>
-                                        <table class="table table-bordered">
+                                        <table class="table table-bordered" style="font-size: 13px;">
                                             <thead >
                                             <tr style="background-color:#30d196;">
-                                                <td>Departement ID</td>
-                                                <td>Depertemant Name</td>
-                                                <td>createdDate</td>
-                                                <td>lastUpdate</td>
-                                                <td>createdWho</td>
-                                                <td>lastUpdateWho</td>
-                                                <td>edit</td>
-                                                <td>delete</td>
+                                                <%--<td>Departement ID</td>--%>
+                                                <td>Name</td>
+                                                <td>Created Date</td>
+                                                <td>Last Update</td>
+                                                <td>Created Who</td>
+                                                <td>Last Update Who</td>
+                                                <td>Edit</td>
+                                                <td>Delete</td>
 
                                             </tr>
                                             </thead>
@@ -304,9 +304,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4">Department :</label>
+                        <label class="control-label col-sm-4">Bidang/Divisi :</label>
                         <div class="col-sm-8">
-                            <select id="department-id" class="form-control">
+                            <select id="department-id-edit" class="form-control">
                             </select>
                             <%--<s:action id="comboDept" namespace="/department" name="initComboDepartment_department"/>--%>
                             <%--<s:select list="#comboDept.listComboDepartment" id="departmentId-edit"--%>
@@ -345,6 +345,16 @@
                             <input type="text" readonly class="form-control" id="devisidelete">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Bidang/Divisi :</label>
+                        <div class="col-sm-8">
+                            <select id="department-id-delete" class="form-control" disabled>
+                            </select>
+                                <%--<s:action id="comboDept" namespace="/department" name="initComboDepartment_department"/>--%>
+                                <%--<s:select list="#comboDept.listComboDepartment" id="departmentId-edit"--%>
+                                <%--listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                        </div>
+                    </div>
                 </s:form>
             </div>
             <div class="modal-footer">
@@ -364,23 +374,28 @@
         var id = $('#positionBagianId').val();
         var dp = $ ('#positionBagianName').val();
         PositionBagianAction.searchHead(id,dp, function (response) {
-            console.log(response);
+//            console.log(response);
             if(response.length > 0){
                 var body = '';
                 $.each(response, function (i, item) {
                     var icon = '';
+//                    if(item.departmentId != null && item.departmentId != ''){
+//                        icon = '<i id="icon_'+item.departmentId+'" class="fa fa-plus" style="cursor: pointer" onclick="anakNya(\''+item.departmentId+'\')"></i>';
+//                    }
+
                     if(item.departmentId != null && item.departmentId != ''){
                         icon = '<i id="icon_'+item.departmentId+'" class="fa fa-plus" style="cursor: pointer" onclick="anakNya(\''+item.departmentId+'\')"></i>';
                     }
-                    body += '<tr id="row_'+item.departmentId+'">' +
-                            '<td>'+icon+" "+item.departmentId+'</td>'+
-                            '<td>'+item.departmentName+'</td>'+
+
+                    body += '<tr id="row_'+item.departmentId+'" style="background-color: gainsboro">' +
+//                            '<td>'+icon+" "+item.departmentId+'</td>'+
+                            '<td>'+icon+" "+item.departmentName+'</td>'+
                         '<td>'+item.stCreatedDate+'</td>'+
-                        '<td>'+item.stLastUpdate+'</td>'+
                         '<td>'+item.createdWho+'</td>'+
+                        '<td>'+item.stLastUpdate+'</td>'+
                         '<td>'+item.lastUpdateWho+'</td>'+
-                        '<td><button type="button" class="btn btn-secondary "></button></td>'+
-                        '<td><button type="button" class="btn btn-secondary"></button></td>'+
+                        '<td></td>'+
+                        '<td></td>'+
                             '<tr>';
                 });
 
@@ -397,12 +412,12 @@
             if(response.length > 0){
                 var tr = '';
                 $.each(response, function (i, item) {
-                    tr += '<tr class="del_'+id+'" bgcolor="#90EE90">' +
-                        '<td><span style="margin-left: 20px">'+item.bagianId+'</span></td>'+
-                        '<td>'+item.bagianName+'</td>'+
+                    tr += '<tr class="del_'+id+'">' +
+//                        '<td><span style="margin-left: 20px">'+item.bagianId+'</span></td>'+
+                        '<td><span style="margin-left: 20px">'+item.bagianName+'</span></td>'+
                         '<td>'+item.stCreatedDate+'</td>'+
-                        '<td>'+item.stLastUpdate+'</td>'+
                         '<td>'+item.createdWho+'</td>'+
+                        '<td>'+item.stLastUpdate+'</td>'+
                         '<td>'+item.lastUpdateWho+'</td>'+
                         '<td><button type="button" id="demo" class="btn btn-success " onclick="edit(\''+item.bagianId+'\')" > <span class="glyphicon glyphicon-pencil"></span></button></td>'+
                         '<td><button type="button" id="demo" class="btn btn-danger "  onclick="delet(\''+item.bagianId+'\')" > <span class="glyphicon glyphicon-trash"></span></button></td>'+
@@ -421,31 +436,38 @@
     function edit(id) {
 
         PositionBagianAction.getDataById(id, function (postionBagianObj) {
+            getDepartment(postionBagianObj.divisiId);
             $("#iddevisiedit").val(postionBagianObj.bagianId);
             $("#devisiedit").val(postionBagianObj.bagianName);
-            var divisiId = $("#departmentid").val(postionBagianObj.divisiId);
-            getDepartment(divisiId);
+            $("#departmentid").val(postionBagianObj.divisiId);
         });
         $('#modal-edit').modal("show");
     }
 
-    function getDepartment() {
-        DepartmentAction.getListDepartmentAll(function (res) {
+    function getDepartment(divisiId) {
+        console.log(divisiId);
+        DepartmentAction.getListDepartmentAll( function (res) {
+            console.log(res);
+            var str = "";
             $.each(res, function (i, item) {
-               if (item.depar){
-
+               if (item.departmentId == divisiId){
+                   str += '<option value="'+item.departmentId+'" selected>'+item.departmentName+'</option>';
                } else {
-
+                   str += '<option value="'+item.departmentId+'">'+item.departmentName+'</option>';
                }
             });
+            $('#department-id-edit').html(str);
+            $('#department-id-delete').html(str);
         });
     }
 
     function delet(id){
 
         PositionBagianAction.getDataById(id, function (postionBagianObj) {
+            getDepartment(postionBagianObj.divisiId);
             $("#iddevisidelete").val(postionBagianObj.bagianId);
             $("#devisidelete").val(postionBagianObj.bagianName);
+            $("#departmentid").val(postionBagianObj.divisiId);
         });
         $('#modal-delete').modal("show");
     }
@@ -453,8 +475,9 @@
     function saveEdit() {
       var iddevisi = $("#iddevisiedit").val();
       var namadevisi = $("#devisiedit").val();
+      var bidang = $("#department-id-edit").val();
 
-      PositionBagianAction.saveEditDwr(iddevisi,namadevisi, function (CrudResponse) {
+      PositionBagianAction.saveEditDwr(iddevisi,namadevisi, bidang, function (CrudResponse) {
           if(CrudResponse.status == "succes"){
               // alert("berhasil");
               $('#modal-edit').modal("hide");

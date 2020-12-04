@@ -369,7 +369,7 @@ public class DepartmentBoImpl implements DepartmentBo {
         Map hsCriteria = new HashMap();
         if (!"".equalsIgnoreCase(id) && id != null)
             hsCriteria.put("department_id", id);
-        hsCriteria.put("flag", id);
+        hsCriteria.put("flag", "Y");
 
         List<ImDepartmentEntity> departmentEntities = new ArrayList<>();
         try {
