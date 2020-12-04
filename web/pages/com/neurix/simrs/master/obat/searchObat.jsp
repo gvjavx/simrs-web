@@ -58,7 +58,6 @@
     <section class="content-header">
         <h1>
             Obat
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
