@@ -6,22 +6,29 @@
 
 <html>
 <head>
-    <%--<script type='text/javascript' src='<s:url value="/dwr/interface/PayrollSkalaGajiAction.js"/>'></script>--%>
     <script type="text/javascript">
-    function callSearch2() {
+        $(document).ready(function(){
+            // var cek = document.getElementById("eksekutif").value;
+            //
+            // if (cek == 'Y'){
+            //     console.log(cek);
+            //     document.getElementById("isEksekutif").checked = true;
+            // }
+        });
+        function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-//            window.location.reload(true);
-            document.asuransiForm.action = "search_asuransi.action";
-            document.asuransiForm.submit();
+           window.location.reload(true);
+
+
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
-            var idAsuransi = document.getElementById("idAsuransi1").value;
+        $.subscribe('beforeProcessSaveDelete', function (event, data) {
+            var idJenisObatdelete = document.getElementById("idJenisObatdelete").value;
 
-            if (idAsuransi != '') {
-                if (confirm('Do you want to delete this record?')) {
+            if (idJenisObatdelete != '') {
+                if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
                 } else {
@@ -31,8 +38,8 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (idAsuransi == '') {
-                    msg += 'Field <strong>ID Asuransi </strong> is required.' + '<br/>';
+                if (idJenisObatdelete == '') {
+                    msg += 'Field <strong> id Jenis Obat</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -69,12 +76,16 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="deleteAsuransiForm" method="post" theme="simple" namespace="/asuransi" action="saveDelete_asuransi" cssClass="well form-horizontal">
+            <s:form id="deleteJenisObatForm" method="post" theme="simple" namespace="/jenisobat"
+                    action="saveDelete_jenisobat" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
-                <legend align="left">Delete Asuransi</legend>
+
+
+                <legend align="left">Delete Jenis Obat</legend>
+
 
                 <table>
                     <tr>
@@ -86,40 +97,34 @@
 
                 <table >
                     <tr>
-                        <td>
-                            <label class="control-label"><small>ID Pelayanan :</small></label>
+                        <td width="30%">
+                            <label class="control-label"><small>ID Jenis Obat :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idAsuransi1" name="asuransi.idAsuransi" required="true" disabled="true" cssClass="form-control"/>
-                                <s:hidden id="idAsuransi1" name="asuransi.idAsuransi" />
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Nama Asuransi :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="namaAsuransi1" name="asuransi.namaAsuransi"
-                                             required="true" disabled="false" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <%--<tr>--%>
-                        <%--<td>--%>
-                            <%--<label class="control-label"><small>No. Master :</small></label>--%>
-                        <%--</td>--%>
-                        <%--<td>--%>
-                            <%--<table>--%>
-                                <%--<s:action id="initComboMaster" namespace="/admin/user" name="initComboMaster_user"/>--%>
-                                <%--<s:select list="#initComboMaster.listOfComboMaster" id="noMaster" name="asuransi.noMaster" disabled="true"--%>
-                                          <%--listKey="noMaster" listValue="noMaster" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                <s:textfield id="idJenisObatdelete" name="jenisObat.idJenisObat" disabled="true"
+                                             required="true" readonly="true" cssClass="form-control"/>
 
-                            <%--</table>--%>
-                        <%--</td>--%>
-                    <%--</tr>--%>
+                                    <s:hidden id="idJenisObatdelete" name="jenisObat.idJenisObat" />
+                            </table>
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td >
+                            <label class="control-label"><small>Jenis Obat:</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="jenisobatAdd" name="jenisObat.namaJenisObat" required="true"
+                                             cssStyle="margin-top: 7px" readonly="true"
+                                             disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
 
                 </table>
 
@@ -129,8 +134,9 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deleteAsuransiForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deleteJenisObatForm" id="save"
+                                   name="save"
+                                   onBeforeTopics="beforeProcessSaveDelete" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Delete
@@ -152,7 +158,7 @@
                                                    closeTopics="closeDialog" modal="true"
                                                    resizable="false"
                                                    height="250" width="600" autoOpen="false"
-                                                   title="Delete Data ...">
+                                                   title="Save Data ...">
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>
@@ -176,7 +182,7 @@
                                                             }"
                                         >
                                             <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                                            Record has been deleted successfully.
+                                            Record has been saved successfully.
                                         </sj:dialog>
 
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
@@ -218,5 +224,13 @@
 </table>
 </body>
 </html>
-
+<script>
+    window.cekEksekutif = function () {
+        if (document.getElementById("isEksekutif").checked == true) {
+            $("#eksekutif").val("Y");
+        } else {
+            $("#eksekutif").val("N");
+        }
+    }
+</script>
 

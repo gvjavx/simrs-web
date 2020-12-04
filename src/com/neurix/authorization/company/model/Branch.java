@@ -55,6 +55,15 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private String notLike;
     private String warna;
     private String isDisabled;
+    private String roleName;
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 
     public String getIsDisabled() {
         return isDisabled;

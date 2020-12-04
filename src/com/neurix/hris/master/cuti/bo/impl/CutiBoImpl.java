@@ -124,9 +124,7 @@ public class CutiBoImpl implements CutiBo {
 //        String condition = null;
 
         if (bean!=null) {
-
             String cutiId = bean.getCutiId();
-
             ImCutiEntity imCutiEntity = null;
             String idHistory = "";
             try {

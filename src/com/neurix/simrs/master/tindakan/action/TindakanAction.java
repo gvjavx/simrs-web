@@ -250,6 +250,7 @@ public class TindakanAction extends BaseTransactionAction {
         Branch branch = new Branch();
         branch.setFlag("Y");
         branch.setNotLike("KP");
+        branch.setRoleName(CommonUtil.roleAsLogin());
         if(!"ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
             branch.setBranchId(CommonUtil.userBranchLogin());
         }

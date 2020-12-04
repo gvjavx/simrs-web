@@ -279,21 +279,21 @@
         cekNotifResep();
         setInterval(function () {
             cekNotifResep();
-        }, 60000);
+        }, 30000);
     }
 
     function pushNotifTele(){
         cekNotifTele();
         setInterval(function () {
             cekNotifTele();
-        }, 60000);
+        }, 30000);
     }
 
     function pushNotifLab(kategori){
         cekNotifLab(kategori);
         setInterval(function () {
             cekNotifLab(kategori);
-        }, 60000);
+        }, 30000);
     }
 
     function cekNotifResep(){

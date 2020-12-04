@@ -213,6 +213,7 @@
         </create>
         <convert converter="bean" match="com.neurix.hris.master.positionBagian.model.positionBagian"/>
         <convert converter="bean" match="com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity"/>
+        <convert converter="bean" match="com.neurix.hris.master.department.model.Department"/>
 
         <create creator="new">
             <param name="class" value="com.neurix.hris.master.groupShift.action.GroupShiftAction"/>
