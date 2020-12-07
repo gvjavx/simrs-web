@@ -426,83 +426,85 @@
 
     function saveTindakan(id) {
         var data = "";
-        var nama = $('#set_nama_tindakan').val();
-        var idKategori = $('#set_kategori_ina_bpjs').val();
-        var tarif = $('#h_tarif').val();
-        var flagTele = $('#flagKonsulTele').val();
+        if(!cekSession()){
+            var nama = $('#set_nama_tindakan').val();
+            var idKategori = $('#set_kategori_ina_bpjs').val();
+            var tarif = $('#h_tarif').val();
+            var flagTele = $('#flagKonsulTele').val();
 
-        if (nama != '' && idKategori != '' && tarif != '' && flagTele != '') {
-            $('#save_add').hide();
-            $('#load_add').show();
-            if (id != '') {
-                data = {
-                    'id_tindakan': id,
-                    'nama_tindakan': nama,
-                    'kategori_ina_bpjs': idKategori,
-                    'tarif': tarif,
-                    'flag_tele': flagTele
-                };
-                var dataString = JSON.stringify(data);
-                dwr.engine.setAsync(true);
-                HeaderTindakanAction.saveEdit(dataString, {
-                    callback: function (response) {
-                        if (response.status == "success") {
-                            $('#modal-add').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#save_add').show();
-                            $('#load_add').hide();
-                            $('body').scrollTop(0);
+            if (nama != '' && idKategori != '' && tarif != '' && flagTele != '') {
+                $('#save_add').hide();
+                $('#load_add').show();
+                if (id != '') {
+                    data = {
+                        'id_tindakan': id,
+                        'nama_tindakan': nama,
+                        'kategori_ina_bpjs': idKategori,
+                        'tarif': tarif,
+                        'flag_tele': flagTele
+                    };
+                    var dataString = JSON.stringify(data);
+                    dwr.engine.setAsync(true);
+                    HeaderTindakanAction.saveEdit(dataString, {
+                        callback: function (response) {
+                            if (response.status == "success") {
+                                $('#modal-add').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#save_add').show();
+                                $('#load_add').hide();
+                                $('body').scrollTop(0);
 
-                        } else {
-                            $('#warning_add').show().fadeOut(5000);
-                            $('#msg_add').text(response.msg);
-                            $('#save_add').show();
-                            $('#load_add').hide();
+                            } else {
+                                $('#warning_add').show().fadeOut(5000);
+                                $('#msg_add').text(response.msg);
+                                $('#save_add').show();
+                                $('#load_add').hide();
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    data = {
+                        'nama_tindakan': nama,
+                        'kategori_ina_bpjs': idKategori,
+                        'tarif': tarif,
+                        'flag_tele': flagTele
+                    };
+                    var dataString = JSON.stringify(data);
+                    dwr.engine.setAsync(true);
+                    HeaderTindakanAction.saveAdd(dataString, {
+                        callback: function (response) {
+                            if (response.status == "success") {
+                                $('#modal-add').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#save_add').show();
+                                $('#load_add').hide();
+                                $('body').scrollTop(0);
+
+                            } else {
+                                $('#warning_add').show().fadeOut(5000);
+                                $('#msg_add').text(response.msg);
+                                $('#save_add').show();
+                                $('#load_add').hide();
+                            }
+                        }
+                    });
+                }
             } else {
-                data = {
-                    'nama_tindakan': nama,
-                    'kategori_ina_bpjs': idKategori,
-                    'tarif': tarif,
-                    'flag_tele': flagTele
-                };
-                var dataString = JSON.stringify(data);
-                dwr.engine.setAsync(true);
-                HeaderTindakanAction.saveAdd(dataString, {
-                    callback: function (response) {
-                        if (response.status == "success") {
-                            $('#modal-add').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#save_add').show();
-                            $('#load_add').hide();
-                            $('body').scrollTop(0);
+                $('#warning_add').show().fadeOut(5000);
+                $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
 
-                        } else {
-                            $('#warning_add').show().fadeOut(5000);
-                            $('#msg_add').text(response.msg);
-                            $('#save_add').show();
-                            $('#load_add').hide();
-                        }
-                    }
-                });
-            }
-        } else {
-            $('#warning_add').show().fadeOut(5000);
-            $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
-
-            if (nama == '') {
-                $('#war_set_nama_tindakan').show();
-            }
-            if (idKategori == '') {
-                $('#war_set_kategori_ina_bpjs').show();
-            }
-            if (tarif == '') {
-                $('#war_set_tarif').show();
-            }
-            if (flagTele == '') {
-                $('#war_konsul_tele').show();
+                if (nama == '') {
+                    $('#war_set_nama_tindakan').show();
+                }
+                if (idKategori == '') {
+                    $('#war_set_kategori_ina_bpjs').show();
+                }
+                if (tarif == '') {
+                    $('#war_set_tarif').show();
+                }
+                if (flagTele == '') {
+                    $('#war_konsul_tele').show();
+                }
             }
         }
     }
@@ -539,21 +541,23 @@
     function saveDelete(id) {
         $('#modal-confirm-dialog').modal('hide');
         $('#waiting_dialog').dialog('open');
-        dwr.engine.setAsync(true);
-        HeaderTindakanAction.saveDelete(id, {
-            callback: function (res) {
-                if(res.status == "success"){
-                    $('#waiting_dialog').dialog('close');
-                    $('#info_dialog').dialog('open');
-                    $('body').scrollTop(0);
-                }else{
-                    $('#waiting_dialog').dialog('close');
-                    $('#error_dialog').dialog('open');
-                    $('#errorMessage').text(res.msg);
-                    $('body').scrollTop(0);
+        if(!cekSession()){
+            dwr.engine.setAsync(true);
+            HeaderTindakanAction.saveDelete(id, {
+                callback: function (res) {
+                    if(res.status == "success"){
+                        $('#waiting_dialog').dialog('close');
+                        $('#info_dialog').dialog('open');
+                        $('body').scrollTop(0);
+                    }else{
+                        $('#waiting_dialog').dialog('close');
+                        $('#error_dialog').dialog('open');
+                        $('#errorMessage').text(res.msg);
+                        $('body').scrollTop(0);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     function setHargaDiskon(value) {

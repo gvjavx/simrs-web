@@ -1172,7 +1172,7 @@
                             <div id="form-asuransi" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-user"></i> Data Asuransi</h3>
+                                    <h3 class="box-title"><i class="fa fa-user"></i> Silahkan Isi Data Asuransi</h3>
                                 </div>
                                 <div class="box-body">
                                     <div class="row">

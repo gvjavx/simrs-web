@@ -1190,7 +1190,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return response;
     }
 
-    public CrudResponse savePeriksaPasien(String data) {
+    public CrudResponse savePeriksaPasien(String data, String asuransi) {
         CrudResponse response = new CrudResponse();
         logger.info("[CheckupDetailAction.savePeriksaPasien] START process >>>");
 
@@ -1309,6 +1309,44 @@ public class CheckupDetailAction extends BaseMasterAction {
                             response = saveLabCheckup(orderPeriksaLab);
                             if ("success".equalsIgnoreCase(response.getStatus())) {
                                 headerDetailCheckup.setIsOrderLab("Y");
+                            }
+                        }
+                    }
+
+                    if("asuransi".equalsIgnoreCase(jenisPasien)){
+                        if(asuransi != null && !"".equalsIgnoreCase(asuransi)){
+                            try {
+                                JSONObject oj = new JSONObject(asuransi);
+                                if(oj != null){
+                                    if (oj.has("no_polisi")) {
+                                        headerDetailCheckup.setNoRujukan(oj.getString("no_polisi"));
+                                    }
+                                    if (oj.has("tgl_kejadian")) {
+                                        headerDetailCheckup.setTglRujukan(oj.getString("tgl_kejadian"));
+                                    }
+                                    if (oj.has("surat_rujukan")) {
+                                        if(oj.getString("surat_rujukan") != null && !"".equalsIgnoreCase(oj.getString("surat_rujukan"))){
+                                            BASE64Decoder decoder = new BASE64Decoder();
+                                            byte[] decodedBytes = decoder.decodeBuffer(oj.getString("surat_rujukan"));
+                                            logger.info("Decoded upload data : " + decodedBytes.length);
+                                            String fileName = idDetailCheckup + "-" + dateFormater("MM") + dateFormater("yy") + ".png";
+                                            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN + fileName;
+                                            logger.info("File save path : " + uploadFile);
+                                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                                            if (image == null) {
+                                                logger.error("Buffered Image is null");
+                                            } else {
+                                                File f = new File(uploadFile);
+                                                ImageIO.write(image, "png", f);
+                                                headerDetailCheckup.setSuratRujukan(fileName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }catch (Exception e){
+                                response.setStatus("error");
+                                response.setMsg("[Found Error] JSON data asuransi tidak bisa dilakukan...!");
                             }
                         }
                     }
