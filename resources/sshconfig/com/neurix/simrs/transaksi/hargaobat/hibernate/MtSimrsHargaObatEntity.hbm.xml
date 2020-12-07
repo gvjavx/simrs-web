@@ -59,6 +59,14 @@
         <property name="branchId">
             <column name="branch_id" sql-type="varchar" length="5" not-null="false"/>
         </property>
-
+        <property name="hargaTerakhir">
+            <column name="harga_terakhir" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="diskonUmum">
+            <column name="diskon_umum" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="hargaJualUmum">
+            <column name="harga_jual_umum" sql-type="numeric" length="5" not-null="false"/>
+        </property>
     </class>
 </hibernate-mapping>

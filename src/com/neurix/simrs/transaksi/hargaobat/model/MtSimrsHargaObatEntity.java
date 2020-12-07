@@ -23,6 +23,33 @@ public class MtSimrsHargaObatEntity implements Serializable {
     private String idHargaObat;
     private Integer margin;
     private String branchId;
+    private BigDecimal hargaTerakhir;
+    private BigDecimal diskonUmum;
+    private BigDecimal hargaJualUmum;
+
+    public BigDecimal getHargaTerakhir() {
+        return hargaTerakhir;
+    }
+
+    public void setHargaTerakhir(BigDecimal hargaTerakhir) {
+        this.hargaTerakhir = hargaTerakhir;
+    }
+
+    public BigDecimal getDiskonUmum() {
+        return diskonUmum;
+    }
+
+    public void setDiskonUmum(BigDecimal diskonUmum) {
+        this.diskonUmum = diskonUmum;
+    }
+
+    public BigDecimal getHargaJualUmum() {
+        return hargaJualUmum;
+    }
+
+    public void setHargaJualUmum(BigDecimal hargaJualUmum) {
+        this.hargaJualUmum = hargaJualUmum;
+    }
 
     public String getIdHargaObat() {
         return idHargaObat;

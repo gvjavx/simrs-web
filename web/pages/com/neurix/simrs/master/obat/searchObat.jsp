@@ -691,7 +691,6 @@
                                 <option value="sachet">Sachet</option>
                                 <option value="supp">Suppositoria</option>
                                 <option value="pulvis">Pulvis</option>
-                                <%--<option value="inf">Infusion</option>--%>
                                 <option value="sol">Sol</option>
                                 <option value="akdr">AKDR</option>
                                 <option value="penfill">Penfill</option>
